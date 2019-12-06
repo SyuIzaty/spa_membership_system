@@ -14,7 +14,7 @@ class PatrolController extends Controller
      */
     public function index()
     {
-        echo 'hahah';
+
     }
 
     /**

@@ -232,9 +232,12 @@
                                     </div>
 
                                     <div class="dropdown-divider m-0"></div>
-                                    <a class="dropdown-item fw-500 pt-3 pb-3" href="page_login-alt.html">
+                                    <a class="dropdown-item fw-500 pt-3 pb-3" href="">
+                                        <form action="{{ Auth::logout() }}" method="POST">
+                                                {{ csrf_field() }}
                                         <span data-i18n="drpdwn.page-logout">Logout</span>
                                         <span class="float-right fw-n">&commat;codexlantern</span>
+                                        </form>
                                     </a>
                                 </div>
                             </div>
