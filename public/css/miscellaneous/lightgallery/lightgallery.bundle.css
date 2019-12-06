@@ -1161,7 +1161,7 @@ body:not(.lg-from-hash) .lg-outer.lg-start-zoom .lg-item.lg-complete .lg-object 
   transition: all 0.2s ease; }
   .lg-actions .lg-next:hover,
   .lg-actions .lg-prev:hover {
-    background-color: #2196F3; }
+    background-color: #8f6ab5; }
   .lg-actions .lg-next:active,
   .lg-actions .lg-prev:active {
     -webkit-transform: scale(0.95);
@@ -1169,7 +1169,7 @@ body:not(.lg-from-hash) .lg-outer.lg-start-zoom .lg-item.lg-complete .lg-object 
 
 .lg-outer .lg-thumb-item.active,
 .lg-outer .lg-thumb-item:hover {
-  border-color: #fd3995; }
+  border-color: #b57d6a; }
 
 .lg-toolbar .lg-icon {
   font-size: 1.3rem; }

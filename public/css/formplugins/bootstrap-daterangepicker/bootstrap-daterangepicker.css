@@ -618,9 +618,9 @@ h6 small,
 
 /* text-gradient */
 .text-gradient {
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(25%, #6e4e9e), color-stop(50%, #62468d), color-stop(75%, #0c7cd5), to(#0960a5));
-  background: linear-gradient(180deg, #6e4e9e 25%, #62468d 50%, #0c7cd5 75%, #0960a5 100%);
-  color: #886ab5;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(25%, #4e9e9d), color-stop(50%, #468d8c), color-stop(75%, #754e9e), to(#5c3d7c));
+  background: linear-gradient(180deg, #4e9e9d 25%, #468d8c 50%, #754e9e 75%, #5c3d7c 100%);
+  color: #6ab5b4;
   background-clip: text;
   text-fill-color: transparent;
   -webkit-background-clip: text;
@@ -711,7 +711,7 @@ RESULT:
 .daterangepicker table tr td.selected.highlighted,
 .daterangepicker table tr td span.active.active,
 .daterangepicker table tr td span.focused {
-  background-color: #967bbd;
+  background-color: #7bbdbd;
   color: #fff; }
 
 .daterangepicker table tr td.active:active:hover,
@@ -740,7 +740,7 @@ RESULT:
 .daterangepicker table tr td.selected.highlighted.active.focus,
 .daterangepicker table tr td.selected:hover,
 .daterangepicker table tr td.selected.highlighted:hover {
-  background-color: #7a59ad;
+  background-color: #59adab;
   color: #fff; }
 
 .daterangepicker .calendar-table .next,
@@ -758,13 +758,13 @@ RESULT:
     border-color: #a1a8c3; }
 
 .daterangepicker .in-range.available {
-  background-color: #ffe3a7; }
+  background-color: #f4eed0; }
 
 .daterangepicker .off.ends.in-range.available {
-  background-color: #ffebc1; }
+  background-color: #f9f5e5; }
 
 .daterangepicker td.available:hover, .daterangepicker th.available:hover {
-  background-color: #ffd274; }
+  background-color: #eadfa7; }
 
 .daterangepicker td.start-date {
   border-radius: 10px 0 0 10px; }
@@ -786,6 +786,6 @@ RESULT:
   font-size: 0.8125rem;
   padding: 0.75rem 1rem; }
   .daterangepicker .ranges li.active {
-    background-color: #886ab5; }
+    background-color: #6ab5b4; }
 
 /*# sourceMappingURL=bootstrap-daterangepicker.css.map */
