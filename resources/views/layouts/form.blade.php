@@ -2,24 +2,31 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>
-            Compas - Patrol System v1.0
-        </title>
-        <meta name="description" content="Page Titile">
+
+         <!-- CSRF Token -->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
+        <title>{{ config('app.name', 'Laravel') }}</title>
+        <meta name="description" content="Page Title">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, minimal-ui">
         <!-- Call App Mode on ios devices -->
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <!-- Remove Tap Highlight on Windows Phone IE -->
         <meta name="msapplication-tap-highlight" content="no">
-        <!-- base css -->
-        <link rel="stylesheet" media="screen, print" href="css/vendors.bundle.css">
-        <link rel="stylesheet" media="screen, print" href="css/app.bundle.css">
+
+         <!-- base css -->
+        <link rel="stylesheet" media="screen, print" href="{{asset('css/vendors.bundle.css')}}">
+        <link rel="stylesheet" media="screen, print" href="{{asset('css/app.bundle.css')}}">
         <!-- Place favicon.ico in the root directory -->
-        <link rel="apple-touch-icon" sizes="180x180" href="img/favicon/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="img/favicon/favicon-32x32.png">
-        <link rel="mask-icon" href="img/favicon/safari-pinned-tab.svg" color="#5bbad5">
+        <link rel="apple-touch-icon" sizes="180x180" href="{{asset('img/favicon/apple-touch-icon.png')}}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{asset('img/favicon/favicon-32x32.png')}}">
+        <link rel="mask-icon" href="{{asset('img/favicon/safari-pinned-tab.svg')}}" color="#5bbad5">
         <!--<link rel="stylesheet" media="screen, print" href="css/your_styles.css">-->
+        <link rel="stylesheet" media="screen, print" href="{{asset('css/datagrid/datatables/datatables.bundle.css')}}">
+        {{-- <link rel="stylesheet" media="screen, print" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"> --}}
+
+        {{-- <link rel="stylesheet" media="screen, print" href="{{asset('css/select2.min.css')}}"> --}}
     </head>
     <body class="mod-bg-1 ">
         <!-- DOC: script to save and load page settings -->
@@ -89,9 +96,9 @@
                 <aside class="page-sidebar">
                     <div class="page-logo">
                         <a href="#" class="page-logo-link press-scale-down d-flex align-items-center position-relative" data-toggle="modal" data-target="#modal-shortcut">
-                            <img src="img/logo.png" alt="SmartAdmin WebApp" aria-roledescription="logo">
+                            {{-- <img src="{{asset('img/logo.png')}}" alt="SmartAdmin WebApp" aria-roledescription="logo"> --}}
 
-                            <span class="page-logo-text mr-1"><b>COMPAS</b> WebApp</span>
+                            <span class="page-logo-text mr-1"><b>INTEC</b> CMS</span>
                             <i class="fal fa-angle-down d-inline-block ml-1 fs-lg color-primary-300"></i>
                         </a>
                     </div>
@@ -106,16 +113,16 @@
                             </div>
                         </div>
                         <div class="info-card">
-                            <img src="img/demo/avatars/avatar-admin.png" class="profile-image rounded-circle" alt="Dr. Codex Lantern">
+                            <img src="{{asset('img/demo/avatars/avatar-m.png')}}" class="profile-image rounded-circle" alt="Dr. Codex Lantern">
                             <div class="info-card-text">
                                 <a href="#" class="d-flex align-items-center text-white">
                                     <span class="text-truncate text-truncate-sm d-inline-block">
-                                        Mohd Yuzi Zali
+                                         YUZI
                                     </span>
                                 </a>
-                                <span class="d-inline-block text-truncate text-truncate-sm">284279</span>
+                                <span class="d-inline-block text-truncate text-truncate-sm">yuzi@email.com</span>
                             </div>
-                            <img src="img/card-backgrounds/cover-2-lg.png" class="cover" alt="cover">
+                            <img src="{{asset('img/card-backgrounds/cover-2-lg.png')}}" class="cover" alt="cover">
                             <a href="#" onclick="return false;" class="pull-trigger-btn" data-action="toggle" data-class="list-filter-active" data-target=".page-sidebar" data-focus="nav_filter_input">
                                 <i class="fal fa-angle-down"></i>
                             </a>
@@ -123,45 +130,155 @@
                         <ul id="js-nav-menu" class="nav-menu">
                             <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
-                                    <i class="fal fa-info-circle"></i>
-                                    <span class="nav-link-text" data-i18n="nav.application_intel">Log Rondaan</span>
+                                    <i class="fal fa-portrait"></i>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Courses</span>
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="create" title="Daftar" data-filter-tags="daftar">
-                                            <span class="nav-link-text" data-i18n="nav.daftar">Daftar</span>
+                                        <a href="/course" title="Active Student" data-filter-tags="active_student">
+                                            <i class="fal fa-user"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">All Courses</span>
+                                        </a>
+                                    </li>
+                                    {{-- <li>
+                                        <a href="" title="Inactive Student" data-filter-tags="inactive_student">
+                                            <i class="fal fa-user-times"></i>
+                                            <span class="nav-link-text" data-i18n="nav.inactive_student"></span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="history" title="Sejarah" data-filter-tags="sejarah">
-                                            <span class="nav-link-text" data-i18n="sejarah">Sejarah</span>
+                                        <a href="" title="Completed Student" data-filter-tags="completed_student">
+                                            <i class="fal fa-user-plus"></i>
+                                            <span class="nav-link-text" data-i18n="nav.completed_student"></span>
+                                        </a>
+                                    </li> --}}
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#" title="Application Intel" data-filter-tags="application intel">
+                                    <i class="fal fa-portrait"></i>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Students</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/student" title="Active Student" data-filter-tags="active_student">
+                                            <i class="fal fa-user"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Active Student</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/student/filter/1" title="Inactive Student" data-filter-tags="inactive_student">
+                                            <i class="fal fa-user-times"></i>
+                                            <span class="nav-link-text" data-i18n="nav.inactive_student">Non-Numeric StudentID</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/student/filter/2" title="Completed Student" data-filter-tags="completed_student">
+                                            <i class="fal fa-user-plus"></i>
+                                            <span class="nav-link-text" data-i18n="nav.completed_student">Null Name</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#" title="Application Intel" data-filter-tags="application intel">
+                                    <i class="fal fa-portrait"></i>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Course Registration</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/courseregistration" title="Active Student" data-filter-tags="active_student">
+                                            <i class="fal fa-user"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Transaction Records</span>
+                                        </a>
+                                    </li>
+                                    {{-- <li>
+                                        <a href="/student/filter/1" title="Inactive Student" data-filter-tags="inactive_student">
+                                            <i class="fal fa-user-times"></i>
+                                            <span class="nav-link-text" data-i18n="nav.inactive_student">Non-Numeric StudentID</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/student/filter/2" title="Completed Student" data-filter-tags="completed_student">
+                                            <i class="fal fa-user-plus"></i>
+                                            <span class="nav-link-text" data-i18n="nav.completed_student">Null Name</span>
+                                        </a>
+                                    </li> --}}
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="#" title="Application Intel" data-filter-tags="application intel">
+                                    <i class="fal fa-portrait"></i>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Examination</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/examination" title="Active Student" data-filter-tags="active_student">
+                                            <i class="fal fa-user"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Exam Transaction Data</span>
+                                        </a>
+                                    </li>
+                                    {{-- <li>
+                                        <a href="/student/filter/1" title="Inactive Student" data-filter-tags="inactive_student">
+                                            <i class="fal fa-user-times"></i>
+                                            <span class="nav-link-text" data-i18n="nav.inactive_student">Non-Numeric StudentID</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/student/filter/2" title="Completed Student" data-filter-tags="completed_student">
+                                            <i class="fal fa-user-plus"></i>
+                                            <span class="nav-link-text" data-i18n="nav.completed_student">Null Name</span>
+                                        </a>
+                                    </li> --}}
+                                </ul>
+                            </li>
+                            {{-- <li>
+                                <a href="#" title="Application Intel" data-filter-tags="application intel">
+                                    <i class="fal fa-diagnoses"></i>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Academician</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/supervisor" title="Supervisor List" data-filter-tags="sv_list">
+                                            <span class="nav-link-text" data-i18n="nav.sv_list">List of Academician</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/supervisor/create" title="Sejarah" data-filter-tags="sejarah">
+                                            <span class="nav-link-text" data-i18n="sejarah">Register</span>
                                         </a>
                                     </li>
                                 </ul>
                             </li>
                             <li>
                                 <a href="#" title="Laporan" data-filter-tags="laporan">
-                                    <i class="fal fa-cog"></i>
-                                    <span class="nav-link-text" data-i18n="nav.laporan">Laporan</span>
+                                    <i class="fal fa-table"></i>
+                                    <span class="nav-link-text" data-i18n="nav.laporan">Report</span>
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="settings_how_it_works.html" title="How it works" data-filter-tags="theme settings how it works">
-                                            <span class="nav-link-text" data-i18n="nav.theme_settings_how_it_works">Laporan Mengikut Pegawai</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="settings_layout_options.html" title="Layout Options" data-filter-tags="theme settings layout options">
-                                            <span class="nav-link-text" data-i18n="nav.theme_settings_layout_options">Laporan Mengikut Lokasi</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="settings_skin_options.html" title="Skin Options" data-filter-tags="theme settings skin options">
-                                            <span class="nav-link-text" data-i18n="nav.theme_settings_skin_options">Laporan Mengikut Shif</span>
+                                        <a href="/report-active-student" title="How it works" data-filter-tags="theme settings how it works">
+                                            <span class="nav-link-text" data-i18n="nav.theme_settings_how_it_works">Active Student List</span>
                                         </a>
                                     </li>
                                 </ul>
                             </li>
+
+                            <li>
+                                <a href="#" title="Parameter Setting" data-filter-tags="parameter-setting">
+                                    <i class="fal fa-cog"></i>
+                                    <span class="nav-link-text" data-i18n="nav.parameter-setting">Parameter Settings</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                    <a href="" title="Student Groups" data-filter-tags="student-groups">
+                                            <span class="nav-link-text" data-i18n="nav.student-groups">Student Group</span>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </li> --}}
 
 
                         </ul>
@@ -178,8 +295,8 @@
                         <!-- we need this logo when user switches to nav-function-top -->
                         <div class="page-logo">
                             <a href="#" class="page-logo-link press-scale-down d-flex align-items-center position-relative" data-toggle="modal" data-target="#modal-shortcut">
-                                <img src="img/logo.png" alt="SmartAdmin WebApp" aria-roledescription="logo">
-                                <span class="page-logo-text mr-1"><b>COMPAS</b> WebApp</span>
+                                <img src="{{asset('img/logo.png')}}" alt="SmartAdmin WebApp" aria-roledescription="logo">
+                                <span class="page-logo-text mr-1"><b>INTEC</b> CMS</span>
                                 <span class="position-absolute text-white opacity-50 small pos-top pos-right mr-2 mt-n2">SeedProject</span>
                                 <i class="fal fa-angle-down d-inline-block ml-1 fs-lg color-primary-300"></i>
                             </a>
@@ -213,7 +330,7 @@
                             <!-- app user menu -->
                             <div>
                                 <a href="#" data-toggle="dropdown" title="drlantern@gotbootstrap.com" class="header-icon d-flex align-items-center justify-content-center ml-2">
-                                    <img src="img/demo/avatars/avatar-admin.png" class="profile-image rounded-circle" alt="Mohd Yuzi Zali">
+                                    <img src="{{asset('img/demo/avatars/avatar-m.png')}}" class="profile-image rounded-circle" alt="">
                                     <!-- you can also add username next to the avatar with the codes below:
 									<span class="ml-1 mr-1 text-truncate text-truncate-header hidden-xs-down">Me</span>
 									<i class="ni ni-chevron-down hidden-xs-down"></i> -->
@@ -222,21 +339,22 @@
                                     <div class="dropdown-header bg-trans-gradient d-flex flex-row py-4 rounded-top">
                                         <div class="d-flex flex-row align-items-center mt-1 mb-1 color-white">
                                             <span class="mr-2">
-                                                <img src="img/demo/avatars/avatar-admin.png" class="rounded-circle profile-image" alt="Dr. Codex Lantern">
+                                                <img src="{{asset('img/demo/avatars/avatar-m.png')}}" class="rounded-circle profile-image" alt="Dr. Codex Lantern">
                                             </span>
                                             <div class="info-card-text">
-                                                <div class="fs-lg text-truncate text-truncate-lg">Mohd Yuzi Zali</div>
-                                                <span class="text-truncate text-truncate-md opacity-80">mohdyuzi@uitm.edu.my</span>
+                                                <div class="fs-lg text-truncate text-truncate-lg">YUZI</div>
+                                                <span class="text-truncate text-truncate-md opacity-80">yuzi@email.com</span>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="dropdown-divider m-0"></div>
                                     <a class="dropdown-item fw-500 pt-3 pb-3" href="">
-                                        <form action="{{ Auth::logout() }}" method="POST">
-                                                {{ csrf_field() }}
-                                        <span data-i18n="drpdwn.page-logout">Logout</span>
-                                        <span class="float-right fw-n">&commat;codexlantern</span>
+                                        <form action="" method="POST">
+                                            @csrf
+                                        <!--span data-i18n="drpdwn.page-logout">Logout</span-->
+                                        <button type="submit" class="btn btn-danger btn-sm">Logout</button>
+                                        <!--span class="float-right fw-n">&commat;codexlantern</span-->
                                         </form>
                                     </a>
                                 </div>
@@ -246,16 +364,16 @@
                     <!-- END Page Header -->
                     <!-- BEGIN Page Content -->
                     <!-- the #js-page-content id is needed for some plugins to initialize -->
-                    <main id="js-page-content" role="main" class="page-content">
-                        @yield('breadcrumbs')
+
+                        <!--@yield('breadcrumbs')-->
                         @yield('content')
-                    </main>
+
                     <!-- this overlay is activated only when mobile menu is triggered -->
                     <div class="page-content-overlay" data-action="toggle" data-class="mobile-nav-on"></div> <!-- END Page Content -->
                     <!-- BEGIN Page Footer -->
                     <footer class="page-footer" role="contentinfo">
                         <div class="d-flex align-items-center flex-1 text-muted">
-                            <span class="hidden-md-down fw-700">2019 © COMPAS</span>
+                            <span class="hidden-md-down fw-700">2020 </span>© INTEC Education College
                         </div>
                     </footer>
                     <!-- END Page Footer -->
@@ -280,13 +398,16 @@
 						+ waves.js (extension)
 						+ smartpanels.js (extension)
 						+ src/../jquery-snippets.js (core) -->
-        <script src="js/vendors.bundle.js"></script>
-        <script src="js/app.bundle.js"></script>
-        <!--<script src="js/../script.js"></script>
-	<script>
-		$(document).ready(function () {
+        <script src="{{asset('js/vendors.bundle.js')}}"></script>
+        <script src="{{asset('js/app.bundle.js')}}"></script>
+        <script src="{{asset('js/datagrid/datatables/datatables.bundle.js')}}"></script>
 
-		});
-	</script>-->
+        {{-- <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+        <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script> --}}
+
+        {{-- <script src="{{asset('js/select2.min.js')}}"></script> --}}
+
+
+        @yield('script')
     </body>
 </html>

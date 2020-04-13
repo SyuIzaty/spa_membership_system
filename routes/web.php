@@ -11,15 +11,26 @@
 |
 */
 
-Route::get('my-theme', function () {
+Route::get('/', function () {
 
-    return view('welcome2');
-
+   return view('welcome');
 });
 
 
-Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('/', 'PatrolController');
+//Auth::routes();
+
+Route::resource('student', 'StudentController');
+Route::resource('course', 'CourseController');
+
+//AJAX DATA STUDENTS
+Route::post('data_allstudents', 'StudentController@data_allstudents');
+Route::post('data_studentWithNonNumericId', 'StudentController@data_studentWithNonNumericId');
+Route::post('data_studentWithNullName', 'StudentController@data_studentWithNullName');
+
+//AJAX DATA COURSES
+Route::post('data_allcourses', 'CourseController@data_allcourses');
+
+
+Route::get('student/filter/{id}','StudentController@indexFiltered');

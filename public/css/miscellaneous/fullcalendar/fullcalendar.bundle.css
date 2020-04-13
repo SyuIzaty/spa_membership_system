@@ -1662,9 +1662,9 @@ h6 small,
 
 /* text-gradient */
 .text-gradient {
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(25%, #4e9e9d), color-stop(50%, #468d8c), color-stop(75%, #754e9e), to(#5c3d7c));
-  background: linear-gradient(180deg, #4e9e9d 25%, #468d8c 50%, #754e9e 75%, #5c3d7c 100%);
-  color: #6ab5b4;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(25%, #6c757d), color-stop(50%, #60686f), color-stop(75%, #0c7cd5), to(#0960a5));
+  background: linear-gradient(180deg, #6c757d 25%, #60686f 50%, #0c7cd5 75%, #0960a5 100%);
+  color: #868e96;
   background-clip: text;
   text-fill-color: transparent;
   -webkit-background-clip: text;
@@ -1795,10 +1795,10 @@ RESULT:
 
 .fc-event,
 .fc-event-dot {
-  background: #7bbdbd; }
+  background: #949ba2; }
 
 .fc-event {
-  border: 1px solid #59adab; }
+  border: 1px solid #78818a; }
 
 .fc-day-top.fc-other-month {
   opacity: 1; }
