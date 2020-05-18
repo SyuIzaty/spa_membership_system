@@ -10,7 +10,7 @@
     </ol> --}}
     <div class="subheader">
         <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-table'></i> Students<!--span class='fw-300'>ColumnFilter</span> <sup class='badge badge-primary fw-500'>ADDON</sup-->
+        <i class='subheader-icon fal fa-table'></i>Campus<!--span class='fw-300'>ColumnFilter</span> <sup class='badge badge-primary fw-500'>ADDON</sup-->
             <!--small>
                 Create headache free searching, sorting and pagination tables without any complex configuration
             </small-->
@@ -21,7 +21,7 @@
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
                     <h2>
-                        Student <span class="fw-300"><i>List</i></span>
+                        Campus <span class="fw-300"><i>List</i></span>
                     </h2>
                     <div class="panel-toolbar">
                         <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
@@ -37,46 +37,57 @@
                         <!-- datatable start -->
 
 
-                        <table id="students" class="table table-bordered table-hover table-striped w-100">
-                            <thead class="bg-highlight">
+                        <table id="campus" class="table table-bordered table-hover table-striped w-100">
+                            <thead>
                                 <tr>
-                                    <th>StudentID</th>
-                                    <th>Student Name</th>
-                                    <th>Program</th>
-                                    <th>Sponsor</th>
-                                    <th>Status</th>
-                                    <th>Phone</th>
-                                    <th>Email</th>
-                                    <th>IC</th>
-                                    <th>Gender</th>
+                                    <th>Code</th>
+                                    <th>Name</th>
+                                    <th>Address 1</th>
+                                    <th>Address 2</th>
+                                    <th>Postcode</th>
+                                    <th>City</th>
+                                    <th>State</th>
+                                    <th>Active</th>
                                     <th>Action</th>
                                 </tr>
 
                                 {{-- <tr>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search StudentID"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Student Name"></td>
+                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Semester Code"></td>
+                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Semester Name"></td>
+                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Description"></td>
                                     <td class="hasinput">
                                         <select id="program" name="program" class="form-control">
                                             <option value="">Search Program</option>
-                                            @foreach($programs as $p)
-                                                <option value="{{$p->prog_code}}">{{$p->prog_code}}</option>
-                                            @endforeach
+                                            <option value="0">IAT11</option>
+
                                         </select>
                                     </td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Campus"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Part"></td>
                                     <td class="hasinput">
-                                        <select id="group" name="group" class="form-control">
-                                            <option value="">Search Group</option>
-                                            @foreach($groups as $g)
-                                                <option value="{{$g->name}}">{{$g->name}}</option>
-                                            @endforeach
+                                        <select id="type" name="type" class="form-control">
+                                            <option value="">Search Type</option>
+                                            <option value="FS">Full Semester</option>
+                                            <option value="SS">Short Semester</option>
+                                            <option value="DS">Deferred Semester</option>
+                                            <option value="RS">Repeat Semester</option>
                                         </select>
                                     </td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Phone"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Process Status"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search HEA Status"></td>
-                                    <td class="hasinput"></th>
+                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Start Date"></td>
+                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search End Date"></td>
+                                    <td class="hasinput">
+                                        <select id="status" name="status" class="form-control">
+                                            <option value="">All</option>
+                                            <option value="1">Active</option>
+                                            <option value="0">Inactive</option>
+                                        </select>
+                                    </td>
+                                    <td class="hasinput">
+                                        <select id="registrationstatus" name="registrationstatus" class="form-control">
+                                            <option value="">All</option>
+                                            <option value="1">Open</option>
+                                            <option value="0">Closed</option>
+                                        </select>
+                                    </td>
+                                    <td class="hasinput"></td>
                                 </tr> --}}
                             </thead>
                             <tbody>
@@ -86,7 +97,18 @@
                         </table>
                         <!-- datatable end -->
                     </div>
+
+                    <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">
+
+                        {{-- <span class="badge badge-pill rounded-circle badge-secondary fw-400 ml-auto mr-2">
+                            1
+                        </span> --}}
+                        <a href="/admin/campus/create" class="btn btn-primary ml-auto">Add New Campus</a>
+
+                    </div>
+
                 </div>
+
             </div>
         </div>
     </div>
@@ -99,7 +121,7 @@
     $(document).ready(function()
     {
 
-        // $('#studentactive thead tr .hasinput').each(function(i)
+        // $('#semester thead tr .hasinput').each(function(i)
         // {
         //     $('input', this).on('keyup change', function()
         //     {
@@ -125,30 +147,28 @@
         // });
 
 
-        var table = $('#students').DataTable({
+        var table = $('#campus').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
-                url: "/data_allstudents",
+                url: "/api/campus/list",
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
             columns: [
-                    { data: 'sm_student_id', name: 'sm_student_id'},
-                    { data: 'sm_student_name', name: 'sm_student_name' },
-                    { data: 'sm_program_code', name: 'sm_program_code' },
-                    { data: 'sm_sponsor', name: 'sm_sponsor' },
-                    { data: 'sm_status', name: 'sm_status' },
-                    { data: 'sm_mobile_no', name: 'sm_mobile_no' },
-                    { data: 'sm_email', name: 'sm_email' },
-                    { data: 'sm_ic_no', name: 'sm_ic_no'},
-                    { data: 'sm_gender', name: 'sm_gender'},
+                    { data: 'code', name: 'code' },
+                    { data: 'name', name: 'name' },
+                    { data: 'address1', name: 'address1' },
+                    { data: 'address2', name: 'address2' },
+                    { data: 'postcode', name: 'postcode' },
+                    { data: 'city', name: 'city' },
+                    { data: 'state_id', name: 'state_id'},
+                    { data: 'active', name: 'active'},
                     { data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
                 "order": [[ 1, "asc" ]],
                 "initComplete": function(settings, json) {
-
 
                 }
         });

@@ -13,16 +13,19 @@
 
 Route::get('/', function () {
 
-   return view('welcome');
+   return view('login');
 });
 
 
 
 
-//Auth::routes();
+// Auth::routes();
 
 Route::resource('student', 'StudentController');
 Route::resource('course', 'CourseController');
+Route::resource('admin/campus', 'CampusController');
+Route::resource('admin/semester', 'SemesterController');
+Route::resource('admin/admission/application', 'ApplicantController');
 
 //AJAX DATA STUDENTS
 Route::post('data_allstudents', 'StudentController@data_allstudents');
@@ -34,3 +37,7 @@ Route::post('data_allcourses', 'CourseController@data_allcourses');
 
 
 Route::get('student/filter/{id}','StudentController@indexFiltered');
+
+//API data source
+Route::post('api/semester/list', 'SemesterController@data_semester_list');
+Route::post('api/campus/list', 'CampusController@data_campus_list');

@@ -738,13 +738,6 @@ Color brightness is determined by the following formula:
 /*  THEME COLORs
 ========================================================================== */
 /* Looks good on chrome default color profile */
-/* looks good in sRGB but washed up on chrome default 
-$color-primary:						#826bb0;
-$color-success:						#31cb55;
-$color-info:						#5e93ec;
-$color-warning:						#eec559;
-$color-danger:						#dc4b92;
-$color-fusion:						darken(desaturate(adjust-hue($color-primary, 5), 80%), 25%); */
 /*  Color Polarity
 ========================================================================== */
 /*  PAINTBUCKET MIXER
@@ -987,9 +980,9 @@ h6 small,
 
 /* text-gradient */
 .text-gradient {
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(25%, #6c757d), color-stop(50%, #60686f), color-stop(75%, #0c7cd5), to(#0960a5));
-  background: linear-gradient(180deg, #6c757d 25%, #60686f 50%, #0c7cd5 75%, #0960a5 100%);
-  color: #868e96;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(25%, #0c7ed5), color-stop(50%, #0a70bd), color-stop(75%, #9d0ad2), to(#7908a1));
+  background: linear-gradient(180deg, #0c7ed5 25%, #0a70bd 50%, #9d0ad2 75%, #7908a1 100%);
+  color: #2198F3;
   background-clip: text;
   text-fill-color: transparent;
   -webkit-background-clip: text;
@@ -1068,7 +1061,7 @@ RESULT:
 .irs--flat .irs-to,
 .irs--flat .irs-single,
 .irs--flat .irs-handle > i:first-child {
-  background-color: #868e96; }
+  background-color: #2198F3; }
 
 .irs--flat .irs-from,
 .irs--flat .irs-to,
@@ -1078,37 +1071,37 @@ RESULT:
 .irs--flat .irs-from:before,
 .irs--flat .irs-to:before,
 .irs--flat .irs-single:before {
-  border-top-color: #868e96; }
+  border-top-color: #2198F3; }
 
 .irs--flat .irs-handle.state_hover > i:first-child,
 .irs--flat .irs-handle:hover > i:first-child {
-  background-color: #78818a; }
+  background-color: #0d8cee; }
 
 .irs--big .irs-bar {
-  background-color: #a1a8ae;
-  border-color: #868e96;
-  background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), color-stop(30%, #a1a8ae), to(#868e96));
-  background: linear-gradient(to bottom, #ffffff 0%, #a1a8ae 30%, #868e96 100%); }
+  background-color: #51aef6;
+  border-color: #2198F3;
+  background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), color-stop(30%, #51aef6), to(#2198F3));
+  background: linear-gradient(to bottom, #ffffff 0%, #51aef6 30%, #2198F3 100%); }
 
 .irs--big .irs-from,
 .irs--big .irs-to,
 .irs--big .irs-single {
-  background: #868e96; }
+  background: #2198F3; }
 
 .irs--modern .irs-bar {
-  background: #1ab3a3;
-  background: -webkit-gradient(linear, left top, left bottom, from(#21dfcb), to(#1ab3a3));
-  background: linear-gradient(to bottom, #21dfcb 0%, #1ab3a3 100%); }
+  background: #5cf004;
+  background: -webkit-gradient(linear, left top, left bottom, from(#79fb2c), to(#5cf004));
+  background: linear-gradient(to bottom, #79fb2c 0%, #5cf004 100%); }
 
 .irs--modern .irs-from,
 .irs--modern .irs-to,
 .irs--modern .irs-single {
-  background-color: #1dc9b7; }
+  background-color: #69FB13; }
 
 .irs--modern .irs-from:before,
 .irs--modern .irs-to:before,
 .irs--modern .irs-single:before {
-  border-top-color: #1dc9b7; }
+  border-top-color: #69FB13; }
 
 .irs--modern .irs-handle > i:nth-child(1) {
   width: 8px;
@@ -1119,30 +1112,30 @@ RESULT:
 .irs--sharp .irs-from,
 .irs--sharp .irs-to,
 .irs--sharp .irs-single {
-  background-color: #fd3995; }
+  background-color: #FC1349; }
 
 .irs--sharp .irs-handle > i:first-child,
 .irs--sharp .irs-from:before,
 .irs--sharp .irs-to:before,
 .irs--sharp .irs-single:before {
-  border-top-color: #fd3995; }
+  border-top-color: #FC1349; }
 
 .irs--sharp .irs-min,
 .irs--sharp .irs-max {
-  background-color: #e7026e; }
+  background-color: #c0022e; }
 
 .irs--round .irs-handle {
-  border-color: #2196F3; }
+  border-color: #BB1BF4; }
 
 .irs--round .irs-bar,
 .irs--round .irs-from,
 .irs--round .irs-to,
 .irs--round .irs-single {
-  background-color: #2196F3; }
+  background-color: #BB1BF4; }
 
 .irs--round .irs-from:before,
 .irs--round .irs-to:before,
 .irs--round .irs-single:before {
-  border-top-color: #2196F3; }
+  border-top-color: #BB1BF4; }
 
 /*# sourceMappingURL=ion-rangeslider.css.map */

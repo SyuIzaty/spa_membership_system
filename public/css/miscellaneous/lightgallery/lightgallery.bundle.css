@@ -99,13 +99,6 @@
 /*  THEME COLORs
 ========================================================================== */
 /* Looks good on chrome default color profile */
-/* looks good in sRGB but washed up on chrome default 
-$color-primary:						#826bb0;
-$color-success:						#31cb55;
-$color-info:						#5e93ec;
-$color-warning:						#eec559;
-$color-danger:						#dc4b92;
-$color-fusion:						darken(desaturate(adjust-hue($color-primary, 5), 80%), 25%); */
 /*  Color Polarity
 ========================================================================== */
 /*  PAINTBUCKET MIXER
@@ -1161,7 +1154,7 @@ body:not(.lg-from-hash) .lg-outer.lg-start-zoom .lg-item.lg-complete .lg-object 
   transition: all 0.2s ease; }
   .lg-actions .lg-next:hover,
   .lg-actions .lg-prev:hover {
-    background-color: #2196F3; }
+    background-color: #BB1BF4; }
   .lg-actions .lg-next:active,
   .lg-actions .lg-prev:active {
     -webkit-transform: scale(0.95);
@@ -1169,7 +1162,7 @@ body:not(.lg-from-hash) .lg-outer.lg-start-zoom .lg-item.lg-complete .lg-object 
 
 .lg-outer .lg-thumb-item.active,
 .lg-outer .lg-thumb-item:hover {
-  border-color: #fd3995; }
+  border-color: #FC1349; }
 
 .lg-toolbar .lg-icon {
   font-size: 1.3rem; }

@@ -589,13 +589,6 @@ Color brightness is determined by the following formula:
 /*  THEME COLORs
 ========================================================================== */
 /* Looks good on chrome default color profile */
-/* looks good in sRGB but washed up on chrome default 
-$color-primary:						#826bb0;
-$color-success:						#31cb55;
-$color-info:						#5e93ec;
-$color-warning:						#eec559;
-$color-danger:						#dc4b92;
-$color-fusion:						darken(desaturate(adjust-hue($color-primary, 5), 80%), 25%); */
 /*  Color Polarity
 ========================================================================== */
 /*  PAINTBUCKET MIXER
@@ -838,9 +831,9 @@ h6 small,
 
 /* text-gradient */
 .text-gradient {
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(25%, #6c757d), color-stop(50%, #60686f), color-stop(75%, #0c7cd5), to(#0960a5));
-  background: linear-gradient(180deg, #6c757d 25%, #60686f 50%, #0c7cd5 75%, #0960a5 100%);
-  color: #868e96;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(25%, #0c7ed5), color-stop(50%, #0a70bd), color-stop(75%, #9d0ad2), to(#7908a1));
+  background: linear-gradient(180deg, #0c7ed5 25%, #0a70bd 50%, #9d0ad2 75%, #7908a1 100%);
+  color: #2198F3;
   background-clip: text;
   text-fill-color: transparent;
   -webkit-background-clip: text;
@@ -948,7 +941,7 @@ RESULT:
     position: absolute;
     left: calc(1rem + 0.875rem);
     top: calc(0.6rem + 0.875rem);
-    color: #868e96; }
+    color: #2198F3; }
 
 .select2-results {
   padding: 0.875rem; }
@@ -959,12 +952,12 @@ RESULT:
 .select2-container--open .select2-dropdown--above {
   -webkit-box-shadow: 0px -3px 8px 0px rgba(90, 80, 105, 0.1);
           box-shadow: 0px -3px 8px 0px rgba(90, 80, 105, 0.1);
-  border-color: #868e96; }
+  border-color: #2198F3; }
 
 .select2-container--open .select2-dropdown--below {
   -webkit-box-shadow: 0px 3px 8px 0px rgba(90, 80, 105, 0.1);
           box-shadow: 0px 3px 8px 0px rgba(90, 80, 105, 0.1);
-  border-color: #868e96; }
+  border-color: #2198F3; }
 
 .select2-container--default .select2-search--dropdown .select2-search__field {
   display: block;
@@ -988,11 +981,11 @@ RESULT:
   color: #8e8e8e; }
 
 .select2-container--default .select2-results__option[aria-selected=true] {
-  background: #eeeff0;
-  color: #555b61; }
+  background: #d9edfd;
+  color: #0961a5; }
 
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
-  background-color: #868e96;
+  background-color: #2198F3;
   color: #fff; }
 
 .select2-selection--single,
@@ -1009,7 +1002,7 @@ RESULT:
 .select2-container--default.select2-container--open.select2-container--above .select2-selection--multiple {
   position: relative;
   z-index: 1151;
-  border-color: #868e96; }
+  border-color: #2198F3; }
 
 .select2-container--default.select2-container--open.select2-container--below .select2-selection--single, .select2-container--default.select2-container--open.select2-container--below .select2-selection--multiple {
   border-bottom-color: transparent;
@@ -1021,7 +1014,7 @@ RESULT:
 
 .select2-container--default.select2-container--focus .select2-selection--single,
 .select2-container--default.select2-container--focus .select2-selection--multiple {
-  border-color: #868e96; }
+  border-color: #2198F3; }
 
 .select2-container--default.select2-container--focus .select2-selection--multiple {
   display: -webkit-box;
@@ -1048,9 +1041,9 @@ RESULT:
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  background: #eeeff0;
-  border-color: #949ba2;
-  color: #555b61; }
+  background: #d9edfd;
+  border-color: #39a3f4;
+  color: #0961a5; }
   .select2-container--default .select2-selection--multiple .select2-selection__choice .select2-selection__choice__remove {
     margin: 0;
     padding-left: 7px;
@@ -1061,9 +1054,9 @@ RESULT:
     font-size: 16px;
     border-left: 1px solid rgba(0, 0, 0, 0.1);
     margin-left: 5px;
-    color: #a1a8ae; }
+    color: #51aef6; }
     .select2-container--default .select2-selection--multiple .select2-selection__choice .select2-selection__choice__remove:hover {
-      color: #868e96; }
+      color: #2198F3; }
     .select2-container--default .select2-selection--multiple .select2-selection__choice .select2-selection__choice__remove:active {
       -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15) inset;
               box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15) inset; }
@@ -1083,9 +1076,9 @@ span.select2-selection.select2-selection--multiple {
   padding: 0 15px;
   margin-right: 8px;
   font-size: 1rem;
-  color: #fd3995; }
+  color: #FC1349; }
   .select2-container--default .select2-selection--single .select2-selection__clear:hover {
-    color: #fd2087; }
+    color: #f2033b; }
 
 /* this is not a permanent solution... hopefully IE will die by the time we release version 5.... */
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
@@ -1094,6 +1087,6 @@ span.select2-selection.select2-selection--multiple {
     margin-top: 8px; } }
 
 .select2-results__message {
-  color: #fd3995; }
+  color: #FC1349; }
 
 /*# sourceMappingURL=select2.bundle.css.map */

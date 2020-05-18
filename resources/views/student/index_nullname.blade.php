@@ -1,4 +1,4 @@
-@extends('layouts.form')
+@extends('layouts.admin')
 
 @section('content')
 <main id="js-page-content" role="main" class="page-content">

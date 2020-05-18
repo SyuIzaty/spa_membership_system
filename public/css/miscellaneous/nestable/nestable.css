@@ -47,13 +47,6 @@ Color brightness is determined by the following formula:
 /*  THEME COLORs
 ========================================================================== */
 /* Looks good on chrome default color profile */
-/* looks good in sRGB but washed up on chrome default 
-$color-primary:						#826bb0;
-$color-success:						#31cb55;
-$color-info:						#5e93ec;
-$color-warning:						#eec559;
-$color-danger:						#dc4b92;
-$color-fusion:						darken(desaturate(adjust-hue($color-primary, 5), 80%), 25%); */
 /*  Color Polarity
 ========================================================================== */
 /*  PAINTBUCKET MIXER
@@ -297,9 +290,9 @@ h6 small,
 
 /* text-gradient */
 .text-gradient {
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(25%, #6c757d), color-stop(50%, #60686f), color-stop(75%, #0c7cd5), to(#0960a5));
-  background: linear-gradient(180deg, #6c757d 25%, #60686f 50%, #0c7cd5 75%, #0960a5 100%);
-  color: #868e96;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(25%, #0c7ed5), color-stop(50%, #0a70bd), color-stop(75%, #9d0ad2), to(#7908a1));
+  background: linear-gradient(180deg, #0c7ed5 25%, #0a70bd 50%, #9d0ad2 75%, #7908a1 100%);
+  color: #2198F3;
   background-clip: text;
   text-fill-color: transparent;
   -webkit-background-clip: text;

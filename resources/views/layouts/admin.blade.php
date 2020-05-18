@@ -98,7 +98,7 @@
                         <a href="#" class="page-logo-link press-scale-down d-flex align-items-center position-relative" data-toggle="modal" data-target="#modal-shortcut">
                             {{-- <img src="{{asset('img/logo.png')}}" alt="SmartAdmin WebApp" aria-roledescription="logo"> --}}
 
-                            <span class="page-logo-text mr-1"><b>INTEC</b> CMS</span>
+                            <span class="page-logo-text mr-1"><b>INTEC</b> SIMS</span>
                             <i class="fal fa-angle-down d-inline-block ml-1 fs-lg color-primary-300"></i>
                         </a>
                     </div>
@@ -127,49 +127,78 @@
                                 <i class="fal fa-angle-down"></i>
                             </a>
                         </div>
+
                         <ul id="js-nav-menu" class="nav-menu">
+                            <li class="nav-title">Dashboard</li>
                             <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
-                                    <i class="fal fa-portrait"></i>
-                                    <span class="nav-link-text" data-i18n="nav.application_intel">Courses</span>
+                                    <i class="fal fa-chart-pie"></i>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Home</span>
+                                </a>
+                            </li>
+                            <li class="nav-title">Operation</li>
+                            <li>
+                                <a href="#" title="Application Intel" data-filter-tags="application intel">
+                                    <i class="fal fa-barcode-read"></i>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Admission</span>
                                 </a>
                                 <ul>
                                     <li>
                                         <a href="/course" title="Active Student" data-filter-tags="active_student">
                                             <i class="fal fa-user"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">All Courses</span>
-                                        </a>
-                                    </li>
-                                    {{-- <li>
-                                        <a href="" title="Inactive Student" data-filter-tags="inactive_student">
-                                            <i class="fal fa-user-times"></i>
-                                            <span class="nav-link-text" data-i18n="nav.inactive_student"></span>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Pending Applicants</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="" title="Completed Student" data-filter-tags="completed_student">
-                                            <i class="fal fa-user-plus"></i>
-                                            <span class="nav-link-text" data-i18n="nav.completed_student"></span>
+                                        <a href="/course" title="Active Student" data-filter-tags="active_student">
+                                            <i class="fal fa-user"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Offer Histroy</span>
                                         </a>
-                                    </li> --}}
+                                    </li>
                                 </ul>
                             </li>
                             <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
-                                    <i class="fal fa-portrait"></i>
-                                    <span class="nav-link-text" data-i18n="nav.application_intel">Students</span>
+                                    <i class="fal fa-map-marker-alt"></i>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Physical Registration</span>
                                 </a>
                                 <ul>
                                     <li>
                                         <a href="/student" title="Active Student" data-filter-tags="active_student">
                                             <i class="fal fa-user"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Active Student</span>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">New Student</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="/student/filter/1" title="Inactive Student" data-filter-tags="inactive_student">
                                             <i class="fal fa-user-times"></i>
-                                            <span class="nav-link-text" data-i18n="nav.inactive_student">Non-Numeric StudentID</span>
+                                            <span class="nav-link-text" data-i18n="nav.inactive_student">Returning Student</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/student/filter/2" title="Completed Student" data-filter-tags="completed_student">
+                                            <i class="fal fa-user-plus"></i>
+                                            <span class="nav-link-text" data-i18n="nav.completed_student">Null Name</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#" title="Application Intel" data-filter-tags="application intel">
+                                    <i class="fal fa-portrait"></i>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Accomodation</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/student" title="Active Student" data-filter-tags="active_student">
+                                            <i class="fal fa-user"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">New Student</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/student/filter/1" title="Inactive Student" data-filter-tags="inactive_student">
+                                            <i class="fal fa-user-times"></i>
+                                            <span class="nav-link-text" data-i18n="nav.inactive_student">Returning Student</span>
                                         </a>
                                     </li>
                                     <li>
@@ -189,7 +218,7 @@
                                     <li>
                                         <a href="/courseregistration" title="Active Student" data-filter-tags="active_student">
                                             <i class="fal fa-user"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Transaction Records</span>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Class Timetable</span>
                                         </a>
                                     </li>
                                     {{-- <li>
@@ -216,6 +245,32 @@
                                     <li>
                                         <a href="/examination" title="Active Student" data-filter-tags="active_student">
                                             <i class="fal fa-user"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Exam Timetable</span>
+                                        </a>
+                                    </li>
+                                    {{-- <li>
+                                        <a href="/student/filter/1" title="Inactive Student" data-filter-tags="inactive_student">
+                                            <i class="fal fa-user-times"></i>
+                                            <span class="nav-link-text" data-i18n="nav.inactive_student">Non-Numeric StudentID</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/student/filter/2" title="Completed Student" data-filter-tags="completed_student">
+                                            <i class="fal fa-user-plus"></i>
+                                            <span class="nav-link-text" data-i18n="nav.completed_student">Null Name</span>
+                                        </a>
+                                    </li> --}}
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#" title="Application Intel" data-filter-tags="application intel">
+                                    <i class="fal fa-portrait"></i>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Finance</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/examination" title="Active Student" data-filter-tags="active_student">
+                                            <i class="fal fa-user"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">Exam Transaction Data</span>
                                         </a>
                                     </li>
@@ -233,20 +288,84 @@
                                     </li> --}}
                                 </ul>
                             </li>
-                            {{-- <li>
+                            <li class="nav-title">Parameter Setting</li>
+                            <li>
+                                <a href="#" title="Application Intel" data-filter-tags="application intel">
+                                    <i class="fal fa-portrait"></i>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Semester</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <li>
+                                            <a href="/examination" title="Active Student" data-filter-tags="active_student">
+                                                <i class="fal fa-user"></i>
+                                                <span class="nav-link-text" data-i18n="nav.active_student">Semester List</span>
+                                            </a>
+                                        </li>
+                                        <a href="/examination" title="Active Student" data-filter-tags="active_student">
+                                            <i class="fal fa-user"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Semester Type</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#" title="Application Intel" data-filter-tags="application intel">
+                                    <i class="fal fa-portrait"></i>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Program</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/examination" title="Active Student" data-filter-tags="active_student">
+                                            <i class="fal fa-user"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Exam Transaction Data</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="#" title="Application Intel" data-filter-tags="application intel">
+                                    <i class="fal fa-portrait"></i>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Course</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/examination" title="Active Student" data-filter-tags="active_student">
+                                            <i class="fal fa-user"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Exam Transaction Data</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#" title="Application Intel" data-filter-tags="application intel">
+                                    <i class="fal fa-portrait"></i>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Fees & Payments</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/examination" title="Active Student" data-filter-tags="active_student">
+                                            <i class="fal fa-user"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Exam Transaction Data</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-diagnoses"></i>
-                                    <span class="nav-link-text" data-i18n="nav.application_intel">Academician</span>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Status</span>
                                 </a>
                                 <ul>
                                     <li>
                                         <a href="/supervisor" title="Supervisor List" data-filter-tags="sv_list">
-                                            <span class="nav-link-text" data-i18n="nav.sv_list">List of Academician</span>
+                                            <span class="nav-link-text" data-i18n="nav.sv_list">Admission Status</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="/supervisor/create" title="Sejarah" data-filter-tags="sejarah">
-                                            <span class="nav-link-text" data-i18n="sejarah">Register</span>
+                                            <span class="nav-link-text" data-i18n="sejarah">Academic Status</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -254,7 +373,7 @@
                             <li>
                                 <a href="#" title="Laporan" data-filter-tags="laporan">
                                     <i class="fal fa-table"></i>
-                                    <span class="nav-link-text" data-i18n="nav.laporan">Report</span>
+                                    <span class="nav-link-text" data-i18n="nav.laporan">Roles & Permission</span>
                                 </a>
                                 <ul>
                                     <li>
@@ -266,23 +385,25 @@
                             </li>
 
                             <li>
-                                <a href="#" title="Parameter Setting" data-filter-tags="parameter-setting">
+                                <a href="#" title="Space Setting" data-filter-tags="space-setting">
                                     <i class="fal fa-cog"></i>
-                                    <span class="nav-link-text" data-i18n="nav.parameter-setting">Parameter Settings</span>
+                                    <span class="nav-link-text" data-i18n="nav.space-setting">Space</span>
                                 </a>
                                 <ul>
                                     <li>
-                                    <a href="" title="Student Groups" data-filter-tags="student-groups">
-                                            <span class="nav-link-text" data-i18n="nav.student-groups">Student Group</span>
+                                    <a href="/admin/campus" title="Campus" data-filter-tags="campus">
+                                            <span class="nav-link-text" data-i18n="nav.campus">Campus</span>
                                         </a>
                                     </li>
 
                                 </ul>
-                            </li> --}}
+                            </li>
 
 
                         </ul>
                         <div class="filter-message js-filter-message bg-success-600"></div>
+
+
                     </nav>
                     <!-- END PRIMARY NAVIGATION -->
                     <!-- NAV FOOTER -->

@@ -189,13 +189,6 @@ button.toast-close-button {
 /*  THEME COLORs
 ========================================================================== */
 /* Looks good on chrome default color profile */
-/* looks good in sRGB but washed up on chrome default 
-$color-primary:						#826bb0;
-$color-success:						#31cb55;
-$color-info:						#5e93ec;
-$color-warning:						#eec559;
-$color-danger:						#dc4b92;
-$color-fusion:						darken(desaturate(adjust-hue($color-primary, 5), 80%), 25%); */
 /*  Color Polarity
 ========================================================================== */
 /*  PAINTBUCKET MIXER
@@ -384,7 +377,7 @@ aside.page-sidebar ($nav-width, $nav-background)
 ========================================================================== */
 /* ACCESSIBILITIES */
 .toast {
-  background-color: #868e96;
+  background-color: #2198F3;
   background-image: none !important; }
   .toast:before {
     content: "\f05a";
@@ -402,22 +395,22 @@ aside.page-sidebar ($nav-width, $nav-background)
             align-items: center; }
 
 .toast-success {
-  background-color: #1ab3a3; }
+  background-color: #5cf004; }
   .toast-success:before {
     content: "\f2f7"; }
 
 .toast-error {
-  background-color: #fd3995; }
+  background-color: #FC1349; }
   .toast-error:before {
     content: "\f2f0"; }
 
 .toast-info {
-  background-color: #2196F3; }
+  background-color: #BB1BF4; }
   .toast-info:before {
     content: "\f05a"; }
 
 .toast-warning {
-  background-color: #ffb20e; }
+  background-color: #df8000; }
   .toast-warning > div,
   .toast-warning .toast-close-button {
     color: #000; }

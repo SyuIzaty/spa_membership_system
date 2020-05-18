@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Semester;
+use App\SemesterType;
 use Illuminate\Http\Request;
 
-class SemesterController extends Controller
+class SemesterTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class SemesterController extends Controller
      */
     public function index()
     {
-        return view('semester.index');
+        //
     }
 
     /**
@@ -41,10 +41,10 @@ class SemesterController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Semester  $semester
+     * @param  \App\SemesterType  $semesterType
      * @return \Illuminate\Http\Response
      */
-    public function show(Semester $semester)
+    public function show(SemesterType $semesterType)
     {
         //
     }
@@ -52,10 +52,10 @@ class SemesterController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Semester  $semester
+     * @param  \App\SemesterType  $semesterType
      * @return \Illuminate\Http\Response
      */
-    public function edit(Semester $semester)
+    public function edit(SemesterType $semesterType)
     {
         //
     }
@@ -64,10 +64,10 @@ class SemesterController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Semester  $semester
+     * @param  \App\SemesterType  $semesterType
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Semester $semester)
+    public function update(Request $request, SemesterType $semesterType)
     {
         //
     }
@@ -75,22 +75,11 @@ class SemesterController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Semester  $semester
+     * @param  \App\SemesterType  $semesterType
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Semester $semester)
+    public function destroy(SemesterType $semesterType)
     {
         //
-    }
-
-    public function data_semester_list()
-    {
-        $semesters = Semester::select('*');
-
-        return datatables()::of($semesters)
-        ->addColumn('action', function ($semesters) {
-            return '<a href="/student/'.$semesters->id.'/edit" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
-        })
-        ->make(true);
     }
 }

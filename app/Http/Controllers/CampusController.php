@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Semester;
+use App\Campus;
 use Illuminate\Http\Request;
 
-class SemesterController extends Controller
+class CampusController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class SemesterController extends Controller
      */
     public function index()
     {
-        return view('semester.index');
+        return view('campus.index');
     }
 
     /**
@@ -24,7 +24,7 @@ class SemesterController extends Controller
      */
     public function create()
     {
-        //
+        return view('campus.create');
     }
 
     /**
@@ -41,10 +41,10 @@ class SemesterController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Semester  $semester
+     * @param  \App\Campus  $campus
      * @return \Illuminate\Http\Response
      */
-    public function show(Semester $semester)
+    public function show(Campus $campus)
     {
         //
     }
@@ -52,22 +52,22 @@ class SemesterController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Semester  $semester
+     * @param  \App\Campus  $campus
      * @return \Illuminate\Http\Response
      */
-    public function edit(Semester $semester)
+    public function edit(Campus $campus)
     {
-        //
+        return view('campus.edit',compact('campus'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Semester  $semester
+     * @param  \App\Campus  $campus
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Semester $semester)
+    public function update(Request $request, Campus $campus)
     {
         //
     }
@@ -75,21 +75,21 @@ class SemesterController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Semester  $semester
+     * @param  \App\Campus  $campus
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Semester $semester)
+    public function destroy(Campus $campus)
     {
         //
     }
 
-    public function data_semester_list()
+    public function data_campus_list()
     {
-        $semesters = Semester::select('*');
+        $campuses = Campus::select('*');
 
-        return datatables()::of($semesters)
-        ->addColumn('action', function ($semesters) {
-            return '<a href="/student/'.$semesters->id.'/edit" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
+        return datatables()::of($campuses)
+        ->addColumn('action', function ($campuses) {
+            return '<a href="/admin/campus/'.$campuses->id.'/edit" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
         })
         ->make(true);
     }
