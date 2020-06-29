@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
 
-   return view('login');
+   return redirect('student');
 });
 
 
