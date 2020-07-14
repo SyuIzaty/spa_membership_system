@@ -325,6 +325,12 @@
                                             <span class="nav-link-text" data-i18n="nav.active_student">Exam Transaction Data</span>
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="/examination" title="Active Student" data-filter-tags="active_student">
+                                            <i class="fal fa-user"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Program Details</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
 
