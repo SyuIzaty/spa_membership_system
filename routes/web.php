@@ -27,6 +27,10 @@ Route::resource('admin/campus', 'CampusController');
 Route::resource('admin/semester', 'SemesterController');
 Route::resource('admin/admission/application', 'ApplicantController');
 
+//APPLICANTS
+Route::get('/applicantresult','ApplicantController@indexs');
+Route::get('checkrequirements', 'ApplicantController@checkrequirements')->name('check-requirements');
+
 //AJAX DATA STUDENTS
 Route::post('data_allstudents', 'StudentController@data_allstudents');
 Route::post('data_studentWithNonNumericId', 'StudentController@data_studentWithNonNumericId');

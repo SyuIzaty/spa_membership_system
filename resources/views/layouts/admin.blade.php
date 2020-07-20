@@ -144,7 +144,7 @@
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="/course" title="Active Student" data-filter-tags="active_student">
+                                        <a href="/applicantresult" title="Active Student" data-filter-tags="active_student">
                                             <i class="fal fa-user"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">Pending Applicants</span>
                                         </a>
