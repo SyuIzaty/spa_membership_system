@@ -29,30 +29,40 @@
                                     <th>Action</th>
                                 </tr>
                                 @foreach($aapplicant as $aapplicant_all_app)
-                                    <tr id={{$aapplicant_all_app['id']}}>
-                                        <td>{{$aapplicant_all_app['id']}}</td>
-                                        <td>{{$aapplicant_all_app['applicant_name']}}</td>
-                                        <td>
-                                            @if(count($aapplicant_all_app['programme']))
-                                                @foreach($aapplicant_all_app['programme'] as $info)
-                                                    <p>{{$info->programme_name}}</p>
-                                                @endforeach
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($aapplicant_all_app['programme_status'] != '' || $aapplicant_all_app['programme_status'] != NULL)
-                                                @foreach(explode(',', $aapplicant_all_app['programme_status']) as $infos)
-                                                    @if($infos == 'Accepted')
-                                                        <h5><span class="badge badge-pill bg-success pull-right">{{$infos}}</span></h5><br>
+                                            <tr id={{$aapplicant_all_app['id']}}>
+                                                <td>{{$aapplicant_all_app['id']}}</td>
+                                                <td>{{$aapplicant_all_app['applicant_name']}}</td>
+                                                <td>
+                                                    @foreach($aapplicant_all_app['programme_1'] as $etc)
+                                                   <p>{{$etc['programme_name']}}</p>
+                                                   @endforeach
+                                                   @foreach($aapplicant_all_app['programme_2'] as $etc)
+                                                   <p>{{$etc['programme_name']}}</p>
+                                                   @endforeach
+                                                   @foreach($aapplicant_all_app['programme_3'] as $etc)
+                                                   <p>{{$etc['programme_name']}}</p>
+                                                   @endforeach
+                                                </td>
+                                                <td>
+                                                    @if($aapplicant_all_app['programme_status']== 'Accepted')
+                                                        <p><span class="badge bg-success pull-right">{{$aapplicant_all_app['programme_status']}}</span></p><br>
                                                     @else
-                                                        <h5><span class="badge badge-pill bg-danger pull-right">{{$infos}}</span></h5><br>
+                                                        <p><span class="badge bg-danger pull-right">{{$aapplicant_all_app['programme_status']}}</span></p><br>
                                                     @endif
-                                                @endforeach
-                                            @endif
-                                        </td>
-                                        <td><a href="/public/applicant/{{$aapplicant_all_app['id']}}" class="btn btn-success">Detail</a></td>
-                                    </tr>
-                                @endforeach
+                                                    @if($aapplicant_all_app['programme_status_2']== 'Accepted')
+                                                        <p><span class="badge bg-success pull-right">{{$aapplicant_all_app['programme_status_2']}}</span></p><br>
+                                                    @else
+                                                        <p><span class="badge bg-danger pull-right">{{$aapplicant_all_app['programme_status_2']}}</span></p><br>
+                                                    @endif
+                                                    @if($aapplicant_all_app['programme_status_3']== 'Accepted')
+                                                        <p><span class="badge bg-success pull-right">{{$aapplicant_all_app['programme_status_3']}}</span></p><br>
+                                                    @else
+                                                        <p><span class="badge bg-danger pull-right">{{$aapplicant_all_app['programme_status_3']}}</span></p><br>
+                                                    @endif
+                                                </td>
+                                                <td><a href="/applicants/public/applicant/{{$aapplicant_all_app['id']}}" class="btn btn-success">Detail</a></td>
+                                            </tr>
+                                        @endforeach
                             </table>
                         </div>
                     </div>
