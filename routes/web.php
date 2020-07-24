@@ -28,8 +28,11 @@ Route::resource('admin/semester', 'SemesterController');
 Route::resource('admin/admission/application', 'ApplicantController');
 
 //APPLICANTS
+Route::resource('/applicant','ApplicantController');
 Route::get('/applicantresult','ApplicantController@indexs');
 Route::get('checkrequirements', 'ApplicantController@checkrequirements')->name('check-requirements');
+Route::post('changestatus', 'ApplicantController@changestatus');
+Route::post('programmestatus', 'ApplicantController@programmestatus');
 
 //AJAX DATA STUDENTS
 Route::post('data_allstudents', 'StudentController@data_allstudents');

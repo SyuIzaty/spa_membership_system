@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ApplicantResult extends Model
 {
 
-    protected $table = 'applicant_results';
+    protected $table = 'applicantresult';
 
     public function applicant()
     {

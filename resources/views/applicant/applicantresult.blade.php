@@ -60,7 +60,7 @@
                                                         <p><span class="badge bg-danger pull-right">{{$aapplicant_all_app['programme_status_3']}}</span></p><br>
                                                     @endif
                                                 </td>
-                                                <td><a href="/applicants/public/applicant/{{$aapplicant_all_app['id']}}" class="btn btn-success">Detail</a></td>
+                                                <td><a href="/applicant/{{$aapplicant_all_app['id']}}" class="btn btn-success">Detail</a></td>
                                             </tr>
                                         @endforeach
                             </table>
