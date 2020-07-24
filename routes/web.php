@@ -34,6 +34,9 @@ Route::get('checkrequirements', 'ApplicantController@checkrequirements')->name('
 Route::post('changestatus', 'ApplicantController@changestatus');
 Route::post('programmestatus', 'ApplicantController@programmestatus');
 
+//OFFER LETTER
+Route::get('/offer-letter', 'EntryRequirementController@offer');
+
 //AJAX DATA STUDENTS
 Route::post('data_allstudents', 'StudentController@data_allstudents');
 Route::post('data_studentWithNonNumericId', 'StudentController@data_studentWithNonNumericId');
