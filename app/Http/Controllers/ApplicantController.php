@@ -232,7 +232,16 @@ class ApplicantController extends Controller
                     }
                     $total_creditspm += $creditspm;
 
-                    if($spmcredit['subject'] == 1119 && $spmcredit['subject'] == 1449)
+                    if($spmcredit['subject'] == 1119)
+                    {
+                        if($spmcredit['grade'] < 9)
+                        {
+                            $total_creditspm = 0;
+                            break;
+                        }
+                    }
+
+                    if($spmcredit['subject'] == 1449)
                     {
                         if($spmcredit['grade'] < 9)
                         {
@@ -251,9 +260,9 @@ class ApplicantController extends Controller
             }
         }
         $olevel = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',6)->get();
-        $count_eng = array_keys(array_column($olevel->toArray(), 'subject'), 1123);
-        $count_math_a = array_keys(array_column($olevel->toArray(), 'subject'), 4037);
-        $count_math_d = array_keys(array_column($olevel->toArray(), 'subject'), 4024);
+        $count_eng = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE1119');
+        $count_math_a = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE4937');
+        $count_math_d = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE4024');
         if($count_eng != []  && ($count_math_a != [] || $count_math_d != []))
         {
             if($olevel->count() > 0)
@@ -269,6 +278,24 @@ class ApplicantController extends Controller
                         $creditolevel = 1;
                     }
                     $total_creditolevel += $creditolevel;
+
+                    if($olevelcredit['subject'] == 'CIE1119')
+                    {
+                        if($olevelcredit['grade'] < 3.00)
+                        {
+                            $total_creditolevel = 0;
+                            break;
+                        }
+                    }
+
+                    if($olevelcredit['subject'] == 'CIE4024' || $olevelcredit['subject'] == 'CIE4937')
+                    {
+                        if($olevelcredit['grade'] < 3.00)
+                        {
+                            $total_creditolevel = 0;
+                            break;
+                        }
+                    }
                 }
                 if($total_creditolevel >= 5)
                 {
@@ -314,7 +341,16 @@ class ApplicantController extends Controller
                     }
                     $total_creditspm += $creditspm;
 
-                    if($spmcredit['subject'] == 1119 && $spmcredit['subject'] == 1449)
+                    if($spmcredit['subject'] == 1119)
+                    {
+                        if($spmcredit['grade'] < 9)
+                        {
+                            $total_creditspm = 0;
+                            break;
+                        }
+                    }
+
+                    if($spmcredit['subject'] == 1449)
                     {
                         if($spmcredit['grade'] < 9)
                         {
@@ -333,9 +369,9 @@ class ApplicantController extends Controller
             }
         }
         $olevel = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',6)->get();
-        $count_eng = array_keys(array_column($olevel->toArray(), 'subject'), 1123);
-        $count_math_a = array_keys(array_column($olevel->toArray(), 'subject'), 4037);
-        $count_math_d = array_keys(array_column($olevel->toArray(), 'subject'), 4024);
+        $count_eng = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE1119');
+        $count_math_a = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE4937');
+        $count_math_d = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE4024');
         if($count_eng != []  && ($count_math_a != [] || $count_math_d != []))
         {
             if($olevel->count() > 0)
@@ -351,6 +387,24 @@ class ApplicantController extends Controller
                         $creditolevel = 1;
                     }
                     $total_creditolevel += $creditolevel;
+
+                    if($olevelcredit['subject'] == 'CIE1119')
+                    {
+                        if($olevelcredit['grade'] < 3.00)
+                        {
+                            $total_creditolevel = 0;
+                            break;
+                        }
+                    }
+
+                    if($olevelcredit['subject'] == 'CIE4024' || $olevelcredit['subject'] == 'CIE4937')
+                    {
+                        if($olevelcredit['grade'] < 3.00)
+                        {
+                            $total_creditolevel = 0;
+                            break;
+                        }
+                    }
                 }
                 if($total_creditolevel >= 5)
                 {
@@ -397,11 +451,20 @@ class ApplicantController extends Controller
                     }
                     $total_creditspm += $creditspm;
 
-                    if($spmcredit['subject'] == 1119 && $spmcredit['subject'] == 1449)
+                    if($spmcredit['subject'] == 1119)
                     {
                         if($spmcredit['grade'] < 9)
                         {
                             $total_creditspm = 0;
+                            break;
+                        }
+                    }
+
+                    if($spmcredit['subject'] == 1449)
+                    {
+                        if($spmcredit['grade'] < 9)
+                        {
+                            $total_creditstpm = 0;
                             break;
                         }
                     }
@@ -416,9 +479,9 @@ class ApplicantController extends Controller
             }
         }
         $olevel = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',6)->get();
-        $count_eng = array_keys(array_column($olevel->toArray(), 'subject'), 1123);
-        $count_math_a = array_keys(array_column($olevel->toArray(), 'subject'), 4037);
-        $count_math_d = array_keys(array_column($olevel->toArray(), 'subject'), 4024);
+        $count_eng = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE1119');
+        $count_math_a = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE4937');
+        $count_math_d = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE4024');
         if($count_eng != []  && ($count_math_a != [] || $count_math_d != []))
         {
             if($olevel->count() > 0)
@@ -434,6 +497,24 @@ class ApplicantController extends Controller
                         $creditolevel = 1;
                     }
                     $total_creditolevel += $creditolevel;
+
+                    if($olevelcredit['subject'] == 'CIE1119')
+                    {
+                        if($olevelcredit['grade'] < 3.00)
+                        {
+                            $total_creditolevel = 0;
+                            break;
+                        }
+                    }
+
+                    if($olevelcredit['subject'] == 'CIE4024' || $olevelcredit['subject'] == 'CIE4937')
+                    {
+                        if($olevelcredit['grade'] < 3.00)
+                        {
+                            $total_creditolevel = 0;
+                            break;
+                        }
+                    }
                 }
                 if($total_creditolevel >= 5)
                 {
@@ -480,12 +561,20 @@ class ApplicantController extends Controller
                     }
                     $total_creditspm += $creditspm;
 
-                    if($spmcredit['subject'] == 1119 && $spmcredit['subject'] == 1449)
+                    if($spmcredit['subject'] == 1119)
                     {
                         if($spmcredit['grade'] < 9)
                         {
                             $total_creditspm = 0;
                             break;
+                        }
+                    }
+
+                    if($spmcredit['subject'] == 1449)
+                    {
+                        if($spmcredit['grade'] < 9)
+                        {
+                            $total_creditspm = 0;
                         }
                     }
                 }
@@ -499,9 +588,9 @@ class ApplicantController extends Controller
             }
         }
         $olevel = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',6)->get();
-        $count_eng = array_keys(array_column($olevel->toArray(), 'subject'), 1123);
-        $count_math_a = array_keys(array_column($olevel->toArray(), 'subject'), 4037);
-        $count_math_d = array_keys(array_column($olevel->toArray(), 'subject'), 4024);
+        $count_eng = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE1119');
+        $count_math_a = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE4937');
+        $count_math_d = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE4024');
         if($count_eng != []  && ($count_math_a != [] || $count_math_d != []))
         {
             if($olevel->count() > 0)
@@ -517,6 +606,24 @@ class ApplicantController extends Controller
                         $creditolevel = 1;
                     }
                     $total_creditolevel += $creditolevel;
+
+                    if($olevelcredit['subject'] == 'CIE1119')
+                    {
+                        if($olevelcredit['grade'] < 3.00)
+                        {
+                            $total_creditolevel = 0;
+                            break;
+                        }
+                    }
+
+                    if($olevelcredit['subject'] == 'CIE4024' || $olevelcredit['subject'] == 'CIE4937')
+                    {
+                        if($olevelcredit['grade'] < 3.00)
+                        {
+                            $total_creditolevel = 0;
+                            break;
+                        }
+                    }
                 }
                 if($total_creditolevel >= 5)
                 {
@@ -550,22 +657,23 @@ class ApplicantController extends Controller
         $count_chem = array_keys(array_column($spm->toArray(), 'subject'), 4541);
         $count_phy = array_keys(array_column($spm->toArray(), 'subject'), 4531);
         $count_sci = array_keys(array_column($spm->toArray(), 'subject'), 1511);
-        if($count_math != [] )
+        if($count_math != [] && ($count_bio != [] || $count_chem != [] || $count_phy != [] || $count_sci != []))
         {
             if($spm->count() > 0)
             {
                 $total_creditspm = 0;
                 foreach($spm->toArray() as $spmcredit)
                 {
-                    if($spmcredit['grade'] >= 9)
-                    {
-                        $creditspm = 1;
-                    }else
+                    if($spmcredit['grade'] < 9)
                     {
                         $creditspm = 0;
+                    }else
+                    {
+                        $creditspm = 1;
                     }
                     $total_creditspm += $creditspm;
-                    if($count_bio != [] || $count_chem != [] || $count_phy != [])
+
+                    if($spmcredit['subject'] == 1449)
                     {
                         if($spmcredit['grade'] < 9)
                         {
@@ -573,7 +681,7 @@ class ApplicantController extends Controller
                             break;
                         }
                     }
-                    if($count_sci != [] )
+                    if($spmcredit['subject'] == 4551 || $spmcredit['subject'] == 4541 || $spmcredit['subject'] == 4531 || $spmcredit['subject'] == 1511)
                     {
                         if($spmcredit['grade'] < 9)
                         {
@@ -615,24 +723,19 @@ class ApplicantController extends Controller
                 $total_creditspm = 0;
                 foreach($spm->toArray() as $spmcredit)
                 {
-                    if($spmcredit['grade'] >= 9)
-                    {
-                        $creditspm = 1;
-                    }else
-                    {
-                        $creditspm = 0;
-                    }
-                    $total_creditspm += $creditspm;
-                    if($count_eng != [])
+                    if($spmcredit['subject'] == 1119)
                     {
                         if($spmcredit['grade'] < 9)
                         {
                             $total_creditspm = 0;
                             break;
+                        }else
+                        {
+                            $total_creditspm = 1;
                         }
                     }
                 }
-                if($total_creditspm >= 5)
+                if($total_creditspm >= 1)
                 {
                     $status[] = true;
                 }else
@@ -697,10 +800,35 @@ class ApplicantController extends Controller
                 $total_creditstpm += $creditstpm;
 
             }
-            if($total_creditstpm >= 1)
+            if($total_creditstpm >= 3)
             {
                 $status[] = true;
             } else
+            {
+                $status[] = false;
+            }
+        }
+
+        $stam = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',3)->get();
+        if($stam->count() > 0)
+        {
+            $total_creditstam = 0;
+            foreach($stam->toArray() as $stamcredit)
+            {
+                if($stamcredit['grade'] == 0.00)
+                {
+                    $creditstam = 0;
+                    break;
+                }else
+                {
+                    $creditstam = 1;
+                }
+                $total_creditstam += $creditstam;
+            }
+            if($total_creditstam >= $stam->count())
+            {
+                $status[] = true;
+            }else
             {
                 $status[] = false;
             }
@@ -712,7 +840,7 @@ class ApplicantController extends Controller
             $total_credituec = 0;
             foreach($uec->toArray() as $ueccredit)
             {
-                if($ueccredit['grade'] < 2.00)
+                if($ueccredit['grade'] < 2.33)
                 {
                     $credituec = 0;
                 }else
@@ -807,6 +935,37 @@ class ApplicantController extends Controller
             }
         }
 
+        $skm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',7)->get();
+        if($skm->count() > 0)
+        {
+            $total_creditskm = 0;
+            foreach($skm->toArray() as $skmcredit)
+            {
+                if($spm->count() > 0)
+                {
+                    $total_creditskm = 0;
+                    foreach($spm->toArray() as $spmcredit)
+                    {
+                        if($spmcredit['grade'] < 9)
+                        {
+                            $creditskm = 0;
+                        } else
+                        {
+                            $creditskm = 1;
+                        }
+                        $total_creditskm += $creditskm;
+                    }
+                    if($total_creditskm >= 1)
+                    {
+                        $status[] = true;
+                    }else
+                    {
+                        $status[] = false;
+                    }
+                }
+            }        
+        }
+
         $komuniti = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',18)->get();
         if($komuniti->count() > 0)
         {
@@ -847,7 +1006,7 @@ class ApplicantController extends Controller
         }            
     }
 
-    public function dpmg($applicantt) //Diploma in Public Management and Governance
+    public function dpmg($applicantt) //Diploma in Public Mangement and Governance
     {
         $status = [];
         $applicantresultt = ApplicantResult::where('applicant_id',$applicantt['id']);
@@ -861,17 +1020,17 @@ class ApplicantController extends Controller
                 if($spmcredit['grade'] < 9)
                 {
                     $creditspm = 0;
-                    break;
-                }else
+                } else
                 {
                     $creditspm = 1;
                 }
                 $total_creditspm += $creditspm;
+
             }
             if($total_creditspm >= 3)
             {
                 $status[] = true;
-            }else
+            } else
             {
                 $status[] = false;
             }
@@ -886,7 +1045,6 @@ class ApplicantController extends Controller
                 if($stpmcredit['grade'] < 2.00)
                 {
                     $creditstpm = 0;
-                    break;
                 }else
                 {
                     $creditstpm = 1;
@@ -957,7 +1115,7 @@ class ApplicantController extends Controller
             $total_credituec = 0;
             foreach($uec->toArray() as $ueccredit)
             {
-                if($ueccredit['grade'] < 2.00)
+                if($ueccredit['grade'] < 2.33)
                 {
                     $credituec = 0;
                 }else
@@ -1013,7 +1171,7 @@ class ApplicantController extends Controller
                         }
                         $total_creditskm += $creditskm;
                     }
-                    if($total_creditspm >= 1)
+                    if($total_creditskm >= 1)
                     {
                         $status[] = true;
                     }else
@@ -1044,7 +1202,7 @@ class ApplicantController extends Controller
                         }
                         $total_creditkom += $creditkom;
                     }
-                    if($total_creditspm >= 1)
+                    if($total_creditkom >= 1)
                     {
                         $status[] = true;
                     }else
@@ -1079,7 +1237,12 @@ class ApplicantController extends Controller
         $count_sejarah = array_keys(array_column($spm->toArray(), 'subject'), 1249);
         $count_syariah = array_keys(array_column($spm->toArray(), 'subject'), 5228);
         $count_science = array_keys(array_column($spm->toArray(), 'subject'), 1511);
-        if($count_math != [] && $count_english != [] && $count_melayu != [] && $count_sejarah)
+
+        if($count_math != [] && $count_english != [] && $count_melayu != [] && $count_sejarah &&
+        ($count_chemistry != [] && $count_bio != [] && (($count_agama != [] || $count_syariah != [])) || 
+        ($count_science != [] && ($count_agama != [] || $count_syariah != [])))
+        )
+        
         {
             if($spm->count() > 0)
             {
@@ -1104,9 +1267,26 @@ class ApplicantController extends Controller
                         }
                     }
 
-                    if(($count_agama != [] || $count_syariah != []) && $count_bio != [] && $count_chemistry != [])
+                    
+                    if(($count_bio != [] && $count_chemistry != []) && ($count_agama != [] || $count_syariah != []))
                     {
-                        if($spmcredit['subject'] == 4551 && $spmcredit['subject'] == 4541)
+                        if($spmcredit['subject'] == 4551)
+                        {
+                            if($spmcredit['grade'] < 9)
+                            {
+                                $total_creditspm = 0;
+                                break;
+                            }
+                        }
+                        if($spmcredit['subject'] == 4541)
+                        {
+                            if($spmcredit['grade'] < 9)
+                            {
+                                $total_creditspm = 0;
+                                break;
+                            }
+                        }
+                        if($spmcredit['subject'] == 1223 || $spmcredit['subject'] == 5228)
                         {
                             if($spmcredit['grade'] < 9)
                             {
@@ -1116,11 +1296,19 @@ class ApplicantController extends Controller
                         }
                     }
 
-                    if(($count_agama != [] || $count_syariah != []) && $count_science != [])
+                    if($count_science != [] && ($count_agama != [] || $count_syariah != []))
                     {
-                        if($spmcredit['subject'] == 4551 && $spmcredit['subject'] == 1511)
+                        if($spmcredit['subject'] == 1511)
                         {
                             if($spmcredit['grade'] < 12)
+                            {
+                                $total_creditspm = 0;
+                                break;
+                            }
+                        }
+                        if($spmcredit['subject'] == 1223 || $spmcredit['subject'] == 5228)
+                        {
+                            if($spmcredit['grade'] < 9)
                             {
                                 $total_creditspm = 0;
                                 break;
@@ -1129,7 +1317,7 @@ class ApplicantController extends Controller
                     }
 
                 }
-                if($total_creditspm >= $spm->count())
+                if($total_creditspm >= 7)
                 {
                     $status[] = true;
                 } else
@@ -1144,14 +1332,15 @@ class ApplicantController extends Controller
         $count_math_t = array_keys(array_column($stpm->toArray(), 'subject'), 954);
         $count_bio = array_keys(array_column($stpm->toArray(), 'subject'), 964);
         $count_chemistry = array_keys(array_column($stpm->toArray(), 'subject'), 962);
-        if(($count_math_m != [] || $count_math_t != [] )&& $count_bio != [] && $count_eng != [])
+        $count_eng = array_keys(array_column($stpm->toArray(), 'subject'), 920);
+        if(($count_math_m != [] || $count_math_t != [] )&& $count_bio != [] && $count_eng != [] && $count_chemistry != [])
         {
             if($stpm->count() > 0)
             {
                 $total_creditstpm = 0;
                 foreach($stpm->toArray() as $stpmcredit)
                 {
-                    if($stpmcredit['grade'] < 9)
+                    if($stpmcredit['grade'] < 2.00)
                     {
                         $creditstpm = 0;
                     } else
@@ -1163,7 +1352,7 @@ class ApplicantController extends Controller
 
                     if($stpmcredit['subject'] == 950 || $stpmcredit['subject'] == 954)
                     {
-                        if($stpmcredit['grade'] < 9)
+                        if($stpmcredit['grade'] < 2.00)
                         {
                             $total_creditstpm = 0;
                             break;
@@ -1172,9 +1361,34 @@ class ApplicantController extends Controller
                             $creditstpm = 1;
                         }
                     }
-                    if($stpmcredit['subject'] == 964 && $stpmcredit['subject'] == 962)
+
+                    if($stpmcredit['subject'] == 920)
                     {
-                        if($stpmcredit['grade'] < 9)
+                        if($stpmcredit['grade'] < 2.00)
+                        {
+                            $total_creditstpm = 0;
+                            break;
+                        }else
+                        {
+                            $creditstpm = 1;
+                        }
+                    }
+                    
+                    if($stpmcredit['subject'] == 964)
+                    {
+                        if($stpmcredit['grade'] < 2.00)
+                        {
+                            $total_creditstpm = 0;
+                            break;
+                        }else
+                        {
+                            $creditstpm = 1;
+                        }
+                    }
+
+                    if($stpmcredit['subject'] == 962)
+                    {
+                        if($stpmcredit['grade'] < 2.00)
                         {
                             $total_creditstpm = 0;
                             break;
@@ -1184,7 +1398,7 @@ class ApplicantController extends Controller
                         }
                     }
                 }
-                if($total_creditstpm >= $stpm->count())
+                if($total_creditstpm >= 4)
                 {
                     $status[] = true;
                 } else
@@ -1214,7 +1428,19 @@ class ApplicantController extends Controller
 
                     $total_creditalevel += $creditalevel;
 
-                    if($alevelcredit['subject'] == 'A101' && $alevelcredit['subject'] == 'A102')
+                    if($alevelcredit['subject'] == 'A101')
+                    {
+                        if($alevelcredit['grade'] < 3.00)
+                        {
+                            $total_creditalevel = 0;
+                            break;
+                        }else
+                        {
+                            $creditalevel = 1;
+                        }
+                    }
+
+                    if($alevelcredit['subject'] == 'A102')
                     {
                         if($alevelcredit['grade'] < 3.00)
                         {
@@ -1226,7 +1452,7 @@ class ApplicantController extends Controller
                         }
                     }
                 }
-                if($total_creditalevel >= $alevel->count())
+                if($total_creditalevel >= 3)
                 {
                     $status[] = true;
                 } else
@@ -1276,7 +1502,29 @@ class ApplicantController extends Controller
                         $creditolevel = 1;
                     }
                     $total_creditolevel += $creditolevel;
-                    if((($olevelcredit['subject'] == 'CIE4024' || $olevelcredit['subject'] == 'CIE4937') && $olevelcredit['subject'] == 'CIE1119') && $olevelcredit['subject'] == 'CIE5090' || $olevelcredit['subject'] == 'CIE5070' || $olevelcredit['subject'] == 'CIE5129')
+                    if($olevelcredit['subject'] == 'CIE4024' || $olevelcredit['subject'] == 'CIE4937')
+                    {
+                        if($olevelcredit['grade'] < 3.00)
+                        {
+                            $total_creditolevel = 0;
+                            break;
+                        }else
+                        {
+                            $creditolevel = 1;
+                        }
+                    }
+                    if($olevelcredit['subject'] == 'CIE1119')
+                    {
+                        if($olevelcredit['grade'] < 3.00)
+                        {
+                            $total_creditolevel = 0;
+                            break;
+                        }else
+                        {
+                            $creditolevel = 1;
+                        }
+                    }
+                    if($olevelcredit['subject'] == 'CIE5090' || $olevelcredit['subject'] == 'CIE5070' || $olevelcredit['subject'] == 'CIE5129')
                     {
                         if($olevelcredit['grade'] < 3.00)
                         {
@@ -1288,7 +1536,7 @@ class ApplicantController extends Controller
                         }
                     }
                 }
-                if($total_creditolevel >= $olevel->count())
+                if($total_creditolevel >= 3)
                 {
                     $status[] = true;
                 } else
@@ -1313,10 +1561,10 @@ class ApplicantController extends Controller
         $status = [];
         $applicantresultt = ApplicantResult::where('applicant_id',$applicantt['id']);
         $spm = $applicantresultt->where('type',1)->get();
-
-        $count_math = array_keys(array_column($spm->toArray(), 'subject'), 1449);
+        
         $count_eng = array_keys(array_column($spm->toArray(), 'subject'), 1119);
-        if($count_math != [] && $count_eng != [])
+        $count_math = array_keys(array_column($spm->toArray(), 'subject'), 1449);
+        if($count_eng != []  && $count_math != [] )
         {
             if($spm->count() > 0)
             {
@@ -1331,23 +1579,29 @@ class ApplicantController extends Controller
                         $creditspm = 1;
                     }
                     $total_creditspm += $creditspm;
-                    if($spmcredit['subject'] == 1449 && $spmcredit['subject'] == 1119)
+
+                    if($spmcredit['subject'] == 1119)
                     {
                         if($spmcredit['grade'] < 9)
                         {
-                            $creditspm = 0;
+                            $total_creditspm = 0;
                             break;
                         }
-                        else
+                    }
+
+                    if($spmcredit['subject'] == 1449)
+                    {
+                        if($spmcredit['grade'] < 9)
                         {
-                            $creditspm = 1;
+                            $total_creditspm = 0;
+                            break;
                         }
                     }
                 }
-                if($total_creditspm >= 5)
+                if($total_creditspm >= 3)
                 {
                     $status[] = true;
-                }else
+                } else
                 {
                     $status[] = false;
                 }
@@ -1364,32 +1618,39 @@ class ApplicantController extends Controller
                 $total_creditstpm = 0;
                 foreach($stpm->toArray() as $stpmcredit)
                 {
-                    if($stpmcredit['grade'] < 9)
+                    if($stpmcredit['grade'] < 2.00)
                     {
                         $creditstpm = 0;
-                        break;
-                    }else
+                    } else
                     {
                         $creditstpm = 1;
                     }
                     $total_creditstpm += $creditstpm;
-                    if($spmcredit['subject'] == 1449 && $spmcredit['subject'] == 1119)
+
+                    $math = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->where('subject',1449)->get()->toArray();
+                    foreach($math as $mathe)
                     {
-                        if($spmcredit['grade'] < 9)
+                        if($mathe['grade'] < 9)
                         {
-                            $creditspm = 0;
+                            $total_creditstpm = 0;
                             break;
                         }
-                        else
+                    }
+
+                    $eng = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->where('subject',1119)->get()->toArray();
+                    foreach($eng as $enge)
+                    {
+                        if($enge['grade'] < 9)
                         {
-                            $creditspm = 1;
+                            $total_creditstpm = 0;
+                            break;
                         }
                     }
                 }
-                if($total_creditstpm >= $stpm->count())
+                if($total_creditstpm >= 1)
                 {
                     $status[] = true;
-                }else
+                } else
                 {
                     $status[] = false;
                 }
@@ -1406,25 +1667,32 @@ class ApplicantController extends Controller
                 $total_creditstam = 0;
                 foreach($stam->toArray() as $stamcredit)
                 {
-                    if($stamcredit['grade'] == 0.00)
+                    if($stamcredit['grade'] < 1.00)
                     {
                         $creditstam = 0;
-                        break;
-                    }else
+                    } else
                     {
                         $creditstam = 1;
                     }
                     $total_creditstam += $creditstam;
-                    if($spmcredit['subject'] == 1449 && $spmcredit['subject'] == 1119)
+
+                    $math = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->where('subject',1449)->get()->toArray();
+                    foreach($math as $mathe)
                     {
-                        if($spmcredit['grade'] < 9)
+                        if($mathe['grade'] < 9)
                         {
-                            $creditspm = 0;
+                            $total_creditstam = 0;
                             break;
                         }
-                        else
+                    }
+
+                    $eng = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->where('subject',1119)->get()->toArray();
+                    foreach($eng as $enge)
+                    {
+                        if($enge['grade'] < 9)
                         {
-                            $creditspm = 1;
+                            $total_creditstam = 0;
+                            break;
                         }
                     }
                 }
@@ -1448,41 +1716,48 @@ class ApplicantController extends Controller
                 $total_creditskm = 0;
                 foreach($skm->toArray() as $skmcredit)
                 {
-                        if($spm->count() > 0)
+                    if($spm->count() > 0)
+                    {
+                        $total_creditskm = 0;
+                        foreach($spm->toArray() as $spmcredit)
                         {
-                            $total_creditskm = 0;
-                            foreach($spm->toArray() as $spmcredit)
+                            if($spmcredit['grade'] < 9)
                             {
-                                if($spmcredit['grade'] < 9)
-                                {
-                                    $creditskm = 0;
-                                } else
-                                {
-                                    $creditskm = 1;
-                                }
-                                $total_creditskm += $creditskm;
+                                $creditskm = 0;
+                            } else
+                            {
+                                $creditskm = 1;
+                            }
+                            $total_creditskm += $creditskm;
 
-                                if($spmcredit['subject'] == 1449 && $spmcredit['subject'] == 1119)
+                            $math = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->where('subject',1449)->get()->toArray();
+                            foreach($math as $mathe)
+                            {
+                                if($mathe['grade'] < 9)
                                 {
-                                    if($spmcredit['grade'] < 9)
-                                    {
-                                        $creditskm = 0;
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        $creditskm = 1;
-                                    }
+                                    $total_creditskm = 0;
+                                    break;
                                 }
                             }
-                            if($total_creditspm >= 1)
+
+                            $eng = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->where('subject',1119)->get()->toArray();
+                            foreach($eng as $enge)
                             {
-                                $status[] = true;
-                            }else
-                            {
-                                $status[] = false;
+                                if($enge['grade'] < 9)
+                                {
+                                    $total_creditskm = 0;
+                                    break;
+                                }
                             }
                         }
+                        if($total_creditskm >= 2)
+                        {
+                            $status[] = true;
+                        }else
+                        {
+                            $status[] = false;
+                        }
+                    }
                 }
             }
         }
@@ -1528,7 +1803,7 @@ class ApplicantController extends Controller
                         }
                     }
                 }
-                if($total_creditspm >= $spm->count())
+                if($total_creditspm >= 3)
                 {
                     $status[] = true;
                 } else
@@ -1540,49 +1815,50 @@ class ApplicantController extends Controller
 
         $stpm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',2)->get();
         $count_math = array_keys(array_column($spm->toArray(), 'subject'), 1449);
-        $count_mathstpm_m = array_keys(array_column($stpm->toArray(), 'subject'), 950);
-        $count_mathstpm_t = array_keys(array_column($stpm->toArray(), 'subject'), 954);
-        if($count_math != [] && ($count_mathstpm_m != [] || $count_mathstpm_t != []))
+        $count_math_m = array_keys(array_column($stpm->toArray(), 'subject'), 550);
+        $count_math_t = array_keys(array_column($stpm->toArray(), 'subject'), 554);
+        if($count_math != [] && ($count_math_m != [] || $count_math_t != []))
         {
             if($stpm->count() > 0)
             {
                 $total_creditstpm = 0;
                 foreach($stpm->toArray() as $stpmcredit)
                 {
-                    if($stpmcredit['grade'] < 9)
+                    if($stpmcredit['grade'] < 2.00)
                     {
                         $creditstpm = 0;
-                    }else
+                    } else
                     {
-                        if($stpmcredit['subject'] == 950 || $stpmcredit['subject'] == 954)
-                        {
-                            if($stpmcredit['grade'] < 9)
-                            {
-                                $creditstpm = 0;
-                            }
-                            else
-                            {
-                                $creditstpm = 1;
-                            }
-                        }
+                        $creditstpm = 1;
                     }
+
                     $total_creditstpm += $creditstpm;
-                    if($spmcredit['subject'] == 1449)
+
+                    if($stpmcredit['subject'] == 550 || $stpmcredit['grade'] == 554)
                     {
-                        if($spmcredit['grade'] < 9)
+                        if($stpmcredit['grade'] < 2.00)
                         {
-                            $creditstpm = 0;
-                        }
-                        else
+                            $math = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->where('subject',1449)->get()->toArray();
+                            foreach($math as $mathe)
+                            {
+                                if($mathe['grade'] < 9)
+                                {
+                                    $total_creditstpm = 0;
+                                }else
+                                {
+                                    $creditstpm = 1;
+                                }
+                            }
+                        }else
                         {
                             $creditstpm = 1;
                         }
                     }
                 }
-                if($total_creditstpm >= $stpm->count())
+                if($total_creditstpm >= 1)
                 {
                     $status[] = true;
-                }else
+                } else
                 {
                     $status[] = false;
                 }
@@ -1598,26 +1874,24 @@ class ApplicantController extends Controller
                 $total_creditstam = 0;
                 foreach($stam->toArray() as $stamcredit)
                 {
-                    if($spmcredit['subject'] == 1449)
+                    if($stamcredit['grade'] < 1.00)
                     {
-                        if($spmcredit['grade'] < 9)
+                        $creditstam = 0;
+                    } else
+                    {
+                        $creditstam = 1;
+                    }
+                    $total_creditstam += $creditstam;
+
+                    $math = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->where('subject',1449)->get()->toArray();
+                    foreach($math as $mathe)
+                    {
+                        if($mathe['grade'] < 9)
                         {
                             $total_creditstam = 0;
                             break;
                         }
-                        else
-                        {
-                            $creditstam = 1;
-                            if($stamcredit['grade'] == 0.00)
-                            {
-                                $creditstam = 0;
-                            }else
-                            {
-                                $creditstam = 1;
-                            }
-                        }
                     }
-                    $total_creditstam += $creditstam;
                 }
                 if($total_creditstam >= $stam->count())
                 {
@@ -1630,16 +1904,15 @@ class ApplicantController extends Controller
         }
 
         $olevel = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',6)->get();
-        $count_math_a = array_keys(array_column($olevel->toArray(), 'subject'), 135);
-        $count_math_d = array_keys(array_column($olevel->toArray(), 'subject'), 136);
-        if($count_math_a != [] || $count_math_d != [])
+        $count_math = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE4024');
+        if($count_math != [])
         {
             if($olevel->count() > 0)
             {
                 $total_creditolevel = 0;
                 foreach($olevel->toArray() as $olevelcredit)
                 {
-                    if($olevelcredit['grade'] < 9)
+                    if($olevelcredit['grade'] < 3.00)
                     {
                         $creditolevel = 0;
                     } else
@@ -1648,7 +1921,7 @@ class ApplicantController extends Controller
                     }
                     $total_creditolevel += $creditolevel;
 
-                    if($olevelcredit['subject'] == 135 || $olecelcredit['subject'] == 136)
+                    if($olevelcredit['subject'] == 'CIE4024')
                     {
                         if($olevelcredit['grade'] < 3.00)
                         {
@@ -1661,7 +1934,7 @@ class ApplicantController extends Controller
                         }
                     }
                 }
-                if($total_creditolevel >= 3)
+                if($total_creditolevel >= 4)
                 {
                     $status[] = true;
                 } else
@@ -1701,7 +1974,7 @@ class ApplicantController extends Controller
                         }                                    
                     }
                 }
-                if($total_credituec >= 3)
+                if($total_credituec >= 4)
                 {
                     $status[] = true;
                 }else
@@ -1747,7 +2020,7 @@ class ApplicantController extends Controller
                                     }
                                 }
                             }
-                            if($total_creditspm >= 1)
+                            if($total_creditspm >= 2)
                             {
                                 $status[] = true;
                             }else
@@ -1795,7 +2068,7 @@ class ApplicantController extends Controller
                                     }
                                 }
                             }
-                            if($total_creditkom >= 1)
+                            if($total_creditkom >= 2)
                             {
                                 $status[] = true;
                             }else
@@ -1869,6 +2142,13 @@ class ApplicantController extends Controller
                         }
                     }
                 }
+                if($total_creditspm >= 5)
+                {
+                    $status[] = true;
+                } else
+                {
+                    $status[] = false;
+                }
             }
         }
         if(in_array(true, $status))
@@ -1914,6 +2194,14 @@ class ApplicantController extends Controller
                             break;
                         }
                     }
+                    
+                }
+                if($total_creditspm >= 5)
+                {
+                    $status[] = true;
+                } else
+                {
+                    $status[] = false;
                 }
             }
         }
@@ -1927,7 +2215,7 @@ class ApplicantController extends Controller
         }        
     }
 
-    public function micpa($applicantt) //The Malaysian Institute of Certified Public Accountants
+    public function micpa($applicantt) //The Malaysian Institute of Certified Public Accountant
     {
         $status = [];
         $applicantresultt = ApplicantResult::where('applicant_id',$applicantt['id']);
@@ -1960,7 +2248,7 @@ class ApplicantController extends Controller
         }        
     }
 
-    public function acca($applicantt) //The Association of Chartered Certified Accountants
+    public function acca($applicantt) //The Association of Certified Chartered Accountant
     {
         $status = [];
         $applicantresultt = ApplicantResult::where('applicant_id',$applicantt['id']);
@@ -2084,7 +2372,7 @@ class ApplicantController extends Controller
         }        
     }
 
-    public function aca($applicantt) //Association of Chartered Accountants (ACA) for Institute of Chartered Accountants in England and Wales (ICAEW)
+    public function aca($applicantt) 
     {
         $status = [];
         $applicantresultt = ApplicantResult::where('applicant_id',$applicantt['id']);
@@ -2108,16 +2396,16 @@ class ApplicantController extends Controller
             }
         }
 
-        $icaew = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',17)->get();
+        $icaew = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',9)->get();
         if($bachelors->count() > 0)
         {
-            $icaew = $icaew->toArray();
-            $cgpaarray = array_column($icaew,'cgpa');
+            $bachelors = $bachelors->toArray();
+            $cgpaarray = array_column($bachelors,'cgpa');
             foreach($cgpaarray as $cgp)
             {
                 $cgpa = $cgp;
             }
-            if($cgpa == 'Pass')
+            if($cgpa == 2.75)
             {
                 $status[] = true;
             }else
