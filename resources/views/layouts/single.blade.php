@@ -11,7 +11,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
     <head>
         <meta charset="utf-8">
         <title>
-            Login - - SmartAdmin v4.0.1
+            INTEC APPLICATIONS
         </title>
         <meta name="description" content="Login">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
