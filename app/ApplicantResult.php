@@ -19,5 +19,15 @@ class ApplicantResult extends Model
         return $this->hasOne('App\Grading');
     }
 
+    public function subjects()
+    {
+        return $this->hasMany('App\Subject','subject_code','subject');
+    }
+
+    public function grades()
+    {
+        return $this->belongsTo('App\Grades','grade_id');
+    }
+
     
 }

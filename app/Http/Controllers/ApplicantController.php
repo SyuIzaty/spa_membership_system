@@ -34,25 +34,6 @@ class ApplicantController extends Controller
         return $applicant->applicant_status;
     }
 
-    public function indexs()
-    {
-        $programme = [];
-        $applicant = Applicant::where('applicant_status',NULL)->get()->toArray();
-
-        foreach($applicant as $applicantstat)
-        {
-            $programme_1['programme_1'] = Programme::where('id',$applicantstat['applicant_programme'])->select('programme_name')->get();
-            $programme_2['programme_2'] = Programme::where('id',$applicantstat['applicant_programme_2'])->select('programme_name')->get(); 
-            $programme_3['programme_3'] = Programme::where('id',$applicantstat['applicant_programme_3'])->select('programme_name')->get(); 
-            
-            $dataappl[] = array_merge($applicantstat, $programme_1, $programme_2, $programme_3);  
-            
-        }
-
-        $aapplicant = $dataappl;
-        return view('applicant.applicantresult', compact('aapplicant'));
-    }
-
     public function show($id)
     {
         $applicant = Applicant::find($id);
@@ -74,54 +55,24 @@ class ApplicantController extends Controller
                 $programmestatus[$i]['status'] = $sta[$i];
             }
         }
-            $spm = ApplicantResult::join('subjects', 'applicantresult.subject', '=', 'subjects.subject_code')
-            ->join('grades','applicantresult.grade','=','grades.grade_point')
-                ->select('applicantresult.*','subjects.*','grades.*')
-                ->where('applicantresult.applicant_id',$id)
-                ->where('grades.grade_type',1)
-                ->where('applicantresult.type',1)
-                ->get();
-
-            $stpm = ApplicantResult::join('subjects', 'applicantresult.subject', '=', 'subjects.subject_code')
-            ->join('grades','applicantresult.grade','=','grades.grade_point')
-                ->select('applicantresult.*','subjects.*','grades.*')
-                ->where('applicantresult.applicant_id',$id)
-                ->where('grades.grade_type',2)
-                ->where('applicantresult.type',2)
-                ->get();
+            $spm_result = ApplicantResult::where('applicant_id',$id)->where('type',1)->get();
+            $spm = $spm_result->load('grades','subjects');
             
-            $stam = ApplicantResult::join('subjects', 'applicantresult.subject', '=', 'subjects.subject_code')
-            ->join('grades','applicantresult.grade','=','grades.grade_point')
-                ->select('applicantresult.*','subjects.*','grades.*')
-                ->where('applicantresult.applicant_id',$id)
-                ->where('grades.grade_type',3)
-                ->where('applicantresult.type',3)
-                ->get();
+            $stpm_result = ApplicantResult::where('applicant_id',$id)->where('type',2)->get();
+            $stpm = $stpm_result->load('grades','subjects');
+            
+            $stam_result = ApplicantResult::where('applicant_id',$id)->where('type',3)->get();
+            $stam = $stam_result->load('grades','subjects');
 
-            $uec = ApplicantResult::join('subjects', 'applicantresult.subject', '=', 'subjects.subject_code')
-            ->join('grades','applicantresult.grade','=','grades.grade_point')
-                ->select('applicantresult.*','subjects.*','grades.*')
-                ->where('applicantresult.applicant_id',$id)
-                ->where('grades.grade_type',4)
-                ->where('applicantresult.type',4)
-                ->get();
+            $uec_result = ApplicantResult::where('applicant_id',$id)->where('type',4)->get();
+            $uec = $uec_result->load('grades','subjects');
 
-            $alevel = ApplicantResult::join('subjects', 'applicantresult.subject', '=', 'subjects.subject_code')
-            ->join('grades','applicantresult.grade','=','grades.grade_point')
-                ->select('applicantresult.*','subjects.*','grades.*')
-                ->where('applicantresult.applicant_id',$id)
-                ->where('grades.grade_type',5)
-                ->where('applicantresult.type',5)
-                ->get();
+            $alevel_result = ApplicantResult::where('applicant_id',$id)->where('type',5)->get();
+            $alevel = $alevel_result->load('grades','subjects');
 
-            $olevel = ApplicantResult::join('subjects', 'applicantresult.subject', '=', 'subjects.subject_code')
-            ->join('grades','applicantresult.grade','=','grades.grade_point')
-                ->select('applicantresult.*','subjects.*','grades.*')
-                ->where('applicantresult.applicant_id',$id)
-                ->where('grades.grade_type',6)
-                ->where('applicantresult.type',6)
-                ->get();
-
+            $olevel_result = ApplicantResult::where('applicant_id',$id)->where('type',6)->get();
+            $olevel = $olevel_result->load('grades','subjects');
+            
             $applicant_guardian = ApplicantGuardian::where('applicant_id',$id)->first();
 
             $applicant_emergency = ApplicantEmergency::where('applicant_id',$id)->first();
@@ -140,1411 +91,650 @@ class ApplicantController extends Controller
         return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel', 'applicantresult','total_point', 'programmestatus', 'aapplicant','applicant_guardian','applicant_emergency'));
     }
 
+    public function indexs()
+    {
+        $dataappl = [];
+        $programme = [];
+        $applicant = Applicant::where('applicant_status',NULL)->get()->toArray();
+
+        foreach($applicant as $applicantstat)
+        {
+            $programme_1['programme_1'] = Programme::where('id',$applicantstat['applicant_programme'])->select('programme_code')->get();
+            $programme_2['programme_2'] = Programme::where('id',$applicantstat['applicant_programme_2'])->select('programme_code')->get(); 
+            $programme_3['programme_3'] = Programme::where('id',$applicantstat['applicant_programme_3'])->select('programme_code')->get(); 
+
+            $bm_res = ApplicantResult::where('applicant_id',$applicantstat['id'])->where('subject',1103)->where('type',1)->get();
+            $bm['bm'] = $bm_res->load('grades');
+
+            $eng_res = ApplicantResult::where('applicant_id',$applicantstat['id'])->where('subject',1119)->where('type',1)->get();
+            $eng['eng'] = $eng_res->load('grades');
+
+            $math_res = ApplicantResult::where('applicant_id',$applicantstat['id'])->where('subject',1449)->where('type',1)->get();
+            $math['math'] = $math_res->load('grades');
+            
+            $dataappl[] = array_merge($applicantstat, $programme_1, $programme_2, $programme_3, $bm, $eng, $math);     
+        }
+
+        $applicant_offer = ApplicantStatus::where('applicant_status','Selected')->get();
+        $app_offer = $applicant_offer->load('programme','applicant');
+
+        $aapplicant = $dataappl;
+        return view('applicant.applicantresult', compact('aapplicant','app_offer'));
+    }
+
     public function accepted($applicantt, $programme_code)
     {
-        if($applicantt['applicant_programme'] == $programme_code)
-        {
-            $statuss = 'Accepted';
-            $programme_status = Applicant::where('id',$applicantt['id'])->where('applicant_programme',$programme_code)->first();
-            if($programme_status)
-            {
-                $programme_status->programme_status = $statuss;
-                $programme_status->save();
-            }
+        $applicants = Applicant::where('id',$applicantt['id'])->get();
+        if($applicantt['applicant_programme'] == $programme_code){
+            $programme_status = $applicants->where('applicant_programme',$programme_code)->first();
+            $programme_status->programme_status = 'Accepted';
+            $programme_status->save();
+            
         }
-        if($applicantt['applicant_programme_2'] == $programme_code)
-        {
-            $statuss = 'Accepted';
-            $programme_status = Applicant::where('id',$applicantt['id'])->where('applicant_programme_2',$programme_code)->first();
-            if($programme_status)
-            {
-                $programme_status->programme_status_2 = $statuss;
-                $programme_status->save();
-            }
+        if($applicantt['applicant_programme_2'] == $programme_code){
+            $programme_status_2 = $applicants->where('applicant_programme_2',$programme_code)->first();
+            $programme_status_2->programme_status_2 = 'Accepted';
+            $programme_status_2->save();
+            
         }
-        if($applicantt['applicant_programme_3'] == $programme_code)
-        {
-            $statuss = 'Accepted';
-            $programme_status = Applicant::where('id',$applicantt['id'])->where('applicant_programme_3',$programme_code)->first();
-            if($programme_status)
-            {
-                $programme_status->programme_status_3 = $statuss;
-                $programme_status->save();
-            }
+        if($applicantt['applicant_programme_3'] == $programme_code){
+            $programme_status_3 = $applicants->where('applicant_programme_3',$programme_code)->first();
+            $programme_status_3->programme_status_3 = 'Accepted';
+            $programme_status_3->save();   
         }
     }
 
-    public function rejected($applicantt, $programme_code)
+    public function rejected($applicantt, $programme_code, $reason_failed)
     {
-        if($applicantt['applicant_programme'] == $programme_code)
-        {
-            $statuss = 'Rejected';
-            $programme_status = Applicant::where('id',$applicantt['id'])->where('applicant_programme',$programme_code)->first();
-            if($programme_status)
-            {
-                $programme_status->programme_status = $statuss;
-                $programme_status->save();
-            }
+        $programme_status = Applicant::where('id',$applicantt['id'])->where('applicant_programme',$programme_code)->first();
+        if($programme_status){
+            $programme_status->programme_status = 'Rejected';
+            $programme_status->reason_fail = $reason_failed;
+            $programme_status->save();
         }
-        if($applicantt['applicant_programme_2'] == $programme_code)
-        {
-            $statuss = 'Rejected';
-            $programme_status = Applicant::where('id',$applicantt['id'])->where('applicant_programme_2',$programme_code)->first();
-            if($programme_status)
-            {
-                $programme_status->programme_status_2 = $statuss;
-                $programme_status->save();
-            }
+    
+        $programme_status = Applicant::where('id',$applicantt['id'])->where('applicant_programme_2',$programme_code)->first();
+        if($programme_status){
+            $programme_status->programme_status_2 = 'Rejected';
+            $programme_status->reason_fail_2 = $reason_failed;
+            $programme_status->save();
         }
-        if($applicantt['applicant_programme_3'] == $programme_code)
-        {
-            $statuss = 'Rejected';
-            $programme_status = Applicant::where('id',$applicantt['id'])->where('applicant_programme_3',$programme_code)->first();
-            if($programme_status)
-            {
-                $programme_status->programme_status_3 = $statuss;
-                $programme_status->save();
-            }
+    
+        $programme_status = Applicant::where('id',$applicantt['id'])->where('applicant_programme_3',$programme_code)->first();
+        if($programme_status){
+            $programme_status->programme_status_3 = 'Rejected';
+            $programme_status->reason_fail_3 = $reason_failed;
+            $programme_status->save();
         }
+        
+    }
+    
+    public function spm($applicantt)
+    {
+        $app_spm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->where('grade_id','<=',8)->get();
+        $spm = $app_spm->count();    
+        $count_eng = $app_spm->where('subject',1119)->count();
+        $count_math = $app_spm->where('subject',1449)->count();
+        
+        return compact('applicantt', 'app_spm', 'spm', 'count_eng', 'count_math');
+    }
+
+    public function stpm($applicantt)
+    {
+        $app_stpm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',2)->where('grade_id','<=',32)->get();
+        $stpm = $app_stpm->count();    
+        
+        $count_math_m = $app_stpm->where('subject',950)->count();
+        $count_math_t = $app_stpm->where('subject',954)->count();
+        $count_eng = $app_stpm->where('subject',920)->count();
+        return compact('app_stpm', 'stpm', 'count_math_m', 'count_math_t', 'count_eng');
+    }
+
+    public function stam($applicantt)
+    {
+        $app_stam = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',3)->where('grade_id','<=',15)->get();
+        $stam = $app_stam->count();    
+        
+        return compact('app_stam', 'stam',);
+    }
+    
+    public function uec($applicantt)
+    {
+        $app_uec = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',4)->where('grade_id','<=',22)->get();
+        $uec = $app_uec->count();    
+        $count_math = $app_uec->where('subject','UEC104')->count();
+        return compact('app_uec', 'uec', 'count_math');
+    }
+
+    public function olevel($applicantt)
+    {
+        $app_olevel = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',6)->where('grade_id','<=',46)->get();
+        $olevel = $app_olevel->count();    
+        $count_eng = $app_olevel->where('subject','CIE1119')->count();
+        $count_math_a = $app_olevel->where('subject','CIE4937')->count();
+        $count_math_d = $app_olevel->where('subject','CIE4024')->count();
+        return compact('applicantt', 'app_olevel', 'olevel', 'count_eng', 'count_math_a', 'count_math_d');
+    }
+
+    public function mqf($applicantt)
+    {
+        $mqf = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',9)->where('cgpa','>=',2.00)->count();
+        return compact('mqf');
+    }
+
+    public function skm($applicantt)
+    {
+        $skm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',7)->count();
+        return compact('skm');
+    }
+
+    public function komuniti($applicantt)
+    {
+        $komuniti = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',11)->count();
+        return compact('komuniti');
+    }
+
+    public function kkm($applicantt)
+    {
+        $kkm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',10)->where('cgpa','>=',2.00)->count();
+        return compact ('kkm');
     }
 
     public function iat($applicantt) //American Degree Transfer Programme
     {
         $status = [];
-        $applicantresultt = ApplicantResult::where('applicant_id',$applicantt['id']);
-        $spm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->get();
-        
-        $count_eng = array_keys(array_column($spm->toArray(), 'subject'), 1119);
-        $count_math = array_keys(array_column($spm->toArray(), 'subject'), 1449);
-        if($count_eng != []  && $count_math != [] )
+        $spm = $this->spm($applicantt);
+        if($spm['count_eng'] == 1 && $spm['count_math'] == 1 && $spm['spm'] >= 5)
         {
-            if($spm->count() > 0)
-            {
-                $total_creditspm = 0;
-                foreach($spm->toArray() as $spmcredit)
-                {
-                    if($spmcredit['grade'] < 9)
-                    {
-                        $creditspm = 0;
-                    } else
-                    {
-                        $creditspm = 1;
-                    }
-                    $total_creditspm += $creditspm;
-
-                    if($spmcredit['subject'] == 1119)
-                    {
-                        if($spmcredit['grade'] < 9)
-                        {
-                            $total_creditspm = 0;
-                            break;
-                        }
-                    }
-
-                    if($spmcredit['subject'] == 1449)
-                    {
-                        if($spmcredit['grade'] < 9)
-                        {
-                            $total_creditspm = 0;
-                            break;
-                        }
-                    }
-                }
-                if($total_creditspm >= 5)
-                {
-                    $status[] = true;
-                } else
-                {
-                    $status[] = false;
-                }
-            }
+            $status_spm = true;
+        }else{
+            $status_spm = false;
         }
-        $olevel = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',6)->get();
-        $count_eng = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE1119');
-        $count_math_a = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE4937');
-        $count_math_d = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE4024');
-        if($count_eng != []  && ($count_math_a != [] || $count_math_d != []))
+
+        $olevel = $this->olevel($applicantt);
+        if($olevel['count_eng'] == 1  && ($olevel['count_math_a'] == 1 || $olevel['count_math_d'] == 1) && $olevel['olevel'] >= 5)
         {
-            if($olevel->count() > 0)
-            {
-                $total_creditolevel = 0;
-                foreach($olevel->toArray() as $olevelcredit)
-                {
-                    if($olevelcredit['grade'] < 3.00)
-                    {
-                        $creditolevel = 0;
-                    }else
-                    {
-                        $creditolevel = 1;
-                    }
-                    $total_creditolevel += $creditolevel;
-
-                    if($olevelcredit['subject'] == 'CIE1119')
-                    {
-                        if($olevelcredit['grade'] < 3.00)
-                        {
-                            $total_creditolevel = 0;
-                            break;
-                        }
-                    }
-
-                    if($olevelcredit['subject'] == 'CIE4024' || $olevelcredit['subject'] == 'CIE4937')
-                    {
-                        if($olevelcredit['grade'] < 3.00)
-                        {
-                            $total_creditolevel = 0;
-                            break;
-                        }
-                    }
-                }
-                if($total_creditolevel >= 5)
-                {
-                    $status[] = true;
-                }else
-                {
-                    $status[] = false;
-                }
-            }
+            $status_olevel = true;
+        }else{
+            $status_olevel = false;
         }
-        
+
+        $status = array($status_spm, $status_olevel);
+
         if(in_array(true, $status))
         {
             $programme_code = 1;
             $this->accepted($applicantt, $programme_code);
         } else {
             $programme_code = 1;
-            $this->rejected($applicantt, $programme_code);
-        }              
+            if($status_spm == false) 
+            {
+                $reason_failed = 'Fail mathematics or english or less than 5 credit SPM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if($status_olevel == false)
+            {
+                $reason_failed = 'Fail mathematics or english or less than 5 credit O Level';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }
+        }                        
     }
 
     public function ial($applicantt) //A Level Programme
     {
         $status = [];
-        $applicantresultt = ApplicantResult::where('applicant_id',$applicantt['id']);
-        $spm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->get();
-        
-        $count_eng = array_keys(array_column($spm->toArray(), 'subject'), 1119);
-        $count_math = array_keys(array_column($spm->toArray(), 'subject'), 1449);
-        if($count_eng != []  && $count_math != [] )
+        $spm = $this->spm($applicantt);
+        if($spm['count_eng'] == 1 && $spm['count_math'] == 1 && $spm['spm'] >= 5)
         {
-            if($spm->count() > 0)
-            {
-                $total_creditspm = 0;
-                foreach($spm->toArray() as $spmcredit)
-                {
-                    if($spmcredit['grade'] < 9)
-                    {
-                        $creditspm = 0;
-                    } else
-                    {
-                        $creditspm = 1;
-                    }
-                    $total_creditspm += $creditspm;
-
-                    if($spmcredit['subject'] == 1119)
-                    {
-                        if($spmcredit['grade'] < 9)
-                        {
-                            $total_creditspm = 0;
-                            break;
-                        }
-                    }
-
-                    if($spmcredit['subject'] == 1449)
-                    {
-                        if($spmcredit['grade'] < 9)
-                        {
-                            $total_creditspm = 0;
-                            break;
-                        }
-                    }
-                }
-                if($total_creditspm >= 5)
-                {
-                    $status[] = true;
-                } else
-                {
-                    $status[] = false;
-                }
-            }
+            $status_spm = true;
+        }else{
+            $status_spm = false;
         }
-        $olevel = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',6)->get();
-        $count_eng = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE1119');
-        $count_math_a = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE4937');
-        $count_math_d = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE4024');
-        if($count_eng != []  && ($count_math_a != [] || $count_math_d != []))
+
+        $olevel = $this->olevel($applicantt);
+        if($olevel['count_eng'] == 1  && ($olevel['count_math_a'] == 1 || $olevel['count_math_d'] == 1) && $olevel['olevel'] >= 5)
         {
-            if($olevel->count() > 0)
-            {
-                $total_creditolevel = 0;
-                foreach($olevel->toArray() as $olevelcredit)
-                {
-                    if($olevelcredit['grade'] < 3.00)
-                    {
-                        $creditolevel = 0;
-                    }else
-                    {
-                        $creditolevel = 1;
-                    }
-                    $total_creditolevel += $creditolevel;
-
-                    if($olevelcredit['subject'] == 'CIE1119')
-                    {
-                        if($olevelcredit['grade'] < 3.00)
-                        {
-                            $total_creditolevel = 0;
-                            break;
-                        }
-                    }
-
-                    if($olevelcredit['subject'] == 'CIE4024' || $olevelcredit['subject'] == 'CIE4937')
-                    {
-                        if($olevelcredit['grade'] < 3.00)
-                        {
-                            $total_creditolevel = 0;
-                            break;
-                        }
-                    }
-                }
-                if($total_creditolevel >= 5)
-                {
-                    $status[] = true;
-                }else
-                {
-                    $status[] = false;
-                }
-            }
+            $status_olevel = true;
+        }else{
+            $status_olevel = false;
         }
-        
+
+        $status = array($status_spm, $status_olevel);
+
         if(in_array(true, $status))
         {
             $programme_code = 2;
             $this->accepted($applicantt, $programme_code);
         } else {
             $programme_code = 2;
-            $this->rejected($applicantt, $programme_code);
-        }
-                
+            if($status_spm == false) 
+            {
+                $reason_failed = 'Fail mathematics or english or less than 5 credit SPM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if ($status_olevel == false)
+            {
+                $reason_failed = 'Fail mathematics or english or less than 5 credit O Level';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }
+        }                        
     }
 
     public function igr($applicantt) //A Level German Programme
     {
         $status = [];
-        $applicantresultt = ApplicantResult::where('applicant_id',$applicantt['id']);
-        $spm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->get();
-        
-        $count_eng = array_keys(array_column($spm->toArray(), 'subject'), 1119);
-        $count_math = array_keys(array_column($spm->toArray(), 'subject'), 1449);
-        if($count_eng != []  && $count_math != [] )
+        $spm = $this->spm($applicantt);
+        if($spm['count_eng'] == 1 && $spm['count_math'] == 1 && $spm['spm'] >= 5)
         {
-            if($spm->count() > 0)
-            {
-                $total_creditspm = 0;
-                foreach($spm->toArray() as $spmcredit)
-                {
-                    if($spmcredit['grade'] < 9)
-                    {
-                        $creditspm = 0;
-                    } else
-                    {
-                        $creditspm = 1;
-                    }
-                    $total_creditspm += $creditspm;
-
-                    if($spmcredit['subject'] == 1119)
-                    {
-                        if($spmcredit['grade'] < 9)
-                        {
-                            $total_creditspm = 0;
-                            break;
-                        }
-                    }
-
-                    if($spmcredit['subject'] == 1449)
-                    {
-                        if($spmcredit['grade'] < 9)
-                        {
-                            $total_creditstpm = 0;
-                            break;
-                        }
-                    }
-                }
-                if($total_creditspm >= 5)
-                {
-                    $status[] = true;
-                } else
-                {
-                    $status[] = false;
-                }
-            }
+            $status_spm = true;
+        }else{
+            $status_spm = false;
         }
-        $olevel = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',6)->get();
-        $count_eng = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE1119');
-        $count_math_a = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE4937');
-        $count_math_d = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE4024');
-        if($count_eng != []  && ($count_math_a != [] || $count_math_d != []))
+
+        $olevel = $this->olevel($applicantt);
+        if($olevel['count_eng'] == 1  && ($olevel['count_math_a'] == 1 || $olevel['count_math_d'] == 1) && $olevel['olevel'] >= 5)
         {
-            if($olevel->count() > 0)
-            {
-                $total_creditolevel = 0;
-                foreach($olevel->toArray() as $olevelcredit)
-                {
-                    if($olevelcredit['grade'] < 3.00)
-                    {
-                        $creditolevel = 0;
-                    }else
-                    {
-                        $creditolevel = 1;
-                    }
-                    $total_creditolevel += $creditolevel;
-
-                    if($olevelcredit['subject'] == 'CIE1119')
-                    {
-                        if($olevelcredit['grade'] < 3.00)
-                        {
-                            $total_creditolevel = 0;
-                            break;
-                        }
-                    }
-
-                    if($olevelcredit['subject'] == 'CIE4024' || $olevelcredit['subject'] == 'CIE4937')
-                    {
-                        if($olevelcredit['grade'] < 3.00)
-                        {
-                            $total_creditolevel = 0;
-                            break;
-                        }
-                    }
-                }
-                if($total_creditolevel >= 5)
-                {
-                    $status[] = true;
-                }else
-                {
-                    $status[] = false;
-                }
-            }
+            $status_olevel = true;
+        }else{
+            $status_olevel = false;
         }
-        
+
+        $status = array($status_spm, $status_olevel);
+
         if(in_array(true, $status))
         {
             $programme_code = 3;
             $this->accepted($applicantt, $programme_code);
         } else {
             $programme_code = 3;
-            $this->rejected($applicantt, $programme_code);
-        }
-                
+            if($status_spm == false) 
+            {
+                $reason_failed = 'Fail mathematics or english or less than 5 credit SPM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if ($status_olevel == false)
+            {
+                $reason_failed = 'Fail mathematics or english or less than 5 credit O Level';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }
+        }                   
     }
 
     public function iam($applicantt) //SACE International
     {
         $status = [];
-        $applicantresultt = ApplicantResult::where('applicant_id',$applicantt['id']);
-        $spm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->get();
-        
-        $count_eng = array_keys(array_column($spm->toArray(), 'subject'), 1119);
-        $count_math = array_keys(array_column($spm->toArray(), 'subject'), 1449);
-        if($count_eng != []  && $count_math != [] )
+        $spm = $this->spm($applicantt);
+        if($spm['count_eng'] == 1 && $spm['count_math'] == 1 && $spm['spm'] >= 5)
         {
-            if($spm->count() > 0)
-            {
-                $total_creditspm = 0;
-                foreach($spm->toArray() as $spmcredit)
-                {
-                    if($spmcredit['grade'] < 9)
-                    {
-                        $creditspm = 0;
-                    } else
-                    {
-                        $creditspm = 1;
-                    }
-                    $total_creditspm += $creditspm;
-
-                    if($spmcredit['subject'] == 1119)
-                    {
-                        if($spmcredit['grade'] < 9)
-                        {
-                            $total_creditspm = 0;
-                            break;
-                        }
-                    }
-
-                    if($spmcredit['subject'] == 1449)
-                    {
-                        if($spmcredit['grade'] < 9)
-                        {
-                            $total_creditspm = 0;
-                        }
-                    }
-                }
-                if($total_creditspm >= 5)
-                {
-                    $status[] = true;
-                } else
-                {
-                    $status[] = false;
-                }
-            }
+            $status_spm = true;
+        }else{
+            $status_spm = false;
         }
-        $olevel = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',6)->get();
-        $count_eng = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE1119');
-        $count_math_a = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE4937');
-        $count_math_d = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE4024');
-        if($count_eng != []  && ($count_math_a != [] || $count_math_d != []))
+
+        $olevel = $this->olevel($applicantt);
+        if($olevel['count_eng'] == 1  && ($olevel['count_math_a'] == 1 || $olevel['count_math_d'] == 1) && $olevel['olevel'] >= 5)
         {
-            if($olevel->count() > 0)
-            {
-                $total_creditolevel = 0;
-                foreach($olevel->toArray() as $olevelcredit)
-                {
-                    if($olevelcredit['grade'] < 3.00)
-                    {
-                        $creditolevel = 0;
-                    }else
-                    {
-                        $creditolevel = 1;
-                    }
-                    $total_creditolevel += $creditolevel;
-
-                    if($olevelcredit['subject'] == 'CIE1119')
-                    {
-                        if($olevelcredit['grade'] < 3.00)
-                        {
-                            $total_creditolevel = 0;
-                            break;
-                        }
-                    }
-
-                    if($olevelcredit['subject'] == 'CIE4024' || $olevelcredit['subject'] == 'CIE4937')
-                    {
-                        if($olevelcredit['grade'] < 3.00)
-                        {
-                            $total_creditolevel = 0;
-                            break;
-                        }
-                    }
-                }
-                if($total_creditolevel >= 5)
-                {
-                    $status[] = true;
-                }else
-                {
-                    $status[] = false;
-                }
-            }
+            $status_olevel = true;
+        }else{
+            $status_olevel = false;
         }
-        
-        
+
+        $status = array($status_spm, $status_olevel);
+
         if(in_array(true, $status))
         {
             $programme_code = 4;
             $this->accepted($applicantt, $programme_code);
         } else {
-            $programme_code = 4;
-            $this->rejected($applicantt, $programme_code);
-        }                  
+            $programme_code = 1;
+            if($status_spm == false) 
+            {
+                $reason_failed = 'Fail mathematics or english or less than 5 credit SPM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if ($status_olevel == false)
+            {
+                $reason_failed = 'Fail mathematics or english or less than 5 credit O Level';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }
+        }                                           
     }
 
     public function ile($applicantt) //Japanese Preparatory Course
     {
         $status = [];
-        $applicantresultt = ApplicantResult::where('applicant_id',$applicantt['id']);
-        $spm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->get();
+        $app_spm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->where('grade_id','<=',8)->get();
+        $spm = $app_spm->count();    
 
-        $count_math = array_keys(array_column($spm->toArray(), 'subject'), 1449);
-        $count_bio = array_keys(array_column($spm->toArray(), 'subject'), 4551);
-        $count_chem = array_keys(array_column($spm->toArray(), 'subject'), 4541);
-        $count_phy = array_keys(array_column($spm->toArray(), 'subject'), 4531);
-        $count_sci = array_keys(array_column($spm->toArray(), 'subject'), 1511);
-        if($count_math != [] && ($count_bio != [] || $count_chem != [] || $count_phy != [] || $count_sci != []))
+        $count_math = $app_spm->where('subject',1449)->count();
+        $count_bio = $app_spm->where('subject',4551)->count();
+        $count_chem = $app_spm->where('subject',4541)->count();
+        $count_phy = $app_spm->where('subject',4531)->count();
+        $count_sci = $app_spm->where('subject',1511)->count();
+        if($count_math == 1 && ($count_bio == 1 || $count_chem == 1 || $count_phy == 1 || $count_sci == 1) && $spm >= 5)
         {
-            if($spm->count() > 0)
-            {
-                $total_creditspm = 0;
-                foreach($spm->toArray() as $spmcredit)
-                {
-                    if($spmcredit['grade'] < 9)
-                    {
-                        $creditspm = 0;
-                    }else
-                    {
-                        $creditspm = 1;
-                    }
-                    $total_creditspm += $creditspm;
-
-                    if($spmcredit['subject'] == 1449)
-                    {
-                        if($spmcredit['grade'] < 9)
-                        {
-                            $total_creditspm = 0;
-                            break;
-                        }
-                    }
-                    if($spmcredit['subject'] == 4551 || $spmcredit['subject'] == 4541 || $spmcredit['subject'] == 4531 || $spmcredit['subject'] == 1511)
-                    {
-                        if($spmcredit['grade'] < 9)
-                        {
-                            $total_creditspm = 0;
-                            break;
-                        }
-                    }
-                }
-                if($total_creditspm >= 5)
-                {
-                    $status[] = true;
-                }else
-                {
-                    $status[] = false;
-                }
-            }
+            $status_spm = true;
+        }else{
+            $status_spm = false;
         }
+
+        $olevel = $this->olevel($applicantt);
+
+        $count_bio = $olevel['app_olevel']->where('subject','CIE5090')->count();
+        $count_chemistry = $olevel['app_olevel']->where('subject','CIE5070')->count();
+        $count_phy = $olevel['app_olevel']->where('subject','CIE5054')->count();
+        $count_science = $olevel['app_olevel']->where('subject','CIE5129')->count();
+        if(($count_bio == 1 || $count_chemistry == 1 || $count_science == 1 || $count_phy) && ($olevel['count_math_d'] == 1 || $olevel['count_math_a'] == 1) && $olevel['olevel'] >= 5)
+        {
+            $status_olevel = true;
+        }else{
+            $status_olevel = false;
+        }
+
+        $status = array($status_spm, $status_olevel);
+
         if(in_array(true, $status))
         {
             $programme_code = 5;
             $this->accepted($applicantt, $programme_code);
-        } else {
-            $programme_code = 5;
-            $this->rejected($applicantt, $programme_code);
-        }        
+        }else{
+            $programme_code = 5; 
+            if($status_spm == false)
+            {
+                $reason_failed = 'Fail mathematics or biology or chemistry or physics or science SPM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if($status_olevel == false)
+            {
+                $reason_failed = 'Fail mathematics or biology or chemistry or physics or science O Level';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }
+        }
     }
 
     public function ikr($applicantt) //Korean Preparatory Course
     {
         $status = [];
-        $applicantresultt = ApplicantResult::where('applicant_id',$applicantt['id']);
-        $spm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->get();
-
-        $count_eng = array_keys(array_column($spm->toArray(), 'subject'), 1119);
-        if($count_eng != [] )
-        {
-            if($spm->count() > 0)
-            {
-                $total_creditspm = 0;
-                foreach($spm->toArray() as $spmcredit)
-                {
-                    if($spmcredit['subject'] == 1119)
-                    {
-                        if($spmcredit['grade'] < 9)
-                        {
-                            $total_creditspm = 0;
-                            break;
-                        }else
-                        {
-                            $total_creditspm = 1;
-                        }
-                    }
-                }
-                if($total_creditspm >= 1)
-                {
-                    $status[] = true;
-                }else
-                {
-                    $status[] = false;
-                }
-            }
-        }
-        if(in_array(true, $status))
+        $spm = $this->spm($applicantt);
+        if($spm['count_eng'] == 1)
         {
             $programme_code = 6;
             $this->accepted($applicantt, $programme_code);
-        } else {
+        }else{
             $programme_code = 6;
-            $this->rejected($applicantt, $programme_code);
-        }        
+                $reason_failed = 'Fail english SPM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            
+        }
     }
 
     public function dbm($applicantt) //Diploma in Business Management
     {
         $status = [];
-        $applicantresultt = ApplicantResult::where('applicant_id',$applicantt['id']);
-        $spm = ApplicantResult::where('applicant_id', $applicantt['id'])->where('type',1)->get();
-
-        if($spm->count() > 0)
+        $spm = $this->spm($applicantt);
+        if($spm['spm'] >= 3)
         {
-            $total_creditspm = 0;
-            foreach($spm->toArray() as $spmcredit)
-            {
-                if($spmcredit['grade'] < 9)
-                {
-                    $creditspm = 0;
-                } else
-                {
-                    $creditspm = 1;
-                }
-                $total_creditspm += $creditspm;
-
-            }
-            if($total_creditspm >= 3)
-            {
-                $status[] = true;
-            } else
-            {
-                $status[] = false;
-            }
+            $status_spm = true;
+        }else{
+            $status_spm = false;
         }
 
-        $stpm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',2)->get();
-        if($stpm->count() > 0)
+        $stpm = $this->stpm($applicantt);
+        if($stpm['stpm'] >= 1)
         {
-            $total_creditstpm = 0;
-            foreach($stpm->toArray() as $stpmcredit)
-            {
-                if($stpmcredit['grade'] < 2.00)
-                {
-                    $creditstpm = 0;
-                } else
-                {
-                    $creditstpm = 1;
-                }
-                $total_creditstpm += $creditstpm;
-
-            }
-            if($total_creditstpm >= 3)
-            {
-                $status[] = true;
-            } else
-            {
-                $status[] = false;
-            }
+            $status_stpm = true;
+        }else{
+            $status_stpm = false;
         }
 
-        $stam = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',3)->get();
-        if($stam->count() > 0)
+        $stam = $this->stam($applicantt);
+        if($stam['stam'] >= 10)
         {
-            $total_creditstam = 0;
-            foreach($stam->toArray() as $stamcredit)
-            {
-                if($stamcredit['grade'] == 0.00)
-                {
-                    $creditstam = 0;
-                    break;
-                }else
-                {
-                    $creditstam = 1;
-                }
-                $total_creditstam += $creditstam;
-            }
-            if($total_creditstam >= $stam->count())
-            {
-                $status[] = true;
-            }else
-            {
-                $status[] = false;
-            }
+            $status_stam = true;
+        }else{
+            $status_stam = false;
         }
 
-        $uec = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',4)->get();
-        if($uec->count() > 0)
+        $olevel = $this->olevel($applicantt);
+        if($olevel['olevel'] >= 3)
         {
-            $total_credituec = 0;
-            foreach($uec->toArray() as $ueccredit)
-            {
-                if($ueccredit['grade'] < 2.33)
-                {
-                    $credituec = 0;
-                }else
-                {
-                    $credituec = 1;
-                }
-                $total_credituec += $credituec;
-                if($total_credituec >= 3)
-                {
-                    $status[] = true;
-                }else
-                {
-                    $status[] = false;
-                }
-            }
+            $status_olevel = true;
+        }else{
+            $status_olevel = false;
         }
 
-        $olevel = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',6)->get();
-        if($olevel->count() > 0)
+        $uec = $this->uec($applicantt);
+        if($uec['uec'] >= 3)
         {
-            $total_creditolevel = 0;
-            foreach($olevel->toArray() as $olevelcredit)
-            {
-                if($olevelcredit['grade'] < 3.00)
-                {
-                    $creditolevel = 0;
-                }else
-                {
-                    $creditolevel = 1;
-                }
-                $total_creditolevel += $creditolevel;
-                if($total_creditolevel >= 3)
-                {
-                    $status[] = true;
-                }else
-                {
-                    $status[] = false;
-                }
-            }
+            $status_uec = true;
+        }else{
+            $status_uec = false;
         }
 
-        $mqf = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',14)->get();
-        if($mqf->count() > 0)
+        $skm = $this->skm($applicantt);
+        if($skm['skm'] >= 1 && $spm['spm'])
         {
-            $mqf = $mqf->toArray();
-            $cgpaarray = array_column($mqf,'cgpa');
-            foreach($cgpaarray as $cgp)
-            {
-                $cgpa = $cgp;
-            }
-            if($cgpa >= 2.00)
-            {
-                $status[] = true;
-            }else
-            {
-                $status[] = false;
-            }
-        }
-        $count_eng = array_keys(array_column($spm->toArray(), 'subject'), 1119);
-        $count_math = array_keys(array_column($spm->toArray(), 'subject'), 1449);
-        $skm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',7)->get();
-        if($count_math != [] && $count_eng != [])
-        {
-            if($skm->count() > 0)
-            {
-                $total_creditskm = 0;
-                foreach($skm->toArray() as $skmcredit)
-                {
-                    if($spm->count() > 0)
-                    {
-                        $total_creditskm = 0;
-                        foreach($spm->toArray() as $spmcredit)
-                        {
-                            if($spmcredit['grade'] < 9)
-                            {
-                                $creditskm = 0;
-                            } else
-                            {
-                                $creditskm = 1;
-                            }
-                            $total_creditskm += $creditskm;
-                        }
-                        if($total_creditspm >= 1)
-                        {
-                            $status[] = true;
-                        }else
-                        {
-                            $status[] = false;
-                        }
-                    }
-                }
-            }
+            $status_skm = true;
+        }else{
+            $status_skm = false;
         }
 
-        $skm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',7)->get();
-        if($skm->count() > 0)
+        $mqf = $this->mqf($applicantt);
+        if($mqf['mqf'] && $spm['spm'])
         {
-            $total_creditskm = 0;
-            foreach($skm->toArray() as $skmcredit)
-            {
-                if($spm->count() > 0)
-                {
-                    $total_creditskm = 0;
-                    foreach($spm->toArray() as $spmcredit)
-                    {
-                        if($spmcredit['grade'] < 9)
-                        {
-                            $creditskm = 0;
-                        } else
-                        {
-                            $creditskm = 1;
-                        }
-                        $total_creditskm += $creditskm;
-                    }
-                    if($total_creditskm >= 1)
-                    {
-                        $status[] = true;
-                    }else
-                    {
-                        $status[] = false;
-                    }
-                }
-            }        
+            $status_mqf = true;
+        }else{
+            $status_mqf = false;
         }
 
-        $komuniti = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',18)->get();
-        if($komuniti->count() > 0)
+        $komuniti = $this->komuniti($applicantt);
+        if($komuniti['komuniti'] >= 1 && $spm['spm'])
         {
-            $total_creditkom = 0;
-            foreach($komuniti->toArray() as $komcredit)
-            {
-                if($spm->count() > 0)
-                {
-                    $total_creditkom = 0;
-                    foreach($spm->toArray() as $spmcredit)
-                    {
-                        if($spmcredit['grade'] < 9)
-                        {
-                            $creditkom = 0;
-                        } else
-                        {
-                            $creditkom = 1;
-                        }
-                        $total_creditkom += $creditkom;
-                    }
-                    if($total_creditkom >= 1)
-                    {
-                        $status[] = true;
-                    }else
-                    {
-                        $status[] = false;
-                    }
-                }
-            }        
+            $status_komuniti = true;
+        }else{
+            $status_komuniti = false;
         }
+
+        $status = array($status_spm, $status_stpm, $status_stam, $status_olevel, $status_uec, $status_skm, $status_mqf, $status_komuniti);
+
         if(in_array(true, $status))
         {
             $programme_code = 7;
             $this->accepted($applicantt, $programme_code);
         } else {
             $programme_code = 7;
-            $this->rejected($applicantt, $programme_code);
-        }            
+            if($status_spm == false) {
+                $reason_failed = 'Less than 3 credit SPM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if ($status_stpm == false){
+                $reason_failed = 'Less than 3 credit STPM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if ($status_stam == false){
+                $reason_failed = 'Less than Maqbul STAM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if ($status_olevel == false){
+                $reason_failed = 'Less than 3 credit O Level';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if ($status_uec == false){
+                $reason_failed = 'Less than 3 credit UEC';
+                $this->rejected($applicantt, $programme_code, $reason_failed);   
+            }if($skm == false){
+                $reason_failed = 'Less than 3 credit SPM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if($mqf == false){
+                $reason_failed = 'Less than 3 credit SPM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if($komuniti == false){
+                $reason_failed = 'Less than 3 credit SPM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }
+        }         
     }
 
     public function dpmg($applicantt) //Diploma in Public Mangement and Governance
     {
         $status = [];
-        $applicantresultt = ApplicantResult::where('applicant_id',$applicantt['id']);
-        $spm = $applicantresultt->where('type',1)->get();
-
-        if($spm->count() > 0)
+        $spm = $this->spm($applicantt);
+        if($spm['spm'] >= 3)
         {
-            $total_creditspm = 0;
-            foreach($spm->toArray() as $spmcredit)
-            {
-                if($spmcredit['grade'] < 9)
-                {
-                    $creditspm = 0;
-                } else
-                {
-                    $creditspm = 1;
-                }
-                $total_creditspm += $creditspm;
-
-            }
-            if($total_creditspm >= 3)
-            {
-                $status[] = true;
-            } else
-            {
-                $status[] = false;
-            }
+            $status_spm = true;
+        }else{
+            $status_spm = false;
         }
         
-        $stpm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',2)->get();
-        if($stpm->count() > 0)
+        $stpm = $this->stpm($applicantt);
+        if($stpm['stpm'] >= 1)
         {
-            $total_creditstpm = 0;
-            foreach($stpm->toArray() as $stpmcredit)
-            {
-                if($stpmcredit['grade'] < 2.00)
-                {
-                    $creditstpm = 0;
-                }else
-                {
-                    $creditstpm = 1;
-                }
-                $total_creditstpm += $creditstpm;
-            }
-            if($total_creditstpm >= 1)
-            {
-                $status[] = true;
-            }else
-            {
-                $status[] = false;
-            }
+            $status_stpm = true;
+        }else{
+            $status_stpm = false;
         }
 
-        $stam = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',3)->get();
-        if($stam->count() > 0)
+        $stam = $this->stam($applicantt);
+        if($stam['stam'] >= 10)
         {
-            $total_creditstam = 0;
-            foreach($stam->toArray() as $stamcredit)
-            {
-                if($stamcredit['grade'] == 0.00)
-                {
-                    $creditstam = 0;
-                    break;
-                }else
-                {
-                    $creditstam = 1;
-                }
-                $total_creditstam += $creditstam;
-            }
-            if($total_creditstam >= $stam->count())
-            {
-                $status[] = true;
-            }else
-            {
-                $status[] = false;
-            }
+            $status_stam = true;
+        }else{
+            $status_stam = false;
         }
 
-        $olevel = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',6)->get();
-        if($olevel->count() > 0)
+        $olevel = $this->olevel($applicantt);
+        if($olevel['olevel'] >= 3)
         {
-            $total_creditolevel = 0;
-            foreach($olevel->toArray() as $olevelcredit)
-            {
-                if($olevelcredit['grade'] < 3.00)
-                {
-                    $creditolevel = 0;
-                }else
-                {
-                    $creditolevel = 1;
-                }
-                $total_creditolevel += $creditolevel;
-            }
-            if($total_creditolevel >= 3)
-            {
-                $status[] = true;
-            }else
-            {
-                $status[] = false;
-            }
+            $status_olevel = true;
+        }else{
+            $status_olevel = false;
         }
 
-        $uec = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',4)->get();
-        if($uec->count() > 0)
+        $uec = $this->uec($applicantt);
+        if($uec['uec'] >= 3)
         {
-            $total_credituec = 0;
-            foreach($uec->toArray() as $ueccredit)
-            {
-                if($ueccredit['grade'] < 2.33)
-                {
-                    $credituec = 0;
-                }else
-                {
-                    $credituec = 1;
-                }
-                $total_credituec += $credituec;
-            }
-            if($total_credituec >= 3)
-            {
-                $status[] = true;
-            }else
-            {
-                $status[] = false;
-            }
+            $status_uec = true;
+        }else{
+            $status_uec = false;
         }
 
-        $mqf = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',14)->get();
-        if($mqf->count() > 0)
+        $mqf = $this->mqf($applicantt);
+        if($mqf ==  1)
         {
-            $mqf = $mqf->toArray();
-            $cgpaarray = array_column($mqf,'cgpa');
-            foreach($cgpaarray as $cgp)
-            {
-                $cgpa = $cgp;
-            }
-            if($cgpa >= 2.00)
-            {
-                $status[] = true;
-            }else
-            {
-                $status[] = false;
-            }
+            $status_mqf = true;
+        }else{
+            $status_mqf = false;
         }
 
-        $skm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',7)->get();
-        if($skm->count() > 0)
+        $skm = $this->skm($applicantt);
+        if($spm['spm'] >= 1 && $skm == 1)
         {
-            $total_creditskm = 0;
-            foreach($skm->toArray() as $skmcredit)
-            {
-                if($spm->count() > 0)
-                {
-                    $total_creditskm = 0;
-                    foreach($spm->toArray() as $spmcredit)
-                    {
-                        if($spmcredit['grade'] < 9)
-                        {
-                            $creditskm = 0;
-                        } else
-                        {
-                            $creditskm = 1;
-                        }
-                        $total_creditskm += $creditskm;
-                    }
-                    if($total_creditskm >= 1)
-                    {
-                        $status[] = true;
-                    }else
-                    {
-                        $status[] = false;
-                    }
-                }
-            }        
+            $status_skm = true;
+        }else{
+            $status_skm = false;
         }
 
-        $komuniti = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',18)->get();
-        if($komuniti->count() > 0)
+        $komuniti = $this->komuniti($applicantt);
+        if($spm['spm'] >= 1 && $skm == 1)
         {
-            $total_creditkom = 0;
-            foreach($koumniti->toArray() as $komcredit)
-            {
-                if($spm->count() > 0)
-                {
-                    $total_creditkom = 0;
-                    foreach($spm->toArray() as $spmcredit)
-                    {
-                        if($spmcredit['grade'] < 9)
-                        {
-                            $creditkom = 0;
-                        } else
-                        {
-                            $creditkom = 1;
-                        }
-                        $total_creditkom += $creditkom;
-                    }
-                    if($total_creditkom >= 1)
-                    {
-                        $status[] = true;
-                    }else
-                    {
-                        $status[] = false;
-                    }
-                }
-            }        
+            $status_komuniti = true;
+        }else{
+            $status_komuniti = false;
         }
+
+        $status = array($status_spm, $status_stpm, $status_stam, $status_olevel, $status_uec, $status_skm, $status_mqf, $status_komuniti);
+
         if(in_array(true, $status))
         {
             $programme_code = 8;
             $this->accepted($applicantt, $programme_code);
         } else {
             $programme_code = 8;
-            $this->rejected($applicantt, $programme_code);
+            if($status_spm == false) {
+                $reason_failed = 'Less than 3 credit SPM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if ($status_stpm == false){
+                $reason_failed = 'Less than 1 credit STPM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if ($status_stam == false){
+                $reason_failed = 'Less than Maqbul STAM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if ($status_olevel == false){
+                $reason_failed = 'Less than 3 credit O Level';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if ($status_uec == false){
+                $reason_failed = 'Less than 3 credit UEC';
+                $this->rejected($applicantt, $programme_code, $reason_failed);   
+            }if($skm == false){
+                $reason_failed = 'Less than 3 credit SPM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if($mqf == false){
+                $reason_failed = 'Less than 3 credit SPM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if($komuniti == false){
+                $reason_failed = 'Less than 3 credit SPM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }
         }        
     }
 
     public function dshp($applicantt) //Diploma in Scientific Halal Practice
     {
         $status = [];
-        $applicantresultt = ApplicantResult::where('applicant_id',$applicantt['id']);
-        $spm = $applicantresultt->where('type',1)->get();
+        $spm = $this->spm($applicantt);
 
-        $count_bio = array_keys(array_column($spm->toArray(), 'subject'), 4551);
-        $count_chemistry = array_keys(array_column($spm->toArray(), 'subject'), 4541);
-        $count_agama = array_keys(array_column($spm->toArray(), 'subject'), 1223);
-        $count_math = array_keys(array_column($spm->toArray(), 'subject'), 1449);
-        $count_english = array_keys(array_column($spm->toArray(), 'subject'), 1119);
-        $count_melayu = array_keys(array_column($spm->toArray(), 'subject'), 1103);
-        $count_sejarah = array_keys(array_column($spm->toArray(), 'subject'), 1249);
-        $count_syariah = array_keys(array_column($spm->toArray(), 'subject'), 5228);
-        $count_science = array_keys(array_column($spm->toArray(), 'subject'), 1511);
+        $count_bio = $spm['app_spm']->where('subject',4551)->count();
+        $count_chemistry = $spm['app_spm']->where('subject',4541)->count();
+        $count_agama = $spm['app_spm']->where('subject',1223)->count();
+        $count_melayu = $spm['app_spm']->where('subject',1103)->count();
+        $count_sejarah = $spm['app_spm']->where('subject',1249)->count();
+        $count_syariah = $spm['app_spm']->where('subject',5228)->count();
+        $count_science = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->where('subject',1511)->where('grade_id','<=',4)->count();
 
-        if($count_math != [] && $count_english != [] && $count_melayu != [] && $count_sejarah &&
-        ($count_chemistry != [] && $count_bio != [] && (($count_agama != [] || $count_syariah != [])) || 
-        ($count_science != [] && ($count_agama != [] || $count_syariah != [])))
-        )
+        if($spm['count_math'] == 1 && $spm['count_eng'] == 1 && $count_melayu == 1 && $count_sejarah == 1 && ($count_agama == 1 || $count_syariah == 1) 
+        && (($count_chemistry == 1 && $count_bio == 1) || $count_science == 1) && $spm['spm'] >= 7)
+        {
+            $status_spm = true;
+        }else{
+            $status_spm = false;
+        }
+
+        $stpm = $this->stpm($applicantt);
         
+        $count_bio = $stpm['app_stpm']->where('subject',964)->count();
+        $count_chemistry = $stpm['app_stpm']->where('subject',952)->count();
+        if(($stpm['count_math_m'] == 1 || $stpm['count_math_t'] == 1 ) && $count_bio == 1 && $stpm['count_eng'] == 1 && $count_chemistry == 1 && $stpm['stpm'] >= 4)
         {
-            if($spm->count() > 0)
-            {
-                $total_creditspm = 0;
-                foreach($spm->toArray() as $spmcredit)
-                {
-                    if($spmcredit['grade'] < 9)
-                    {
-                        $creditspm = 0;
-                    } else
-                    {
-                        $creditspm = 1;
-                    }
-                    $total_creditspm += $creditspm;
-
-                    if($spmcredit['subject'] == 1103 && $spmcredit['subject'] == 1119 && $spmcredit['subject'] == 1449 && $spmcredit['subject'] == 1249)
-                    {
-                        if($spmcredit['grade'] < 9)
-                        {
-                            $total_creditspm = 0;
-                            break;
-                        }
-                    }
-
-                    
-                    if(($count_bio != [] && $count_chemistry != []) && ($count_agama != [] || $count_syariah != []))
-                    {
-                        if($spmcredit['subject'] == 4551)
-                        {
-                            if($spmcredit['grade'] < 9)
-                            {
-                                $total_creditspm = 0;
-                                break;
-                            }
-                        }
-                        if($spmcredit['subject'] == 4541)
-                        {
-                            if($spmcredit['grade'] < 9)
-                            {
-                                $total_creditspm = 0;
-                                break;
-                            }
-                        }
-                        if($spmcredit['subject'] == 1223 || $spmcredit['subject'] == 5228)
-                        {
-                            if($spmcredit['grade'] < 9)
-                            {
-                                $total_creditspm = 0;
-                                break;
-                            }
-                        }
-                    }
-
-                    if($count_science != [] && ($count_agama != [] || $count_syariah != []))
-                    {
-                        if($spmcredit['subject'] == 1511)
-                        {
-                            if($spmcredit['grade'] < 12)
-                            {
-                                $total_creditspm = 0;
-                                break;
-                            }
-                        }
-                        if($spmcredit['subject'] == 1223 || $spmcredit['subject'] == 5228)
-                        {
-                            if($spmcredit['grade'] < 9)
-                            {
-                                $total_creditspm = 0;
-                                break;
-                            }
-                        }
-                    }
-
-                }
-                if($total_creditspm >= 7)
-                {
-                    $status[] = true;
-                } else
-                {
-                    $status[] = false;
-                }
-            }
+            $status_stpm = true;
+        }else{
+            $status_stpm = false;
         }
 
-        $stpm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',2)->get();
-        $count_math_m = array_keys(array_column($stpm->toArray(), 'subject'), 950);
-        $count_math_t = array_keys(array_column($stpm->toArray(), 'subject'), 954);
-        $count_bio = array_keys(array_column($stpm->toArray(), 'subject'), 964);
-        $count_chemistry = array_keys(array_column($stpm->toArray(), 'subject'), 962);
-        $count_eng = array_keys(array_column($stpm->toArray(), 'subject'), 920);
-        if(($count_math_m != [] || $count_math_t != [] )&& $count_bio != [] && $count_eng != [] && $count_chemistry != [])
+        $app_alevel = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',5)->where('grade_id','<=',39)->get();
+        $alevel = $app_alevel->count();   
+
+        $count_bio = $app_alevel->where('subject','A101')->count();
+        $count_chemistry = $app_alevel->where('subject','A102')->count();
+        if($count_bio == 1 && $count_chemistry == 1 && $alevel >= 3)
         {
-            if($stpm->count() > 0)
-            {
-                $total_creditstpm = 0;
-                foreach($stpm->toArray() as $stpmcredit)
-                {
-                    if($stpmcredit['grade'] < 2.00)
-                    {
-                        $creditstpm = 0;
-                    } else
-                    {
-                        $creditstpm = 1;
-                    }
-
-                    $total_creditstpm += $creditstpm;
-
-                    if($stpmcredit['subject'] == 950 || $stpmcredit['subject'] == 954)
-                    {
-                        if($stpmcredit['grade'] < 2.00)
-                        {
-                            $total_creditstpm = 0;
-                            break;
-                        }else
-                        {
-                            $creditstpm = 1;
-                        }
-                    }
-
-                    if($stpmcredit['subject'] == 920)
-                    {
-                        if($stpmcredit['grade'] < 2.00)
-                        {
-                            $total_creditstpm = 0;
-                            break;
-                        }else
-                        {
-                            $creditstpm = 1;
-                        }
-                    }
-                    
-                    if($stpmcredit['subject'] == 964)
-                    {
-                        if($stpmcredit['grade'] < 2.00)
-                        {
-                            $total_creditstpm = 0;
-                            break;
-                        }else
-                        {
-                            $creditstpm = 1;
-                        }
-                    }
-
-                    if($stpmcredit['subject'] == 962)
-                    {
-                        if($stpmcredit['grade'] < 2.00)
-                        {
-                            $total_creditstpm = 0;
-                            break;
-                        }else
-                        {
-                            $creditstpm = 1;
-                        }
-                    }
-                }
-                if($total_creditstpm >= 4)
-                {
-                    $status[] = true;
-                } else
-                {
-                    $status[] = false;
-                }
-            }
+            $status_alevel = true;
+        }else{
+            $status_alevel = false;
         }
 
-        $alevel = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',5)->get();
-        $count_bio = array_keys(array_column($alevel->toArray(), 'subject'), 'A101');
-        $count_chemistry = array_keys(array_column($alevel->toArray(), 'subject'), 'A102');
-        if($count_bio != [] && $count_chemistry != [])
+        $olevel = $this->olevel($applicantt);
+
+        $count_bio = $olevel['app_olevel']->where('subject','CIE5090')->count();
+        $count_chemistry = $olevel['app_olevel']->where('subject','CIE5070')->count();
+        $count_science = $olevel['app_olevel']->where('subject','CIE5129')->count();
+
+        if(($count_bio == 1 || $count_chemistry == 1 || $count_science == 1) && $olevel['count_eng'] == 1 && ($olevel['count_math_d'] == 1 || $olevel['count_math_a'] == 1) && $olevel['olevel'] >= 3)
         {
-            if($alevel->count() > 0)
-            {
-                $total_creditalevel = 0;
-                foreach($alevel->toArray() as $alevelcredit)
-                {
-                    if($alevelcredit['grade'] < 3.00)
-                    {
-                        $creditalevel = 0;
-                    }else
-                    {
-                        $creditalevel = 1;
-                    }
-
-                    $total_creditalevel += $creditalevel;
-
-                    if($alevelcredit['subject'] == 'A101')
-                    {
-                        if($alevelcredit['grade'] < 3.00)
-                        {
-                            $total_creditalevel = 0;
-                            break;
-                        }else
-                        {
-                            $creditalevel = 1;
-                        }
-                    }
-
-                    if($alevelcredit['subject'] == 'A102')
-                    {
-                        if($alevelcredit['grade'] < 3.00)
-                        {
-                            $total_creditalevel = 0;
-                            break;
-                        }else
-                        {
-                            $creditalevel = 1;
-                        }
-                    }
-                }
-                if($total_creditalevel >= 3)
-                {
-                    $status[] = true;
-                } else
-                {
-                    $status[] = false;
-                }
-            }
+            $status_olevel = true;
+        }else{
+            $status_olevel = false;
         }
 
-        $sace = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',10)->get();
-        if($sace->count() > 0)
+        $sace = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',10)->where('cgpa','>=',50)->count();
+        if($sace == 1)
         {
-            $sace = $sace->toArray();
-            $sacearray = array_column($sace, 'cgpa');
-            foreach($sacearray as $cgp)
-            {
-                $cgpa = $cgp;
-            }
-            if($cgpa >= 50)
-            {
-                $status[] = true;
-            } else
-            {
-                $status[] = false;
-            }
+            $status_sace = true;
+        }else{
+            $status_sace = false;
         }
 
-        $olevel = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',6)->get();
-        $count_bio = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE5090');
-        $count_chemistry = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE5070');
-        $count_science = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE5129');
-        $count_english = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE1119');
-        $count_math = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE4024');
-        $count_math_a = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE4937');
-        if(($count_bio != [] || $count_chemistry != [] || $count_science != []) && $count_english != [] && ($count_math != [] || $count_math_a))
-        {
-            if($olevel->count() > 0)
-            {
-                $total_creditolevel = 0;
-                foreach($olevel->toArray() as $olevelcredit)
-                {
-                    if($olevelcredit['grade'] < 3.00)
-                    {
-                        $creditolevel = 0;
-                    }else
-                    {
-                        $creditolevel = 1;
-                    }
-                    $total_creditolevel += $creditolevel;
-                    if($olevelcredit['subject'] == 'CIE4024' || $olevelcredit['subject'] == 'CIE4937')
-                    {
-                        if($olevelcredit['grade'] < 3.00)
-                        {
-                            $total_creditolevel = 0;
-                            break;
-                        }else
-                        {
-                            $creditolevel = 1;
-                        }
-                    }
-                    if($olevelcredit['subject'] == 'CIE1119')
-                    {
-                        if($olevelcredit['grade'] < 3.00)
-                        {
-                            $total_creditolevel = 0;
-                            break;
-                        }else
-                        {
-                            $creditolevel = 1;
-                        }
-                    }
-                    if($olevelcredit['subject'] == 'CIE5090' || $olevelcredit['subject'] == 'CIE5070' || $olevelcredit['subject'] == 'CIE5129')
-                    {
-                        if($olevelcredit['grade'] < 3.00)
-                        {
-                            $total_creditolevel = 0;
-                            break;
-                        }else
-                        {
-                            $creditolevel = 1;
-                        }
-                    }
-                }
-                if($total_creditolevel >= 3)
-                {
-                    $status[] = true;
-                } else
-                {
-                    $status[] = false;
-                }
-            }
-        }
+        $status = array($status_spm, $status_stpm, $status_alevel, $status_olevel, $status_sace);
 
         if(in_array(true, $status))
         {
@@ -1552,551 +742,152 @@ class ApplicantController extends Controller
             $this->accepted($applicantt, $programme_code);
         } else {
             $programme_code = 9;
-            $this->rejected($applicantt, $programme_code);
+            if($status_spm == false) {
+                $reason_failed = 'Fail Biology or Chemistry or Science or Sejarah or Syariah or Mathematics SPM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if ($status_stpm == false){
+                $reason_failed = 'Fail Biology or Chemistry or Mathematics or English or Less than 4 credit STPM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if ($status_alevel == false){
+                $reason_failed = 'Fail Biology or Chemistry or less than 3 credit A Level';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if ($status_olevel == false){
+                $reason_failed = 'Fail Biology or Chemistry or Science or English or Mathematics or Less than 3 credit UEC';
+                $this->rejected($applicantt, $programme_code, $reason_failed);   
+            }if($sace == false){
+                $reason_failed = 'Less than 50 SACE';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }
         }        
     }
 
     public function dia($applicantt) //Diploma in Accounting
     {
         $status = [];
-        $applicantresultt = ApplicantResult::where('applicant_id',$applicantt['id']);
-        $spm = $applicantresultt->where('type',1)->get();
-        
-        $count_eng = array_keys(array_column($spm->toArray(), 'subject'), 1119);
-        $count_math = array_keys(array_column($spm->toArray(), 'subject'), 1449);
-        if($count_eng != []  && $count_math != [] )
+        $spm = $this->spm($applicantt);
+        if($spm['count_math'] == 1 && $spm['count_eng'] == 1 && $spm['spm'] >= 5)
         {
-            if($spm->count() > 0)
-            {
-                $total_creditspm = 0;
-                foreach($spm->toArray() as $spmcredit)
-                {
-                    if($spmcredit['grade'] < 9)
-                    {
-                        $creditspm = 0;
-                    } else
-                    {
-                        $creditspm = 1;
-                    }
-                    $total_creditspm += $creditspm;
-
-                    if($spmcredit['subject'] == 1119)
-                    {
-                        if($spmcredit['grade'] < 9)
-                        {
-                            $total_creditspm = 0;
-                            break;
-                        }
-                    }
-
-                    if($spmcredit['subject'] == 1449)
-                    {
-                        if($spmcredit['grade'] < 9)
-                        {
-                            $total_creditspm = 0;
-                            break;
-                        }
-                    }
-                }
-                if($total_creditspm >= 3)
-                {
-                    $status[] = true;
-                } else
-                {
-                    $status[] = false;
-                }
-            }
+            $status_spm = true;
+        }else{
+            $status_spm = false;
         }
 
-        $stpm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',2)->get();
-        $count_math = array_keys(array_column($spm->toArray(), 'subject'), 1449);
-        $count_eng = array_keys(array_column($spm->toArray(), 'subject'), 1119);
-        if($count_math != [] && $count_eng != [])
+        $stpm = $this->stpm($applicantt);
+        if($spm['count_eng'] == 1 && ($stpm['count_math_m'] == 1 || $stpm['count_math_t'] == 1 ) && $stpm['stpm'] >= 2)
         {
-            if($stpm->count() > 0)
-            {
-                $total_creditstpm = 0;
-                foreach($stpm->toArray() as $stpmcredit)
-                {
-                    if($stpmcredit['grade'] < 2.00)
-                    {
-                        $creditstpm = 0;
-                    } else
-                    {
-                        $creditstpm = 1;
-                    }
-                    $total_creditstpm += $creditstpm;
-
-                    $math = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->where('subject',1449)->get()->toArray();
-                    foreach($math as $mathe)
-                    {
-                        if($mathe['grade'] < 9)
-                        {
-                            $total_creditstpm = 0;
-                            break;
-                        }
-                    }
-
-                    $eng = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->where('subject',1119)->get()->toArray();
-                    foreach($eng as $enge)
-                    {
-                        if($enge['grade'] < 9)
-                        {
-                            $total_creditstpm = 0;
-                            break;
-                        }
-                    }
-                }
-                if($total_creditstpm >= 1)
-                {
-                    $status[] = true;
-                } else
-                {
-                    $status[] = false;
-                }
-            }
+            $status_stpm = true;
+        }else{
+            $status_stpm = false;
         }
 
-        $stam = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',3)->get();
-        $count_math = array_keys(array_column($spm->toArray(), 'subject'), 1449);
-        $count_eng = array_keys(array_column($spm->toArray(), 'subject'), 1119);
-        if($count_math != [] && $count_eng != [])
+        $stam = $this->stam($applicantt);
+        if($spm['count_math'] == 1 && $spm['count_eng'] == 1 && $stam['stam'] >= 10)
         {
-            if($stam->count() > 0)
-            {
-                $total_creditstam = 0;
-                foreach($stam->toArray() as $stamcredit)
-                {
-                    if($stamcredit['grade'] < 1.00)
-                    {
-                        $creditstam = 0;
-                    } else
-                    {
-                        $creditstam = 1;
-                    }
-                    $total_creditstam += $creditstam;
-
-                    $math = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->where('subject',1449)->get()->toArray();
-                    foreach($math as $mathe)
-                    {
-                        if($mathe['grade'] < 9)
-                        {
-                            $total_creditstam = 0;
-                            break;
-                        }
-                    }
-
-                    $eng = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->where('subject',1119)->get()->toArray();
-                    foreach($eng as $enge)
-                    {
-                        if($enge['grade'] < 9)
-                        {
-                            $total_creditstam = 0;
-                            break;
-                        }
-                    }
-                }
-                if($total_creditstam >= $stam->count())
-                {
-                    $status[] = true;
-                }else
-                {
-                    $status[] = false;
-                }
-            }
+            $status_stam = true;
+        }else{
+            $status_stam = false;
         }
 
-        $skm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',7)->get();
-        $count_math = array_keys(array_column($spm->toArray(), 'subject'), 1449);
-        $count_eng = array_keys(array_column($spm->toArray(), 'subject'), 1119);
-        if($count_math != [] && $count_eng != [])
+        $skm = $this->skm($applicantt);
+        if($spm['count_math'] == 1 && $spm['count_eng'] == 1 && $skm['skm'] == 3)
         {
-            if($skm->count() > 0)
-            {
-                $total_creditskm = 0;
-                foreach($skm->toArray() as $skmcredit)
-                {
-                    if($spm->count() > 0)
-                    {
-                        $total_creditskm = 0;
-                        foreach($spm->toArray() as $spmcredit)
-                        {
-                            if($spmcredit['grade'] < 9)
-                            {
-                                $creditskm = 0;
-                            } else
-                            {
-                                $creditskm = 1;
-                            }
-                            $total_creditskm += $creditskm;
-
-                            $math = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->where('subject',1449)->get()->toArray();
-                            foreach($math as $mathe)
-                            {
-                                if($mathe['grade'] < 9)
-                                {
-                                    $total_creditskm = 0;
-                                    break;
-                                }
-                            }
-
-                            $eng = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->where('subject',1119)->get()->toArray();
-                            foreach($eng as $enge)
-                            {
-                                if($enge['grade'] < 9)
-                                {
-                                    $total_creditskm = 0;
-                                    break;
-                                }
-                            }
-                        }
-                        if($total_creditskm >= 2)
-                        {
-                            $status[] = true;
-                        }else
-                        {
-                            $status[] = false;
-                        }
-                    }
-                }
-            }
+            $status_skm = true;
+        }else{
+            $status_skm = false;
         }
+
+        $status = array($status_spm, $status_stpm, $status_stam, $status_skm);
+
         if(in_array(true, $status))
         {
             $programme_code = 10;
             $this->accepted($applicantt, $programme_code);
         } else {
             $programme_code = 10;
-            $this->rejected($applicantt, $programme_code);
-        }        
+            if($status_spm == false) {
+                $reason_failed = 'Fail English or Mathematics or Less than 3 credit SPM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if ($status_stpm == false){
+                $reason_failed = 'Fail English or Mathematics or Less than 3 credit STPM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if ($status_stam == false){
+                $reason_failed = 'Less than Maqbul STAM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if($skm == false){
+                $reason_failed = 'Less than 3 credit SPM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }
+        }
     }
 
     public function dif($applicantt) //Diploma in Islamic Finance
     {
         $status = [];
-        $applicantresultt = ApplicantResult::where('applicant_id',$applicantt['id']);
-        $spm = $applicantresultt->where('type',1)->get();
-
-        $count_math = array_keys(array_column($spm->toArray(), 'subject'), 1449);
-        if($count_math != [] )
+        $spm = $this->spm($applicantt);
+        if($spm['count_math'] == 1 && $spm['spm'] >= 4)
         {
-            if($spm->count() > 0)
-            {
-                $total_creditspm = 0;
-                foreach($spm->toArray() as $spmcredit)
-                {
-                    if($spmcredit['grade'] < 9)
-                    {
-                        $creditspm = 0;
-                    } else
-                    {
-                        $creditspm = 1;
-                    }
-                    $total_creditspm += $creditspm;
-
-                    if($spmcredit['subject'] == 1449)
-                    {
-                        if($spmcredit['grade'] < 9)
-                        {
-                            $total_creditspm = 0;
-                            break;
-                        }
-                    }
-                }
-                if($total_creditspm >= 3)
-                {
-                    $status[] = true;
-                } else
-                {
-                    $status[] = false;
-                }
-            }
+            $status_spm = true;
+        }else{
+            $status_spm = false;
         }
 
-        $stpm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',2)->get();
-        $count_math = array_keys(array_column($spm->toArray(), 'subject'), 1449);
-        $count_math_m = array_keys(array_column($stpm->toArray(), 'subject'), 550);
-        $count_math_t = array_keys(array_column($stpm->toArray(), 'subject'), 554);
-        if($count_math != [] && ($count_math_m != [] || $count_math_t != []))
+        $stpm = $this->stpm($applicantt);
+        if(($spm['count_math'] == 1 || $stpm['count_math_m'] == 1 || $stpm['count_math_t'] == 1) && $stpm['stpm'] >= 2)
         {
-            if($stpm->count() > 0)
-            {
-                $total_creditstpm = 0;
-                foreach($stpm->toArray() as $stpmcredit)
-                {
-                    if($stpmcredit['grade'] < 2.00)
-                    {
-                        $creditstpm = 0;
-                    } else
-                    {
-                        $creditstpm = 1;
-                    }
-
-                    $total_creditstpm += $creditstpm;
-
-                    if($stpmcredit['subject'] == 550 || $stpmcredit['grade'] == 554)
-                    {
-                        if($stpmcredit['grade'] < 2.00)
-                        {
-                            $math = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->where('subject',1449)->get()->toArray();
-                            foreach($math as $mathe)
-                            {
-                                if($mathe['grade'] < 9)
-                                {
-                                    $total_creditstpm = 0;
-                                }else
-                                {
-                                    $creditstpm = 1;
-                                }
-                            }
-                        }else
-                        {
-                            $creditstpm = 1;
-                        }
-                    }
-                }
-                if($total_creditstpm >= 1)
-                {
-                    $status[] = true;
-                } else
-                {
-                    $status[] = false;
-                }
-            }
+            $status_stpm = true;
+        }else{
+            $status_stpm = false;
         }
 
-        $stam = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',3)->get();
-        $count_math = array_keys(array_column($spm->toArray(), 'subject'), 1449);
-        if($count_math != [])
+        $stam = $this->stam($applicantt);
+        if($spm['count_math'] == 1 && $stam['stam'] >= 10)
         {
-            if($stam->count() > 0)
-            {
-                $total_creditstam = 0;
-                foreach($stam->toArray() as $stamcredit)
-                {
-                    if($stamcredit['grade'] < 1.00)
-                    {
-                        $creditstam = 0;
-                    } else
-                    {
-                        $creditstam = 1;
-                    }
-                    $total_creditstam += $creditstam;
-
-                    $math = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->where('subject',1449)->get()->toArray();
-                    foreach($math as $mathe)
-                    {
-                        if($mathe['grade'] < 9)
-                        {
-                            $total_creditstam = 0;
-                            break;
-                        }
-                    }
-                }
-                if($total_creditstam >= $stam->count())
-                {
-                    $status[] = true;
-                }else
-                {
-                    $status[] = false;
-                }
-            }
+            $status_stam = true;
+        }else{
+            $status_stam = false;
         }
 
-        $olevel = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',6)->get();
-        $count_math = array_keys(array_column($olevel->toArray(), 'subject'), 'CIE4024');
-        if($count_math != [])
+        $olevel = $this->olevel($applicantt);
+        if(($olevel['count_math_a'] == 1 || $olevel['count_math_d'] == 1) && $olevel['olevel'] >= 4)
         {
-            if($olevel->count() > 0)
-            {
-                $total_creditolevel = 0;
-                foreach($olevel->toArray() as $olevelcredit)
-                {
-                    if($olevelcredit['grade'] < 3.00)
-                    {
-                        $creditolevel = 0;
-                    } else
-                    {
-                        $creditolevel = 1;
-                    }
-                    $total_creditolevel += $creditolevel;
-
-                    if($olevelcredit['subject'] == 'CIE4024')
-                    {
-                        if($olevelcredit['grade'] < 3.00)
-                        {
-                            $creditolevel = 0;
-                            break;
-                        }
-                        else
-                        {
-                            $creditolevel = 1;
-                        }
-                    }
-                }
-                if($total_creditolevel >= 4)
-                {
-                    $status[] = true;
-                } else
-                {
-                    $status[] = false;
-                }
-            }
+            $status_olevel = true;
+        }else{
+            $status_olevel = false;
         }
 
-        $uec = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',4)->get();
-        $count_math = array_keys(array_column($uec->toArray(), 'subject'), 'UEC104');
-        if($count_math != [])
+        $uec = $this->uec($applicantt);
+        if($uec['count_math'] == 1 && $uec['uec'] >= 4)
         {
-            if($uec->count() > 0)
-            {
-                $total_credituec = 0;
-                foreach($uec->toArray() as $ueccredit)
-                {
-                    if($ueccredit['grade'] < 2.33)
-                    {
-                        $credituec = 0;
-                    }else
-                    {
-                        $credituec = 1;
-                    }
-                    $total_credituec += $credituec;
-
-                    if($ueccredit['subject'] == 'UEC104')
-                    {
-                        if($ueccredit['grade'] >= 2.33)
-                        {
-                            $credituec = 0;
-                            break;
-                        }else
-                        {
-                            $credituec = 1;
-                        }                                    
-                    }
-                }
-                if($total_credituec >= 4)
-                {
-                    $status[] = true;
-                }else
-                {
-                    $status[] = false;
-                }
-            }
+            $status_uec = true;
+        }else{
+            $status_uec = false;
         }
 
-        $skm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',7)->get();
-        $count_math = array_keys(array_column($spm->toArray(), 'subject'), 1449);
-        if($count_math != [])
+        $skm = $this->skm($applicantt);
+        if($spm['count_math'] == 1 && $skm['skm'] == 1 && $spm['spm'] >= 2)
         {
-            if($skm->count() > 0)
-            {
-                $total_creditskm = 0;
-                foreach($skm->toArray() as $skmcredit)
-                {
-                        if($spm->count() > 0)
-                        {
-                            $total_creditskm = 0;
-                            foreach($spm->toArray() as $spmcredit)
-                            {
-                                if($spmcredit['grade'] < 9)
-                                {
-                                    $creditskm = 0;
-                                } else
-                                {
-                                    $creditskm = 1;
-                                }
-                                $total_creditskm += $creditskm;
-
-                                if($spmcredit['subject'] == 1449)
-                                {
-                                    if($spmcredit['grade'] < 9)
-                                    {
-                                        $creditskm = 0;
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        $creditskm = 1;
-                                    }
-                                }
-                            }
-                            if($total_creditspm >= 2)
-                            {
-                                $status[] = true;
-                            }else
-                            {
-                                $status[] = false;
-                            }
-                        }
-                }
-            }
+            $status_skm = true;
+        }else{
+            $status_skm = false;
         }
 
-        $komuniti = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',18)->get();
-        $count_math = array_keys(array_column($spm->toArray(), 'subject'), 1449);
-        if($count_math != [])
+        $komuniti = $this->komuniti($applicantt);
+        if($spm['count_math'] == 1 && $komuniti['komuniti'] == 1 && $spm['spm'] >= 2)
         {
-            if($komuniti->count() > 0)
-            {
-                $total_creditkom = 0;
-                foreach($komuniti->toArray() as $komcredit)
-                {
-                        if($spm->count() > 0)
-                        {
-                            $total_creditkom = 0;
-                            foreach($spm->toArray() as $spmcredit)
-                            {
-                                if($spmcredit['grade'] < 9)
-                                {
-                                    $creditkom = 0;
-                                } else
-                                {
-                                    $creditkom = 1;
-                                }
-                                $total_creditkom += $creditkom;
-
-                                if($spmcredit['subject'] == 1449)
-                                {
-                                    if($spmcredit['grade'] < 9)
-                                    {
-                                        $creditkom = 0;
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        $creditkom = 1;
-                                    }
-                                }
-                            }
-                            if($total_creditkom >= 2)
-                            {
-                                $status[] = true;
-                            }else
-                            {
-                                $status[] = false;
-                            }
-                        }
-                }
-            }
+            $status_komuniti = true;
+        }else{
+            $status_komuniti = false;
         }
 
-        $kkm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',15)->get();
-        if($kkm->count() > 0)
+        $kkm = $this->kkm($applicantt);
+        if($kkm['kkm'] == 1)
         {
-            $kkm = $kkm->toArray();
-            $cgpaarray = array_column($kkm,'cgpa');
-            foreach($cgpaarray as $cgp)
-            {
-                $cgpa = $cgp;
-            }
-            if($cgpa >= 2.00)
-            {
-                $status[] = true;
-            }else
-            {
-                $status[] = false;
-            }
+            $status_kkm = true;
+        }else{
+            $status_kkm = false;
         }
+
+        $status = array($status_spm, $status_stpm, $status_stam, $status_olevel, $status_uec, $status_skm, $status_komuniti);
 
         if(in_array(true, $status))
         {
@@ -2104,424 +895,153 @@ class ApplicantController extends Controller
             $this->accepted($applicantt, $programme_code);
         } else {
             $programme_code = 11;
-            $this->rejected($applicantt, $programme_code);
+            if($status_spm == false) {
+                $reason_failed = 'Fail mathematics or Less than 4 credit SPM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if ($status_stpm == false){
+                $reason_failed = 'Fail mathematics or Less than 3 credit STPM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if ($status_stam == false){
+                $reason_failed = 'Less Maqbul STAM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if ($status_olevel == false){
+                $reason_failed = 'Fail Mathematics or Less than 4 credit O Level';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if ($status_uec == false){
+                $reason_failed = 'Fail Mathematics or Less than 4 credit UEC';
+                $this->rejected($applicantt, $programme_code, $reason_failed);   
+            }if($skm == false){
+                $reason_failed = 'Fail Mathematics or Less than 2 credit SPM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if($kkm == false){
+                $reason_failed = 'Less than 3 credit SPM';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }
         }         
     }
 
     public function cat($applicantt) //Certified Accounting Technician
     {
         $status = [];
-        $applicantresultt = ApplicantResult::where('applicant_id',$applicantt['id']);
-        $spm = $applicantresultt->where('type',1)->get();
+        $spm = $this->spm($applicantt);
+        $count_malay = $spm['app_spm']->where('subject',1103)->count();
 
-        $count_eng = array_keys(array_column($spm->toArray(), 'subject'), 1119);
-        $count_malay = array_keys(array_column($spm->toArray(), 'subject'), 1103);
-        $count_math = array_keys(array_column($spm->toArray(), 'subject'), 1449);
-        if($count_eng != []  && $count_math != [] && $count_malay != [])
-        {
-            if($spm->count() > 0)
-            {
-                $total_creditspm = 0;
-                foreach($spm->toArray() as $spmcredit)
-                {
-                    if($spmcredit['grade'] < 9)
-                    {
-                        $creditspm = 0;
-                    } else
-                    {
-                        $creditspm = 1;
-                    }
-                    $total_creditspm += $creditspm;
-
-                    if($spmcredit['subject'] == 1103 && $spmcredit['subject'] == 1119 && $spmcredit['subject'] == 1449)
-                    {
-                        if($spmcredit['grade'] < 9)
-                        {
-                            $total_creditspm = 0;
-                            break;
-                        }
-                    }
-                }
-                if($total_creditspm >= 5)
-                {
-                    $status[] = true;
-                } else
-                {
-                    $status[] = false;
-                }
-            }
-        }
-        if(in_array(true, $status))
+        if($spm['count_eng'] == 1 && $spm['count_math'] == 1 && $count_malay == 1 && $spm['spm'] >= 5)
         {
             $programme_code = 12;
             $this->accepted($applicantt, $programme_code);
-        } else {
+        }else{
             $programme_code = 12;
-            $this->rejected($applicantt, $programme_code);
-        }        
+            $reason_failed = 'Fail Mathematics or English or Bahasa Melayu or Less than 5 credit SPM';
+            $this->rejected($applicantt, $programme_code, $reason_failed);
+        }
     }
 
     public function cfab($applicantt) //Certified in Accounting, Finance & Business
     {
         $status = [];
-        $applicantresultt = ApplicantResult::where('applicant_id',$applicantt['id']);
-        $spm = $applicantresultt->where('type',1)->get();
+        $spm = $this->spm($applicantt);
+        $count_malay = $spm['app_spm']->where('subject',1103)->count();
 
-        $count_eng = array_keys(array_column($spm->toArray(), 'subject'), 1119);
-        $count_malay = array_keys(array_column($spm->toArray(), 'subject'), 1103);
-        $count_math = array_keys(array_column($spm->toArray(), 'subject'), 1449);
-        if($count_eng != []  && $count_math != [] && $count_malay != [])
-        {
-            if($spm->count() > 0)
-            {
-                $total_creditspm = 0;
-                foreach($spm->toArray() as $spmcredit)
-                {
-                    if($spmcredit['grade'] < 9)
-                    {
-                        $creditspm = 0;
-                    } else
-                    {
-                        $creditspm = 1;
-                    }
-                    $total_creditspm += $creditspm;
-
-                    if($spmcredit['subject'] == 1103 && $spmcredit['subject'] == 1119 && $spmcredit['subject'] == 1449)
-                    {
-                        if($spmcredit['grade'] < 9)
-                        {
-                            $total_creditspm = 0;
-                            break;
-                        }
-                    }
-                    
-                }
-                if($total_creditspm >= 5)
-                {
-                    $status[] = true;
-                } else
-                {
-                    $status[] = false;
-                }
-            }
-        }
-        if(in_array(true, $status))
+        if($spm['count_eng'] == 1 && $spm['count_math'] == 1 && $count_malay == 1 && $spm['spm'] >= 5)
         {
             $programme_code = 13;
             $this->accepted($applicantt, $programme_code);
-        } else {
+        }else {
             $programme_code = 13;
-            $this->rejected($applicantt, $programme_code);
+            $reason_failed = 'Fail English or Mathematics or Bahasa Melayu or Less than 3 credit SPM';
+            $this->rejected($applicantt, $programme_code, $reason_failed);
         }        
     }
 
     public function micpa($applicantt) //The Malaysian Institute of Certified Public Accountant
     {
         $status = [];
-        $applicantresultt = ApplicantResult::where('applicant_id',$applicantt['id']);
-        $spm = $applicantresultt->where('type',1)->get();
-
-        $bachelors = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',9)->get();
-        if($bachelors->count() > 0)
-        {
-            $bachelors = $bachelors->toArray();
-            $cgpaarray = array_column($bachelors,'cgpa');
-            foreach($cgpaarray as $cgp)
-            {
-                $cgpa = $cgp;
-            }
-            if($cgpa >= 2.50)
-            {
-                $status[] = true;
-            }else
-            {
-                $status[] = false;
-            }
-        }
-        if(in_array(true, $status))
+        $bachelors = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',14)->where('cgpa','>=',2.50)->count();
+        if($bachelors == 1)
         {
             $programme_code = 14;
             $this->accepted($applicantt, $programme_code);
-        } else {
+        }else{
             $programme_code = 14;
-            $this->rejected($applicantt, $programme_code);
-        }        
+            $reason_failed = 'CGPA less than 2.50';
+            $this->rejected($applicantt, $programme_code, $reason_failed);
+            
+        }
     }
 
-    public function acca($applicantt) //The Association of Certified Chartered Accountant
+    public function acca($applicantt) //The Association of Certified Chartered Accountant 
     {
         $status = [];
-        $applicantresultt = ApplicantResult::where('applicant_id',$applicantt['id']);
-        $spm = $applicantresultt->where('type',1)->get();
 
-        $muet = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',11)->get();
-        if($muet->count() > 0)
-        {
-            $muet = $muet->toArray();
-            $cgpaarray = array_column($muet,'cgpa');
-            foreach($cgpaarray as $muets)
-            {
-                $muet = $muets;
-                if($muets >= 2)
-                {
-                    $matriculations = ApplicantResult::where('applicant_id',$applicantt['id'])-get();
-                    foreach($matriculations as $matriculation)
-                    {
-                        if($matriculation['type'] == 12 || $matriculation['type'] == 13)
-                        {
-                            if($matriculation['cgpa'] >= 2.50)
-                            {
-                                $count_math = array_keys(array_column($spm->toArray(), 'subject'), 1449);
-                                $count_eng = array_keys(array_column($spm->toArray(), 'subject'), 1119);
-                                if($count_math != [] && $count_eng != [])
-                                {
-                                    if($spm->count() > 0)
-                                    {
-                                        $total_creditspm = 0;
-                                        foreach($spm->toArray() as $spmcredit)
-                                        {
-                                            if($spmcredit['subject'] == 1449 && $spmcredit['subject'] == 1119)
-                                            {
-                                                if($spmcredit['grade'] < 9)
-                                                {
-                                                    $creditspm = 0;
-                                                    break;
-                                                }else
-                                                {
-                                                    $creditspm = 1;
-                                                }
-                                            }
-                                            $total_creditspm += $creditspm;
-                                            if($total_creditspm = 2)
-                                            {
-                                                $status[] = true;
-                                            }else
-                                            {
-                                                $status[] = false;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    $diploma = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',8)->get();
-                    if($diploma->count() > 0)
-                    {
-                        $diploma = $diploma->toArray();
-                        $cgpaarray = array_column($diploma,'cgpa');
-                        foreach($cgpaarray as $cgp)
-                        {
-                            $cgpa = $cgp;
-                        }
-                        if($cgpa >= 3.00)
-                        {
-                            $status[] = true;
-                        }else
-                        {
-                            $status[] = false;
-                        }
-                    }
-
-                    $cat = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',16)->get();
-                    if($cat->count() > 0)
-                    {
-                        $cat = $cat->toArray();
-                        $cgpaarray = array_column($cat,'cgpa');
-                        foreach($cgpaarray as $cgp)
-                        {
-                            $cgpa = $cgp;
-                        }
-                        if($cgpa == 'Pass')
-                        {
-                            $status[] = true;
-                        }else
-                        {
-                            $status[] = false;
-                        }
-                    }
-
-                    $bachelors = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',9)->get();
-                    if($bachelors->count() > 0)
-                    {
-                        $bachelors = $bachelors->toArray();
-                        $cgpaarray = array_column($bachelors,'cgpa');
-                        foreach($cgpaarray as $cgp)
-                        {
-                            $cgpa = $cgp;
-                        }
-                        if($cgpa >= 2.50)
-                        {
-                            $status[] = true;
-                        }else
-                        {
-                            $status[] = false;
-                        }
-                    }
-                }
-            }
-        }
-        if(in_array(true, $status))
+        $muet = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',18)->where('cgpa','>=',2)->count();
+        $matriculations = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',12)->where('cgpa','>=',2.50)->count();
+        $diploma = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',15)->where('cgpa','>=',3.00)->count();
+        $cat = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',16)->where('cgpa','Pass')->count();
+        $bachelors = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',14)->where('cgpa','>=',2.50)->count();
+        if($muet >= 1 && ($matriculations >= 1 || $diploma >= 1 || $bachelors >= 1 || $cat >= 1))
         {
             $programme_code = 15;
             $this->accepted($applicantt, $programme_code);
-        } else {
+        }else
+        {
             $programme_code = 15;
-            $this->rejected($applicantt, $programme_code);
-        }        
+            $reason_failed = 'Does not exceed minimum requirement';
+            $this->rejected($applicantt, $programme_code, $reason_failed);
+        }
     }
 
     public function aca($applicantt) 
     {
         $status = [];
-        $applicantresultt = ApplicantResult::where('applicant_id',$applicantt['id']);
-        $spm = $applicantresultt->where('type',1)->get();
-
-        $bachelors = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',9)->get();
-        if($bachelors->count() > 0)
+        $bachelors = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',14)->where('cgpa','>=',2.75)->count();
+        if($bachelors == 1)
         {
-            $bachelors = $bachelors->toArray();
-            $cgpaarray = array_column($bachelors,'cgpa');
-            foreach($cgpaarray as $cgp)
-            {
-                $cgpa = $cgp;
-            }
-            if($cgpa >= 2.75)
-            {
-                $status[] = true;
-            }else
-            {
-                $status[] = false;
-            }
+            $status_bach = true;
+        }else{
+            $status_bach = false;
+        }
+        
+        $icaew = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',17)->count();
+        if($icaew == 1)
+        {
+            $status_icaew = true;
+        }else{
+            $status_icaew = false;
         }
 
-        $icaew = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',9)->get();
-        if($bachelors->count() > 0)
-        {
-            $bachelors = $bachelors->toArray();
-            $cgpaarray = array_column($bachelors,'cgpa');
-            foreach($cgpaarray as $cgp)
-            {
-                $cgpa = $cgp;
-            }
-            if($cgpa == 2.75)
-            {
-                $status[] = true;
-            }else
-            {
-                $status[] = false;
-            }
-        }
+        $status = array($status_bach, $status_icaew);
+
         if(in_array(true, $status))
         {
             $programme_code = 16;
             $this->accepted($applicantt, $programme_code);
-        } else {
+        }else{
             $programme_code = 16;
-            $this->rejected($applicantt, $programme_code);
-        }        
+            if($status_bach == false) {
+                $reason_failed = 'Less than 2.75 CGPA';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }if ($status_icaew == false){
+                $reason_failed = 'Fail ICAEW';
+                $this->rejected($applicantt, $programme_code, $reason_failed);
+            }
+        }
     }
 
     public function checkrequirements()
     {
-        $applicant = Applicant::where('applicant_status', NULL)->select('*')->get();
-        $applicantresult = ApplicantResult::all();
-
-        $result = [];
         $applicants = Applicant::where('applicant_status', NULL)->get()->toArray();
+        $programme = Programme::all();
         foreach ($applicants as $applicantt)
         {
-            $p = $applicantt['applicant_programme'];
-            $p2 = $applicantt['applicant_programme_2'];
-            $p3 = $applicantt['applicant_programme_3'];
-            $applicantresultt = ApplicantResult::where('applicant_id',$applicantt['id']);
-            $spm = $applicantresultt->where('type',1)->get();
-
-            $status = [];
-            if($p == 1 || $p2 == 1 || $p3 == 1)
+            foreach($programme as $programmes)
             {
-                $this->iat($applicantt);
-            }
-            if($p == 2 || $p2 == 2 || $p3 == 2)
-            {
-                $this->ial($applicantt);
-            }
-
-            if($p == 3 || $p2 == 3 || $p3 == 3)
-            {
-                $this->igr($applicantt);
-            }
-
-            if($p == 4 || $p2 == 4 || $p3 == 4)
-            {
-                $this->iam($applicantt);
-            }
-
-            if($p == 5 || $p2 == 5 || $p3 == 5)
-            {
-                $this->ile($applicantt);
-            }
-            
-            if($p == 6 || $p2 == 6 || $p3 == 6)
-            {
-                $this->ikr($applicantt);
-            }
-
-            if($p == 7 || $p2 == 7 || $p3 == 7)
-            {
-                $this->dbm($applicantt);
-            }
-
-            if($p == 8 || $p2 == 8 || $p3 == 8)
-            {
-                $this->dpmg($applicantt);
-            }
-
-            if($p == 9 || $p2 == 9 || $p3 == 9)
-            {
-                $this->dshp($applicantt);
-            }
-
-            if($p == 10 || $p2 == 10 || $p3 == 10)
-            {
-                $this->dia($applicantt);
-            }
-
-            if($p == 11 || $p2 == 11 || $p3 == 11)
-            {
-                $this->dif($applicantt);
-            }
-
-            if($p == 12 || $p2 == 12 || $p3 == 12)
-            {
-                $this->cat($applicantt);
-            }
-
-            if($p == 13 || $p2 == 13 || $p3 == 13)
-            {
-                $this->cfab($applicantt);
-            }
-            
-            if($p == 14 || $p2 == 14 || $p3 == 14)
-            {
-                $this->micpa($applicantt);
-            }
-
-            if($p == 15 || $p2 == 15 || $p3 == 15)
-            {
-                $this->acca($applicantt);
-            }
-
-            if($p == 16 || $p2 == 16 || $p3 == 16)
-            {
-                $this->aca($applicantt);
+                $programme_func = $programmes->programme_code;
+                $this->$programme_func($applicantt);
             }
         }
-
         return $this->indexs();
     }
-
 
     public function programmestatus(Request $request)
     {

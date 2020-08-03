@@ -40,6 +40,7 @@
                                                         <tr>
                                                             <th>Applied Programme</th>
                                                             <th>Result</th>
+                                                            <th>Reason</th>
                                                         </tr>
                                                         <tr>
                                                             <td>
@@ -71,6 +72,11 @@
                                                                 @else
                                                                     <p><span class="badge bg-danger pull-right">{{$aapplicant_all_app['programme_status_3']}}</span></p><br>
                                                                 @endif
+                                                            </td>
+                                                            <td>
+                                                                <p>{{$applicant->reason_fail}}</p>
+                                                                <p>{{$applicant->reason_fail_2}}</p>
+                                                                <p>{{$applicant->reason_fail_3}}</p>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -215,7 +221,6 @@
                                     <div class="card">
                                         <div class="card-header">Academic Qualification</div>
                                             <div class="card-body">
-                                            @if(count($applicantresult) > 0)
                                                 @if(count($spm)!=0)
                                                 <h5>SPM</h5>
                                                 <table class="table table-bordered">
@@ -226,9 +231,9 @@
                                                 </tr>
                                                 @foreach($spm as $spms)
                                                     <tr>
-                                                        <td>{{$spms->subject_code}}</td>
-                                                        <td>{{$spms->subject_name}}</td>
-                                                        <td>{{$spms->grade_code}}</td>
+                                                        <td>{{$spms->subjects->first()->subject_code}}</td>
+                                                        <td>{{$spms->subjects->first()->subject_name}}</td>
+                                                        <td>{{$spms->grades->grade_code}}</td>
                                                     </tr>
                                                 @endforeach
                                                 </table>
@@ -243,9 +248,9 @@
                                                 </tr>
                                                 @foreach($stpm as $stpms)
                                                     <tr>
-                                                        <td>{{$stpms->subject_code}}</td>
-                                                        <td>{{$stpms->subject_name}}</td>
-                                                        <td>{{$stpms->grade_code}}</td>
+                                                        <td>{{$stpms->subjects->first()->subject_code}}</td>
+                                                        <td>{{$stpms->subjects->first()->subject_name}}</td>
+                                                        <td>{{$stpms->grades->grade_code}}</td>
                                                     </tr>
                                                 @endforeach
                                                 </table>
@@ -260,9 +265,9 @@
                                                 </tr>
                                                 @foreach($stam as $stams)
                                                     <tr>
-                                                        <td>{{$stams->subject_code}}</td>
-                                                        <td>{{$stams->subject_name}}</td>
-                                                        <td>{{$stams->grade_code}}</td>
+                                                        <td>{{$stams->subjects->first()->subject_code}}</td>
+                                                        <td>{{$stams->subjects->first()->subject_name}}</td>
+                                                        <td>{{$stams->grades->grade_code}}</td>
                                                     </tr>
                                                 @endforeach
                                                 </table>
@@ -277,9 +282,9 @@
                                                 </tr>
                                                 @foreach($uec as $uecs)
                                                     <tr>
-                                                        <td>{{$uecs->subject_code}}</td>
-                                                        <td>{{$uecs->subject_name}}</td>
-                                                        <td>{{$uecs->grade_code}}</td>
+                                                        <td>{{$uecs->subjects->first()->subject_code}}</td>
+                                                        <td>{{$uecs->subjects->first()->subject_name}}</td>
+                                                        <td>{{$uecs->grades->grade_code}}</td>
                                                     </tr>
                                                 @endforeach
                                                 </table>
@@ -294,14 +299,14 @@
                                                 </tr>
                                                 @foreach($alevel as $alevels)
                                                     <tr>
-                                                        <td>{{$alevels->subject_code}}</td>
-                                                        <td>{{$alevels->subject_name}}</td>
-                                                        <td>{{$alevels->grade_code}}</td>
+                                                        <td>{{$alevels->subjects->first()->subject_code}}</td>
+                                                        <td>{{$alevels->subjects->first()->subject_name}}</td>
+                                                        <td>{{$alevels->grades->first()->grade_code}}</td>
                                                     </tr>
                                                 @endforeach
                                                 </table>
                                                 @endif
-                                                @if(count($alevel)!=0)
+                                                @if(count($olevel)!=0)
                                                 <h5>O Level</h5>
                                                 <table class="table table-bordered">
                                                 <tr>
@@ -311,14 +316,13 @@
                                                 </tr>
                                                 @foreach($olevel as $olevels)
                                                     <tr>
-                                                        <td>{{$olevels->subject_code}}</td>
-                                                        <td>{{$olevels->subject_name}}</td>
-                                                        <td>{{$olevels->grade_code}}</td>
+                                                        <td>{{$olevels->subjects->first()->subject_code}}</td>
+                                                        <td>{{$olevels->subjects->first()->subject_name}}</td>
+                                                        <td>{{$olevels->grades->grade_code}}</td>
                                                     </tr>
                                                 @endforeach
                                                 </table>
                                                 @endif
-                                            @endif
                                         </div>
                                     </div>
                                 </div>

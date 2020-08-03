@@ -15,8 +15,18 @@ class Applicant extends Model
         return $this->belongsTo('App\ApplicantResult');
     }
 
-    public function programme()
+    /*public function programme()
     {
         return $this->belongsTo('App\Programme','id');
+    }*/
+
+    public function programme()
+    {
+        return $this->hasMany('App\Programme','id','applicant_programme');
+    }
+
+    public function applicantstatus()
+    {
+        return $this->hasMany('App\ApplicantStatus','applicant_id','id');
     }
 }
