@@ -20,6 +20,8 @@ Route::get('/', function () {
 
 
 // Auth::routes();
+Route::resource('applicant','ApplicantController');
+Route::get('/applicant','ApplicantController@create');
 
 Route::resource('student', 'StudentController');
 Route::resource('course', 'CourseController');
@@ -28,7 +30,13 @@ Route::resource('admin/semester', 'SemesterController');
 Route::resource('admin/admission/application', 'ApplicantController');
 
 //APPLICANTS
-Route::resource('/applicant','ApplicantController');
+
+Route::get('/applicant','ApplicantController@create');
+
+Route::post('applicant/{applicant}','ApplicantController@showapp')->name('applicant.showapp');
+Route::get('applicant/{applicant}','ApplicantController@profile')->name('applicant.profile');
+Route::post('applicant/{applicant}','ApplicantController@prefprogramme')->name('applicant.prefprogramme');
+
 Route::get('/applicantresult','ApplicantController@indexs');
 Route::get('checkrequirements', 'ApplicantController@checkrequirements')->name('check-requirements');
 Route::post('changestatus', 'ApplicantController@changestatus');

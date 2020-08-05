@@ -17,6 +17,198 @@ use DB;
 
 class ApplicantController extends Controller
 {
+    public function index(Applicant $applicant)
+    {
+        
+        //$applicant=Applicant::latest()->get();
+        //$programme = DB::select('select * from programmes');
+        $programme = DB::table('programmes')
+        ->select('*')
+        ->where('id', $applicant->applicant_programme)
+        ->get(); 
+        foreach ($programme as $program)
+      
+        // return view ('applicant.index',compact('applicant','programme','program'));
+        return view ('applicant.showapp',compact('applicant','program'));
+        
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        
+        $programme = DB::select('select * from programmes');
+        return view('applicant.create',['programme'=>$programme]);
+    }
+
+    
+
+      /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request, Applicant $applicant)
+    {
+       // dd($applicant);
+        // Validate posted form data
+        $validated = $request->validate([
+        'applicant_name' => 'required|string|min:|max:100',
+        'applicant_ic' => 'required|string|min:|max:100',
+        'applicant_email' => 'required|string|min:|max:100',
+        'applicant_phone' => 'required|string|min:|max:100',
+        'applicant_programme' => 'required|string|min:|max:100',
+        'applicant_programme_2' => 'required|string|min:|max:100',
+        'applicant_programme_3' => 'required|string|min:|max:100',
+        'applicant_nationality' => 'required|string|min:|max:100',
+        'applicant_gender' => 'string|min:|max:100',
+        'applicant_religion' => 'string|min:|max:100',
+        
+        
+        
+    ]);
+    
+    // Create and save applicant with validated data
+    $applicant = Applicant::create($validated);
+    
+    $programme = DB::table('programmes')
+    ->select('*')
+    ->where('id', $applicant->applicant_programme)
+    ->get(); 
+ 
+     foreach ($programme as $program)
+
+    // Redirect the user to the created applicant with a success notification
+    return redirect(route('applicant.profile',$applicant,$programme))->with('notification', 'Applicant created!');
+       
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Applicant  $applicant
+     
+     * @return \Illuminate\Http\Response
+     */
+    public function showapp(Applicant $applicant )
+    {
+        
+        //dd($applicant);
+       
+        $programme = DB::table('programmes')
+        ->select('*')
+        ->where('id', $applicant->applicant_programme)
+        ->get(); 
+     
+         foreach ($programme as $program)
+
+        return view ('applicant.showapp',compact('applicant','programme','program'));
+    }
+    public function profile(Applicant $applicant)
+    {
+        
+     
+    return view ('applicant.profile',compact('applicant'));
+    }
+     
+    public function prefprogramme(Applicant $applicant,Programme $programme)
+    {
+        $programme = DB::table('programmes')
+        ->select('*')
+        ->where('id', $applicant->applicant_programme)
+        ->get(); 
+     
+         foreach ($programme as $program)  
+
+        return view ('applicant.program',compact('applicant','programme'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Applicant  $applicant
+     * @return \Illuminate\Http\Response
+     */
+    public function edit( Applicant $applicant, Programme $programme)
+    {
+        
+       
+        //$programme = DB::select('select * from programmes');
+        $programme = DB::table('programmes')
+       ->select('*')
+       ->where('id', $applicant->applicant_programme)
+       ->get(); 
+        foreach ($programme as $program)
+        //return view('applicant.create',['programme'=>$programme]);
+        return view ('applicant.edit',compact('applicant','programme','program'));
+    }
+
+    
+
+
+     /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Applicant  $applicant
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Applicant $applicant, Programme $programme)
+    {
+        // Validate posted form data
+        $validated = $request->validate([
+            'applicant_name' => 'string|min:|max:100',
+            'applicant_ic' => 'string|min:|max:100',
+            'applicant_email' => 'string|min:|max:100',
+            'applicant_phone' => 'string|min:|max:100',
+            'applicant_nationality' => 'string|min:|max:100',
+            'applicant_gender' => 'string|min:|max:100',
+            'applicant_religion' => 'string|min:|max:100',
+            
+        ]);
+        
+        // Create and save post with validated data
+        $applicant->update($validated);
+    
+        // Redirect the user to the created post with a success notification
+        return redirect(route('applicant.profile',$applicant))->with('notification', 'Applicant Updated!');
+     
+    }
+
+    public function updateprogramme(Request $request, Applicant $applicant, Programme $programme)
+    {
+        // Validate posted form data
+        $validated = $request->validate([
+            'applicant_programme' => 'string|min:|max:100',
+            'applicant_programme_2' => 'string|min:|max:100',
+            'applicant_programme_3' => 'string|min:|max:100', 
+        ]);
+        
+        // Create and save post with validated data
+        $applicant->update($validated);
+    
+        // Redirect the user to the created post with a success notification
+        return redirect(route('applicant.program',$applicant))->with('notification', 'Applicant Updated!');
+     
+    }
+   
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Applicant  $applicant
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Applicant $applicant)
+    {
+        //
+        $applicant->delete();
+    }
     public function changestatus(Request $request)
     {
         $input = $request->all();
@@ -195,7 +387,7 @@ class ApplicantController extends Controller
         $app_stam = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',3)->where('grade_id','<=',15)->get();
         $stam = $app_stam->count();    
         
-        return compact('app_stam', 'stam',);
+        return compact('app_stam', 'stam');
     }
     
     public function uec($applicantt)
