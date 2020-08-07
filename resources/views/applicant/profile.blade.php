@@ -5,7 +5,7 @@
 
 @section('content')
 
-<h1 class="title">Profile:{{$applicant->applicant_name}}</h1>
+<h1 class="title">Profile Information</h1>
 
 
 <form method="post" action="{{ route('applicant.update',$applicant) }}">

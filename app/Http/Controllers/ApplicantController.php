@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use App\Applicant;
 use App\ApplicantResult;
 use App\ApplicantStatus;
+use App\ApplicantContact;
 use App\Grades;
 use App\RequirementSubject;
 use App\Programme;
+
 use App\Qualification;
 use App\Subject;
 use App\ApplicantEmergency;
@@ -116,16 +118,21 @@ class ApplicantController extends Controller
     return view ('applicant.profile',compact('applicant'));
     }
      
+    
+
     public function prefprogramme(Applicant $applicant,Programme $programme)
     {
+        
         $programme = DB::table('programmes')
         ->select('*')
         ->where('id', $applicant->applicant_programme)
         ->get(); 
-     
-         foreach ($programme as $program)  
-
-        return view ('applicant.program',compact('applicant','programme'));
+        $programme = DB::select('select * from programmes');
+       
+         foreach ($programme as $program )
+         
+        return view ('applicant.program',compact('applicant','programme','program'));
+        //return view ('applicant.create');
     }
 
     /**
@@ -180,6 +187,54 @@ class ApplicantController extends Controller
      
     }
 
+    public function contact(Request $request,Applicant $applicant, ApplicantContact $applicantcontact)
+    {
+        // Validate posted form data
+        $validated = $request->validate([
+            'applicant_address_1' => 'string|min:|max:100',
+            'applicant_address_2' => 'string|min:|max:100',
+            'applicant_poscode' => 'string|min:|max:100',
+            'applicant_city' => 'string|min:|max:100',
+            'applicant_state' => 'string|min:|max:100',
+            'applicant_country' => 'string|min:|max:100',
+            'applicant_phone_office' => 'string|min:|max:100',
+            'applicant_phone_home' => 'string|min:|max:100',
+            'applicant_phone_mobile' => 'string|min:|max:100',
+            'applicant_email' => 'string|min:|max:100',
+            
+        ]);
+        
+        // Create and save post with validated data
+//dd($applicantcontact);
+        $applicantcontact = ApplicantContact::create($validated);
+
+       
+        // $applicantcontact->update($validated);
+        // $applicant = DB::table('applicant')
+        // ->select('*')
+        // ->where('id', $applicantcontact->applicant_id)
+        // ->get(); 
+
+        // $applicant = DB::table('applicant')
+        // ->select('*')
+        // ->where('id'->applicant_id)
+        // ->get(); 
+
+        // $applicantcontact = DB::table('applicant_contact_info')
+        // ->insert();
+         //ApplicantContact::find($applicant)->update($validated);
+        //  $validated=new ApplicantContact;
+        //  $validated->applicant_id=$request->input('applicant_id');
+        //  $validated->save();
+
+       // foreach ($applicant as $applicants)
+        // Redirect the user to the created post with a success notification
+       //return redirect(route('applicant.contact',$applicant,$applicantcontact))->with('notification', 'Contact Updated!');
+     //return view ('applicant.contact');
+     return view ('applicant.contact',compact('applicant','applicantcontact'))->with('notification', 'Contact Updated!');
+     //return redirect(route('applicant.contact',$applicant,$applicantcontact))->with('notification', 'Contact created!');    
+    }
+
     public function updateprogramme(Request $request, Applicant $applicant, Programme $programme)
     {
         // Validate posted form data
@@ -191,9 +246,16 @@ class ApplicantController extends Controller
         
         // Create and save post with validated data
         $applicant->update($validated);
+        $programme = DB::table('programmes')
+       ->select('*')
+       ->where('id', $applicant->applicant_programme)
+       ->get(); 
+       
+        foreach ($programme as $program)
     
         // Redirect the user to the created post with a success notification
-        return redirect(route('applicant.program',$applicant))->with('notification', 'Applicant Updated!');
+        return redirect(route('applicant.prefprogramme',$applicant))->with('notification', 'Programme Updated!');
+        //return view ('applicant.program',compact('applicant','programme','program'))->with('notification', 'Applicant Updated!');
      
     }
    

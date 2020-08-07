@@ -5,20 +5,18 @@
 
 @section('content')
 
-<h1 class="title">Profile:{{$applicant->applicant_name}}</h1>
+<h1 class="title">Preferred Program</h1>
 
 
 <form method="post" action="{{ route('applicant.updateprogramme',$applicant,$programme,$program) }}">
 
     @csrf
-    @method('patch')
+    @method('get')
     @include('partials.errors')
 
 
 
- <div class="field">
-        <label class="label">Preferred Program</label>
-    </div>
+
     <div class="field">
         <label class="label">1st Preferred Programme</label>
         <div class="control">

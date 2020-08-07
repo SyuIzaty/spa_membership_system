@@ -34,11 +34,12 @@
           <a href="{{route('applicant.profile',$applicant)}}" class="navbar-item">
             Personal Profile
           </a>
+
           <a href="{{route('applicant.prefprogramme',$applicant)}}" class="navbar-item">
             Preferred Program
           </a>
-          <a href="" class="navbar-item">
-            Address
+          <a href="{{route('applicant.contact',$applicant)}}" class="navbar-item">
+            Contact Information
           </a>
           <a href="" class="navbar-item">
             Academic Qualification

@@ -35,7 +35,13 @@ Route::get('/applicant','ApplicantController@create');
 
 Route::post('applicant/{applicant}','ApplicantController@showapp')->name('applicant.showapp');
 Route::get('applicant/{applicant}','ApplicantController@profile')->name('applicant.profile');
-Route::post('applicant/{applicant}','ApplicantController@prefprogramme')->name('applicant.prefprogramme');
+Route::get('applicant/{applicant}/prefprogramme','ApplicantController@prefprogramme')->name('applicant.prefprogramme');
+Route::get('applicant/{applicant}/address','ApplicantController@address')->name('applicant.address');
+Route::get('applicant/{applicant}/contact','ApplicantController@contact')->name('applicant.contact');
+Route::get('applicant/{applicant}/updateprogramme','ApplicantController@updateprogramme')->name('applicant.updateprogramme');;
+
+
+
 
 Route::get('/applicantresult','ApplicantController@indexs');
 Route::get('checkrequirements', 'ApplicantController@checkrequirements')->name('check-requirements');

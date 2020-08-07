@@ -12,4 +12,15 @@ class Programme extends Model
     {
         $this->belongsTo('App\Applicant','applicant_programme');
     }
+
+}
+
+class Programme2 extends Model
+{
+    protected $table = 'programmes';
+}
+
+class Programme3 extends Model
+{
+    protected $table = 'programmes';
 }

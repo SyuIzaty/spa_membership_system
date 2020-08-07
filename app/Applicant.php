@@ -25,6 +25,11 @@ class Applicant extends Model
         return $this->hasMany('App\Programme','id','applicant_programme');
     }
 
+    public function prefprogramme()
+    {
+        return $this->hasMany('App\Programme','id','applicant_programme_2');
+    }
+
     public function applicantstatus()
     {
         return $this->hasMany('App\ApplicantStatus','applicant_id','id');
