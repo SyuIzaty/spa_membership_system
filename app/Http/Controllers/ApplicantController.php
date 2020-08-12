@@ -47,6 +47,13 @@ class ApplicantController extends Controller
         return view('applicant.create',['programme'=>$programme]);
     }
 
+    public function createcontact(Applicant $applicant, ApplicantContact $applicantcontact)
+    {
+        
+        
+        return view('applicant.contact',compact('applicant','applicantcontact'));
+    }
+
     
 
       /**
@@ -187,7 +194,43 @@ class ApplicantController extends Controller
      
     }
 
-    public function contact(Request $request,Applicant $applicant, ApplicantContact $applicantcontact)
+    public function storecontact(Request $request,Applicant $applicant, ApplicantContact $applicantcontact)
+    {
+        // Validate posted form data
+        $validated = $request->validate([
+            'applicant_address_1' => 'string|min:|max:100',
+            'applicant_address_2' => 'string|min:|max:100',
+            'applicant_poscode' => 'string|min:|max:100',
+            'applicant_city' => 'string|min:|max:100',
+            'applicant_state' => 'string|min:|max:100',
+            'applicant_country' => 'string|min:|max:100',
+            'applicant_phone_office' => 'string|min:|max:100',
+            'applicant_phone_home' => 'string|min:|max:100',
+            'applicant_phone_mobile' => 'string|min:|max:100',
+            'applicant_email' => 'string|min:|max:100',
+            
+        ]);
+    
+        // Create and save post with validated data
+
+        $applicantcontact = ApplicantContact::create($validated);
+        
+        //dd($applicantcontact);
+     //return view ('applicant.contact',compact('applicant','applicantcontact'))->with('notification', 'Contact Updated!');
+     return redirect(route('applicant.contactinfo',$applicant,$applicantcontact))->with('notification', 'Contact created!');    
+    }
+
+    public function contact(Applicant $applicant,ApplicantContact $applicantcontact)
+    { 
+        return view ('applicant.contact',compact('applicant','applicantcontact'));
+    }
+
+    public function contactinfo(Applicant $applicant,ApplicantContact $applicantcontact)
+    { 
+        return view ('applicant.contactinfo',compact('applicant','applicantcontact'));
+    }
+
+    public function updatecontact(Request $request,Applicant $applicant, ApplicantContact $applicantcontact)
     {
         // Validate posted form data
         $validated = $request->validate([
@@ -205,35 +248,12 @@ class ApplicantController extends Controller
         ]);
         
         // Create and save post with validated data
-//dd($applicantcontact);
-        $applicantcontact = ApplicantContact::create($validated);
+         $applicantcontact->update($validated);
 
-       
-        // $applicantcontact->update($validated);
-        // $applicant = DB::table('applicant')
-        // ->select('*')
-        // ->where('id', $applicantcontact->applicant_id)
-        // ->get(); 
-
-        // $applicant = DB::table('applicant')
-        // ->select('*')
-        // ->where('id'->applicant_id)
-        // ->get(); 
-
-        // $applicantcontact = DB::table('applicant_contact_info')
-        // ->insert();
-         //ApplicantContact::find($applicant)->update($validated);
-        //  $validated=new ApplicantContact;
-        //  $validated->applicant_id=$request->input('applicant_id');
-        //  $validated->save();
-
-       // foreach ($applicant as $applicants)
-        // Redirect the user to the created post with a success notification
-       //return redirect(route('applicant.contact',$applicant,$applicantcontact))->with('notification', 'Contact Updated!');
-     //return view ('applicant.contact');
-     return view ('applicant.contact',compact('applicant','applicantcontact'))->with('notification', 'Contact Updated!');
-     //return redirect(route('applicant.contact',$applicant,$applicantcontact))->with('notification', 'Contact created!');    
+     //return view ('applicant.contact',compact('applicant','applicantcontact'))->with('notification', 'Contact Updated!');
+     return redirect(route('applicant.contactinfo',$applicantcontact))->with('notification', 'Contact updated!');    
     }
+
 
     public function updateprogramme(Request $request, Applicant $applicant, Programme $programme)
     {

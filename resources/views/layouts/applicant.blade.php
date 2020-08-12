@@ -38,7 +38,7 @@
           <a href="{{route('applicant.prefprogramme',$applicant)}}" class="navbar-item">
             Preferred Program
           </a>
-          <a href="{{route('applicant.contact',$applicant)}}" class="navbar-item">
+          <a href="{{route('applicant.createcontact',$applicant)}}" class="navbar-item">
             Contact Information
           </a>
           <a href="" class="navbar-item">
