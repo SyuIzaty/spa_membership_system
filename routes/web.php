@@ -52,6 +52,11 @@ Route::get('checkrequirements', 'ApplicantController@checkrequirements')->name('
 Route::post('changestatus', 'ApplicantController@changestatus');
 Route::post('programmestatus', 'ApplicantController@programmestatus');
 
+//INTAKE
+Route::resource('/intake','IntakeController');
+Route::post('createprograminfo','IntakeController@createProgramInfo');
+Route::get('/intake-info','IntakeController@intakeInfo');
+
 //OFFER LETTER
 Route::get('/offer-letter', 'EntryRequirementController@offer');
 

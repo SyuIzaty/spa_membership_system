@@ -165,6 +165,20 @@
                             </li>
                             <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
+                                    <i class="fal fa-barcode-read"></i>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Intake</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/intake-info" title="Intake Information" data-filter-tags="active_student">
+                                            <i class="fal fa-user"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Intake Information</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-map-marker-alt"></i>
                                     <span class="nav-link-text" data-i18n="nav.application_intel">Physical Registration</span>
                                 </a>
