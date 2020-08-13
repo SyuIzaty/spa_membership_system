@@ -35,21 +35,37 @@
                                 </li>
                             </ul>
                             <div class="tab-content">
-                                <div class="tab-pane active" id="applicant" role="tabpanel">
+                                <div class="tab-pane active" role="tabpanel">
                                     <button type="button" class="btn btn-info pull-right mb-5" onclick="window.location='{{ route("check-requirements") }}'">Check Requirement</button>
-                                    <table class="table table-bordered">
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Applicant Name</th>
-                                            <th>Programme 1</th>
-                                            <th>Programme 2</th>
-                                            <th>Programme 3</th>
-                                            <th>Bahasa Melayu</th>
-                                            <th>English</th>
-                                            <th>Mathematics</th>
-                                            <th>Action</th>
-                                        </tr>
-                                        @foreach($aapplicant as $aapplicant_all_app)
+                                    <table class="table table-bordered" id="applicant">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Applicant Name</th>
+                                                <th>Programme 1</th>
+                                                <th>Programme 2</th>
+                                                <th>Programme 3</th>
+                                                <th>Bahasa Melayu</th>
+                                                <th>English</th>
+                                                <th>Mathematics</th>
+                                                <th>Action</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Applicant Name"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Bahasa Melayu"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search English"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Mathematics"></td>
+                                                <td></td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                        {{-- @foreach($aapplicant as $aapplicant_all_app)
                                             <tr id={{$aapplicant_all_app['id']}}>
                                                 <td>{{$aapplicant_all_app['id']}}</td>
                                                 <td>{{$aapplicant_all_app['applicant_name']}}</td>
@@ -98,7 +114,7 @@
                                                 </td>
                                                 <td><a href="/applicant/{{$aapplicant_all_app['id']}}" class="btn btn-success">Detail</a></td>
                                             </tr>
-                                        @endforeach
+                                        @endforeach --}}
                                     </table>
                                 </div>
                             </div>
@@ -108,4 +124,64 @@
             </div>
         </div>
     </main>
+@endsection
+@section('script')
+<script>
+    $(document).ready(function()
+    {
+
+        $('#applicant thead tr .hasinput').each(function(i)
+        {
+            $('input', this).on('keyup change', function()
+            {
+                if (table.column(i).search() !== this.value)
+                {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+
+            $('select', this).on('keyup change', function()
+            {
+                if (table.column(i).search() !== this.value)
+                {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+
+        var table = $('#applicant').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "/data_allapplicant",
+                type: 'POST',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
+            },
+            columns: [
+                    { data: 'id', name: 'id' },
+                    { data: 'applicant_name', name: 'applicant_name' },
+                    { data: 'prog_name', name: 'prog_name' },
+                    { data: 'prog_name_2', name: 'prog_name_2' },
+                    { data: 'prog_name_3', name: 'prog_name_3' },
+                    { data: 'bm', name: 'bm' },
+                    { data: 'english', name: 'english' },
+                    { data: 'math', name: 'math' },
+                    { data: 'action', name: 'action', orderable: false, searchable: false}
+                ],
+                orderCellsTop: true,
+                "order": [[ 1, "asc" ]],
+                "initComplete": function(settings, json) {
+
+                }
+        });
+
+    });
+
+</script>
 @endsection

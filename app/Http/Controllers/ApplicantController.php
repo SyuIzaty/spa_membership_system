@@ -15,6 +15,7 @@ use App\Qualification;
 use App\Subject;
 use App\ApplicantEmergency;
 use App\ApplicantGuardian;
+use App\RequirementStatus;
 use DB;
 
 class ApplicantController extends Controller
@@ -400,24 +401,76 @@ class ApplicantController extends Controller
         return view('applicant.applicantresult', compact('aapplicant','app_offer'));
     }
 
+    public function testCollection()
+    {
+        $applicant = Applicant::where('applicant_status',NULL)->get();
+        $applicants = $applicant->load('programme','applicantresult.grades');  
+        // $applicants = $applicants[0]->applicantresult->where('subject','1103')->first()->grades->grade_code;//->pluck('grade_code');
+
+        // foreach($applicants as $a)
+        // {
+        //     echo $a->grades->grade_code;
+        // }
+    }
+
+    public function data_allapplicant()
+    {
+        $applicant = Applicant::where('applicant_status',NULL)->get();
+        $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo');
+     
+
+        return datatables()::of($applicants)
+            ->addColumn('prog_name',function($applicants)
+            {
+                return '<div style="color:'.$applicants->statusResult->colour.'">'.$applicants->programme->programme_code.'</div>';
+            })
+            ->addColumn('prog_name_2',function($applicants)
+            {
+                return '<div style="color:'.$applicants->statusResultTwo->colour.'">'.isset($applicants->programmeTwo->programme_code) ? $applicants->programmeTwo->programme_code.$applicants->programme_status_2 : ''.'</div>';
+    
+            })
+            ->addColumn('prog_name_3',function($applicants)
+            {
+                return isset($applicants->programmeThree->programme_code) ? $applicants->programmeThree->programme_code.$applicants->programme_status_3 : '';
+    
+            })
+            ->addColumn('bm',function($applicants){
+                return $applicants->applicantresult->where('subject',1103)->isEmpty() ? '': $applicants->applicantresult->where('subject',1103)->first()->grades->grade_code;
+            })
+            ->addColumn('english',function($applicants){
+                return $applicants->applicantresult->where('subject',1119)->isEmpty() ? '': $applicants->applicantresult->where('subject',1119)->first()->grades->grade_code;
+            })
+            ->addColumn('math',function($applicants){
+                return $applicants->applicantresult->where('subject',1449)->isEmpty() ? '': $applicants->applicantresult->where('subject',1449)->first()->grades->grade_code;
+            })
+            
+           ->addColumn('action', function ($applicants) {
+               return '<a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Detail</a>';
+           })
+           ->rawColumns(['prog_name','prog_name_2','prog_name_3','action'])
+           ->make(true);
+    }
+
+
+
     public function accepted($applicantt, $programme_code)
     {
         $applicants = Applicant::where('id',$applicantt['id'])->get();
         if($applicantt['applicant_programme'] == $programme_code){
             $programme_status = $applicants->where('applicant_programme',$programme_code)->first();
-            $programme_status->programme_status = 'Accepted';
+            $programme_status->programme_status = '1';
             $programme_status->save();
             
         }
         if($applicantt['applicant_programme_2'] == $programme_code){
             $programme_status_2 = $applicants->where('applicant_programme_2',$programme_code)->first();
-            $programme_status_2->programme_status_2 = 'Accepted';
+            $programme_status_2->programme_status_2 = '1';
             $programme_status_2->save();
             
         }
         if($applicantt['applicant_programme_3'] == $programme_code){
             $programme_status_3 = $applicants->where('applicant_programme_3',$programme_code)->first();
-            $programme_status_3->programme_status_3 = 'Accepted';
+            $programme_status_3->programme_status_3 = '1';
             $programme_status_3->save();   
         }
     }
@@ -426,21 +479,21 @@ class ApplicantController extends Controller
     {
         $programme_status = Applicant::where('id',$applicantt['id'])->where('applicant_programme',$programme_code)->first();
         if($programme_status){
-            $programme_status->programme_status = 'Rejected';
+            $programme_status->programme_status = '2';
             $programme_status->reason_fail = $reason_failed;
             $programme_status->save();
         }
     
         $programme_status = Applicant::where('id',$applicantt['id'])->where('applicant_programme_2',$programme_code)->first();
         if($programme_status){
-            $programme_status->programme_status_2 = 'Rejected';
+            $programme_status->programme_status_2 = '2';
             $programme_status->reason_fail_2 = $reason_failed;
             $programme_status->save();
         }
     
         $programme_status = Applicant::where('id',$applicantt['id'])->where('applicant_programme_3',$programme_code)->first();
         if($programme_status){
-            $programme_status->programme_status_3 = 'Rejected';
+            $programme_status->programme_status_3 = '2';
             $programme_status->reason_fail_3 = $reason_failed;
             $programme_status->save();
         }
@@ -661,7 +714,7 @@ class ApplicantController extends Controller
             $programme_code = 4;
             $this->accepted($applicantt, $programme_code);
         } else {
-            $programme_code = 1;
+            $programme_code = 4;
             if($status_spm == false) 
             {
                 $reason_failed = 'Fail mathematics or english or less than 5 credit SPM';
@@ -1312,11 +1365,23 @@ class ApplicantController extends Controller
         $programme = Programme::all();
         foreach ($applicants as $applicantt)
         {
-            foreach($programme as $programmes)
-            {
-                $programme_func = $programmes->programme_code;
-                $this->$programme_func($applicantt);
-            }
+            $this->iat($applicantt);
+            $this->ial($applicantt);
+            $this->igr($applicantt);
+            $this->iam($applicantt);
+            $this->ile($applicantt);
+            $this->ikr($applicantt);
+            $this->dbm($applicantt);
+            $this->dpmg($applicantt);
+            $this->dshp($applicantt);
+            $this->dia($applicantt);
+            $this->dif($applicantt);
+            $this->cat($applicantt);
+            $this->cfab($applicantt);
+            $this->micpa($applicantt);
+            $this->acca($applicantt);
+            $this->aca($applicantt);
+
         }
         return $this->indexs();
     }

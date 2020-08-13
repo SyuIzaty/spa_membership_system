@@ -8,11 +8,11 @@ class Applicant extends Model
 {
     protected $table = 'applicant';
     // Set mass-assignable fields
-    protected $fillable = ['applicant_name', 'applicant_ic', 'applicant_email', 'applicant_phone', 'applicant_nationality', 'applicant_programme', 'applicant_programme_2', 'applicant_programme_3', 'applicant_gender', 'applicant_religion','programme_name'];
+    protected $fillable = ['applicant_name', 'applicant_ic', 'applicant_email', 'applicant_phone', 'applicant_nationality', 'applicant_programme','programme_name'];
 
     public function applicantresult()
     {
-        return $this->belongsTo('App\ApplicantResult');
+        return $this->hasMany('App\ApplicantResult', 'applicant_id', 'id');
     }
 
     /*public function programme()
@@ -22,12 +22,17 @@ class Applicant extends Model
 
     public function programme()
     {
-        return $this->hasMany('App\Programme','id','applicant_programme');
+        return $this->hasOne('App\Programme','id','applicant_programme');
     }
 
-    public function prefprogramme()
+    public function programmeTwo()
     {
-        return $this->hasMany('App\Programme','id','applicant_programme_2');
+        return $this->hasOne('App\Programme','id','applicant_programme_2');
+    }
+
+    public function programmeThree()
+    {
+        return $this->hasOne('App\Programme','id','applicant_programme_3');
     }
 
     public function applicantstatus()
@@ -35,8 +40,26 @@ class Applicant extends Model
         return $this->hasMany('App\ApplicantStatus','applicant_id','id');
     }
 
+<<<<<<< HEAD
     public function storecontact()
     {
         return $this->hasManyThrough('App\ApplicantContact', 'applicant_id');
     }
+=======
+    public function statusResult()
+    {
+        return $this->hasOne('App\RequirementStatus','id','programme_status');
+    }
+
+    public function statusResultTwo()
+    {
+        return $this->hasOne('App\RequirementStatus','id','programme_status_2');
+    }
+
+    public function statusResultThree()
+    {
+        return $this->hasOne('App\RequirementStatus','id','programme_status_3');
+    }
+    
+>>>>>>> af440181857d5b016deeaf2a2ed71e24cd60725c
 }
