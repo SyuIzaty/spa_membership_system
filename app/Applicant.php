@@ -34,4 +34,9 @@ class Applicant extends Model
     {
         return $this->hasMany('App\ApplicantStatus','applicant_id','id');
     }
+
+    public function storecontact()
+    {
+        return $this->hasManyThrough('App\ApplicantContact', 'applicant_id');
+    }
 }

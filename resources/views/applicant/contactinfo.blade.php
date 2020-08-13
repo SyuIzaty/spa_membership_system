@@ -8,7 +8,7 @@
 <h1 class="title">Contact Information</h1>
 
 
-<form method="post" action="{{ route('applicant.updatecontact',$applicant,$applicantcontact) }}">
+<form method="post" action="{{ route('applicant.updatecontact',$applicant,$applicantcontact,$app) }}">
 
     @csrf
     @method('patch')

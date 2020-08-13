@@ -163,8 +163,6 @@ class ApplicantController extends Controller
     }
 
     
-
-
      /**
      * Update the specified resource in storage.
      *
@@ -214,10 +212,16 @@ class ApplicantController extends Controller
         // Create and save post with validated data
 
         $applicantcontact = ApplicantContact::create($validated);
-        
+        $appcontact = DB::table('applicant')
+    ->select('*')
+    ->where('id', $applicantcontact->applicant_id)
+    ->get();
+    foreach ($appcontact as $app);
+        //DB::table()->join('applicant','id','=','applicant_contact_info.applicant_id');
+      
         //dd($applicantcontact);
      //return view ('applicant.contact',compact('applicant','applicantcontact'))->with('notification', 'Contact Updated!');
-     return redirect(route('applicant.contactinfo',$applicant,$applicantcontact))->with('notification', 'Contact created!');    
+     return redirect(route('applicant.contactinfo',$applicant,$applicantcontact,$appcontact))->with('notification', 'Contact created!');    
     }
 
     public function contact(Applicant $applicant,ApplicantContact $applicantcontact)
