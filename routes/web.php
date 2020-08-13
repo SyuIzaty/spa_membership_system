@@ -29,6 +29,16 @@ Route::resource('admin/campus', 'CampusController');
 Route::resource('admin/semester', 'SemesterController');
 Route::resource('admin/admission/application', 'ApplicantController');
 
+//SPACE
+Route::resource('space/campus', 'CampusController'); //campus
+Route::resource('space/zone', 'ZoneController');  //zone
+Route::resource('space/building', 'BuildingController');  //building
+Route::resource('space/level', 'LevelController');  //level
+Route::resource('space/roomtype', 'RoomTypeController');  //roomtype
+Route::resource('space/roomsuitability', 'RoomSuitabilityController');  //roomsuitability
+Route::resource('space/roomfacility', 'RoomFacilityController');  //roomfacility
+Route::resource('space/roomowner', 'RoomOwnerController');  //roomowner
+
 //APPLICANTS
 
 Route::get('/applicant','ApplicantController@create');
@@ -77,4 +87,11 @@ Route::get('student/filter/{id}','StudentController@indexFiltered');
 
 //API data source
 Route::post('api/semester/list', 'SemesterController@data_semester_list');
-Route::post('api/campus/list', 'CampusController@data_campus_list');
+Route::post('api/campus/list', 'CampusController@data_campus_list');  //campus
+Route::post('api/zone/list', 'ZoneController@data_zone_list');  //zone
+Route::post('api/building/list', 'BuildingController@data_building_list');  //building
+Route::post('api/level/list', 'LevelController@data_level_list');  //level
+Route::post('api/roomtype/list', 'RoomTypeController@data_roomtype_list');  //roomtype
+Route::post('api/roomsuitability/list', 'RoomSuitabilityController@data_roomsuitability_list');  //roomsuitability
+Route::post('api/roomfacility/list', 'RoomFacilityController@data_roomfacility_list');  //roomfacility
+Route::post('api/roomowner/list', 'RoomOwnerController@data_roomowner_list');  //roomowner

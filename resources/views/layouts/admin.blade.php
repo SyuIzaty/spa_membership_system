@@ -416,16 +416,77 @@
 
                             <li>
                                 <a href="#" title="Space Setting" data-filter-tags="space-setting">
-                                    <i class="fal fa-cog"></i>
+                                    <i class="fal fa-building"></i>
                                     <span class="nav-link-text" data-i18n="nav.space-setting">Space</span>
                                 </a>
                                 <ul>
+                                   <li>
+                                        <a href="#" title="Space Settings" data-filter-tags="space">
+                                            <span class="nav-link-text" data-i18n="nav.space">Space Settings</span>
+                                        </a>
+
+                                        <ul>
+                                            <li>
+                                                <a href="/space/campus" title="Campus" data-filter-tags="campus">
+                                                    <i class="fal fa-university"></i>
+                                                <span class="nav-link-text" data-i18n="nav.campus">Campus</span>
+                                                </a>
+                                            </li>
+                                           <li>
+                                                <a href="/space/zone" title="Zone" data-filter-tags="zone">
+                                                    <i class="fal fa-location-arrow"></i>
+                                                <span class="nav-link-text" data-i18n="nav.zone">Zone</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/space/building" title="Building" data-filter-tags="building">
+                                                    <i class="fal fa-building"></i>
+                                                <span class="nav-link-text" data-i18n="nav.building">Building</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/space/level" title="Level" data-filter-tags="level">
+                                                    <i class="fal fa-bars"></i>
+                                                   <span class="nav-link-text" data-i18n="nav.level">Level</span>
+                                               </a>
+                                           </li>
+                                           <li>
+                                                <a href="/space/roomtype" title="RoomType" data-filter-tags="room_type">
+                                                    <i class="fal fa-wrench"></i>
+                                                <span class="nav-link-text" data-i18n="nav.room_type">Room Type</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/space/roomsuitability" title="RoomSuitability" data-filter-tags="room_suitability">
+                                                    <i class="fal fa-check-circle"></i>
+                                                <span class="nav-link-text" data-i18n="nav.room_suitability">Room Suitability</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/space/roomfacility" title="RoomFacility" data-filter-tags="room_facility">
+                                                    <i class="fal fa-desktop"></i>
+                                                <span class="nav-link-text" data-i18n="nav.room_facility">Room Facility</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/space/roomowner" title="RoomOwner" data-filter-tags="room_owner">
+                                                    <i class="fal fa-user-plus"></i>
+                                                <span class="nav-link-text" data-i18n="nav.room_owner">Room Owner</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+
+                                    </li>
                                     <li>
-                                    <a href="/admin/campus" title="Campus" data-filter-tags="campus">
-                                            <span class="nav-link-text" data-i18n="nav.campus">Campus</span>
+                                        <a href="#" title="Space Management" data-filter-tags="space">
+                                            <span class="nav-link-text" data-i18n="nav.space">Space Management</span>
                                         </a>
                                     </li>
-
+                                    <li>
+                                        <a href="#" title="Space Reservation" data-filter-tags="space">
+                                            <span class="nav-link-text" data-i18n="nav.space">Space Reservation</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
 
