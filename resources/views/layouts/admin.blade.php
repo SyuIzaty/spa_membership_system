@@ -146,13 +146,13 @@
                                     <li>
                                         <a href="/applicantresult" title="Pending Applicant" data-filter-tags="active_student">
                                             <i class="fal fa-user"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Pending Applicants</span>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Applicants</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="/offer-letter" title="Pending Applicant" data-filter-tags="active_student">
                                             <i class="fal fa-user"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Offer Letter</span>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Intake Detail</span>
                                         </a>
                                     </li>
                                     <li>

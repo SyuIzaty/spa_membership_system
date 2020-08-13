@@ -52,6 +52,10 @@ Route::get('checkrequirements', 'ApplicantController@checkrequirements')->name('
 Route::post('changestatus', 'ApplicantController@changestatus');
 Route::post('programmestatus', 'ApplicantController@programmestatus');
 
+Route::post('/data_allapplicant', 'ApplicantController@data_allapplicant');
+
+Route::get('testCollection','ApplicantController@testCollection');
+
 //INTAKE
 Route::resource('/intake','IntakeController');
 Route::post('createprograminfo','IntakeController@createProgramInfo');

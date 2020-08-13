@@ -26,7 +26,7 @@ class ApplicantResult extends Model
 
     public function grades()
     {
-        return $this->belongsTo('App\Grades','grade_id');
+        return $this->belongsTo('App\Grades','grade_id')->withDefault();
     }
 
     
