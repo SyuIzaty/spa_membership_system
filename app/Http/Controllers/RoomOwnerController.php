@@ -173,8 +173,10 @@ class RoomOwnerController extends Controller
     {
         $request = [
             'name'                => 'required|min:3|max:255',                        
-            'phone_number'        => 'required|regex:/(\+?0)[0-46-9]-*[0-9]{7,8}/|unique:roomowners,phone_number',  
-            'email'               => 'required|unique:roomowners,email',    
+            // 'phone_number'        => 'required|regex:/(\+?0)[0-46-9]-*[0-9]{7,8}/|unique:roomowners,phone_number', 
+            'phone_number'        => 'required|regex:/(\+?0)[0-46-9]-*[0-9]{7,8}/',
+            // 'email'               => 'required|unique:roomowners,email',  
+            'email'               => 'required|email',    
             'dateofbirth'         => 'required|date', 
             'gender'              => 'required|in:male,female',    
             'active'              => 'required', 

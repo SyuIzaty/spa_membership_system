@@ -35,9 +35,9 @@
                         <form action="{{ route('campus.update',$campus->id) }}" enctype="multipart/form-data" method="POST">
                             @method('PUT')
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
+                            <p><span class="text-danger">*</span> Required fields</p>
                                 <div class="form-group">
-                                    <label class="form-label" for="code">Code</label>
+                                    <label class="form-label" for="code">Code <span class="text-danger">*</span></label>
                                     <input class="form-control @error('code') is-invalid @enderror" id="code" name="code" value="{{ $campus->code }}">
                                         @error('code')
                                             <span class="invalid-feedback" role="alert">
@@ -47,7 +47,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="form-label" for="name">Name</label>
+                                    <label class="form-label" for="name">Name <span class="text-danger">*</span></label>
                                     <input class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ $campus->name }}">
                                         @error('name')
                                             <span class="invalid-feedback" role="alert">
@@ -57,7 +57,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="form-label" for="description">Description</label>
+                                    <label class="form-label" for="description">Description <span class="text-danger">*</span></label>
                                     <input class="form-control @error('description') is-invalid @enderror" id="description" name="description" value="{{ $campus->description }}">
                                         @error('description')
                                             <span class="invalid-feedback" role="alert">
@@ -67,7 +67,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="form-label" for="address1">Address 1</label>
+                                    <label class="form-label" for="address1">Address 1 <span class="text-danger">*</span></label>
                                     <input class="form-control @error('address1') is-invalid @enderror" id="address1" name="address1" value="{{ $campus->address1 }}">
                                         @error('address1')
                                             <span class="invalid-feedback" role="alert">
@@ -87,7 +87,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="form-label" for="postcode">Postcode</label>
+                                    <label class="form-label" for="postcode">Postcode <span class="text-danger">*</span></label>
                                     <input class="form-control @error('postcode') is-invalid @enderror" id="postcode" name="postcode" value="{{ $campus->postcode }}">
                                         @error('postcode')
                                             <span class="invalid-feedback" role="alert">
@@ -97,7 +97,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="form-label" for="city">City</label>
+                                    <label class="form-label" for="city">City <span class="text-danger">*</span></label>
                                     <input class="form-control @error('city') is-invalid @enderror" id="city" name="city" value="{{ $campus->city }}">
                                         @error('city')
                                             <span class="invalid-feedback" role="alert">
@@ -107,7 +107,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="form-label" for="state_id">State</label>
+                                    <label class="form-label" for="state_id">State <span class="text-danger">*</span></label>
                                     <select class="form-control" id="state_id" name="state_id" class="form-control @error('state_id') is-invalid @enderror">
                                         <option value="">Please Select</option>
                                         <option value="Johor" {{ old('state_id', $campus->state_id) == 'Johor' ? 'selected':''}}>Johor</option>
@@ -135,7 +135,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="form-label" for="active">Active</label>
+                                    <label class="form-label" for="active">Active <span class="text-danger">*</span></label>
                                     <select class="form-control @error('active') is-invalid @enderror" id="active" name="active">
                                         <option value="">Please Select</option>
                                         <option value="0" {{ old('active', $campus->active) == 'No' ? 'selected':''}} >No</option>

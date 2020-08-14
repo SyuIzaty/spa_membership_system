@@ -35,9 +35,9 @@
                         <form action="{{ route('zone.update',$zone->id) }}" enctype="multipart/form-data" method="POST">
                             @method('PUT')
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
+                            <p><span class="text-danger">*</span> Required fields</p>
                                 <div class="form-group">
-                                    <label class="form-label" for="zone_code">Code</label>
+                                    <label class="form-label" for="zone_code">Code <span class="text-danger">*</span></label>
                                     <input class="form-control @error('zone_code') is-invalid @enderror" id="zone_code" name="zone_code" value="{{ $zone->zone_code }}">
                                         @error('zone_code')
                                             <span class="invalid-feedback" role="alert">
@@ -47,7 +47,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="form-label" for="name">Name</label>
+                                    <label class="form-label" for="name">Name <span class="text-danger">*</span></label>
                                     <input class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ $zone->name }}">
                                         @error('name')
                                             <span class="invalid-feedback" role="alert">
@@ -58,7 +58,7 @@
 
 
                                 <div class="form-group">
-                                    <label class="form-label" for="campus_id">Campus : </label>
+                                    <label class="form-label" for="campus_id">Campus <span class="text-danger">*</span></label>
                                     <select name="campus_id" id="campus_id" class="form-control @error('campus_id') is-invalid @enderror">
                                         <option value="" disabled>Select Campus</option>
                                         @foreach ($campus as $campuses) 
@@ -66,28 +66,6 @@
                                                 {{ $campuses->name }}</option>
                                         @endforeach
                                      </select>
-
-                                     {{-- <select name="campus_id[]" id="campus_id" class="form-control @error('campus_id') is-invalid @enderror" multiple>
-                                        <option value="">Select Campus</option>
-                                        @foreach ($campus as $campuses) 
-                                            <option value="{{ $campuses->id }}" {{ (in_array($campuses->id == $zone->id, $selected)) ? 'selected="selected"' : '' }}>
-                                                {{ $campuses->name }}</option>
-                                        @endforeach
-                                     </select> https://laracasts.com/discuss/channels/general-discussion/how-to-get-selected-values-from-db-in-select-list --}}
-
-                                     {{-- <select name="campus_id" id="campus_id" class="form-control @error('campus_id') is-invalid @enderror">
-                                        <option value="">Select Campus</option>
-                                        @foreach ($campus as $campuses) 
-                                            <option value="{{ $campuses->id }}"
-                                                
-                                                @if($campuses->id == $zone->id)
-                                                selected
-                                                @endif
-
-                                                >{{ $campuses->name }}</option>
-                                        @endforeach
-                                     </select> --}}
-
                                     <!-- sent message error input -->
                                     @error('campus_id')
                                         <span class="invalid-feedback" role="alert">
@@ -98,7 +76,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="form-label" for="description">Description</label>
+                                    <label class="form-label" for="description">Description <span class="text-danger">*</span></label>
                                     <input class="form-control @error('description') is-invalid @enderror" id="description" name="description" value="{{ $zone->description }}">
                                         @error('description')
                                             <span class="invalid-feedback" role="alert">
@@ -108,7 +86,7 @@
                                 </div>
     
                                 <div class="form-group">
-                                    <label class="form-label" for="active">Active</label>
+                                    <label class="form-label" for="active">Active <span class="text-danger">*</span></label>
                                     <select class="form-control @error('active') is-invalid @enderror" id="active" name="active">
                                         <option value="">Please Select</option>
                                         <option value="0" {{ old('active', $zone->active) == 'No' ? 'selected':''}} >No</option>

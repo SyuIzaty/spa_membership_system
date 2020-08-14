@@ -35,9 +35,9 @@
                         <form action="{{ route('level.update',$level->id) }}" enctype="multipart/form-data" method="POST">
                             @method('PUT')
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
+                            <p><span class="text-danger">*</span> Required fields</p>
                                 <div class="form-group">
-                                    <label class="form-label" for="level_code">Code</label>
+                                    <label class="form-label" for="level_code">Code <span class="text-danger">*</span></label>
                                     <input class="form-control @error('level_code') is-invalid @enderror" id="level_code" name="level_code" value="{{ $level->level_code }}">
                                         @error('level_code')
                                             <span class="invalid-feedback" role="alert">
@@ -47,7 +47,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="form-label" for="name">Name</label>
+                                    <label class="form-label" for="name">Name <span class="text-danger">*</span></label>
                                     <input class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ $level->name }}">
                                         @error('name')
                                             <span class="invalid-feedback" role="alert">
@@ -57,7 +57,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="form-label" for="campus_id">Campus : </label>
+                                    <label class="form-label" for="campus_id">Campus <span class="text-danger">*</span></label>
                                     <select name="campus_id" id="campus_id" class="form-control @error('campus_id') is-invalid @enderror">
                                         <option value="" disabled>Select Campus</option>
                                         @foreach ($campus as $campuses) 
@@ -73,7 +73,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="form-label" for="zone_id">Zone : </label>
+                                    <label class="form-label" for="zone_id">Zone <span class="text-danger">*</span></label>
                                     <select name="zone_id" id="zone_id" class="form-control @error('zone_id') is-invalid @enderror">
                                         <option value="" disabled>Select Zone</option>
                                         @foreach ($zone as $zones) 
@@ -89,7 +89,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="form-label" for="zone_id">Zone : </label>
+                                    <label class="form-label" for="zone_id">Building <span class="text-danger">*</span></label>
                                     <select name="building_id" id="building_id" class="form-control @error('building_id') is-invalid @enderror">
                                         <option value="" disabled>Select Building</option>
                                         @foreach ($building as $buildings) 
@@ -105,7 +105,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="form-label" for="description">Description</label>
+                                    <label class="form-label" for="description">Description <span class="text-danger">*</span></label>
                                     <input class="form-control @error('description') is-invalid @enderror" id="description" name="description" value="{{ $level->description }}">
                                         @error('description')
                                             <span class="invalid-feedback" role="alert">
@@ -115,7 +115,7 @@
                                 </div>
     
                                 <div class="form-group">
-                                    <label class="form-label" for="active">Active</label>
+                                    <label class="form-label" for="active">Active <span class="text-danger">*</span></label>
                                     <select class="form-control @error('active') is-invalid @enderror" id="active" name="active">
                                         <option value="">Please Select</option>
                                         <option value="0" {{ old('active', $level->active) == 'No' ? 'selected':''}} >No</option>

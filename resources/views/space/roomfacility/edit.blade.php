@@ -35,9 +35,9 @@
                         <form action="{{ route('roomfacility.update',$roomfacility->id) }}" enctype="multipart/form-data" method="POST">
                             @method('PUT')
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
+                            <p><span class="text-danger">*</span> Required fields</p>
                                 <div class="form-group">
-                                    <label class="form-label" for="code">Code</label>
+                                    <label class="form-label" for="code">Code <span class="text-danger">*</span></label>
                                     <input class="form-control @error('code') is-invalid @enderror" id="code" name="code" value="{{ $roomfacility->code }}">
                                         @error('code')
                                             <span class="invalid-feedback" role="alert">
@@ -47,7 +47,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="form-label" for="name">Name</label>
+                                    <label class="form-label" for="name">Name <span class="text-danger">*</span></label>
                                     <input class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ $roomfacility->name }}">
                                         @error('name')
                                             <span class="invalid-feedback" role="alert">
@@ -57,7 +57,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="form-label" for="description">Description</label>
+                                    <label class="form-label" for="description">Description <span class="text-danger">*</span></label>
                                     <input class="form-control @error('description') is-invalid @enderror" id="description" name="description" value="{{ $roomfacility->description }}">
                                         @error('description')
                                             <span class="invalid-feedback" role="alert">
@@ -67,7 +67,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="form-label" for="active">Active</label>
+                                    <label class="form-label" for="active">Active <span class="text-danger">*</span></label>
                                     <select class="form-control @error('active') is-invalid @enderror" id="active" name="active">
                                         <option value="">Please Select</option>
                                         <option value="0" {{ old('active', $roomfacility->active) == 'No' ? 'selected':''}} >No</option>
