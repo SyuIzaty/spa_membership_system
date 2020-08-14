@@ -426,12 +426,14 @@ class ApplicantController extends Controller
             })
             ->addColumn('prog_name_2',function($applicants)
             {
-                return '<div style="color:'.$applicants->statusResultTwo->colour.'">'.isset($applicants->programmeTwo->programme_code) ? $applicants->programmeTwo->programme_code.$applicants->programme_status_2 : ''.'</div>';
+                // return '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->programmeTwo->programme_code.'</div>';
+                return isset($applicants->programmeTwo->programme_code) ? '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->programmeTwo->programme_code.'</div>' : '';
     
             })
             ->addColumn('prog_name_3',function($applicants)
             {
-                return isset($applicants->programmeThree->programme_code) ? $applicants->programmeThree->programme_code.$applicants->programme_status_3 : '';
+                // return isset($applicants->programmeThree->programme_code) ? $applicants->programmeThree->programme_code.$applicants->programme_status_3 : '';
+                return isset($applicants->programmeThree->programme_code) ? '<div style="color:'.$applicants->statusResultThree->colour.'">'.$applicants->programmeThree->programme_code.'</div>' : '';
     
             })
             ->addColumn('bm',function($applicants){
