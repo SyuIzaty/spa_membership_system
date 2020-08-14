@@ -40,12 +40,12 @@ class Applicant extends Model
         return $this->hasMany('App\ApplicantStatus','applicant_id','id');
     }
 
-<<<<<<< HEAD
+
     public function storecontact()
     {
         return $this->hasManyThrough('App\ApplicantContact', 'applicant_id');
     }
-=======
+
     public function statusResult()
     {
         return $this->hasOne('App\RequirementStatus','id','programme_status');
@@ -61,5 +61,5 @@ class Applicant extends Model
         return $this->hasOne('App\RequirementStatus','id','programme_status_3');
     }
     
->>>>>>> af440181857d5b016deeaf2a2ed71e24cd60725c
+
 }
