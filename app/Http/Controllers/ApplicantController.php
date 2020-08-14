@@ -63,7 +63,7 @@ class ApplicantController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Applicant $applicant)
+    public function store(Request $request)
     {
        // dd($applicant);
         // Validate posted form data
@@ -79,13 +79,13 @@ class ApplicantController extends Controller
         'applicant_gender' => 'string|min:|max:100',
         'applicant_religion' => 'string|min:|max:100',
         
-        
-        
     ]);
     
     // Create and save applicant with validated data
-    $applicant = Applicant::create($validated);
+
     
+    $applicant = Applicant::create($validated);
+    // dd($applicant);
     $programme = DB::table('programmes')
     ->select('*')
     ->where('id', $applicant->applicant_programme)
