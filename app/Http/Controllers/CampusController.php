@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Redirect;
 use App\Campus;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,8 @@ class CampusController extends Controller
      */
     public function index()
     {
-        return view('campus.index');
+        $arr['campus'] = Campus::all();
+        return view('space.campus.index')->with($arr);
     }
 
     /**
@@ -24,7 +26,7 @@ class CampusController extends Controller
      */
     public function create()
     {
-        return view('campus.create');
+        return view('space.campus.create');
     }
 
     /**
@@ -35,7 +37,8 @@ class CampusController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Campus::create($this->validateRequestStore());
+        return redirect('space/campus');
     }
 
     /**
@@ -46,7 +49,8 @@ class CampusController extends Controller
      */
     public function show(Campus $campus)
     {
-        //
+        $arr['campus'] = $campus;
+        return view('space.campus.show')->with($arr);
     }
 
     /**
@@ -57,7 +61,7 @@ class CampusController extends Controller
      */
     public function edit(Campus $campus)
     {
-        return view('campus.edit',compact('campus'));
+        return view('space.campus.edit',compact('campus'));
     }
 
     /**
@@ -69,7 +73,9 @@ class CampusController extends Controller
      */
     public function update(Request $request, Campus $campus)
     {
-        //
+        //dd($fields);
+        $campus->update($this->validateRequestUpdate($campus));
+        return redirect('space/campus');
     }
 
     /**
@@ -80,17 +86,53 @@ class CampusController extends Controller
      */
     public function destroy(Campus $campus)
     {
-        //
+        $campus->delete();
+        return redirect()->route('space.campus.index');
     }
 
     public function data_campus_list()
     {
-        $campuses = Campus::select('*');
+        $campus = Campus::select('*');
 
-        return datatables()::of($campuses)
-        ->addColumn('action', function ($campuses) {
-            return '<a href="/admin/campus/'.$campuses->id.'/edit" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
+        return datatables()::of($campus)
+        ->addColumn('action', function ($campus) {
+
+            return '<a href="/space/campus/'.$campus->id.'/edit" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i> Edit</a>
+                    <a href="/space/campus/'.$campus->id.'" class="btn btn-sm btn-info btn-view"><i class="fal fa-eye"></i> View</a>
+                    <button class="btn btn-sm btn-danger btn-delete" data-remote="/space/campus/' . $campus->id . '"><i class="fal fa-trash"></i> Delete</button>';
         })
+
         ->make(true);
     }
+
+    public function validateRequestStore()
+    {
+        return request()->validate([
+            'code'                => 'required|min:3|max:10|unique:campuses,code',                        
+            'name'                => 'required|min:3|max:100',  
+            'description'         => 'required|min:5|max:1000',    
+            'address1'            => 'required',
+            'address2'            => '',  
+            'postcode'            => 'required',  
+            'city'                => 'required', 
+            'state_id'            => 'required',  
+            'active'              => 'required', 
+        ]);
+    }
+
+    public function validateRequestUpdate(Campus $campus)
+    {
+        return request()->validate([
+            'code'                => 'required|min:3|max:10|unique:campuses,code,'.$campus->id,                        
+            'name'                => 'required|min:3|max:100',  
+            'description'         => 'required|min:5|max:1000',    
+            'address1'            => 'required',
+            'address2'            => '',  
+            'postcode'            => 'required',  
+            'city'                => 'required', 
+            'state_id'            => 'required',  
+            'active'              => 'required', 
+        ]);
+    }
+
 }

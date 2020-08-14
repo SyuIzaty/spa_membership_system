@@ -5,12 +5,12 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Campus extends Model
+class Zone extends Model
 {
     use SoftDeletes;
-    
-    protected $fillable = ['code','name','description','address1','address2','postcode','city','state_id','active'];
-    protected $table = 'campuses';
+
+    protected $fillable = ['zone_code','campus_id','name','description','active'];
+    protected $table = 'zones';
 
     protected $attributes = [
         'active' => 1
@@ -34,9 +34,9 @@ class Campus extends Model
     	return $query->where('active', 0);
     }
 
-    public function zone()
+    public function campus()
     {
-    	return $this->hasMany(Zone::class);
+        return $this->belongsTo(Campus::class);
     }
 
     public function building()
