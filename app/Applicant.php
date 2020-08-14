@@ -8,7 +8,7 @@ class Applicant extends Model
 {
     protected $table = 'applicant';
     // Set mass-assignable fields
-    protected $fillable = ['applicant_name', 'applicant_ic', 'applicant_email', 'applicant_phone', 'applicant_nationality', 'applicant_programme','programme_name'];
+    protected $fillable = ['applicant_name', 'applicant_ic', 'applicant_email', 'applicant_phone', 'applicant_nationality', 'applicant_programme', 'applicant_programme_2', 'applicant_programme_3','programme_name'];
 
     public function applicantresult()
     {
@@ -41,9 +41,14 @@ class Applicant extends Model
     }
 
 
-    public function storecontact()
-    {
-        return $this->hasManyThrough('App\ApplicantContact', 'applicant_id');
+    // public function storecontact()
+    // {
+    //     return $this->belongsTo('App\ApplicantContact', 'applicant_id');
+    // }
+
+    public function storecontact(){
+
+        return $this->belongsTo('App\ApplicantContact', 'applicant_id');
     }
 
     public function statusResult()
