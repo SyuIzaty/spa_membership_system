@@ -457,8 +457,89 @@ class ApplicantController extends Controller
     public function data_allapplicant()
     {
         $applicant = Applicant::where('applicant_status',NULL)->get();
-        $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo');
+        $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','statusResultThree','programmeThree');
      
+
+        return datatables()::of($applicants)
+            ->addColumn('prog_name',function($applicants)
+            {
+                return '<div style="color:'.$applicants->statusResult->colour.'">'.$applicants->programme->programme_code.'</div>';
+            })
+            ->addColumn('prog_name_2',function($applicants)
+            {
+                // return '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->programmeTwo->programme_code.'</div>';
+                return isset($applicants->programmeTwo->programme_code) ? '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->programmeTwo->programme_code.'</div>' : '';
+    
+            })
+            ->addColumn('prog_name_3',function($applicants)
+            {
+                // return isset($applicants->programmeThree->programme_code) ? $applicants->programmeThree->programme_code.$applicants->programme_status_3 : '';
+                return isset($applicants->programmeThree->programme_code) ? '<div style="color:'.$applicants->statusResultThree->colour.'">'.$applicants->programmeThree->programme_code.'</div>' : '';
+    
+            })
+            ->addColumn('bm',function($applicants){
+                return $applicants->applicantresult->where('subject',1103)->isEmpty() ? '': $applicants->applicantresult->where('subject',1103)->first()->grades->grade_code;
+            })
+            ->addColumn('english',function($applicants){
+                return $applicants->applicantresult->where('subject',1119)->isEmpty() ? '': $applicants->applicantresult->where('subject',1119)->first()->grades->grade_code;
+            })
+            ->addColumn('math',function($applicants){
+                return $applicants->applicantresult->where('subject',1449)->isEmpty() ? '': $applicants->applicantresult->where('subject',1449)->first()->grades->grade_code;
+            })
+            
+           ->addColumn('action', function ($applicants) {
+               return '<a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Detail</a>';
+           })
+           ->rawColumns(['prog_name','prog_name_2','prog_name_3','action'])
+           ->make(true);
+    }
+
+    public function data_passapplicant()
+    {
+        $applicant = Applicant::where('programme_status','1')->orWhere('programme_status_2','1')->orWhere('programme_status_3','1')->get();
+        $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','statusResultThree','programmeThree');
+     
+
+        return datatables()::of($applicants)
+            ->addColumn('prog_name',function($applicants)
+            {
+                return '<div style="color:'.$applicants->statusResult->colour.'">'.$applicants->programme->programme_code.'</div>';
+            })
+            ->addColumn('prog_name_2',function($applicants)
+            {
+                // return '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->programmeTwo->programme_code.'</div>';
+                return isset($applicants->programmeTwo->programme_code) ? '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->programmeTwo->programme_code.'</div>' : '';
+    
+            })
+            ->addColumn('prog_name_3',function($applicants)
+            {
+                // return isset($applicants->programmeThree->programme_code) ? $applicants->programmeThree->programme_code.$applicants->programme_status_3 : '';
+                return isset($applicants->programmeThree->programme_code) ? '<div style="color:'.$applicants->statusResultThree->colour.'">'.$applicants->programmeThree->programme_code.'</div>' : '';
+    
+            })
+            ->addColumn('bm',function($applicants){
+                return $applicants->applicantresult->where('subject',1103)->isEmpty() ? '': $applicants->applicantresult->where('subject',1103)->first()->grades->grade_code;
+            })
+            ->addColumn('english',function($applicants){
+                return $applicants->applicantresult->where('subject',1119)->isEmpty() ? '': $applicants->applicantresult->where('subject',1119)->first()->grades->grade_code;
+            })
+            ->addColumn('math',function($applicants){
+                return $applicants->applicantresult->where('subject',1449)->isEmpty() ? '': $applicants->applicantresult->where('subject',1449)->first()->grades->grade_code;
+            })
+            
+           ->addColumn('action', function ($applicants) {
+               return '<a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Detail</a>';
+           })
+           ->rawColumns(['prog_name','prog_name_2','prog_name_3','action'])
+           ->make(true);
+    }
+
+    public function data_rejectedapplicant()
+    {
+        // $applicant = Applicant::where('applicant_status',NULL)->get();
+        $applicant = Applicant::where('programme_status','2')->where('programme_status_2','2')->orWhere('programme_status_2',NULL)->where('programme_status_3','2')->orWhere('programme_status_3',NULL)->get();
+        $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo');
+        
 
         return datatables()::of($applicants)
             ->addColumn('prog_name',function($applicants)
@@ -516,6 +597,7 @@ class ApplicantController extends Controller
             $programme_status_3->programme_status_3 = '1';
             $programme_status_3->save();   
         }
+        Applicant::where('id',$applicantt['id'])->where('applicant_status',NULL)->update(['applicant_status'=>'2']);
     }
 
     public function rejected($applicantt, $programme_code, $reason_failed)
@@ -540,6 +622,7 @@ class ApplicantController extends Controller
             $programme_status->reason_fail_3 = $reason_failed;
             $programme_status->save();
         }
+        Applicant::where('id',$applicantt['id'])->where('applicant_status',NULL)->update(['applicant_status'=>'2']);
         
     }
     

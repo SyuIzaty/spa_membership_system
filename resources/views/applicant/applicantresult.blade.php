@@ -22,20 +22,23 @@
                         <div class="panel-content">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item">
-                                    <a data-toggle="tab" class="nav-link" href="#applicant" role="tab">Applicant</a>
+                                    <a data-toggle="tab" class="nav-link" href="#applicant_all" role="tab">Applicant</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a data-toggle="tab" class="nav-link" href="#not_qualified" role="tab">Not Qualified</a>
+                                    <a data-toggle="tab" class="nav-link" href="#applicant_pass" role="tab">Qualified</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a data-toggle="tab" class="nav-link" href="#offer" role="tab">Offer <span class="badge bg-primary">{{$app_offer->count()}}</span></a>
+                                    <a data-toggle="tab" class="nav-link" href="#rejected_all" role="tab">Not Qualified</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a data-toggle="tab" class="nav-link" href="#offer" role="tab">Offer </a>
                                 </li>
                                 <li class="nav-item">
                                     <a data-toggle="tab" class="nav-link" href="#accept" role="tab">Accept Offer</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
-                                <div class="tab-pane active" role="tabpanel">
+                                <div class="tab-pane active" role="tabpanel" id="applicant_all">
                                     <button type="button" class="btn btn-info pull-right mb-5" onclick="window.location='{{ route("check-requirements") }}'">Check Requirement</button>
                                     <table class="table table-bordered" id="applicant">
                                         <thead>
@@ -117,6 +120,71 @@
                                         @endforeach --}}
                                     </table>
                                 </div>
+
+
+                                <div class="tab-pane" role="tabpanel" id="applicant_pass">
+                                    <table class="table table-bordered" id="pass">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Applicant Name</th>
+                                                <th>Programme 1</th>
+                                                <th>Programme 2</th>
+                                                <th>Programme 3</th>
+                                                <th>Bahasa Melayu</th>
+                                                <th>English</th>
+                                                <th>Mathematics</th>
+                                                <th>Action</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Applicant Name"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Bahasa Melayu"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search English"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Mathematics"></td>
+                                                <td></td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="tab-pane" role="tabpanel" id="rejected_all">
+                                    <table class="table table-bordered" id="rejected">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Applicant Name</th>
+                                                <th>Programme 1</th>
+                                                <th>Programme 2</th>
+                                                <th>Programme 3</th>
+                                                <th>Bahasa Melayu</th>
+                                                <th>English</th>
+                                                <th>Mathematics</th>
+                                                <th>Action</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Applicant Name"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Bahasa Melayu"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search English"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Mathematics"></td>
+                                                <td></td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -160,6 +228,110 @@
             serverSide: true,
             ajax: {
                 url: "/data_allapplicant",
+                type: 'POST',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
+            },
+            columns: [
+                    { data: 'id', name: 'id' },
+                    { data: 'applicant_name', name: 'applicant_name' },
+                    { data: 'prog_name', name: 'prog_name' },
+                    { data: 'prog_name_2', name: 'prog_name_2' },
+                    { data: 'prog_name_3', name: 'prog_name_3' },
+                    { data: 'bm', name: 'bm' },
+                    { data: 'english', name: 'english' },
+                    { data: 'math', name: 'math' },
+                    { data: 'action', name: 'action', orderable: false, searchable: false}
+                ],
+                orderCellsTop: true,
+                "order": [[ 1, "asc" ]],
+                "initComplete": function(settings, json) {
+
+                }
+        });
+        
+
+        $('#pass thead tr .hasinput').each(function(i)
+        {
+            $('input', this).on('keyup change', function()
+            {
+                if (table.column(i).search() !== this.value)
+                {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+
+            $('select', this).on('keyup change', function()
+            {
+                if (table.column(i).search() !== this.value)
+                {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+
+        var table = $('#pass').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "/data_passapplicant",
+                type: 'POST',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
+            },
+            columns: [
+                    { data: 'id', name: 'id' },
+                    { data: 'applicant_name', name: 'applicant_name' },
+                    { data: 'prog_name', name: 'prog_name' },
+                    { data: 'prog_name_2', name: 'prog_name_2' },
+                    { data: 'prog_name_3', name: 'prog_name_3' },
+                    { data: 'bm', name: 'bm' },
+                    { data: 'english', name: 'english' },
+                    { data: 'math', name: 'math' },
+                    { data: 'action', name: 'action', orderable: false, searchable: false}
+                ],
+                orderCellsTop: true,
+                "order": [[ 1, "asc" ]],
+                "initComplete": function(settings, json) {
+
+                }
+        });
+
+
+        $('#rejected thead tr .hasinput').each(function(i)
+        {
+            $('input', this).on('keyup change', function()
+            {
+                if (table.column(i).search() !== this.value)
+                {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+
+            $('select', this).on('keyup change', function()
+            {
+                if (table.column(i).search() !== this.value)
+                {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+
+        var table = $('#rejected').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "/data_rejectedapplicant",
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
