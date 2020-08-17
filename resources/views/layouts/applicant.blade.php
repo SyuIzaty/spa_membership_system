@@ -41,7 +41,7 @@
           <a href="{{route('applicant.createcontact',$applicant)}}" class="navbar-item">
             Contact Information
           </a>
-          <a href="" class="navbar-item">
+          <a href="{{route('applicant.createacademic',$applicant)}}" class="navbar-item">
             Academic Qualification
           </a>
           <a href="" class="navbar-item">

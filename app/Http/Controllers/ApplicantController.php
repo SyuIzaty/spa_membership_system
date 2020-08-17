@@ -7,6 +7,7 @@ use App\Applicant;
 use App\ApplicantResult;
 use App\ApplicantStatus;
 use App\ApplicantContact;
+use App\ApplicantAcademic;
 use App\Grades;
 use App\RequirementSubject;
 use App\Programme;
@@ -55,6 +56,13 @@ class ApplicantController extends Controller
         return view('applicant.contact',compact('applicant','applicantcontact'));
     }
 
+    public function createacademic(Applicant $applicant, ApplicantAcademic $applicantacademic)
+    {
+        
+        $qualifications = DB::select('select * from qualifications');
+        return view('applicant.createacademic',['qualifications'=>$qualifications],compact('applicant','applicantacademic'));
+    }
+
     
 
       /**
@@ -98,6 +106,32 @@ class ApplicantController extends Controller
        
     }
 
+
+    public function storeacademic(Request $request)
+    {
+       
+        // Validate posted form data
+        $validated = $request->validate([
+        'qualification_type' => 'required|string|min:|max:100',
+    ]);
+    
+    // Create and save applicant with validated data
+
+    
+    $academic = ApplicantAcademic::create($validated);
+    // dd($applicant);
+    $qualifications = DB::table('qualifications')
+    ->select('*')
+    ->where('id', $academic->qualification_type)
+    ->get(); 
+ 
+     foreach ($qualifications as $qualification)
+
+    // Redirect the user to the created applicant with a success notification
+    return redirect(route('applicant.academicinfo',$applicant,$qualifications))->with('notification', 'Qualifications created!');
+       
+    }
+
     /**
      * Display the specified resource.
      *
@@ -124,6 +158,13 @@ class ApplicantController extends Controller
         
      
     return view ('applicant.profile',compact('applicant'));
+    }
+
+    public function academicinfo(Applicant $applicant ,ApplicantAcademic $applicantacademic)
+    {
+        
+     
+    return view ('applicant.academic',compact('applicant','applicantacademic'));
     }
      
     

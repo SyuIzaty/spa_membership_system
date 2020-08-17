@@ -45,8 +45,6 @@ Route::get('/applicant','ApplicantController@create');
 
 Route::post('applicant/{applicant}/showapp','ApplicantController@showapp')->name('applicant.showapp');
 Route::get('applicant/{applicant}/profile','ApplicantController@profile')->name('applicant.profile');
-
-
 Route::get('applicant/{applicant}/contact','ApplicantController@createcontact')->name('applicant.createcontact');
 Route::get('applicant/{applicant}/contactinfo','ApplicantController@contactinfo')->name('applicant.contactinfo');
 Route::get('applicant/{applicant}/prefprogramme','ApplicantController@prefprogramme')->name('applicant.prefprogramme');
@@ -54,7 +52,7 @@ Route::get('applicant/{applicant}/address','ApplicantController@address')->name(
 Route::post('applicant/{applicant}/storecontact','ApplicantController@storecontact')->name('applicant.storecontact');
 Route::get('applicant/{applicant}/updateprogramme','ApplicantController@updateprogramme')->name('applicant.updateprogramme');
 Route::get('applicant/{applicant}/updatecontact','ApplicantController@updatecontact')->name('applicant.updatecontact');
-
+Route::get('applicant/{applicant}/academic','ApplicantController@createacademic')->name('applicant.createacademic');
 
 
 Route::get('/applicantresult','ApplicantController@indexs');
