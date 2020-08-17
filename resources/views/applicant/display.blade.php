@@ -57,20 +57,20 @@
                                                                 @endforeach
                                                             </td>
                                                             <td>
-                                                                @if($aapplicant_all_app['programme_status']== 'Accepted')
-                                                                    <p><span class="badge bg-success pull-right">{{$aapplicant_all_app['programme_status']}}</span></p><br>
+                                                                @if($aapplicant_all_app['programme_status']== '1')
+                                                                    <p><span class="badge bg-success pull-right">Accepted</span></p><br>
                                                                 @else
-                                                                    <p><span class="badge bg-danger pull-right">{{$aapplicant_all_app['programme_status']}}</span></p><br>
+                                                                    <p><span class="badge bg-danger pull-right">Rejected</span></p><br>
                                                                 @endif
-                                                                @if($aapplicant_all_app['programme_status_2']== 'Accepted')
-                                                                    <p><span class="badge bg-success pull-right">{{$aapplicant_all_app['programme_status_2']}}</span></p><br>
+                                                                @if($aapplicant_all_app['programme_status_2']== '1')
+                                                                <p><span class="badge bg-success pull-right">Accepted</span></p><br>
                                                                 @else
-                                                                    <p><span class="badge bg-danger pull-right">{{$aapplicant_all_app['programme_status_2']}}</span></p><br>
+                                                                    <p><span class="badge bg-danger pull-right">Rejected</span></p><br>
                                                                 @endif
-                                                                @if($aapplicant_all_app['programme_status_3']== 'Accepted')
-                                                                    <p><span class="badge bg-success pull-right">{{$aapplicant_all_app['programme_status_3']}}</span></p><br>
+                                                                @if($aapplicant_all_app['programme_status_3']== '1')
+                                                                    <p><span class="badge bg-success pull-right">Accepted</span></p><br>
                                                                 @else
-                                                                    <p><span class="badge bg-danger pull-right">{{$aapplicant_all_app['programme_status_3']}}</span></p><br>
+                                                                    <p><span class="badge bg-danger pull-right">Rejected</span></p><br>
                                                                 @endif
                                                             </td>
                                                             <td>
@@ -360,51 +360,51 @@
                                                                     @endforeach
                                                                 </td>
                                                                 <td>
-                                                                    @if($aapplicant_all_app['programme_status']== 'Accepted')
-                                                                        <p><span class="badge bg-success pull-right">{{$aapplicant_all_app['programme_status']}}</span></p><br>
+                                                                    @if($aapplicant_all_app['programme_status']== '1')
+                                                                        <p><span class="badge bg-success pull-right">Accepted</span></p><br>
                                                                     @else
-                                                                        <p><span class="badge bg-danger pull-right">{{$aapplicant_all_app['programme_status']}}</span></p><br>
+                                                                        <p><span class="badge bg-danger pull-right">Rejected</span></p><br>
                                                                     @endif
-                                                                    @if($aapplicant_all_app['programme_status_2']== 'Accepted')
-                                                                        <p><span class="badge bg-success pull-right">{{$aapplicant_all_app['programme_status_2']}}</span></p><br>
+                                                                    @if($aapplicant_all_app['programme_status_2']== '1')
+                                                                        <p><span class="badge bg-success pull-right">Accepted</span></p><br>
                                                                     @else
-                                                                        <p><span class="badge bg-danger pull-right">{{$aapplicant_all_app['programme_status_2']}}</span></p><br>
+                                                                        <p><span class="badge bg-danger pull-right">Rejected</span></p><br>
                                                                     @endif
-                                                                    @if($aapplicant_all_app['programme_status_3']== 'Accepted')
-                                                                        <p><span class="badge bg-success pull-right">{{$aapplicant_all_app['programme_status_3']}}</span></p><br>
+                                                                    @if($aapplicant_all_app['programme_status_3']== '1')
+                                                                        <p><span class="badge bg-success pull-right">Accepted</span></p><br>
                                                                     @else
-                                                                        <p><span class="badge bg-danger pull-right">{{$aapplicant_all_app['programme_status_3']}}</span></p><br>
+                                                                        <p><span class="badge bg-danger pull-right">Rejected</span></p><br>
                                                                     @endif
                                                                 </td>
                                                                 <td>
                                                                     @foreach($aapplicant as $aapplicant_all_app)
-                                                                    @if($aapplicant_all_app['programme_status'] == 'Accepted')
+                                                                    @if($aapplicant_all_app['programme_status'] == '1')
                                                                     <select name="applicant_status" class="form-control" id="status_{{$aapplicant_all_app['applicant_programme']}}">
                                                                         <option disabled selected>Please select</option>
-                                                                        <option value="Selected">Selected</option>
-                                                                        <option value="Selected for Interview">Selected for Interview</option>
+                                                                        <option value="3">Selected</option>
+                                                                        <option value="4">Selected for Interview</option>
                                                                     </select>
                                                                     @else
                                                                     <input class="form-control" value="Not Selected" name="applicant_status" disabled>
                                                                     @endif
                                                                     @endforeach
                                                                     @foreach($aapplicant as $aapplicant_all_app)
-                                                                    @if($aapplicant_all_app['programme_status_2'] == 'Accepted')
+                                                                    @if($aapplicant_all_app['programme_status_2'] == '1')
                                                                     <select name="applicant_status" class="form-control" id="status_{{$aapplicant_all_app['applicant_programme_2']}}">
                                                                         <option disabled selected>Please select</option>
-                                                                        <option value="Selected">Selected</option>
-                                                                        <option value="Selected for Interview">Selected for Interview</option>
+                                                                        <option value="3">Selected</option>
+                                                                        <option value="4">Selected for Interview</option>
                                                                     </select>
                                                                     @else
                                                                     <input class="form-control" value="Not Selected" name="applicant_status" disabled>
                                                                     @endif
                                                                     @endforeach
                                                                     @foreach($aapplicant as $aapplicant_all_app)
-                                                                    @if($aapplicant_all_app['programme_status_3'] == 'Accepted')
+                                                                    @if($aapplicant_all_app['programme_status_3'] == '1')
                                                                     <select name="applicant_status_3" class="form-control" id="status_{{$aapplicant_all_app['applicant_programme_3']}}">
                                                                         <option disabled selected>Please select</option>
-                                                                        <option value="Selected">Selected</option>
-                                                                        <option value="Selected for Interview">Selected for Interview</option>
+                                                                        <option value="3">Selected</option>
+                                                                        <option value="4">Selected for Interview</option>
                                                                     </select>
                                                                     @else
                                                                     <input class="form-control" value="Not Selected" name="applicant_status" disabled>

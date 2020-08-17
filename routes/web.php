@@ -63,6 +63,7 @@ Route::post('programmestatus', 'ApplicantController@programmestatus');
 Route::post('/data_allapplicant', 'ApplicantController@data_allapplicant');
 Route::post('/data_rejectedapplicant', 'ApplicantController@data_rejectedapplicant');
 Route::post('/data_passapplicant', 'ApplicantController@data_passapplicant');
+Route::post('/data_offerapplicant', 'ApplicantController@data_offerapplicant');
 
 Route::get('testCollection','ApplicantController@testCollection');
 
