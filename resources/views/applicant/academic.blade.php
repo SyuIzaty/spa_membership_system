@@ -8,7 +8,7 @@
 <h1 class="title">Academic Information</h1>
 
 
-<form method="post" action="">
+<form method="post" action="{{ route('applicant.updateacademic',$applicant,$qualifications) }}">
 
     @csrf
     @method('get')

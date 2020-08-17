@@ -8,7 +8,7 @@
 <h1 class="title">Academic Qualification</h1>
 
 
-<form method="post" action="">
+<form method="post" action="{{ route('applicant.storeacademic',$applicant,$applicantacademic) }}">
 
     @csrf
     @method('get')
