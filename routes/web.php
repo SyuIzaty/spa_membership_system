@@ -53,6 +53,10 @@ Route::post('applicant/{applicant}/storecontact','ApplicantController@storeconta
 Route::get('applicant/{applicant}/updateprogramme','ApplicantController@updateprogramme')->name('applicant.updateprogramme');
 Route::get('applicant/{applicant}/updatecontact','ApplicantController@updatecontact')->name('applicant.updatecontact');
 Route::get('applicant/{applicant}/academic','ApplicantController@createacademic')->name('applicant.createacademic');
+Route::get('applicant/{applicant}/storeacademic','ApplicantController@storeacademic')->name('applicant.storeacademic');
+Route::get('applicant/{applicant}/academicinfo','ApplicantController@academicinfo')->name('applicant.academicinfo');
+Route::get('applicant/{applicant}/updateacademic','ApplicantController@updateacademic')->name('applicant.updateacademic');
+
 
 
 Route::get('/applicantresult','ApplicantController@indexs');

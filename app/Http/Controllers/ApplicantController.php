@@ -107,7 +107,7 @@ class ApplicantController extends Controller
     }
 
 
-    public function storeacademic(Request $request)
+    public function storeacademic(Request $request, Applicant $applicant)
     {
        
         // Validate posted form data
@@ -255,10 +255,10 @@ class ApplicantController extends Controller
 
         $applicantcontact = ApplicantContact::create($validated);
         $appcontact = DB::table('applicant')
-    ->select('*')
-    ->where('id', $applicantcontact->applicant_id)
-    ->get();
-    foreach ($appcontact as $app);
+        ->select('*')
+        ->where('id', $applicantcontact->applicant_id)
+        ->get();
+        foreach ($appcontact as $app);
         //DB::table()->join('applicant','id','=','applicant_contact_info.applicant_id');
       
         //dd($applicantcontact);
