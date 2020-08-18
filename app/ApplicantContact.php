@@ -10,12 +10,16 @@ class ApplicantContact extends Model
     // Set mass-assignable fields
     protected $fillable = ['applicant_id','applicant_address_1', 'applicant_address_2', 'applicant_poscode', 'applicant_city', 'applicant_state', 'applicant_country', 'applicant_phone_office', 'applicant_phone_mobile', 'applicant_phone_home', 'applicant_email'];
     
+    protected $foreignKey = 'applicant_id';
     
     
-    
-    public function store()
-    {  
-        return $this->belongsTo('App\Applicant','id');
+    // public function store()
+    // {  
+    //     return $this->belongsTo('App\Applicant','id');
+    // }
+
+    public function store() {
+        return $this->belongsTo('App\Applicant', 'applicant_id', 'id');
     }
 
     public function applicantid()
