@@ -1,5 +1,5 @@
 @section('title', 'Profile Applicant')
-@section('action', route('applicant.create'))
+
 
 @extends('layouts.applicant')
 
@@ -13,17 +13,19 @@
     @csrf
     @method('patch')
     @include('partials.errors')
+    
     <div class="field">
         <label class="label">ID</label>
         <div class="control">
             <input type="text" name="id" value="{{ $applicant->id }}" class="input" placeholder="" minlength="3" maxlength="100" required />
         </div>
+    
     <div class="field">
         <label class="label">Address Line 1</label>
         <div class="control">
         
-            <input type="text" name="applicant_address_1" value="{{ $applicantcontact->applicant_address_1 }}" class="input" placeholder="" minlength="3" maxlength="100" required />
-            
+            <input type="text" name="applicant_address_1" value="test" class="input" placeholder="" minlength="3" maxlength="100" required />
+            {{ $applicantcontact->applicant_address_1 }}
         </div>
     </div>
 

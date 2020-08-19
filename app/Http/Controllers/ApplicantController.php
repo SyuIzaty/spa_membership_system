@@ -51,14 +51,9 @@ class ApplicantController extends Controller
 
     public function createcontact(Applicant $applicant, ApplicantContact $applicantcontact)
     {
-        $appcontact = DB::table('applicant')
-        ->select('*')
-        ->where('id', $applicantcontact->applicant_id)
-        ->get();
+      
         
-        foreach ($appcontact as $app);
-        
-        return view('applicant.contact',compact('applicant','applicantcontact','appcontact'));
+        return view('applicant.contact',compact('applicant','applicantcontact'));
     }
 
     public function createacademic(Applicant $applicant, ApplicantAcademic $applicantacademic)
@@ -233,13 +228,14 @@ class ApplicantController extends Controller
         
         // Create and save post with validated data
         $applicant->update($validated);
+        //dd($validated);
     
         // Redirect the user to the created post with a success notification
         return redirect(route('applicant.profile',$applicant))->with('notification', 'Applicant Updated!');
      
     }
 
-    public function storecontact(Request $request)
+    public function storecontact(Request $request, Applicant $applicant)
     {
         
         $data = [
@@ -256,10 +252,10 @@ class ApplicantController extends Controller
             'applicant_email' => $request->applicant_email,
         ];
        
-        ApplicantContact::create($data);
+        $applicantcontact=ApplicantContact::create($data);
         
-        dd($data);  
-        return redirect(route('applicant.contactinfo'))->with('notification', 'Contact created!');    
+        //dd($data);  
+        return redirect(route('applicant.contactinfo',$applicant,$applicantcontact))->with('notification', 'Contact created!');    
     }
 
     public function contact(Applicant $applicant,ApplicantContact $applicantcontact)
@@ -269,10 +265,15 @@ class ApplicantController extends Controller
 
     public function contactinfo(Applicant $applicant,ApplicantContact $applicantcontact)
     { 
-        return view ('applicant.contactinfo',compact('applicant','applicantcontact'));
+        //$appcontact=DB::table('applicant_contact_info')->select('applicant_address_1','applicant_address_2')->get();
+        //dd($appcontact);
+        $appcontact= DB::table('applicant_contact_info')->latest()->get();
+        //dd($appcontact);
+        foreach ($appcontact as $appcontact1)
+        return view ('applicant.contactview',compact('applicant','applicantcontact','appcontact','appcontact1'));
     }
 
-    public function updatecontact(Request $request,Applicant $applicant, ApplicantContact $applicantcontact)
+    public function updatecontact(Request $request, Applicant $applicant, ApplicantContact $applicantcontact)
     {
         // Validate posted form data
         $validated = $request->validate([
@@ -288,9 +289,26 @@ class ApplicantController extends Controller
             'applicant_email' => 'string|min:|max:100',
             
         ]);
+
+        // $data = [
+            
+        //     'applicant_address_1' =>  $request->applicant_address_1,
+        //     'applicant_address_2' => $request->applicant_address_2,
+        //     'applicant_poscode' => $request->applicant_poscode,
+        //     'applicant_city' => $request->applicant_city,
+        //     'applicant_state' => $request->applicant_state,
+        //     'applicant_country' => $request->applicant_country,
+        //     'applicant_phone_office' => $request->applicant_phone_office,
+        //     'applicant_phone_home' => $request->applicant_phone_home,
+        //     'applicant_phone_mobile' => $request->applicant_phone_mobile,
+        //     'applicant_email' => $request->applicant_email,
+        // ];
+       
+        //ApplicantContact::update($data);
         
         // Create and save post with validated data
          $applicantcontact->update($validated);
+         dd($validated);
 
      //return view ('applicant.contact',compact('applicant','applicantcontact'))->with('notification', 'Contact Updated!');
      return redirect(route('applicant.contactinfo',$applicantcontact))->with('notification', 'Contact updated!');    
