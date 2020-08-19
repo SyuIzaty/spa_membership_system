@@ -51,9 +51,14 @@ class ApplicantController extends Controller
 
     public function createcontact(Applicant $applicant, ApplicantContact $applicantcontact)
     {
+        $appcontact = DB::table('applicant')
+        ->select('*')
+        ->where('id', $applicantcontact->applicant_id)
+        ->get();
         
+        foreach ($appcontact as $app);
         
-        return view('applicant.contact',compact('applicant','applicantcontact'));
+        return view('applicant.contact',compact('applicant','applicantcontact','appcontact'));
     }
 
     public function createacademic(Applicant $applicant, ApplicantAcademic $applicantacademic)
@@ -98,7 +103,7 @@ class ApplicantController extends Controller
     ->select('*')
     ->where('id', $applicant->applicant_programme)
     ->get(); 
- 
+ //dd($programme);
      foreach ($programme as $program)
 
     // Redirect the user to the created applicant with a success notification
@@ -124,7 +129,7 @@ class ApplicantController extends Controller
     ->select('*')
     ->where('id', $academic->qualification_type)
     ->get(); 
- 
+    //dd($qualifications);
      foreach ($qualifications as $qualification)
 
     // Redirect the user to the created applicant with a success notification
@@ -234,36 +239,27 @@ class ApplicantController extends Controller
      
     }
 
-    public function storecontact(Request $request,Applicant $applicant, ApplicantContact $applicantcontact)
+    public function storecontact(Request $request)
     {
-        // Validate posted form data
-        $validated = $request->validate([
-            'applicant_address_1' => 'string|min:|max:100',
-            'applicant_address_2' => 'string|min:|max:100',
-            'applicant_poscode' => 'string|min:|max:100',
-            'applicant_city' => 'string|min:|max:100',
-            'applicant_state' => 'string|min:|max:100',
-            'applicant_country' => 'string|min:|max:100',
-            'applicant_phone_office' => 'string|min:|max:100',
-            'applicant_phone_home' => 'string|min:|max:100',
-            'applicant_phone_mobile' => 'string|min:|max:100',
-            'applicant_email' => 'string|min:|max:100',
-            
-        ]);
-    
-        // Create and save post with validated data
-
-        $applicantcontact = ApplicantContact::create($validated);
-        $appcontact = DB::table('applicant')
-        ->select('*')
-        ->where('id', $applicantcontact->applicant_id)
-        ->get();
-        foreach ($appcontact as $app);
-        //DB::table()->join('applicant','id','=','applicant_contact_info.applicant_id');
-      
-        //dd($applicantcontact);
-     //return view ('applicant.contact',compact('applicant','applicantcontact'))->with('notification', 'Contact Updated!');
-     return redirect(route('applicant.contactinfo',$applicant,$applicantcontact,$appcontact))->with('notification', 'Contact created!');    
+        
+        $data = [
+            'applicant_id' => $request->id,
+            'applicant_address_1' => $request->applicant_address_1,
+            'applicant_address_2' => $request->applicant_address_2,
+            'applicant_poscode' => $request->applicant_poscode,
+            'applicant_city' => $request->applicant_city,
+            'applicant_state' => $request->applicant_state,
+            'applicant_country' => $request->applicant_country,
+            'applicant_phone_office' => $request->applicant_phone_office,
+            'applicant_phone_home' => $request->applicant_phone_home,
+            'applicant_phone_mobile' => $request->applicant_phone_mobile,
+            'applicant_email' => $request->applicant_email,
+        ];
+       
+        ApplicantContact::create($data);
+        
+        dd($data);  
+        return redirect(route('applicant.contactinfo'))->with('notification', 'Contact created!');    
     }
 
     public function contact(Applicant $applicant,ApplicantContact $applicantcontact)

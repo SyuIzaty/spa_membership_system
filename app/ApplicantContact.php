@@ -12,6 +12,10 @@ class ApplicantContact extends Model
     
     protected $foreignKey = 'applicant_id';
     
+    public function applicant()
+    {
+        return $this->belongsTo('App\Applicant','applicant_id','id');
+    }
     
     // public function store()
     // {  

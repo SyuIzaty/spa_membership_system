@@ -13,7 +13,11 @@
     @csrf
     @method('get')
     @include('partials.errors')
-
+    <div class="field">
+        <label class="label">ID</label>
+        <div class="control">
+            <input type="text" name="id" value="{{ $applicant->id }}" class="input" placeholder="" minlength="3" maxlength="100" required />
+        </div>
 
 
 

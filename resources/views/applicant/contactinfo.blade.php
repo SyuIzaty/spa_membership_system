@@ -8,12 +8,16 @@
 <h1 class="title">Contact Information</h1>
 
 
-<form method="post" action="{{ route('applicant.updatecontact',$applicant,$applicantcontact,$app) }}">
+<form method="post" action="{{ route('applicant.updatecontact',$applicant,$applicantcontact) }}">
 
     @csrf
     @method('patch')
     @include('partials.errors')
-
+    <div class="field">
+        <label class="label">ID</label>
+        <div class="control">
+            <input type="text" name="id" value="{{ $applicant->id }}" class="input" placeholder="" minlength="3" maxlength="100" required />
+        </div>
     <div class="field">
         <label class="label">Address Line 1</label>
         <div class="control">
