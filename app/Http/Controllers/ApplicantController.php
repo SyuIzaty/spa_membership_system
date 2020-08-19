@@ -60,7 +60,7 @@ class ApplicantController extends Controller
     {
         
         $qualifications = DB::select('select * from qualifications');
-        return view('applicant.createacademic',['qualifications'=>$qualifications],compact('applicant','applicantacademic'));
+        return view('applicant.createacademic',['qualifications'=>$qualifications],compact('applicant','applicantacademic','qualifications'));
     }
 
     
@@ -124,11 +124,11 @@ class ApplicantController extends Controller
     ->select('*')
     ->where('id', $academic->qualification_type)
     ->get(); 
-    //dd($qualifications);
+    dd($qualifications);
      foreach ($qualifications as $qualification)
 
     // Redirect the user to the created applicant with a success notification
-    return redirect(route('applicant.academicinfo',$applicant,$qualifications))->with('notification', 'Qualifications created!');
+    return redirect(route('applicant.academicinfo',$academic,$qualifications,$qualification))->with('notification', 'Qualifications created!');
        
     }
 
