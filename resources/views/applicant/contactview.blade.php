@@ -54,7 +54,7 @@
                 <select name="applicant_city" required>
                     <option value="" disabled selected>Select City</option>
                     
-                    <option value="Shah Alam" {{ $appcontact1->applicant_city === 'Shah Alam' ? 'selected' : null }}>SHAH ALAM</option>
+                    <option value="ShahAlam" {{ $appcontact1->applicant_city === 'ShahAlam' ? 'selected' : null }}>SHAH ALAM</option>
                     <option value="Klang" {{ $appcontact1->applicant_city=== 'Klang' ? 'selected' : null }}>KLANG</option>
                    
                 </select>

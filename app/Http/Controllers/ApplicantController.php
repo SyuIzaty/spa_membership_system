@@ -258,15 +258,12 @@ class ApplicantController extends Controller
         return redirect(route('applicant.contactinfo',$applicant,$applicantcontact))->with('notification', 'Contact created!');    
     }
 
-    public function contact(Applicant $applicant,ApplicantContact $applicantcontact)
-    { 
-        return view ('applicant.contact',compact('applicant','applicantcontact'));
-    }
+    
 
     public function contactinfo(Applicant $applicant,ApplicantContact $applicantcontact)
     { 
-        //$appcontact=DB::table('applicant_contact_info')->select('applicant_address_1','applicant_address_2')->get();
-        //dd($appcontact);
+        
+        
         $appcontact= DB::table('applicant_contact_info')->latest()->get();
         //dd($appcontact);
         foreach ($appcontact as $appcontact1)
@@ -290,21 +287,7 @@ class ApplicantController extends Controller
             
         ]);
 
-        // $data = [
-            
-        //     'applicant_address_1' =>  $request->applicant_address_1,
-        //     'applicant_address_2' => $request->applicant_address_2,
-        //     'applicant_poscode' => $request->applicant_poscode,
-        //     'applicant_city' => $request->applicant_city,
-        //     'applicant_state' => $request->applicant_state,
-        //     'applicant_country' => $request->applicant_country,
-        //     'applicant_phone_office' => $request->applicant_phone_office,
-        //     'applicant_phone_home' => $request->applicant_phone_home,
-        //     'applicant_phone_mobile' => $request->applicant_phone_mobile,
-        //     'applicant_email' => $request->applicant_email,
-        // ];
-       
-        //ApplicantContact::update($data);
+        
         
         // Create and save post with validated data
          $applicantcontact->update($validated);

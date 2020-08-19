@@ -23,7 +23,7 @@
         <label class="label">Address Line 1</label>
         <div class="control">
         
-            <input type="text" name="applicant_address_1" value="{{ $applicantcontact->applicant_address_1 }}" class="input" placeholder="" minlength="3" maxlength="100" required />
+            <input type="text" name="applicant_address_1" value="{{ old('applicant_address_1') }}" class="input" placeholder="" minlength="3" maxlength="100" required />
         
         </div>
     </div>
