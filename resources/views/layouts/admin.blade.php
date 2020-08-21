@@ -24,6 +24,7 @@
         <link rel="mask-icon" href="{{asset('img/favicon/safari-pinned-tab.svg')}}" color="#5bbad5">
         <!--<link rel="stylesheet" media="screen, print" href="css/your_styles.css">-->
         <link rel="stylesheet" media="screen, print" href="{{asset('css/datagrid/datatables/datatables.bundle.css')}}">
+        <link rel="stylesheet" href="{{ asset('css/notifications/sweetalert2/sweetalert2.bundle.css') }}">
         {{-- <link rel="stylesheet" media="screen, print" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"> --}}
 
         {{-- <link rel="stylesheet" media="screen, print" href="{{asset('css/select2.min.css')}}"> --}}
@@ -170,7 +171,7 @@
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="/intake-info" title="Intake Information" data-filter-tags="active_student">
+                                        <a href="/intake" title="Intake Information" data-filter-tags="active_student">
                                             <i class="fal fa-user"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">Intake Information</span>
                                         </a>
@@ -613,6 +614,7 @@
         <script src="{{asset('js/vendors.bundle.js')}}"></script>
         <script src="{{asset('js/app.bundle.js')}}"></script>
         <script src="{{asset('js/datagrid/datatables/datatables.bundle.js')}}"></script>
+        <script src="{{ asset('js/notifications/sweetalert2/sweetalert2.bundle.js') }}"></script>
 
         {{-- <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script> --}}

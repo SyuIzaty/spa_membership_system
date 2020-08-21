@@ -42,8 +42,8 @@
                                         <td>{{$intakeInfos['intake_check_open']}}</td>
                                         <td>{{$intakeInfos['intake_check_close']}}</td>
                                         <td>
-                                            {{-- <p><input type="checkbox" @if($intakeInfos['status'] == "Active") checked @endif data-toggle="toggle" data-on="Active" data-off="Inactive" data-onstyle="success" ></p>
-                                            <a class="btn btn-primary" href="{{ route('intake.edit',$intakeInfos['intake_id']) }}">Edit</a>
+                                            {{-- {{-- <p><input type="checkbox" @if($intakeInfos['status'] == "Active") checked @endif data-toggle="toggle" data-on="Active" data-off="Inactive" data-onstyle="success" ></p> --}}
+                                            {{-- <a class="btn btn-primary" href="{{ route('intake.edit',$intakeInfos['intake_id']) }}">Edit</a> --}}
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger">Delete</button> --}}
@@ -58,3 +58,4 @@
         </div>
     </main>
 @endsection
+

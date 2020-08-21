@@ -20,6 +20,16 @@
                     </div>
                     <div class="panel-container show">
                         <div class="panel-content">
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                             <table class="table table-bordered">
                                 <div class="card-body">
                                     {!! Form::open(['action' => 'IntakeController@store', 'method' => 'POST']) !!}
@@ -51,9 +61,7 @@
                                                 {{Form::date('intake_check_close', '', ['class' => 'form-control', 'placeholder' => 'Application Status End Date'])}}
                                             </div>
                                         </div>
-                                    <div class="pull-right">
-                                        {{Form::submit('Next')}}
-                                    </div>
+                                        {{Form::submit('Submit')}}
                                     {!! Form::close() !!}
                                 </div>
                             </table>

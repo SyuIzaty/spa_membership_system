@@ -23,18 +23,18 @@ class ApplicantController extends Controller
 {
     public function index(Applicant $applicant)
     {
-        
+
         //$applicant=Applicant::latest()->get();
         //$programme = DB::select('select * from programmes');
         $programme = DB::table('programmes')
         ->select('*')
         ->where('id', $applicant->applicant_programme)
-        ->get(); 
+        ->get();
         foreach ($programme as $program)
-      
+
         // return view ('applicant.index',compact('applicant','programme','program'));
         return view ('applicant.showapp',compact('applicant','program'));
-        
+
     }
 
     /**
@@ -44,26 +44,26 @@ class ApplicantController extends Controller
      */
     public function create()
     {
-        
+
         $programme = DB::select('select * from programmes');
         return view('applicant.create',['programme'=>$programme]);
     }
 
     public function createcontact(Applicant $applicant, ApplicantContact $applicantcontact)
     {
-      
-        
+
+
         return view('applicant.contact',compact('applicant','applicantcontact'));
     }
 
     public function createacademic(Applicant $applicant, ApplicantAcademic $applicantacademic)
     {
-        
+
         $qualifications = DB::select('select * from qualifications');
         return view('applicant.createacademic',['qualifications'=>$qualifications],compact('applicant','applicantacademic','qualifications'));
     }
 
-    
+
 
       /**
      * Store a newly created resource in storage.
@@ -86,100 +86,100 @@ class ApplicantController extends Controller
         'applicant_nationality' => 'required|string|min:|max:100',
         'applicant_gender' => 'string|min:|max:100',
         'applicant_religion' => 'string|min:|max:100',
-        
+
     ]);
-    
+
     // Create and save applicant with validated data
 
-    
+
     $applicant = Applicant::create($validated);
     // dd($applicant);
     $programme = DB::table('programmes')
     ->select('*')
     ->where('id', $applicant->applicant_programme)
-    ->get(); 
+    ->get();
  //dd($programme);
      foreach ($programme as $program)
 
     // Redirect the user to the created applicant with a success notification
     return redirect(route('applicant.profile',$applicant,$programme))->with('notification', 'Applicant created!');
-       
+
     }
 
 
     public function storeacademic(Request $request, Applicant $applicant)
     {
-       
+
         // Validate posted form data
         $validated = $request->validate([
         'qualification_type' => 'required|string|min:|max:100',
     ]);
-    
+
     // Create and save applicant with validated data
 
-    
+
     $academic = ApplicantAcademic::create($validated);
     // dd($applicant);
     $qualifications = DB::table('qualifications')
     ->select('*')
     ->where('id', $academic->qualification_type)
-    ->get(); 
+    ->get();
     dd($qualifications);
      foreach ($qualifications as $qualification)
 
     // Redirect the user to the created applicant with a success notification
     return redirect(route('applicant.academicinfo',$academic,$qualifications,$qualification))->with('notification', 'Qualifications created!');
-       
+
     }
 
     /**
      * Display the specified resource.
      *
      * @param  \App\Applicant  $applicant
-     
+
      * @return \Illuminate\Http\Response
      */
     public function showapp(Applicant $applicant )
     {
-        
+
         //dd($applicant);
-       
+
         $programme = DB::table('programmes')
         ->select('*')
         ->where('id', $applicant->applicant_programme)
-        ->get(); 
-     
+        ->get();
+
          foreach ($programme as $program)
 
         return view ('applicant.showapp',compact('applicant','programme','program'));
     }
     public function profile(Applicant $applicant)
     {
-        
-     
+
+
     return view ('applicant.profile',compact('applicant'));
     }
 
     public function academicinfo(Applicant $applicant ,ApplicantAcademic $applicantacademic)
     {
-        
-     
+
+
     return view ('applicant.academic',compact('applicant','applicantacademic'));
     }
-     
-    
+
+
 
     public function prefprogramme(Applicant $applicant,Programme $programme)
     {
-        
+
         $programme = DB::table('programmes')
         ->select('*')
         ->where('id', $applicant->applicant_programme)
-        ->get(); 
+        ->get();
         $programme = DB::select('select * from programmes');
-       
+
          foreach ($programme as $program )
-         
+
         return view ('applicant.program',compact('applicant','programme','program'));
         //return view ('applicant.create');
     }
@@ -192,19 +192,19 @@ class ApplicantController extends Controller
      */
     public function edit( Applicant $applicant, Programme $programme)
     {
-        
-       
+
+
         //$programme = DB::select('select * from programmes');
         $programme = DB::table('programmes')
        ->select('*')
        ->where('id', $applicant->applicant_programme)
-       ->get(); 
+       ->get();
         foreach ($programme as $program)
         //return view('applicant.create',['programme'=>$programme]);
         return view ('applicant.edit',compact('applicant','programme','program'));
     }
 
-    
+
      /**
      * Update the specified resource in storage.
      *
@@ -223,21 +223,21 @@ class ApplicantController extends Controller
             'applicant_nationality' => 'string|min:|max:100',
             'applicant_gender' => 'string|min:|max:100',
             'applicant_religion' => 'string|min:|max:100',
-            
+
         ]);
-        
+
         // Create and save post with validated data
         $applicant->update($validated);
         //dd($validated);
-    
+
         // Redirect the user to the created post with a success notification
         return redirect(route('applicant.profile',$applicant))->with('notification', 'Applicant Updated!');
-     
+
     }
 
     public function storecontact(Request $request, Applicant $applicant)
     {
-        
+
         $data = [
             'applicant_id' => $request->id,
             'applicant_address_1' => $request->applicant_address_1,
@@ -251,19 +251,19 @@ class ApplicantController extends Controller
             'applicant_phone_mobile' => $request->applicant_phone_mobile,
             'applicant_email' => $request->applicant_email,
         ];
-       
+
         $applicantcontact=ApplicantContact::create($data);
-        
-        //dd($data);  
-        return redirect(route('applicant.contactinfo',$applicant,$applicantcontact))->with('notification', 'Contact created!');    
+
+        //dd($data);
+        return redirect(route('applicant.contactinfo',$applicant,$applicantcontact))->with('notification', 'Contact created!');
     }
 
-    
+
 
     public function contactinfo(Applicant $applicant,ApplicantContact $applicantcontact)
-    { 
-        
-        
+    {
+
+
         $appcontact= DB::table('applicant_contact_info')->latest()->get();
         //dd($appcontact);
         foreach ($appcontact as $appcontact1)
@@ -284,17 +284,17 @@ class ApplicantController extends Controller
             'applicant_phone_home' => 'string|min:|max:100',
             'applicant_phone_mobile' => 'string|min:|max:100',
             'applicant_email' => 'string|min:|max:100',
-            
+
         ]);
 
-        
-        
+
+
         // Create and save post with validated data
          $applicantcontact->update($validated);
          dd($validated);
 
      //return view ('applicant.contact',compact('applicant','applicantcontact'))->with('notification', 'Contact Updated!');
-     return redirect(route('applicant.contactinfo',$applicantcontact))->with('notification', 'Contact updated!');    
+     return redirect(route('applicant.contactinfo',$applicantcontact))->with('notification', 'Contact updated!');
     }
 
 
@@ -304,24 +304,24 @@ class ApplicantController extends Controller
         $validated = $request->validate([
             'applicant_programme' => 'string|min:|max:100',
             'applicant_programme_2' => 'string|min:|max:100',
-            'applicant_programme_3' => 'string|min:|max:100', 
+            'applicant_programme_3' => 'string|min:|max:100',
         ]);
-        
+
         // Create and save post with validated data
         $applicant->update($validated);
         $programme = DB::table('programmes')
        ->select('*')
        ->where('id', $applicant->applicant_programme)
-       ->get(); 
-       
+       ->get();
+
         foreach ($programme as $program)
-    
+
         // Redirect the user to the created post with a success notification
         return redirect(route('applicant.prefprogramme',$applicant))->with('notification', 'Programme Updated!');
         //return view ('applicant.program',compact('applicant','programme','program'))->with('notification', 'Applicant Updated!');
-     
+
     }
-   
+
 
     /**
      * Remove the specified resource from storage.
@@ -347,7 +347,7 @@ class ApplicantController extends Controller
         $applicant =DB::table('applicant')
         ->where('Id','=',$input['id'])
         ->first();
-        
+
         return $applicant->applicant_status;
     }
 
@@ -367,17 +367,17 @@ class ApplicantController extends Controller
             for($i=0; $i < count($pro); $i++)
             {
                 $prog = Programme::where('id',$pro[$i])->first();
-                $programmestatus[$i]['id'] = $prog->id; 
+                $programmestatus[$i]['id'] = $prog->id;
                 $programmestatus[$i]['programme'] = $prog->programme_name;
                 $programmestatus[$i]['status'] = $sta[$i];
             }
         }
             $spm_result = ApplicantResult::where('applicant_id',$id)->where('type',1)->get();
             $spm = $spm_result->load('grades','subjects');
-            
+
             $stpm_result = ApplicantResult::where('applicant_id',$id)->where('type',2)->get();
             $stpm = $stpm_result->load('grades','subjects');
-            
+
             $stam_result = ApplicantResult::where('applicant_id',$id)->where('type',3)->get();
             $stam = $stam_result->load('grades','subjects');
 
@@ -389,7 +389,7 @@ class ApplicantController extends Controller
 
             $olevel_result = ApplicantResult::where('applicant_id',$id)->where('type',6)->get();
             $olevel = $olevel_result->load('grades','subjects');
-            
+
             $applicant_guardian = ApplicantGuardian::where('applicant_id',$id)->first();
 
             $applicant_emergency = ApplicantEmergency::where('applicant_id',$id)->first();
@@ -403,7 +403,7 @@ class ApplicantController extends Controller
 
                 $dataappl[] = array_merge($applicantstat, $programme_1, $programme_2, $programme_3);
             }
-            
+
             $aapplicant = $dataappl;
         return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel', 'applicantresult','total_point', 'programmestatus', 'aapplicant','applicant_guardian','applicant_emergency'));
     }
@@ -417,8 +417,8 @@ class ApplicantController extends Controller
         foreach($applicant as $applicantstat)
         {
             $programme_1['programme_1'] = Programme::where('id',$applicantstat['applicant_programme'])->select('programme_code')->get();
-            $programme_2['programme_2'] = Programme::where('id',$applicantstat['applicant_programme_2'])->select('programme_code')->get(); 
-            $programme_3['programme_3'] = Programme::where('id',$applicantstat['applicant_programme_3'])->select('programme_code')->get(); 
+            $programme_2['programme_2'] = Programme::where('id',$applicantstat['applicant_programme_2'])->select('programme_code')->get();
+            $programme_3['programme_3'] = Programme::where('id',$applicantstat['applicant_programme_3'])->select('programme_code')->get();
 
             $bm_res = ApplicantResult::where('applicant_id',$applicantstat['id'])->where('subject',1103)->where('type',1)->get();
             $bm['bm'] = $bm_res->load('grades');
@@ -428,8 +428,8 @@ class ApplicantController extends Controller
 
             $math_res = ApplicantResult::where('applicant_id',$applicantstat['id'])->where('subject',1449)->where('type',1)->get();
             $math['math'] = $math_res->load('grades');
-            
-            $dataappl[] = array_merge($applicantstat, $programme_1, $programme_2, $programme_3, $bm, $eng, $math);     
+
+            $dataappl[] = array_merge($applicantstat, $programme_1, $programme_2, $programme_3, $bm, $eng, $math);
         }
 
         $applicant_offer = ApplicantStatus::where('applicant_status','Selected')->get();
@@ -442,7 +442,7 @@ class ApplicantController extends Controller
     public function testCollection()
     {
         $applicant = Applicant::where('applicant_status',NULL)->get();
-        $applicants = $applicant->load('programme','applicantresult.grades');  
+        $applicants = $applicant->load('programme','applicantresult.grades');
         // $applicants = $applicants[0]->applicantresult->where('subject','1103')->first()->grades->grade_code;//->pluck('grade_code');
 
         // foreach($applicants as $a)
@@ -455,7 +455,7 @@ class ApplicantController extends Controller
     {
         $applicant = Applicant::where('applicant_status',NULL)->get();
         $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','statusResultThree','programmeThree');
-     
+
 
         return datatables()::of($applicants)
             ->addColumn('prog_name',function($applicants)
@@ -466,13 +466,13 @@ class ApplicantController extends Controller
             {
                 // return '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->programmeTwo->programme_code.'</div>';
                 return isset($applicants->programmeTwo->programme_code) ? '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->programmeTwo->programme_code.'</div>' : '';
-    
+
             })
             ->addColumn('prog_name_3',function($applicants)
             {
                 // return isset($applicants->programmeThree->programme_code) ? $applicants->programmeThree->programme_code.$applicants->programme_status_3 : '';
                 return isset($applicants->programmeThree->programme_code) ? '<div style="color:'.$applicants->statusResultThree->colour.'">'.$applicants->programmeThree->programme_code.'</div>' : '';
-    
+
             })
             ->addColumn('bm',function($applicants){
                 return $applicants->applicantresult->where('subject',1103)->isEmpty() ? '': $applicants->applicantresult->where('subject',1103)->first()->grades->grade_code;
@@ -483,7 +483,7 @@ class ApplicantController extends Controller
             ->addColumn('math',function($applicants){
                 return $applicants->applicantresult->where('subject',1449)->isEmpty() ? '': $applicants->applicantresult->where('subject',1449)->first()->grades->grade_code;
             })
-            
+
            ->addColumn('action', function ($applicants) {
                return '<a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Detail</a>';
            })
@@ -495,7 +495,7 @@ class ApplicantController extends Controller
     {
         $applicant = Applicant::where('programme_status','1')->orWhere('programme_status_2','1')->orWhere('programme_status_3','1')->get();
         $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','statusResultThree','programmeThree');
-     
+
 
         return datatables()::of($applicants)
             ->addColumn('prog_name',function($applicants)
@@ -506,13 +506,13 @@ class ApplicantController extends Controller
             {
                 // return '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->programmeTwo->programme_code.'</div>';
                 return isset($applicants->programmeTwo->programme_code) ? '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->programmeTwo->programme_code.'</div>' : '';
-    
+
             })
             ->addColumn('prog_name_3',function($applicants)
             {
                 // return isset($applicants->programmeThree->programme_code) ? $applicants->programmeThree->programme_code.$applicants->programme_status_3 : '';
                 return isset($applicants->programmeThree->programme_code) ? '<div style="color:'.$applicants->statusResultThree->colour.'">'.$applicants->programmeThree->programme_code.'</div>' : '';
-    
+
             })
             ->addColumn('bm',function($applicants){
                 return $applicants->applicantresult->where('subject',1103)->isEmpty() ? '': $applicants->applicantresult->where('subject',1103)->first()->grades->grade_code;
@@ -523,7 +523,7 @@ class ApplicantController extends Controller
             ->addColumn('math',function($applicants){
                 return $applicants->applicantresult->where('subject',1449)->isEmpty() ? '': $applicants->applicantresult->where('subject',1449)->first()->grades->grade_code;
             })
-            
+
            ->addColumn('action', function ($applicants) {
                return '<a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Detail</a>';
            })
@@ -536,7 +536,7 @@ class ApplicantController extends Controller
         // $applicant = Applicant::where('applicant_status',NULL)->get();
         $applicant = Applicant::where('programme_status','2')->where('programme_status_2','2')->orWhere('programme_status_2',NULL)->where('programme_status_3','2')->orWhere('programme_status_3',NULL)->get();
         $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo');
-        
+
 
         return datatables()::of($applicants)
             ->addColumn('prog_name',function($applicants)
@@ -547,13 +547,13 @@ class ApplicantController extends Controller
             {
                 // return '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->programmeTwo->programme_code.'</div>';
                 return isset($applicants->programmeTwo->programme_code) ? '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->programmeTwo->programme_code.'</div>' : '';
-    
+
             })
             ->addColumn('prog_name_3',function($applicants)
             {
                 // return isset($applicants->programmeThree->programme_code) ? $applicants->programmeThree->programme_code.$applicants->programme_status_3 : '';
                 return isset($applicants->programmeThree->programme_code) ? '<div style="color:'.$applicants->statusResultThree->colour.'">'.$applicants->programmeThree->programme_code.'</div>' : '';
-    
+
             })
             ->addColumn('bm',function($applicants){
                 return $applicants->applicantresult->where('subject',1103)->isEmpty() ? '': $applicants->applicantresult->where('subject',1103)->first()->grades->grade_code;
@@ -564,7 +564,7 @@ class ApplicantController extends Controller
             ->addColumn('math',function($applicants){
                 return $applicants->applicantresult->where('subject',1449)->isEmpty() ? '': $applicants->applicantresult->where('subject',1449)->first()->grades->grade_code;
             })
-            
+
            ->addColumn('action', function ($applicants) {
                return '<a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Detail</a>';
            })
@@ -577,7 +577,7 @@ class ApplicantController extends Controller
         // $applicant = Applicant::where('applicant_status',NULL)->get();
         $applicant = Applicant::where('applicant_status','3')->get();
         $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo');
-        
+
 
         return datatables()::of($applicants)
             ->addColumn('prog_name',function($applicants)
@@ -588,13 +588,13 @@ class ApplicantController extends Controller
             {
                 // return '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->programmeTwo->programme_code.'</div>';
                 return isset($applicants->programmeTwo->programme_code) ? '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->programmeTwo->programme_code.'</div>' : '';
-    
+
             })
             ->addColumn('prog_name_3',function($applicants)
             {
                 // return isset($applicants->programmeThree->programme_code) ? $applicants->programmeThree->programme_code.$applicants->programme_status_3 : '';
                 return isset($applicants->programmeThree->programme_code) ? '<div style="color:'.$applicants->statusResultThree->colour.'">'.$applicants->programmeThree->programme_code.'</div>' : '';
-    
+
             })
             ->addColumn('bm',function($applicants){
                 return $applicants->applicantresult->where('subject',1103)->isEmpty() ? '': $applicants->applicantresult->where('subject',1103)->first()->grades->grade_code;
@@ -605,16 +605,17 @@ class ApplicantController extends Controller
             ->addColumn('math',function($applicants){
                 return $applicants->applicantresult->where('subject',1449)->isEmpty() ? '': $applicants->applicantresult->where('subject',1449)->first()->grades->grade_code;
             })
-            
+
            ->addColumn('action', function ($applicants) {
-               return '<a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Detail</a>';
+               return '<a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Detail</a>
+               ';
            })
            ->rawColumns(['prog_name','prog_name_2','prog_name_3','action'])
            ->make(true);
     }
 
 
-    
+
     public function accepted($applicantt, $programme_code)
     {
         $applicants = Applicant::where('id',$applicantt['id'])->get();
@@ -622,18 +623,18 @@ class ApplicantController extends Controller
             $programme_status = $applicants->where('applicant_programme',$programme_code)->first();
             $programme_status->programme_status = '1';
             $programme_status->save();
-            
+
         }
         if($applicantt['applicant_programme_2'] == $programme_code){
             $programme_status_2 = $applicants->where('applicant_programme_2',$programme_code)->first();
             $programme_status_2->programme_status_2 = '1';
             $programme_status_2->save();
-            
+
         }
         if($applicantt['applicant_programme_3'] == $programme_code){
             $programme_status_3 = $applicants->where('applicant_programme_3',$programme_code)->first();
             $programme_status_3->programme_status_3 = '1';
-            $programme_status_3->save();   
+            $programme_status_3->save();
         }
         Applicant::where('id',$applicantt['id'])->where('applicant_status',NULL)->update(['applicant_status'=>'2']);
     }
@@ -646,14 +647,14 @@ class ApplicantController extends Controller
             $programme_status->reason_fail = $reason_failed;
             $programme_status->save();
         }
-    
+
         $programme_status = Applicant::where('id',$applicantt['id'])->where('applicant_programme_2',$programme_code)->first();
         if($programme_status){
             $programme_status->programme_status_2 = '2';
             $programme_status->reason_fail_2 = $reason_failed;
             $programme_status->save();
         }
-    
+
         $programme_status = Applicant::where('id',$applicantt['id'])->where('applicant_programme_3',$programme_code)->first();
         if($programme_status){
             $programme_status->programme_status_3 = '2';
@@ -661,24 +662,24 @@ class ApplicantController extends Controller
             $programme_status->save();
         }
         Applicant::where('id',$applicantt['id'])->where('applicant_status',NULL)->update(['applicant_status'=>'2']);
-        
+
     }
-    
+
     public function spm($applicantt)
     {
         $app_spm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->where('grade_id','<=',8)->get();
-        $spm = $app_spm->count();    
+        $spm = $app_spm->count();
         $count_eng = $app_spm->where('subject',1119)->count();
         $count_math = $app_spm->where('subject',1449)->count();
-        
+
         return compact('applicantt', 'app_spm', 'spm', 'count_eng', 'count_math');
     }
 
     public function stpm($applicantt)
     {
         $app_stpm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',2)->where('grade_id','<=',32)->get();
-        $stpm = $app_stpm->count();    
-        
+        $stpm = $app_stpm->count();
+
         $count_math_m = $app_stpm->where('subject',950)->count();
         $count_math_t = $app_stpm->where('subject',954)->count();
         $count_eng = $app_stpm->where('subject',920)->count();
@@ -688,15 +689,15 @@ class ApplicantController extends Controller
     public function stam($applicantt)
     {
         $app_stam = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',3)->where('grade_id','<=',15)->get();
-        $stam = $app_stam->count();    
-        
+        $stam = $app_stam->count();
+
         return compact('app_stam', 'stam');
     }
-    
+
     public function uec($applicantt)
     {
         $app_uec = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',4)->where('grade_id','<=',22)->get();
-        $uec = $app_uec->count();    
+        $uec = $app_uec->count();
         $count_math = $app_uec->where('subject','UEC104')->count();
         return compact('app_uec', 'uec', 'count_math');
     }
@@ -704,7 +705,7 @@ class ApplicantController extends Controller
     public function olevel($applicantt)
     {
         $app_olevel = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',6)->where('grade_id','<=',46)->get();
-        $olevel = $app_olevel->count();    
+        $olevel = $app_olevel->count();
         $count_eng = $app_olevel->where('subject','CIE1119')->count();
         $count_math_a = $app_olevel->where('subject','CIE4937')->count();
         $count_math_d = $app_olevel->where('subject','CIE4024')->count();
@@ -762,7 +763,7 @@ class ApplicantController extends Controller
             $this->accepted($applicantt, $programme_code);
         } else {
             $programme_code = 1;
-            if($status_spm == false) 
+            if($status_spm == false)
             {
                 $reason_failed = 'Fail mathematics or english or less than 5 credit SPM';
                 $this->rejected($applicantt, $programme_code, $reason_failed);
@@ -771,7 +772,7 @@ class ApplicantController extends Controller
                 $reason_failed = 'Fail mathematics or english or less than 5 credit O Level';
                 $this->rejected($applicantt, $programme_code, $reason_failed);
             }
-        }                        
+        }
     }
 
     public function ial($applicantt) //A Level Programme
@@ -801,7 +802,7 @@ class ApplicantController extends Controller
             $this->accepted($applicantt, $programme_code);
         } else {
             $programme_code = 2;
-            if($status_spm == false) 
+            if($status_spm == false)
             {
                 $reason_failed = 'Fail mathematics or english or less than 5 credit SPM';
                 $this->rejected($applicantt, $programme_code, $reason_failed);
@@ -810,7 +811,7 @@ class ApplicantController extends Controller
                 $reason_failed = 'Fail mathematics or english or less than 5 credit O Level';
                 $this->rejected($applicantt, $programme_code, $reason_failed);
             }
-        }                        
+        }
     }
 
     public function igr($applicantt) //A Level German Programme
@@ -840,7 +841,7 @@ class ApplicantController extends Controller
             $this->accepted($applicantt, $programme_code);
         } else {
             $programme_code = 3;
-            if($status_spm == false) 
+            if($status_spm == false)
             {
                 $reason_failed = 'Fail mathematics or english or less than 5 credit SPM';
                 $this->rejected($applicantt, $programme_code, $reason_failed);
@@ -849,7 +850,7 @@ class ApplicantController extends Controller
                 $reason_failed = 'Fail mathematics or english or less than 5 credit O Level';
                 $this->rejected($applicantt, $programme_code, $reason_failed);
             }
-        }                   
+        }
     }
 
     public function iam($applicantt) //SACE International
@@ -879,7 +880,7 @@ class ApplicantController extends Controller
             $this->accepted($applicantt, $programme_code);
         } else {
             $programme_code = 4;
-            if($status_spm == false) 
+            if($status_spm == false)
             {
                 $reason_failed = 'Fail mathematics or english or less than 5 credit SPM';
                 $this->rejected($applicantt, $programme_code, $reason_failed);
@@ -888,14 +889,14 @@ class ApplicantController extends Controller
                 $reason_failed = 'Fail mathematics or english or less than 5 credit O Level';
                 $this->rejected($applicantt, $programme_code, $reason_failed);
             }
-        }                                           
+        }
     }
 
     public function ile($applicantt) //Japanese Preparatory Course
     {
         $status = [];
         $app_spm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->where('grade_id','<=',8)->get();
-        $spm = $app_spm->count();    
+        $spm = $app_spm->count();
 
         $count_math = $app_spm->where('subject',1449)->count();
         $count_bio = $app_spm->where('subject',4551)->count();
@@ -929,7 +930,7 @@ class ApplicantController extends Controller
             $programme_code = 5;
             $this->accepted($applicantt, $programme_code);
         }else{
-            $programme_code = 5; 
+            $programme_code = 5;
             if($status_spm == false)
             {
                 $reason_failed = 'Fail mathematics or biology or chemistry or physics or science SPM';
@@ -954,7 +955,7 @@ class ApplicantController extends Controller
             $programme_code = 6;
                 $reason_failed = 'Fail english SPM';
                 $this->rejected($applicantt, $programme_code, $reason_failed);
-            
+
         }
     }
 
@@ -1047,7 +1048,7 @@ class ApplicantController extends Controller
                 $this->rejected($applicantt, $programme_code, $reason_failed);
             }if ($status_uec == false){
                 $reason_failed = 'Less than 3 credit UEC';
-                $this->rejected($applicantt, $programme_code, $reason_failed);   
+                $this->rejected($applicantt, $programme_code, $reason_failed);
             }if($skm == false){
                 $reason_failed = 'Less than 3 credit SPM';
                 $this->rejected($applicantt, $programme_code, $reason_failed);
@@ -1058,7 +1059,7 @@ class ApplicantController extends Controller
                 $reason_failed = 'Less than 3 credit SPM';
                 $this->rejected($applicantt, $programme_code, $reason_failed);
             }
-        }         
+        }
     }
 
     public function dpmg($applicantt) //Diploma in Public Mangement and Governance
@@ -1071,7 +1072,7 @@ class ApplicantController extends Controller
         }else{
             $status_spm = false;
         }
-        
+
         $stpm = $this->stpm($applicantt);
         if($stpm['stpm'] >= 1)
         {
@@ -1150,7 +1151,7 @@ class ApplicantController extends Controller
                 $this->rejected($applicantt, $programme_code, $reason_failed);
             }if ($status_uec == false){
                 $reason_failed = 'Less than 3 credit UEC';
-                $this->rejected($applicantt, $programme_code, $reason_failed);   
+                $this->rejected($applicantt, $programme_code, $reason_failed);
             }if($skm == false){
                 $reason_failed = 'Less than 3 credit SPM';
                 $this->rejected($applicantt, $programme_code, $reason_failed);
@@ -1161,7 +1162,7 @@ class ApplicantController extends Controller
                 $reason_failed = 'Less than 3 credit SPM';
                 $this->rejected($applicantt, $programme_code, $reason_failed);
             }
-        }        
+        }
     }
 
     public function dshp($applicantt) //Diploma in Scientific Halal Practice
@@ -1177,7 +1178,7 @@ class ApplicantController extends Controller
         $count_syariah = $spm['app_spm']->where('subject',5228)->count();
         $count_science = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->where('subject',1511)->where('grade_id','<=',4)->count();
 
-        if($spm['count_math'] == 1 && $spm['count_eng'] == 1 && $count_melayu == 1 && $count_sejarah == 1 && ($count_agama == 1 || $count_syariah == 1) 
+        if($spm['count_math'] == 1 && $spm['count_eng'] == 1 && $count_melayu == 1 && $count_sejarah == 1 && ($count_agama == 1 || $count_syariah == 1)
         && (($count_chemistry == 1 && $count_bio == 1) || $count_science == 1) && $spm['spm'] >= 7)
         {
             $status_spm = true;
@@ -1186,7 +1187,7 @@ class ApplicantController extends Controller
         }
 
         $stpm = $this->stpm($applicantt);
-        
+
         $count_bio = $stpm['app_stpm']->where('subject',964)->count();
         $count_chemistry = $stpm['app_stpm']->where('subject',952)->count();
         if(($stpm['count_math_m'] == 1 || $stpm['count_math_t'] == 1 ) && $count_bio == 1 && $stpm['count_eng'] == 1 && $count_chemistry == 1 && $stpm['stpm'] >= 4)
@@ -1197,7 +1198,7 @@ class ApplicantController extends Controller
         }
 
         $app_alevel = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',5)->where('grade_id','<=',39)->get();
-        $alevel = $app_alevel->count();   
+        $alevel = $app_alevel->count();
 
         $count_bio = $app_alevel->where('subject','A101')->count();
         $count_chemistry = $app_alevel->where('subject','A102')->count();
@@ -1248,12 +1249,12 @@ class ApplicantController extends Controller
                 $this->rejected($applicantt, $programme_code, $reason_failed);
             }if ($status_olevel == false){
                 $reason_failed = 'Fail Biology or Chemistry or Science or English or Mathematics or Less than 3 credit UEC';
-                $this->rejected($applicantt, $programme_code, $reason_failed);   
+                $this->rejected($applicantt, $programme_code, $reason_failed);
             }if($sace == false){
                 $reason_failed = 'Less than 50 SACE';
                 $this->rejected($applicantt, $programme_code, $reason_failed);
             }
-        }        
+        }
     }
 
     public function dia($applicantt) //Diploma in Accounting
@@ -1404,7 +1405,7 @@ class ApplicantController extends Controller
                 $this->rejected($applicantt, $programme_code, $reason_failed);
             }if ($status_uec == false){
                 $reason_failed = 'Fail Mathematics or Less than 4 credit UEC';
-                $this->rejected($applicantt, $programme_code, $reason_failed);   
+                $this->rejected($applicantt, $programme_code, $reason_failed);
             }if($skm == false){
                 $reason_failed = 'Fail Mathematics or Less than 2 credit SPM';
                 $this->rejected($applicantt, $programme_code, $reason_failed);
@@ -1412,7 +1413,7 @@ class ApplicantController extends Controller
                 $reason_failed = 'Less than 3 credit SPM';
                 $this->rejected($applicantt, $programme_code, $reason_failed);
             }
-        }         
+        }
     }
 
     public function cat($applicantt) //Certified Accounting Technician
@@ -1446,7 +1447,7 @@ class ApplicantController extends Controller
             $programme_code = 13;
             $reason_failed = 'Fail English or Mathematics or Bahasa Melayu or Less than 3 credit SPM';
             $this->rejected($applicantt, $programme_code, $reason_failed);
-        }        
+        }
     }
 
     public function micpa($applicantt) //The Malaysian Institute of Certified Public Accountant
@@ -1461,11 +1462,11 @@ class ApplicantController extends Controller
             $programme_code = 14;
             $reason_failed = 'CGPA less than 2.50';
             $this->rejected($applicantt, $programme_code, $reason_failed);
-            
+
         }
     }
 
-    public function acca($applicantt) //The Association of Certified Chartered Accountant 
+    public function acca($applicantt) //The Association of Certified Chartered Accountant
     {
         $status = [];
 
@@ -1486,7 +1487,7 @@ class ApplicantController extends Controller
         }
     }
 
-    public function aca($applicantt) 
+    public function aca($applicantt)
     {
         $status = [];
         $bachelors = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',14)->where('cgpa','>=',2.75)->count();
@@ -1496,7 +1497,7 @@ class ApplicantController extends Controller
         }else{
             $status_bach = false;
         }
-        
+
         $icaew = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',17)->count();
         if($icaew == 1)
         {
@@ -1520,6 +1521,60 @@ class ApplicantController extends Controller
                 $reason_failed = 'Fail ICAEW';
                 $this->rejected($applicantt, $programme_code, $reason_failed);
             }
+        }
+    }
+
+    public function pac551($applicantt) //The Association of Certified Chartered Accountant ACCA from Diploma
+    {
+        $status = [];
+
+        $muet = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',18)->where('cgpa','>=',2)->count();
+        $diploma = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',15)->where('cgpa','>=',3.00)->count();
+        if($muet >= 1 && $diploma >= 1)
+        {
+            $programme_code = 17;
+            $this->accepted($applicantt, $programme_code);
+        }else
+        {
+            $programme_code = 17;
+            $reason_failed = 'Does not exceed minimum requirement';
+            $this->rejected($applicantt, $programme_code, $reason_failed);
+        }
+    }
+
+    public function pac553($applicantt) //The Association of Certified Chartered Accountant ACCA from Degree Full Time
+    {
+        $status = [];
+
+        $muet = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',18)->where('cgpa','>=',2)->count();
+        $bachelors = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',14)->where('cgpa','>=',2.50)->count();
+        if($muet >= 1 && $bachelors >= 1)
+        {
+            $programme_code = 18;
+            $this->accepted($applicantt, $programme_code);
+        }else
+        {
+            $programme_code = 18;
+            $reason_failed = 'Does not exceed minimum requirement';
+            $this->rejected($applicantt, $programme_code, $reason_failed);
+        }
+    }
+
+    public function pac554($applicantt) //The Association of Certified Chartered Accountant ACCA from Degree Part Time
+    {
+        $status = [];
+
+        $muet = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',18)->where('cgpa','>=',2)->count();
+        $bachelors = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',14)->where('cgpa','>=',2.50)->count();
+        if($muet >= 1 && $bachelors >= 1)
+        {
+            $programme_code = 19;
+            $this->accepted($applicantt, $programme_code);
+        }else
+        {
+            $programme_code = 19;
+            $reason_failed = 'Does not exceed minimum requirement';
+            $this->rejected($applicantt, $programme_code, $reason_failed);
         }
     }
 
