@@ -70,29 +70,28 @@
                                     <tr>
                                         <td>Programme Code</td>
                                         <td>Programme Name</td>
+                                        <td>Intake Programme Description</td>
+                                        <td>Intake Type</td>
+                                        <td>Batch Code</td>
                                         <td>Intake Date</td>
                                         <td>Intake Time</td>
                                         <td>Intake Venue</td>
-                                        <td>Intake Type</td>
-                                        <td>Batch Code</td>
                                         <td>Status</td>
                                         <td>Action</td>
                                     </tr>
                                     @foreach($intake_detail as $intake_del)
-                                    <tr>
-                                        <td>{{$intake_del->programme->programme_code}}</td>
-                                        <td>{{$intake_del->programme->programme_name}}</td>
-                                        <td>{{$intake_del->intake_date}}</td>
-                                        <td>{{$intake_del->intake_time}}</td>
-                                        <td>{{$intake_del->intake_venue}}</td>
-                                        <td>{{$intake_del->intakeType->intake_type_code}}</td>
-                                        <td>{{$intake_del->batch_code}}</td>
-                                        <td>@if($intake_del->status== '1')
-                                                <p>Active</p>
-                                            @else
-                                                <p>Inactive</p>
-                                            @endif</td>
+                                    <tr class="data-row">
+                                        <td class="programme_code">{{$intake_del->programme->programme_code}}</td>
+                                        <td class="programme_name">{{$intake_del->programme->programme_name}}</td>
+                                        <td class="programme_desc">{{ $intake_del->intake_programme_description }}</td>
+                                        <td class="intake_type_code">{{$intake_del->intakeType->intake_type_code}}</td>
+                                        <td class="batch_code">{{$intake_del->batch_code}}</td>
+                                        <td class="intake_date">{{$intake_del->intake_date}}</td>
+                                        <td class="intake_time">{{$intake_del->intake_time}}</td>
+                                        <td class="intake_venue">{{$intake_del->intake_venue}}</td>
+                                        <td class="status">{{$intake_del->status}}</td>
                                         <td>
+                                            <button class="btn btn-primary" data-toggle="modal" data-id="{{$intake_del->id}}" id="edit">Edit</button>
                                             <button class="btn btn-danger deleteProgram" data-id="{{$intake_del->id}}" data-action="{{route('deleteProgramInfo', $intake_del->id)}}">Delete</button>
                                         </td>
                                     </tr>
@@ -160,17 +159,118 @@
                 </div>
             </div>
         </div>
+
+           <div class="modal fade" id="editModal" aria-hidden="true" >
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title"> Edit Program Info</h4>
+                        </div>
+                        <div class="modal-body">
+                            {!! Form::open(['action' => 'IntakeController@updateProgramInfo', 'method' => 'POST', 'id' => 'edit-form']) !!}
+                            @csrf
+                            <input name="id" id="program_id" hidden>
+                            <input name="intake_code" value="{{$intake['id']}}" hidden>
+                            <div class="form-group">
+                                {{Form::label('title', 'Program Code')}}
+                                <select name="intake_programme" id="programme_code" class="form-control">
+                                    @foreach($intake_detail as $in_prog)
+                                        <option value="{{ $in_prog->programme->id }}">{{ $in_prog->programme->programme_code }}</option>
+                                    @endforeach
+                                    @foreach($programme as $programmes)
+                                    <option value="{{ $programmes->id }}">{{ $programmes->programme_code }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                {{Form::label('title', 'Intake Description')}}
+                                {{Form::text('intake_programme_description', '', ['id' => 'programme_desc','class' => 'form-control','placeholder' => 'Intake Description'])}}
+                            </div>
+                            <div class="form-group">
+                                {{Form::label('title', 'Batch Code')}}
+                                {{Form::text('batch_code', '', ['class' => 'form-control', 'id' => 'batch_code' ,'placeholder' => 'Batch Code', 'required'])}}
+                            </div>
+                            <div class="form-group">
+                                {{Form::label('title', 'Intake Type')}}
+                                <select name="intake_type" id="intake_type_code" class="form-control">
+                                    @foreach($intake_detail as $in_type)
+                                        <option value="{{ $in_prog->intake_type }}">{{ $in_prog->intakeType->intake_type_code }}</option>
+                                    @endforeach
+                                    @foreach($intake_type as $intaketype)
+                                      <option value="{{ $intaketype->id }}">{{ $intaketype->intake_type_code }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-6">
+                                    {{Form::label('title', 'Intake Date')}}
+                                    {{Form::date('intake_date', '', ['class' => 'form-control', 'id' => 'intake_date' ,'placeholder' => 'Intake Date', 'required'])}}
+                                </div>
+                                <div class="col-md-6">
+                                    {{Form::label('title', 'Intake Time')}}
+                                    {{Form::time('intake_time', '', ['class' => 'form-control', 'id' => 'intake_time' ,'placeholder' => 'Intake Time', 'required'])}}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {{Form::label('title', 'Intake Venue')}}
+                                {{Form::text('intake_venue', '', ['class' => 'form-control', 'id' => 'intake_venue' ,'placeholder' => 'Intake Venue', 'required'])}}
+                            </div>
+                            <div class="modal-footer">
+                                {{Form::submit('Save', ['class' => 'btn btn-primary'])}}
+                                <button type="button" class="btn btn-secondary text-white" data-dismiss="modal">Close</button>
+                            </div>
+                            {!! Form::close() !!}
+                        </div>
+                    </div>
+                </div>
+            </div>
     </main>
 @endsection
 @section('script')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <script type="text/javascript">
          $('#new').click(function () {
             $('#crud-modal').modal('show');
         });
 
-        $(document).on('click', '.deleteProgram', function (e) {
-            e.preventDefault();
+        $(document).ready(function() {
+            $(document).on('click', "#edit", function() {
+                $(this).addClass('edit-item-trigger-clicked');
+                var options = {
+                    'backdrop': 'static'
+                };
+                $('#editModal').modal(options)
+            })
+            $('#editModal').on('show.bs.modal', function() {
+                var el = $(".edit-item-trigger-clicked");
+                var row = el.closest(".data-row");
+                var id = el.data('id');
+                var programme_code = row.children(".programme_code").text();
+                var programme_desc = row.children(".programme_desc").text();
+                var intake_date = row.children(".intake_date").text();
+                var intake_time = row.children(".intake_time").text();
+                var intake_venue = row.children(".intake_venue").text();
+                var intake_type_code = row.children(".intake_type_code").text();
+                var batch_code = row.children(".batch_code").text();
+                var status = row.children(".status").text();
+                $("#program_id").val(id);
+                $("#programme_code").val(programme_code);
+                $("#programme_desc").val(programme_desc);
+                $("#intake_date").val(intake_date);
+                $("#intake_time").val(intake_time);
+                $("#intake_venue").val(intake_venue);
+                $("#intake_type_code").val(intake_type_code);
+                $("#batch_code").val(batch_code);
+                $("#status").val(status);
+            })
+            $('#editModal').on('hide.bs.modal', function() {
+                $('.edit-item-trigger-clicked').removeClass('edit-item-trigger-clicked')
+                $("#edit-form").trigger("reset");
+            })
+        });
+
+        $('.deleteProgram').click(function() {
+            console.log('asdaa');
+            // Swal.fire('Any fool can use a computer');
             var id = $(this).data('id');
             var url = '{{route("deleteProgramInfo", "id")}}';
             url = url.replace('id', id );
@@ -199,6 +299,8 @@
                     });
                 }
             })
-        });
+        })
+
+
     </script>
 @endsection

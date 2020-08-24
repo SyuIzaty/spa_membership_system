@@ -81,6 +81,7 @@ Route::post('/data-allintake', 'IntakeController@data_allintake');
 Route::post('createprograminfo','IntakeController@createProgramInfo');
 Route::delete('deleteProgramInfo/{id}', 'IntakeController@deleteProgramInfo')->name('deleteProgramInfo');
 Route::get('/intake-info','IntakeController@intakeInfo');
+Route::post('updateProgramInfo', 'IntakeController@updateProgramInfo');
 Route::get('/letter', 'IntakeController@letter')->name('letter');
 
 //OFFER LETTER

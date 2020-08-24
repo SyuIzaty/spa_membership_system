@@ -205,4 +205,21 @@ class IntakeController extends Controller
         $pdf = PDF::loadView('intake.pdf', compact('applicant', 'programme', 'intakes'));
         return $pdf->stream('Offer Letter_' . $request->applicant_name . '.pdf');
     }
+
+    public function updateProgramInfo(Request $request)
+    {
+         $this->validate($request, [
+             'intake_programme' => 'required',
+             'intake_programme_description' => 'required',
+             'intake_date' => 'required',
+             'intake_time' => 'required',
+             'intake_venue' => 'required',
+             'intake_type' =>'required',
+             'batch_code' =>'required',
+         ]);
+
+         IntakeDetail::find($request->id)->update($request->all());
+
+         return $this->showProgramInfo($request->intake_code);
+    }
 }

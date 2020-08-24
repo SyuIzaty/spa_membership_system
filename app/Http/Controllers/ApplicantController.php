@@ -1601,6 +1601,9 @@ class ApplicantController extends Controller
             $this->micpa($applicantt);
             $this->acca($applicantt);
             $this->aca($applicantt);
+            $this->pac551($applicantt);
+            $this->pac554($applicantt);
+            $this->pac553($applicantt);
 
         }
         return $this->indexs();
