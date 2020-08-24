@@ -43,7 +43,7 @@
                                     <th>Campus</th>
                                     <th>Zone</th>
                                     {{-- <th>Description</th> --}}
-                                    <th>Status</th>
+                                    <th>Active</th>
                                     <th>Action</th>
                                 </tr>
                                 <tr>

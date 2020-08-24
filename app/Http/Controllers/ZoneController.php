@@ -123,10 +123,10 @@ class ZoneController extends Controller
     public function validateRequestStore()
     {
         return request()->validate([
-            'zone_code'           => 'required|min:3|max:10|unique:zones,zone_code',   
+            'zone_code'           => 'required|min:1|max:10|unique:zones,zone_code',   
             'campus_id'           => 'required',                    
-            'name'                => 'required|min:3|max:100',  
-            'description'         => 'required|min:5|max:1000',    
+            'name'                => 'required|min:1|max:100',  
+            'description'         => 'required|min:1|max:1000',    
             'active'              => 'required', 
         ]);
     }
@@ -134,10 +134,10 @@ class ZoneController extends Controller
     public function validateRequestUpdate(Zone $zone)
     {
         return request()->validate([
-            'zone_code'           => 'required|min:3|max:10|unique:zones,zone_code,'.$zone->id,   
+            'zone_code'           => 'required|min:1|max:10|unique:zones,zone_code,'.$zone->id,   
             'campus_id'           => 'required',                    
-            'name'                => 'required|min:3|max:100',  
-            'description'         => 'required|min:5|max:1000',    
+            'name'                => 'required|min:1|max:100',  
+            'description'         => 'required|min:1|max:1000',    
             'active'              => 'required', 
         ]);
     }

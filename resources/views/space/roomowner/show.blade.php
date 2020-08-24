@@ -35,34 +35,42 @@
                         <table id="roomowner" class="table table-bordered table-hover table-striped w-100">
                             <thead>
                                 <tr>
-                                    <td width="21%"><b>IMAGE :</b></td>
-                                    <td colspan="2"><center><img src="{{ asset('storage/space/'.$roomowner->image) }}" style="height: 200px; width: 200px;"></center></td>
+                                    {{-- <td width="21%"><b>IMAGE :</b></td> --}}
+                                    {{-- <td width="21%"><b> </b></td> --}}
+                                    <td colspan="10"><center><img src="{{ asset('storage/space/'.$roomowner->image) }}" style="height: 200px; width: 200px;"></center></td>
                                 </tr>
                                 <tr>
                                     <td width="21%"><b>OWNER NAME :</b></td>
-                                    <td colspan="2">{{ $roomowner->name }}</td>
+                                    <td colspan="5">{{ $roomowner->name }}</td>
+                                    <td width="21%"><b>PHONE NUMBER :</b></td>
+                                    <td colspan="5">{{ $roomowner->phone_number }}</td>
                                 </tr>
-                                <tr>
+                                {{-- <tr>
                                     <td width="21%"><b>PHONE NUMBER :</b></td>
                                     <td colspan="2">{{ $roomowner->phone_number }}</td>
-                                </tr>
+                                </tr> --}}
                                 <tr>
                                     <td width="21%"><b>EMAIL :</b></td>
-                                    <td colspan="2">{{ $roomowner->email }}</td>
-                                </tr>
-                                <tr>
+                                    <td colspan="5">{{ $roomowner->email }}</td>
                                     <td width="21%"><b>DATE OF BIRTH :</b></td>
-                                    <td colspan="2">{{ date('jS F Y', strtotime($roomowner->dateofbirth)) }}</td>
+                                    <td colspan="5">{{ date('jS F Y', strtotime($roomowner->dateofbirth)) }}</td>
                                     {{-- <td>{{ date('d-M-y D', strtotime($expenses->date)) }}</td> --}}
                                 </tr>
+                                {{-- <tr>
+                                    <td width="21%"><b>DATE OF BIRTH :</b></td>
+                                    <td colspan="2">{{ date('jS F Y', strtotime($roomowner->dateofbirth)) }}</td>
+                                    <td>{{ date('d-M-y D', strtotime($expenses->date)) }}</td>
+                                </tr> --}}
                                 <tr>
                                     <td width="21%"><b>GENDER :</b></td>
-                                    <td colspan="2">{{ ucfirst($roomowner->gender) }}</td> {{--ucfirst() to capitalize first word, strtoupper() for uppercase --}}
+                                    <td colspan="5">{{ ucfirst($roomowner->gender) }}</td> {{--ucfirst() to capitalize first word, strtoupper() for uppercase --}}
+                                    <td width="21%"><b>ACTIVE STATUS :</b></td>
+                                    <td colspan="5">{{ $roomowner->active }}</td>
                                 </tr>
-                                <tr>
+                                {{-- <tr>
                                     <td width="21%"><b>ACTIVE STATUS :</b></td>
                                     <td colspan="2">{{ $roomowner->active }}</td>
-                                </tr>
+                                </tr> --}}
                             </thead>
                         </table>
                     </div>

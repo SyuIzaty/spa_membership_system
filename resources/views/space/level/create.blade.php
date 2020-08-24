@@ -35,17 +35,29 @@
                         <form action="{{ route('level.store') }}" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <p><span class="text-danger">*</span> Required fields</p>
+                            <table id="campus" class="table table-bordered table-hover table-striped w-100">
+                                <thead>
+                                
+                                <tr>
                                 <div class="form-group">
-                                    <label class="form-label" for="level_code">Code <span class="text-danger">*</span></label>
-                                    <input value="{{ old('level_code') }}" class="form-control @error('level_code') is-invalid @enderror" id="level_code" name="level_code">
+                                    <td width="15%"><label class="form-label" for="level_code">Code <span class="text-danger">*</span></label></td>
+                                    <td colspan="2"><input value="{{ old('level_code') }}" class="form-control @error('level_code') is-invalid @enderror" id="level_code" name="level_code">
                                         @error('level_code')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong> *{{ $message }} </strong>
                                             </span>
-                                        @enderror
+                                        @enderror</td>
+                                    <td width="15%"><label class="form-label" for="name">Name <span class="text-danger">*</span></label></td>
+                                    <td colspan="10"><input value="{{ old('name') }}" class="form-control @error('name') is-invalid @enderror" id="name" name="name">
+                                        @error('name')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong> *{{ $message }} </strong>
+                                                </span>
+                                        @enderror</td>
                                 </div>
+                                </tr>
 
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <label class="form-label" for="name">Name <span class="text-danger">*</span></label>
                                     <input value="{{ old('name') }}" class="form-control @error('name') is-invalid @enderror" id="name" name="name">
                                         @error('name')
@@ -53,14 +65,15 @@
                                                 <strong> *{{ $message }} </strong>
                                             </span>
                                         @enderror
-                                </div>
+                                </div> --}}
 
+                                <tr>
                                 <div class="form-group">
-                                    <label class="form-label" for="campus_id">Campus <span class="text-danger">*</span></label>
-                                    <select name="campus_id" id="campus_id" class="form-control @error('campus_id') is-invalid @enderror">
-                                        <option value="">Select Campus</option>
+                                    <td width="15%"><label class="form-label" for="campus_id">Campus <span class="text-danger">*</span></label></td>
+                                    <td colspan="10"><select name="campus_id" id="campus_id" class="campus form-control @error('campus_id') is-invalid @enderror select2">
+                                        <option value="">-- Select Campus --</option>
                                         @foreach ($campus as $campus) 
-                                            <option value="{{ $campus->id }}" {{ $campus->id == $level->level_id ? 'selected' : '' }}>
+                                            <option value="{{ $campus->id }}" {{ old('campus_id') ? 'selected' : '' }}>
                                                 {{ $campus->name }}</option>
                                         @endforeach
                                      </select>
@@ -68,55 +81,53 @@
                                         <span class="invalid-feedback" role="alert">
                                             <strong> *{{ $message }} </strong>
                                         </span>
-                                    @enderror
+                                    @enderror</td>
                                 </div>
+                                </tr>
 
+                                <tr>
                                 <div class="form-group">
-                                    <label class="form-label" for="zone_id">Zone <span class="text-danger">*</span></label>
-                                    <select name="zone_id" id="zone_id" class="form-control @error('zone_id') is-invalid @enderror">
-                                        <option value="">Select Zone</option>
-                                        @foreach ($zone as $zones) 
-                                            <option value="{{ $zones->id }}" {{ $zones->id == $level->level_id ? 'selected' : '' }}>
-                                                {{ $zones->name }}</option>
-                                        @endforeach
+                                    <td width="15%"><label class="form-label" for="zone_id">Zone <span class="text-danger">*</span></label></td>
+                                    <td colspan="10"><select name="zone_id" id="zone_id" class="zone form-control @error('zone_id') is-invalid @enderror select2">
                                      </select>
                                     @error('zone_id')
                                         <span class="invalid-feedback" role="alert">
                                             <strong> *{{ $message }} </strong>
                                         </span>
-                                    @enderror
+                                    @enderror</td>
                                 </div>
+                                </tr>
 
+                                <tr>
                                 <div class="form-group">
-                                    <label class="form-label" for="zone_id">Building <span class="text-danger">*</span></label>
-                                    <select name="building_id" id="building_id" class="form-control @error('building_id') is-invalid @enderror">
-                                        <option value="">Select Building</option>
-                                        @foreach ($building as $buildings) 
-                                            <option value="{{ $buildings->id }}" {{ $buildings->id == $level->level_id ? 'selected' : '' }}>
-                                                {{ $buildings->name }}</option>
-                                        @endforeach
+                                    <td width="15%"><label class="form-label" for="building_id">Building <span class="text-danger">*</span></label></td>
+                                    <td colspan="10"><select name="building_id" id="building_id" class="building form-control @error('building_id') is-invalid @enderror select2">
                                      </select>
                                     @error('building_id')
                                         <span class="invalid-feedback" role="alert">
                                             <strong> *{{ $message }} </strong>
                                         </span>
-                                    @enderror
+                                    @enderror</td>
                                 </div>
+                                </tr>
 
+                                <tr>
                                 <div class="form-group">
-                                    <label class="form-label" for="description">Description <span class="text-danger">*</span></label>
-                                    <input value="{{ old('description') }}" class="form-control @error('description') is-invalid @enderror" id="description" name="description">
+                                    <td width="15%"><label class="form-label" for="description">Description <span class="text-danger">*</span></label></td>
+                                    <td colspan="10"><input value="{{ old('description') }}" class="form-control @error('description') is-invalid @enderror" id="description" name="description">
                                      @error('description')
                                      <span class="invalid-feedback" role="alert">
                                          <strong> *{{ $message }} </strong>
                                      </span>
-                                     @enderror
+                                     @enderror</td>
                                 </div>
+                                </tr>
 
+                                <tr>
                                 <div class="form-group">
-                                    <label class="form-label" for="active">Active <span class="text-danger">*</span></label>
-                                    <select class="form-control @error('active') is-invalid @enderror" id="active" name="active">
-                                        <option value="">Please Select</option>
+                                    <td width="15%"><label class="form-label" for="active">Active <span class="text-danger">*</span></label></td>
+                                    <td colspan="10"><select class="form-control @error('active') is-invalid @enderror" id="active" name="active">
+                                        <option value="">-- Select Active Status --</option>
                                         <option value="0" {{ old('active') == 'No' ? 'selected':''}} >No</option>
                                         <option value="1" {{ old('active') == 'Yes' ? 'selected':''}} >Yes</option>
                                     </select>
@@ -124,12 +135,15 @@
                                     <span class="invalid-feedback" role="alert">
                                         <strong> *{{ $message }} </strong>
                                     </span>
-                                @enderror
+                                @enderror</td>
                                 </div>
+                                </tr>
 
-                                <button type="submit" class="btn btn-primary ml-auto"><i class="fal fa-save"></i> Save</button>	
-                                <button type="reset" class="btn btn-danger ml-auto"><i class="fal fa-redo"></i> Reset</button>
-                                <a href="{{ URL::route('level.index') }}" onclick="return confirm('Are you sure to discard data?')" class="btn btn-success ml-auto"><i class="fal fa-trash-alt"></i> Discard</a>
+                            </thead>
+                        </table>
+                                <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>	
+                                <button style="margin-right:5px" type="reset" class="btn btn-danger ml-auto float-right"><i class="fal fa-redo"></i> Reset</button>
+                                <a style="margin-right:5px" href="{{ URL::route('level.index') }}" onclick="return confirm('Are you sure to discard data?')" class="btn btn-success ml-auto float-right"><i class="fal fa-trash-alt"></i> Discard</a><br><br>
                         </form>
                     </div>
                 </div>
@@ -142,6 +156,77 @@
 
 @section('script')
 
+<script>
 
+    $(function () {
+
+        // Start for Dynamic Drop down with ajax jquery
+        if($('.campus').val()!=''){
+            updateZone($('.campus'));
+        }
+        $(document).on('change','.campus',function(){
+            updateZone($(this));
+        });
+
+        function updateZone(elem){
+        var campusid=elem.val();
+        var op=" "; 
+
+        $.ajax({
+            type:'get',
+            url:'{!!URL::to('findzone')!!}',
+            data:{'id':campusid},
+            success:function(data)
+            {
+                op+='<option value="">-- Select Zone --</option>';
+                for (var i=0; i<data.length; i++)
+                {
+                    var selected = (data[i].id=="{{old('zone_id', $level->zone_id)}}") ? "selected='selected'" : '';
+                    op+='<option value="'+data[i].id+'" '+selected+'>'+data[i].name+'</option>';
+                }
+
+                $('.zone').html(op);
+            },
+            error:function(){
+                console.log('success');
+            },
+        });
+    }
+
+    if($('.zone').val()!=''){
+        updateBuilding($('.zone'));
+    }
+    $(document).on('change','.zone',function(){
+        updateBuilding($(this));
+    });
+
+    function updateBuilding(elem){
+    var zoneid=elem.val();
+    var op2=" "; 
+
+    $.ajax({
+        type:'get',
+        url:'{!!URL::to('findbuilding')!!}',
+        data:{'id':zoneid},
+        success:function(data2)
+        {
+            // op2+='<option value="">-- Select Building --</option>';
+            for (var i=0; i<data2.length; i++)
+            {
+                var selected = (data2[i].id=="{{old('building_id', $level->building_id)}}") ? "selected='selected'" : '';
+                op2+='<option value="'+data2[i].id+'" '+selected+'>'+data2[i].name+'</option>';
+            }
+
+            $('.building').html(op2);
+        },
+        // error:function(){
+        //     console.log('success');
+        // },
+    });
+    }
+
+    })
+
+</script>
 
 @endsection

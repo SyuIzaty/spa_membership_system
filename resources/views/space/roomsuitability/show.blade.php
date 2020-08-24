@@ -37,18 +37,22 @@
                                 <tr>
                                     <td width="21%"><b>ROOM SUITABILITY CODE :</b></td>
                                     <td colspan="2">{{ $roomsuitability->code }}</td>
+                                    <td width="21%"><b>ROOM SUITABILITY NAME :</b></td>
+                                    <td colspan="5">{{ $roomsuitability->name }}</td>
                                 </tr>
-                                <tr>
+                                {{-- <tr>
                                     <td width="21%"><b>ROOM SUITABILITY NAME :</b></td>
                                     <td colspan="2">{{ $roomsuitability->name }}</td>
                                 </tr>
-                                <tr>
+                                <tr> --}}
                                     <td width="21%"><b>DESCRIPTION :</b></td>
-                                    <td colspan="2">{{ $roomsuitability->description }}</td>
+                                    <td colspan="7">{{ $roomsuitability->description }}</td>
                                 </tr>
                                 <tr>
+                                    <td width="21%"><b>CAMPUS :</b></td>
+                                    <td colspan="2">{{ $roomsuitability->roomtype->name }}</td>
                                     <td width="21%"><b>ACTIVE STATUS :</b></td>
-                                    <td colspan="2">{{ $roomsuitability->active }}</td>
+                                    <td colspan="5">{{ $roomsuitability->active }}</td>
                                 </tr>
                             </thead>
                         </table>

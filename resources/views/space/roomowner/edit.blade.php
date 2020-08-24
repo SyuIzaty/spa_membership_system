@@ -36,63 +36,99 @@
                             @method('PUT')
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <p><span class="text-danger">*</span> Required fields</p>
+                            <table id="campus" class="table table-bordered table-hover table-striped w-100">
+                              <thead>
+
+                            <tr>
                                 <div class="form-group">
-                                    <label class="form-label" for="name">Name <span class="text-danger">*</span></label>
-                                    <input class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ $roomowner->name }}">
-                                        @error('name')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong> *{{ $message }} </strong>
-                                            </span>
-                                        @enderror
+                                    <td width="15%"><label class="form-label" for="name">Name</label></td>
+                                        <td colspan="5"><input class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ $roomowner->name }}">
+                                            @error('name')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong> *{{ $message }} </strong>
+                                                </span>
+                                            @enderror</td>
+                                    <td width="15%"><label class="form-label" for="phone_number">Phone Number</label></td>
+                                        <td colspan="5"><input class="form-control @error('phone_number') is-invalid @enderror" id="phone_number" name="phone_number" value="{{ $roomowner->phone_number }}">
+                                            @error('phone_number')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong> *{{ $message }} </strong>
+                                                </span>
+                                            @enderror</td>
                                 </div>
 
-                                <div class="form-group">
-                                    <label class="form-label" for="phone_number">Phone Number <span class="text-danger">*</span></label>
+                                {{-- <div class="form-group">
+                                    <label class="form-label" for="phone_number">Phone Number</label>
                                     <input class="form-control @error('phone_number') is-invalid @enderror" id="phone_number" name="phone_number" value="{{ $roomowner->phone_number }}">
                                         @error('phone_number')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong> *{{ $message }} </strong>
                                             </span>
                                         @enderror
-                                </div>
+                                </div> --}}
 
+                                <tr>
                                 <div class="form-group">
-                                    <label class="form-label" for="email">Email <span class="text-danger">*</span></label>
-                                    <input class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ $roomowner->email }}">
-                                        @error('email')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong> *{{ $message }} </strong>
-                                            </span>
-                                        @enderror
+                                    <td width="15%"><label class="form-label" for="email">Email</label></td>
+                                        <td colspan="5"><input class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ $roomowner->email }}">
+                                            @error('email')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong> *{{ $message }} </strong>
+                                                </span>
+                                            @enderror</td>
+                                    <td width="15%"><label class="form-label" for="dateofbirth">Date of Birth</label></td>
+                                        <td colspan="5"><input type="date" class="form-control @error('dateofbirth') is-invalid @enderror" id="dateofbirth" name="dateofbirth" value="{{ $roomowner->dateofbirth }}">
+                                            @error('dateofbirth')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong> *{{ $message }} </strong>
+                                                </span>
+                                            @enderror</td>
                                 </div>
+                                </tr>
 
+                                {{-- <tr>
                                 <div class="form-group">
-                                    <label class="form-label" for="dateofbirth">Date of Birth <span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control @error('dateofbirth') is-invalid @enderror" id="dateofbirth" name="dateofbirth" value="{{ $roomowner->dateofbirth }}">
-                                        @error('dateofbirth')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong> *{{ $message }} </strong>
-                                            </span>
-                                        @enderror
+                                    <td width="15%"><label class="form-label" for="dateofbirth">Date of Birth</label></td>
+                                        <td colspan="10"><input type="date" class="form-control @error('dateofbirth') is-invalid @enderror" id="dateofbirth" name="dateofbirth" value="{{ $roomowner->dateofbirth }}">
+                                            @error('dateofbirth')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong> *{{ $message }} </strong>
+                                                </span>
+                                            @enderror</td>
                                 </div>
+                                </tr> --}}
                                 
+                                <tr>
                                 <div class="form-group">
-                                    <label class="form-label" for="gender">Gender <span class="text-danger">*</span></label>
-                                    <select class="form-control" id="gender" name="gender" class="form-control @error('gender') is-invalid @enderror">
-                                        <option value="">Please Select</option>
-                                        <option value="male" {{ old('gender', $roomowner->gender) == 'male' ? 'selected':''}}>Male</option>
-                                        <option value="female" {{ old('gender', $roomowner->gender) == 'female' ? 'selected':''}}>Female</option>
-                                    </select>
-                                        @error('gender')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong> *{{ $message }} </strong>
-                                            </span>
-                                        @enderror
+                                    <td width="15%"><label class="form-label" for="gender">Gender</label></td>
+                                        <td colspan="5"><select class="form-control" id="gender" name="gender" class="form-control @error('gender') is-invalid @enderror">
+                                            <option value="">Please Select</option>
+                                            <option value="male" {{ old('gender', $roomowner->gender) == 'male' ? 'selected':''}}>Male</option>
+                                            <option value="female" {{ old('gender', $roomowner->gender) == 'female' ? 'selected':''}}>Female</option>
+                                        </select>
+                                            @error('gender')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong> *{{ $message }} </strong>
+                                                </span>
+                                            @enderror</td>
+                                    <td width="15%"><label class="form-label" for="active">Active</label></td>
+                                        <td colspan="5"><select class="form-control @error('active') is-invalid @enderror" id="active" name="active">
+                                            <option value="">Please Select</option>
+                                            <option value="0" {{ old('active', $roomowner->active) == 'No' ? 'selected':''}} >No</option>
+                                            <option value="1" {{ old('active', $roomowner->active) == 'Yes' ? 'selected':''}} >Yes</option>
+                                        </select>
+                                        @error('active')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong> *{{ $message }} </strong>
+                                        </span>
+                                    @enderror</td>
                                 </div>
+                                </tr>
 
+                                {{-- <tr>
                                 <div class="form-group">
-                                    <label class="form-label" for="active">Active <span class="text-danger">*</span></label>
-                                    <select class="form-control @error('active') is-invalid @enderror" id="active" name="active">
+                                    <td width="15%"><label class="form-label" for="active">Active</label></td>
+                                    <td colspan="10"><select class="form-control @error('active') is-invalid @enderror" id="active" name="active">
                                         <option value="">Please Select</option>
                                         <option value="0" {{ old('active', $roomowner->active) == 'No' ? 'selected':''}} >No</option>
                                         <option value="1" {{ old('active', $roomowner->active) == 'Yes' ? 'selected':''}} >Yes</option>
@@ -101,12 +137,14 @@
                                     <span class="invalid-feedback" role="alert">
                                         <strong> *{{ $message }} </strong>
                                     </span>
-                                @enderror
+                                @enderror</td>
                                 </div>
+                                </tr> --}}
 
+                                <tr>
                                 <div class="form-group">
-                                    <label class="form-label" for="image">Image <span class="text-danger">*</span></label>
-                                    <div class="col-sm-6"><input type="file" id="image" name="image"></div><br>
+                                    <td width="15%"><label class="form-label" for="image">Image</label></td>
+                                    <td colspan="10"><div class="col-sm-6"><input type="file" id="image" name="image"></div><br>
                                     <div class="clearfix"></div>
                                     @if($roomowner->image)
                                     <div class="col-md-3"></div>
@@ -114,8 +152,11 @@
                                         <img src="{{ asset('storage/space/'.$roomowner->image) }}" style="width: 150px;">
                                     </div>
                                     <div class="clearfix"></div>
-                                    @endif
+                                    @endif</td>
                                   </div>
+                                </tr>
+                            </thead>
+                            </table>
 
                                <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted">
                                     <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Update</button> 

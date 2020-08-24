@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Redirect;
 use App\Roomfacility;
+use App\Roomtype;
+use App\Roomsuitability;
 use Illuminate\Http\Request;
 
 class RoomFacilityController extends Controller
@@ -13,9 +15,11 @@ class RoomFacilityController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Roomfacility $roomfacility)
     {
-        $arr['roomfacility'] = Roomfacility::all();
+        $arr['roomfacility'] = $roomfacility;
+        $arr['roomtype'] = Roomtype::all();
+        $arr['roomsuitability'] = Roomsuitability::all();
         return view('space.roomfacility.index')->with($arr);
     }
 
@@ -26,7 +30,10 @@ class RoomFacilityController extends Controller
      */
     public function create()
     {
-        return view('space.roomfacility.create');
+        $roomtype = Roomtype::where('active', 1)->get();
+        $roomsuitability = Roomsuitability::where('active', 1)->get();
+        $roomfacility = new Roomfacility();
+        return view('space.roomfacility.create', compact('roomtype', 'roomsuitability', 'roomfacility'));
     }
 
     /**
@@ -50,6 +57,8 @@ class RoomFacilityController extends Controller
     public function show(Roomfacility $roomfacility)
     {
         $arr['roomfacility'] = $roomfacility;
+        $arr['roomtype'] = Roomtype::all();
+        $arr['roomsuitability'] = Roomsuitability::all();
         return view('space.roomfacility.show')->with($arr);
     }
 
@@ -61,7 +70,10 @@ class RoomFacilityController extends Controller
      */
     public function edit(Roomfacility $roomfacility)
     {
-        return view('space.roomfacility.edit',compact('roomfacility'));
+        $arr['roomfacility'] = $roomfacility;
+        $arr['roomtype'] = Roomtype::where('active', 1)->get();
+        $arr['roomsuitability'] = Roomsuitability::where('active', 1)->get();
+        return view('space.roomfacility.edit')->with($arr);
     }
 
     /**
@@ -83,10 +95,11 @@ class RoomFacilityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Roomfacility $roomfacility)
+    public function destroy($id)
     {
+        $roomfacility = Roomfacility::find($id);
         $roomfacility->delete();
-        return redirect()->route('space.roomfacility.index');
+        return Redirect::route('space.roomfacility.index');
     }
 
     public function data_roomfacility_list()
@@ -100,6 +113,18 @@ class RoomFacilityController extends Controller
                     <a href="/space/roomfacility/'.$roomfacility->id.'" class="btn btn-sm btn-info btn-view"><i class="fal fa-eye"></i> View</a>
                     <button class="btn btn-sm btn-danger btn-delete" data-remote="/space/roomfacility/' . $roomfacility->id . '"><i class="fal fa-trash"></i> Delete</button>';
         })
+
+        ->editColumn('roomtype_id', function ($roomfacility) {
+            
+            return $roomfacility->roomtype->name;
+          
+        })
+
+        ->editColumn('roomsuitability_id', function ($roomfacility) {
+            
+            return $roomfacility->roomsuitability->name;
+          
+        })
             
         ->make(true);
     }
@@ -107,9 +132,11 @@ class RoomFacilityController extends Controller
     public function validateRequestStore()
     {
         return request()->validate([
-            'code'                => 'required|min:3|max:10|unique:roomfacilities,code',                        
-            'name'                => 'required|min:3|max:100',  
-            'description'         => 'required|min:5|max:1000',    
+            'code'                => 'required|min:1|max:10|unique:roomfacilities,code',                        
+            'roomtype_id'         => 'required',  
+            'roomsuitability_id'  => 'required',          
+            'name'                => 'required|min:1|max:100',  
+            'description'         => 'required|min:1|max:1000',    
             'active'              => 'required', 
         ]);
     }
@@ -117,11 +144,22 @@ class RoomFacilityController extends Controller
     public function validateRequestUpdate(Roomfacility $roomfacility)
     {
         return request()->validate([
-            'code'                => 'required|min:3|max:10|unique:roomfacilities,code,'.$roomfacility->id,                        
-            'name'                => 'required|min:3|max:100',  
-            'description'         => 'required|min:5|max:1000',    
+            'code'                => 'required|min:1|max:10|unique:roomfacilities,code,'.$roomfacility->id,                        
+            'roomtype_id'         => 'required',  
+            'roomsuitability_id'  => 'required',          
+            'name'                => 'required|min:1|max:100',  
+            'description'         => 'required|min:1|max:1000',    
             'active'              => 'required', 
         ]);
+    }
+
+    public function findroomsuitability(Request $request){ //RSuitability
+        $data = Roomsuitability::select('name', 'id')
+                ->where('roomtype_id',$request->id)
+                ->where('active', 1)
+                ->take(100)->get();
+
+        return response()->json($data);
     }
 
 }

@@ -37,29 +37,34 @@
                                 <tr>
                                     <td width="21%"><b>BUILDING CODE :</b></td>
                                     <td colspan="2">{{ $building->building_code }}</td>
-                                </tr>
-                                <tr>
                                     <td width="21%"><b>BUILDING NAME :</b></td>
                                     <td colspan="2">{{ $building->name }}</td>
                                 </tr>
-                                <tr>
-                                    <td width="21%"><b>DESCRIPTION :</b></td>
-                                    <td colspan="2">{{ $building->description }}</td>
-                                </tr>
-
+                                {{-- <tr>
+                                    <td width="21%"><b>BUILDING NAME :</b></td>
+                                    <td colspan="2">{{ $building->name }}</td>
+                                </tr> --}}
+                                
                                 <tr>
                                     <td width="21%"><b>CAMPUS :</b></td>
                                     <td colspan="2">{{ $building->campus->name }}</td>
-                                </tr>
-
-                                <tr>
                                     <td width="21%"><b>ZONE :</b></td>
                                     <td colspan="2">{{ $building->zone->name }}</td>
                                 </tr>
 
                                 <tr>
+                                    <td width="21%"><b>DESCRIPTION :</b></td>
+                                    <td colspan="5">{{ $building->description }}</td>
+                                </tr>
+
+                                {{-- <tr>
+                                    <td width="21%"><b>ZONE :</b></td>
+                                    <td colspan="2">{{ $building->zone->name }}</td>
+                                </tr> --}}
+
+                                <tr>
                                     <td width="21%"><b>ACTIVE STATUS :</b></td>
-                                    <td colspan="2">{{ $building->active }}</td>
+                                    <td colspan="5">{{ $building->active }}</td>
                                 </tr>
                             </thead>
                         </table>

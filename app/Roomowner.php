@@ -11,7 +11,7 @@ class Roomowner extends Model
     
     protected $fillable = ['name','phone_number','email','dateofbirth','gender','active','image'];
     protected $table = 'roomowners';
-
+    
     protected $attributes = [
         'active' => 1
     ];
@@ -24,12 +24,12 @@ class Roomowner extends Model
         ] [$attribute];
     }
 
-    public function scopeYes($query)
+    public function scopeActive($query)
     {
     	return $query->where('active', 1);
     }
 
-    public function scopeNo($query)
+    public function scopeInactive($query)
     {
     	return $query->where('active', 0);
     }

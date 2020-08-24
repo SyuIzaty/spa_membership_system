@@ -35,32 +35,38 @@
                         <table id="campus" class="table table-bordered table-hover table-striped w-100">
                             <thead>
                                 <tr>
-                                    <td width="21%"><b>CAMPUS CODE :</b></td>
+                                    <td width="15%"><b>CAMPUS CODE :</b></td>
                                     <td colspan="2">{{ $campus->code }}</td>
+                                    <td width="15%"><b>CAMPUS NAME :</b></td>
+                                    <td colspan="10">{{ $campus->name }}</td>
                                 </tr>
-                                <tr>
+                                {{-- <tr>
                                     <td width="21%"><b>CAMPUS NAME :</b></td>
                                     <td colspan="2">{{ $campus->name }}</td>
-                                </tr>
+                                </tr> --}}
                                 <tr>
-                                    <td width="21%"><b>DESCRIPTION :</b></td>
-                                    <td colspan="2">{{ $campus->description }}</td>
+                                    <td width="15%"><b>DESCRIPTION :</b></td>
+                                    <td colspan="10">{{ $campus->description }}</td>
                                 </tr>
                                 <tr>
                                     <td width="21%"><b>ADDRESS :</b></td>
-                                    <td colspan="2">{{ $campus->address1 }} {{ $campus->address2 }}</td>
+                                    <td colspan="10">{{ $campus->address1 }} {{ $campus->address2 }}</td>
                                 </tr>
                                 <tr>
-                                    <td width="21%"><b></b></td>
-                                    <td colspan="2">{{ $campus->postcode }} {{ $campus->city }}</td>
-                                </tr>
-                                <tr>
-                                    <td width="21%"><b></b></td>
+                                    <td width="10%"><b>POSTCODE :</b></td>
+                                    <td colspan="2">{{ $campus->postcode }}</td>
+                                    <td width="10%"><b>CITY :</b></td>
+                                    <td colspan="2">{{ $campus->city }}</td>
+                                    <td width="10%"><b>STATE :</b></td>
                                     <td colspan="2">{{ $campus->state_id }}</td>
                                 </tr>
+                                {{-- <tr>
+                                    <td width="21%"><b></b></td>
+                                    <td colspan="2">{{ $campus->state_id }}</td>
+                                </tr> --}}
                                 <tr>
-                                    <td width="21%"><b>ACTIVE STATUS :</b></td>
-                                    <td colspan="2">{{ $campus->active }}</td>
+                                    <td width="15%"><b>ACTIVE STATUS :</b></td>
+                                    <td colspan="10">{{ $campus->active }}</td>
                                 </tr>
                             </thead>
                         </table>

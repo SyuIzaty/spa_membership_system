@@ -36,54 +36,74 @@
                             @method('PUT')
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <p><span class="text-danger">*</span> Required fields</p>
-                                <div class="form-group">
-                                    <label class="form-label" for="code">Code <span class="text-danger">*</span></label>
-                                    <input class="form-control @error('code') is-invalid @enderror" id="code" name="code" value="{{ $roomtype->code }}">
-                                        @error('code')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong> *{{ $message }} </strong>
-                                            </span>
-                                        @enderror
-                                </div>
+                            <table id="campus" class="table table-bordered table-hover table-striped w-100">
+                              <thead>
 
+                            <tr>
                                 <div class="form-group">
-                                    <label class="form-label" for="name">Name <span class="text-danger">*</span></label>
+                                    <td width="15%"> <label class="form-label" for="code">Code <span class="text-danger">*</span></label></td>
+                                        <td colspan="2"><input class="form-control @error('code') is-invalid @enderror" id="code" name="code" value="{{ $roomtype->code }}">
+                                            @error('code')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong> *{{ $message }} </strong>
+                                                </span>
+                                            @enderror
+                                        </td>
+                                    <td width="15%"><label class="form-label" for="name">Name <span class="text-danger">*</span></label></td>
+                                        <td colspan="10"> <input class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ $roomtype->name }}">
+                                            @error('name')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong> *{{ $message }} </strong>
+                                                </span>
+                                            @enderror
+                                        </td>
+                                </div>
+                            </tr>
+
+                                {{-- <div class="form-group">
+                                    <label class="form-label" for="name">Name</label>
                                     <input class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ $roomtype->name }}">
                                         @error('name')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong> *{{ $message }} </strong>
                                             </span>
                                         @enderror
-                                </div>
-
+                                </div> --}}
+                            <tr>
                                 <div class="form-group">
-                                    <label class="form-label" for="description">Description <span class="text-danger">*</span></label>
-                                    <input class="form-control @error('description') is-invalid @enderror" id="description" name="description" value="{{ $roomtype->description }}">
-                                        @error('description')
+                                    <td width="15%"><label class="form-label" for="description">Description <span class="text-danger">*</span></label></td>
+                                        <td colspan="10"><input class="form-control @error('description') is-invalid @enderror" id="description" name="description" value="{{ $roomtype->description }}">
+                                            @error('description')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong> *{{ $message }} </strong>
+                                                </span>
+                                            @enderror
+                                        </td>
+                                </div>
+                            </tr>
+
+                            <tr>
+                                <div class="form-group">
+                                    <td width="15%"><label class="form-label" for="active">Active <span class="text-danger">*</span></label></td>
+                                        <td colspan="10"><select class="form-control @error('active') is-invalid @enderror" id="active" name="active">
+                                            <option value="">Please Select</option>
+                                            <option value="0" {{ old('active', $roomtype->active) == 'No' ? 'selected':''}} >No</option>
+                                            <option value="1" {{ old('active', $roomtype->active) == 'Yes' ? 'selected':''}} >Yes</option>
+                                        </select>
+                                        @error('active')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong> *{{ $message }} </strong>
                                             </span>
-                                        @enderror
+                                        @enderror</td>
                                 </div>
-
-                                <div class="form-group">
-                                    <label class="form-label" for="active">Active <span class="text-danger">*</span></label>
-                                    <select class="form-control @error('active') is-invalid @enderror" id="active" name="active">
-                                        <option value="">Please Select</option>
-                                        <option value="0" {{ old('active', $roomtype->active) == 'No' ? 'selected':''}} >No</option>
-                                        <option value="1" {{ old('active', $roomtype->active) == 'Yes' ? 'selected':''}} >Yes</option>
-                                    </select>
-                                    @error('active')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong> *{{ $message }} </strong>
-                                    </span>
-                                @enderror
-                                </div>
-
-                               <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted">
-                                    <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Update</button> 
-                                    <a style="margin-right:5px" href="{{ URL::route('roomtype.index') }}" class="btn btn-success ml-auto float-right"><i class="fal fa-angle-double-left"></i> Back</a>
-                                </div><br>
+                            </tr>
+                            
+                            </thead>
+                        </table>
+                                <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Update</button> 
+                                <a style="margin-right:5px" href="{{ URL::route('roomtype.index') }}" class="btn btn-success ml-auto float-right"><i class="fal fa-angle-double-left"></i> Back</a><br><br>
+                               {{-- <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted">
+                               </div><br> --}}
                         </form>
                     </div>
                 </div>

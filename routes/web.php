@@ -33,6 +33,10 @@ Route::resource('admin/admission/application', 'ApplicantController');
 Route::resource('space/campus', 'CampusController'); //campus
 Route::resource('space/zone', 'ZoneController');  //zone
 Route::resource('space/building', 'BuildingController');  //building
+Route::get('/findzoneid', 'BuildingController@findzoneid'); //dropdown building
+Route::get('/findzone', 'LevelController@findzone'); //dropdown level
+Route::get('/findbuilding', 'LevelController@findbuilding'); //dropdown level
+Route::get('/findroomsuitability', 'RoomFacilityController@findroomsuitability'); //dropdown suitability
 Route::resource('space/level', 'LevelController');  //level
 Route::resource('space/roomtype', 'RoomTypeController');  //roomtype
 Route::resource('space/roomsuitability', 'RoomSuitabilityController');  //roomsuitability

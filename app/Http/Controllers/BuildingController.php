@@ -18,8 +18,8 @@ class BuildingController extends Controller
     public function index(Building $building)
     {
         $arr['building'] = $building;
-        $arr['zone'] = Zone::all(); 
-        $arr['campus'] = Campus::all(); 
+        $arr['zone'] = Zone::all(); //use zone model
+        $arr['campus'] = Campus::all(); //use campus model
         return view('space.building.index')->with($arr);
     }
 
@@ -132,11 +132,11 @@ class BuildingController extends Controller
     public function validateRequestStore()
     {
         return request()->validate([
-            'building_code'       => 'required|unique:buildings,building_code',   //kiv min, max
+            'building_code'       => 'required|min:1|max:10|unique:buildings,building_code',   
             'campus_id'           => 'required',  
             'zone_id'             => 'required',                    
-            'name'                => 'required|min:3|max:100',  
-            'description'         => 'required|min:3|max:1000',    
+            'name'                => 'required|min:1|max:100',  
+            'description'         => 'required|min:1|max:1000',    
             'active'              => 'required', 
         ]);
     }
@@ -144,13 +144,22 @@ class BuildingController extends Controller
     public function validateRequestUpdate(Building $building)
     {
         return request()->validate([
-            'building_code'       => 'required|unique:buildings,building_code,'.$building->id,   //kiv min, max
+            'building_code'       => 'required|min:1|max:10|unique:buildings,building_code,'.$building->id,   
             'campus_id'           => 'required',  
             'zone_id'             => 'required',                    
-            'name'                => 'required|min:3|max:100',  
-            'description'         => 'required|min:3|max:1000',    
+            'name'                => 'required|min:1|max:100',  
+            'description'         => 'required|min:1|max:1000',    
             'active'              => 'required', 
         ]);
+    }
+
+    public function findzoneid(Request $request){ //Building $building
+        $data = Zone::select('name', 'id')
+                ->where('campus_id',$request->id)
+                ->where('active', 1)
+                ->take(100)->get();
+
+        return response()->json($data);
     }
 
 }

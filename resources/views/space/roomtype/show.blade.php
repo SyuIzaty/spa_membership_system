@@ -37,18 +37,20 @@
                                 <tr>
                                     <td width="21%"><b>ROOM TYPE CODE :</b></td>
                                     <td colspan="2">{{ $roomtype->code }}</td>
+                                    <td width="21%"><b>ROOM TYPE NAME :</b></td>
+                                    <td colspan="5">{{ $roomtype->name }}</td>
                                 </tr>
-                                <tr>
+                                {{-- <tr>
                                     <td width="21%"><b>ROOM TYPE NAME :</b></td>
                                     <td colspan="2">{{ $roomtype->name }}</td>
-                                </tr>
+                                </tr> --}}
                                 <tr>
                                     <td width="21%"><b>DESCRIPTION :</b></td>
-                                    <td colspan="2">{{ $roomtype->description }}</td>
+                                    <td colspan="7">{{ $roomtype->description }}</td>
                                 </tr>
                                 <tr>
                                     <td width="21%"><b>ACTIVE STATUS :</b></td>
-                                    <td colspan="2">{{ $roomtype->active }}</td>
+                                    <td colspan="7">{{ $roomtype->active }}</td>
                                 </tr>
                             </thead>
                         </table>

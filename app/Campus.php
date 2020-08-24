@@ -24,12 +24,12 @@ class Campus extends Model
         ] [$attribute];
     }
 
-    public function scopeYes($query)
+    public function scopeActive($query)
     {
     	return $query->where('active', 1);
     }
 
-    public function scopeNo($query)
+    public function scopeInactive($query)
     {
     	return $query->where('active', 0);
     }

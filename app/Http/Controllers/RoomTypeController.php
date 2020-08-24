@@ -107,9 +107,9 @@ class RoomTypeController extends Controller
     public function validateRequestStore()
     {
         return request()->validate([
-            'code'                => 'required|min:3|max:10|unique:roomtypes,code',                        
-            'name'                => 'required|min:3|max:100',  
-            'description'         => 'required|min:5|max:1000',    
+            'code'                => 'required|min:1|max:10|unique:roomtypes,code',                        
+            'name'                => 'required|min:1|max:100',  
+            'description'         => 'required|min:1|max:1000',    
             'active'              => 'required', 
         ]);
     }
@@ -117,9 +117,9 @@ class RoomTypeController extends Controller
     public function validateRequestUpdate(Roomtype $roomtype)
     {
         return request()->validate([
-            'code'                => 'required|min:3|max:10|unique:roomtypes,code,'.$roomtype->id,                        
-            'name'                => 'required|min:3|max:100',  
-            'description'         => 'required|min:5|max:1000',    
+            'code'                => 'required|min:1|max:10|unique:roomtypes,code,'.$roomtype->id,                        
+            'name'                => 'required|min:1|max:100',  
+            'description'         => 'required|min:1|max:1000',    
             'active'              => 'required', 
         ]);
     }

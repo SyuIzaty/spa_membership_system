@@ -36,15 +36,17 @@
                             <thead>
                                 <tr>
                                     <td width="21%"><b>ZONE CODE :</b></td>
-                                    <td colspan="2">{{ $zone->zone_code }}</td>
-                                </tr>
-                                <tr>
+                                    <td colspan="1">{{ $zone->zone_code }}</td>
                                     <td width="21%"><b>ZONE NAME :</b></td>
                                     <td colspan="2">{{ $zone->name }}</td>
                                 </tr>
+                                {{-- <tr>
+                                    <td width="21%"><b>ZONE NAME :</b></td>
+                                    <td colspan="2">{{ $zone->name }}</td>
+                                </tr> --}}
                                 <tr>
-                                    <td width="21%"><b>DESCRIPTION :</b></td>
-                                    <td colspan="2">{{ $zone->description }}</td>
+                                    <td width="15%"><b>DESCRIPTION :</b></td>
+                                    <td colspan="10">{{ $zone->description }}</td>
                                 </tr>
                                 {{-- @foreach($campus as $campuses)
                                 @if($campuses->id == $zone->campus_id)
@@ -56,12 +58,14 @@
                                 @endforeach --}}
                                 <tr>
                                     <td width="21%"><b>CAMPUS :</b></td>
-                                    <td colspan="2">{{ $zone->campus->name }}</td>
-                                </tr>
-                                <tr>
+                                    <td colspan="1">{{ $zone->campus->name }}</td>
                                     <td width="21%"><b>ACTIVE STATUS :</b></td>
-                                    <td colspan="2">{{ $zone->active }}</td>
+                                    <td colspan="5">{{ $zone->active }}</td>
                                 </tr>
+                                {{-- <tr>
+                                    <td width="15%"><b>ACTIVE STATUS :</b></td>
+                                    <td colspan="10">{{ $zone->active }}</td>
+                                </tr> --}}
                             </thead>
                         </table>
                     </div>

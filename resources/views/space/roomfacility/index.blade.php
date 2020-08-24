@@ -42,14 +42,34 @@
                                 <tr>
                                     <th>Code</th>
                                     <th>Name</th>
-                                    <th>Description</th>
+                                    <th>Room Type</th>
+                                    <th>Room Suitability</th>
                                     <th>Active</th>
                                     <th>Action</th>
                                 </tr>
                                 <tr>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search Code"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search Name"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Description"></td>
+                                    <td class="hasinput">
+                                        <select name="roomtype_id" id="roomtype_id" class="form-control">
+                                             <option value="">All</option>
+                                                @foreach ($roomtype as $roomtypes) 
+                                                    <option value="{{ $roomtypes->id }}" {{ $roomtypes->id == $roomfacility->roomtype_id ? 'selected' : '' }}>
+                                                        {{ $roomtypes->name }}
+                                                    </option>
+                                                @endforeach
+                                        </select>
+                                    </td>
+                                    <td class="hasinput">
+                                        <select name="roomsuitability_id" id="roomsuitability_id" class="form-control">
+                                             <option value="">All</option>
+                                                @foreach ($roomsuitability as $roomsuitabilities) 
+                                                    <option value="{{ $roomsuitabilities->id }}" {{ $roomsuitabilities->id == $roomfacility->roomsuitability_id ? 'selected' : '' }}>
+                                                        {{ $roomsuitabilities->name }}
+                                                    </option>
+                                                @endforeach
+                                        </select>
+                                    </td>
                                     <td class="hasinput">
                                         <select id="active" name="active" class="form-control">
                                             <option value="">All</option>
@@ -126,7 +146,8 @@
             columns: [
                     { data: 'code', name: 'code' },
                     { data: 'name', name: 'name' },
-                    { data: 'description', name: 'description' },
+                    { data: 'roomtype_id', name: 'roomtype_id' },
+                    { data: 'roomsuitability_id', name: 'roomsuitability_id' },
                     { data: 'active', name: 'active'},
                     { data: 'action', name: 'action', orderable: false, searchable: false}
                 ],

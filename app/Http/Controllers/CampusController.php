@@ -101,16 +101,16 @@ class CampusController extends Controller
                     <a href="/space/campus/'.$campus->id.'" class="btn btn-sm btn-info btn-view"><i class="fal fa-eye"></i> View</a>
                     <button class="btn btn-sm btn-danger btn-delete" data-remote="/space/campus/' . $campus->id . '"><i class="fal fa-trash"></i> Delete</button>';
         })
-
+            
         ->make(true);
     }
 
     public function validateRequestStore()
     {
         return request()->validate([
-            'code'                => 'required|min:3|max:10|unique:campuses,code',                        
-            'name'                => 'required|min:3|max:100',  
-            'description'         => 'required|min:5|max:1000',    
+            'code'                => 'required|min:1|max:10|unique:campuses,code',                        
+            'name'                => 'required|min:1|max:100',  
+            'description'         => 'required|min:1|max:1000',    
             'address1'            => 'required',
             'address2'            => '',  
             'postcode'            => 'required',  
@@ -123,9 +123,9 @@ class CampusController extends Controller
     public function validateRequestUpdate(Campus $campus)
     {
         return request()->validate([
-            'code'                => 'required|min:3|max:10|unique:campuses,code,'.$campus->id,                        
-            'name'                => 'required|min:3|max:100',  
-            'description'         => 'required|min:5|max:1000',    
+            'code'                => 'required|min:1|max:10|unique:campuses,code,'.$campus->id,                        
+            'name'                => 'required|min:1|max:100',  
+            'description'         => 'required|min:1|max:1000',    
             'address1'            => 'required',
             'address2'            => '',  
             'postcode'            => 'required',  

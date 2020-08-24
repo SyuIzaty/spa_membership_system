@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Redirect;
 use App\Roomsuitability;
+use App\Roomtype;
 use Illuminate\Http\Request;
 
 class RoomSuitabilityController extends Controller
@@ -13,9 +14,10 @@ class RoomSuitabilityController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Roomsuitability $roomsuitability)
     {
-        $arr['roomsuitability'] = Roomsuitability::all();
+        $arr['roomsuitability'] = $roomsuitability;
+        $arr['roomtype'] = Roomtype::all();
         return view('space.roomsuitability.index')->with($arr);
     }
 
@@ -26,7 +28,9 @@ class RoomSuitabilityController extends Controller
      */
     public function create()
     {
-        return view('space.roomsuitability.create');
+        $roomtype = Roomtype::where('active', 1)->get();
+        $roomsuitability = new Roomsuitability();
+        return view('space.roomsuitability.create', compact('roomtype', 'roomsuitability'));
     }
 
     /**
@@ -50,6 +54,7 @@ class RoomSuitabilityController extends Controller
     public function show(Roomsuitability $roomsuitability)
     {
         $arr['roomsuitability'] = $roomsuitability;
+        $arr['roomtype'] = Roomtype::all();
         return view('space.roomsuitability.show')->with($arr);
     }
 
@@ -61,7 +66,9 @@ class RoomSuitabilityController extends Controller
      */
     public function edit(Roomsuitability $roomsuitability)
     {
-        return view('space.roomsuitability.edit',compact('roomsuitability'));
+        $arr['roomsuitability'] = $roomsuitability;
+        $arr['roomtype'] = Roomtype::where('active', 1)->get();
+        return view('space.roomsuitability.edit')->with($arr);
     }
 
     /**
@@ -83,10 +90,11 @@ class RoomSuitabilityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Roomsuitability $roomsuitability)
+    public function destroy($id)
     {
+        $roomsuitability = Roomsuitability::find($id);
         $roomsuitability->delete();
-        return redirect()->route('space.roomsuitability.index');
+        return Redirect::route('space.roomsuitability.index');
     }
 
     public function data_roomsuitability_list()
@@ -100,6 +108,12 @@ class RoomSuitabilityController extends Controller
                     <a href="/space/roomsuitability/'.$roomsuitability->id.'" class="btn btn-sm btn-info btn-view"><i class="fal fa-eye"></i> View</a>
                     <button class="btn btn-sm btn-danger btn-delete" data-remote="/space/roomsuitability/' . $roomsuitability->id . '"><i class="fal fa-trash"></i> Delete</button>';
         })
+
+        ->editColumn('roomtype_id', function ($roomsuitability) {
+            
+            return $roomsuitability->roomtype->name;
+          
+        })
             
         ->make(true);
     }
@@ -107,9 +121,10 @@ class RoomSuitabilityController extends Controller
     public function validateRequestStore()
     {
         return request()->validate([
-            'code'                => 'required|min:3|max:10|unique:roomsuitabilities,code',                        
-            'name'                => 'required|min:3|max:100',  
-            'description'         => 'required|min:5|max:1000',    
+            'code'                => 'required|min:1|max:10|unique:roomsuitabilities,code',                        
+            'roomtype_id'         => 'required',
+            'name'                => 'required|min:1|max:100',  
+            'description'         => 'required|min:1|max:1000',    
             'active'              => 'required', 
         ]);
     }
@@ -117,9 +132,10 @@ class RoomSuitabilityController extends Controller
     public function validateRequestUpdate(Roomsuitability $roomsuitability)
     {
         return request()->validate([
-            'code'                => 'required|min:3|max:10|unique:roomsuitabilities,code,'.$roomsuitability->id,                        
-            'name'                => 'required|min:3|max:100',  
-            'description'         => 'required|min:5|max:1000',    
+            'code'                => 'required|min:1|max:10|unique:roomsuitabilities,code,'.$roomsuitability->id,                        
+            'roomtype_id'         => 'required',
+            'name'                => 'required|min:1|max:100',  
+            'description'         => 'required|min:1|max:1000',    
             'active'              => 'required', 
         ]);
     }

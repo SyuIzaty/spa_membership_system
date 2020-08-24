@@ -36,45 +36,71 @@
                             @method('PUT')
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <p><span class="text-danger">*</span> Required fields</p>
+                            <table id="campus" class="table table-bordered table-hover table-striped w-100">
+                              <thead>
+                                <tr>
                                 <div class="form-group">
-                                    <label class="form-label" for="building_code">Code <span class="text-danger">*</span></label>
-                                    <input class="form-control @error('building_code') is-invalid @enderror" id="building_code" name="building_code" value="{{ $building->building_code }}">
+                                    <td width="15%"><label class="form-label" for="building_code">Code <span class="text-danger">*</span></label></td>
+                                    <td colspan="2"><input class="form-control @error('building_code') is-invalid @enderror" id="building_code" name="building_code" value="{{ $building->building_code }}">
                                         @error('building_code')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong> *{{ $message }} </strong>
                                             </span>
-                                        @enderror
+                                        @enderror</td>
+                                    <td width="15%"><label class="form-label" for="name">Name <span class="text-danger">*</span></label></td>
+                                    <td colspan="5"><input class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ $building->name }}">
+                                        @error('name')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong> *{{ $message }} </strong>
+                                                </span>
+                                        @enderror</td>
                                 </div>
+                                </tr>
 
                                 
-                                <div class="form-group">
-                                    <label class="form-label" for="name">Name <span class="text-danger">*</span></label>
+                                {{-- <div class="form-group">
+                                    <label class="form-label" for="name">Name</label>
                                     <input class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ $building->name }}">
                                         @error('name')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong> *{{ $message }} </strong>
                                             </span>
                                         @enderror
-                                </div>
+                                </div> --}}
 
+                                <tr>
                                 <div class="form-group">
-                                    <label class="form-label" for="campus_id">Campus <span class="text-danger">*</span></label>
-                                    <select name="campus_id" id="campus_id" class="form-control @error('campus_id') is-invalid @enderror">
-                                        <option value="" disabled>Select Campus</option>
+                                    <td width="15%"><label class="form-label" for="campus_id">Campus <span class="text-danger">*</span></label></td>
+                                    <td colspan="5"><select name="campus_id" id="campus_id" class="campus form-control @error('campus_id') is-invalid @enderror select2">
+                                        <option value="" disabled>-- Select Campus --</option>
                                         @foreach ($campus as $campuses) 
                                             <option value="{{ $campuses->id }}" {{ $campuses->id == $building->campus_id ? 'selected' : '' }}>
                                                 {{ $campuses->name }}</option>
                                         @endforeach
                                      </select>
-                                    @error('campus_id')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong> *{{ $message }} </strong>
-                                        </span>
-                                    @enderror
+                                        @error('campus_id')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong> *{{ $message }} </strong>
+                                            </span>
+                                        @enderror</td>
+                                    <td width="15%"><label class="form-label" for="zone_id">Zone <span class="text-danger">*</span></label></td>
+                                    <td colspan="5"><select name="zone_id" id="zone_id" class="zone form-control @error('zone_id') is-invalid @enderror">
+                                        <option value="" disabled>-- Select Zone --</option>
+                                        @foreach ($zone as $zones) 
+                                            <option value="{{ $zones->id }}" {{ $zones->id == $building->zone_id ? 'selected' : '' }}>
+                                                {{ $zones->name }}</option>
+                                        @endforeach
+                                     </select>
+                                        @error('zone_id')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong> *{{ $message }} </strong>
+                                            </span>
+                                        @enderror</td>
                                 </div>
+                                </tr>
 
-                                <div class="form-group">
-                                    <label class="form-label" for="zone_id">Zone <span class="text-danger">*</span></label>
+                                {{-- <div class="form-group">
+                                    <label class="form-label" for="zone_id">Zone : </label>
                                     <select name="zone_id" id="zone_id" class="form-control @error('zone_id') is-invalid @enderror">
                                         <option value="" disabled>Select Zone</option>
                                         @foreach ($zone as $zones) 
@@ -87,36 +113,41 @@
                                             <strong> *{{ $message }} </strong>
                                         </span>
                                     @enderror
-                                </div>
+                                </div> --}}
 
+                                <tr>
                                 <div class="form-group">
-                                    <label class="form-label" for="description">Description <span class="text-danger">*</span></label>
-                                    <input class="form-control @error('description') is-invalid @enderror" id="description" name="description" value="{{ $building->description }}">
+                                    <td width="15%"><label class="form-label" for="description">Description <span class="text-danger">*</span></label></td>
+                                    <td colspan="10"><input class="form-control @error('description') is-invalid @enderror" id="description" name="description" value="{{ $building->description }}">
                                         @error('description')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong> *{{ $message }} </strong>
                                             </span>
-                                        @enderror
+                                        @enderror</td>
                                 </div>
+                                </tr>
     
+                                <tr>
                                 <div class="form-group">
-                                    <label class="form-label" for="active">Active <span class="text-danger">*</span></label>
-                                    <select class="form-control @error('active') is-invalid @enderror" id="active" name="active">
-                                        <option value="">Please Select</option>
+                                    <td width="15%"><label class="form-label" for="active">Active <span class="text-danger">*</span></label></td>
+                                    <td colspan="10"><select class="form-control @error('active') is-invalid @enderror" id="active" name="active">
+                                        <option value="">-- Select Active Status --</option>
                                         <option value="0" {{ old('active', $building->active) == 'No' ? 'selected':''}} >No</option>
                                         <option value="1" {{ old('active', $building->active) == 'Yes' ? 'selected':''}} >Yes</option>
                                     </select>
-                                    @error('active')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong> *{{ $message }} </strong>
-                                    </span>
-                                @enderror
+                                        @error('active')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong> *{{ $message }} </strong>
+                                            </span>
+                                        @enderror</td>
                                 </div>
-
-                               <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted">
-                                    <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Update</button> 
-                                    <a style="margin-right:5px" href="{{ URL::route('building.index') }}" class="btn btn-success ml-auto float-right"><i class="fal fa-angle-double-left"></i> Back</a>
-                                </div><br>
+                                </tr>   
+                            </thead>
+                        </table>
+                            <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Update</button> 
+                            <a style="margin-right:5px" href="{{ URL::route('building.index') }}" class="btn btn-success ml-auto float-right"><i class="fal fa-angle-double-left"></i> Back</a><br><br>
+                            {{-- <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted">
+                            </div><br> --}}
                         </form>
                     </div>
                 </div>
@@ -128,6 +159,44 @@
 
 @section('script')
 
-<script></script>
+<script>
+    $(function () {
+
+        // Start for Dynamic Drop down with ajax jquery
+        if($('.campus').val()!=''){
+            updateZone($('.campus'));
+        }
+        $(document).on('change','.campus',function(){
+            updateZone($(this));
+        });
+
+        function updateZone(elem){
+        var campusid=elem.val();
+        var op=" "; 
+
+        $.ajax({
+            type:'get',
+            url:'{!!URL::to('findzone')!!}',
+            data:{'id':campusid},
+            success:function(data)
+            {
+                op+='<option value="">-- Please Select Zone --</option>';
+                for (var i=0; i<data.length; i++)
+                {
+                    var selected = (data[i].id=="{{old('zone_id', $building->zone_id)}}") ? "selected='selected'" : '';
+                    op+='<option value="'+data[i].id+'" '+selected+'>'+data[i].name+'</option>';
+                    // var option = $('<option></option>').text(subcatObj).val(index);
+                }
+
+                $('.zone').html(op);
+            },
+            error:function(){
+                console.log('success');
+            },
+        });
+    }
+
+    })
+</script>
 
 @endsection

@@ -9,7 +9,7 @@ class Roomfacility extends Model
 {
     use SoftDeletes;
     
-    protected $fillable = ['code','name','description','active'];
+    protected $fillable = ['code', 'roomtype_id', 'roomsuitability_id', 'name','description','active'];
     protected $table = 'roomfacilities';
 
     protected $attributes = [
@@ -24,14 +24,26 @@ class Roomfacility extends Model
         ] [$attribute];
     }
 
-    public function scopeYes($query)
+    public function scopeActive($query)
     {
     	return $query->where('active', 1);
     }
 
-    public function scopeNo($query)
+    public function scopeInactive($query)
     {
     	return $query->where('active', 0);
+    }
+
+    public function roomtype()
+    {
+        // return $this->belongsTo('App\Roomtype');
+        return $this->belongsTo(Roomtype::class);
+    }
+
+    public function roomsuitability()
+    {
+        // return $this->belongsTo('App\Roomsuitability');
+        return $this->belongsTo(Roomsuitability::class);
     }
     
 }

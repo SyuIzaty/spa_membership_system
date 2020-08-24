@@ -16,6 +16,8 @@ class CreateRoomfacilitiesTable extends Migration
         Schema::create('roomfacilities', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('code')->unique();
+            $table->integer('roomtype_id')->unsigned(); //roomtype
+            $table->integer('roomsuitability_id')->unsigned(); //roomsuitability
             $table->string('name');
             $table->string('description');  
             $table->string('active');

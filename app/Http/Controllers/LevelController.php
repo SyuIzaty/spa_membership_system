@@ -6,7 +6,9 @@ use App\Campus;
 use App\Zone;
 use App\Building;
 use App\Level;
+// use Redirect;
 use Illuminate\Http\Request;
+// use Illuminate\Support\Facades\View;
 
 class LevelController extends Controller
 {
@@ -18,9 +20,9 @@ class LevelController extends Controller
     public function index(Level $level)
     {
         $arr['level'] = $level;
-        $arr['building'] = Building::all(); 
-        $arr['zone'] = Zone::all(); 
-        $arr['campus'] = Campus::all();
+        $arr['building'] = Building::all(); //use building model
+        $arr['zone'] = Zone::all(); //use zone model
+        $arr['campus'] = Campus::all(); //use campus model
         return view('space.level.index')->with($arr);
     }
 
@@ -135,19 +137,19 @@ class LevelController extends Controller
             return $level->building->name;
           
         })
-            
+        
         ->make(true);
     }
 
     public function validateRequestStore()
     {
         return request()->validate([
-            'level_code'          => 'required|unique:levels,level_code',   //kiv min, max
+            'level_code'          => 'required|min:1|max:10|unique:levels,level_code',   
             'campus_id'           => 'required',  
             'zone_id'             => 'required', 
             'building_id'         => 'required',                    
-            'name'                => 'required|min:3|max:100',  
-            'description'         => 'required|min:5|max:1000',    
+            'name'                => 'required|min:1|max:100',  
+            'description'         => 'required|min:1|max:1000',    
             'active'              => 'required', 
         ]);
     }
@@ -155,14 +157,32 @@ class LevelController extends Controller
     public function validateRequestUpdate(Level $level)
     {
         return request()->validate([
-            'level_code'          => 'required|unique:levels,level_code,'.$level->id,   //kiv min, max
+            'level_code'          => 'required|min:1|max:10|unique:levels,level_code,'.$level->id,   
             'campus_id'           => 'required',  
             'zone_id'             => 'required', 
             'building_id'         => 'required',                    
-            'name'                => 'required|min:3|max:100',  
-            'description'         => 'required|min:5|max:1000',    
+            'name'                => 'required|min:1|max:100',  
+            'description'         => 'required|min:1|max:1000',    
             'active'              => 'required', 
         ]);
+    }
+
+    public function findzone(Request $request){ 
+        $data = Zone::select('name','id')
+                ->where('campus_id',$request->id)
+                ->where('active', 1)
+                ->take(100)->get();
+
+        return response()->json($data);
+    }
+
+    public function findbuilding(Request $request){ 
+        $data2 = Building::select('name','id')
+                ->where('zone_id',$request->id)
+                ->where('active', 1)
+                ->take(100)->get();
+
+        return response()->json($data2);
     }
 
 }
