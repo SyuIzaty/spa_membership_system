@@ -57,16 +57,6 @@
                                 </div>
                                 </tr>
 
-                                {{-- <div class="form-group">
-                                    <label class="form-label" for="name">Name <span class="text-danger">*</span></label>
-                                    <input value="{{ old('name') }}" class="form-control @error('name') is-invalid @enderror" id="name" name="name">
-                                        @error('name')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong> *{{ $message }} </strong>
-                                            </span>
-                                        @enderror
-                                </div> --}}
-
                                 <tr>
                                 <div class="form-group">
                                     <td width="15%"><label class="form-label" for="campus_id">Campus <span class="text-danger">*</span></label></td>
@@ -170,7 +160,6 @@
                 {
                     var selected = (data[i].id=="{{old('zone_id', $building->zone_id)}}") ? "selected='selected'" : '';
                     op+='<option value="'+data[i].id+'" '+selected+'>'+data[i].name+'</option>';
-                    // var option = $('<option></option>').text(subcatObj).val(index);
                 }
 
                 $('.zone').html(op);

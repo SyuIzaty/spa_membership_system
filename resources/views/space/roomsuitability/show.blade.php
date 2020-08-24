@@ -40,11 +40,6 @@
                                     <td width="21%"><b>ROOM SUITABILITY NAME :</b></td>
                                     <td colspan="5">{{ $roomsuitability->name }}</td>
                                 </tr>
-                                {{-- <tr>
-                                    <td width="21%"><b>ROOM SUITABILITY NAME :</b></td>
-                                    <td colspan="2">{{ $roomsuitability->name }}</td>
-                                </tr>
-                                <tr> --}}
                                     <td width="21%"><b>DESCRIPTION :</b></td>
                                     <td colspan="7">{{ $roomsuitability->description }}</td>
                                 </tr>

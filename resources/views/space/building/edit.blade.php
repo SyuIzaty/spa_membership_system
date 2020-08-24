@@ -57,17 +57,6 @@
                                 </div>
                                 </tr>
 
-                                
-                                {{-- <div class="form-group">
-                                    <label class="form-label" for="name">Name</label>
-                                    <input class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ $building->name }}">
-                                        @error('name')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong> *{{ $message }} </strong>
-                                            </span>
-                                        @enderror
-                                </div> --}}
-
                                 <tr>
                                 <div class="form-group">
                                     <td width="15%"><label class="form-label" for="campus_id">Campus <span class="text-danger">*</span></label></td>
@@ -98,22 +87,6 @@
                                         @enderror</td>
                                 </div>
                                 </tr>
-
-                                {{-- <div class="form-group">
-                                    <label class="form-label" for="zone_id">Zone : </label>
-                                    <select name="zone_id" id="zone_id" class="form-control @error('zone_id') is-invalid @enderror">
-                                        <option value="" disabled>Select Zone</option>
-                                        @foreach ($zone as $zones) 
-                                            <option value="{{ $zones->id }}" {{ $zones->id == $building->zone_id ? 'selected' : '' }}>
-                                                {{ $zones->name }}</option>
-                                        @endforeach
-                                     </select>
-                                    @error('zone_id')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong> *{{ $message }} </strong>
-                                        </span>
-                                    @enderror
-                                </div> --}}
 
                                 <tr>
                                 <div class="form-group">
@@ -146,8 +119,6 @@
                         </table>
                             <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Update</button> 
                             <a style="margin-right:5px" href="{{ URL::route('building.index') }}" class="btn btn-success ml-auto float-right"><i class="fal fa-angle-double-left"></i> Back</a><br><br>
-                            {{-- <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted">
-                            </div><br> --}}
                         </form>
                     </div>
                 </div>
@@ -185,7 +156,6 @@
                 {
                     var selected = (data[i].id=="{{old('zone_id', $building->zone_id)}}") ? "selected='selected'" : '';
                     op+='<option value="'+data[i].id+'" '+selected+'>'+data[i].name+'</option>';
-                    // var option = $('<option></option>').text(subcatObj).val(index);
                 }
 
                 $('.zone').html(op);

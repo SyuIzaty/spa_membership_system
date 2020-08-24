@@ -98,9 +98,6 @@
 
                     <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">
 
-                        {{-- <span class="badge badge-pill rounded-circle badge-secondary fw-400 ml-auto mr-2">
-                            1
-                        </span> --}}	
                         <a href="/space/level/create" class="btn btn-primary ml-auto"><i class="fal fa-search-plus"></i> Add New Level</a>
                     </div>
                 </div>
@@ -154,7 +151,6 @@
                     { data: 'campus_id', name: 'campus_id' },
                     { data: 'zone_id', name: 'zone_id' },
                     { data: 'building_id', name: 'building_id' },
-                    // { data: 'description', name: 'description' },
                     { data: 'active', name: 'active' },
                     { data: 'action', name: 'action', orderable: false, searchable: false}
                 ],

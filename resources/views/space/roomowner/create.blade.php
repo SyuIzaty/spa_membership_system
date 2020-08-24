@@ -57,16 +57,6 @@
                                 </div>
                                 </tr>   
 
-                                {{-- <div class="form-group">
-                                    <label class="form-label" for="phone_number">Phone Number <span class="text-danger">*</span></label>
-                                    <input value="{{ old('phone_number') }}" class="form-control @error('phone_number') is-invalid @enderror" id="phone_number" name="phone_number">
-                                        @error('phone_number')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong> *{{ $message }} </strong>
-                                            </span>
-                                        @enderror
-                                </div> --}}
-
                                 <tr>
                                 <div class="form-group">
                                     <td width="15%"><label class="form-label" for="email">Email <span class="text-danger">*</span></label></td>
@@ -128,7 +118,6 @@
                                         <td width="15%"><label class="form-label" for="image">Image <span class="text-danger">*</span></label></td>
                                             <td colspan="10"><div value="{{ old('image') }}" class="col-sm-6 form-control @error('image') is-invalid @enderror"><input type="file" name="image" id="image"></div>
                                                 <div class="clearfix"></div>
-                                                <!-- sent message error input -->
                                                 @error('image')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong> *{{ $message }} </strong>
@@ -140,7 +129,6 @@
 
                             </thead>
                             </table>
-                                {{-- <button type="submit" class="btn btn-primary btn-sm">Save</button> --}}
                                 <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>	
                                 <button style="margin-right:5px" type="reset" class="btn btn-danger ml-auto float-right"><i class="fal fa-redo"></i> Reset</button>
                                 <a style="margin-right:5px" href="{{ URL::route('roomowner.index') }}" onclick="return confirm('Are you sure to discard data?')" class="btn btn-success ml-auto float-right"><i class="fal fa-trash-alt"></i> Discard</a><br><br>

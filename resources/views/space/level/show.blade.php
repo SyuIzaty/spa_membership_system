@@ -40,11 +40,7 @@
                                     <td width="15%"><b>LEVEL NAME :</b></td>
                                     <td colspan="10">{{ $level->name }}</td>
                                 </tr>
-                                {{-- <tr>
-                                    <td width="21%"><b>LEVEL NAME :</b></td>
-                                    <td colspan="2">{{ $level->name }}</td>
-                                </tr> --}}
-                                
+
                                 <tr>
                                     <td width="15%"><b>CAMPUS :</b></td>
                                     <td colspan="5">{{ $level->campus->name }}</td>
@@ -58,16 +54,6 @@
                                     <td width="15%"><b>DESCRIPTION :</b></td>
                                     <td colspan="15">{{ $level->description }}</td>
                                 </tr>
-
-                                {{-- <tr>
-                                    <td width="21%"><b>ZONE :</b></td>
-                                    <td colspan="2">{{ $level->zone->name }}</td>
-                                </tr>
-  
-                                <tr>
-                                    <td width="21%"><b>BUILDING :</b></td>
-                                    <td colspan="2">{{ $level->building->name }}</td>
-                                </tr> --}}
                                
                                 <tr>
                                     <td width="15%"><b>ACTIVE STATUS :</b></td>

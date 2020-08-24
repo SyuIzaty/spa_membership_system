@@ -49,7 +49,6 @@
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search Code"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search Name"></td>
                                     <td class="hasinput">
-                                        {{-- <input type="text" class="form-control" placeholder="Search Campus"> --}}
                                         <select name="campus_id" id="campus_id" class="form-control">
                                              <option value="">All</option>
                                                 @foreach ($campus as $campuses) 
@@ -61,57 +60,17 @@
                                     </td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search Description"></td>
                                     <td class="hasinput">
-                                        {{-- <input type="text" class="form-control" placeholder="Search Status"> --}}
                                         <select id="active" name="active" class="form-control">
                                             <option value="">All</option>
                                             <option value="1">Yes</option>
                                             <option value="0">No</option>
                                         </select>
                                     </td>
-                                    {{-- <td class="hasinput">
-                                        <select id="campus_id" name="campus_id" class="form-control">
-                                            <option value="{{ $campuses->id }}" {{ $campuses->id == $zone->campus_id ? 'selected' : '' }}>
-                                                {{ $campuses->name }}</option>
-                                        </select>
-                                    </td> --}}
-                                    {{-- <td class="hasinput">
-                                        <select id="type" name="type" class="form-control">
-                                            <option value="">Search Type</option>
-                                            <option value="FS">Full Semester</option>
-                                            <option value="SS">Short Semester</option>
-                                            <option value="DS">Deferred Semester</option>
-                                            <option value="RS">Repeat Semester</option>
-                                        </select>
-                                    </td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Start Date"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search End Date"></td>
-                                    <td class="hasinput">
-                                        <select id="status" name="status" class="form-control">
-                                            <option value="">All</option>
-                                            <option value="1">Active</option>
-                                            <option value="0">Inactive</option>
-                                        </select>
-                                    </td>
-                                    <td class="hasinput">
-                                        <select id="registrationstatus" name="registrationstatus" class="form-control">
-                                            <option value="">All</option>
-                                            <option value="1">Open</option>
-                                            <option value="0">Closed</option>
-                                        </select>
-                                    </td> --}}
                                     <td class="hasinput"></td>
                                 </tr>
                             </thead>
                             <tbody>
                             </tbody>
-                            {{-- <tfoot>
-                                <th>Code</th>
-                                <th>Campus</th>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tfoot> --}}
                         </table>
                         <!-- datatable end -->
                     </div>
@@ -206,33 +165,6 @@
         });
 
     });
-
-    // $(document).ready(function() {
-    // // Setup - add a text input to each footer cell
-    // $('#zone tfoot th').each( function () {
-    //     var name = $(this).text();
-    //     $(this).html( '<input type="text" placeholder="Search '+name+'" />' );
-    // } );
- 
-    // // DataTable
-    // var table = $('#zone').DataTable({
-    //     initComplete: function () {
-    //         // Apply the search
-    //         this.api().columns().every( function () {
-    //             var that = this;
- 
-    //             $( 'input', this.footer() ).on( 'keyup change clear', function () {
-    //                 if ( that.search() !== this.value ) {
-    //                     that
-    //                         .search( this.value )
-    //                         .draw();
-    //                 }
-    //             } );
-    //         } );
-    //     }
-    // });
- 
-    // });
 
 </script>
 

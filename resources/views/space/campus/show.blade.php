@@ -40,10 +40,6 @@
                                     <td width="15%"><b>CAMPUS NAME :</b></td>
                                     <td colspan="10">{{ $campus->name }}</td>
                                 </tr>
-                                {{-- <tr>
-                                    <td width="21%"><b>CAMPUS NAME :</b></td>
-                                    <td colspan="2">{{ $campus->name }}</td>
-                                </tr> --}}
                                 <tr>
                                     <td width="15%"><b>DESCRIPTION :</b></td>
                                     <td colspan="10">{{ $campus->description }}</td>
@@ -60,10 +56,6 @@
                                     <td width="10%"><b>STATE :</b></td>
                                     <td colspan="2">{{ $campus->state_id }}</td>
                                 </tr>
-                                {{-- <tr>
-                                    <td width="21%"><b></b></td>
-                                    <td colspan="2">{{ $campus->state_id }}</td>
-                                </tr> --}}
                                 <tr>
                                     <td width="15%"><b>ACTIVE STATUS :</b></td>
                                     <td colspan="10">{{ $campus->active }}</td>

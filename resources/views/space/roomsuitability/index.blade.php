@@ -144,7 +144,7 @@
                 "order": [[ 1, "asc" ]],
                 "initComplete": function(settings, json) {
 
-                } //{ data:null, render: function ( data, type, row ) {return '<button type="button" class="btn btn-primary" id="showCarsButton">Show cars</button>';}
+                } 
         });
 
         $('#roomsuitability').on('click', '.btn-delete[data-remote]', function (e) { 

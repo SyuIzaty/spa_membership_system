@@ -57,16 +57,6 @@
                                 </div>
                                 </tr>
 
-                                {{-- <div class="form-group">
-                                    <label class="form-label" for="name">Name</label>
-                                    <input class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ $zone->name }}">
-                                        @error('name')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong> *{{ $message }} </strong>
-                                            </span>
-                                        @enderror
-                                </div> --}}
-
                                 <tr>
                                 <div class="form-group">
                                     <td width="15%"><label class="form-label" for="campus_id">Campus <span class="text-danger">*</span></label></td>
@@ -77,35 +67,11 @@
                                                 {{ $campuses->name }}</option>
                                         @endforeach
                                      </select>
-
-                                     {{-- <select name="campus_id[]" id="campus_id" class="form-control @error('campus_id') is-invalid @enderror" multiple>
-                                        <option value="">Select Campus</option>
-                                        @foreach ($campus as $campuses) 
-                                            <option value="{{ $campuses->id }}" {{ (in_array($campuses->id == $zone->id, $selected)) ? 'selected="selected"' : '' }}>
-                                                {{ $campuses->name }}</option>
-                                        @endforeach
-                                     </select> https://laracasts.com/discuss/channels/general-discussion/how-to-get-selected-values-from-db-in-select-list --}}
-
-                                     {{-- <select name="campus_id" id="campus_id" class="form-control @error('campus_id') is-invalid @enderror">
-                                        <option value="">Select Campus</option>
-                                        @foreach ($campus as $campuses) 
-                                            <option value="{{ $campuses->id }}"
-                                                
-                                                @if($campuses->id == $zone->id)
-                                                selected
-                                                @endif
-
-                                                >{{ $campuses->name }}</option>
-                                        @endforeach
-                                     </select> --}}
-
-                                    <!-- sent message error input -->
                                     @error('campus_id')
                                         <span class="invalid-feedback" role="alert">
                                             <strong> *{{ $message }} </strong>
                                         </span>
                                     @enderror</td>
-                                    <!-- end sent message error input -->
                                 </div>
                                 </tr>
 
@@ -141,8 +107,6 @@
                         </table>
                                 <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Update</button> 
                                 <a style="margin-right:5px" href="{{ URL::route('zone.index') }}" class="btn btn-success ml-auto float-right"><i class="fal fa-angle-double-left"></i> Back</a><br><br>
-                               {{-- <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted">
-                                </div><br> --}}
                         </form>
                     </div>
                 </div>

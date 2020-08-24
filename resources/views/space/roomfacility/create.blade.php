@@ -57,16 +57,6 @@
                                 </div>
                             </tr>
 
-                                {{-- <div class="form-group">
-                                    <label class="form-label" for="name">Name <span class="text-danger">*</span></label>
-                                    <input value="{{ old('name') }}" class="form-control @error('name') is-invalid @enderror" id="name" name="name">
-                                        @error('name')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong> *{{ $message }} </strong>
-                                            </span>
-                                        @enderror
-                                </div> --}}
-
                                 <tr>
                                     <div class="form-group">
                                         <td width="15%"><label class="form-label" for="roomtype_id">Room Type <span class="text-danger">*</span></label></td>
@@ -94,19 +84,6 @@
                                         
                                     </div>
                                 </tr>
-    
-                                {{-- <tr>
-                                    <div class="form-group">
-                                        <td width="15%"><label class="form-label" for="roomsuitability_id">Room Suitability <span class="text-danger">*</span></label></td>
-                                        <td colspan="10"><select name="roomsuitability_id" id="roomsuitability_id" class="roomsuitability form-control @error('roomsuitability_id') is-invalid @enderror select2">
-                                         </select>
-                                        @error('roomsuitability_id')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong> *{{ $message }} </strong>
-                                            </span>
-                                        @enderror</td>
-                                    </div>
-                                </tr> --}}
 
                             <tr>
                                 <div class="form-group">
@@ -139,7 +116,6 @@
 
                             </thead>
                         </table>
-                                {{-- <button type="submit" class="btn btn-primary btn-sm">Save</button> --}}
                                 <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>	
                                 <button style="margin-right:5px" type="reset" class="btn btn-danger ml-auto float-right"><i class="fal fa-redo"></i> Reset</button>
                                 <a style="margin-right:5px" href="{{ URL::route('roomfacility.index') }}" onclick="return confirm('Are you sure to discard data?')" class="btn btn-success ml-auto float-right"><i class="fal fa-trash-alt"></i> Discard</a><br><br>
@@ -181,7 +157,6 @@
                 {
                     var selected = (data[i].id=="{{old('roomsuitability_id', $roomfacility->roomsuitability_id)}}") ? "selected='selected'" : '';
                     op+='<option value="'+data[i].id+'" '+selected+'>'+data[i].name+'</option>';
-                    // var option = $('<option></option>').text(subcatObj).val(index);
                 }
 
                 $('.roomsuitability').html(op);

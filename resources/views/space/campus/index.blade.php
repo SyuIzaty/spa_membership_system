@@ -43,10 +43,6 @@
                                     <th>Code</th>
                                     <th>Name</th>
                                     <th>Description</th>
-                                    {{-- <th>Address 1</th> --}}
-                                    {{-- <th>Address 2</th> --}}
-                                    {{-- <th>Postcode</th> --}}
-                                    {{-- <th>City</th> --}}
                                     <th>State</th>
                                     <th>Active</th>
                                     <th>Action</th>
@@ -63,38 +59,6 @@
                                             <option value="0">No</option>
                                         </select>
                                     </td>
-                                    {{-- <td class="hasinput">
-                                        <select id="program" name="program" class="form-control">
-                                            <option value="">Search Program</option>
-                                            <option value="0">IAT11</option>
-
-                                        </select>
-                                    </td>
-                                    <td class="hasinput">
-                                        <select id="type" name="type" class="form-control">
-                                            <option value="">Search Type</option>
-                                            <option value="FS">Full Semester</option>
-                                            <option value="SS">Short Semester</option>
-                                            <option value="DS">Deferred Semester</option>
-                                            <option value="RS">Repeat Semester</option>
-                                        </select>
-                                    </td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Start Date"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search End Date"></td>
-                                    <td class="hasinput">
-                                        <select id="status" name="status" class="form-control">
-                                            <option value="">All</option>
-                                            <option value="1">Active</option>
-                                            <option value="0">Inactive</option>
-                                        </select>
-                                    </td>
-                                    <td class="hasinput">
-                                        <select id="registrationstatus" name="registrationstatus" class="form-control">
-                                            <option value="">All</option>
-                                            <option value="1">Open</option>
-                                            <option value="0">Closed</option>
-                                        </select>
-                                    </td> --}}
                                     <td class="hasinput"></td>
                                 </tr>
                             </thead>
@@ -166,10 +130,6 @@
                     { data: 'code', name: 'code' },
                     { data: 'name', name: 'name' },
                     { data: 'description', name: 'description' },
-                    // { data: 'address1', name: 'address1' },
-                    // { data: 'address2', name: 'address2' },
-                    // { data: 'postcode', name: 'postcode' },
-                    // { data: 'city', name: 'city' },
                     { data: 'state_id', name: 'state_id'},
                     { data: 'active', name: 'active'},
                     { data: 'action', name: 'action', orderable: false, searchable: false}
@@ -178,7 +138,7 @@
                 "order": [[ 1, "asc" ]],
                 "initComplete": function(settings, json) {
 
-                } //{ data:null, render: function ( data, type, row ) {return '<button type="button" class="btn btn-primary" id="showCarsButton">Show cars</button>';}
+                } 
         });
 
         $('#campus').on('click', '.btn-delete[data-remote]', function (e) { 

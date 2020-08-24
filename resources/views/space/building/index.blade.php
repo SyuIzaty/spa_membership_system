@@ -42,7 +42,6 @@
                                     <th>Name</th>
                                     <th>Campus</th>
                                     <th>Zone</th>
-                                    {{-- <th>Description</th> --}}
                                     <th>Active</th>
                                     <th>Action</th>
                                 </tr>
@@ -69,9 +68,7 @@
                                                 @endforeach
                                         </select>
                                     </td>
-                                    {{-- <td class="hasinput"><input type="text" class="form-control" placeholder="Search Description"></td> --}}
                                     <td class="hasinput">
-                                        {{-- <input type="text" class="form-control" placeholder="Search Status"> --}}
                                         <select id="active" name="active" class="form-control">
                                             <option value="">All</option>
                                             <option value="1">Yes</option>
@@ -144,7 +141,6 @@
                     { data: 'name', name: 'name' },
                     { data: 'campus_id', name: 'campus_id' },
                     { data: 'zone_id', name: 'zone_id' },
-                    // { data: 'description', name: 'description' },
                     { data: 'active', name: 'active' },
                     { data: 'action', name: 'action', orderable: false, searchable: false}
                 ],

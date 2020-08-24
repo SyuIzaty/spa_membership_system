@@ -57,16 +57,6 @@
                                             @enderror</td>
                                 </div>
 
-                                {{-- <div class="form-group">
-                                    <label class="form-label" for="phone_number">Phone Number</label>
-                                    <input class="form-control @error('phone_number') is-invalid @enderror" id="phone_number" name="phone_number" value="{{ $roomowner->phone_number }}">
-                                        @error('phone_number')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong> *{{ $message }} </strong>
-                                            </span>
-                                        @enderror
-                                </div> --}}
-
                                 <tr>
                                 <div class="form-group">
                                     <td width="15%"><label class="form-label" for="email">Email</label></td>
@@ -85,18 +75,6 @@
                                             @enderror</td>
                                 </div>
                                 </tr>
-
-                                {{-- <tr>
-                                <div class="form-group">
-                                    <td width="15%"><label class="form-label" for="dateofbirth">Date of Birth</label></td>
-                                        <td colspan="10"><input type="date" class="form-control @error('dateofbirth') is-invalid @enderror" id="dateofbirth" name="dateofbirth" value="{{ $roomowner->dateofbirth }}">
-                                            @error('dateofbirth')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong> *{{ $message }} </strong>
-                                                </span>
-                                            @enderror</td>
-                                </div>
-                                </tr> --}}
                                 
                                 <tr>
                                 <div class="form-group">
@@ -124,22 +102,6 @@
                                     @enderror</td>
                                 </div>
                                 </tr>
-
-                                {{-- <tr>
-                                <div class="form-group">
-                                    <td width="15%"><label class="form-label" for="active">Active</label></td>
-                                    <td colspan="10"><select class="form-control @error('active') is-invalid @enderror" id="active" name="active">
-                                        <option value="">Please Select</option>
-                                        <option value="0" {{ old('active', $roomowner->active) == 'No' ? 'selected':''}} >No</option>
-                                        <option value="1" {{ old('active', $roomowner->active) == 'Yes' ? 'selected':''}} >Yes</option>
-                                    </select>
-                                    @error('active')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong> *{{ $message }} </strong>
-                                    </span>
-                                @enderror</td>
-                                </div>
-                                </tr> --}}
 
                                 <tr>
                                 <div class="form-group">

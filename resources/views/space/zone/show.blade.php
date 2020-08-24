@@ -40,32 +40,16 @@
                                     <td width="21%"><b>ZONE NAME :</b></td>
                                     <td colspan="2">{{ $zone->name }}</td>
                                 </tr>
-                                {{-- <tr>
-                                    <td width="21%"><b>ZONE NAME :</b></td>
-                                    <td colspan="2">{{ $zone->name }}</td>
-                                </tr> --}}
                                 <tr>
                                     <td width="15%"><b>DESCRIPTION :</b></td>
                                     <td colspan="10">{{ $zone->description }}</td>
                                 </tr>
-                                {{-- @foreach($campus as $campuses)
-                                @if($campuses->id == $zone->campus_id)
-                                <tr>
-                                    <td width="21%"><b>CAMPUS :</b></td>
-                                    <td colspan="2">{{ $campuses->name }}</td>
-                                </tr>
-                                @endif
-                                @endforeach --}}
                                 <tr>
                                     <td width="21%"><b>CAMPUS :</b></td>
                                     <td colspan="1">{{ $zone->campus->name }}</td>
                                     <td width="21%"><b>ACTIVE STATUS :</b></td>
                                     <td colspan="5">{{ $zone->active }}</td>
                                 </tr>
-                                {{-- <tr>
-                                    <td width="15%"><b>ACTIVE STATUS :</b></td>
-                                    <td colspan="10">{{ $zone->active }}</td>
-                                </tr> --}}
                             </thead>
                         </table>
                     </div>

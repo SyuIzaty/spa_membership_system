@@ -40,10 +40,6 @@
                                     <td width="21%"><b>BUILDING NAME :</b></td>
                                     <td colspan="2">{{ $building->name }}</td>
                                 </tr>
-                                {{-- <tr>
-                                    <td width="21%"><b>BUILDING NAME :</b></td>
-                                    <td colspan="2">{{ $building->name }}</td>
-                                </tr> --}}
                                 
                                 <tr>
                                     <td width="21%"><b>CAMPUS :</b></td>
@@ -56,11 +52,6 @@
                                     <td width="21%"><b>DESCRIPTION :</b></td>
                                     <td colspan="5">{{ $building->description }}</td>
                                 </tr>
-
-                                {{-- <tr>
-                                    <td width="21%"><b>ZONE :</b></td>
-                                    <td colspan="2">{{ $building->zone->name }}</td>
-                                </tr> --}}
 
                                 <tr>
                                     <td width="21%"><b>ACTIVE STATUS :</b></td>

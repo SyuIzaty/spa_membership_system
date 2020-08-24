@@ -58,16 +58,6 @@
                                 </div>
                                 </tr>
 
-                                {{-- <div class="form-group">
-                                    <label class="form-label" for="name">Name</label>
-                                    <input class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ $campus->name }}">
-                                        @error('name')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong> *{{ $message }} </strong>
-                                            </span>
-                                        @enderror
-                                </div> --}}
-
                                 <tr>
                                 <div class="form-group">
                                     <td width="15%"><label class="form-label" for="description">Description <span class="text-danger">*</span></label></td>
@@ -148,44 +138,6 @@
                                         @enderror</td>
                                 </div>
 
-                                {{-- <div class="form-group">
-                                    <label class="form-label" for="city">City</label>
-                                    <input class="form-control @error('city') is-invalid @enderror" id="city" name="city" value="{{ $campus->city }}">
-                                        @error('city')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong> *{{ $message }} </strong>
-                                            </span>
-                                        @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="form-label" for="state_id">State</label>
-                                    <select class="form-control" id="state_id" name="state_id" class="form-control @error('state_id') is-invalid @enderror">
-                                        <option value="">Please Select</option>
-                                        <option value="Johor" {{ old('state_id', $campus->state_id) == 'Johor' ? 'selected':''}}>Johor</option>
-                                        <option value="Kedah" {{ old('state_id', $campus->state_id) == 'Kedah' ? 'selected':''}}>Kedah</option>
-                                        <option value="Kelantan" {{ old('state_id', $campus->state_id) == 'Kelantan' ? 'selected':''}}>Kelantan</option>
-                                        <option value="Melaka" {{ old('state_id', $campus->state_id) == 'Melaka' ? 'selected':''}}>Melaka</option>
-                                        <option value="Negeri Sembilan" {{ old('state_id', $campus->state_id) == 'Negeri Sembilan' ? 'selected':''}}>Negeri Sembilan</option>
-                                        <option value="Pahang" {{ old('state_id', $campus->state_id) == 'Pahang' ? 'selected':''}}>Pahang</option>
-                                        <option value="Pulau Pinang" {{ old('state_id', $campus->state_id) == 'Pulau Pinang' ? 'selected':''}}>Pulau Pinang</option>
-                                        <option value="Perak" {{ old('state_id', $campus->state_id) == 'Perak' ? 'selected':''}}>Perak</option>
-                                        <option value="Perlis" {{ old('state_id', $campus->state_id) == 'Perlis' ? 'selected':''}}>Perlis</option>
-                                        <option value="Selangor" {{ old('state_id', $campus->state_id) == 'Selangor' ? 'selected':''}}>Selangor</option>
-                                        <option value="Terengganu" {{ old('state_id', $campus->state_id) == 'Terengganu' ? 'selected':''}}>Terengganu</option>
-                                        <option value="Sabah" {{ old('state_id', $campus->state_id) == 'Sabah' ? 'selected':''}}>Sabah</option>
-                                        <option value="Sarawak" {{ old('state_id', $campus->state_id) == 'Sarawak' ? 'selected':''}}>Sarawak</option>
-                                        <option value="Wilayah Persekutuan Kuala Lumpur" {{ old('state_id', $campus->state_id) == 'Wilayah Persekutuan Kuala Lumpur' ? 'selected':''}}>Wilayah Persekutuan Kuala Lumpur</option>
-                                        <option value="Wilayah Persekutuan Labuan" {{ old('state_id', $campus->state_id) == 'Wilayah Persekutuan Labuan' ? 'selected':''}}>Wilayah Persekutuan Labuan</option>
-                                        <option value="Wilayah Persekutuan Putrajaya" {{ old('state_id', $campus->state_id) == 'Wilayah Persekutuan Putrajaya' ? 'selected':''}}>Wilayah Persekutuan Putrajaya</option>
-                                    </select>
-                                        @error('state_id')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong> *{{ $message }} </strong>
-                                            </span>
-                                        @enderror
-                                </div> --}}
-
                                 <tr>
                                 <div class="form-group">
                                     <td width="15%"><label class="form-label" for="active">Active <span class="text-danger">*</span></label></td>
@@ -206,8 +158,6 @@
                             </table>
                                     <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Update</button> 
                                     <a style="margin-right:5px" href="{{ URL::route('campus.index') }}" class="btn btn-success ml-auto float-right"><i class="fal fa-angle-double-left"></i> Back</a><br><br>
-                                    {{-- <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted">
-                                    </div><br> --}}
                         </form>
                     </div>
                 </div>

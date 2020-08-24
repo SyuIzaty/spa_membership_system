@@ -59,29 +59,15 @@
                                     </div>
                                     </tr>
 
-                                    {{-- <tr>
-                                    <div class="form-group">
-                                        <td width="21%"><label class="form-label" for="name">Name <span class="text-danger">*</span></label></td>
-                                        <td colspan="10"><input value="{{ old('name') }}" class="form-control @error('name') is-invalid @enderror" id="name" name="name"></td>
-                                            @error('name')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong> *{{ $message }} </strong>
-                                                </span>
-                                            @enderror
-                                    </div>
-                                    </tr> --}}
-
                                     <tr>
                                     <div class="form-group">
                                         <td width="15%"><label class="form-label" for="description">Description <span class="text-danger">*</span></label></td>
                                         <td colspan="10"><input value="{{ old('description') }}" class="form-control @error('description') is-invalid @enderror" id="description" name="description">
-                                        <!-- sent message error input -->
                                         @error('description')
                                         <span class="invalid-feedback" role="alert">
                                             <strong> *{{ $message }} </strong>
                                         </span>
                                         @enderror</td>
-                                        <!-- end sent message error input -->
                                     </div>
                                     </tr>
 
@@ -153,48 +139,6 @@
                                     </div>
                                     </tr>
                                     
-                                    {{-- <tr>
-                                    <div class="form-group">
-                                        <td width="21%"><label class="form-label" for="city">City <span class="text-danger">*</span></label></td>
-                                        <td colspan="2"><input value="{{ old('city') }}" class="form-control @error('city') is-invalid @enderror" id="city" name="city"></td>
-                                            @error('city')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong> *{{ $message }} </strong>
-                                                </span>
-                                            @enderror
-                                    </div>
-                                    </tr>
-
-                                    <tr>
-                                    <div class="form-group">
-                                        <td width="21%"><label class="form-label" for="state_id">State <span class="text-danger">*</span></label></td>
-                                        <td colspan="2"><select id="state_id" name="state_id" class="form-control @error('state_id') is-invalid @enderror">
-                                            <option value="">Please Select</option>
-                                            <option value="Johor" {{ old('state_id') == 'Johor' ? 'selected':''}}>Johor</option>
-                                            <option value="Kedah" {{ old('state_id') == 'Kedah' ? 'selected':''}}>Kedah</option>
-                                            <option value="Kelantan" {{ old('state_id') == 'Kelantan' ? 'selected':''}}>Kelantan</option>
-                                            <option value="Melaka" {{ old('state_id') == 'Melaka' ? 'selected':''}}>Melaka</option>
-                                            <option value="Negeri Sembilan" {{ old('state_id') == 'Negeri Sembilan' ? 'selected':''}}>Negeri Sembilan</option>
-                                            <option value="Pahang" {{ old('state_id') == 'Pahang' ? 'selected':''}}>Pahang</option>
-                                            <option value="Pulau Pinang" {{ old('state_id') == 'Pulau Pinang' ? 'selected':''}}>Pulau Pinang</option>
-                                            <option value="Perak" {{ old('state_id') == 'Perak' ? 'selected':''}}>Perak</option>
-                                            <option value="Perlis" {{ old('state_id') == 'Perlis' ? 'selected':''}}>Perlis</option>
-                                            <option value="Selangor" {{ old('state_id') == 'Selangor' ? 'selected':''}}>Selangor</option>
-                                            <option value="Terengganu" {{ old('state_id') == 'Terengganu' ? 'selected':''}}>Terengganu</option>
-                                            <option value="Sabah" {{ old('state_id') == 'Sabah' ? 'selected':''}}>Sabah</option>
-                                            <option value="Sarawak" {{ old('state_id') == 'Sarawak' ? 'selected':''}}>Sarawak</option>
-                                            <option value="Wilayah Persekutuan Kuala Lumpur" {{ old('state_id') == 'Wilayah Persekutuan Kuala Lumpur' ? 'selected':''}}>Wilayah Persekutuan Kuala Lumpur</option>
-                                            <option value="Wilayah Persekutuan Labuan" {{ old('state_id') == 'Wilayah Persekutuan Labuan' ? 'selected':''}}>Wilayah Persekutuan Labuan</option>
-                                            <option value="Wilayah Persekutuan Putrajaya" {{ old('state_id') == 'Wilayah Persekutuan Putrajaya' ? 'selected':''}}>Wilayah Persekutuan Putrajaya</option>
-                                        </select></td>
-                                        @error('state_id')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong> *{{ $message }} </strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                    </tr> --}}
-
                                     <tr>
                                     <div class="form-group">
                                         <td width="15%"><label class="form-label" for="active">Active <span class="text-danger">*</span></label></td>
@@ -213,7 +157,6 @@
                                     
                                 </thead>
                             </table>
-                                {{-- <button type="submit" class="btn btn-primary btn-sm">Save</button> --}}
                                 <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>	
                                 <button style="margin-right:5px" type="reset" class="btn btn-danger ml-auto float-right"><i class="fal fa-redo"></i> Reset</button>
                                 <a style="margin-right:5px" href="{{ URL::route('campus.index') }}" onclick="return confirm('Are you sure to discard data?')" class="btn btn-success ml-auto float-right"><i class="fal fa-trash-alt"></i> Discard</a><br><br>
@@ -228,29 +171,5 @@
 @endsection
 
 @section('script')
-
-{{-- <script>
-
-    $.ajax{{
-        type:'get',
-        url:'{!!URL::to('findsubact')!!}',
-        data:{'id':mainactid},
-        success:function(data)
-        {
-            op+='<option value="">-- Sila Pilih Sub Aktiviti --</option>';
-            for (var i=0; i<data.length; i++)
-            {
-                var selected = (data[i].id=="{{old('subact_id', $rpa->subact_id)}}") ? "selected='selected'" : '';
-                op+='<option value="'+data[i].id+'" '+selected+'>'+data[i].subactname+'</option>';
-            }
-
-            $('.subactname').html(op);
-        },
-        error:function(){
-            console.log('success');
-        },
-    }};
-    
-</script> --}}
 
 @endsection
