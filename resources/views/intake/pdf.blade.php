@@ -2,10 +2,10 @@
     <meta charset="UTF-8">
 
     <title>Offer Letter</title>
-    <link href="{{ asset('css/print.css') }}" rel="stylesheet">
-
+    {{-- <link href="{{ asset('css/print.css') }}" rel="stylesheet"> --}}
 </head>
 <body>
+    <img src="{{ storage_path('app/public/intec_offer.png') }}" style="height: 170px; width: 650px">
     <div class="app_detail">
         {{$applicant->applicant_name}}<br>{{$applicant->applicant_ic}}
     </div>

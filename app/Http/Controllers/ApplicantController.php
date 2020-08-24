@@ -608,6 +608,7 @@ class ApplicantController extends Controller
 
            ->addColumn('action', function ($applicants) {
                return '<a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Detail</a>
+               <a href="'.action('IntakeController@letter', ['applicant_id' => $applicants->id, 'intake_id' => $applicants->intake_id, 'programme_id' => $applicants->applicantstatus->first()->applicant_programme, 'name' => $applicants->applicant_name]).'" class="btn btn-sm btn-info">Offer Letter</a>
                ';
            })
            ->rawColumns(['prog_name','prog_name_2','prog_name_3','action'])
