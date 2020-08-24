@@ -131,7 +131,7 @@
 
     <div class="field">
         <div class="control">
-            <button type="submit" class="button is-link is-outlined">Update</button>
+            <button type="submit"  class="button is-link is-outlined">Update</button>
         </div>
     </div>
 

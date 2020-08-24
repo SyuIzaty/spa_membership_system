@@ -39,6 +39,7 @@
     <div class="field">
         <div class="control">
             <button type="submit" class="button is-link is-outlined">Create</button>
+            <a href="{{route('applicant.contactinfo',$applicant)}}" button type="back"  class="button is-link is-outlined">back</a></button>
         </div>
     </div>
 
