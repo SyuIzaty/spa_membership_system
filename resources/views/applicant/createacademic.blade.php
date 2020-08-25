@@ -14,7 +14,11 @@
     @method('get')
     @include('partials.errors')
 
-    
+    <div class="field">
+        <label class="label">ID</label>
+        <div class="control">
+            <input type="text" name="id" value="{{ $applicant->id }}" />
+        </div>
     <div class="field">
         <label class="label">Highest Qualification</label>
         <div>Complete following fields with qualification details</div>
@@ -29,16 +33,19 @@
                     @foreach ($qualifications as $qualification)
                     <option value={{ $qualification->id }}>{{ $qualification->qualification_code }}</option>
                     @endforeach
+                    
                 </select>
+                
             </div>
+           
         </div>
     </div>
 
     
-
+<br>
     <div class="field">
         <div class="control">
-            <button type="submit" class="button is-link is-outlined">Create</button>
+            <button type="submit" class="button is-link is-outlined">Add</button>
             <a href="{{route('applicant.contactinfo',$applicant)}}" button type="back"  class="button is-link is-outlined">back</a></button>
         </div>
     </div>

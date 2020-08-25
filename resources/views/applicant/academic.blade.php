@@ -8,7 +8,7 @@
 <h1 class="title">Academic Information</h1>
 
 
-<form method="post" action="{{ route('applicant.updateacademic',$applicant,$qualifications) }}">
+<form method="post" action="{{ route('applicant.updateacademic',$applicant,$qualifications,$academic,$academics) }}">
 
     @csrf
     @method('get')
@@ -20,18 +20,20 @@
     </div>
     <div class="field">
         <label class="label">Qualification Type</label>
-       
+        {{ $qualifications->qualification_name }}
         <div class="control">
             <div class="select">
                 <select name="qualification_type" required>  
                     <option value="$qualification">Select Qualification Type</option>
-                    @foreach ($qualifications as $qualification)
-                    <option value={{ $qualification->id }}>{{ $qualification->qualification_code }}</option>
+                    @foreach ($qualification as $qualifications)
+                    <option value={{ $qualifications->id }}>{{ $qualifications->qualification_name }}</option>
                     @endforeach
                 </select>
             </div>
         </div>
     </div>
+
+   
 
     
     
