@@ -132,6 +132,7 @@
     <div class="field">
         <div class="control">
             <button type="submit"  class="button is-link is-outlined">Update</button>
+            <a href="{{route('applicant.createacademic',$applicant)}}" button type="back"  class="button is-link is-outlined">Next</a></button>
         </div>
     </div>
 
