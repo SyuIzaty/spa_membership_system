@@ -25,6 +25,9 @@
                                     <a data-toggle="tab" class="nav-link" href="#details" role="tab">Applicant Details</a>
                                 </li>
                                 <li class="nav-item">
+                                    <a data-toggle="tab" class="nav-link" href="#academic" role="tab">Applicant Academic</a>
+                                </li>
+                                <li class="nav-item">
                                     <a data-toggle="tab" class="nav-link" href="#bucket" role="tab">Applicant Bucket Details</a>
                                 </li>
                             </ul>
@@ -39,6 +42,7 @@
                                                     <table class="table table-bordered">
                                                         <tr>
                                                             <th>Applied Programme</th>
+                                                            <th>Major</th>
                                                             <th>Result</th>
                                                             <th>Reason</th>
                                                         </tr>
@@ -57,20 +61,25 @@
                                                                 @endforeach
                                                             </td>
                                                             <td>
+                                                                <p>{{ $applicant->applicant_major }}</p>
+                                                                <p>{{ $applicant->applicant_major_2 }}</p>
+                                                                <p>{{ $applicant->applicant_major_3 }}</p>
+                                                            </td>
+                                                            <td>
                                                                 @if($aapplicant_all_app['programme_status']== '1')
-                                                                    <p><span class="badge bg-success pull-right">Accepted</span></p><br>
+                                                                    <p style="color:green">Accepted</p>
                                                                 @else
-                                                                    <p><span class="badge bg-danger pull-right">Rejected</span></p><br>
+                                                                    <p style="color: red">Rejected</p>
                                                                 @endif
                                                                 @if($aapplicant_all_app['programme_status_2']== '1')
-                                                                <p><span class="badge bg-success pull-right">Accepted</span></p><br>
+                                                                    <p style="color: green">Accepted</p>
                                                                 @else
-                                                                    <p><span class="badge bg-danger pull-right">Rejected</span></p><br>
+                                                                    <p style="color: red">Rejected</p>
                                                                 @endif
                                                                 @if($aapplicant_all_app['programme_status_3']== '1')
-                                                                    <p><span class="badge bg-success pull-right">Accepted</span></p><br>
+                                                                    <p style="color: green">Accepted</p>
                                                                 @else
-                                                                    <p><span class="badge bg-danger pull-right">Rejected</span></p><br>
+                                                                    <p style="color: red">Rejected</p>
                                                                 @endif
                                                             </td>
                                                             <td>
@@ -157,6 +166,8 @@
                                                     <td>Occupation</td>
                                                     <td colspan="3">{{$applicant_guardian->guardian_one_occupation}}</td>
                                                 </tr>
+                                            </table>
+                                            <table class="table table-bordered">
                                                 <tr>
                                                     <td>Name (Mother / Guardian I)</td>
                                                     <td colspan="3">{{$applicant_guardian->guardian_two_name}}</td>
@@ -217,111 +228,169 @@
                                             @endif
                                         </div>
                                     </div>
-                                    <hr class="mt-2 mb-3">
+                                </div>
+                                <div class="tab-pane" id="academic" role="tabpanel">
                                     <div class="card">
                                         <div class="card-header">Academic Qualification</div>
                                             <div class="card-body">
                                                 @if(count($spm)!=0)
                                                 <h5>SPM</h5>
-                                                <table class="table table-bordered">
-                                                <tr>
-                                                    <td>Subject Code</td>
-                                                    <td>Subject Name</td>
-                                                    <td>Grade</td>
-                                                </tr>
-                                                @foreach($spm as $spms)
+                                                    <table class="table table-bordered">
                                                     <tr>
-                                                        <td>{{$spms->subjects->first()->subject_code}}</td>
-                                                        <td>{{$spms->subjects->first()->subject_name}}</td>
-                                                        <td>{{$spms->grades->grade_code}}</td>
+                                                        <td>Subject Code</td>
+                                                        <td>Subject Name</td>
+                                                        <td>Grade</td>
                                                     </tr>
-                                                @endforeach
-                                                </table>
+                                                    @foreach($spm as $spms)
+                                                        <tr>
+                                                            <td>{{$spms->subjects->first()->subject_code}}</td>
+                                                            <td>{{$spms->subjects->first()->subject_name}}</td>
+                                                            <td>{{$spms->grades->grade_code}}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </table>
                                                 @endif
                                                 @if(count($stpm)!=0)
                                                 <h5>STPM</h5>
-                                                <table class="table table-bordered">
-                                                <tr>
-                                                    <td>Subject Code</td>
-                                                    <td>Subject Name</td>
-                                                    <td>Grade</td>
-                                                </tr>
-                                                @foreach($stpm as $stpms)
+                                                    <table class="table table-bordered">
                                                     <tr>
-                                                        <td>{{$stpms->subjects->first()->subject_code}}</td>
-                                                        <td>{{$stpms->subjects->first()->subject_name}}</td>
-                                                        <td>{{$stpms->grades->grade_code}}</td>
+                                                        <td>Subject Code</td>
+                                                        <td>Subject Name</td>
+                                                        <td>Grade</td>
                                                     </tr>
-                                                @endforeach
-                                                </table>
+                                                    @foreach($stpm as $stpms)
+                                                        <tr>
+                                                            <td>{{$stpms->subjects->first()->subject_code}}</td>
+                                                            <td>{{$stpms->subjects->first()->subject_name}}</td>
+                                                            <td>{{$stpms->grades->grade_code}}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </table>
                                                 @endif
                                                 @if(count($stam)!=0)
                                                 <h5>STAM</h5>
-                                                <table class="table table-bordered">
-                                                <tr>
-                                                    <td>Subject Code</td>
-                                                    <td>Subject Name</td>
-                                                    <td>Grade</td>
-                                                </tr>
-                                                @foreach($stam as $stams)
+                                                    <table class="table table-bordered">
                                                     <tr>
-                                                        <td>{{$stams->subjects->first()->subject_code}}</td>
-                                                        <td>{{$stams->subjects->first()->subject_name}}</td>
-                                                        <td>{{$stams->grades->grade_code}}</td>
+                                                        <td>Subject Code</td>
+                                                        <td>Subject Name</td>
+                                                        <td>Grade</td>
                                                     </tr>
-                                                @endforeach
-                                                </table>
+                                                    @foreach($stam as $stams)
+                                                        <tr>
+                                                            <td>{{$stams->subjects->first()->subject_code}}</td>
+                                                            <td>{{$stams->subjects->first()->subject_name}}</td>
+                                                            <td>{{$stams->grades->grade_code}}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </table>
                                                 @endif
                                                 @if(count($uec)!=0)
                                                 <h5>UEC</h5>
-                                                <table class="table table-bordered">
-                                                <tr>
-                                                    <td>Subject Code</td>
-                                                    <td>Subject Name</td>
-                                                    <td>Grade</td>
-                                                </tr>
-                                                @foreach($uec as $uecs)
+                                                    <table class="table table-bordered">
                                                     <tr>
-                                                        <td>{{$uecs->subjects->first()->subject_code}}</td>
-                                                        <td>{{$uecs->subjects->first()->subject_name}}</td>
-                                                        <td>{{$uecs->grades->grade_code}}</td>
+                                                        <td>Subject Code</td>
+                                                        <td>Subject Name</td>
+                                                        <td>Grade</td>
                                                     </tr>
-                                                @endforeach
-                                                </table>
+                                                    @foreach($uec as $uecs)
+                                                        <tr>
+                                                            <td>{{$uecs->subjects->first()->subject_code}}</td>
+                                                            <td>{{$uecs->subjects->first()->subject_name}}</td>
+                                                            <td>{{$uecs->grades->grade_code}}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </table>
                                                 @endif
                                                 @if(count($alevel)!=0)
                                                 <h5>A Level</h5>
-                                                <table class="table table-bordered">
-                                                <tr>
-                                                    <td>Subject Code</td>
-                                                    <td>Subject Name</td>
-                                                    <td>Grade</td>
-                                                </tr>
-                                                @foreach($alevel as $alevels)
+                                                    <table class="table table-bordered">
                                                     <tr>
-                                                        <td>{{$alevels->subjects->first()->subject_code}}</td>
-                                                        <td>{{$alevels->subjects->first()->subject_name}}</td>
-                                                        <td>{{$alevels->grades->first()->grade_code}}</td>
+                                                        <td>Subject Code</td>
+                                                        <td>Subject Name</td>
+                                                        <td>Grade</td>
                                                     </tr>
-                                                @endforeach
-                                                </table>
+                                                    @foreach($alevel as $alevels)
+                                                        <tr>
+                                                            <td>{{$alevels->subjects->first()->subject_code}}</td>
+                                                            <td>{{$alevels->subjects->first()->subject_name}}</td>
+                                                            <td>{{$alevels->grades->first()->grade_code}}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </table>
                                                 @endif
                                                 @if(count($olevel)!=0)
                                                 <h5>O Level</h5>
-                                                <table class="table table-bordered">
-                                                <tr>
-                                                    <td>Subject Code</td>
-                                                    <td>Subject Name</td>
-                                                    <td>Grade</td>
-                                                </tr>
-                                                @foreach($olevel as $olevels)
+                                                    <table class="table table-bordered">
                                                     <tr>
-                                                        <td>{{$olevels->subjects->first()->subject_code}}</td>
-                                                        <td>{{$olevels->subjects->first()->subject_name}}</td>
-                                                        <td>{{$olevels->grades->grade_code}}</td>
+                                                        <td>Subject Code</td>
+                                                        <td>Subject Name</td>
+                                                        <td>Grade</td>
                                                     </tr>
-                                                @endforeach
-                                                </table>
+                                                    @foreach($olevel as $olevels)
+                                                        <tr>
+                                                            <td>{{$olevels->subjects->first()->subject_code}}</td>
+                                                            <td>{{$olevels->subjects->first()->subject_name}}</td>
+                                                            <td>{{$olevels->grades->grade_code}}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </table>
+                                                @endif
+                                                @if(isset($matriculation))
+                                                <h5>Matriculation</h5>
+                                                    <table class="table table-bordered">
+                                                        <tr>
+                                                            <td>Matriculation</td>
+                                                            <td colspan="3">{{$matriculation->applicantAcademic->applicant_study}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Major</td>
+                                                            <td colspan="3">{{ $matriculation->applicantAcademic->applicant_major }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Graduation Year</td>
+                                                            <td>{{ $matriculation->applicantAcademic->applicant_year }}</td>
+                                                            <td>CGPA</td>
+                                                            <td>{{$matriculation->cgpa}}</td>
+                                                        </tr>
+                                                    </table>
+                                                @endif
+                                                @if(isset($diploma))
+                                                <h5>Diploma</h5>
+                                                    <table class="table table-bordered">
+                                                    <tr>
+                                                        <td>University</td>
+                                                        <td colspan="3">{{ $diploma->applicantAcademic->applicant_study }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Major</td>
+                                                        <td colspan="3">{{ $diploma->applicantAcademic->applicant_major }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Graduation Year</td>
+                                                        <td>{{ $diploma->applicantAcademic->applicant_year }}</td>
+                                                        <td>CGPA</td>
+                                                        <td>{{ $diploma->cgpa }}</td>
+                                                    </tr>
+                                                    </table>
+                                                @endif
+                                                @if(isset($degree))
+                                                <h5>Degree</h5>
+                                                    <table class="table table-bordered">
+                                                    <tr>
+                                                        <td>University</td>
+                                                        <td colspan="3">{{$degree->applicantAcademic->applicant_study}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Major</td>
+                                                        <td colspan="3">{{ $degree->applicantAcademic->applicant_major }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Graduation Year</td>
+                                                        <td>{{ $degree->applicantAcademic->applicant_year }}</td>
+                                                        <td>CGPA</td>
+                                                        <td>{{$degree->cgpa}}</td>
+                                                    </tr>
+                                                    </table>
                                                 @endif
                                         </div>
                                     </div>
@@ -361,19 +430,19 @@
                                                                 </td>
                                                                 <td>
                                                                     @if($aapplicant_all_app['programme_status']== '1')
-                                                                        <p><span class="badge bg-success pull-right">Accepted</span></p><br>
+                                                                        <p><span class="badge bg-success pull-right">Accepted</span></p>
                                                                     @else
-                                                                        <p><span class="badge bg-danger pull-right">Rejected</span></p><br>
+                                                                        <p><span class="badge bg-danger pull-right">Rejected</span></p>
                                                                     @endif
                                                                     @if($aapplicant_all_app['programme_status_2']== '1')
-                                                                        <p><span class="badge bg-success pull-right">Accepted</span></p><br>
+                                                                        <p><span class="badge bg-success pull-right">Accepted</span></p>
                                                                     @else
-                                                                        <p><span class="badge bg-danger pull-right">Rejected</span></p><br>
+                                                                        <p><span class="badge bg-danger pull-right">Rejected</span></p>
                                                                     @endif
                                                                     @if($aapplicant_all_app['programme_status_3']== '1')
-                                                                        <p><span class="badge bg-success pull-right">Accepted</span></p><br>
+                                                                        <p><span class="badge bg-success pull-right">Accepted</span></p>
                                                                     @else
-                                                                        <p><span class="badge bg-danger pull-right">Rejected</span></p><br>
+                                                                        <p><span class="badge bg-danger pull-right">Rejected</span></p>
                                                                     @endif
                                                                 </td>
                                                                 <td>

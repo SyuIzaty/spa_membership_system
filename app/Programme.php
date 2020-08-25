@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Programme extends Model
 {
     protected $table = 'programmes';
+    protected $keyType = 'string';
+    public $incrementing = false;
 
     public function applicant()
     {

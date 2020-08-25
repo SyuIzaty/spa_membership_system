@@ -29,5 +29,9 @@ class ApplicantResult extends Model
         return $this->belongsTo('App\Grades','grade_id')->withDefault();
     }
 
-    
+    public function applicantAcademic()
+    {
+        return $this->hasOne('App\ApplicantAcademic','applicant_id','applicant_id');
+    }
+
 }
