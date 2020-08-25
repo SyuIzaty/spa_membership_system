@@ -446,12 +446,12 @@
                 data: { "_token": "{{ csrf_token() }}", applicant_id: trid, applicant_programme: programme,applicant_status: selectedValue },
                 success: function(response) {
                 alert('Data has been updated');
-                return response;  
+                return response;
                 },
                 error: function() {
                     alert('error');
                 }
-                
+
             });
         });
         $('#status_{{$aapplicant_all_app['applicant_programme_2']}}').on('change',function(){
@@ -467,12 +467,12 @@
                 data: { "_token": "{{ csrf_token() }}", applicant_id: trid, applicant_programme: programme,applicant_status: selectedValue },
                 success: function(response) {
                 alert('Data has been updated');
-                return response;  
+                return response;
                 },
                 error: function() {
                     alert('error');
                 }
-                
+
             });
         });
         $('#status_{{$aapplicant_all_app['applicant_programme_3']}}').on('change',function(){
@@ -488,12 +488,12 @@
                 data: { "_token": "{{ csrf_token() }}", applicant_id: trid, applicant_programme: programme,applicant_status: selectedValue },
                 success: function(response) {
                 alert('Data has been updated');
-                return response;  
+                return response;
                 },
                 error: function() {
                     alert('error');
                 }
-                
+
             });
         });
     });

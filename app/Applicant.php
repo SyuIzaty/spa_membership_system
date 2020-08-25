@@ -68,5 +68,10 @@ class Applicant extends Model
     {
         return $this->hasOne('App\RequirementStatus','id','programme_status_3')->withDefault();
     }
-    
+
+    public function applicantAcademic()
+    {
+        return $this->hasOne('App\ApplicantAcademic','applicant_id','id');
+    }
+
 }

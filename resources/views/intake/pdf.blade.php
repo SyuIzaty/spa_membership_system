@@ -2,59 +2,8 @@
     <meta charset="UTF-8">
 
     <title>Offer Letter</title>
-    <style>
-        @page :right {
-            margin: 2cm;
-        }
 
-        @page {
-            size: A4;
-        }
-
-        body{
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 10pt;
-        }
-
-        .app_detail{
-            text-transform: uppercase;
-            font-weight: bold;
-            line-height: 1.2;
-        }
-
-        .intake_detail p{
-            line-height: 1.2;
-        }
-
-        .prog_detail tr td:nth-child(3){
-            text-transform: uppercase;
-            font-weight: bold;
-            width: 500px;
-        }
-
-        .prog_detail tr td:nth-child(1){
-            width: 150px;
-        }
-
-        .important{
-            line-height: 1.2;
-            border: 2px solid black;
-            font-weight: bold;
-        }
-
-        .important p{
-            margin-left: 10px;
-        }
-
-        .note p{
-            line-height: 1.2;
-            font-style: italic;
-        }
-
-        .footer p{
-            font-style: italic;
-        }
-    </style>
+    <link rel="stylesheet" href="css/pdf.css">
 </head>
 <body>
     <img src="{{ storage_path('app/public/intec_offer.png') }}" style="height: 170px; width: 650px">
