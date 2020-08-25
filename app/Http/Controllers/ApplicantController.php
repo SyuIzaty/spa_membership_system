@@ -107,29 +107,26 @@ class ApplicantController extends Controller
     }
 
 
+    
     public function storeacademic(Request $request, Applicant $applicant)
     {
 
-        // Validate posted form data
-        $validated = $request->validate([
-        'qualification_type' => 'required|string|min:|max:100',
-    ]);
+        $data = [
+            'applicant_id' => $request->id,
+            'type' => $request->qualification_type,
+        ];
 
-    // Create and save applicant with validated data
+        $academic=ApplicantAcademic::create($data);
+        //dd($data);
+        $qualifications = DB::table('qualifications')
+        ->select('*')
+        ->where('id', $academic->type)
+        ->get();
+        //dd($qualifications);
+        foreach ($qualifications as $qualification)
 
-
-    $academic = ApplicantAcademic::create($validated);
-    // dd($applicant);
-    $qualifications = DB::table('qualifications')
-    ->select('*')
-    ->where('id', $academic->qualification_type)
-    ->get();
-    dd($qualifications);
-     foreach ($qualifications as $qualification)
-
-    // Redirect the user to the created applicant with a success notification
-    return redirect(route('applicant.academicinfo',$academic,$qualifications,$qualification))->with('notification', 'Qualifications created!');
-
+        //dd($data);
+        return redirect(route('applicant.academicinfo',$applicant,$academic,$qualification,$qualifications))->with('notification', 'Qualifications created!');
     }
 
     /**
@@ -160,11 +157,19 @@ class ApplicantController extends Controller
     return view ('applicant.profile',compact('applicant'));
     }
 
-    public function academicinfo(Applicant $applicant ,ApplicantAcademic $applicantacademic)
+    public function academicinfo(Request $request,Applicant $applicant ,ApplicantAcademic $academic, Qualification $qualification)
     {
 
+        $qualification= DB::table('qualifications')->latest()->get();
+        
+        $academic= DB::table('applicant_academic')->latest()->get();
+        //dd($academic);
+        foreach ($qualification as $qualifications)
+        foreach ($academic as $academics)
 
-    return view ('applicant.academic',compact('applicant','applicantacademic'));
+        return view ('applicant.academic',compact('applicant','applicantacademic','qualification','qualifications','academic','academics'));
+    
+
     }
 
 
@@ -176,7 +181,7 @@ class ApplicantController extends Controller
         ->select('*')
         ->where('id', $applicant->applicant_programme)
         ->get();
-        $programme = DB::select('select * from programmes');
+        //$programme = DB::select('select * from programmes');
 
          foreach ($programme as $program )
 
