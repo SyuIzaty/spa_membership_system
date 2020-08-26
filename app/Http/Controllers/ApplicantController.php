@@ -108,21 +108,21 @@ class ApplicantController extends Controller
 
 
 
-    public function storeacademic(Request $request, Applicant $applicant)
+    public function storeacademic(Request $request, Applicant $applicant, ApplicantAcademic $academic, Qualification $qualification)
     {
 
         $data = [
             'applicant_id' => $request->id,
-            'qualification_type' => $request->qualification_type,
+            'type' => $request->qualification_type,
         ];
 
         $academic=ApplicantAcademic::create($data);
         //dd($data);
         $qualifications = DB::table('qualifications')
         ->select('*')
-        ->where('id', $academic->qualification_type)
+        ->where('id', $academic->type)
         ->get();
-        //dd($qualifications);
+       // dd($qualifications);
         foreach ($qualifications as $qualification)
 
         //dd($data);

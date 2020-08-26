@@ -8,7 +8,7 @@
 <h1 class="title">Academic Information</h1>
 
 
-<form method="post" action="{{ route('applicant.updateacademic',$applicant,$qualifications,$academic,$academics) }}">
+<form method="post" action="{{ route('applicant.updateacademic',$applicant,$qualification,$qualifications) }}">
 
     @csrf
     @method('get')
@@ -20,7 +20,7 @@
     </div>
     <div class="field">
         <label class="label">Qualification Type</label>
-        {{ $qualifications->qualification_name }}
+     
         <div class="control">
             <div class="select">
                 <select name="qualification_type" required>  

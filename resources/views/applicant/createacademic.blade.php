@@ -5,7 +5,18 @@
 
 @section('content')
 
-<h1 class="title">Academic Qualification</h1>
+
+<head>
+  <meta charset="utf-8">
+  <h1 class="title">Academic Qualification</h1>
+  <style>
+  input, label {
+    line-height: 1.5em;
+  }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+</head>
+
 
 
 <form method="post" action="{{ route('applicant.storeacademic',$applicant,$applicantacademic) }}">
@@ -49,7 +60,20 @@
             <a href="{{route('applicant.contactinfo',$applicant)}}" button type="back"  class="button is-link is-outlined">back</a></button>
         </div>
     </div>
-
+   
 </form>
 
+
+
 @endsection
+<script>
+$( "select" )
+  .change(function() {
+    var str = "";
+    $( "select option:selected" ).each(function() {
+      str += $( this ).text() + " ";
+    });
+    $( "div" ).text( str );
+  })
+  .trigger( "change" );
+</script>
