@@ -113,14 +113,14 @@ class ApplicantController extends Controller
 
         $data = [
             'applicant_id' => $request->id,
-            'type' => $request->qualification_type,
+            'qualification_type' => $request->qualification_type,
         ];
 
         $academic=ApplicantAcademic::create($data);
         //dd($data);
         $qualifications = DB::table('qualifications')
         ->select('*')
-        ->where('id', $academic->type)
+        ->where('id', $academic->qualification_type)
         ->get();
         //dd($qualifications);
         foreach ($qualifications as $qualification)
@@ -157,19 +157,22 @@ class ApplicantController extends Controller
     return view ('applicant.profile',compact('applicant'));
     }
 
-    public function academicinfo(Request $request,Applicant $applicant ,ApplicantAcademic $academic, Qualification $qualification)
-    {
 
-        $qualification= DB::table('qualifications')->latest()->get();
-        
-        $academic= DB::table('applicant_academic')->latest()->get();
-        //dd($academic);
-        foreach ($qualification as $qualifications)
-        foreach ($academic as $academics)
-
-        return view ('applicant.academic',compact('applicant','applicantacademic','qualification','qualifications','academic','academics'));
     
+    public function academicinfo(Applicant $applicant,ApplicantAcademic $applicantacademic, Qualification $qualification)
+    {
+        $qualification= DB::table('qualifications')->latest()->get();
+       // ApplicantAcademic::where('qualification_type',$qualification);
+        //dd($qualification);
+        // $qualification = DB::table('qualifications')
+        // ->select('*')
+        // ->where('id', $applicantacademic->qualification_type)
+        // ->latest()
+        // ->get();
+        
 
+        foreach ($qualification as $qualifications)
+        return view ('applicant.academic',compact('applicant','applicantacademic','qualification','qualifications'));
     }
 
 
@@ -326,7 +329,27 @@ class ApplicantController extends Controller
         //return view ('applicant.program',compact('applicant','programme','program'))->with('notification', 'Applicant Updated!');
 
     }
+    public function updateacademic(Request $request, Applicant $applicant,ApplicantAcademic $applicantacademic, Qualification $qualification)
+    {
+        // Validate posted form data
+        $validated = $request->validate([
+            'type' => 'string|min:|max:100',
+        ]);
 
+        // Create and save post with validated data
+        $applicantacademic->update($validated);
+        $qualification = DB::table('qualifications')
+       ->select('*')
+       ->where('id', $applicantacademic->type)
+       ->get();
+
+        foreach ($qualification as $qualifications)
+
+        // Redirect the user to the created post with a success notification
+        return redirect(route('applicant.academic',$applicant))->with('notification', 'Programme Updated!');
+        //return view ('applicant.program',compact('applicant','programme','program'))->with('notification', 'Applicant Updated!');
+
+    }
 
     /**
      * Remove the specified resource from storage.
