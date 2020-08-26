@@ -74,6 +74,7 @@ Route::post('/data_passapplicant', 'ApplicantController@data_passapplicant');
 Route::post('/data_offerapplicant', 'ApplicantController@data_offerapplicant');
 
 Route::get('testCollection','ApplicantController@testCollection');
+Route::get('test','IntakeTypeController@test');
 
 //INTAKE
 Route::resource('/intake','IntakeController');
@@ -83,6 +84,13 @@ Route::delete('deleteProgramInfo/{id}', 'IntakeController@deleteProgramInfo')->n
 Route::get('/intake-info','IntakeController@intakeInfo');
 Route::post('updateProgramInfo', 'IntakeController@updateProgramInfo');
 Route::get('/letter', 'IntakeController@letter')->name('letter');
+Route::get('/emails', 'IntakeController@sendEmail')->name('emails');
+
+//PARAM
+Route::resource('/intakeType', 'IntakeTypeController');
+Route::resource('param/programme', 'ProgrammeController');
+Route::post('data-intakeType', 'IntakeTypeController@data_intakeType');
+Route::post('data-allProgramme', 'ProgrammeController@data_allProgramme');
 
 //OFFER LETTER
 Route::get('/offer-letter', 'EntryRequirementController@offer');

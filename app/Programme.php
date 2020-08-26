@@ -7,8 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Programme extends Model
 {
     protected $table = 'programmes';
-    protected $keyType = 'string';
+    protected $primaryKey = 'id';
+
     public $incrementing = false;
+    protected $keyType = 'string';
+
+    protected $fillable = [
+        'id','programme_code','programme_name','programme_duration',
+    ];
 
     public function applicant()
     {

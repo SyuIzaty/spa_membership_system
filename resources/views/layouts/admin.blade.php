@@ -337,9 +337,31 @@
                             <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-portrait"></i>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Intake</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <li>
+                                            <a href="/intakeType" title="Active Student" data-filter-tags="active_student">
+                                                <i class="fal fa-user"></i>
+                                                <span class="nav-link-text" data-i18n="nav.active_student">Intake Type</span>
+                                            </a>
+                                        </li>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#" title="Application Intel" data-filter-tags="application intel">
+                                    <i class="fal fa-portrait"></i>
                                     <span class="nav-link-text" data-i18n="nav.application_intel">Program</span>
                                 </a>
                                 <ul>
+                                    <li>
+                                        <a href="/param/programme/" title="Active Student" data-filter-tags="active_student">
+                                            <i class="fal fa-user"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Programme List</span>
+                                        </a>
+                                    </li>
                                     <li>
                                         <a href="/examination" title="Active Student" data-filter-tags="active_student">
                                             <i class="fal fa-user"></i>

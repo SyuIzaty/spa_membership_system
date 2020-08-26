@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Programme;
 use Illuminate\Http\Request;
+use App\IntakeType;
 
-class ProgrammeController extends Controller
+class IntakeTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,19 +14,20 @@ class ProgrammeController extends Controller
      */
     public function index()
     {
-        $programme = Programme::all();
-        return view('param.programme.index', compact('programme'));
+        $intakeType = IntakeType::all();
+        return view('intakeType.index', compact('intakeType'));
     }
 
-    public function data_allProgramme()
-    {
-        $programmes = Programme::all();
 
-        return datatables()::of($programmes)
-        ->addColumn('action', function ($programmes) {
+    public function data_intakeType()
+    {
+        $intake = IntakeType::all();
+
+        return datatables()::of($intake)
+        ->addColumn('action', function ($intake) {
 
             return '
-            <button class="btn btn-sm btn-danger btn-delete delete" data-remote="/param/programme/' . $programmes->id . '"> Delete</button>'
+            <button class="btn btn-sm btn-danger btn-delete delete" data-remote="/intakeType/' . $intake->id . '"> Delete</button>'
             ;
         })
 
@@ -38,9 +39,13 @@ class ProgrammeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $request->validate([
+            'id' => 'required'
+        ]);
+
+        IntakeType::create($request->all());
     }
 
     /**
@@ -53,27 +58,23 @@ class ProgrammeController extends Controller
     {
         $request->validate([
             'id' => 'required',
-            'programme_name' => 'required',
-            'programme_duration' => 'required',
+            'intake_type_description' => 'required',
         ]);
 
-        Programme::create([
+        IntakeType::create([
             'id' => $request->id,
-            'programme_code' => $request->id,
-            'programme_name' => $request->programme_name,
-            'programme_duration' => $request->programme_duration,
+            'intake_type_description' => $request->intake_type_description,
         ]);
         return redirect()->back();
 
     }
-
     /**
      * Display the specified resource.
      *
-     * @param  \App\Programme  $programme
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Programme $programme)
+    public function show($id)
     {
         //
     }
@@ -81,10 +82,10 @@ class ProgrammeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Programme  $programme
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Programme $programme)
+    public function edit($id)
     {
         //
     }
@@ -93,23 +94,22 @@ class ProgrammeController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Programme  $programme
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Programme $programme)
+    public function update(Request $request)
     {
-        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Programme  $programme
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $exist = Programme::find($id);
+        $exist = IntakeType::find($id);
         $exist->delete();
         return response()->json(['success'=>'Intake deleted successfully.']);
     }

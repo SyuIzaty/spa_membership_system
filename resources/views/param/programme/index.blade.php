@@ -4,7 +4,7 @@
 <main id="js-page-content" role="main" class="page-content">
     <div class="subheader">
         <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-university'></i>Intake
+        <i class='subheader-icon fal fa-university'></i>Programme
         </h1>
     </div>
     <div class="row">
@@ -12,7 +12,7 @@
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
                     <h2>
-                        Intake <span class="fw-300"><i>List</i></span>
+                        Programme <span class="fw-300"><i>List</i></span>
                     </h2>
                     <div class="panel-toolbar">
                         <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
@@ -22,25 +22,21 @@
                 </div>
                 <div class="panel-container show">
                     <div class="panel-content">
-                        <a class="btn btn-success" href="{{ route('intake.create') }}"> Create Intake Info</a>
-                        <table id="intake" class="table table-bordered table-hover table-striped w-100">
+                        <div class="pull-right mb-4">
+                            <a class="btn btn-primary pull-right" href="javascript:;" data-toggle="modal" id="new">Add Programme</a>
+                        </div>
+                        <table id="programme" class="table table-bordered table-hover table-striped w-100">
                             <thead>
                                 <tr>
-                                    <th>Intake Code</th>
-                                    <th>Intake Description</th>
-                                    <th>Application Start Date</th>
-                                    <th>Application End Date</th>
-                                    <th>Check Status Start Date</th>
-                                    <th>Check Status End Date</th>
+                                    <th>Programme Code</th>
+                                    <th>Programme Description</th>
+                                    <th>Programme Duration</th>
                                     <th>Action</th>
                                 </tr>
                                 <tr>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Intake Code"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Intake Description"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Date"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Date"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Date"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Date"></td>
+                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Code"></td>
+                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Description"></td>
+                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Duration"></td>
                                     <td class="hasinput"></td>
                                 </tr>
                             </thead>
@@ -53,11 +49,36 @@
 
                     <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">
 
-
                     </div>
-
+                    <div class="modal fade" id="crud-modal" aria-hidden="true" >
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title"> Add Programme</h4>
+                                </div>
+                                <div class="modal-body">
+                                    {!! Form::open(['action' => 'ProgrammeController@store', 'method' => 'POST']) !!}
+                                    <div class="form-group">
+                                        {{Form::label('title', 'Programme Code')}}
+                                        {{Form::text('id', '', ['class' => 'form-control', 'placeholder' => 'Programme Code'])}}
+                                    </div>
+                                    <div class="form-group">
+                                        {{Form::label('title', 'Programme Name')}}
+                                        {{Form::text('programme_name', '', ['class' => 'form-control', 'placeholder' => 'Programme Name', 'required'])}}
+                                    </div>
+                                    <div class="form-group">
+                                        {{Form::label('title', 'Programme Description')}}
+                                        {{Form::text('programme_duration', '', ['class' => 'form-control', 'placeholder' => 'Programme Duration', 'required'])}}
+                                    </div>
+                                    <div class="pull-right">
+                                        <button class="btn btn-primary" type="submit">Save</button>
+                                    </div>
+                                    {!! Form::close() !!}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -67,10 +88,15 @@
 @section('script')
 
 <script>
+    $('#new').click(function () {
+        $('#crud-modal').modal('show');
+    });
+
+
+
     $(document).ready(function()
     {
-
-        $('#intake thead tr .hasinput').each(function(i)
+        $('#programme thead tr .hasinput').each(function(i)
         {
             $('input', this).on('keyup change', function()
             {
@@ -96,21 +122,18 @@
         });
 
 
-        var table = $('#intake').DataTable({
+        var table = $('#programme').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
-                url: "/data-allintake",
+                url: "/data-allProgramme",
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
             columns: [
-                    { data: 'intake_code', name: 'intake_code' },
-                    { data: 'intake_description', name: 'intake_description' },
-                    { data: 'intake_app_open', name: 'intake_app_open' },
-                    { data: 'intake_app_close', name: 'intake_app_close'},
-                    { data: 'intake_check_open', name: 'intake_check_open'},
-                    { data: 'intake_check_close', name: 'intake_check_close'},
+                    { data: 'id', name: 'id' },
+                    { data: 'programme_name', name: 'programme_name' },
+                    { data: 'programme_duration', name: 'programme_duration' },
                     { data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
@@ -120,7 +143,7 @@
                 }
         });
 
-        $('#intake').on('click', '.btn-delete[data-remote]', function (e) {
+        $('#programme').on('click', '.btn-delete[data-remote]', function (e) {
             e.preventDefault();
             $.ajaxSetup({
                 headers: {
@@ -145,7 +168,7 @@
                     dataType: 'json',
                     data: {method: '_DELETE', submit: true}
                     }).always(function (data) {
-                        $('#intake').DataTable().draw(false);
+                        $('#programme').DataTable().draw(false);
                     });
                 }
             })

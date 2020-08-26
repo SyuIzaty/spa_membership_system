@@ -84,7 +84,7 @@
                                         <td class="programme_code">{{$intake_del->programme->programme_code}}</td>
                                         <td class="programme_name">{{$intake_del->programme->programme_name}}</td>
                                         <td class="programme_desc">{{ $intake_del->intake_programme_description }}</td>
-                                        <td class="intake_type_code">{{$intake_del->intakeType->intake_type_code}}</td>
+                                        <td class="intake_type_code">{{$intake_del->intake_type}}</td>
                                         <td class="batch_code">{{$intake_del->batch_code}}</td>
                                         <td class="intake_date">{{$intake_del->intake_date}}</td>
                                         <td class="intake_time">{{$intake_del->intake_time}}</td>
@@ -133,7 +133,7 @@
                             {{Form::label('title', 'Intake Type')}}
                             <select name="intake_type" id="intake_type" class="form-control">
                                 @foreach($intake_type as $intaketype)
-                                  <option value="{{ $intaketype->id }}">{{ $intaketype->intake_type_code }}</option>
+                                  <option value="{{ $intaketype->id }}">{{ $intaketype->id }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -193,11 +193,8 @@
                             <div class="form-group">
                                 {{Form::label('title', 'Intake Type')}}
                                 <select name="intake_type" id="intake_type_code" class="form-control">
-                                    @foreach($intake_detail as $in_type)
-                                        <option value="{{ $in_prog->intake_type }}">{{ $in_prog->intakeType->intake_type_code }}</option>
-                                    @endforeach
                                     @foreach($intake_type as $intaketype)
-                                      <option value="{{ $intaketype->id }}">{{ $intaketype->intake_type_code }}</option>
+                                      <option value="{{ $intaketype->id }}">{{ $intaketype->id }}</option>
                                     @endforeach
                                 </select>
                             </div>

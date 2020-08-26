@@ -12,7 +12,7 @@
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
                     <h2>
-                        Intake <span class="fw-300"><i>List</i></span>
+                        Intake <span class="fw-300"><i>Type</i></span>
                     </h2>
                     <div class="panel-toolbar">
                         <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
@@ -22,25 +22,19 @@
                 </div>
                 <div class="panel-container show">
                     <div class="panel-content">
-                        <a class="btn btn-success" href="{{ route('intake.create') }}"> Create Intake Info</a>
-                        <table id="intake" class="table table-bordered table-hover table-striped w-100">
+                        <div class="pull-right mb-4">
+                            <a class="btn btn-primary pull-right" href="javascript:;" data-toggle="modal" id="new">Add Intake Type</a>
+                        </div>
+                        <table id="intakeType" class="table table-bordered table-hover table-striped w-100">
                             <thead>
                                 <tr>
-                                    <th>Intake Code</th>
-                                    <th>Intake Description</th>
-                                    <th>Application Start Date</th>
-                                    <th>Application End Date</th>
-                                    <th>Check Status Start Date</th>
-                                    <th>Check Status End Date</th>
+                                    <th>Intake Type Code</th>
+                                    <th>Intake Type Description</th>
                                     <th>Action</th>
                                 </tr>
                                 <tr>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search Intake Code"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search Intake Description"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Date"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Date"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Date"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Date"></td>
                                     <td class="hasinput"></td>
                                 </tr>
                             </thead>
@@ -53,11 +47,56 @@
 
                     <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">
 
-
+                    </div>
+                    <div class="modal fade" id="crud-modal" aria-hidden="true" >
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title"> Add Intake Type</h4>
+                                </div>
+                                <div class="modal-body">
+                                    {!! Form::open(['action' => 'IntakeTypeController@store', 'method' => 'POST']) !!}
+                                    <div class="form-group">
+                                        {{Form::label('title', 'Intake Type')}}
+                                        {{Form::text('id', '', ['class' => 'form-control', 'placeholder' => 'Intake Type'])}}
+                                    </div>
+                                    <div class="form-group">
+                                        {{Form::label('title', 'Intake Description')}}
+                                        {{Form::text('intake_type_description', '', ['class' => 'form-control', 'placeholder' => 'Intake Description', 'required'])}}
+                                    </div>
+                                    <div class="pull-right">
+                                        <button class="btn btn-primary" type="submit">Save</button>
+                                    </div>
+                                    {!! Form::close() !!}
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
+                    <div class="modal fade" id="editModal" aria-hidden="true" >
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title"> Edit Intake Type</h4>
+                                </div>
+                                <div class="modal-body">
+                                    {{-- {!! Form::open(['action' => 'IntakeTypeController@update', 'method' => 'POST', 'id' => 'edit-form']) !!} --}}
+                                    @csrf
+                                    <input name="id" id="id" >
+                                    <div class="form-group">
+                                        {{Form::label('title', 'Intake Description')}}
+                                        {{Form::text('intake_type_description', '', ['id' => 'intake_type_description','class' => 'form-control','placeholder' => 'Intake Type Description'])}}
+                                    </div>
+                                    <div class="modal-footer">
+                                        {{Form::submit('Save', ['class' => 'btn btn-primary'])}}
+                                        <button type="button" class="btn btn-secondary text-white" data-dismiss="modal">Close</button>
+                                    </div>
+                                    {!! Form::close() !!}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -67,10 +106,15 @@
 @section('script')
 
 <script>
+    $('#new').click(function () {
+        $('#crud-modal').modal('show');
+    });
+
+
+
     $(document).ready(function()
     {
-
-        $('#intake thead tr .hasinput').each(function(i)
+        $('#intakeType thead tr .hasinput').each(function(i)
         {
             $('input', this).on('keyup change', function()
             {
@@ -96,21 +140,17 @@
         });
 
 
-        var table = $('#intake').DataTable({
+        var table = $('#intakeType').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
-                url: "/data-allintake",
+                url: "/data-intakeType",
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
             columns: [
-                    { data: 'intake_code', name: 'intake_code' },
-                    { data: 'intake_description', name: 'intake_description' },
-                    { data: 'intake_app_open', name: 'intake_app_open' },
-                    { data: 'intake_app_close', name: 'intake_app_close'},
-                    { data: 'intake_check_open', name: 'intake_check_open'},
-                    { data: 'intake_check_close', name: 'intake_check_close'},
+                    { data: 'id', name: 'id' },
+                    { data: 'intake_type_description', name: 'intake_type_description' },
                     { data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
@@ -120,7 +160,7 @@
                 }
         });
 
-        $('#intake').on('click', '.btn-delete[data-remote]', function (e) {
+        $('#intakeType').on('click', '.btn-delete[data-remote]', function (e) {
             e.preventDefault();
             $.ajaxSetup({
                 headers: {
@@ -145,7 +185,7 @@
                     dataType: 'json',
                     data: {method: '_DELETE', submit: true}
                     }).always(function (data) {
-                        $('#intake').DataTable().draw(false);
+                        $('#intakeType').DataTable().draw(false);
                     });
                 }
             })
