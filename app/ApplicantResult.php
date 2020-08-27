@@ -8,6 +8,7 @@ class ApplicantResult extends Model
 {
 
     protected $table = 'applicantresult';
+    protected $fillable = ['applicant_id','type','subject','grade_id'];
 
     public function applicant()
     {

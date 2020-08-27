@@ -109,7 +109,7 @@ class ApplicantController extends Controller
 
 
 
-    public function storeacademic(Request $request, Applicant $applicant, ApplicantAcademic $academic, Qualification $qualification, Subject $subject)
+    public function storeacademic(Request $request, Applicant $applicant, ApplicantAcademic $academic, Qualification $qualification, Subject $subject, ApplicantResult $result)
     {
 
         $data = [
@@ -118,6 +118,16 @@ class ApplicantController extends Controller
         ];
 
         $academic=ApplicantAcademic::create($data);
+
+        $dataresult = [
+            'applicant_id' => $request->id,
+            'type' => $request->qualification_type,
+            'subject'=>$request->subject_code,
+            'grade_id'=>$request->id,
+        ];
+
+        $result=ApplicantResult::create($dataresult);
+
         //dd($data);
         $qualification = DB::table('qualifications')
         ->select('*')
@@ -126,12 +136,12 @@ class ApplicantController extends Controller
         //dd($qualification);
 
         $subject = DB::select('select * from subjects');
-
+        
         foreach ($subject as $subjects)
         foreach ($qualification as $qualifications)
 
-
-
+        
+     
         //dd($data);
         return redirect(route('applicant.academicinfo',$applicant,$academic,$qualification,$qualifications,$subjects,$subject))->with('notification', 'Qualifications created!');
     }
