@@ -60,8 +60,8 @@ class ApplicantController extends Controller
     {
 
         $qualifications = DB::select('select * from qualifications');
-        $subjects = DB::select('select * from subjects');
-        return view('applicant.createacademic',['qualifications'=>$qualifications,'subjects'=>$subjects],compact('applicant','applicantacademic','qualifications','subjects'));
+        $subject = DB::select('select * from subjects');
+        return view('applicant.createacademic',['qualifications'=>$qualifications,'subject'=>$subject],compact('applicant','applicantacademic','qualifications'));
     }
 
 
@@ -123,11 +123,12 @@ class ApplicantController extends Controller
         ->select('*')
         ->where('id', $academic->type)
         ->get();
-        dd($qualification);
+        //dd($qualification);
 
         $subject = DB::select('select * from subjects');
         
-        foreach ($subjects as $subject)
+        foreach ($subject as $subjects)
+        foreach ($qualification as $qualifications)
 
         
      
