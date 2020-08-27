@@ -50,7 +50,7 @@
                 <select name="applicant_programme" required>  
                     <option value="$program">Select Programme</option>
                     @foreach ($programme as $program)
-                    <option value={{ $program->id }}>{{ $program->programme_name }}</option>
+                    <option value={{ $program->id }}>{{ $program->programme_code }}-{{ $program->programme_name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -62,9 +62,9 @@
         <div class="control">
             <div class="select">
                 <select name="applicant_programme_2" required>  
-                    <option value="$program">Select Programme</option>
+                <option value="$program">Select Programme</option>
                     @foreach ($programme as $program)
-                    <option value={{ $program->id }}>{{ $program->programme_name }}</option>
+                    <option value={{ $program->id }}>{{ $program->programme_code }}-{{ $program->programme_name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -76,9 +76,9 @@
         <div class="control">
             <div class="select">
                 <select name="applicant_programme_3" required>  
-                    <option value="$program">Select Programme</option>
+                <option value="$program">Select Programme</option>
                     @foreach ($programme as $program)
-                    <option value={{ $program->id }}>{{ $program->programme_name }}</option>
+                    <option value={{ $program->id }}>{{ $program->programme_code }}-{{ $program->programme_name }}</option>
                     @endforeach
                 </select>
             </div>
