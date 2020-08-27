@@ -126,12 +126,12 @@ class ApplicantController extends Controller
         //dd($qualification);
 
         $subject = DB::select('select * from subjects');
-        
+
         foreach ($subject as $subjects)
         foreach ($qualification as $qualifications)
 
-        
-     
+
+
         //dd($data);
         return redirect(route('applicant.academicinfo',$applicant,$academic,$qualification,$qualifications,$subjects,$subject))->with('notification', 'Qualifications created!');
     }
@@ -463,33 +463,7 @@ class ApplicantController extends Controller
 
     public function indexs()
     {
-        $dataappl = [];
-        $programme = [];
-        $applicant = Applicant::where('applicant_status',NULL)->get()->toArray();
-
-        foreach($applicant as $applicantstat)
-        {
-            $programme_1['programme_1'] = Programme::where('id',$applicantstat['applicant_programme'])->select('programme_code')->get();
-            $programme_2['programme_2'] = Programme::where('id',$applicantstat['applicant_programme_2'])->select('programme_code')->get();
-            $programme_3['programme_3'] = Programme::where('id',$applicantstat['applicant_programme_3'])->select('programme_code')->get();
-
-            $bm_res = ApplicantResult::where('applicant_id',$applicantstat['id'])->where('subject',1103)->where('type',1)->get();
-            $bm['bm'] = $bm_res->load('grades');
-
-            $eng_res = ApplicantResult::where('applicant_id',$applicantstat['id'])->where('subject',1119)->where('type',1)->get();
-            $eng['eng'] = $eng_res->load('grades');
-
-            $math_res = ApplicantResult::where('applicant_id',$applicantstat['id'])->where('subject',1449)->where('type',1)->get();
-            $math['math'] = $math_res->load('grades');
-
-            $dataappl[] = array_merge($applicantstat, $programme_1, $programme_2, $programme_3, $bm, $eng, $math);
-        }
-
-        $applicant_offer = ApplicantStatus::where('applicant_status','Selected')->get();
-        $app_offer = $applicant_offer->load('programme','applicant');
-
-        $aapplicant = $dataappl;
-        return view('applicant.applicantresult', compact('aapplicant','app_offer'));
+        return view('applicant.applicantresult');
     }
 
     public function testCollection()
@@ -1316,7 +1290,7 @@ class ApplicantController extends Controller
     {
         $status = [];
         $spm = $this->spm($applicantt);
-        if($spm['count_math'] == 1 && $spm['count_eng'] == 1 && $spm['spm'] >= 5)
+        if($spm['count_math'] == 1 && $spm['count_eng'] == 1 && $spm['spm'] >= 3)
         {
             $status_spm = true;
         }else{
@@ -1375,7 +1349,7 @@ class ApplicantController extends Controller
     {
         $status = [];
         $spm = $this->spm($applicantt);
-        if($spm['count_math'] == 1 && $spm['spm'] >= 4)
+        if($spm['count_math'] == 1 && $spm['spm'] >= 3)
         {
             $status_spm = true;
         }else{
@@ -1636,25 +1610,16 @@ class ApplicantController extends Controller
         $programme = Programme::all();
         foreach ($applicants as $applicantt)
         {
-            $this->iat($applicantt);
-            $this->ial($applicantt);
-            $this->igr($applicantt);
-            $this->iam($applicantt);
-            $this->ile($applicantt);
-            $this->ikr($applicantt);
-            $this->dbm($applicantt);
-            $this->dpmg($applicantt);
-            $this->dshp($applicantt);
-            $this->dia($applicantt);
-            $this->dif($applicantt);
-            $this->cat($applicantt);
-            $this->cfab($applicantt);
-            $this->micpa($applicantt);
-            $this->aca($applicantt);
-            $this->pac551($applicantt);
-            $this->pac554($applicantt);
-            $this->pac553($applicantt);
-            $this->pac552($applicantt);
+            $programme_1 = $applicantt['applicant_programme'];
+            $programme_2 = $applicantt['applicant_programme_2'];
+            $programme_3 = $applicantt['applicant_programme_3'];
+            if(isset($applicantt['applicant_programme'])){
+                $this->$programme_1($applicantt);
+            }if(isset($applicantt['applicant_programme_2'])){
+                $this->$programme_2($applicantt);
+            }if(isset($applicantt['applicant_programme_3'])){
+                $this->$programme_3($applicantt);
+            }
 
         }
         return $this->indexs();

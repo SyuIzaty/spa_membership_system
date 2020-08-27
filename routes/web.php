@@ -72,9 +72,9 @@ Route::post('/data_allapplicant', 'ApplicantController@data_allapplicant');
 Route::post('/data_rejectedapplicant', 'ApplicantController@data_rejectedapplicant');
 Route::post('/data_passapplicant', 'ApplicantController@data_passapplicant');
 Route::post('/data_offerapplicant', 'ApplicantController@data_offerapplicant');
+Route::post('/data_acceptedapplicant', 'ApplicantController@data_acceptedapplicant');
 
 Route::get('testCollection','ApplicantController@testCollection');
-Route::get('test','IntakeTypeController@test');
 
 //INTAKE
 Route::resource('/intake','IntakeController');

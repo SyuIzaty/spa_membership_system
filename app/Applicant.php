@@ -74,4 +74,9 @@ class Applicant extends Model
         return $this->hasOne('App\ApplicantAcademic','applicant_id','id');
     }
 
+    public function applicantIntake()
+    {
+        return $this->hasOne('App\Intakes','id','intake_id');
+    }
+
 }
