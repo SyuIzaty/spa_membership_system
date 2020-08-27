@@ -52,7 +52,7 @@
                 <select name="subject" id="subject" required>  
                     <option value="">Select Subject</option>
                     @foreach ($subject as $subjects)
-                    <option >{{ $subjects->subject_name }}</option>
+                    <option value={{ $subjects->subject_code }} >{{ $subjects->subject_name }}</option>
                     @endforeach 
                 </select>
              </div>
@@ -85,7 +85,7 @@ $(document).ready(function(){
    var dependent = $(this).data('dependent');
    var _token = $('input[name="_token"]').val();
    $.ajax({
-    url:"",
+    url:"{{ route('applicant.storeacademic',$applicant,$applicantacademic) }}",
     method:"POST",
     data:{select:select, value:value, _token:_token, dependent:dependent},
     success:function(result)
