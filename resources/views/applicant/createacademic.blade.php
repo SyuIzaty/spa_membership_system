@@ -6,18 +6,13 @@
 @section('content')
 
 
+
+
 <head>
-  <meta charset="utf-8">
   <h1 class="title">Academic Qualification</h1>
-  <style>
-  input, label {
-    line-height: 1.5em;
-  }
-  </style>
-  <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
-</head>
-
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+ 
+ </head>
 
 <form method="post" action="{{ route('applicant.storeacademic',$applicant,$applicantacademic) }}">
 
@@ -30,25 +25,37 @@
         <div class="control">
             <input type="text" name="id" value="{{ $applicant->id }}" />
         </div>
+
     <div class="field">
         <label class="label">Highest Qualification</label>
         <div>Complete following fields with qualification details</div>
     </div>
+
     <div class="field">
         <label class="label">Qualification Type</label>
-       
         <div class="control">
             <div class="select">
-                <select name="qualification_type" required>  
-                    <option value="$qualification">Select Qualification Type</option>
+                <select name="qualification_type" id="qualification_type" data-dependent="subject" required>  
+                    <option value="">Select Qualification Type</option>
                     @foreach ($qualifications as $qualification)
                     <option value={{ $qualification->id }}>{{ $qualification->qualification_code }}</option>
-                    @endforeach
-                    
+                    @endforeach 
                 </select>
-                
-            </div>
-           
+             </div>
+        </div>
+    </div>
+
+    <div class="field">
+        <label class="label">Subject</label>
+        <div class="control">
+            <div class="select">
+                <select name="subject" id="subject" required>  
+                    <option value="">Select Subject</option>
+                    @foreach ($subjects as $subject)
+                    <option >{{ $subject->subject_name }}</option>
+                    @endforeach 
+                </select>
+             </div>
         </div>
     </div>
 

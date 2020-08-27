@@ -60,7 +60,8 @@ class ApplicantController extends Controller
     {
 
         $qualifications = DB::select('select * from qualifications');
-        return view('applicant.createacademic',['qualifications'=>$qualifications],compact('applicant','applicantacademic','qualifications'));
+        $subjects = DB::select('select * from subjects');
+        return view('applicant.createacademic',['qualifications'=>$qualifications,'subjects'=>$subjects],compact('applicant','applicantacademic','qualifications','subjects'));
     }
 
 
@@ -108,7 +109,7 @@ class ApplicantController extends Controller
 
 
 
-    public function storeacademic(Request $request, Applicant $applicant, ApplicantAcademic $academic, Qualification $qualification)
+    public function storeacademic(Request $request, Applicant $applicant, ApplicantAcademic $academic, Qualification $qualification, Subject $subject)
     {
 
         $data = [
@@ -118,15 +119,20 @@ class ApplicantController extends Controller
 
         $academic=ApplicantAcademic::create($data);
         //dd($data);
-        $qualifications = DB::table('qualifications')
+        $qualification = DB::table('qualifications')
         ->select('*')
         ->where('id', $academic->type)
         ->get();
-       // dd($qualifications);
-        foreach ($qualifications as $qualification)
+        dd($qualification);
 
+        $subject = DB::select('select * from subjects');
+        
+        foreach ($subjects as $subject)
+
+        
+     
         //dd($data);
-        return redirect(route('applicant.academicinfo',$applicant,$academic,$qualification,$qualifications))->with('notification', 'Qualifications created!');
+        return redirect(route('applicant.academicinfo',$applicant,$academic,$qualification,$qualifications,$subjects,$subject))->with('notification', 'Qualifications created!');
     }
 
     /**
