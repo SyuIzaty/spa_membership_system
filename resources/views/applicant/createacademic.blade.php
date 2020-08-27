@@ -51,8 +51,8 @@
             <div class="select">
                 <select name="subject" id="subject" required>  
                     <option value="">Select Subject</option>
-                    @foreach ($subjects as $subject)
-                    <option >{{ $subject->subject_name }}</option>
+                    @foreach ($subject as $subjects)
+                    <option >{{ $subjects->subject_name }}</option>
                     @endforeach 
                 </select>
              </div>
@@ -67,20 +67,39 @@
             <a href="{{route('applicant.contactinfo',$applicant)}}" button type="back"  class="button is-link is-outlined">back</a></button>
         </div>
     </div>
-   
+   {{ csrf_field() }}
 </form>
 
 
 
 @endsection
+
 <script>
-$( "select" )
-  .change(function() {
-    var str = "";
-    $( "select option:selected" ).each(function() {
-      str += $( this ).text() + " ";
-    });
-    $( "div" ).text( str );
-  })
-  .trigger( "change" );
+$(document).ready(function(){
+
+ $('.dynamic').change(function(){
+  if($(this).val() != '')
+  {
+   var select = $(this).attr("id");
+   var value = $(this).val();
+   var dependent = $(this).data('dependent');
+   var _token = $('input[name="_token"]').val();
+   $.ajax({
+    url:"",
+    method:"POST",
+    data:{select:select, value:value, _token:_token, dependent:dependent},
+    success:function(result)
+    {
+     $('#'+dependent).html(result);
+    }
+
+   })
+  }
+ });
+
+    $('#qualification_type').change(function(){
+    $('#subject').val('');  
+ });
+
+});
 </script>
