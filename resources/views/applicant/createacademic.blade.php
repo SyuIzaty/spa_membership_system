@@ -41,8 +41,10 @@
                     <option value={{ $qualification->id }}>{{ $qualification->qualification_code }}</option>
                     @endforeach 
                 </select>
-             </div>
+             </div>  
+                     
         </div>
+        
     </div>
 
     <div class="field">
@@ -55,11 +57,24 @@
                     <option value={{ $subjects->subject_code }} >{{ $subjects->subject_name }}</option>
                     @endforeach 
                 </select>
+                </div>   
+                 
+            <div class="select">
+               
+                <select name="grades" id="grades" required>  
+                    <option value="">Select Grade</option>
+                    @foreach ($grades as $grade)
+                    <option value={{ $grade->grade_type }} >{{ $grade->grade_code }}</option>
+                    @endforeach 
+                </select>
+                </div>  
              </div>
         </div>
-    </div>
-
     
+        <br>
+        <br>
+        <br>
+        <br>   
 <br>
     <div class="field">
         <div class="control">
