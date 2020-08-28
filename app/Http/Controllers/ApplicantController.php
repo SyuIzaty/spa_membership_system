@@ -61,7 +61,8 @@ class ApplicantController extends Controller
 
         $qualifications = DB::select('select * from qualifications');
         $subject = DB::select('select * from subjects');
-        return view('applicant.createacademic',['qualifications'=>$qualifications,'subject'=>$subject],compact('applicant','applicantacademic','qualifications'));
+        $grades = DB::select('select * from grades');
+        return view('applicant.createacademic',['qualifications'=>$qualifications,'subject'=>$subject,'grades'=>$grades],compact('applicant','applicantacademic','qualifications','subject','grades'));
     }
 
 
@@ -109,7 +110,7 @@ class ApplicantController extends Controller
 
 
 
-    public function storeacademic(Request $request, Applicant $applicant, ApplicantAcademic $academic, Qualification $qualification, Subject $subject, ApplicantResult $result)
+    public function storeacademic(Request $request, Applicant $applicant, ApplicantAcademic $academic, Qualification $qualification, Subject $subject, ApplicantResult $applicantresult, Grades $grades)
     {
 
         $data = [
@@ -118,7 +119,15 @@ class ApplicantController extends Controller
         ];
 
         $academic=ApplicantAcademic::create($data);
-
+        //$subject = DB::table('subjects');
+        //$subjectcode =Subject::select('subjects')->where('subject_code')->latest()->get();
+        // $subjectcode = DB::table('subjects')
+        // ->select('*')
+        // ->where('subject_code')
+        // ->get();
+        $subject = Subject::all('subject_code');
+        // $subjectcode= DB::table('applicant_contact_info')->latest()->get();
+        //dd($subject);
         $dataresult = [
             'applicant_id' => $request->id,
             'type' => $request->qualification_type,
@@ -127,6 +136,7 @@ class ApplicantController extends Controller
         ];
 
         $result=ApplicantResult::create($dataresult);
+        dd($result);
 
         //dd($data);
         $qualification = DB::table('qualifications')
@@ -136,14 +146,30 @@ class ApplicantController extends Controller
         //dd($qualification);
 
         $subject = DB::select('select * from subjects');
+        $grades = DB::select('select * from grades');
         
         foreach ($subject as $subjects)
         foreach ($qualification as $qualifications)
+        foreach ($grades as $grade)
 
+        $select = $request->get('select');
+        $value = $request->get('value');
+        $dependent = $request->get('dependent');
+        $data = DB::table('applicantresult')
+          ->where($select, $value)
+          ->groupBy($dependent)
+          ->get();
+          dd($data);
+        $output = '<option value="">Select '.ucfirst($dependent).'</option>';
+        foreach($data as $row)
+        {
+         $output .= '<option value="'.$row->$dependent.'">'.$row->$dependent.'</option>';
+        }
+        echo $output;
         
      
         //dd($data);
-        return redirect(route('applicant.academicinfo',$applicant,$academic,$qualification,$qualifications,$subjects,$subject))->with('notification', 'Qualifications created!');
+        return redirect(route('applicant.academicinfo',$applicant,$academic,$qualification,$qualifications,$subjects,$subject,$grades,$grade))->with('notification', 'Qualifications created!');
     }
 
     /**
