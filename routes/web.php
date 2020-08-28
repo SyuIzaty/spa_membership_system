@@ -86,6 +86,7 @@ Route::post('updateProgramInfo', 'IntakeController@updateProgramInfo');
 Route::get('/letter', 'IntakeController@letter')->name('letter');
 Route::get('/emails', 'IntakeController@sendEmail')->name('emails');
 
+
 //PARAM
 Route::resource('/intakeType', 'IntakeTypeController');
 Route::resource('param/programme', 'ProgrammeController');

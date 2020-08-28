@@ -43,15 +43,15 @@
                                     <table class="table table-bordered" id="applicant">
                                         <thead>
                                             <tr>
-                                                <th>No</th>
-                                                <th>Applicant Name</th>
-                                                <th>Programme 1</th>
-                                                <th>Programme 2</th>
-                                                <th>Programme 3</th>
-                                                <th>Bahasa Melayu</th>
-                                                <th>English</th>
-                                                <th>Mathematics</th>
-                                                <th>Action</th>
+                                                <th>NO</th>
+                                                <th>APPLICANT</th>
+                                                <th>PROG 1</th>
+                                                <th>PROG 2</th>
+                                                <th>PROG 3</th>
+                                                <th>BM</th>
+                                                <th>ENG</th>
+                                                <th>MATH</th>
+                                                <th>ACTION</th>
                                             </tr>
                                             <tr>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
@@ -125,15 +125,15 @@
                                     <table class="table table-bordered" id="pass">
                                         <thead>
                                             <tr>
-                                                <th>No</th>
-                                                <th>Applicant Name</th>
-                                                <th>Programme 1</th>
-                                                <th>Programme 2</th>
-                                                <th>Programme 3</th>
-                                                <th>Bahasa Melayu</th>
-                                                <th>English</th>
-                                                <th>Mathematics</th>
-                                                <th>Action</th>
+                                                <th>NO</th>
+                                                <th>APPLICANT</th>
+                                                <th>PROG 1</th>
+                                                <th>PROG 2</th>
+                                                <th>PROG 3</th>
+                                                <th>BM</th>
+                                                <th>ENG</th>
+                                                <th>MATH</th>
+                                                <th>ACTION</th>
                                             </tr>
                                             <tr>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
@@ -157,15 +157,15 @@
                                     <table class="table table-bordered" id="rejected">
                                         <thead>
                                             <tr>
-                                                <th>No</th>
-                                                <th>Applicant Name</th>
-                                                <th>Programme 1</th>
-                                                <th>Programme 2</th>
-                                                <th>Programme 3</th>
-                                                <th>Bahasa Melayu</th>
-                                                <th>English</th>
-                                                <th>Mathematics</th>
-                                                <th>Action</th>
+                                                <th>NO</th>
+                                                <th>APPLICANT</th>
+                                                <th>PROG 1</th>
+                                                <th>PROG 2</th>
+                                                <th>PROG 3</th>
+                                                <th>BM</th>
+                                                <th>ENG</th>
+                                                <th>MATH</th>
+                                                <th>ACTION</th>
                                             </tr>
                                             <tr>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
@@ -186,22 +186,25 @@
                                 </div>
 
                                 <div class="tab-pane" role="tabpanel" id="offer_all">
+                                    <span id="intake"></span>
                                     <table class="table table-bordered" id="offer">
                                         <thead>
                                             <tr>
-                                                <th>No</th>
-                                                <th>Applicant Name</th>
-                                                <th>Programme 1</th>
-                                                <th>Programme 2</th>
-                                                <th>Programme 3</th>
-                                                <th>Bahasa Melayu</th>
-                                                <th>English</th>
-                                                <th>Mathematics</th>
-                                                <th>Action</th>
+                                                <th>NO</th>
+                                                <th>APPLICANT</th>
+                                                <th>INTAKE</th>
+                                                <th>PROG 1</th>
+                                                <th>PROG 2</th>
+                                                <th>PROG 3</th>
+                                                <th>BM</th>
+                                                <th>ENG</th>
+                                                <th>MATH</th>
+                                                <th>ACTION</th>
                                             </tr>
                                             <tr>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Applicant Name"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
@@ -395,17 +398,6 @@
                         .draw();
                 }
             });
-
-            $('select', this).on('keyup change', function()
-            {
-                if (table.column(i).search() !== this.value)
-                {
-                    table
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
         });
 
         var table = $('#offer').DataTable({
@@ -419,6 +411,7 @@
             columns: [
                     { data: 'id', name: 'id' },
                     { data: 'applicant_name', name: 'applicant_name' },
+                    { data: 'intake_id', name: 'intake_id' },
                     { data: 'prog_name', name: 'prog_name' },
                     { data: 'prog_name_2', name: 'prog_name_2' },
                     { data: 'prog_name_3', name: 'prog_name_3' },
@@ -430,7 +423,19 @@
                 orderCellsTop: true,
                 "order": [[ 1, "asc" ]],
                 "initComplete": function(settings, json) {
-
+                    var column = this.api().column(2);
+                    var select = $('<select class="form-control"><option value=""></option></select>')
+                    .appendTo( $('#intake').empty().text('Intake: ') )
+                    .on('change',function(){
+                        var val = $.fn.DataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+                        column
+                        .search(val ? '^'+val+'$' : '', true, false).draw();
+                    });
+                    column.data().unique().sort().each(function (d, j){
+                        select.append( '<option value="'+d+'">'+d+'</option>' );
+                    });
                 }
         });
 

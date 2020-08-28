@@ -39,7 +39,7 @@
                                                 <div class="card-header">Preffered Programme</div>
                                                     <div class="card-body">
                                                     @if(count($applicantresult) > 0)
-                                                    <table class="table table-bordered">
+                                                    <table class="table table-bordered table-sm">
                                                         <tr>
                                                             <th>Applied Programme</th>
                                                             <th>Major</th>
@@ -61,8 +61,8 @@
                                                                 @endforeach
                                                             </td>
                                                             <td>
-                                                                <p>{{ $applicant->applicant_major }}</p>
-                                                                <p>{{ $applicant->applicant_major_2 }}</p>
+                                                                <p>{{ $applicant->applicant_major }}</p><br>
+                                                                <p>{{ $applicant->applicant_major_2 }}</p><br>
                                                                 <p>{{ $applicant->applicant_major_3 }}</p>
                                                             </td>
                                                             <td>
@@ -83,8 +83,8 @@
                                                                 @endif
                                                             </td>
                                                             <td>
-                                                                <p>{{$applicant->reason_fail}}</p>
-                                                                <p>{{$applicant->reason_fail_2}}</p>
+                                                                <p>{{$applicant->reason_fail}}</p><br>
+                                                                <p>{{$applicant->reason_fail_2}}</p><br>
                                                                 <p>{{$applicant->reason_fail_3}}</p>
                                                             </td>
                                                         </tr>
@@ -98,7 +98,7 @@
                                             <div class="card">
                                                 <div class="card-header">Personal Profile</div>
                                                     <div class="card-body">
-                                                    <table class="table table-bordered">
+                                                    <table class="table table-bordered table-sm">
                                                         <tr>
                                                             <td>Full Name</td>
                                                             <td>{{$applicant->applicant_name}}</td>
@@ -137,7 +137,7 @@
                                         <div class="card-header">Parent Information</div>
                                         <div class="card-body">
                                             @if(isset($applicant_guardian))
-                                            <table class="table table-bordered">
+                                            <table class="table table-bordered table-sm">
                                                 <tr>
                                                     <td>Name (Father / Guardian I)</td>
                                                     <td colspan="3">{{$applicant_guardian->guardian_one_name}}</td>
@@ -167,7 +167,7 @@
                                                     <td colspan="3">{{$applicant_guardian->guardian_one_occupation}}</td>
                                                 </tr>
                                             </table>
-                                            <table class="table table-bordered">
+                                            <table class="table table-bordered table-sm">
                                                 <tr>
                                                     <td>Name (Mother / Guardian I)</td>
                                                     <td colspan="3">{{$applicant_guardian->guardian_two_name}}</td>
@@ -205,7 +205,7 @@
                                         <div class="card-header">Emergency Contact</div>
                                         <div class="card-body">
                                             @if(isset($applicant_emergency))
-                                            <table class="table table-bordered">
+                                            <table class="table table-bordered table-sm">
                                                 <tr>
                                                     <td>Name</td>
                                                     <td colspan="3">{{$applicant_emergency->emergency_name}}</td>
@@ -235,7 +235,7 @@
                                             <div class="card-body">
                                                 @if(count($spm)!=0)
                                                 <h5>SPM</h5>
-                                                    <table class="table table-bordered">
+                                                    <table class="table table-bordered table-sm">
                                                     <tr>
                                                         <td>Subject Code</td>
                                                         <td>Subject Name</td>
@@ -252,7 +252,7 @@
                                                 @endif
                                                 @if(count($stpm)!=0)
                                                 <h5>STPM</h5>
-                                                    <table class="table table-bordered">
+                                                    <table class="table table-bordered table-sm">
                                                     <tr>
                                                         <td>Subject Code</td>
                                                         <td>Subject Name</td>
@@ -269,7 +269,7 @@
                                                 @endif
                                                 @if(count($stam)!=0)
                                                 <h5>STAM</h5>
-                                                    <table class="table table-bordered">
+                                                    <table class="table table-bordered table-sm">
                                                     <tr>
                                                         <td>Subject Code</td>
                                                         <td>Subject Name</td>
@@ -286,7 +286,7 @@
                                                 @endif
                                                 @if(count($uec)!=0)
                                                 <h5>UEC</h5>
-                                                    <table class="table table-bordered">
+                                                    <table class="table table-bordered table-sm">
                                                     <tr>
                                                         <td>Subject Code</td>
                                                         <td>Subject Name</td>
@@ -303,7 +303,7 @@
                                                 @endif
                                                 @if(count($alevel)!=0)
                                                 <h5>A Level</h5>
-                                                    <table class="table table-bordered">
+                                                    <table class="table table-bordered table-sm">
                                                     <tr>
                                                         <td>Subject Code</td>
                                                         <td>Subject Name</td>
@@ -320,7 +320,7 @@
                                                 @endif
                                                 @if(count($olevel)!=0)
                                                 <h5>O Level</h5>
-                                                    <table class="table table-bordered">
+                                                    <table class="table table-bordered table-sm">
                                                     <tr>
                                                         <td>Subject Code</td>
                                                         <td>Subject Name</td>
@@ -337,7 +337,7 @@
                                                 @endif
                                                 @if(isset($matriculation))
                                                 <h5>Matriculation</h5>
-                                                    <table class="table table-bordered">
+                                                    <table class="table table-bordered table-sm">
                                                         <tr>
                                                             <td>Matriculation</td>
                                                             <td colspan="3">{{$matriculation->applicantAcademic->applicant_study}}</td>
@@ -356,7 +356,7 @@
                                                 @endif
                                                 @if(isset($diploma))
                                                 <h5>Diploma</h5>
-                                                    <table class="table table-bordered">
+                                                    <table class="table table-bordered table-sm">
                                                     <tr>
                                                         <td>University</td>
                                                         <td colspan="3">{{ $diploma->applicantAcademic->applicant_study }}</td>
@@ -375,7 +375,7 @@
                                                 @endif
                                                 @if(isset($degree))
                                                 <h5>Degree</h5>
-                                                    <table class="table table-bordered">
+                                                    <table class="table table-bordered table-sm">
                                                     <tr>
                                                         <td>University</td>
                                                         <td colspan="3">{{$degree->applicantAcademic->applicant_study}}</td>
@@ -403,46 +403,39 @@
                                                     <div class="card-header">Applicant Bucket Details</div>
                                                         <div class="card-body">
                                                         @if(count($applicantresult) > 0)
-                                                        <table class="table table-bordered">
+                                                        <table class="table table-bordered table-sm">
                                                             <tr>
-                                                                <th>Applied Programme</th>
+                                                                <th>Applicant Programme</th>
+                                                                <th>Applicant Major</th>
                                                                 <th>Result</th>
                                                                 <th>Action</th>
                                                             </tr>
                                                             <tr id={{$applicant->id}}>
                                                                 <td>
-                                                                    @foreach($programmestatus as $info)
-                                                                        @foreach($aapplicant as $aapplicant_all_app)
-                                                                            <input type="hidden" name="applicant_programme" value="{{$aapplicant_all_app['applicant_programme']}}">
-                                                                            @foreach($aapplicant_all_app['programme_1'] as $etc)
-                                                                            <p>{{$etc['programme_name']}}</p>
-                                                                            @endforeach
-                                                                            <input type="hidden" name="applicant_programme" value="{{$aapplicant_all_app['applicant_programme_2']}}">
-                                                                            @foreach($aapplicant_all_app['programme_2'] as $etc)
-                                                                            <p>{{$etc['programme_name']}}</p>
-                                                                            @endforeach
-                                                                            <input type="hidden" name="applicant_programme" value="{{$aapplicant_all_app['applicant_programme_3']}}">
-                                                                            @foreach($aapplicant_all_app['programme_3'] as $etc)
-                                                                            <p>{{$etc['programme_name']}}</p>
-                                                                            @endforeach
-                                                                        @endforeach
-                                                                    @endforeach
+                                                                    <p>{{ $applicant->applicant_programme }}</p>
+                                                                    <p>{{ $applicant->applicant_programme_2 }}</p>
+                                                                    <p>{{ $applicant->applicant_programme_3 }}</p>
+                                                                </td>
+                                                                <td>
+                                                                    <p>{{ $applicant->applicant_major }}</p>
+                                                                    <p>{{ $applicant->applicant_major_2 }}</p>
+                                                                    <p>{{ $applicant->applicant_major_3 }}</p>
                                                                 </td>
                                                                 <td>
                                                                     @if($aapplicant_all_app['programme_status']== '1')
-                                                                        <p><span class="badge bg-success pull-right">Accepted</span></p>
+                                                                        <p style="color: green">Accepted</p>
                                                                     @else
-                                                                        <p><span class="badge bg-danger pull-right">Rejected</span></p>
+                                                                        <p style="color: red">Rejected</p>
                                                                     @endif
                                                                     @if($aapplicant_all_app['programme_status_2']== '1')
-                                                                        <p><span class="badge bg-success pull-right">Accepted</span></p>
+                                                                        <p style="color: green">Accepted</p>
                                                                     @else
-                                                                        <p><span class="badge bg-danger pull-right">Rejected</span></p>
+                                                                        <p style="color: red">Rejected</p>
                                                                     @endif
                                                                     @if($aapplicant_all_app['programme_status_3']== '1')
-                                                                        <p><span class="badge bg-success pull-right">Accepted</span></p>
+                                                                        <p style="color: green">Accepted</p>
                                                                     @else
-                                                                        <p><span class="badge bg-danger pull-right">Rejected</span></p>
+                                                                        <p style="color: red">Rejected</p>
                                                                     @endif
                                                                 </td>
                                                                 <td>

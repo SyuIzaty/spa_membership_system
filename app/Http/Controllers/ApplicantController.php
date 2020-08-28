@@ -147,7 +147,7 @@ class ApplicantController extends Controller
 
         $subject = DB::select('select * from subjects');
         $grades = DB::select('select * from grades');
-        
+
         foreach ($subject as $subjects)
         foreach ($qualification as $qualifications)
         foreach ($grades as $grade)
@@ -166,8 +166,8 @@ class ApplicantController extends Controller
          $output .= '<option value="'.$row->$dependent.'">'.$row->$dependent.'</option>';
         }
         echo $output;
-        
-     
+
+
         //dd($data);
         return redirect(route('applicant.academicinfo',$applicant,$academic,$qualification,$qualifications,$subjects,$subject,$grades,$grade))->with('notification', 'Qualifications created!');
     }
@@ -504,8 +504,13 @@ class ApplicantController extends Controller
 
     public function testCollection()
     {
-        $applicant = Applicant::where('applicant_status',NULL)->get();
-        $applicants = $applicant->load('programme','applicantresult.grades');
+        // $applicant = Applicant::where('applicant_status','3')->get();
+        // $applicants = $applicant->load('programme','applicantresult.grades','applicantIntake');
+        //$applicant = Applicant::where('id','2')->with('applicantstatus')->get();
+        //dd(Applicant::first()->applicantstatus->applicant_programme);
+        // foreach($applicants as $app){
+        //     dd($app->applicantIntake->first()->intake_code);
+        // }
         // $applicants = $applicants[0]->applicantresult->where('subject','1103')->first()->grades->grade_code;//->pluck('grade_code');
 
         // foreach($applicants as $a)
@@ -517,7 +522,7 @@ class ApplicantController extends Controller
     public function data_allapplicant()
     {
         $applicant = Applicant::where('applicant_status',NULL)->get();
-        $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','statusResultThree','programmeThree');
+        $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','statusResultThree','programmeThree','applicantstatus','applicantIntake');
 
 
         return datatables()::of($applicants)
@@ -557,7 +562,7 @@ class ApplicantController extends Controller
     public function data_passapplicant()
     {
         $applicant = Applicant::where('programme_status','1')->orWhere('programme_status_2','1')->orWhere('programme_status_3','1')->get();
-        $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','statusResultThree','programmeThree');
+        $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','statusResultThree','programmeThree','applicantstatus','applicantIntake');
 
 
         return datatables()::of($applicants)
@@ -598,7 +603,7 @@ class ApplicantController extends Controller
     {
         // $applicant = Applicant::where('applicant_status',NULL)->get();
         $applicant = Applicant::where('programme_status','2')->where('programme_status_2','2')->orWhere('programme_status_2',NULL)->where('programme_status_3','2')->orWhere('programme_status_3',NULL)->get();
-        $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo');
+        $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','applicantstatus','applicantIntake');
 
 
         return datatables()::of($applicants)
@@ -639,10 +644,14 @@ class ApplicantController extends Controller
     {
         // $applicant = Applicant::where('applicant_status',NULL)->get();
         $applicant = Applicant::where('applicant_status','3')->get();
-        $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo');
+        $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','applicantstatus','applicantIntake');
 
 
         return datatables()::of($applicants)
+            ->addColumn('intake_id',function($applicants)
+            {
+                return $applicants->applicantIntake->intake_code;
+            })
             ->addColumn('prog_name',function($applicants)
             {
                 return '<div style="color:'.$applicants->statusResult->colour.'">'.$applicants->programme->programme_code.'</div>';
@@ -670,10 +679,10 @@ class ApplicantController extends Controller
             })
 
            ->addColumn('action', function ($applicants) {
-               return '<a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Detail</a>
-               <a href="'.action('IntakeController@letter', ['applicant_id' => $applicants->id, 'intake_id' => $applicants->intake_id, 'programme_id' => $applicants->applicantstatus->first()->applicant_programme, 'name' => $applicants->applicant_name]).'" class="btn btn-sm btn-info">Offer Letter</a>
-               <a href="'.action('IntakeController@sendEmail', ['applicant_id' => $applicants->id, 'intake_id' => $applicants->intake_id, 'programme_id' => $applicants->applicantstatus->first()->applicant_programme, 'name' => $applicants->applicant_name]).'" class="btn btn-sm btn-primary">Send Email</a>
-               ';
+
+            //    return '<a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Detail</a>
+            //    <a href="'.action('IntakeController@letter', ['applicant_id' => $applicants->id, 'intake_id' => $applicants->intake_id, 'programme_id' => $applicants->applicantstatus->first()->applicant_programme, 'name' => $applicants->applicant_name]).'" class="btn btn-sm btn-info">Offer Letter</a>
+            //    ';
            })
            ->rawColumns(['prog_name','prog_name_2','prog_name_3','action'])
            ->make(true);

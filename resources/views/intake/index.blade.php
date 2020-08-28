@@ -22,7 +22,7 @@
                 </div>
                 <div class="panel-container show">
                     <div class="panel-content">
-                        <a class="btn btn-success" href="{{ route('intake.create') }}"> Create Intake Info</a>
+                        <a class="btn btn-primary" href="{{ route('intake.create') }}"> Create Intake Info</a>
                         <table id="intake" class="table table-bordered table-hover table-striped w-100">
                             <thead>
                                 <tr>

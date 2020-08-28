@@ -40,7 +40,7 @@ class Applicant extends Model
 
     public function applicantstatus()
     {
-        return $this->hasMany('App\ApplicantStatus','applicant_id','id');
+        return $this->hasOne('App\ApplicantStatus','id','applicant_id');
     }
 
 
@@ -76,7 +76,7 @@ class Applicant extends Model
 
     public function applicantIntake()
     {
-        return $this->hasOne('App\Intakes','id','intake_id');
+        return $this->belongsTo('App\Intakes','intake_id','id');
     }
 
 }

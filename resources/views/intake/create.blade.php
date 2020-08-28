@@ -61,7 +61,7 @@
                                                 {{Form::date('intake_check_close', '', ['class' => 'form-control', 'placeholder' => 'Application Status End Date'])}}
                                             </div>
                                         </div>
-                                        {{Form::submit('Submit')}}
+                                        <button class="btn btn-primary">Submit</button>
                                     {!! Form::close() !!}
                                 </div>
                             </table>

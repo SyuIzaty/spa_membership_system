@@ -59,7 +59,7 @@
                                         </div>
                                     </div>
                                     {{Form::hidden('_method', 'PUT')}}
-                                    {{Form::submit('Submit')}}
+                                    <button class="btn btn-primary">Submit</button>
                                 {!! Form::close() !!}
                             <div class="card-body">
                             <div class="form-group">
@@ -89,7 +89,10 @@
                                         <td class="intake_date">{{$intake_del->intake_date}}</td>
                                         <td class="intake_time">{{$intake_del->intake_time}}</td>
                                         <td class="intake_venue">{{$intake_del->intake_venue}}</td>
-                                        <td class="status">{{$intake_del->status}}</td>
+                                        <td class="status">
+                                            @if ($intake_del->status == '1') Active @endif
+                                            @if ($intake_del->status == '0') Inactive @endif
+                                        </td>
                                         <td>
                                             <button class="btn btn-primary" data-toggle="modal" data-id="{{$intake_del->id}}" id="edit">Edit</button>
                                             <button class="btn btn-danger deleteProgram" data-id="{{$intake_del->id}}" data-action="{{route('deleteProgramInfo', $intake_del->id)}}">Delete</button>
@@ -213,7 +216,7 @@
                                 {{Form::text('intake_venue', '', ['class' => 'form-control', 'id' => 'intake_venue' ,'placeholder' => 'Intake Venue', 'required'])}}
                             </div>
                             <div class="modal-footer">
-                                {{Form::submit('Save', ['class' => 'btn btn-primary'])}}
+                                <button class="btn btn-primary">Save</button>
                                 <button type="button" class="btn btn-secondary text-white" data-dismiss="modal">Close</button>
                             </div>
                             {!! Form::close() !!}
@@ -267,7 +270,6 @@
 
         $('.deleteProgram').click(function() {
             console.log('asdaa');
-            // Swal.fire('Any fool can use a computer');
             var id = $(this).data('id');
             var url = '{{route("deleteProgramInfo", "id")}}';
             url = url.replace('id', id );
