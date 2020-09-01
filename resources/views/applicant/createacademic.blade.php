@@ -57,28 +57,30 @@
                     <option value={{ $subjects->subject_code }} >{{ $subjects->subject_name }}</option>
                     @endforeach 
                 </select>
-                </div>   
-                 
-            <div class="select">
-               
-                <select name="grades" id="grades" required>  
+                </div>  
+
+       
+     
+            <div class="select">  
+                <select name="grades" id="grades"  required>  
                     <option value="">Select Grade</option>
                     @foreach ($grades as $grade)
                     <option value={{ $grade->grade_type }} >{{ $grade->grade_code }}</option>
                     @endforeach 
                 </select>
                 </div>  
-             </div>
+                <button type="submit" class="button is-link is-outlined">Add Subject</button>
+            
+        </div>
         </div>
     
-        <br>
-        <br>
-        <br>
-        <br>   
-<br>
+  
+        
+        
+
     <div class="field">
         <div class="control">
-            <button type="submit" class="button is-link is-outlined">Add</button>
+            <button type="submit" class="button is-link is-outlined">Submit</button>
             <a href="{{route('applicant.contactinfo',$applicant)}}" button type="back"  class="button is-link is-outlined">back</a></button>
         </div>
     </div>
