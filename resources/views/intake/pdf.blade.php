@@ -6,9 +6,9 @@
     <link rel="stylesheet" href="css/pdf.css">
 </head>
 <body>
-    <img src="{{ asset('img/intec_offer.png') }}" style="height: 170px; width: 650px">
+    <img src="{{ storage_path('img/intec_offer.png') }}" style="height: 170px; width: 650px">
     <div class="app_detail">
-        {{$applicant->applicant_name}}<br>{{$applicant->applicant_ic}}
+        {{$detail->applicant->applicant_name}}<br>{{$detail->applicant->applicant_ic}}
     </div>
     <div class="intake_detail">
         <p>Congratulations. INTEC Education College is pleased to inform you of your admission to our Institute.
@@ -19,12 +19,17 @@
         <tr>
             <td>Programme</td>
             <td>:</td>
-            <td>{{$programme->programme_code}} - {{$programme->programme_name}}</td>
+            <td>{{$detail->programme->programme_code}} - {{$detail->programme->programme_name}}</td>
+        </tr>
+        <tr>
+            <td>Major</td>
+            <td>:</td>
+            <td>{{$detail->major->id}} - {{$detail->major->major_name}}</td>
         </tr>
         <tr>
             <td>Duration</td>
             <td>:</td>
-            <td>{{$programme->programme_duration}}</td>
+            <td>{{$detail->programme->programme_duration}}</td>
         </tr>
         <tr>
             <td>Date</td>

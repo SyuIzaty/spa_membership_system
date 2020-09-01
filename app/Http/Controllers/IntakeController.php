@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Intakes;
 use App\IntakeType;
 use App\Programme;
+use App\Major;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Mail;
@@ -197,32 +198,30 @@ class IntakeController extends Controller
 
     public function letter(Request $request)
     {
-        $applicant = Applicant::where('id', $request->applicant_id)->first();
-        $programme = Programme::where('id', $request->programme_id)->first();
-        $intakes = IntakeDetail::where('status', '1')->where('intake_code', $request->intake_id)->where('intake_programme', $request->programme_id)
+        $detail = ApplicantStatus::where('applicant_id',$request->applicant_id)->with(['applicant','major','programme'])->first();
+        $intakes = IntakeDetail::where('status', '1')->where('intake_code', $request->intake_id)->where('intake_programme', $detail->applicant_programme)
             ->first();
 
-        $pdf = PDF::loadView('intake.pdf', compact('applicant', 'programme', 'intakes'));
+        $pdf = PDF::loadView('intake.pdf', compact('detail','intakes'));
         return $pdf->stream('Offer Letter_' . $request->applicant_name . '.pdf');
     }
 
     public function sendEmail(Request $request)
     {
-        $applicant = Applicant::where('id', $request->applicant_id)->first();
-        $programme = Programme::where('id', $request->programme_id)->first();
-        $intakes = IntakeDetail::where('status', '1')->where('intake_code', $request->intake_id)->where('intake_programme', $request->programme_id)
+        $detail = ApplicantStatus::where('applicant_id',$request->applicant_id)->with(['applicant','programme','major'])->first();
+        $intakes = IntakeDetail::where('status', '1')->where('intake_code', $request->intake_id)->where('intake_programme', $detail->applicant_programme)
             ->first();
 
-        $report = PDF::loadView('intake.pdf', compact('applicant', 'programme', 'intakes'));
+        $report = PDF::loadView('intake.pdf', compact('detail', 'intakes'));
         $data = [
-            'receiver_name' => $applicant->applicant_name,
+            'receiver_name' => $detail->applicant->applicant_name,
             'details' => 'This offer letter is appended with this email. Please refer to the attachment for your registration instructions.',
         ];
 
-        Mail::send('intake.offer-letter', $data, function ($message) use ($applicant, $report) {
-            $message->subject('Congratulations, ' . $applicant->applicant_name);
-            $message->to(!empty($applicant->applicant_email) ? $applicant->applicant_email : 'jane-doe@email.com');
-            $message->attachData($report->output(), 'Offer_Letter_' . $applicant->applicant_name . '.pdf');
+        Mail::send('intake.offer-letter', $data, function ($message) use ($detail, $report) {
+            $message->subject('Congratulations, ' . $detail->applicant->applicant_name);
+            $message->to(!empty($detail->applicant->applicant_email) ? $detail->applicant->applicant_email : 'jane-doe@email.com');
+            $message->attachData($report->output(), 'Offer_Letter_' . $detail->applicant->applicant_name . '.pdf');
         });
         return redirect()->back();
     }

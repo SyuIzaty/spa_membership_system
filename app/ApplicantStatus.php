@@ -10,13 +10,18 @@ class ApplicantStatus extends Model
 
     protected $fillable = ['applicant_id','applicant_programme','applicant_status','student_id','applicant_major'];
 
-    public function applicant()
-    {
-        return $this->belongsTo('App\Applicant','applicant_id','id');
-    }
-
     public function programme()
     {
-        return $this->belongsTo('App\Programme','applicant_programme','id');
+        return $this->hasOne('App\Programme','id','applicant_programme');
+    }
+
+    public function applicant()
+    {
+        return $this->hasOne('App\Applicant','id','applicant_id');
+    }
+
+    public function major()
+    {
+        return $this->hasOne('App\Major','id','applicant_major');
     }
 }

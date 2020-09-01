@@ -40,7 +40,7 @@ class Applicant extends Model
 
     public function applicantstatus()
     {
-        return $this->hasOne('App\ApplicantStatus','id','applicant_id');
+        return $this->hasOne('App\ApplicantStatus','applicant_id','id');
     }
 
 
