@@ -8,7 +8,7 @@ class ApplicantStatus extends Model
 {
     protected $table = 'applicant_status';
 
-    protected $fillable = ['applicant_id','applicant_programme','applicant_status'];
+    protected $fillable = ['applicant_id','applicant_programme','applicant_status','student_id','applicant_major'];
 
     public function applicant()
     {

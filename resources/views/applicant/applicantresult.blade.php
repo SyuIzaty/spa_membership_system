@@ -45,6 +45,7 @@
                                             <tr>
                                                 <th>NO</th>
                                                 <th>APPLICANT</th>
+                                                <th>INTAKE</th>
                                                 <th>PROG 1</th>
                                                 <th>PROG 2</th>
                                                 <th>PROG 3</th>
@@ -56,6 +57,7 @@
                                             <tr>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Applicant Name"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Intake"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
@@ -127,6 +129,7 @@
                                             <tr>
                                                 <th>NO</th>
                                                 <th>APPLICANT</th>
+                                                <th>INTAKE</th>
                                                 <th>PROG 1</th>
                                                 <th>PROG 2</th>
                                                 <th>PROG 3</th>
@@ -138,6 +141,7 @@
                                             <tr>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Applicant Name"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Intake"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
@@ -159,6 +163,7 @@
                                             <tr>
                                                 <th>NO</th>
                                                 <th>APPLICANT</th>
+                                                <th>INTAKE</th>
                                                 <th>PROG 1</th>
                                                 <th>PROG 2</th>
                                                 <th>PROG 3</th>
@@ -170,6 +175,7 @@
                                             <tr>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Applicant Name"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Intake"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
@@ -204,7 +210,7 @@
                                             <tr>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Applicant Name"></td>
-                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Intake"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
@@ -231,7 +237,6 @@
 <script>
     $(document).ready(function()
     {
-
         $('#applicant thead tr .hasinput').each(function(i)
         {
             $('input', this).on('keyup change', function()
@@ -268,6 +273,7 @@
             columns: [
                     { data: 'id', name: 'id' },
                     { data: 'applicant_name', name: 'applicant_name' },
+                    { data: 'intake_id', name: 'intake_id' },
                     { data: 'prog_name', name: 'prog_name' },
                     { data: 'prog_name_2', name: 'prog_name_2' },
                     { data: 'prog_name_3', name: 'prog_name_3' },
@@ -282,8 +288,10 @@
 
                 }
         });
+    });
 
-
+    $(document).ready(function()
+    {
         $('#pass thead tr .hasinput').each(function(i)
         {
             $('input', this).on('keyup change', function()
@@ -320,6 +328,7 @@
             columns: [
                     { data: 'id', name: 'id' },
                     { data: 'applicant_name', name: 'applicant_name' },
+                    { data: 'intake_id', name: 'intake_id' },
                     { data: 'prog_name', name: 'prog_name' },
                     { data: 'prog_name_2', name: 'prog_name_2' },
                     { data: 'prog_name_3', name: 'prog_name_3' },
@@ -334,7 +343,10 @@
 
                 }
         });
+    });
 
+    $(document).ready(function()
+    {
         $('#rejected thead tr .hasinput').each(function(i)
         {
             $('input', this).on('keyup change', function()
@@ -371,6 +383,7 @@
             columns: [
                     { data: 'id', name: 'id' },
                     { data: 'applicant_name', name: 'applicant_name' },
+                    { data: 'intake_id', name: 'intake_id' },
                     { data: 'prog_name', name: 'prog_name' },
                     { data: 'prog_name_2', name: 'prog_name_2' },
                     { data: 'prog_name_3', name: 'prog_name_3' },
@@ -385,7 +398,10 @@
 
                 }
         });
+    });
 
+    $(document).ready(function()
+    {
         $('#offer thead tr .hasinput').each(function(i)
         {
             $('input', this).on('keyup change', function()

@@ -497,15 +497,17 @@
     $(function(){
         $('#status_{{$aapplicant_all_app['applicant_programme']}}').on('change',function(){
             var programme = "{{$aapplicant_all_app['applicant_programme']}}";
+            var major = "{{$applicant->applicant_major}}";
             var selectedValue = $(this).val();
             var trid = $(this).closest('tr').attr('id');
             console.log(programme);
+            console.log(major);
             console.log(selectedValue);
             console.log(trid);
             $.ajax({
                 url: "{{url('/programmestatus')}}",
                 method: "post",
-                data: { "_token": "{{ csrf_token() }}", applicant_id: trid, applicant_programme: programme,applicant_status: selectedValue },
+                data: { "_token": "{{ csrf_token() }}", applicant_id: trid, applicant_programme: programme, applicant_major: major,applicant_status: selectedValue },
                 success: function(response) {
                 alert('Data has been updated');
                 return response;
@@ -518,15 +520,17 @@
         });
         $('#status_{{$aapplicant_all_app['applicant_programme_2']}}').on('change',function(){
             var programme = "{{$aapplicant_all_app['applicant_programme_2']}}";
+            var major = "{{$applicant->applicant_major_2}}";
             var selectedValue = $(this).val();
             var trid = $(this).closest('tr').attr('id');
             console.log(programme);
+            console.log(major);
             console.log(selectedValue);
             console.log(trid);
             $.ajax({
                 url: "{{url('/programmestatus')}}",
                 method: "post",
-                data: { "_token": "{{ csrf_token() }}", applicant_id: trid, applicant_programme: programme,applicant_status: selectedValue },
+                data: { "_token": "{{ csrf_token() }}", applicant_id: trid, applicant_programme: programme,applicant_major: major,applicant_status: selectedValue },
                 success: function(response) {
                 alert('Data has been updated');
                 return response;
@@ -539,15 +543,17 @@
         });
         $('#status_{{$aapplicant_all_app['applicant_programme_3']}}').on('change',function(){
             var programme = "{{$aapplicant_all_app['applicant_programme_3']}}";
+            var major = "{{$applicant->applicant_major_3}}";
             var selectedValue = $(this).val();
             var trid = $(this).closest('tr').attr('id');
             console.log(programme);
+            console.log(major);
             console.log(selectedValue);
             console.log(trid);
             $.ajax({
                 url: "{{url('/programmestatus')}}",
                 method: "post",
-                data: { "_token": "{{ csrf_token() }}", applicant_id: trid, applicant_programme: programme,applicant_status: selectedValue },
+                data: { "_token": "{{ csrf_token() }}", applicant_id: trid, applicant_programme: programme,applicant_major: major,applicant_status: selectedValue },
                 success: function(response) {
                 alert('Data has been updated');
                 return response;
@@ -561,4 +567,6 @@
     });
     @endforeach
 </script>
+
+
 @endsection

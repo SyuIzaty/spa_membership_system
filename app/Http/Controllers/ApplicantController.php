@@ -526,6 +526,10 @@ class ApplicantController extends Controller
 
 
         return datatables()::of($applicants)
+            ->addColumn('intake_id',function($applicants)
+            {
+                return $applicants->applicantIntake->intake_code;
+            })
             ->addColumn('prog_name',function($applicants)
             {
                 return '<div style="color:'.$applicants->statusResult->colour.'">'.$applicants->programme->programme_code.'</div>';
@@ -566,6 +570,10 @@ class ApplicantController extends Controller
 
 
         return datatables()::of($applicants)
+            ->addColumn('intake_id',function($applicants)
+            {
+                return $applicants->applicantIntake->intake_code;
+            })
             ->addColumn('prog_name',function($applicants)
             {
                 return '<div style="color:'.$applicants->statusResult->colour.'">'.$applicants->programme->programme_code.'</div>';
@@ -607,6 +615,10 @@ class ApplicantController extends Controller
 
 
         return datatables()::of($applicants)
+            ->addColumn('intake_id',function($applicants)
+            {
+                return $applicants->applicantIntake->intake_code;
+            })
             ->addColumn('prog_name',function($applicants)
             {
                 return '<div style="color:'.$applicants->statusResult->colour.'">'.$applicants->programme->programme_code.'</div>';
@@ -1676,10 +1688,19 @@ class ApplicantController extends Controller
         ->where('applicant_programme',$request->applicant_programme)
         ->delete();
 
+        $applicant = Applicant::where('id',$request->applicant_id)->first();
+        do {
+            $year = substr((date("Y",strtotime($applicant->created_at))),-2);
+            $random = mt_rand(1000,9999);
+            $student_id = $year . '1117' . $random;
+         } while ( ApplicantStatus::where('student_id', $student_id )->exists() );
+
         $data = [
             'applicant_id' => $request->applicant_id,
             'applicant_programme' => $request->applicant_programme,
-            'applicant_status' => $request->applicant_status
+            'applicant_major' => $request->applicant_major,
+            'applicant_status' => $request->applicant_status,
+            'student_id' => $student_id,
         ];
 
         Applicant::where('id',$request->applicant_id)->update(['applicant_status'=>$request->applicant_status]);
@@ -1688,5 +1709,6 @@ class ApplicantController extends Controller
 
         return response()->json(['success'=>true,'status'=>'success','message'=>'Data has been saved to datatbase','Data'=>$data]);
     }
+
 
 }
