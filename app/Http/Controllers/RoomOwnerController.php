@@ -106,9 +106,11 @@ class RoomOwnerController extends Controller
         if(!empty($request->image))
             $fields['image'] = $request->image;
         
-        $fields['name'] = $request->name;                      
-        $fields['phone_number'] = $request->phone_number;  
-        $fields['email'] = $request->email;
+        $fields['name'] = $request->name; 
+        
+        if(!empty($id))                   
+        $fields['phone_number'] ['email'] = ",$id";
+
         $fields['dateofbirth'] = $request->dateofbirth;
         $fields['gender'] = $request->gender;
         $fields['active'] =  $request->active;
@@ -172,8 +174,8 @@ class RoomOwnerController extends Controller
     {
         $request = [
             'name'                => 'required|min:1|max:255',   
-            'phone_number'        => 'required|regex:/(\+?0)[0-46-9]-*[0-9]{7,8}/',
-            'email'               => 'required|email',    
+            'phone_number'        => 'required|regex:/(\+?0)[0-46-9]-*[0-9]{7,8}/|unique:roomowners,phone_number',
+            'email'               => 'required|unique:roomowners,email',
             'dateofbirth'         => 'required|date', 
             'gender'              => 'required|in:male,female',    
             'active'              => 'required', 
