@@ -405,22 +405,6 @@ class ApplicantController extends Controller
         //
         $applicant->delete();
     }
-    public function changestatus(Request $request)
-    {
-        $input = $request->all();
-
-        $status = DB::table('applicant')
-        ->where('id','=',$input['id'])
-        ->update([
-            'applicant_status' =>$input['select']
-        ]);
-
-        $applicant =DB::table('applicant')
-        ->where('Id','=',$input['id'])
-        ->first();
-
-        return $applicant->applicant_status;
-    }
 
     public function show($id)
     {
@@ -504,18 +488,10 @@ class ApplicantController extends Controller
 
     public function testCollection()
     {
-        // $applicant = Applicant::where('applicant_status','3')->get();
-        // $applicants = $applicant->load('programme','applicantresult.grades','applicantIntake');
-        //$applicant = Applicant::where('id','2')->with('applicantstatus')->get();
-        //dd(Applicant::first()->applicantstatus->applicant_programme);
+        // $applicant = Applicantstatus::where('applicant_status','5')->get();
+        // $applicants = $applicant->load('applicant','programme','major','applicantresult','applicantresult.grades','applicant.applicantIntake','statusResult');
         // foreach($applicants as $app){
-        //     dd($app->applicantIntake->first()->intake_code);
-        // }
-        // $applicants = $applicants[0]->applicantresult->where('subject','1103')->first()->grades->grade_code;//->pluck('grade_code');
-
-        // foreach($applicants as $a)
-        // {
-        //     echo $a->grades->grade_code;
+        //     dd($app->applicant->statusResult->colour);
         // }
     }
 
@@ -660,6 +636,10 @@ class ApplicantController extends Controller
 
 
         return datatables()::of($applicants)
+            ->addColumn('student_id',function($applicants)
+            {
+                return $applicants->applicantstatus->student_id;
+            })
             ->addColumn('intake_id',function($applicants)
             {
                 return $applicants->applicantIntake->intake_code;
@@ -701,7 +681,53 @@ class ApplicantController extends Controller
            ->make(true);
     }
 
+    public function data_acceptedapplicant()
+    {
+        $applicant = Applicantstatus::where('applicant_status','5')->get();
+        $applicants = $applicant->load('applicant','programme','major','applicantresult','applicantresult.grades','applicant.applicantIntake');
+        return datatables()::of($applicants)
+            ->addColumn('applicant_name',function($applicants)
+            {
+                return $applicants->applicant->id;
+            })
+            ->addColumn('applicant_name',function($applicants)
+            {
+                return $applicants->applicant->applicant_name;
+            })
+            ->addColumn('intake_id',function($applicants)
+            {
+                return $applicants->applicant->applicantIntake->intake_code;
+            })
+            ->addColumn('prog_name',function($applicants)
+            {
+                return '<div style="color:'.$applicants->applicant->statusResult->colour.'">'.$applicants->applicant->applicant_programme.'</div>';
+            })
+            ->addColumn('prog_name_2',function($applicants)
+            {
+                return isset($applicants->applicant->applicant_programme_2) ? '<div style="color:'.$applicants->applicant->statusResultTwo->colour.'">'.$applicants->applicant->applicant_programme_2.'</div>' : '';
 
+            })
+            ->addColumn('prog_name_3',function($applicants)
+            {
+                return isset($applicants->applicant->applicant_programme_2) ? '<div style="color:'.$applicants->applicant->statusResultThree->colour.'">'.$applicants->applicant->applicant_programme_3.'</div>' : '';
+            })
+            ->addColumn('bm',function($applicants){
+                return $applicants->applicantresult->where('subject',1103)->isEmpty() ? '': $applicants->applicantresult->where('subject',1103)->first()->grades->grade_code;
+            })
+            ->addColumn('english',function($applicants){
+                return $applicants->applicantresult->where('subject',1119)->isEmpty() ? '': $applicants->applicantresult->where('subject',1119)->first()->grades->grade_code;
+            })
+            ->addColumn('math',function($applicants){
+                return $applicants->applicantresult->where('subject',1449)->isEmpty() ? '': $applicants->applicantresult->where('subject',1449)->first()->grades->grade_code;
+            })
+
+           ->addColumn('action', function ($applicants) {
+               return '<a href="/applicant/'.$applicants->applicant->id.'" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Detail</a>
+               ';
+           })
+           ->rawColumns(['prog_name','prog_name_2','prog_name_3','action'])
+           ->make(true);
+    }
 
     public function accepted($applicantt, $programme_code)
     {

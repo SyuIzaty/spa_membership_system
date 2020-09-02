@@ -3,12 +3,15 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Programme extends Model
 {
-    protected $table = 'programmes';
-    protected $primaryKey = 'id';
+    use SoftDeletes;
 
+    protected $table = 'programmes';
+
+    protected $primaryKey = 'id';
     public $incrementing = false;
     protected $keyType = 'string';
 

@@ -34,7 +34,7 @@
                                     <a data-toggle="tab" class="nav-link" href="#offer_all" role="tab">Offer</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a data-toggle="tab" class="nav-link" href="#accept" role="tab">Accept Offer</a>
+                                    <a data-toggle="tab" class="nav-link" href="#accepted_all" role="tab">Accept Offer</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
@@ -70,56 +70,6 @@
                                         <tbody>
 
                                         </tbody>
-                                        {{-- @foreach($aapplicant as $aapplicant_all_app)
-                                            <tr id={{$aapplicant_all_app['id']}}>
-                                                <td>{{$aapplicant_all_app['id']}}</td>
-                                                <td>{{$aapplicant_all_app['applicant_name']}}</td>
-                                                <td>
-                                                    @foreach($aapplicant_all_app['programme_1'] as $etc)
-                                                    <p>{{$etc['programme_code']}}</p>
-                                                    @endforeach
-                                                    @if($aapplicant_all_app['programme_status']== 'Accepted')
-                                                        <p><span class="badge bg-success">{{$aapplicant_all_app['programme_status']}}</span></p><br>
-                                                    @else
-                                                        <p><span class="badge bg-danger">{{$aapplicant_all_app['programme_status']}}</span></p><br>
-                                                    @endif
-                                                </td>
-                                                <td>@foreach($aapplicant_all_app['programme_2'] as $etc)
-                                                    <p>{{$etc['programme_code']}}</p>
-                                                    @endforeach
-                                                    @if($aapplicant_all_app['programme_status_2']== 'Accepted')
-                                                        <p><span class="badge bg-success">{{$aapplicant_all_app['programme_status_2']}}</span></p><br>
-                                                    @else
-                                                        <p><span class="badge bg-danger">{{$aapplicant_all_app['programme_status_2']}}</span></p><br>
-                                                    @endif
-                                                </td>
-                                                <td>@foreach($aapplicant_all_app['programme_3'] as $etc)
-                                                    <p>{{$etc['programme_code']}}</p>
-                                                    @endforeach
-                                                    @if($aapplicant_all_app['programme_status_3']== 'Accepted')
-                                                        <p><span class="badge bg-success">{{$aapplicant_all_app['programme_status_3']}}</span></p><br>
-                                                    @else
-                                                        <p><span class="badge bg-danger">{{$aapplicant_all_app['programme_status_3']}}</span></p><br>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @foreach($aapplicant_all_app['bm'] as $app_result)
-                                                        <p>{{$app_result->grades->grade_code}}</p>
-                                                    @endforeach
-                                                </td>
-                                                <td>
-                                                    @foreach($aapplicant_all_app['eng'] as $app_result)
-                                                        <p>{{$app_result->grades->grade_code}}</p>
-                                                    @endforeach
-                                                </td>
-                                                <td>
-                                                    @foreach($aapplicant_all_app['math'] as $app_result)
-                                                        <p>{{$app_result->grades->grade_code}}</p>
-                                                    @endforeach
-                                                </td>
-                                                <td><a href="/applicant/{{$aapplicant_all_app['id']}}" class="btn btn-success">Detail</a></td>
-                                            </tr>
-                                        @endforeach --}}
                                     </table>
                                 </div>
 
@@ -197,6 +147,7 @@
                                         <thead>
                                             <tr>
                                                 <th>NO</th>
+                                                <th>STUDENT ID</th>
                                                 <th>APPLICANT</th>
                                                 <th>INTAKE</th>
                                                 <th>PROG 1</th>
@@ -209,6 +160,43 @@
                                             </tr>
                                             <tr>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Student ID"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Applicant Name"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Intake"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Bahasa Melayu"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search English"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Mathematics"></td>
+                                                <td></td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="tab-pane" role="tabpanel" id="accepted_all">
+                                    <table class="table table-bordered" id="accepted">
+                                        <thead>
+                                            <tr>
+                                                <th>NO</th>
+                                                <th>STUDENT ID</th>
+                                                <th>APPLICANT</th>
+                                                <th>INTAKE</th>
+                                                <th>PROG 1</th>
+                                                <th>PROG 2</th>
+                                                <th>PROG 3</th>
+                                                <th>BM</th>
+                                                <th>ENG</th>
+                                                <th>MATH</th>
+                                                <th>ACTION</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Student ID"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Applicant Name"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Intake"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
@@ -426,6 +414,7 @@
             },
             columns: [
                     { data: 'id', name: 'id' },
+                    { data: 'student_id', name: 'student_id' },
                     { data: 'applicant_name', name: 'applicant_name' },
                     { data: 'intake_id', name: 'intake_id' },
                     { data: 'prog_name', name: 'prog_name' },
@@ -439,7 +428,7 @@
                 orderCellsTop: true,
                 "order": [[ 1, "asc" ]],
                 "initComplete": function(settings, json) {
-                    var column = this.api().column(2);
+                    var column = this.api().column(3);
                     var select = $('<select class="form-control"><option value=""></option></select>')
                     .appendTo( $('#intake').empty().text('Intake: ') )
                     .on('change',function(){
@@ -455,6 +444,62 @@
                 }
         });
 
+    });
+
+    $(document).ready(function()
+    {
+        $('#accepted thead tr .hasinput').each(function(i)
+        {
+            $('input', this).on('keyup change', function()
+            {
+                if (table.column(i).search() !== this.value)
+                {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+
+            $('select', this).on('keyup change', function()
+            {
+                if (table.column(i).search() !== this.value)
+                {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+
+        var table = $('#accepted').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "/data_acceptedapplicant",
+                type: 'POST',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
+            },
+            columns: [
+                    { data: 'applicant_id', name: 'applicant_id' },
+                    { data: 'student_id', name: 'student_id' },
+                    { data: 'applicant_name', name: 'applicant_name' },
+                    { data: 'intake_id', name: 'intake_id' },
+                    { data: 'prog_name', name: 'prog_name' },
+                    { data: 'prog_name_2', name: 'prog_name_2' },
+                    { data: 'prog_name_3', name: 'prog_name_3' },
+                    { data: 'bm', name: 'bm' },
+                    { data: 'english', name: 'english' },
+                    { data: 'math', name: 'math' },
+                    { data: 'action', name: 'action', orderable: false, searchable: false}
+                ],
+                orderCellsTop: true,
+                "order": [[ 1, "asc" ]],
+                "initComplete": function(settings, json) {
+
+                }
+        });
     });
 
 </script>

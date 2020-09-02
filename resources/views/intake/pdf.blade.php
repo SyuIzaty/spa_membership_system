@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="css/pdf.css">
 </head>
 <body>
-    <img src="{{ storage_path('img/intec_offer.png') }}" style="height: 170px; width: 650px">
+    <img src="{{ public_path('img/intec_offer.png') }}" style="height: 170px; width: 650px">
     <div class="app_detail">
         {{$detail->applicant->applicant_name}}<br>{{$detail->applicant->applicant_ic}}
     </div>

@@ -61,8 +61,8 @@
                                                                 @endforeach
                                                             </td>
                                                             <td>
-                                                                <p>{{ $applicant->applicant_major }}</p><br>
-                                                                <p>{{ $applicant->applicant_major_2 }}</p><br>
+                                                                <p>{{ $applicant->applicant_major }}</p>
+                                                                <p>{{ $applicant->applicant_major_2 }}</p>
                                                                 <p>{{ $applicant->applicant_major_3 }}</p>
                                                             </td>
                                                             <td>
@@ -83,8 +83,8 @@
                                                                 @endif
                                                             </td>
                                                             <td>
-                                                                <p>{{$applicant->reason_fail}}</p><br>
-                                                                <p>{{$applicant->reason_fail_2}}</p><br>
+                                                                <p>{{$applicant->reason_fail}}</p>
+                                                                <p>{{$applicant->reason_fail_2}}</p>
                                                                 <p>{{$applicant->reason_fail_3}}</p>
                                                             </td>
                                                         </tr>

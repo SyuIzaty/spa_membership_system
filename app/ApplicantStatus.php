@@ -24,4 +24,24 @@ class ApplicantStatus extends Model
     {
         return $this->hasOne('App\Major','id','applicant_major');
     }
+
+    public function applicantresult()
+    {
+        return $this->hasMany('App\ApplicantResult', 'applicant_id', 'applicant_id');
+    }
+
+    public function statusResult()
+    {
+        return $this->hasOne('App\RequirementStatus','id','programme_status')->withDefault();
+    }
+
+    public function statusResultTwo()
+    {
+        return $this->hasOne('App\RequirementStatus','id','programme_status_2')->withDefault();
+    }
+
+    public function statusResultThree()
+    {
+        return $this->hasOne('App\RequirementStatus','id','programme_status_3')->withDefault();
+    }
 }

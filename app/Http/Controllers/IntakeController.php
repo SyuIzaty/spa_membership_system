@@ -186,12 +186,9 @@ class IntakeController extends Controller
     {
         $applicants = Applicantstatus::where('applicant_status', 'Selected')->with(['applicant', 'programme'])->get();
         foreach ($applicants as $apps) {
-            $applied_date = date("Y-m-d", strtotime($apps->applicant->created_at));
             $app = IntakeDetail::where('intake_code', $apps->applicant->intake_id)->where('intake_programme', $apps->applicant_programme)
                 ->where('status', '1')->with(['intakes'])->get();
         }
-
-        $this->studentID($app, $applied_date);
 
         return view('intake.offer', compact('applicants'));
     }
