@@ -79,4 +79,18 @@ class Applicant extends Model
         return $this->belongsTo('App\Intakes','intake_id','id');
     }
 
+    public function applicantContactInfo()
+    {
+        return $this->hasOne('App\ApplicantContact','applicant_id','id');
+    }
+
+    public function applicantGuardian()
+    {
+        return $this->hasOne('App\ApplicantGuardian','applicant_id','id');
+    }
+
+    public function applicantEmergency()
+    {
+        return $this->hasOne('App\ApplicantEmergency','applicant_id','id');
+    }
 }

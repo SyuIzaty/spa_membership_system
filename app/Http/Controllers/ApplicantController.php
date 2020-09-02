@@ -408,7 +408,7 @@ class ApplicantController extends Controller
 
     public function show($id)
     {
-        $applicant = Applicant::find($id);
+        $applicant = Applicant::where('id',$id)->with(['applicantContactInfo','applicantGuardian','applicantEmergency'])->first();
         $applicantresult = ApplicantResult::where('applicant_id',$id)->get();
         $applicantAcademic = ApplicantAcademic::where('applicant_id',$id)->get();
 
@@ -463,9 +463,6 @@ class ApplicantController extends Controller
                 $query->where('type','12');
             }])->first();
 
-            $applicant_guardian = ApplicantGuardian::where('applicant_id',$id)->first();
-
-            $applicant_emergency = ApplicantEmergency::where('applicant_id',$id)->first();
 
             $applicant2 = Applicant::where('id',$id)->get()->toArray();
             foreach($applicant2 as $applicantstat)
@@ -478,7 +475,7 @@ class ApplicantController extends Controller
             }
 
             $aapplicant = $dataappl;
-        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','applicantresult','total_point', 'programmestatus', 'aapplicant','applicant_guardian','applicant_emergency'));
+        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','applicantresult','total_point', 'programmestatus', 'aapplicant'));
     }
 
     public function indexs()
@@ -630,35 +627,33 @@ class ApplicantController extends Controller
 
     public function data_offerapplicant()
     {
-        // $applicant = Applicant::where('applicant_status',NULL)->get();
-        $applicant = Applicant::where('applicant_status','3')->get();
-        $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','applicantstatus','applicantIntake');
-
-
+        $applicant = Applicantstatus::where('applicant_status','3')->get();
+        $applicants = $applicant->load('applicant','programme','major','applicantresult','applicantresult.grades','applicant.applicantIntake');
         return datatables()::of($applicants)
-            ->addColumn('student_id',function($applicants)
+            ->addColumn('applicant_name',function($applicants)
             {
-                return $applicants->applicantstatus->student_id;
+                return $applicants->applicant->id;
+            })
+            ->addColumn('applicant_name',function($applicants)
+            {
+                return $applicants->applicant->applicant_name;
             })
             ->addColumn('intake_id',function($applicants)
             {
-                return $applicants->applicantIntake->intake_code;
+                return $applicants->applicant->applicantIntake->intake_code;
             })
             ->addColumn('prog_name',function($applicants)
             {
-                return '<div style="color:'.$applicants->statusResult->colour.'">'.$applicants->programme->programme_code.'</div>';
+                return '<div style="color:'.$applicants->applicant->statusResult->colour.'">'.$applicants->applicant->applicant_programme.'</div>';
             })
             ->addColumn('prog_name_2',function($applicants)
             {
-                // return '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->programmeTwo->programme_code.'</div>';
-                return isset($applicants->programmeTwo->programme_code) ? '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->programmeTwo->programme_code.'</div>' : '';
+                return isset($applicants->applicant->applicant_programme_2) ? '<div style="color:'.$applicants->applicant->statusResultTwo->colour.'">'.$applicants->applicant->applicant_programme_2.'</div>' : '';
 
             })
             ->addColumn('prog_name_3',function($applicants)
             {
-                // return isset($applicants->programmeThree->programme_code) ? $applicants->programmeThree->programme_code.$applicants->programme_status_3 : '';
-                return isset($applicants->programmeThree->programme_code) ? '<div style="color:'.$applicants->statusResultThree->colour.'">'.$applicants->programmeThree->programme_code.'</div>' : '';
-
+                return isset($applicants->applicant->applicant_programme_2) ? '<div style="color:'.$applicants->applicant->statusResultThree->colour.'">'.$applicants->applicant->applicant_programme_3.'</div>' : '';
             })
             ->addColumn('bm',function($applicants){
                 return $applicants->applicantresult->where('subject',1103)->isEmpty() ? '': $applicants->applicantresult->where('subject',1103)->first()->grades->grade_code;
@@ -671,10 +666,9 @@ class ApplicantController extends Controller
             })
 
            ->addColumn('action', function ($applicants) {
-
-               return '<a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Detail</a>
-               <a href="'.action('IntakeController@letter', ['applicant_id' => $applicants->id, 'intake_id' => $applicants->intake_id]).'" class="btn btn-sm btn-info">Offer Letter</a>
-               <a href="'.action('IntakeController@sendEmail', ['applicant_id' => $applicants->id, 'intake_id' => $applicants->intake_id]).'" class="btn btn-sm btn-primary">Send Email</a>
+               return '<a href="/applicant/'.$applicants->applicant->id.'" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Detail</a>
+               <a href="'.action('IntakeController@letter', ['applicant_id' => $applicants->applicant->id, 'intake_id' => $applicants->applicant->intake_id]).'" class="btn btn-sm btn-info">Offer Letter</a>
+               <a href="'.action('IntakeController@sendEmail', ['applicant_id' => $applicants->applicant->id, 'intake_id' => $applicants->applicant->intake_id]).'" class="btn btn-sm btn-primary">Send Email</a>
                ';
            })
            ->rawColumns(['prog_name','prog_name_2','prog_name_3','action'])
@@ -919,7 +913,7 @@ class ApplicantController extends Controller
             {
                 $reason_failed = 'Fail mathematics or english or less than 5 credit SPM';
                 $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if ($status_olevel == false)
+            }else if ($status_olevel == false)
             {
                 $reason_failed = 'Fail mathematics or english or less than 5 credit O Level';
                 $this->rejected($applicantt, $programme_code, $reason_failed);
@@ -1416,13 +1410,13 @@ class ApplicantController extends Controller
             if($status_spm == false) {
                 $reason_failed = 'Fail English or Mathematics or Less than 3 credit SPM';
                 $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if ($status_stpm == false){
+            }else if ($status_stpm == false){
                 $reason_failed = 'Fail English or Mathematics or Less than 3 credit STPM';
                 $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if ($status_stam == false){
+            }else if ($status_stam == false){
                 $reason_failed = 'Less than Maqbul STAM';
                 $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if($skm == false){
+            }else if($skm == false){
                 $reason_failed = 'Less than 3 credit SPM';
                 $this->rejected($applicantt, $programme_code, $reason_failed);
             }

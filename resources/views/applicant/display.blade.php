@@ -38,7 +38,6 @@
                                             <div class="card">
                                                 <div class="card-header">Preffered Programme</div>
                                                     <div class="card-body">
-                                                    @if(count($applicantresult) > 0)
                                                     <table class="table table-bordered table-sm">
                                                         <tr>
                                                             <th>Applied Programme</th>
@@ -48,17 +47,9 @@
                                                         </tr>
                                                         <tr>
                                                             <td>
-                                                                @foreach($aapplicant as $aapplicant_all_app)
-                                                                    @foreach($aapplicant_all_app['programme_1'] as $etc)
-                                                                    <p>{{$etc['programme_name']}}</p>
-                                                                    @endforeach
-                                                                    @foreach($aapplicant_all_app['programme_2'] as $etc)
-                                                                    <p>{{$etc['programme_name']}}</p>
-                                                                    @endforeach
-                                                                    @foreach($aapplicant_all_app['programme_3'] as $etc)
-                                                                    <p>{{$etc['programme_name']}}</p>
-                                                                    @endforeach
-                                                                @endforeach
+                                                                <p>{{ $applicant->applicant_programme }}</p>
+                                                                <p>{{ $applicant->applicant_programme_2 }}</p>
+                                                                <p>{{ $applicant->applicant_programme_3 }}</p>
                                                             </td>
                                                             <td>
                                                                 <p>{{ $applicant->applicant_major }}</p>
@@ -66,18 +57,24 @@
                                                                 <p>{{ $applicant->applicant_major_3 }}</p>
                                                             </td>
                                                             <td>
-                                                                @if($aapplicant_all_app['programme_status']== '1')
+                                                                @if($applicant['programme_status']== '1')
                                                                     <p style="color:green">Accepted</p>
+                                                                @elseif($applicant['programme_status'] == NULL)
+                                                                    <p></p>
                                                                 @else
                                                                     <p style="color: red">Rejected</p>
                                                                 @endif
-                                                                @if($aapplicant_all_app['programme_status_2']== '1')
+                                                                @if($applicant['programme_status_2']== '1')
                                                                     <p style="color: green">Accepted</p>
+                                                                @elseif($applicant['programme_status_2'] == NULL)
+                                                                <p></p>
                                                                 @else
                                                                     <p style="color: red">Rejected</p>
                                                                 @endif
-                                                                @if($aapplicant_all_app['programme_status_3']== '1')
+                                                                @if($applicant['programme_status_3']== '1')
                                                                     <p style="color: green">Accepted</p>
+                                                                @elseif($applicant['programme_status_3'] == NULL)
+                                                                <p></p>
                                                                 @else
                                                                     <p style="color: red">Rejected</p>
                                                                 @endif
@@ -89,7 +86,6 @@
                                                             </td>
                                                         </tr>
                                                     </table>
-                                                    @endif
                                                 </div>
                                             </div>
                                             <hr class="mt-2 mb-3">
@@ -98,36 +94,71 @@
                                             <div class="card">
                                                 <div class="card-header">Personal Profile</div>
                                                     <div class="card-body">
-                                                    <table class="table table-bordered table-sm">
-                                                        <tr>
-                                                            <td>Full Name</td>
-                                                            <td>{{$applicant->applicant_name}}</td>
-                                                            <td>IC Number</td>
-                                                            <td>{{$applicant->applicant_ic}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Email</td>
-                                                            <td>{{$applicant->applicant_email}}</td>
-                                                            <td>Mobile No</td>
-                                                            <td>{{$applicant->applicant_phone}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Nationality</td>
-                                                            <td>{{$applicant->applicant_nationality}}</td>
-                                                            <td>Gender</td>
-                                                            <td>{{$applicant->applicant_gender}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Marital Status</td>
-                                                            <td>{{$applicant->applicant_marital}}</td>
-                                                            <td>Date of Birth</td>
-                                                            <td>{{$applicant->dob}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Religion</td>
-                                                            <td>{{$applicant->applicant_religion}}</td>
-                                                        </tr>
-                                                    </table>
+                                                    <div class="row">
+                                                        <div class="form-group col-md-12">
+                                                            <label class="form-label">Name</label>
+                                                            <input type="text" class="form-control" name="applicant_name" value="{{ $applicant->applicant_name }}">
+                                                        </div>
+                                                        <div class="col-md-6 form-group">
+                                                            <label class="form-label">IC Number</label>
+                                                            <input type="text" class="form-control" name="applicant_ic" value="{{ $applicant->applicant_ic }}">
+                                                        </div>
+                                                        <div class="col-md-6 form-group">
+                                                            <label class="form-label">Birth Date</label>
+                                                            <input type="date" class="form-control" name="applicant_dob" value="{{ $applicant->applicant_dob }}">
+                                                        </div>
+                                                        <div class="col-md-6 form-group">
+                                                            <label class="form-label">Phone Number</label>
+                                                            <input type="text" class="form-control" name="applicant_phone" value="{{ $applicant->applicant_phone }}">
+                                                        </div>
+                                                        <div class="col-md-6 form-group">
+                                                            <label class="form-label">Email</label>
+                                                            <input type="email" class="form-control" name="applicant_email" value="{{ $applicant->applicant_email }}">
+                                                        </div>
+                                                        <div class="col-md-6 form-group">
+                                                            <label class="form-label">Gender</label>
+                                                            <input type="text" class="form-control" name="applicant_gender" value="{{ $applicant->applicant_gender }}">
+                                                        </div>
+                                                        <div class="col-md-6 form-group">
+                                                            <label class="form-label">Marital Status</label>
+                                                            <input type="text" class="form-control" name="applicant_marital" value="{{ $applicant->applicant_marital }}">
+                                                        </div>
+                                                        <div class="col-md-4 form-group">
+                                                            <label class="form-label">Race</label>
+                                                            <input type="text" class="form-control" name="applicant_race" value="{{ $applicant->applicant_race }}">
+                                                        </div>
+                                                        <div class="col-md-4 form-group">
+                                                            <label class="form-label">Religion</label>
+                                                            <input type="text" class="form-control" name="applicant_religion" value="{{ $applicant->applicant_religion }}">
+                                                        </div>
+                                                        <div class="col-md-4 form-group">
+                                                            <label class="form-label">Nationality</label>
+                                                            <input type="text" class="form-control" name="applicant_nationality" value="{{ $applicant->applicant_nationality }}">
+                                                        </div>
+                                                        @if(isset($applicant->applicantContactInfo))
+                                                        <div class="col-md-12 form-group">
+                                                            <label class="form-label">Address</label>
+                                                            <input type="text" class="form-control" name="applicant_address_1" value="{{ $applicant->applicantContactInfo->applicant_address_1 }}"><br>
+                                                            <input type="text" class="form-control" name="applicant_address_2" value="{{ $applicant->applicantContactInfo->applicant_address_2 }}">
+                                                        </div>
+                                                        <div class="col-md-3 form-group">
+                                                            <label class="form-label">Postcode</label>
+                                                            <input type="text" class="form-control" name="applicant_poscode" value="{{ $applicant->applicantContactInfo->applicant_poscode }}">
+                                                        </div>
+                                                        <div class="col-md-3 form-group">
+                                                            <label class="form-label">City</label>
+                                                            <input type="text" class="form-control" name="applicant_city" value="{{ $applicant->applicantContactInfo->applicant_city }}">
+                                                        </div>
+                                                        <div class="col-md-3 form-group">
+                                                            <label class="form-label">State</label>
+                                                            <input type="text" class="form-control" name="applicant_state" value="{{ $applicant->applicantContactInfo->applicant_state }}">
+                                                        </div>
+                                                        <div class="col-md-3 form-group">
+                                                            <label class="form-label">Country</label>
+                                                            <input type="text" class="form-control" name="applicant_country" value="{{ $applicant->applicantContactInfo->applicant_country }}">
+                                                        </div>
+                                                        @endif
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -136,67 +167,75 @@
                                     <div class="card">
                                         <div class="card-header">Parent Information</div>
                                         <div class="card-body">
-                                            @if(isset($applicant_guardian))
-                                            <table class="table table-bordered table-sm">
-                                                <tr>
-                                                    <td>Name (Father / Guardian I)</td>
-                                                    <td colspan="3">{{$applicant_guardian->guardian_one_name}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Relationship</td>
-                                                    <td colspan="3">{{$applicant_guardian->guardian_one_relationship}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>IC/passport</td>
-                                                    <td>{{$applicant_guardian->guardian_one_ic}}</td>
-                                                    <td>Nationality</td>
-                                                    <td>{{$applicant_guardian->guardian_one_nationality}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Mobile Phone</td>
-                                                    <td>{{$applicant_guardian->guardian_one_mobile}}</td>
-                                                    <td>Email</td>
-                                                    <td>{{$applicant_guardian->guardian_one_email}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Address</td>
-                                                    <td colspan="3">{{$applicant_guardian->guardian_one_address}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Occupation</td>
-                                                    <td colspan="3">{{$applicant_guardian->guardian_one_occupation}}</td>
-                                                </tr>
-                                            </table>
-                                            <table class="table table-bordered table-sm">
-                                                <tr>
-                                                    <td>Name (Mother / Guardian I)</td>
-                                                    <td colspan="3">{{$applicant_guardian->guardian_two_name}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Relationship</td>
-                                                    <td colspan="3">{{$applicant_guardian->guardian_two_relationship}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>IC/passport</td>
-                                                    <td>{{$applicant_guardian->guardian_two_ic}}</td>
-                                                    <td>Nationality</td>
-                                                    <td>{{$applicant_guardian->guardian_two_nationality}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Mobile Phone</td>
-                                                    <td>{{$applicant_guardian->guardian_two_mobile}}</td>
-                                                    <td>Email</td>
-                                                    <td>{{$applicant_guardian->guardian_two_email}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Address</td>
-                                                    <td colspan="3">{{$applicant_guardian->guardian_two_address}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Occupation</td>
-                                                    <td colspan="3">{{$applicant_guardian->guardian_two_occupation}}</td>
-                                                </tr>
-                                            </table>
+                                            @if(isset($applicant->applicantGuardian))
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label class="form-label">Name(Father / Guardian I)</label>
+                                                    <input type="text" class="form-control" name="guardian_one_name" value="{{ $applicant->applicantGuardian->guardian_one_name }}">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="form-label">Relationship</label>
+                                                    <input type="text" class="form-control" name="guardian_one_relationship" value="{{ $applicant->applicantGuardian->guardian_one_relationship }}">
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label class="form-label">IC / Passport</label>
+                                                    <input type="text" class="form-control" name="guardian_one_ic" value="{{ $applicant->applicantGuardian->guardian_one_ic }}">
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label class="form-label">Nationality</label>
+                                                    <input type="text" class="form-control" name="guardian_one_nationality" value="{{ $applicant->applicantGuardian->guardian_one_nationality }}">
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label class="form-label">Occupation</label>
+                                                    <input type="text" class="form-control" name="guardian_one_occupation" value="{{ $applicant->applicantGuardian->guardian_one_occupation }}">
+                                                </div>
+                                                <div class="form-group col-md-12">
+                                                    <label class="form-label">Address</label>
+                                                    <input type="text" class="form-control" name="guardian_one_address" value="{{ $applicant->applicantGuardian->guardian_one_address }}">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="form-label">Mobile Phone</label>
+                                                    <input type="text" class="form-control" name="guardian_one_mobile" value="{{ $applicant->applicantGuardian->guardian_one_mobile }}">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="form-label">Email</label>
+                                                    <input type="text" class="form-control" name="guardian_one_email" value="{{ $applicant->applicantGuardian->guardian_one_email }}">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label class="form-label">Name(Mother / Guardian II)</label>
+                                                    <input type="text" class="form-control" name="guardian_two_name" value="{{ $applicant->applicantGuardian->guardian_two_name }}">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="form-label">Relationship</label>
+                                                    <input type="text" class="form-control" name="guardian_two_relationship" value="{{ $applicant->applicantGuardian->guardian_two_relationship }}">
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label class="form-label">IC / Passport</label>
+                                                    <input type="text" class="form-control" name="guardian_two_ic" value="{{ $applicant->applicantGuardian->guardian_two_ic }}">
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label class="form-label">Nationality</label>
+                                                    <input type="text" class="form-control" name="guardian_two_nationality" value="{{ $applicant->applicantGuardian->guardian_two_nationality }}">
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label class="form-label">Occupation</label>
+                                                    <input type="text" class="form-control" name="guardian_two_occupation" value="{{ $applicant->applicantGuardian->guardian_two_occupation }}">
+                                                </div>
+                                                <div class="form-group col-md-12">
+                                                    <label class="form-label">Address</label>
+                                                    <input type="text" class="form-control" name="guardian_two_address" value="{{ $applicant->applicantGuardian->guardian_two_address }}">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="form-label">Mobile Phone</label>
+                                                    <input type="text" class="form-control" name="guardian_two_mobile" value="{{ $applicant->applicantGuardian->guardian_two_mobile }}">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="form-label">Email</label>
+                                                    <input type="text" class="form-control" name="guardian_two_email" value="{{ $applicant->applicantGuardian->guardian_two_email }}">
+                                                </div>
+                                            </div>
                                             @endif
                                         </div>
                                     </div>
@@ -204,27 +243,29 @@
                                     <div class="card">
                                         <div class="card-header">Emergency Contact</div>
                                         <div class="card-body">
-                                            @if(isset($applicant_emergency))
-                                            <table class="table table-bordered table-sm">
-                                                <tr>
-                                                    <td>Name</td>
-                                                    <td colspan="3">{{$applicant_emergency->emergency_name}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Relationship</td>
-                                                    <td colspan="3">{{$applicant_emergency->emergency_relationship}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Mobile Phone</td>
-                                                    <td>{{$applicant_emergency->emergency_phone}}</td>
-                                                    <td>Email</td>
-                                                    <td>{{$applicant_emergency->emergency_email}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Address</td>
-                                                    <td colspan="3">{{$applicant_emergency->emergency_address}}</td>
-                                                </tr>
-                                            </table>
+                                            @if(isset($applicant->applicantEmergency))
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label class="form-label">Name</label>
+                                                    <input type="text" class="form-control" name="emergency_name" value="{{ $applicant->applicantEmergency->emergency_name }}">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="form-label">Relationship</label>
+                                                    <input type="text" class="form-control" name="emergency_relationship" value="{{ $applicant->applicantEmergency->emergency_relationship }}">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="form-label">Mobile Phone</label>
+                                                    <input type="text" class="form-control" name="emergency_phone" value="{{ $applicant->applicantEmergency->emergency_phone }}">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="form-label">Email</label>
+                                                    <input type="email" class="form-control" name="emergency_email" value="{{ $applicant->applicantEmergency->emergency_email }}">
+                                                </div>
+                                                <div class="form-group col-md-12">
+                                                    <label class="form-label">Address</label>
+                                                    <input type="text" class="form-control" name="emergency_address" value="{{ $applicant->applicantEmergency->emergency_address }}">
+                                                </div>
+                                            </div>
                                             @endif
                                         </div>
                                     </div>
@@ -422,17 +463,17 @@
                                                                     <p>{{ $applicant->applicant_major_3 }}</p>
                                                                 </td>
                                                                 <td>
-                                                                    @if($aapplicant_all_app['programme_status']== '1')
+                                                                    @if($applicant['programme_status']== '1')
                                                                         <p style="color: green">Accepted</p>
                                                                     @else
                                                                         <p style="color: red">Rejected</p>
                                                                     @endif
-                                                                    @if($aapplicant_all_app['programme_status_2']== '1')
+                                                                    @if($applicant['programme_status_2']== '1')
                                                                         <p style="color: green">Accepted</p>
                                                                     @else
                                                                         <p style="color: red">Rejected</p>
                                                                     @endif
-                                                                    @if($aapplicant_all_app['programme_status_3']== '1')
+                                                                    @if($applicant['programme_status_3']== '1')
                                                                         <p style="color: green">Accepted</p>
                                                                     @else
                                                                         <p style="color: red">Rejected</p>
