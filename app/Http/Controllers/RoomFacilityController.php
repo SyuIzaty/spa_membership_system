@@ -6,6 +6,7 @@ use Redirect;
 use App\Roomfacility;
 use App\Roomtype;
 use App\Roomsuitability;
+use App\Storefacility;
 use Illuminate\Http\Request;
 
 class RoomFacilityController extends Controller
@@ -17,9 +18,9 @@ class RoomFacilityController extends Controller
      */
     public function index(Roomfacility $roomfacility)
     {
-        $arr['roomfacility'] = $roomfacility;
         $arr['roomtype'] = Roomtype::all();
         $arr['roomsuitability'] = Roomsuitability::all();
+        $arr['roomfacility']  = Roomfacility::with('store_facilities')->get(); 
         return view('space.roomfacility.index')->with($arr);
     }
 
@@ -44,7 +45,31 @@ class RoomFacilityController extends Controller
      */
     public function store(Request $request)
     {
-        Roomfacility::create($this->validateRequestStore());
+        $request->validate([
+            'code'                => 'required|min:1|max:10|unique:roomfacilities,code',                        
+            'roomtype_id'         => 'required',  
+            'roomsuitability_id'  => 'required',          
+            'name'                => 'required|min:1|max:100',  
+            'description'         => 'required|min:1|max:1000',    
+            'active'              => 'required', 
+        ]);
+
+        $roomsuit = $request->input('roomsuitability_id');
+        $roomsuit = implode(',', $roomsuit);
+        $input = $request->except('roomsuitability_id');
+        $input['roomsuitability_id'] = $roomsuit; 
+        $input['roomtype_id'] = $request->roomtype_id; 
+        $room = Roomfacility::create($input);
+
+        foreach (explode(',', $input['roomsuitability_id']) as $input)
+        {
+            $storefacility = new Storefacility(); 
+            $storefacility->roomfacility_id = $room->id; 
+            $storefacility->roomtype_id = $request->roomtype_id;
+            $storefacility->roomsuitability_id = $input;
+            $storefacility->save();
+        }
+
         return redirect('space/roomfacility');
     }
 
@@ -56,9 +81,22 @@ class RoomFacilityController extends Controller
      */
     public function show(Roomfacility $roomfacility)
     {
-        $arr['roomfacility'] = $roomfacility;
         $arr['roomtype'] = Roomtype::all();
         $arr['roomsuitability'] = Roomsuitability::all();
+
+        // $d = explode(',', $roomfacility['roomsuitability_id']);
+
+        // foreach(explode(',', $roomfacility['roomsuitability_id']) as $input)
+        // {
+        //     $name[] = Roomsuitability::select('name')->where('id', $input)->first();
+        // }
+
+        // $arr['name'] = $name;
+
+        // @
+
+        $roomfacility = Roomfacility::with('store_facilities')->where('id', $roomfacility->id)->first(); 
+        $arr['roomfacility'] = $roomfacility;
         return view('space.roomfacility.show')->with($arr);
     }
 
@@ -83,9 +121,39 @@ class RoomFacilityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Roomfacility $roomfacility)
+    public function update(Request $request, Storefacility $storefacility, $id)
     {
-        $roomfacility->update($this->validateRequestUpdate($roomfacility));
+        $this->validate($request,[
+            'code'                => 'required|min:1|max:10|unique:roomfacilities,code,'.$id,                        
+            'roomtype_id'         => 'required',  
+            'roomsuitability_id'  => 'required',          
+            'name'                => 'required|min:1|max:100',  
+            'description'         => 'required|min:1|max:1000',    
+            'active'              => 'required', 
+        ]);
+
+        $roomsuit = $request->input('roomsuitability_id');
+        $roomsuit = implode(',', $roomsuit);
+        $input = $request->except('roomsuitability_id');
+        $input['roomsuitability_id'] = $roomsuit; 
+        $input['roomtype_id'] = $request->roomtype_id; 
+        $room = Roomfacility::find($id);
+        $room->update($input);
+
+        // $storefacility = Storefacility::where('roomfacility_id', $room->id);
+        // $storefacility->delete();
+        Storefacility::where('roomfacility_id', $room->id)->delete();
+
+        foreach (explode(',', $input['roomsuitability_id']) as $input) 
+        {
+            $storefacility = new Storefacility;
+            $storefacility->roomfacility_id = $room->id; 
+            $storefacility->roomtype_id = $request->roomtype_id;
+            // $storefacility->roomsuitability_id = $request->get('roomsuitability_id[]');
+            $storefacility->roomsuitability_id = $input;
+            $storefacility->save();
+        }
+
         return redirect('space/roomfacility');
     }
 
@@ -121,39 +189,24 @@ class RoomFacilityController extends Controller
         })
 
         ->editColumn('roomsuitability_id', function ($roomfacility) {
+
+            $room_name = '';
             
-            return $roomfacility->roomsuitability->name;
+            foreach($roomfacility['store_facilities'] as $roomsuitability)
+            {
+                $room_name .= "<ul><li>".$roomsuitability->roomsuitability->name."</li></ul>";
+            }
+            
+            return $room_name;
           
         })
+
+        ->rawColumns(['roomsuitability_id', 'action']) //use rawColumns to allow rendering of html
             
         ->make(true);
     }
 
-    public function validateRequestStore()
-    {
-        return request()->validate([
-            'code'                => 'required|min:1|max:10|unique:roomfacilities,code',                        
-            'roomtype_id'         => 'required',  
-            'roomsuitability_id'  => 'required',          
-            'name'                => 'required|min:1|max:100',  
-            'description'         => 'required|min:1|max:1000',    
-            'active'              => 'required', 
-        ]);
-    }
-
-    public function validateRequestUpdate(Roomfacility $roomfacility)
-    {
-        return request()->validate([
-            'code'                => 'required|min:1|max:10|unique:roomfacilities,code,'.$roomfacility->id,                        
-            'roomtype_id'         => 'required',  
-            'roomsuitability_id'  => 'required',          
-            'name'                => 'required|min:1|max:100',  
-            'description'         => 'required|min:1|max:1000',    
-            'active'              => 'required', 
-        ]);
-    }
-
-    public function findroomsuitability(Request $request){ //RSuitability
+    public function findroomsuitability(Request $request){ 
         $data = Roomsuitability::select('name', 'id')
                 ->where('roomtype_id',$request->id)
                 ->where('active', 1)

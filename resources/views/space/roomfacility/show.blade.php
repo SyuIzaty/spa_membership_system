@@ -40,11 +40,18 @@
                                     <td width="21%"><b>ROOM FACILITY NAME :</b></td>
                                     <td colspan="2">{{ $roomfacility->name }}</td>
                                 </tr>
+
                                 <tr>
                                     <td width="21%"><b>ROOM TYPE :</b></td>
                                     <td colspan="2">{{ $roomfacility->roomtype->name }}</td>
                                     <td width="21%"><b>ROOM SUITABILITY :</b></td>
-                                    <td colspan="2">{{ $roomfacility->roomsuitability->name }}</td>
+                                    <td colspan="2">
+                                        <ul>  
+                                            @foreach($roomfacility['store_facilities'] as $roomsuitability)
+                                                <li>{{  $roomsuitability->roomsuitability->name }}</li>
+                                            @endforeach
+                                        </ul>   
+                                    </td>
                                 </tr>
 
                                 <tr>

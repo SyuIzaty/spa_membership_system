@@ -36,16 +36,17 @@ class Roomsuitability extends Model
 
     public function roomtype()
     {
-        // return $this->belongsTo('App\Roomtype');
         return $this->belongsTo(Roomtype::class);
     }
 
     public function roomfacility()
     {
-        // return $this->hasMany('App\Roomfacility');
-        return $this->hasMany(Roomfacility::class);
+        return $this->hasMany('App\Roomfacility');
     }
 
-    
+    public function store_facilities()
+    {
+        return $this->hasMany('App\Storefacility');
+    }
 }
 

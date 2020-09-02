@@ -38,8 +38,8 @@
 
 
                         <table id="roomfacility" class="table table-bordered table-hover table-striped w-100">
-                            <thead>
-                                <tr>
+                           <thead>
+                                  <tr>
                                     <th>Code</th>
                                     <th>Name</th>
                                     <th>Room Type</th>
@@ -54,7 +54,7 @@
                                         <select name="roomtype_id" id="roomtype_id" class="form-control">
                                              <option value="">All</option>
                                                 @foreach ($roomtype as $roomtypes) 
-                                                    <option value="{{ $roomtypes->id }}" {{ $roomtypes->id == $roomfacility->roomtype_id ? 'selected' : '' }}>
+                                                    <option value="{{ $roomtypes->id }}"> 
                                                         {{ $roomtypes->name }}
                                                     </option>
                                                 @endforeach
@@ -64,7 +64,7 @@
                                         <select name="roomsuitability_id" id="roomsuitability_id" class="form-control">
                                              <option value="">All</option>
                                                 @foreach ($roomsuitability as $roomsuitabilities) 
-                                                    <option value="{{ $roomsuitabilities->id }}" {{ $roomsuitabilities->id == $roomfacility->roomsuitability_id ? 'selected' : '' }}>
+                                                    <option value="{{ $roomsuitabilities->id }}">  
                                                         {{ $roomsuitabilities->name }}
                                                     </option>
                                                 @endforeach

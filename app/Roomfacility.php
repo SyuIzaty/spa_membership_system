@@ -42,8 +42,12 @@ class Roomfacility extends Model
 
     public function roomsuitability()
     {
-        // return $this->belongsTo('App\Roomsuitability');
-        return $this->belongsTo(Roomsuitability::class);
+        return $this->belongsTo('App\Roomsuitability', 'roomsuitability_id');
     }
-    
+
+    public function store_facilities()
+    {
+        return $this->hasMany('App\Storefacility', 'roomfacility_id');
+    }
+
 }

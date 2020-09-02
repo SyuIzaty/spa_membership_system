@@ -41,14 +41,14 @@
 
                             <tr>
                                 <div class="form-group">
-                                    <td width="15%"><label class="form-label" for="code">Code</label></td>
+                                    <td width="15%"><label class="form-label" for="code">Code <span class="text-danger">*</span></label></td>
                                         <td colspan="2"><input class="form-control @error('code') is-invalid @enderror" id="code" name="code" value="{{ $roomfacility->code }}">
                                             @error('code')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong> *{{ $message }} </strong>
                                                 </span>
                                             @enderror</td>
-                                    <td width="15%"><label class="form-label" for="name">Name</label></td>
+                                    <td width="15%"><label class="form-label" for="name">Name <span class="text-danger">*</span></label></td>
                                         <td colspan="5"><input class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ $roomfacility->name }}">
                                             @error('name')
                                                 <span class="invalid-feedback" role="alert">
@@ -58,40 +58,35 @@
                                 </div>
                             </tr>
 
-                                <tr>
-                                    <div class="form-group">
-                                        <td width="15%"><label class="form-label" for="roomtype_id">Room Type <span class="text-danger">*</span></label></td>
-                                        <td colspan="5"><select name="roomtype_id" id="roomtype_id" class="roomtype form-control @error('roomtype_id') is-invalid @enderror select2">
-                                            <option value="" disabled>-- Select Room Type --</option>
-                                            @foreach ($roomtype as $roomtype) 
-                                                <option value="{{ $roomtype->id }}" {{ $roomtype->id == $roomfacility->roomtype_id ? 'selected' : '' }}>
-                                                    {{ $roomtype->name }}</option>
-                                            @endforeach
-                                         </select>
-                                        @error('roomtype_id')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong> *{{ $message }} </strong>
-                                            </span>
-                                        @enderror</td>
-                                        <td width="15%"><label class="form-label" for="roomsuitability_id">Room Suitability <span class="text-danger">*</span></label></td>
-                                        <td colspan="5"><select name="roomsuitability_id" id="roomsuitability_id" class="roomsuitability form-control @error('roomsuitability_id') is-invalid @enderror select2">
-                                            <option value="" disabled>-- Select Room Suitability --</option>
-                                            @foreach ($roomsuitability as $roomsuitability) 
-                                                <option value="{{ $roomsuitability->id }}" {{ $roomsuitability->id == $roomfacility->roomsuitability_id ? 'selected' : '' }}>
-                                                    {{ $roomsuitability->name }}</option>
-                                            @endforeach
-                                         </select>
-                                        @error('roomsuitability_id')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong> *{{ $message }} </strong>
-                                            </span>
-                                        @enderror</td>
-                                    </div>
-                                </tr>
+                            <tr>
+                                <div class="form-group">
+                                    <td width="15%"><label class="form-label" for="roomtype_id">Room Type <span class="text-danger">*</span></label></td>
+                                    <td colspan="5"><select name="roomtype_id" id="roomtype_id" class="roomtype form-control @error('roomtype_id') is-invalid @enderror select2">
+                                        <option value="" disabled>-- Select Room Type --</option>
+                                        @foreach ($roomtype as $roomtype) 
+                                            <option value="{{ $roomtype->id }}" {{ $roomtype->id == $roomfacility->roomtype_id ? 'selected' : '' }}>
+                                                {{ $roomtype->name }}</option>
+                                        @endforeach
+                                        </select>
+                                    @error('roomtype_id')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong> *{{ $message }} </strong>
+                                        </span>
+                                    @enderror</td>
+                                    <td width="15%"><label class="form-label" for="roomsuitability_id">Room Suitability <span class="text-danger">*</span></label></td>
+                                    <td colspan="5"><select name="roomsuitability_id[]" multiple="multiple" id="roomsuitability_id" class="roomsuitability selectpicker form-control @error('roomsuitability_id') is-invalid @enderror select2">
+                                        </select>
+                                    @error('roomsuitability_id')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong> *{{ $message }} </strong>
+                                        </span>
+                                    @enderror</td>
+                                </div>
+                            </tr>
 
                             <tr>
                                 <div class="form-group">
-                                    <td width="15%"><label class="form-label" for="description">Description</label></td>
+                                    <td width="15%"><label class="form-label" for="description">Description <span class="text-danger">*</span></label></td>
                                         <td colspan="10"><input class="form-control @error('description') is-invalid @enderror" id="description" name="description" value="{{ $roomfacility->description }}">
                                             @error('description')
                                                 <span class="invalid-feedback" role="alert">
@@ -103,7 +98,7 @@
 
                             <tr>
                                 <div class="form-group">
-                                    <td width="15%"><label class="form-label" for="active">Active</label></td>
+                                    <td width="15%"><label class="form-label" for="active">Active <span class="text-danger">*</span></label></td>
                                         <td colspan="10"><select class="form-control @error('active') is-invalid @enderror" id="active" name="active">
                                             <option value="">-- Select Active Status --</option>
                                             <option value="0" {{ old('active', $roomfacility->active) == 'No' ? 'selected':''}} >No</option>
@@ -120,7 +115,7 @@
                         </table>
                                 <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Update</button> 
                                 <a style="margin-right:5px" href="{{ URL::route('roomfacility.index') }}" class="btn btn-success ml-auto float-right"><i class="fal fa-angle-double-left"></i> Back</a><br><br>
-                            </form>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -152,11 +147,11 @@
             data:{'id':roomtypeid},
             success:function(data)
             {
-                op+='<option value="">-- Please Select Room Suitability --</option>';
+                op+='<option disabled value="">-- Please Select Room Suitability --</option>';
                 for (var i=0; i<data.length; i++)
                 {
                     var selected = (data[i].id=="{{old('roomsuitability_id', $roomfacility->roomsuitability_id)}}") ? "selected='selected'" : '';
-                    op+='<option value="'+data[i].id+'" '+selected+'>'+data[i].name+'</option>';
+                    op+='<option value="'+data[i].id+'" '+selected+'>'+data[i].name+'</option>'; 
                 }
 
                 $('.roomsuitability').html(op);
