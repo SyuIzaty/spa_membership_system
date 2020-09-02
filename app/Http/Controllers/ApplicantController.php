@@ -478,6 +478,30 @@ class ApplicantController extends Controller
         return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','applicantresult','total_point', 'programmestatus', 'aapplicant'));
     }
 
+    public function updateApplicant(Request $request)
+    {
+
+    }
+
+    public function updateEmergency(Request $request)
+    {
+        $this->validate($request, [
+            'emergency_name' => 'required',
+            'emergency_phone' => 'required',
+            'emergency_address' => 'required',
+            'emergency_relationship' => 'required',
+        ]);
+
+        ApplicantEmergency::where('applicant_id',$request->id)->update($request->except(['_token']));
+        return redirect()->back();
+    }
+
+    public function updateGuardian(Request $request)
+    {
+        ApplicantGuardian::where('applicant_id',$request->id)->update($request->except(['_token']));
+        return redirect()->back();
+    }
+
     public function indexs()
     {
         return view('applicant.applicantresult');
@@ -501,7 +525,7 @@ class ApplicantController extends Controller
         return datatables()::of($applicants)
             ->addColumn('intake_id',function($applicants)
             {
-                return $applicants->applicantIntake->intake_code;
+                return isset($applicants->intake_code) ? $applicants->intake_code : '';
             })
             ->addColumn('prog_name',function($applicants)
             {
@@ -545,7 +569,7 @@ class ApplicantController extends Controller
         return datatables()::of($applicants)
             ->addColumn('intake_id',function($applicants)
             {
-                return $applicants->applicantIntake->intake_code;
+                return isset($applicants->intake_code) ? $applicants->intake_code : '';
             })
             ->addColumn('prog_name',function($applicants)
             {
@@ -590,7 +614,7 @@ class ApplicantController extends Controller
         return datatables()::of($applicants)
             ->addColumn('intake_id',function($applicants)
             {
-                return $applicants->applicantIntake->intake_code;
+                return isset($applicants->intake_code) ? $applicants->intake_code : '';
             })
             ->addColumn('prog_name',function($applicants)
             {
@@ -632,7 +656,7 @@ class ApplicantController extends Controller
         return datatables()::of($applicants)
             ->addColumn('applicant_name',function($applicants)
             {
-                return $applicants->applicant->id;
+                return isset($applicants->intake_code) ? $applicants->intake_code : '';
             })
             ->addColumn('applicant_name',function($applicants)
             {
@@ -682,7 +706,7 @@ class ApplicantController extends Controller
         return datatables()::of($applicants)
             ->addColumn('applicant_name',function($applicants)
             {
-                return $applicants->applicant->id;
+                return isset($applicants->intake_code) ? $applicants->intake_code : '';
             })
             ->addColumn('applicant_name',function($applicants)
             {

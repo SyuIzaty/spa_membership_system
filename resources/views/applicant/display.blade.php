@@ -168,74 +168,78 @@
                                         <div class="card-header">Parent Information</div>
                                         <div class="card-body">
                                             @if(isset($applicant->applicantGuardian))
+                                            {!! Form::open(['action' => ['ApplicantController@updateGuardian'], 'method' => 'POST'])!!}
+                                            {{Form::hidden('id', $applicant->id)}}
                                             <div class="row">
                                                 <div class="form-group col-md-6">
-                                                    <label class="form-label">Name(Father / Guardian I)</label>
-                                                    <input type="text" class="form-control" name="guardian_one_name" value="{{ $applicant->applicantGuardian->guardian_one_name }}">
+                                                    {{Form::label('title', 'Name(Father / Guardian I)')}}
+                                                    {{Form::text('guardian_one_name', $applicant->applicantGuardian->guardian_one_name, ['class' => 'form-control', 'placeholder' => 'Guardian Name'])}}
                                                 </div>
                                                 <div class="form-group col-md-6">
-                                                    <label class="form-label">Relationship</label>
-                                                    <input type="text" class="form-control" name="guardian_one_relationship" value="{{ $applicant->applicantGuardian->guardian_one_relationship }}">
+                                                    {{Form::label('title', 'Relationship')}}
+                                                    {{Form::text('guardian_one_relationship', $applicant->applicantGuardian->guardian_one_relationship, ['class' => 'form-control', 'placeholder' => 'Relationship'])}}
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <label class="form-label">IC / Passport</label>
-                                                    <input type="text" class="form-control" name="guardian_one_ic" value="{{ $applicant->applicantGuardian->guardian_one_ic }}">
+                                                    {{Form::label('title', 'IC / Passport')}}
+                                                    {{Form::text('guardian_one_ic', $applicant->applicantGuardian->guardian_one_ic, ['class' => 'form-control', 'placeholder' => 'Guardian IC / Passport'])}}
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <label class="form-label">Nationality</label>
-                                                    <input type="text" class="form-control" name="guardian_one_nationality" value="{{ $applicant->applicantGuardian->guardian_one_nationality }}">
+                                                    {{Form::label('title', 'Nationality')}}
+                                                    {{Form::text('guardian_one_nationality', $applicant->applicantGuardian->guardian_one_nationality, ['class' => 'form-control', 'placeholder' => 'Nationality'])}}
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <label class="form-label">Occupation</label>
-                                                    <input type="text" class="form-control" name="guardian_one_occupation" value="{{ $applicant->applicantGuardian->guardian_one_occupation }}">
+                                                    {{Form::label('title', 'Occupation')}}
+                                                    {{Form::text('guardian_one_occupation', $applicant->applicantGuardian->guardian_one_occupation, ['class' => 'form-control', 'placeholder' => 'Occupation'])}}
                                                 </div>
                                                 <div class="form-group col-md-12">
-                                                    <label class="form-label">Address</label>
-                                                    <input type="text" class="form-control" name="guardian_one_address" value="{{ $applicant->applicantGuardian->guardian_one_address }}">
+                                                    {{Form::label('title', 'Address')}}
+                                                    {{Form::text('guardian_one_address', $applicant->applicantGuardian->guardian_one_address, ['class' => 'form-control', 'placeholder' => 'Address'])}}
                                                 </div>
                                                 <div class="form-group col-md-6">
-                                                    <label class="form-label">Mobile Phone</label>
-                                                    <input type="text" class="form-control" name="guardian_one_mobile" value="{{ $applicant->applicantGuardian->guardian_one_mobile }}">
+                                                    {{Form::label('title', 'Mobile Phone')}}
+                                                    {{Form::text('guardian_one_mobile', $applicant->applicantGuardian->guardian_one_mobile, ['class' => 'form-control', 'placeholder' => 'Mobile'])}}
                                                 </div>
                                                 <div class="form-group col-md-6">
-                                                    <label class="form-label">Email</label>
-                                                    <input type="text" class="form-control" name="guardian_one_email" value="{{ $applicant->applicantGuardian->guardian_one_email }}">
+                                                    {{Form::label('title', 'Email')}}
+                                                    {{Form::text('guardian_one_email', $applicant->applicantGuardian->guardian_one_email, ['class' => 'form-control', 'placeholder' => 'Email'])}}
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="form-group col-md-6">
-                                                    <label class="form-label">Name(Mother / Guardian II)</label>
-                                                    <input type="text" class="form-control" name="guardian_two_name" value="{{ $applicant->applicantGuardian->guardian_two_name }}">
+                                                    {{Form::label('title', 'Name(Mother / Guardian II)')}}
+                                                    {{Form::text('guardian_two_name', $applicant->applicantGuardian->guardian_two_name, ['class' => 'form-control', 'placeholder' => 'Guardian Name'])}}
                                                 </div>
                                                 <div class="form-group col-md-6">
-                                                    <label class="form-label">Relationship</label>
-                                                    <input type="text" class="form-control" name="guardian_two_relationship" value="{{ $applicant->applicantGuardian->guardian_two_relationship }}">
+                                                    {{Form::label('title', 'Relationship')}}
+                                                    {{Form::text('guardian_two_relationship', $applicant->applicantGuardian->guardian_two_relationship, ['class' => 'form-control', 'placeholder' => 'Relationship'])}}
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <label class="form-label">IC / Passport</label>
-                                                    <input type="text" class="form-control" name="guardian_two_ic" value="{{ $applicant->applicantGuardian->guardian_two_ic }}">
+                                                    {{Form::label('title', 'IC / Passport')}}
+                                                    {{Form::text('guardian_two_ic', $applicant->applicantGuardian->guardian_two_ic, ['class' => 'form-control', 'placeholder' => 'Guardian IC / Passport'])}}
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <label class="form-label">Nationality</label>
-                                                    <input type="text" class="form-control" name="guardian_two_nationality" value="{{ $applicant->applicantGuardian->guardian_two_nationality }}">
+                                                    {{Form::label('title', 'Nationality')}}
+                                                    {{Form::text('guardian_two_nationality', $applicant->applicantGuardian->guardian_two_nationality, ['class' => 'form-control', 'placeholder' => 'Nationality'])}}
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <label class="form-label">Occupation</label>
-                                                    <input type="text" class="form-control" name="guardian_two_occupation" value="{{ $applicant->applicantGuardian->guardian_two_occupation }}">
+                                                    {{Form::label('title', 'Occupation')}}
+                                                    {{Form::text('guardian_two_occupation', $applicant->applicantGuardian->guardian_two_occupation, ['class' => 'form-control', 'placeholder' => 'Occupation'])}}
                                                 </div>
                                                 <div class="form-group col-md-12">
-                                                    <label class="form-label">Address</label>
-                                                    <input type="text" class="form-control" name="guardian_two_address" value="{{ $applicant->applicantGuardian->guardian_two_address }}">
+                                                    {{Form::label('title', 'Address')}}
+                                                    {{Form::text('guardian_two_address', $applicant->applicantGuardian->guardian_two_address, ['class' => 'form-control', 'placeholder' => 'Address'])}}
                                                 </div>
                                                 <div class="form-group col-md-6">
-                                                    <label class="form-label">Mobile Phone</label>
-                                                    <input type="text" class="form-control" name="guardian_two_mobile" value="{{ $applicant->applicantGuardian->guardian_two_mobile }}">
+                                                    {{Form::label('title', 'Mobile Phone')}}
+                                                    {{Form::text('guardian_two_mobile', $applicant->applicantGuardian->guardian_two_mobile, ['class' => 'form-control', 'placeholder' => 'Mobile'])}}
                                                 </div>
                                                 <div class="form-group col-md-6">
-                                                    <label class="form-label">Email</label>
-                                                    <input type="text" class="form-control" name="guardian_two_email" value="{{ $applicant->applicantGuardian->guardian_two_email }}">
+                                                    {{Form::label('title', 'Email')}}
+                                                    {{Form::text('guardian_two_email', $applicant->applicantGuardian->guardian_two_email, ['class' => 'form-control', 'placeholder' => 'Email'])}}
                                                 </div>
                                             </div>
+                                            <button class="btn btn-primary">Update</button>
+                                            {!! Form::close() !!}
                                             @endif
                                         </div>
                                     </div>
@@ -244,28 +248,28 @@
                                         <div class="card-header">Emergency Contact</div>
                                         <div class="card-body">
                                             @if(isset($applicant->applicantEmergency))
+                                            {!! Form::open(['action' => ['ApplicantController@updateEmergency'], 'method' => 'POST'])!!}
                                             <div class="row">
+                                                {{Form::hidden('id', $applicant->id)}}
                                                 <div class="form-group col-md-6">
-                                                    <label class="form-label">Name</label>
-                                                    <input type="text" class="form-control" name="emergency_name" value="{{ $applicant->applicantEmergency->emergency_name }}">
+                                                    {{Form::label('title', 'Name')}}
+                                                    {{Form::text('emergency_name', $applicant->applicantEmergency->emergency_name, ['class' => 'form-control', 'placeholder' => 'Name'])}}
                                                 </div>
                                                 <div class="form-group col-md-6">
-                                                    <label class="form-label">Relationship</label>
-                                                    <input type="text" class="form-control" name="emergency_relationship" value="{{ $applicant->applicantEmergency->emergency_relationship }}">
+                                                    {{Form::label('title', 'Relationship')}}
+                                                    {{Form::text('emergency_relationship', $applicant->applicantEmergency->emergency_relationship, ['class' => 'form-control', 'placeholder' => 'Relationship'])}}
                                                 </div>
                                                 <div class="form-group col-md-6">
-                                                    <label class="form-label">Mobile Phone</label>
-                                                    <input type="text" class="form-control" name="emergency_phone" value="{{ $applicant->applicantEmergency->emergency_phone }}">
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    <label class="form-label">Email</label>
-                                                    <input type="email" class="form-control" name="emergency_email" value="{{ $applicant->applicantEmergency->emergency_email }}">
+                                                    {{Form::label('title', 'Emergency Phone Number')}}
+                                                    {{Form::text('emergency_phone', $applicant->applicantEmergency->emergency_phone, ['class' => 'form-control', 'placeholder' => 'Emergency Number'])}}
                                                 </div>
                                                 <div class="form-group col-md-12">
-                                                    <label class="form-label">Address</label>
-                                                    <input type="text" class="form-control" name="emergency_address" value="{{ $applicant->applicantEmergency->emergency_address }}">
+                                                    {{Form::label('title', 'Address')}}
+                                                    {{Form::text('emergency_address', $applicant->applicantEmergency->emergency_address, ['class' => 'form-control', 'placeholder' => 'Address'])}}
                                                 </div>
                                             </div>
+                                            <button class="btn btn-primary">Update</button>
+                                            {!! Form::close() !!}
                                             @endif
                                         </div>
                                     </div>
