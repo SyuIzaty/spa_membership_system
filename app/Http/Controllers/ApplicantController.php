@@ -21,6 +21,11 @@ use DB;
 
 class ApplicantController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index(Applicant $applicant)
     {
 
@@ -480,7 +485,28 @@ class ApplicantController extends Controller
 
     public function updateApplicant(Request $request)
     {
+        Applicant::where('id', $request->id)->update([
+            'applicant_name' => $request->applicant_name,
+            'applicant_ic' => $request->applicant_ic,
+            'applicant_dob' => $request->applicant_dob,
+            'applicant_phone' => $request->applicant_phone,
+            'applicant_email' => $request->applicant_email,
+            'applicant_gender' => $request->applicant_gender,
+            'applicant_marital' => $request->applicant_marital,
+            'applicant_race' => $request->applicant_race,
+            'applicant_religion' => $request->applicant_religion,
+            'applicant_nationality' => $request->applicant_nationality
+        ]);
+        ApplicantContact::where('applicant_id', $request->id)->update([
+            'applicant_address_1' => $request->applicant_address_1,
+            'applicant_address_2' => $request->applicant_address_2,
+            'applicant_poscode' => $request->applicant_poscode,
+            'applicant_city' => $request->applicant_city,
+            'applicant_state' => $request->applicant_state,
+            'applicant_country' => $request->applicant_country,
+        ]);
 
+        return redirect()->back();
     }
 
     public function updateEmergency(Request $request)
@@ -656,10 +682,6 @@ class ApplicantController extends Controller
         return datatables()::of($applicants)
             ->addColumn('applicant_name',function($applicants)
             {
-                return isset($applicants->intake_code) ? $applicants->intake_code : '';
-            })
-            ->addColumn('applicant_name',function($applicants)
-            {
                 return $applicants->applicant->applicant_name;
             })
             ->addColumn('intake_id',function($applicants)
@@ -770,26 +792,23 @@ class ApplicantController extends Controller
         Applicant::where('id',$applicantt['id'])->where('applicant_status',NULL)->update(['applicant_status'=>'2']);
     }
 
-    public function rejected($applicantt, $programme_code, $reason_failed)
+    public function rejected($applicantt, $programme_code)
     {
         $programme_status = Applicant::where('id',$applicantt['id'])->where('applicant_programme',$programme_code)->first();
         if($programme_status){
             $programme_status->programme_status = '2';
-            $programme_status->reason_fail = $reason_failed;
             $programme_status->save();
         }
 
         $programme_status = Applicant::where('id',$applicantt['id'])->where('applicant_programme_2',$programme_code)->first();
         if($programme_status){
             $programme_status->programme_status_2 = '2';
-            $programme_status->reason_fail_2 = $reason_failed;
             $programme_status->save();
         }
 
         $programme_status = Applicant::where('id',$applicantt['id'])->where('applicant_programme_3',$programme_code)->first();
         if($programme_status){
             $programme_status->programme_status_3 = '2';
-            $programme_status->reason_fail_3 = $reason_failed;
             $programme_status->save();
         }
         Applicant::where('id',$applicantt['id'])->where('applicant_status',NULL)->update(['applicant_status'=>'2']);
@@ -808,7 +827,7 @@ class ApplicantController extends Controller
 
     public function stpm($applicantt)
     {
-        $app_stpm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',2)->where('grade_id','<=',32)->get();
+        $app_stpm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',2)->where('grade_id','<=',17)->get();
         $stpm = $app_stpm->count();
 
         $count_math_m = $app_stpm->where('subject',950)->count();
@@ -827,7 +846,7 @@ class ApplicantController extends Controller
 
     public function uec($applicantt)
     {
-        $app_uec = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',4)->where('grade_id','<=',22)->get();
+        $app_uec = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',4)->where('grade_id','<=',25)->get();
         $uec = $app_uec->count();
         $count_math = $app_uec->where('subject','UEC104')->count();
         return compact('app_uec', 'uec', 'count_math');
@@ -835,7 +854,7 @@ class ApplicantController extends Controller
 
     public function olevel($applicantt)
     {
-        $app_olevel = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',6)->where('grade_id','<=',46)->get();
+        $app_olevel = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',6)->where('grade_id','<=',45)->get();
         $olevel = $app_olevel->count();
         $count_eng = $app_olevel->where('subject','CIE1119')->count();
         $count_math_a = $app_olevel->where('subject','CIE4937')->count();
@@ -894,15 +913,7 @@ class ApplicantController extends Controller
             $this->accepted($applicantt, $programme_code);
         } else {
             $programme_code = 'IAT';
-            if($status_spm == false)
-            {
-                $reason_failed = 'Fail mathematics or english or less than 5 credit SPM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if($status_olevel == false)
-            {
-                $reason_failed = 'Fail mathematics or english or less than 5 credit O Level';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }
+            $this->rejected($applicantt, $programme_code);
         }
     }
 
@@ -933,15 +944,7 @@ class ApplicantController extends Controller
             $this->accepted($applicantt, $programme_code);
         } else {
             $programme_code = 'IAL';
-            if($status_spm == false)
-            {
-                $reason_failed = 'Fail mathematics or english or less than 5 credit SPM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }else if ($status_olevel == false)
-            {
-                $reason_failed = 'Fail mathematics or english or less than 5 credit O Level';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }
+            $this->rejected($applicantt, $programme_code);
         }
     }
 
@@ -972,15 +975,7 @@ class ApplicantController extends Controller
             $this->accepted($applicantt, $programme_code);
         } else {
             $programme_code = 'IGR';
-            if($status_spm == false)
-            {
-                $reason_failed = 'Fail mathematics or english or less than 5 credit SPM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if ($status_olevel == false)
-            {
-                $reason_failed = 'Fail mathematics or english or less than 5 credit O Level';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }
+            $this->rejected($applicantt, $programme_code);
         }
     }
 
@@ -1011,15 +1006,7 @@ class ApplicantController extends Controller
             $this->accepted($applicantt, $programme_code);
         } else {
             $programme_code = 'IAM';
-            if($status_spm == false)
-            {
-                $reason_failed = 'Fail mathematics or english or less than 5 credit SPM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if ($status_olevel == false)
-            {
-                $reason_failed = 'Fail mathematics or english or less than 5 credit O Level';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }
+            $this->rejected($applicantt, $programme_code);
         }
     }
 
@@ -1062,15 +1049,7 @@ class ApplicantController extends Controller
             $this->accepted($applicantt, $programme_code);
         }else{
             $programme_code = 'ILE';
-            if($status_spm == false)
-            {
-                $reason_failed = 'Fail mathematics or biology or chemistry or physics or science SPM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if($status_olevel == false)
-            {
-                $reason_failed = 'Fail mathematics or biology or chemistry or physics or science O Level';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }
+            $this->rejected($applicantt, $programme_code);
         }
     }
 
@@ -1084,9 +1063,7 @@ class ApplicantController extends Controller
             $this->accepted($applicantt, $programme_code);
         }else{
             $programme_code = 'IKR';
-                $reason_failed = 'Fail english SPM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-
+            $this->rejected($applicantt, $programme_code);
         }
     }
 
@@ -1165,31 +1142,7 @@ class ApplicantController extends Controller
             $this->accepted($applicantt, $programme_code);
         } else {
             $programme_code = 'DBM';
-            if($status_spm == false) {
-                $reason_failed = 'Less than 3 credit SPM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if ($status_stpm == false){
-                $reason_failed = 'Less than 3 credit STPM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if ($status_stam == false){
-                $reason_failed = 'Less than Maqbul STAM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if ($status_olevel == false){
-                $reason_failed = 'Less than 3 credit O Level';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if ($status_uec == false){
-                $reason_failed = 'Less than 3 credit UEC';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if($skm == false){
-                $reason_failed = 'Less than 3 credit SPM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if($mqf == false){
-                $reason_failed = 'Less than 3 credit SPM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if($komuniti == false){
-                $reason_failed = 'Less than 3 credit SPM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }
+            $this->rejected($applicantt, $programme_code);
         }
     }
 
@@ -1268,31 +1221,7 @@ class ApplicantController extends Controller
             $this->accepted($applicantt, $programme_code);
         } else {
             $programme_code = 'DPMG';
-            if($status_spm == false) {
-                $reason_failed = 'Less than 3 credit SPM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if ($status_stpm == false){
-                $reason_failed = 'Less than 1 credit STPM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if ($status_stam == false){
-                $reason_failed = 'Less than Maqbul STAM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if ($status_olevel == false){
-                $reason_failed = 'Less than 3 credit O Level';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if ($status_uec == false){
-                $reason_failed = 'Less than 3 credit UEC';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if($skm == false){
-                $reason_failed = 'Less than 3 credit SPM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if($mqf == false){
-                $reason_failed = 'Less than 3 credit SPM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if($komuniti == false){
-                $reason_failed = 'Less than 3 credit SPM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }
+            $this->rejected($applicantt, $programme_code);
         }
     }
 
@@ -1328,7 +1257,7 @@ class ApplicantController extends Controller
             $status_stpm = false;
         }
 
-        $app_alevel = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',5)->where('grade_id','<=',39)->get();
+        $app_alevel = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',5)->where('grade_id','<=',38)->get();
         $alevel = $app_alevel->count();
 
         $count_bio = $app_alevel->where('subject','A101')->count();
@@ -1369,22 +1298,7 @@ class ApplicantController extends Controller
             $this->accepted($applicantt, $programme_code);
         } else {
             $programme_code = 'DSHP';
-            if($status_spm == false) {
-                $reason_failed = 'Fail Biology or Chemistry or Science or Sejarah or Syariah or Mathematics SPM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if ($status_stpm == false){
-                $reason_failed = 'Fail Biology or Chemistry or Mathematics or English or Less than 4 credit STPM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if ($status_alevel == false){
-                $reason_failed = 'Fail Biology or Chemistry or less than 3 credit A Level';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if ($status_olevel == false){
-                $reason_failed = 'Fail Biology or Chemistry or Science or English or Mathematics or Less than 3 credit UEC';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if($sace == false){
-                $reason_failed = 'Less than 50 SACE';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }
+            $this->rejected($applicantt, $programme_code);
         }
     }
 
@@ -1429,22 +1343,9 @@ class ApplicantController extends Controller
         {
             $programme_code = 'DIA';
             $this->accepted($applicantt, $programme_code);
-        } else {
-            $programme_code = 'DIA';
-            if($status_spm == false) {
-                $reason_failed = 'Fail English or Mathematics or Less than 3 credit SPM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }else if ($status_stpm == false){
-                $reason_failed = 'Fail English or Mathematics or Less than 3 credit STPM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }else if ($status_stam == false){
-                $reason_failed = 'Less than Maqbul STAM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }else if($skm == false){
-                $reason_failed = 'Less than 3 credit SPM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }
         }
+        $programme_code = 'DIA';
+        $this->rejected($applicantt, $programme_code);
     }
 
     public function dif($applicantt) //Diploma in Islamic Finance
@@ -1522,28 +1423,7 @@ class ApplicantController extends Controller
             $this->accepted($applicantt, $programme_code);
         } else {
             $programme_code = 'DIF';
-            if($status_spm == false) {
-                $reason_failed = 'Fail mathematics or Less than 4 credit SPM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if ($status_stpm == false){
-                $reason_failed = 'Fail mathematics or Less than 3 credit STPM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if ($status_stam == false){
-                $reason_failed = 'Less Maqbul STAM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if ($status_olevel == false){
-                $reason_failed = 'Fail Mathematics or Less than 4 credit O Level';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if ($status_uec == false){
-                $reason_failed = 'Fail Mathematics or Less than 4 credit UEC';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if($skm == false){
-                $reason_failed = 'Fail Mathematics or Less than 2 credit SPM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if($kkm == false){
-                $reason_failed = 'Less than 3 credit SPM';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }
+            $this->rejected($applicantt, $programme_code);
         }
     }
 
@@ -1559,8 +1439,7 @@ class ApplicantController extends Controller
             $this->accepted($applicantt, $programme_code);
         }else{
             $programme_code = 'CAT';
-            $reason_failed = 'Fail Mathematics or English or Bahasa Melayu or Less than 5 credit SPM';
-            $this->rejected($applicantt, $programme_code, $reason_failed);
+            $this->rejected($applicantt, $programme_code);
         }
     }
 
@@ -1576,8 +1455,7 @@ class ApplicantController extends Controller
             $this->accepted($applicantt, $programme_code);
         }else {
             $programme_code = 'CFAB';
-            $reason_failed = 'Fail English or Mathematics or Bahasa Melayu or Less than 3 credit SPM';
-            $this->rejected($applicantt, $programme_code, $reason_failed);
+            $this->rejected($applicantt, $programme_code);
         }
     }
 
@@ -1591,9 +1469,7 @@ class ApplicantController extends Controller
             $this->accepted($applicantt, $programme_code);
         }else{
             $programme_code = 'MICPA';
-            $reason_failed = 'CGPA less than 2.50';
-            $this->rejected($applicantt, $programme_code, $reason_failed);
-
+            $this->rejected($applicantt, $programme_code);
         }
     }
 
@@ -1624,13 +1500,7 @@ class ApplicantController extends Controller
             $this->accepted($applicantt, $programme_code);
         }else{
             $programme_code = 'ACA';
-            if($status_bach == false) {
-                $reason_failed = 'Less than 2.75 CGPA';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }if ($status_icaew == false){
-                $reason_failed = 'Fail ICAEW';
-                $this->rejected($applicantt, $programme_code, $reason_failed);
-            }
+            $this->rejected($applicantt, $programme_code);
         }
     }
 
@@ -1647,8 +1517,7 @@ class ApplicantController extends Controller
         }else
         {
             $programme_code = 'PAC552';
-            $reason_failed = 'Does not exceed minimum requirement';
-            $this->rejected($applicantt, $programme_code, $reason_failed);
+            $this->rejected($applicantt, $programme_code);
         }
     }
 
@@ -1665,8 +1534,7 @@ class ApplicantController extends Controller
         }else
         {
             $programme_code = 'PAC551';
-            $reason_failed = 'Does not exceed minimum requirement';
-            $this->rejected($applicantt, $programme_code, $reason_failed);
+            $this->rejected($applicantt, $programme_code);
         }
     }
 
@@ -1683,8 +1551,7 @@ class ApplicantController extends Controller
         }else
         {
             $programme_code = 'PAC553';
-            $reason_failed = 'Does not exceed minimum requirement';
-            $this->rejected($applicantt, $programme_code, $reason_failed);
+            $this->rejected($applicantt, $programme_code);
         }
     }
 
@@ -1701,8 +1568,7 @@ class ApplicantController extends Controller
         }else
         {
             $programme_code = 'PAC554';
-            $reason_failed = 'Does not exceed minimum requirement';
-            $this->rejected($applicantt, $programme_code, $reason_failed);
+            $this->rejected($applicantt, $programme_code);
         }
     }
 

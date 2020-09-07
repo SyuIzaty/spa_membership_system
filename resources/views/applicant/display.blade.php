@@ -25,10 +25,7 @@
                                     <a data-toggle="tab" class="nav-link" href="#details" role="tab">Applicant Details</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a data-toggle="tab" class="nav-link" href="#academic" role="tab">Applicant Academic</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a data-toggle="tab" class="nav-link" href="#bucket" role="tab">Applicant Bucket Details</a>
+                                    <a data-toggle="tab" class="nav-link" href="#academic" role="tab">Personal Information</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
@@ -36,16 +33,34 @@
                                     <div class="row">
                                         <div class="col-md-12 grid-margin stretch-card">
                                             <div class="card">
-                                                <div class="card-header">Preffered Programme</div>
+                                                <div class="card-header">Applicant</div>
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="form-group col-md-6">
+                                                            {{Form::label('title', 'Name')}}
+                                                            {{Form::text('applicant_name', $applicant->applicant_name, ['class' => 'form-control', 'placeholder' => 'Applicant Name'])}}
+                                                        </div>
+                                                        <div class="col-md-6 form-group">
+                                                            {{ Form::label('title', 'IC Number') }}
+                                                            {{ Form::text('applicant_ic', $applicant->applicant_ic, ['class' => 'form-control', 'placeholder' => 'Applicant IC Number']) }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr class="mt-2 mb-3">
+                                            <div class="card">
+                                                <div class="card-header">Offer Program</div>
                                                     <div class="card-body">
+                                                    @if(isset($applicant->applicant_name) )
+                                                    {{-- @if(count($applicantresult) > 0) --}}
                                                     <table class="table table-bordered table-sm">
                                                         <tr>
-                                                            <th>Applied Programme</th>
-                                                            <th>Major</th>
+                                                            <th>Applicant Programme</th>
+                                                            <th>Applicant Major</th>
                                                             <th>Result</th>
-                                                            <th>Reason</th>
+                                                            <th>Action</th>
                                                         </tr>
-                                                        <tr>
+                                                        <tr id={{$applicant->id}}>
                                                             <td>
                                                                 <p>{{ $applicant->applicant_programme }}</p>
                                                                 <p>{{ $applicant->applicant_programme_2 }}</p>
@@ -58,476 +73,575 @@
                                                             </td>
                                                             <td>
                                                                 @if($applicant['programme_status']== '1')
-                                                                    <p style="color:green">Accepted</p>
-                                                                @elseif($applicant['programme_status'] == NULL)
-                                                                    <p></p>
-                                                                @else
-                                                                    <p style="color: red">Rejected</p>
+                                                                    <p style="color: green">Qualified</p>
+                                                                @endif
+                                                                @if($applicant['programme_status']== '2')
+                                                                    <p style="color: red">Not Qualified</p>
                                                                 @endif
                                                                 @if($applicant['programme_status_2']== '1')
-                                                                    <p style="color: green">Accepted</p>
-                                                                @elseif($applicant['programme_status_2'] == NULL)
-                                                                <p></p>
-                                                                @else
-                                                                    <p style="color: red">Rejected</p>
+                                                                    <p style="color: green">Qualified</p>
+                                                                @endif
+                                                                @if($applicant['programme_status_2']== '2')
+                                                                    <p style="color: red">Not Qualified</p>
                                                                 @endif
                                                                 @if($applicant['programme_status_3']== '1')
-                                                                    <p style="color: green">Accepted</p>
-                                                                @elseif($applicant['programme_status_3'] == NULL)
-                                                                <p></p>
-                                                                @else
-                                                                    <p style="color: red">Rejected</p>
+                                                                    <p style="color: green">Qualified</p>
+                                                                @endif
+                                                                @if($applicant['programme_status_3']== '2')
+                                                                    <p style="color: red">Not Qualified</p>
                                                                 @endif
                                                             </td>
                                                             <td>
-                                                                <p>{{$applicant->reason_fail}}</p>
-                                                                <p>{{$applicant->reason_fail_2}}</p>
-                                                                <p>{{$applicant->reason_fail_3}}</p>
+                                                                @foreach($aapplicant as $aapplicant_all_app)
+                                                                @if($aapplicant_all_app['programme_status'] == '1')
+                                                                <select name="applicant_status" class="form-control" id="status_{{$aapplicant_all_app['applicant_programme']}}">
+                                                                    <option disabled selected>Please select</option>
+                                                                    <option value="3">Selected</option>
+                                                                    <option value="4">Selected for Interview</option>
+                                                                </select>
+                                                                @else
+                                                                <input class="form-control" value="Not Selected" name="applicant_status" disabled>
+                                                                @endif
+                                                                @endforeach
+                                                                @foreach($aapplicant as $aapplicant_all_app)
+                                                                @if($aapplicant_all_app['programme_status_2'] == '1')
+                                                                <select name="applicant_status" class="form-control" id="status_{{$aapplicant_all_app['applicant_programme_2']}}">
+                                                                    <option disabled selected>Please select</option>
+                                                                    <option value="3">Selected</option>
+                                                                    <option value="4">Selected for Interview</option>
+                                                                </select>
+                                                                @else
+                                                                <input class="form-control" value="Not Selected" name="applicant_status" disabled>
+                                                                @endif
+                                                                @endforeach
+                                                                @foreach($aapplicant as $aapplicant_all_app)
+                                                                @if($aapplicant_all_app['programme_status_3'] == '1')
+                                                                <select name="applicant_status_3" class="form-control" id="status_{{$aapplicant_all_app['applicant_programme_3']}}">
+                                                                    <option disabled selected>Please select</option>
+                                                                    <option value="3">Selected</option>
+                                                                    <option value="4">Selected for Interview</option>
+                                                                </select>
+                                                                @else
+                                                                <input class="form-control" value="Not Selected" name="applicant_status" disabled>
+                                                                @endif
+                                                                @endforeach
                                                             </td>
                                                         </tr>
                                                     </table>
+                                                    @endif
                                                 </div>
                                             </div>
                                             <hr class="mt-2 mb-3">
                                         </div>
+                                    </div>
+                                    <hr class="mt-2 mb-3">
+                                    <div class="card">
+                                        <div class="card-header">Minimum Qualification</div>
+                                        <div class="card-body">
+                                            @if($applicant->programme_status == '2' || $applicant->programme_status_2 == '2' || $applicant->programme_status_3 == '2')
+                                                @if($applicant->applicant_programme == 'IAT' || $applicant->applicant_programme_2 == 'IAT' || $applicant->applicant_programme_3 == 'IAT')
+                                                    <p>American Degree Transfer Programme</p>
+                                                    <ul>
+                                                        <li>Pass SPM / O-Level with minimum five (5) credits including English and Mathematics or other equivalent qualifications recognised by Malaysian Government.</li>
+                                                    </ul>
+                                                @endif
+                                                @if($applicant->applicant_programme == 'IAL' || $applicant->applicant_programme_2 == 'IAL' || $applicant->applicant_programme_3 == 'IAL')
+                                                    <p>A Level Programme</p>
+                                                    <ul>
+                                                        <li>Pass SPM / O-Level with minimum five (5) credits including English and Mathematics or other equivalent qualifications recognised by Malaysian Government.</li>
+                                                    </ul>
+                                                @endif
+                                                @if($applicant->applicant_programme == 'IGR' || $applicant->applicant_programme_2 == 'IGR' || $applicant->applicant_programme_3 == 'IGR')
+                                                    <p>A Level German Programme</p>
+                                                    <ul>
+                                                        <li>Pass SPM / O-Level with minimum five (5) credits including English and Mathematics or other equivalent qualifications recognised by Malaysian Government.</li>
+                                                    </ul>
+                                                @endif
+                                                @if($applicant->applicant_programme == 'IAM' || $applicant->applicant_programme_2 == 'IAM' || $applicant->applicant_programme_3 == 'IAM')
+                                                    <p>SACE International</p>
+                                                    <ul>
+                                                        <li>Pass SPM / O-Level with minimum five (5) credits including English and Mathematics or other equivalent qualifications recognised by Malaysian Government.</li>
+                                                    </ul>
+                                                @endif
+                                                @if($applicant->applicant_programme == 'ILE' || $applicant->applicant_programme_2 == 'ILE' || $applicant->applicant_programme_3 == 'ILE')
+                                                    <p>Japanese Preparatory Course</p>
+                                                    <ol>
+                                                        <li>Science: Minimum credit in 5 subjects including Mathematics <b>OR</b> any science subject in SPM / GCE O-Level or equivalent</li>
+                                                        <li>Non-Science: Minimum credit in 5 subjects including Mathematics in SPM / GCE O-Level or equivalent</li>
+                                                    </ol>
+                                                @endif
+                                                @if($applicant->applicant_programme == 'IKR' || $applicant->applicant_programme_2 == 'IKR' || $applicant->applicant_programme_3 == 'IKR')
+                                                    <p>Korean Preparatory Course</p>
+                                                    <ul>
+                                                        <li>Open (Minimum ability and knowledge in English)</li>
+                                                    </ul>
+                                                @endif
+                                                @if($applicant->applicant_programme == 'DBM' || $applicant->applicant_programme_2 == 'DBM' || $applicant->applicant_programme_3 == 'DBM')
+                                                    <p>Diploma in Business Management</p>
+                                                    <ol>
+                                                        <li>Obtain a minimum of 3 credits in Sijil Pelajaran Malaysia (SPM) <b>OR</b></li>
+                                                        <li>Pass STPM or equivalent with a minimum of Grade C (CGPA 2.0) in ONE subject <b>OR</b></li>
+                                                        <li>Pass STAM with a minimum of Maqbul Grade <b>OR</b></li>
+                                                        <li>Pass UEC with a minimum of Grade B in 3 subjects <b>OR</b></li>
+                                                        <li>Pass O-level with a minimum of Grade C in 3 subjects <b>OR</b></li>
+                                                        <li>Pass SKM Level 3 in related field with a minimum credit of 1 subject in SPM <b>OR</b></li>
+                                                        <li>Pass Community College Certificate which is equivalent with MQF level 3 in related field with minimum ONE credit in SPM <b>OR</b></li>
+                                                        <li>Pass certificate (MQF Level 3) in a related field with at least CGPA 2.00</li>
+                                                    </ol>
+                                                @endif
+                                                @if($applicant->applicant_programme == 'DPMG' || $applicant->applicant_programme_2 == 'DPMG' || $applicant->applicant_programme_3 == 'DPMG')
+                                                    <p>Diploma in Public Management and Governance</p>
+                                                    <ol>
+                                                        <li>Obtain a minimum of 3 credits in Sijil Pelajaran Malaysia (SPM) <b>OR</b></li>
+                                                        <li>Pass STPM or equivalent with at least a Grade C (CGPA 2.0) in any subjects <b>OR</b></li>
+                                                        <li>Pass STAM with a minimum of Maqbul Grade <b>OR</b></li>
+                                                        <li>Pass UEC with minimum of Grade B in 3 subjects <b>OR</b></li>
+                                                        <li>Pass O-level with a minimum of Grade C in 3 subjects <b>OR</b></li>
+                                                        <li>Pass SKM Level 3 in related field with a minimum credit of 1 subject in SPM <b>AND</b> through reinforcement programme (if required)<b>OR</b></li>
+                                                        <li>Pass Community College Certificate which is equivalent with MQF level 3 in related field with minimum ONE credit in SPM <b>OR</b></li>
+                                                    </ol>
+                                                @endif
+                                                @if($applicant->applicant_programme == 'DSHP' || $applicant->applicant_programme_2 == 'DSHP' || $applicant->applicant_programme_3 == 'DSHP')
+                                                    <p>Diploma in Scientific Halal and Practice</p>
+                                                    <ol>
+                                                        <li>Sijil Pelajaran Malaysia (SPM)</li>
+                                                        <ul>
+                                                            <li>Science stream: obtain three (3) credits in Chemistry, Biology and Islamic Studies or Syariah <b>OR</b></li>
+                                                            <li>Non-science stream: obtain minimum B+ in science, AND three (3) credits in Islamic Studies or Syariah and one other subjects</li>
+                                                            <li><b>AND</b>must pass Bahasa Melayu. Sejarah, Bahasa Inggeris and Mathematics <b>OR</b></li>                                                            </li>
+                                                        </ul>
+                                                        <li>Sijil Tinggi Pelajaran Malaysia (STPM): Pass with minimum C (NGMP 2.0) in Biology and Chemistry; AND pass Bahasa Inggeris and Mathematics <b>OR</b></li>
+                                                        <li>Pass O-level/IGCSE with a minimum of Grade C in 3 subjects including Biology, Chemistry or science, AND pass English and Mathematics <b>OR</b></li>
+                                                        <li>South Australian Certificate of Education (SACE) with minimum ATAR 50 <b>OR</b></li>
+                                                        <li>A-Level: Pass with minimum C in three (3) subjects including Biology and Chemistry</li>
+                                                    </ol>
+                                                @endif
+                                                @if($applicant->applicant_programme == 'DIF' || $applicant->applicant_programme_2 == 'DIF' || $applicant->applicant_programme_3 == 'DIF')
+                                                    <p>Diploma in Islamic Finance</p>
+                                                    <ol>
+                                                        <li>Pass Sijil Pelajaran Malaysia (SPM) with at least credit in three subjects and pass Mathematics <b>OR</b></li>
+                                                        <li>Pass Sijil Tinggi Pelajaran Malaysia (STPM) or equivalent with at least Grade C (CGPA 2.00) in one subject AND pass Mathematics at SPM level (or equivalent) or at STPM <b>OR</b></li>
+                                                        <li>Pass Sijil Tinggi Agama Malaysia (STAM)(Maqbul Grade) <b>AND</b> pass Mathematics at SPM level (or equivalent) <b>OR</b></li>
+                                                        <li>Pass UEC (Unified Examination Certificate) with a minimum of Grade B in three subjects ans pass Mathematics <b>OR</b></li>
+                                                        <li>Pass O-Level with a minimum of Grade C in three subjects and pass Mathematics <b>OR</b></li>
+                                                        <li>Pass Sijil Kemahiran Malaysia (SKM) Level 3 in related field AND pass SPM with a minimum credit for one subject and pass Mathematics at SPM level <b>OR</b></li>
+                                                        <li>Pass Comunity College Certificate which is equivalent to KKM Level 3 in related field <b>AND</b> pass SPM with a minimum credit for one subject and <b>PASS</b> Mathematics at SPM level</li>
+                                                    </ol>
+                                                @endif
+                                                @if($applicant->applicant_programme == 'CAT' || $applicant->applicant_programme_2 == 'CAT' || $applicant->applicant_programme_3 == 'CAT')
+                                                    <p>Certified Accounting Technician</p>
+                                                    <ol>
+                                                        <li>Pass Sijil Pelajaran Malaysia (SPM) with at least creditfive credits including Bahasa Malaysia, Mathematics and English <b>OR</b></li>
+                                                        <li>Other qualifications with equivalent recognition by the Malaysian Government.</li>
+                                                    </ol>
+                                                @endif
+                                                @if($applicant->applicant_programme == 'CFAB' || $applicant->applicant_programme_2 == 'CFAB' || $applicant->applicant_programme_3 == 'CFAB')
+                                                    <p>Certified in Finance, Accounting & Business (CFAB)</p>
+                                                    <ol>
+                                                        <li>Pass Sijil Pelajaran Malaysia (SPM) with at least creditfive credits including Bahasa Malaysia, Mathematics and English <b>OR</b></li>
+                                                        <li>Other qualifications with equivalent recognition by the Malaysian Government.</li>
+                                                    </ol>
+                                                @endif
+                                                @if($applicant->applicant_programme == 'MICPA' || $applicant->applicant_programme_2 == 'MICPA' || $applicant->applicant_programme_3 == 'MICPA')
+                                                    <p>The Malaysian Institute of Certified Public Accountants (MICPA)</p>
+                                                    <ol>
+                                                        <li>Degree holder with CGPA of at least 3.00; 5.0 (New Zealand); 4.0 (Australia)</li>
+                                                        <li>Degree must be from universities which are accredited by MICPA in order to obtain full exemption</li>
+                                                    </ol>
+                                                @endif
+                                                @if($applicant->applicant_programme == 'PAC551' || $applicant->applicant_programme_2 == 'PAC551' || $applicant->applicant_programme_3 == 'PAC551')
+                                                    <p>The Association of Chartered Certified Accountants (ACCA)(UK) from Diploma</p>
+                                                    <ul>
+                                                        <li>Diploma in Accountancy (Level 4, KKM) with minimum CGPA of 3.00</li>
+                                                    </ul>
+                                                @endif
+                                                @if($applicant->applicant_programme == 'PAC552' || $applicant->applicant_programme_2 == 'PAC552' || $applicant->applicant_programme_3 == 'PAC552')
+                                                    <p>The Association of Chartered Certified Accountants (ACCA)(UK) from CAT</p>
+                                                    <ul>
+                                                        <li>Pass Certified Accounting Technician (CAT)</li>
+                                                    </ul>
+                                                @endif
+                                                @if($applicant->applicant_programme == 'PAC553' || $applicant->applicant_programme_2 == 'PAC553' || $applicant->applicant_programme_3 == 'PAC553')
+                                                    <p>The Association of Chartered Certified Accountants (ACCA)(UK) from CAT</p>
+                                                    <ul>
+                                                        <li>Bachelor of Accountancy or with related fields with CGPA of at least 2.50</li>
+                                                    </ul>
+                                                @endif
+                                                @if($applicant->applicant_programme == 'PAC554' || $applicant->applicant_programme_2 == 'PAC554' || $applicant->applicant_programme_3 == 'PAC554')
+                                                    <p>The Association of Chartered Certified Accountants (ACCA)(UK) from CAT</p>
+                                                    <ul>
+                                                        <li>Bachelor of Accountancy or with related fields with CGPA of at least 2.50</li>
+                                                    </ul>
+                                                @endif
+                                                @if($applicant->applicant_programme == 'ACA' || $applicant->applicant_programme_2 == 'ACA' || $applicant->applicant_programme_3 == 'ACA')
+                                                    <p>The Association of Chartered Certified Accountants (ACA) for Institute of Chartered Accountants in England and Wales (ICAEW)</p>
+                                                    <ol>
+                                                        <li>Pass ICAEW Certificate in Finance, Accounting, and Business (ICAEW CFAB) <b>OR</b></li>
+                                                        <li>Pass Bachelor of Accountancy (Level 6, KKM) with CGPA of at least 2.75</li>
+                                                    </ol>
+                                                @endif
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <hr class="mt-2 mb-3">
+                                    <div class="card-header">Applicant Academic</div>
+                                    <div class="card-body">
+                                        @if(count($spm)!=0)
+                                        <h5>SPM</h5>
+                                            <table class="table table-bordered table-sm">
+                                            <tr>
+                                                <td>Subject Code</td>
+                                                <td>Subject Name</td>
+                                                <td>Grade</td>
+                                            </tr>
+                                            @foreach($spm as $spms)
+                                                <tr>
+                                                    <td>{{$spms->subjects->first()->subject_code}}</td>
+                                                    <td>{{$spms->subjects->first()->subject_name}}</td>
+                                                    <td>{{$spms->grades->grade_code}}</td>
+                                                </tr>
+                                            @endforeach
+                                            </table>
+                                        @endif
+                                        @if(count($stpm)!=0)
+                                        <h5>STPM</h5>
+                                            <table class="table table-bordered table-sm">
+                                            <tr>
+                                                <td>Subject Code</td>
+                                                <td>Subject Name</td>
+                                                <td>Grade</td>
+                                            </tr>
+                                            @foreach($stpm as $stpms)
+                                                <tr>
+                                                    <td>{{$stpms->subjects->first()->subject_code}}</td>
+                                                    <td>{{$stpms->subjects->first()->subject_name}}</td>
+                                                    <td>{{$stpms->grades->grade_code}}</td>
+                                                </tr>
+                                            @endforeach
+                                            </table>
+                                        @endif
+                                        @if(count($stam)!=0)
+                                        <h5>STAM</h5>
+                                            <table class="table table-bordered table-sm">
+                                            <tr>
+                                                <td>Subject Code</td>
+                                                <td>Subject Name</td>
+                                                <td>Grade</td>
+                                            </tr>
+                                            @foreach($stam as $stams)
+                                                <tr>
+                                                    <td>{{$stams->subjects->first()->subject_code}}</td>
+                                                    <td>{{$stams->subjects->first()->subject_name}}</td>
+                                                    <td>{{$stams->grades->grade_code}}</td>
+                                                </tr>
+                                            @endforeach
+                                            </table>
+                                        @endif
+                                        @if(count($uec)!=0)
+                                        <h5>UEC</h5>
+                                            <table class="table table-bordered table-sm">
+                                            <tr>
+                                                <td>Subject Code</td>
+                                                <td>Subject Name</td>
+                                                <td>Grade</td>
+                                            </tr>
+                                            @foreach($uec as $uecs)
+                                                <tr>
+                                                    <td>{{$uecs->subjects->first()->subject_code}}</td>
+                                                    <td>{{$uecs->subjects->first()->subject_name}}</td>
+                                                    <td>{{$uecs->grades->grade_code}}</td>
+                                                </tr>
+                                            @endforeach
+                                            </table>
+                                        @endif
+                                        @if(count($alevel)!=0)
+                                        <h5>A Level</h5>
+                                            <table class="table table-bordered table-sm">
+                                            <tr>
+                                                <td>Subject Code</td>
+                                                <td>Subject Name</td>
+                                                <td>Grade</td>
+                                            </tr>
+                                            @foreach($alevel as $alevels)
+                                                <tr>
+                                                    <td>{{$alevels->subjects->first()->subject_code}}</td>
+                                                    <td>{{$alevels->subjects->first()->subject_name}}</td>
+                                                    <td>{{$alevels->grades->first()->grade_code}}</td>
+                                                </tr>
+                                            @endforeach
+                                            </table>
+                                        @endif
+                                        @if(count($olevel)!=0)
+                                        <h5>O Level</h5>
+                                            <table class="table table-bordered table-sm">
+                                            <tr>
+                                                <td>Subject Code</td>
+                                                <td>Subject Name</td>
+                                                <td>Grade</td>
+                                            </tr>
+                                            @foreach($olevel as $olevels)
+                                                <tr>
+                                                    <td>{{$olevels->subjects->first()->subject_code}}</td>
+                                                    <td>{{$olevels->subjects->first()->subject_name}}</td>
+                                                    <td>{{$olevels->grades->grade_code}}</td>
+                                                </tr>
+                                            @endforeach
+                                            </table>
+                                        @endif
+                                        @if(isset($matriculation))
+                                        <h5>Matriculation</h5>
+                                            <table class="table table-bordered table-sm">
+                                                <tr>
+                                                    <td>Matriculation</td>
+                                                    <td colspan="3">{{$matriculation->applicantAcademic->applicant_study}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Major</td>
+                                                    <td colspan="3">{{ $matriculation->applicantAcademic->applicant_major }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Graduation Year</td>
+                                                    <td>{{ $matriculation->applicantAcademic->applicant_year }}</td>
+                                                    <td>CGPA</td>
+                                                    <td>{{$matriculation->cgpa}}</td>
+                                                </tr>
+                                            </table>
+                                        @endif
+                                        @if(isset($diploma))
+                                        <h5>Diploma</h5>
+                                            <table class="table table-bordered table-sm">
+                                            <tr>
+                                                <td>University</td>
+                                                <td colspan="3">{{ $diploma->applicantAcademic->applicant_study }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Major</td>
+                                                <td colspan="3">{{ $diploma->applicantAcademic->applicant_major }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Graduation Year</td>
+                                                <td>{{ $diploma->applicantAcademic->applicant_year }}</td>
+                                                <td>CGPA</td>
+                                                <td>{{ $diploma->cgpa }}</td>
+                                            </tr>
+                                            </table>
+                                        @endif
+                                        @if(isset($degree))
+                                        <h5>Degree</h5>
+                                            <table class="table table-bordered table-sm">
+                                            <tr>
+                                                <td>University</td>
+                                                <td colspan="3">{{$degree->applicantAcademic->applicant_study}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Major</td>
+                                                <td colspan="3">{{ $degree->applicantAcademic->applicant_major }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Graduation Year</td>
+                                                <td>{{ $degree->applicantAcademic->applicant_year }}</td>
+                                                <td>CGPA</td>
+                                                <td>{{$degree->cgpa}}</td>
+                                            </tr>
+                                            </table>
+                                        @endif
+                                </div>
+                                </div>
+                                <div class="tab-pane" id="academic" role="tabpanel">
+                                    <div class="row">
                                         <div class="col-md-12 grid-margin stretch-card">
                                             <div class="card">
                                                 <div class="card-header">Personal Profile</div>
                                                     <div class="card-body">
+                                                    {!! Form::open(['action' => ['ApplicantController@updateApplicant'], 'method' => 'POST'])!!}
+                                                    {{Form::hidden('id', $applicant->id)}}
                                                     <div class="row">
                                                         <div class="form-group col-md-12">
-                                                            <label class="form-label">Name</label>
-                                                            <input type="text" class="form-control" name="applicant_name" value="{{ $applicant->applicant_name }}">
+                                                            {{Form::label('title', 'Name')}}
+                                                            {{Form::text('applicant_name', $applicant->applicant_name, ['class' => 'form-control', 'placeholder' => 'Applicant Name'])}}
                                                         </div>
                                                         <div class="col-md-6 form-group">
-                                                            <label class="form-label">IC Number</label>
-                                                            <input type="text" class="form-control" name="applicant_ic" value="{{ $applicant->applicant_ic }}">
+                                                            {{ Form::label('title', 'IC Number') }}
+                                                            {{ Form::text('applicant_ic', $applicant->applicant_ic, ['class' => 'form-control', 'placeholder' => 'Applicant IC Number']) }}
                                                         </div>
                                                         <div class="col-md-6 form-group">
-                                                            <label class="form-label">Birth Date</label>
-                                                            <input type="date" class="form-control" name="applicant_dob" value="{{ $applicant->applicant_dob }}">
+                                                            {{ Form::label('title', 'Birth Date') }}
+                                                            {{ Form::text('applicant_dob', $applicant->applicant_dob, ['class' => 'form-control', 'placeholder' => 'Applicant Date of Birth']) }}
                                                         </div>
                                                         <div class="col-md-6 form-group">
-                                                            <label class="form-label">Phone Number</label>
-                                                            <input type="text" class="form-control" name="applicant_phone" value="{{ $applicant->applicant_phone }}">
+                                                            {{ Form::label('title', 'Phone Number') }}
+                                                            {{ Form::text('applicant_phone', $applicant->applicant_phone, ['class' => 'form-control' , 'placeholder' => 'Applicant Phone']) }}
                                                         </div>
                                                         <div class="col-md-6 form-group">
-                                                            <label class="form-label">Email</label>
-                                                            <input type="email" class="form-control" name="applicant_email" value="{{ $applicant->applicant_email }}">
+                                                            {{ Form::label('title', 'Email') }}
+                                                            {{ Form::email('applicant_email', $applicant->applicant_email, ['class' => 'form-control', 'placeholder' => 'Applicant Email']) }}
                                                         </div>
                                                         <div class="col-md-6 form-group">
-                                                            <label class="form-label">Gender</label>
-                                                            <input type="text" class="form-control" name="applicant_gender" value="{{ $applicant->applicant_gender }}">
+                                                            {{ Form::label('title', 'Gender') }}
+                                                            {{ Form::text('applicant_gender', $applicant->applicant_gender, ['class' => 'form-control', 'placeholder' => 'Applicant Gender']) }}
                                                         </div>
                                                         <div class="col-md-6 form-group">
-                                                            <label class="form-label">Marital Status</label>
-                                                            <input type="text" class="form-control" name="applicant_marital" value="{{ $applicant->applicant_marital }}">
+                                                            {{ Form::label('title', 'Marital') }}
+                                                            {{ Form::text('applicant_marital', $applicant->applicant_marital, ['class' => 'form-control', 'placeholder' => 'Applicant Marital']) }}
                                                         </div>
                                                         <div class="col-md-4 form-group">
-                                                            <label class="form-label">Race</label>
-                                                            <input type="text" class="form-control" name="applicant_race" value="{{ $applicant->applicant_race }}">
+                                                            {{ Form::label('title', 'Race') }}
+                                                            {{ Form::text('applicant_race', $applicant->applicant_race, ['class' => 'form-control', 'placeholder' => 'Applicant Race']) }}
                                                         </div>
                                                         <div class="col-md-4 form-group">
-                                                            <label class="form-label">Religion</label>
-                                                            <input type="text" class="form-control" name="applicant_religion" value="{{ $applicant->applicant_religion }}">
+                                                            {{ Form::label('title', 'Religion') }}
+                                                            {{ Form::text('applicant_religion', $applicant->applicant_religion, ['class' => 'form-control', 'placeholder' => 'Applicant Religion']) }}
                                                         </div>
                                                         <div class="col-md-4 form-group">
-                                                            <label class="form-label">Nationality</label>
-                                                            <input type="text" class="form-control" name="applicant_nationality" value="{{ $applicant->applicant_nationality }}">
+                                                            {{ Form::label('title', 'Nationality') }}
+                                                            {{ Form::text('applicant_nationality', $applicant->applicant_nationality, ['class' => 'form-control', 'placeholder' => 'Applicant Nationality']) }}
                                                         </div>
                                                         @if(isset($applicant->applicantContactInfo))
                                                         <div class="col-md-12 form-group">
-                                                            <label class="form-label">Address</label>
-                                                            <input type="text" class="form-control" name="applicant_address_1" value="{{ $applicant->applicantContactInfo->applicant_address_1 }}"><br>
-                                                            <input type="text" class="form-control" name="applicant_address_2" value="{{ $applicant->applicantContactInfo->applicant_address_2 }}">
+                                                            {{ Form::label('title', 'Address') }}
+                                                            {{ Form::text('applicant_address_1', $applicant->applicantContactInfo->applicant_address_1, ['class' => 'form-control', 'placeholder' => 'Address 1']) }}<br>
+                                                            {{ Form::text('applicant_address_2', $applicant->applicantContactInfo->applicant_address_2, ['class' => 'form-control', 'placeholder' => 'Address 2']) }}
                                                         </div>
                                                         <div class="col-md-3 form-group">
-                                                            <label class="form-label">Postcode</label>
-                                                            <input type="text" class="form-control" name="applicant_poscode" value="{{ $applicant->applicantContactInfo->applicant_poscode }}">
+                                                            {{ Form::label('title', 'Postcode') }}
+                                                            {{ Form::text('applicant_poscode', $applicant->applicantContactInfo->applicant_poscode, ['class' => 'form-control', 'placeholder' => 'Postcode']) }}
                                                         </div>
                                                         <div class="col-md-3 form-group">
-                                                            <label class="form-label">City</label>
-                                                            <input type="text" class="form-control" name="applicant_city" value="{{ $applicant->applicantContactInfo->applicant_city }}">
+                                                            {{ Form::label('title', 'City') }}
+                                                            {{ Form::text('applicant_city', $applicant->applicantContactInfo->applicant_city, ['class' => 'form-control', 'placeholder' => 'Applicant City']) }}
                                                         </div>
                                                         <div class="col-md-3 form-group">
-                                                            <label class="form-label">State</label>
-                                                            <input type="text" class="form-control" name="applicant_state" value="{{ $applicant->applicantContactInfo->applicant_state }}">
+                                                            {{ Form::label('title', 'State') }}
+                                                            {{ Form::text('applicant_state', $applicant->applicantContactInfo->applicant_state, ['class' => 'form-control', 'placeholder' => 'State']) }}
                                                         </div>
                                                         <div class="col-md-3 form-group">
-                                                            <label class="form-label">Country</label>
-                                                            <input type="text" class="form-control" name="applicant_country" value="{{ $applicant->applicantContactInfo->applicant_country }}">
+                                                            {{ Form::label('title', 'Country') }}
+                                                            {{ Form::text('applicant_country', $applicant->applicantContactInfo->applicant_country, ['class' => 'form-control', 'placeholder' => 'Country']) }}
                                                         </div>
                                                         @endif
                                                     </div>
+                                                    @role('executive')
+                                                    <button class="btn btn-primary">Update</button>
+                                                    {!! Form::close() !!}
+                                                    @endrole
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <hr class="mt-2 mb-3">
-                                    <div class="card">
-                                        <div class="card-header">Parent Information</div>
-                                        <div class="card-body">
-                                            @if(isset($applicant->applicantGuardian))
-                                            {!! Form::open(['action' => ['ApplicantController@updateGuardian'], 'method' => 'POST'])!!}
-                                            {{Form::hidden('id', $applicant->id)}}
-                                            <div class="row">
-                                                <div class="form-group col-md-6">
-                                                    {{Form::label('title', 'Name(Father / Guardian I)')}}
-                                                    {{Form::text('guardian_one_name', $applicant->applicantGuardian->guardian_one_name, ['class' => 'form-control', 'placeholder' => 'Guardian Name'])}}
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    {{Form::label('title', 'Relationship')}}
-                                                    {{Form::text('guardian_one_relationship', $applicant->applicantGuardian->guardian_one_relationship, ['class' => 'form-control', 'placeholder' => 'Relationship'])}}
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    {{Form::label('title', 'IC / Passport')}}
-                                                    {{Form::text('guardian_one_ic', $applicant->applicantGuardian->guardian_one_ic, ['class' => 'form-control', 'placeholder' => 'Guardian IC / Passport'])}}
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    {{Form::label('title', 'Nationality')}}
-                                                    {{Form::text('guardian_one_nationality', $applicant->applicantGuardian->guardian_one_nationality, ['class' => 'form-control', 'placeholder' => 'Nationality'])}}
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    {{Form::label('title', 'Occupation')}}
-                                                    {{Form::text('guardian_one_occupation', $applicant->applicantGuardian->guardian_one_occupation, ['class' => 'form-control', 'placeholder' => 'Occupation'])}}
-                                                </div>
-                                                <div class="form-group col-md-12">
-                                                    {{Form::label('title', 'Address')}}
-                                                    {{Form::text('guardian_one_address', $applicant->applicantGuardian->guardian_one_address, ['class' => 'form-control', 'placeholder' => 'Address'])}}
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    {{Form::label('title', 'Mobile Phone')}}
-                                                    {{Form::text('guardian_one_mobile', $applicant->applicantGuardian->guardian_one_mobile, ['class' => 'form-control', 'placeholder' => 'Mobile'])}}
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    {{Form::label('title', 'Email')}}
-                                                    {{Form::text('guardian_one_email', $applicant->applicantGuardian->guardian_one_email, ['class' => 'form-control', 'placeholder' => 'Email'])}}
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="form-group col-md-6">
-                                                    {{Form::label('title', 'Name(Mother / Guardian II)')}}
-                                                    {{Form::text('guardian_two_name', $applicant->applicantGuardian->guardian_two_name, ['class' => 'form-control', 'placeholder' => 'Guardian Name'])}}
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    {{Form::label('title', 'Relationship')}}
-                                                    {{Form::text('guardian_two_relationship', $applicant->applicantGuardian->guardian_two_relationship, ['class' => 'form-control', 'placeholder' => 'Relationship'])}}
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    {{Form::label('title', 'IC / Passport')}}
-                                                    {{Form::text('guardian_two_ic', $applicant->applicantGuardian->guardian_two_ic, ['class' => 'form-control', 'placeholder' => 'Guardian IC / Passport'])}}
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    {{Form::label('title', 'Nationality')}}
-                                                    {{Form::text('guardian_two_nationality', $applicant->applicantGuardian->guardian_two_nationality, ['class' => 'form-control', 'placeholder' => 'Nationality'])}}
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    {{Form::label('title', 'Occupation')}}
-                                                    {{Form::text('guardian_two_occupation', $applicant->applicantGuardian->guardian_two_occupation, ['class' => 'form-control', 'placeholder' => 'Occupation'])}}
-                                                </div>
-                                                <div class="form-group col-md-12">
-                                                    {{Form::label('title', 'Address')}}
-                                                    {{Form::text('guardian_two_address', $applicant->applicantGuardian->guardian_two_address, ['class' => 'form-control', 'placeholder' => 'Address'])}}
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    {{Form::label('title', 'Mobile Phone')}}
-                                                    {{Form::text('guardian_two_mobile', $applicant->applicantGuardian->guardian_two_mobile, ['class' => 'form-control', 'placeholder' => 'Mobile'])}}
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    {{Form::label('title', 'Email')}}
-                                                    {{Form::text('guardian_two_email', $applicant->applicantGuardian->guardian_two_email, ['class' => 'form-control', 'placeholder' => 'Email'])}}
-                                                </div>
-                                            </div>
-                                            <button class="btn btn-primary">Update</button>
-                                            {!! Form::close() !!}
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <hr class="mt-2 mb-3">
-                                    <div class="card">
-                                        <div class="card-header">Emergency Contact</div>
-                                        <div class="card-body">
-                                            @if(isset($applicant->applicantEmergency))
-                                            {!! Form::open(['action' => ['ApplicantController@updateEmergency'], 'method' => 'POST'])!!}
-                                            <div class="row">
-                                                {{Form::hidden('id', $applicant->id)}}
-                                                <div class="form-group col-md-6">
-                                                    {{Form::label('title', 'Name')}}
-                                                    {{Form::text('emergency_name', $applicant->applicantEmergency->emergency_name, ['class' => 'form-control', 'placeholder' => 'Name'])}}
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    {{Form::label('title', 'Relationship')}}
-                                                    {{Form::text('emergency_relationship', $applicant->applicantEmergency->emergency_relationship, ['class' => 'form-control', 'placeholder' => 'Relationship'])}}
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    {{Form::label('title', 'Emergency Phone Number')}}
-                                                    {{Form::text('emergency_phone', $applicant->applicantEmergency->emergency_phone, ['class' => 'form-control', 'placeholder' => 'Emergency Number'])}}
-                                                </div>
-                                                <div class="form-group col-md-12">
-                                                    {{Form::label('title', 'Address')}}
-                                                    {{Form::text('emergency_address', $applicant->applicantEmergency->emergency_address, ['class' => 'form-control', 'placeholder' => 'Address'])}}
-                                                </div>
-                                            </div>
-                                            <button class="btn btn-primary">Update</button>
-                                            {!! Form::close() !!}
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane" id="academic" role="tabpanel">
-                                    <div class="card">
-                                        <div class="card-header">Academic Qualification</div>
-                                            <div class="card-body">
-                                                @if(count($spm)!=0)
-                                                <h5>SPM</h5>
-                                                    <table class="table table-bordered table-sm">
-                                                    <tr>
-                                                        <td>Subject Code</td>
-                                                        <td>Subject Name</td>
-                                                        <td>Grade</td>
-                                                    </tr>
-                                                    @foreach($spm as $spms)
-                                                        <tr>
-                                                            <td>{{$spms->subjects->first()->subject_code}}</td>
-                                                            <td>{{$spms->subjects->first()->subject_name}}</td>
-                                                            <td>{{$spms->grades->grade_code}}</td>
-                                                        </tr>
-                                                    @endforeach
-                                                    </table>
-                                                @endif
-                                                @if(count($stpm)!=0)
-                                                <h5>STPM</h5>
-                                                    <table class="table table-bordered table-sm">
-                                                    <tr>
-                                                        <td>Subject Code</td>
-                                                        <td>Subject Name</td>
-                                                        <td>Grade</td>
-                                                    </tr>
-                                                    @foreach($stpm as $stpms)
-                                                        <tr>
-                                                            <td>{{$stpms->subjects->first()->subject_code}}</td>
-                                                            <td>{{$stpms->subjects->first()->subject_name}}</td>
-                                                            <td>{{$stpms->grades->grade_code}}</td>
-                                                        </tr>
-                                                    @endforeach
-                                                    </table>
-                                                @endif
-                                                @if(count($stam)!=0)
-                                                <h5>STAM</h5>
-                                                    <table class="table table-bordered table-sm">
-                                                    <tr>
-                                                        <td>Subject Code</td>
-                                                        <td>Subject Name</td>
-                                                        <td>Grade</td>
-                                                    </tr>
-                                                    @foreach($stam as $stams)
-                                                        <tr>
-                                                            <td>{{$stams->subjects->first()->subject_code}}</td>
-                                                            <td>{{$stams->subjects->first()->subject_name}}</td>
-                                                            <td>{{$stams->grades->grade_code}}</td>
-                                                        </tr>
-                                                    @endforeach
-                                                    </table>
-                                                @endif
-                                                @if(count($uec)!=0)
-                                                <h5>UEC</h5>
-                                                    <table class="table table-bordered table-sm">
-                                                    <tr>
-                                                        <td>Subject Code</td>
-                                                        <td>Subject Name</td>
-                                                        <td>Grade</td>
-                                                    </tr>
-                                                    @foreach($uec as $uecs)
-                                                        <tr>
-                                                            <td>{{$uecs->subjects->first()->subject_code}}</td>
-                                                            <td>{{$uecs->subjects->first()->subject_name}}</td>
-                                                            <td>{{$uecs->grades->grade_code}}</td>
-                                                        </tr>
-                                                    @endforeach
-                                                    </table>
-                                                @endif
-                                                @if(count($alevel)!=0)
-                                                <h5>A Level</h5>
-                                                    <table class="table table-bordered table-sm">
-                                                    <tr>
-                                                        <td>Subject Code</td>
-                                                        <td>Subject Name</td>
-                                                        <td>Grade</td>
-                                                    </tr>
-                                                    @foreach($alevel as $alevels)
-                                                        <tr>
-                                                            <td>{{$alevels->subjects->first()->subject_code}}</td>
-                                                            <td>{{$alevels->subjects->first()->subject_name}}</td>
-                                                            <td>{{$alevels->grades->first()->grade_code}}</td>
-                                                        </tr>
-                                                    @endforeach
-                                                    </table>
-                                                @endif
-                                                @if(count($olevel)!=0)
-                                                <h5>O Level</h5>
-                                                    <table class="table table-bordered table-sm">
-                                                    <tr>
-                                                        <td>Subject Code</td>
-                                                        <td>Subject Name</td>
-                                                        <td>Grade</td>
-                                                    </tr>
-                                                    @foreach($olevel as $olevels)
-                                                        <tr>
-                                                            <td>{{$olevels->subjects->first()->subject_code}}</td>
-                                                            <td>{{$olevels->subjects->first()->subject_name}}</td>
-                                                            <td>{{$olevels->grades->grade_code}}</td>
-                                                        </tr>
-                                                    @endforeach
-                                                    </table>
-                                                @endif
-                                                @if(isset($matriculation))
-                                                <h5>Matriculation</h5>
-                                                    <table class="table table-bordered table-sm">
-                                                        <tr>
-                                                            <td>Matriculation</td>
-                                                            <td colspan="3">{{$matriculation->applicantAcademic->applicant_study}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Major</td>
-                                                            <td colspan="3">{{ $matriculation->applicantAcademic->applicant_major }}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Graduation Year</td>
-                                                            <td>{{ $matriculation->applicantAcademic->applicant_year }}</td>
-                                                            <td>CGPA</td>
-                                                            <td>{{$matriculation->cgpa}}</td>
-                                                        </tr>
-                                                    </table>
-                                                @endif
-                                                @if(isset($diploma))
-                                                <h5>Diploma</h5>
-                                                    <table class="table table-bordered table-sm">
-                                                    <tr>
-                                                        <td>University</td>
-                                                        <td colspan="3">{{ $diploma->applicantAcademic->applicant_study }}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Major</td>
-                                                        <td colspan="3">{{ $diploma->applicantAcademic->applicant_major }}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Graduation Year</td>
-                                                        <td>{{ $diploma->applicantAcademic->applicant_year }}</td>
-                                                        <td>CGPA</td>
-                                                        <td>{{ $diploma->cgpa }}</td>
-                                                    </tr>
-                                                    </table>
-                                                @endif
-                                                @if(isset($degree))
-                                                <h5>Degree</h5>
-                                                    <table class="table table-bordered table-sm">
-                                                    <tr>
-                                                        <td>University</td>
-                                                        <td colspan="3">{{$degree->applicantAcademic->applicant_study}}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Major</td>
-                                                        <td colspan="3">{{ $degree->applicantAcademic->applicant_major }}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Graduation Year</td>
-                                                        <td>{{ $degree->applicantAcademic->applicant_year }}</td>
-                                                        <td>CGPA</td>
-                                                        <td>{{$degree->cgpa}}</td>
-                                                    </tr>
-                                                    </table>
-                                                @endif
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane" id="bucket" role="tabpanel">
-                                    <div class="row">
-                                        <div class="col-md-12 grid-margin stretch-card">
-                                            <div class="col-md-12 grid-margin stretch-card">
-                                                <div class="card">
-                                                    <div class="card-header">Applicant Bucket Details</div>
-                                                        <div class="card-body">
-                                                        @if(count($applicantresult) > 0)
-                                                        <table class="table table-bordered table-sm">
-                                                            <tr>
-                                                                <th>Applicant Programme</th>
-                                                                <th>Applicant Major</th>
-                                                                <th>Result</th>
-                                                                <th>Action</th>
-                                                            </tr>
-                                                            <tr id={{$applicant->id}}>
-                                                                <td>
-                                                                    <p>{{ $applicant->applicant_programme }}</p>
-                                                                    <p>{{ $applicant->applicant_programme_2 }}</p>
-                                                                    <p>{{ $applicant->applicant_programme_3 }}</p>
-                                                                </td>
-                                                                <td>
-                                                                    <p>{{ $applicant->applicant_major }}</p>
-                                                                    <p>{{ $applicant->applicant_major_2 }}</p>
-                                                                    <p>{{ $applicant->applicant_major_3 }}</p>
-                                                                </td>
-                                                                <td>
-                                                                    @if($applicant['programme_status']== '1')
-                                                                        <p style="color: green">Accepted</p>
-                                                                    @else
-                                                                        <p style="color: red">Rejected</p>
-                                                                    @endif
-                                                                    @if($applicant['programme_status_2']== '1')
-                                                                        <p style="color: green">Accepted</p>
-                                                                    @else
-                                                                        <p style="color: red">Rejected</p>
-                                                                    @endif
-                                                                    @if($applicant['programme_status_3']== '1')
-                                                                        <p style="color: green">Accepted</p>
-                                                                    @else
-                                                                        <p style="color: red">Rejected</p>
-                                                                    @endif
-                                                                </td>
-                                                                <td>
-                                                                    @foreach($aapplicant as $aapplicant_all_app)
-                                                                    @if($aapplicant_all_app['programme_status'] == '1')
-                                                                    <select name="applicant_status" class="form-control" id="status_{{$aapplicant_all_app['applicant_programme']}}">
-                                                                        <option disabled selected>Please select</option>
-                                                                        <option value="3">Selected</option>
-                                                                        <option value="4">Selected for Interview</option>
-                                                                    </select>
-                                                                    @else
-                                                                    <input class="form-control" value="Not Selected" name="applicant_status" disabled>
-                                                                    @endif
-                                                                    @endforeach
-                                                                    @foreach($aapplicant as $aapplicant_all_app)
-                                                                    @if($aapplicant_all_app['programme_status_2'] == '1')
-                                                                    <select name="applicant_status" class="form-control" id="status_{{$aapplicant_all_app['applicant_programme_2']}}">
-                                                                        <option disabled selected>Please select</option>
-                                                                        <option value="3">Selected</option>
-                                                                        <option value="4">Selected for Interview</option>
-                                                                    </select>
-                                                                    @else
-                                                                    <input class="form-control" value="Not Selected" name="applicant_status" disabled>
-                                                                    @endif
-                                                                    @endforeach
-                                                                    @foreach($aapplicant as $aapplicant_all_app)
-                                                                    @if($aapplicant_all_app['programme_status_3'] == '1')
-                                                                    <select name="applicant_status_3" class="form-control" id="status_{{$aapplicant_all_app['applicant_programme_3']}}">
-                                                                        <option disabled selected>Please select</option>
-                                                                        <option value="3">Selected</option>
-                                                                        <option value="4">Selected for Interview</option>
-                                                                    </select>
-                                                                    @else
-                                                                    <input class="form-control" value="Not Selected" name="applicant_status" disabled>
-                                                                    @endif
-                                                                    @endforeach
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                        @endif
+                                            <hr class="mt-2 mb-3">
+                                            <div class="card">
+                                                <div class="card-header">Parent Information</div>
+                                                <div class="card-body">
+                                                    @if(isset($applicant->applicantGuardian))
+                                                    {!! Form::open(['action' => ['ApplicantController@updateGuardian'], 'method' => 'POST'])!!}
+                                                    {{Form::hidden('id', $applicant->id)}}
+                                                    <div class="row">
+                                                        <div class="form-group col-md-6">
+                                                            {{Form::label('title', 'Name(Father / Guardian I)')}}
+                                                            {{Form::text('guardian_one_name', $applicant->applicantGuardian->guardian_one_name, ['class' => 'form-control', 'placeholder' => 'Guardian Name'])}}
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            {{Form::label('title', 'Relationship')}}
+                                                            {{Form::text('guardian_one_relationship', $applicant->applicantGuardian->guardian_one_relationship, ['class' => 'form-control', 'placeholder' => 'Relationship'])}}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{Form::label('title', 'IC / Passport')}}
+                                                            {{Form::text('guardian_one_ic', $applicant->applicantGuardian->guardian_one_ic, ['class' => 'form-control', 'placeholder' => 'Guardian IC / Passport'])}}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{Form::label('title', 'Nationality')}}
+                                                            {{Form::text('guardian_one_nationality', $applicant->applicantGuardian->guardian_one_nationality, ['class' => 'form-control', 'placeholder' => 'Nationality'])}}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{Form::label('title', 'Occupation')}}
+                                                            {{Form::text('guardian_one_occupation', $applicant->applicantGuardian->guardian_one_occupation, ['class' => 'form-control', 'placeholder' => 'Occupation'])}}
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                            {{Form::label('title', 'Address')}}
+                                                            {{Form::text('guardian_one_address', $applicant->applicantGuardian->guardian_one_address, ['class' => 'form-control', 'placeholder' => 'Address'])}}
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            {{Form::label('title', 'Mobile Phone')}}
+                                                            {{Form::text('guardian_one_mobile', $applicant->applicantGuardian->guardian_one_mobile, ['class' => 'form-control', 'placeholder' => 'Mobile'])}}
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            {{Form::label('title', 'Email')}}
+                                                            {{Form::text('guardian_one_email', $applicant->applicantGuardian->guardian_one_email, ['class' => 'form-control', 'placeholder' => 'Email'])}}
+                                                        </div>
                                                     </div>
+                                                    <div class="row">
+                                                        <div class="form-group col-md-6">
+                                                            {{Form::label('title', 'Name(Mother / Guardian II)')}}
+                                                            {{Form::text('guardian_two_name', $applicant->applicantGuardian->guardian_two_name, ['class' => 'form-control', 'placeholder' => 'Guardian Name'])}}
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            {{Form::label('title', 'Relationship')}}
+                                                            {{Form::text('guardian_two_relationship', $applicant->applicantGuardian->guardian_two_relationship, ['class' => 'form-control', 'placeholder' => 'Relationship'])}}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{Form::label('title', 'IC / Passport')}}
+                                                            {{Form::text('guardian_two_ic', $applicant->applicantGuardian->guardian_two_ic, ['class' => 'form-control', 'placeholder' => 'Guardian IC / Passport'])}}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{Form::label('title', 'Nationality')}}
+                                                            {{Form::text('guardian_two_nationality', $applicant->applicantGuardian->guardian_two_nationality, ['class' => 'form-control', 'placeholder' => 'Nationality'])}}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{Form::label('title', 'Occupation')}}
+                                                            {{Form::text('guardian_two_occupation', $applicant->applicantGuardian->guardian_two_occupation, ['class' => 'form-control', 'placeholder' => 'Occupation'])}}
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                            {{Form::label('title', 'Address')}}
+                                                            {{Form::text('guardian_two_address', $applicant->applicantGuardian->guardian_two_address, ['class' => 'form-control', 'placeholder' => 'Address'])}}
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            {{Form::label('title', 'Mobile Phone')}}
+                                                            {{Form::text('guardian_two_mobile', $applicant->applicantGuardian->guardian_two_mobile, ['class' => 'form-control', 'placeholder' => 'Mobile'])}}
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            {{Form::label('title', 'Email')}}
+                                                            {{Form::text('guardian_two_email', $applicant->applicantGuardian->guardian_two_email, ['class' => 'form-control', 'placeholder' => 'Email'])}}
+                                                        </div>
+                                                    </div>
+                                                    @role('executive')
+                                                    <button class="btn btn-primary">Update</button>
+                                                    @endrole
+                                                    {!! Form::close() !!}
+                                                    @endif
                                                 </div>
-                                                <hr class="mt-2 mb-3">
+                                            </div>
+                                            <hr class="mt-2 mb-3">
+                                            <div class="card">
+                                                <div class="card-header">Emergency Contact</div>
+                                                <div class="card-body">
+                                                    @if(isset($applicant->applicantEmergency))
+                                                    {!! Form::open(['action' => ['ApplicantController@updateEmergency'], 'method' => 'POST'])!!}
+                                                    <div class="row">
+                                                        {{Form::hidden('id', $applicant->id)}}
+                                                        <div class="form-group col-md-6">
+                                                            {{Form::label('title', 'Name')}}
+                                                            {{Form::text('emergency_name', $applicant->applicantEmergency->emergency_name, ['class' => 'form-control', 'placeholder' => 'Name'])}}
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            {{Form::label('title', 'Relationship')}}
+                                                            {{Form::text('emergency_relationship', $applicant->applicantEmergency->emergency_relationship, ['class' => 'form-control', 'placeholder' => 'Relationship'])}}
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            {{Form::label('title', 'Emergency Phone Number')}}
+                                                            {{Form::text('emergency_phone', $applicant->applicantEmergency->emergency_phone, ['class' => 'form-control', 'placeholder' => 'Emergency Number'])}}
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                            {{Form::label('title', 'Address')}}
+                                                            {{Form::text('emergency_address', $applicant->applicantEmergency->emergency_address, ['class' => 'form-control', 'placeholder' => 'Address'])}}
+                                                        </div>
+                                                    </div>
+                                                    @role('executive')
+                                                    <button class="btn btn-primary">Update</button>
+                                                    @endrole
+                                                    {!! Form::close() !!}
+                                                    @endif
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
                             </div>
                         </div>
                     </div>

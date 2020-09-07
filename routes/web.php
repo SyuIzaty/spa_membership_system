@@ -13,13 +13,13 @@
 
 Route::get('/', function () {
 
-   return redirect('student');
+   return view('welcome');
 });
 
 
 
 
-// Auth::routes();
+Auth::routes();
 Route::resource('applicant','ApplicantController');
 Route::get('/applicant','ApplicantController@create');
 
