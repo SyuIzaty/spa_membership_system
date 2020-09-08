@@ -93,4 +93,9 @@ class Applicant extends Model
     {
         return $this->hasOne('App\ApplicantEmergency','applicant_id','id');
     }
+
+    public function country()
+    {
+        return $this->hasOne('App\Country','country_code', 'applicant_nationality');
+    }
 }

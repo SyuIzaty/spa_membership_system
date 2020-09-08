@@ -16,6 +16,7 @@ use App\Religion;
 use App\Marital;
 use App\Gender;
 use App\Race;
+use App\State;
 use App\Qualification;
 use App\Subject;
 use App\ApplicantEmergency;
@@ -430,6 +431,7 @@ class ApplicantController extends Controller
         $religion = Religion::all();
         $race = Race::all();
         $gender = Gender::all();
+        $state = State::all();
 
         foreach ($applicants as $key => $applicantt)
         {
@@ -496,7 +498,7 @@ class ApplicantController extends Controller
             }
 
             $aapplicant = $dataappl;
-        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace','applicantresult','total_point', 'programmestatus', 'aapplicant','country','marital','religion','race','gender'));
+        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace','applicantresult','total_point', 'programmestatus', 'aapplicant','country','marital','religion','race','gender','state'));
     }
 
     public function updateApplicant(Request $request)

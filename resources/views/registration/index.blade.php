@@ -1,0 +1,107 @@
+@extends('layouts.applicant')
+@section('content')
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <div class="card">
+            <div class="panel-hdr">
+                <h2>Registration</h2>
+            </div>
+            <div class="tab-content">
+                <div class="tab-pane active" id="personal" role="tabpanel">
+                    <div class="card">
+                        <div class="card-body">
+                            {!! Form::open(['action' => 'RegistrationController@store', 'method' => 'POST']) !!}
+                            <div class="row">
+                                <div class="form-group col-md-8">
+                                    {{Form::label('title', 'Name')}}
+                                    {{Form::text('applicant_name', '', ['class' => 'form-control', 'placeholder' => 'Applicant Name'])}}
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    {{ Form::label('title', 'IC Number') }}
+                                    {{ Form::text('applicant_ic', '', ['class' => 'form-control', 'placeholder' => 'Applicant IC Number']) }}
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    {{ Form::label('title', 'Phone Number') }}
+                                    {{ Form::text('applicant_phone', '', ['class' => 'form-control', 'placeholder' => 'Applicant Phone']) }}
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    {{ Form::label('title', 'Email') }}
+                                    {{ Form::email('applicant_email', '', ['class' => 'form-control', 'placeholder' => 'Applicant Phone']) }}
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    {{ Form::label('title', 'Nationality') }}
+                                    <select class="form-control" name="applicant_nationality" id="applicant_nationality" >
+                                        @foreach($country as $countries)
+                                            <option value="{{$countries->country_code}}">{{$countries->country_name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-12">
+                                    <h4>Preffered Programme</h4>
+                                </div>
+                                <div class="col-md-8 form-group">
+                                    {{ Form::label('title', '1st Preferred Programme (Required)') }}
+                                    <select class="form-control" name="applicant_programme" >
+                                        <option value="">-- Select Programme --</option>
+                                        @foreach($programme as $programmes)
+                                            <option value="{{$programmes->programme_code}}">{{$programmes->programme_name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    {{ Form::label('Major', 'Major') }}
+                                    <select class="form-control" name="applicant_major" >
+                                        <option value="">-- Select Major --</option>
+                                        @foreach($major as $majors)
+                                            <option value="{{$majors->id}}">{{$majors->major_name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-8 form-group">
+                                    {{ Form::label('title', '2nd Preferred Programme (Optional)') }}
+                                    <select class="form-control" name="applicant_programme_2" >
+                                        <option value="">-- Select Programme --</option>
+                                        @foreach($programme as $programmes)
+                                            <option value="{{$programmes->programme_code}}">{{$programmes->programme_name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    {{ Form::label('Major', 'Major') }}
+                                    <select class="form-control" name="applicant_major_2" >
+                                        <option value="">-- Select Major --</option>
+                                        @foreach($major as $majors)
+                                            <option value="{{$majors->id}}">{{$majors->major_name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-8 form-group">
+                                    {{ Form::label('title', '3rd Preferred Programme (Optional)') }}
+                                    <select class="form-control" name="applicant_programme_3" >
+                                        <option value="">-- Select Programme --</option>
+                                        @foreach($programme as $programmes)
+                                            <option value="{{$programmes->programme_code}}">{{$programmes->programme_name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    {{ Form::label('Major', 'Major') }}
+                                    <select class="form-control" name="applicant_major_3" >
+                                        @foreach($major as $majors)
+                                            <option value="">-- Select Major --</option>
+                                            <option value="{{$majors->id}}">{{$majors->major_name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary">Submit</button>
+                            {!! Form::close() !!}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection

@@ -560,6 +560,11 @@
                                                         </div>
                                                         <div class="col-md-3 form-group">
                                                             {{ Form::label('title', 'State') }}
+                                                            <select class="form-control" name="applicant_state">
+                                                                @foreach ($state as $states)
+                                                                    <option value="{{ $states->state_code }}" {{ $applicant->applicantContactInfo->applicant_state == $states->state_code ? 'selected="selected"' : ''}}>{{ $states->state_name }}</option>
+                                                                @endforeach
+                                                            </select>
                                                             {{ Form::text('applicant_state', $applicant->applicantContactInfo->applicant_state, ['class' => 'form-control', 'placeholder' => 'State']) }}
                                                         </div>
                                                         <div class="col-md-3 form-group">
@@ -614,10 +619,6 @@
                                                             {{Form::label('title', 'Mobile Phone')}}
                                                             {{Form::text('guardian_one_mobile', $applicant->applicantGuardian->guardian_one_mobile, ['class' => 'form-control', 'placeholder' => 'Mobile'])}}
                                                         </div>
-                                                        <div class="form-group col-md-6">
-                                                            {{Form::label('title', 'Email')}}
-                                                            {{Form::text('guardian_one_email', $applicant->applicantGuardian->guardian_one_email, ['class' => 'form-control', 'placeholder' => 'Email'])}}
-                                                        </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="form-group col-md-6">
@@ -647,10 +648,6 @@
                                                         <div class="form-group col-md-6">
                                                             {{Form::label('title', 'Mobile Phone')}}
                                                             {{Form::text('guardian_two_mobile', $applicant->applicantGuardian->guardian_two_mobile, ['class' => 'form-control', 'placeholder' => 'Mobile'])}}
-                                                        </div>
-                                                        <div class="form-group col-md-6">
-                                                            {{Form::label('title', 'Email')}}
-                                                            {{Form::text('guardian_two_email', $applicant->applicantGuardian->guardian_two_email, ['class' => 'form-control', 'placeholder' => 'Email'])}}
                                                         </div>
                                                     </div>
                                                     @role('executive')

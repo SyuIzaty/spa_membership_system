@@ -79,6 +79,9 @@ Route::post('/data_acceptedapplicant', 'ApplicantController@data_acceptedapplica
 
 Route::get('testCollection','ApplicantController@testCollection');
 
+//APPLICANT REGISTRATION
+Route::resource('/registration','RegistrationController');
+
 //INTAKE
 Route::resource('/intake','IntakeController');
 Route::post('/data-allintake', 'IntakeController@data_allintake');
