@@ -195,9 +195,11 @@ class IntakeController extends Controller
 
     public function letter(Request $request)
     {
-        $detail = ApplicantStatus::where('applicant_id',$request->applicant_id)->with(['applicant','major','programme'])->first();
-        $intakes = IntakeDetail::where('status', '1')->where('intake_code', $request->intake_id)->where('intake_programme', $detail->applicant_programme)
-            ->first();
+        $details = ApplicantStatus::where('applicant_id',$request->applicant_id)->with(['applicant','major','programme'])->get();
+        foreach($details as $detail){
+            $intakes = IntakeDetail::where('intake_code', $detail->applicant->intake_id)->where('intake_programme',$detail->applicant_programme)
+                ->where('status','1')->with(['intakes'])->first();
+        }
 
         $pdf = PDF::loadView('intake.pdf', compact('detail','intakes'));
         return $pdf->stream('Offer Letter_' . $request->applicant_name . '.pdf');

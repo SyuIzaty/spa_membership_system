@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Country extends Model
+class Race extends Model
 {
-    protected $primaryKey = 'country_code';
+    protected $primaryKey = 'race_code';
 
     public $incrementing = false;
     protected $keyType = 'string';

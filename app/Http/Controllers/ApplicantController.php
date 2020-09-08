@@ -11,13 +11,20 @@ use App\ApplicantAcademic;
 use App\Grades;
 use App\RequirementSubject;
 use App\Programme;
-
+use App\Country;
+use App\Religion;
+use App\Marital;
+use App\Gender;
+use App\Race;
 use App\Qualification;
 use App\Subject;
 use App\ApplicantEmergency;
 use App\ApplicantGuardian;
 use App\RequirementStatus;
+use App\IntakeDetail;
 use DB;
+use Illuminate\Support\Facades\Mail;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class ApplicantController extends Controller
 {
@@ -418,6 +425,12 @@ class ApplicantController extends Controller
         $applicantAcademic = ApplicantAcademic::where('applicant_id',$id)->get();
 
         $applicants = Applicant::where('id',$id)->get()->toArray();
+        $country = Country::all();
+        $marital = Marital::all();
+        $religion = Religion::all();
+        $race = Race::all();
+        $gender = Gender::all();
+
         foreach ($applicants as $key => $applicantt)
         {
             $total_point = 0;
@@ -463,11 +476,14 @@ class ApplicantController extends Controller
                 $query->where('type','9');
             }])->first();
 
+            $sace = ApplicantResult::where('applicant_id',$id)->where('type','10')->first();
+
+            $muet = ApplicantResult::where('applicant_id',$id)->where('type','11')->first();
+
             $matriculation = ApplicantResult::where('applicant_id',$id)->where('type','12')
             ->with(['applicantAcademic'=>function($query){
                 $query->where('type','12');
             }])->first();
-
 
             $applicant2 = Applicant::where('id',$id)->get()->toArray();
             foreach($applicant2 as $applicantstat)
@@ -480,7 +496,7 @@ class ApplicantController extends Controller
             }
 
             $aapplicant = $dataappl;
-        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','applicantresult','total_point', 'programmestatus', 'aapplicant'));
+        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace','applicantresult','total_point', 'programmestatus', 'aapplicant','country','marital','religion','race','gender'));
     }
 
     public function updateApplicant(Request $request)
@@ -713,7 +729,7 @@ class ApplicantController extends Controller
 
            ->addColumn('action', function ($applicants) {
                return '<a href="/applicant/'.$applicants->applicant->id.'" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Detail</a>
-               <a href="'.action('IntakeController@letter', ['applicant_id' => $applicants->applicant->id, 'intake_id' => $applicants->applicant->intake_id]).'" class="btn btn-sm btn-info">Offer Letter</a>
+               <a href="'.action('IntakeController@letter', ['applicant_id' => $applicants->applicant->id]).'" class="btn btn-sm btn-info">Offer Letter</a>
                <a href="'.action('IntakeController@sendEmail', ['applicant_id' => $applicants->applicant->id, 'intake_id' => $applicants->applicant->intake_id]).'" class="btn btn-sm btn-primary">Send Email</a>
                ';
            })
@@ -1021,7 +1037,7 @@ class ApplicantController extends Controller
         $count_chem = $app_spm->where('subject',4541)->count();
         $count_phy = $app_spm->where('subject',4531)->count();
         $count_sci = $app_spm->where('subject',1511)->count();
-        if($count_math == 1 && ($count_bio == 1 || $count_chem == 1 || $count_phy == 1 || $count_sci == 1) && $spm >= 5)
+        if(($count_math == 1 && ($count_bio == 1 || $count_chem == 1 || $count_phy == 1 || $count_sci == 1)) || ($count_math == 1) && $spm >= 5)
         {
             $status_spm = true;
         }else{
@@ -1343,9 +1359,10 @@ class ApplicantController extends Controller
         {
             $programme_code = 'DIA';
             $this->accepted($applicantt, $programme_code);
+        }else{
+            $programme_code = 'DIA';
+            $this->rejected($applicantt, $programme_code);
         }
-        $programme_code = 'DIA';
-        $this->rejected($applicantt, $programme_code);
     }
 
     public function dif($applicantt) //Diploma in Islamic Finance
@@ -1618,8 +1635,30 @@ class ApplicantController extends Controller
 
         ApplicantStatus::create($data);
 
+        $this->sendEmail($request->applicant_id);
+
         return response()->json(['success'=>true,'status'=>'success','message'=>'Data has been saved to datatbase','Data'=>$data]);
     }
 
+    public function sendEmail($applicants_id)
+    {
+        $details = ApplicantStatus::where('applicant_id',$applicants_id)->where('applicant_status','3')->with(['applicant','programme','major'])->first();
+        foreach($details as $detail)
+        {
+            $intakes = IntakeDetail::where('status', '1')->where('intake_code', $detail->applicant->intake_id)->where('intake_programme', $detail->applicant_programme)
+            ->first();
+        }
+        $report = PDF::loadView('intake.pdf', compact('detail', 'intakes'));
+        $data = [
+            'receiver_name' => $details->applicant->applicant_name,
+            'details' => 'This offer letter is appended with this email. Please refer to the attachment for your registration instructions.',
+        ];
+
+        Mail::send('intake.offer-letter', $data, function ($message) use ($details, $report) {
+            $message->subject('Congratulations, ' . $details->applicant->applicant_name);
+            $message->to(!empty($details->applicant->applicant_email) ? $details->applicant->applicant_email : 'jane-doe@email.com');
+            $message->attachData($report->output(), 'Offer_Letter_' . $details->applicant->applicant_name . '.pdf');
+        });
+    }
 
 }

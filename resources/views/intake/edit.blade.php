@@ -154,8 +154,8 @@
                             {{Form::label('title', 'Intake Venue')}}
                             {{Form::text('intake_venue', '', ['class' => 'form-control', 'placeholder' => 'Intake Venue', 'required'])}}
                         </div>
-                        <div class="pull-right">
-                            {{Form::submit('Save', ['class' => 'btn btn-primary'])}}
+                        <div class="footer">
+                            <button class="btn btn-primary pull-right">Save</button>
                         </div>
                         {!! Form::close() !!}
                     </div>
