@@ -4,8 +4,8 @@
     <div class="col-md-1"></div>
     <div class="col-md-10">
         <div class="card">
-            <div class="panel-hdr">
-                <h2>End Registration</h2>
+            <div class="card-body">
+                <p>Congratulation you application have been submited</p>
             </div>
         </div>
     </div>

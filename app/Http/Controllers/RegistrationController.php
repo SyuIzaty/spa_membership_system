@@ -9,9 +9,16 @@ use App\Programme;
 use App\Major;
 use App\State;
 use App\Gender;
+use App\Marital;
+use App\Race;
+use App\Religion;
 use App\ApplicantContact;
 use App\ApplicantEmergency;
 use App\ApplicantGuardian;
+use App\Qualification;
+use App\Subject;
+use App\Grades;
+use App\ApplicantResult;
 
 class RegistrationController extends Controller
 {
@@ -85,11 +92,51 @@ class RegistrationController extends Controller
      */
     public function edit($id)
     {
-        $applicant = Applicant::where('id', $id)->with(['applicantContactInfo'])->first();
+        $applicant = Applicant::where('id', $id)->with(['applicantContactInfo','applicantEmergency'])->first();
         $country = Country::all();
         $gender = Gender::all();
         $state = State::all();
-        return view('registration.edit', compact('applicant','country','gender','state'));
+        $marital = Marital::all();
+        $race = Race::all();
+        $religion = Religion::all();
+        $subjectSpmArr = $subjectSpmAGradeArr = $subjectStamArr = $subjectStamAGradeArr = [];
+        $qualification = Qualification::all();
+        $subjectspm = Subject::where('qualification_type', '1')->get();
+        $gradeSpm = Grades::where('grade_type', '1')->get();
+        foreach ($subjectspm as $subspm) {
+            $subjectSpmArr[] = [
+                $subspm->subject_code,
+                $subspm->subject_name
+            ];
+        }
+        foreach ($gradeSpm as $rspm) {
+            $subjectSpmAGradeArr[] = [
+                $rspm->id,
+                $rspm->grade_code
+            ];
+        }
+
+        $subjectstam = Subject::where('qualification_type', '3')->get();
+        $gradeStam = Grades::where('grade_type', '3')->get();
+        foreach ($subjectstam as $substam) {
+            $subjectStamArr[] = [
+                $substam->subject_code,
+                $substam->subject_name
+            ];
+        }
+        foreach ($gradeStam as $rstam) {
+            $subjectStamAGradeArr[] = [
+                $rstam->id,
+                $rstam->grade_code
+            ];
+        }
+
+
+        $subjectSpmStr = json_encode($subjectSpmArr);
+        $gradeSpmStr = json_encode($subjectSpmAGradeArr);
+        $subjectStamStr = json_encode($subjectStamArr);
+        $gradeStamStr = json_encode($subjectStamAGradeArr);
+        return view('registration.edit', compact('applicant','country','gender','state','marital','race','religion','qualification', 'subjectspm', 'gradeSpm', 'subjectSpmStr', 'gradeSpmStr', 'subjectstam', 'gradeStam', 'subjectStamStr', 'gradeStamStr'));
     }
 
     /**
@@ -108,6 +155,9 @@ class RegistrationController extends Controller
             'applicant_email' => $request->applicant_email,
             'applicant_nationality' => $request->applicant_nationality,
             'applicant_gender' => $request->applicant_gender,
+            'applicant_marital' => $request->applicant_marital,
+            'applicant_race' => $request->applicant_race,
+            'applicant_religion' => $request->applicant_religion,
             'applicant_dob' => $request->applicant_dob,
             'applicant_phone' => $request->applicant_phone,
         ]);
@@ -121,9 +171,82 @@ class RegistrationController extends Controller
             'applicant_state' => $request->applicant_state,
             'applicant_country' => $request->applicant_country,
         ]);
+
         ApplicantContact::create($request->all());
         ApplicantEmergency::create($request->all());
         ApplicantGuardian::create($request->all());
+        $result = [];
+        if (isset($request->bachelor_cgpa)) {
+            $result[] = [
+                'applicant_id' => $id,
+                'type' => $request->bachelor_type,
+                'cgpa' => $request->bachelor_cgpa,
+            ];
+        }
+
+        if (isset($request->diploma_cgpa)) {
+            $result[] = [
+                'applicant_id' => $id,
+                'type' => $request->diploma_type,
+                'cgpa' => $request->diploma_cgpa,
+            ];
+        }
+
+        if (isset($request->muet_cgpa)) {
+            $result[] = [
+                'applicant_id' => $id,
+                'type' => $request->muet_type,
+                'cgpa' => $request->muet_cgpa,
+            ];
+        }
+
+        if (isset($request->matriculation_cgpa)) {
+            $result[] = [
+                'applicant_id' => $id,
+                'type' => $request->matriculation_type,
+                'cgpa' => $request->matriculation_cgpa,
+            ];
+        }
+
+        if (isset($request->foundation_cgpa)) {
+            $result[] = [
+                'applicant_id' => $id,
+                'type' => $request->foundation_type,
+                'cgpa' => $request->foundation_cgpa,
+            ];
+        }
+
+        if (isset($request->spm_subject) && isset($request->spm_grade_id)) {
+            if (count($request->spm_subject) > 0 && count($request->spm_grade_id)) {
+                for ($i = 0; $i < count($request->spm_subject); $i++) {
+                    $result[] = [
+                        'applicant_id' => $id,
+                        'type' => $request->spm_type,
+                        'subject' => $request->spm_subject[$i],
+                        'grade_id' => $request->spm_grade_id[$i],
+                    ];
+                }
+            }
+        }
+
+        if (isset($request->stam_subject) && isset($request->stam_grade_id)) {
+            if (count($request->stam_subject) > 0 && count($request->stam_grade_id)) {
+                for ($i = 0; $i < count($request->stam_subject); $i++) {
+                    $result[] = [
+                        'applicant_id' => $id,
+                        'type' => $request->stam_type,
+                        'subject' => $request->stam_subject[$i],
+                        'grade_id' => $request->stam_grade_id[$i],
+                    ];
+                }
+            }
+        }
+        if (count($result) > 0) {
+            foreach ($result as $row) {
+                ApplicantResult::create($row);
+            }
+        }
+
         return view('registration.printReg');
     }
 

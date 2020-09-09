@@ -17,10 +17,14 @@
                 <li class="nav-item">
                     <a data-toggle="tab" class="nav-link" href="#emergency" role="tab">Emergency Contact</a>
                 </li>
+                <li class="nav-item">
+                    <a data-toggle="tab" class="nav-link" href="#academic" role="tab">Academic Qualification & Subject</a>
+                </li>
             </ul>
+            {!! Form::model($applicant, ['method' => 'PATCH', 'route' => ['registration.update', $applicant->id]]) !!}
+
             <div class="tab-content">
                 <div class="tab-pane active" id="personal" role="tabpanel">
-                    {!! Form::model($applicant, ['method' => 'PATCH', 'route' => ['registration.update', $applicant->id]]) !!}
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
@@ -71,6 +75,30 @@
                                 <div class="col-md-4 form-group">
                                     {{ Form::label('title', 'Date of Birth') }}
                                     {{ Form::date('applicant_dob', '', ['class' => 'form-control']) }}
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    {{ Form::label('title', 'Marital Status') }}
+                                    <select class="form-control" name="applicant_marital">
+                                        @foreach ($marital as $maritals)
+                                            <option value="{{ $maritals->marital_code }}" {{ $applicant->applicant_marital == $maritals->marital_code ? 'selected="Selected"' : ''}}>{{ $maritals->marital_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    {{ Form::label('title', 'Race') }}
+                                    <select class="form-control" name="applicant_race">
+                                        @foreach ($race as $races)
+                                            <option value="{{ $races->race_code }}" {{ $applicant->applicant_race == $races->race_code ? 'selected="Selected"' : ''}}>{{ $races->race_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    {{ Form::label('title', 'Religion') }}
+                                    <select class="form-control" name="applicant_religion">
+                                        @foreach ($religion as $religions)
+                                            <option value="{{ $religions->religion_code }}" {{ $applicant->applicant_religion == $religions->religion_code ? 'selected="Selected"' : ''}}>{{ $religions->religion_name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div class="col-md-12 form-group">
                                     {{ Form::label('title', 'Address Line 1') }}
@@ -212,7 +240,7 @@
                                 {{Form::hidden('applicant_id', $applicant->id)}}
                                 <div class="form-group col-md-12">
                                     {{Form::label('title', 'Emergency Name')}}
-                                    {{Form::text('emergency_name', '', ['class' => 'form-control', 'placeholder' => 'Emergency Name'])}}
+                                    {{Form::text('emergency_name', $applicant->applicantEmergency->first()->applicant_name, ['class' => 'form-control', 'placeholder' => 'Emergency Name'])}}
                                 </div>
                                 <div class="col-md-6 form-group">
                                     {{ Form::label('title', 'Emergency Relation') }}
@@ -228,30 +256,48 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-footer">
-                        <button class="btn btn-primary">Submit</button>
-                         {!! Form::close() !!}
+                        <div class="card-footer"> <a data-toggle="tab" class="nav-link" href="#academic" role="tab">Next</a></div>
                     </div>
                 </div>
-                {{-- <div class="tab-pane" id="academic" role="tabpanel">
+                <div class="tab-pane" id="academic" role="tabpanel">
                     <div class="card">
                         <div class="card-body">
-                            <div class="row">
-                                <div class="form-group col-md-6">
-                                    {{Form::label('title', 'Applicant Name')}}
-                                    {{Form::text('applicant_name', $applicant->applicant_name, ['class' => 'form-control', 'placeholder' => 'Applicant Name', 'readonly' => 'true'])}}
-                                </div>
+                            <div class="row qualification-row">
                                 <div class="col-md-6 form-group">
-                                    {{ Form::label('title', 'Applicant IC Number') }}
-                                    {{ Form::text('applicant_ic', $applicant->applicant_ic, ['class' => 'form-control', 'placeholder' => 'Applicant IC Number', 'readonly' => 'true']) }}
+                                    {{ Form::label('title', 'Qualification Type') }}
+                                    <select class="form-control qualification" id="qualification">
+                                        @foreach($qualification as $qualifications)
+                                        <option value="{{ $qualifications->id }}">{{ $qualifications->qualification_code }}</option>
+                                        @endforeach
+                                    </select>
+                                    <button class="btn btn-primary tambah-qualification">Add Qualification & Subject</button>
+                                </div>
+                            </div>
+                            <div class="row mt-2 mb-3">
+                                <hr>
+                                <div class="col-12">
+                                    <div class="content"></div>
                                 </div>
                             </div>
                         </div>
+                        <div class="card-footer">
+                            <button class="btn btn-primary">Submit</button>
+
+                        </div>
                     </div>
-                </div> --}}
+                </div>
             </div>
+            {!! Form::close() !!}
         </div>
     </div>
 </div>
+@endsection
+@section('script')
+<script>
+    var listSPM = {!! $subjectSpmStr !!};
+    var listGradeSPM = {!! $gradeSpmStr !!};
+    var listSTAM = {!! $subjectStamStr !!};
+    var listGradeSTAM = {!! $gradeStamStr !!};
+</script>
+<script src="{{ asset('/js/applicant.js')}}" type="text/javascript"></script>
 @endsection
