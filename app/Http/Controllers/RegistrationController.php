@@ -19,6 +19,7 @@ use App\Qualification;
 use App\Subject;
 use App\Grades;
 use App\ApplicantResult;
+use App\Http\Requests\StoreApplicantRequest;
 
 class RegistrationController extends Controller
 {
@@ -52,7 +53,7 @@ class RegistrationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreApplicantRequest $request)
     {
         $detail = Applicant::create([
             'applicant_name' => $request->applicant_name,
@@ -68,7 +69,7 @@ class RegistrationController extends Controller
             'applicant_major_3' => $request->applicant_major_3,
         ]);
 
-        $applicant_detail = Applicant::where('applicant_ic',$request->applicant_ic)->with(['country','programme','programmeTwo','programmeThree'])->first();
+        $applicant_detail = Applicant::where('applicant_ic',$request->applicant_ic)->with(['country','programme','programmeTwo','programmeThree','majorOne','majorTwo','majorThree'])->first();
 
         return view('registration.printRef', compact('detail','applicant_detail'));
     }
@@ -146,6 +147,45 @@ class RegistrationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    public function validateApplicantContact()
+    {
+        return request()->validate([
+            'applicant_id' => 'required',
+            'applicant_address_1' => 'required|min:1|max:100',
+            'applicant_address_2' => 'max:100',
+            'applicant_poscode' => 'max:100',
+            'applicant_city' => 'required|min:1|max:100',
+            'applicant_state' => 'required|min:1|max:100',
+            'applicant_country' => 'required|min:1|max:100',
+        ]);
+    }
+
+    public function validateApplicantGuardian()
+    {
+        return request()->validate([
+            'applicant_id' => 'required',
+            'guardian_one_name' => 'required|min:1|max:100',
+            'guardian_one_relationship' => 'required|min:1|max:100',
+            'guardian_one_mobile' => 'required|min:1|max:100',
+            'guardian_one_address' => 'required|min:1|max:100',
+            'guardian_two_name' => 'required|min:1|max:100',
+            'guardian_two_relationship' => 'required|min:1|max:100',
+            'guardian_two_mobile' => 'required|min:1|max:100',
+            'guardian_two_address' => 'max:100',
+        ]);
+    }
+
+    public function validateApplicantEmergency()
+    {
+        return request()->validate([
+            'applicant_id' => 'required',
+            'emergency_name' => 'required|min:1|max:100',
+            'emergency_relationship' => 'required|min:1|max:100',
+            'emergency_phone' => 'required|min:1|max:100',
+            'emergency_address' => 'max:100',
+        ]);
+    }
     public function update(Request $request, $id)
     {
         Applicant::find($id)->update([
@@ -162,19 +202,11 @@ class RegistrationController extends Controller
             'applicant_phone' => $request->applicant_phone,
         ]);
 
-        ApplicantContact::create([
-            'applicant_id' => $id,
-            'applicant_address_1' => $request->applicant_address_1,
-            'applicant_address_2' => $request->applicant_address_2,
-            'applicant_poscode' => $request->applicant_poscode,
-            'applicant_city' => $request->applicant_city,
-            'applicant_state' => $request->applicant_state,
-            'applicant_country' => $request->applicant_country,
-        ]);
+        ApplicantContact::create($this->validateApplicantContact());
+        ApplicantGuardian::create($this->validateApplicantGuardian());
+        ApplicantEmergency::create($this->validateApplicantEmergency());
 
-        ApplicantContact::create($request->all());
-        ApplicantEmergency::create($request->all());
-        ApplicantGuardian::create($request->all());
+
         $result = [];
         if (isset($request->bachelor_cgpa)) {
             $result[] = [

@@ -39,30 +39,49 @@
                             </div>
                             <hr class="mt-2 mb-3">
                             <div class="col-md-12"><h4>Personal Profile</h4></div>
+                            <div class="alert alert-danger" role="alert">
+                                * Mandatory Field
+                              </div>
                             <div class="row">
                                 <div class="form-group col-md-8">
-                                    {{Form::label('title', 'Applicant Name')}}
+                                    {{Form::label('title', 'Applicant Name')}} *
+                                    {{ Form::hidden('applicant_id',$applicant->id) }}
                                     {{Form::text('applicant_name', $applicant->applicant_name, ['class' => 'form-control', 'placeholder' => 'Applicant Name'])}}
+                                    @error('applicant_name')
+                                        <p style="color: red">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="col-md-4 form-group">
-                                    {{ Form::label('title', 'Applicant IC Number') }}
+                                    {{ Form::label('title', 'Applicant IC Number') }} *
                                     {{ Form::text('applicant_ic', $applicant->applicant_ic, ['class' => 'form-control', 'placeholder' => 'Applicant IC Number', 'readonly' => 'true']) }}
+                                    @error('applicant_ic')
+                                        <p style="color: red">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="form-group col-md-8">
-                                    {{Form::label('title', 'Applicant Email')}}
+                                    {{Form::label('title', 'Applicant Email')}} *
                                     {{Form::email('applicant_email', $applicant->applicant_email, ['class' => 'form-control', 'placeholder' => 'Applicant Name'])}}
+                                    @error('applicant_email')
+                                        <p style="color: red">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="col-md-4 form-group">
-                                    {{ Form::label('title', 'Applicant Phone Number') }}
+                                    {{ Form::label('title', 'Applicant Phone Number') }} *
                                     {{ Form::text('applicant_phone', $applicant->applicant_phone, ['class' => 'form-control', 'placeholder' => 'Applicant IC Number']) }}
+                                    @error('applicant_phone')
+                                        <p style="color: red">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="form-group col-md-4">
-                                    {{Form::label('title', 'Nationality')}}
+                                    {{Form::label('title', 'Nationality')}} *
                                     <select class="form-control" name="applicant_nationality">
                                         @foreach($country as $countries)
                                             <option value="{{ $countries->country_code }}" {{ $applicant->applicant_nationality == $countries->country_code ? 'selected="selected"' : ''}}>{{ $countries->country_name }}</option>
                                         @endforeach
                                     </select>
+                                    @error('applicant_phone')
+                                        <p style="color: red">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="form-group col-md-4">
                                     {{ Form::label('title', 'Gender') }}
@@ -101,9 +120,12 @@
                                     </select>
                                 </div>
                                 <div class="col-md-12 form-group">
-                                    {{ Form::label('title', 'Address Line 1') }}
+                                    {{ Form::label('title', 'Address Line 1') }} *
                                     {{ Form::text('applicant_address_1', '', ['class' => 'form-control', 'placeholder' => 'Address Line 1']) }}
                                 </div>
+                                @error('applicant_phone')
+                                    <p style="color: red">{{ $message }}</p>
+                                @enderror
                                 <div class="col-md-12 form-group">
                                     {{ Form::label('title', 'Address Line 2') }}
                                     {{ Form::text('applicant_address_2', '', ['class' => 'form-control', 'placeholder' => 'Address Line 2']) }}
@@ -113,20 +135,29 @@
                                     {{ Form::text('applicant_poscode', '', ['class' => 'form-control', 'placeholder' => 'Postcode']) }}
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    {{ Form::label('title', 'City') }}
+                                    {{ Form::label('title', 'City') }} *
                                     {{ Form::text('applicant_city', '', ['class' => 'form-control', 'placeholder' => 'City']) }}
                                 </div>
+                                @error('applicant_city')
+                                    <p style="color: red">{{ $message }}</p>
+                                @enderror
                                 <div class="col-md-6 form-group">
                                     {{ Form::label('title', 'State') }}
                                     {{ Form::text('applicant_state', '', ['class' => 'form-control', 'placeholder' => 'State']) }}
                                 </div>
+                                @error('applicant_state')
+                                    <p style="color: red">{{ $message }}</p>
+                                @enderror
                                 <div class="col-md-6 form-group">
-                                    {{ Form::label('title', 'State') }}
+                                    {{ Form::label('title', 'Country') }}
                                     <select class="form-control" name="applicant_country">
                                         @foreach($country as $countries)
                                         <option value="{{ $countries->country_code }}">{{ $countries->country_name }}</option>
                                         @endforeach
                                     </select>
+                                    @error('applicant_country')
+                                        <p style="color: red">{{ $message }}</p>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -148,73 +179,65 @@
                             </div>
                             <hr class="mt-2 mb-3">
                             <div class="col-md-12"><h4>Guardian Contact Info</h4></div>
+                            <div class="alert alert-danger" role="alert">
+                                * Mandatory Field
+                              </div>
                             <div class="row">
-                                {{Form::hidden('id', $applicant->id)}}
-                                <div class="form-group col-md-8">
-                                    {{Form::label('title', 'Father / Guardian I Name')}}
+                                {{Form::hidden('applicant_id', $applicant->id)}}
+                                <div class="form-group col-md-12">
+                                    {{Form::label('title', 'Father / Guardian I Name')}} *
                                     {{Form::text('guardian_one_name', '', ['class' => 'form-control', 'placeholder' => 'Guardian Name'])}}
+                                    @error('guardian_one_name')
+                                        <p style="color: red">{{ $message }}</p>
+                                    @enderror
                                 </div>
-                                <div class="col-md-4 form-group">
-                                    {{ Form::label('title', 'Father / Guardian I Relation') }}
+                                <div class="col-md-6 form-group">
+                                    {{ Form::label('title', 'Father / Guardian I Relation') }} *
                                     {{ Form::text('guardian_one_relationship', '', ['class' => 'form-control', 'placeholder' => 'Guardian Relation']) }}
+                                    @error('guardian_one_relationship')
+                                        <p style="color: red">{{ $message }}</p>
+                                    @enderror
                                 </div>
-                                <div class="form-group col-md-4">
-                                    {{Form::label('title', 'Father / Guardian I IC Number')}}
-                                    {{Form::text('guardian_one_ic', '', ['class' => 'form-control', 'placeholder' => 'Guardian IC Number'])}}
-                                </div>
-                                <div class="col-md-4 form-group">
-                                    {{ Form::label('title', 'Father / Guardian I Phone Number') }}
+                                <div class="col-md-6 form-group">
+                                    {{ Form::label('title', 'Father / Guardian I Phone Number') }} *
                                     {{ Form::text('guardian_one_mobile', '', ['class' => 'form-control', 'placeholder' => 'Guardian Phone Number']) }}
+                                    @error('guardian_one_mobile')
+                                        <p style="color: red">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="form-group col-md-12">
-                                    {{Form::label('title', 'Father / Guardian I Address')}}
+                                    {{Form::label('title', 'Father / Guardian I Address')}} *
                                     {{Form::text('guardian_one_address', '', ['class' => 'form-control', 'placeholder' => 'Guardian Address'])}}
-                                </div>
-                                <div class="form-group col-md-6">
-                                    {{Form::label('title', 'Father / Guardian I Occupation')}}
-                                    {{Form::text('guardian_one_occupation', '', ['class' => 'form-control', 'placeholder' => 'Guardian Occupation'])}}
-                                </div>
-                                <div class="form-group col-md-6">
-                                    {{Form::label('title', 'Nationality')}}
-                                    <select class="form-control" name="guardian_one_nationality">
-                                        @foreach($country as $countries)
-                                            <option value="{{ $countries->country_code }}" >{{ $countries->country_name }}</option>
-                                        @endforeach
-                                    </select>
+                                    @error('guardian_one_address')
+                                        <p style="color: red">{{ $message }}</p>
+                                    @enderror
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="form-group col-md-8">
-                                    {{Form::label('title', 'Mother / Guardian II Name')}}
+                            <div class="row mt-5">
+                                <div class="form-group col-md-12">
+                                    {{Form::label('title', 'Mother / Guardian II Name')}} *
                                     {{Form::text('guardian_two_name', '', ['class' => 'form-control', 'placeholder' => 'Guardian Name'])}}
+                                    @error('guardian_two_name')
+                                        <p style="color: red">{{ $message }}</p>
+                                    @enderror
                                 </div>
-                                <div class="col-md-4 form-group">
-                                    {{ Form::label('title', 'Mother / Guardian II Relation') }}
+                                <div class="col-md-6 form-group">
+                                    {{ Form::label('title', 'Mother / Guardian II Relation') }} *
                                     {{ Form::text('guardian_two_relationship', '', ['class' => 'form-control', 'placeholder' => 'Guardian Relation']) }}
+                                    @error('guardian_two_relationship')
+                                        <p style="color: red">{{ $message }}</p>
+                                    @enderror
                                 </div>
-                                <div class="form-group col-md-4">
-                                    {{Form::label('title', 'Mother / Guardian II IC Number')}}
-                                    {{Form::text('guardian_two_ic', '', ['class' => 'form-control', 'placeholder' => 'Guardian IC Number'])}}
-                                </div>
-                                <div class="col-md-4 form-group">
-                                    {{ Form::label('title', 'Mother / Guardian II Phone Number') }}
+                                <div class="col-md-6 form-group">
+                                    {{ Form::label('title', 'Mother / Guardian II Phone Number') }} *
                                     {{ Form::text('guardian_two_mobile', '', ['class' => 'form-control', 'placeholder' => 'Guardian Phone Number']) }}
+                                    @error('guardian_two_mobile')
+                                        <p style="color: red">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="form-group col-md-12">
                                     {{Form::label('title', 'Mother / Guardian II Address')}}
                                     {{Form::text('guardian_two_address', '', ['class' => 'form-control', 'placeholder' => 'Guardian Address'])}}
-                                </div>
-                                <div class="form-group col-md-6">
-                                    {{Form::label('title', 'Mother / Guardian II Occupation')}}
-                                    {{Form::text('guardian_two_occupation', '', ['class' => 'form-control', 'placeholder' => 'Guardian Occupation'])}}
-                                </div>
-                                <div class="form-group col-md-6">
-                                    {{Form::label('title', 'Nationality')}}
-                                    <select class="form-control" name="guardian_two_nationality">
-                                        @foreach($country as $countries)
-                                            <option value="{{ $countries->country_code }}" >{{ $countries->country_name }}</option>
-                                        @endforeach
-                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -236,19 +259,31 @@
                             </div>
                             <hr class="mt-2 mb-3">
                             <div class="col-md-12"><h4>Emergency Contact Info</h4></div>
+                            <div class="alert alert-danger" role="alert">
+                                * Mandatory Field
+                              </div>
                             <div class="row">
                                 {{Form::hidden('applicant_id', $applicant->id)}}
                                 <div class="form-group col-md-12">
-                                    {{Form::label('title', 'Emergency Name')}}
-                                    {{Form::text('emergency_name', $applicant->applicantEmergency->first()->applicant_name, ['class' => 'form-control', 'placeholder' => 'Emergency Name'])}}
+                                    {{Form::label('title', 'Emergency Name')}} *
+                                    {{Form::text('emergency_name', '', ['class' => 'form-control', 'placeholder' => 'Emergency Name'])}}
+                                    @error('emergency_name')
+                                        <p style="color: red">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    {{ Form::label('title', 'Emergency Relation') }}
+                                    {{ Form::label('title', 'Emergency Relation') }} *
                                     {{ Form::text('emergency_relationship', '', ['class' => 'form-control', 'placeholder' => 'Emergency Relation']) }}
+                                    @error('emergency_relationship')
+                                        <p style="color: red">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    {{ Form::label('title', 'Emergency Phone Number') }}
+                                    {{ Form::label('title', 'Emergency Phone Number') }} *
                                     {{ Form::text('emergency_phone', '', ['class' => 'form-control', 'placeholder' => 'Emergency Phone Number']) }}
+                                    @error('emergency_phone')
+                                        <p style="color: red">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="form-group col-md-12">
                                     {{Form::label('title', 'Emergency Address')}}

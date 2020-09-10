@@ -600,16 +600,8 @@
                                                             {{Form::text('guardian_one_relationship', $applicant->applicantGuardian->guardian_one_relationship, ['class' => 'form-control', 'placeholder' => 'Relationship'])}}
                                                         </div>
                                                         <div class="form-group col-md-4">
-                                                            {{Form::label('title', 'IC / Passport')}}
-                                                            {{Form::text('guardian_one_ic', $applicant->applicantGuardian->guardian_one_ic, ['class' => 'form-control', 'placeholder' => 'Guardian IC / Passport'])}}
-                                                        </div>
-                                                        <div class="form-group col-md-4">
                                                             {{Form::label('title', 'Nationality')}}
                                                             {{Form::text('guardian_one_nationality', $applicant->applicantGuardian->guardian_one_nationality, ['class' => 'form-control', 'placeholder' => 'Nationality'])}}
-                                                        </div>
-                                                        <div class="form-group col-md-4">
-                                                            {{Form::label('title', 'Occupation')}}
-                                                            {{Form::text('guardian_one_occupation', $applicant->applicantGuardian->guardian_one_occupation, ['class' => 'form-control', 'placeholder' => 'Occupation'])}}
                                                         </div>
                                                         <div class="form-group col-md-12">
                                                             {{Form::label('title', 'Address')}}
@@ -630,16 +622,8 @@
                                                             {{Form::text('guardian_two_relationship', $applicant->applicantGuardian->guardian_two_relationship, ['class' => 'form-control', 'placeholder' => 'Relationship'])}}
                                                         </div>
                                                         <div class="form-group col-md-4">
-                                                            {{Form::label('title', 'IC / Passport')}}
-                                                            {{Form::text('guardian_two_ic', $applicant->applicantGuardian->guardian_two_ic, ['class' => 'form-control', 'placeholder' => 'Guardian IC / Passport'])}}
-                                                        </div>
-                                                        <div class="form-group col-md-4">
                                                             {{Form::label('title', 'Nationality')}}
                                                             {{Form::text('guardian_two_nationality', $applicant->applicantGuardian->guardian_two_nationality, ['class' => 'form-control', 'placeholder' => 'Nationality'])}}
-                                                        </div>
-                                                        <div class="form-group col-md-4">
-                                                            {{Form::label('title', 'Occupation')}}
-                                                            {{Form::text('guardian_two_occupation', $applicant->applicantGuardian->guardian_two_occupation, ['class' => 'form-control', 'placeholder' => 'Occupation'])}}
                                                         </div>
                                                         <div class="form-group col-md-12">
                                                             {{Form::label('title', 'Address')}}

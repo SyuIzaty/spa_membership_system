@@ -14,20 +14,33 @@
                             {!! Form::open(['action' => 'RegistrationController@store', 'method' => 'POST']) !!}
                             <div class="row">
                                 <div class="form-group col-md-8">
+                                    <small class="text-danger">{{ $errors->first('name') }}</small>
                                     {{Form::label('title', 'Name')}}
                                     {{Form::text('applicant_name', '', ['class' => 'form-control', 'placeholder' => 'Applicant Name'])}}
+                                    @error('applicant_name')
+                                        <p style="color: red">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="col-md-4 form-group">
                                     {{ Form::label('title', 'IC Number') }}
                                     {{ Form::text('applicant_ic', '', ['class' => 'form-control', 'placeholder' => 'Applicant IC Number']) }}
+                                    @error('applicant_ic')
+                                        <p style="color: red">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="col-md-4 form-group">
                                     {{ Form::label('title', 'Phone Number') }}
                                     {{ Form::text('applicant_phone', '', ['class' => 'form-control', 'placeholder' => 'Applicant Phone']) }}
+                                    @error('applicant_phone')
+                                        <p style="color: red">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="col-md-4 form-group">
                                     {{ Form::label('title', 'Email') }}
-                                    {{ Form::email('applicant_email', '', ['class' => 'form-control', 'placeholder' => 'Applicant Phone']) }}
+                                    {{ Form::email('applicant_email', '', ['class' => 'form-control', 'placeholder' => 'Applicant Email']) }}
+                                    @error('applicant_email')
+                                        <p style="color: red">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="col-md-4 form-group">
                                     {{ Form::label('title', 'Nationality') }}
@@ -43,25 +56,29 @@
                                 <div class="col-md-8 form-group">
                                     {{ Form::label('title', '1st Preferred Programme (Required)') }}
                                     <select class="form-control" name="applicant_programme" >
-                                        <option value="">-- Select Programme --</option>
                                         @foreach($programme as $programmes)
                                             <option value="{{$programmes->programme_code}}">{{$programmes->programme_name}}</option>
                                         @endforeach
                                     </select>
+                                    @error('applicant_programme')
+                                        <p style="color: red">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="col-md-4 form-group">
                                     {{ Form::label('Major', 'Major') }}
                                     <select class="form-control" name="applicant_major" >
-                                        <option value="">-- Select Major --</option>
                                         @foreach($major as $majors)
                                             <option value="{{$majors->id}}">{{$majors->major_name}}</option>
                                         @endforeach
                                     </select>
+                                    @error('applicant_major')
+                                        <p style="color: red">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="col-md-8 form-group">
                                     {{ Form::label('title', '2nd Preferred Programme (Optional)') }}
                                     <select class="form-control" name="applicant_programme_2" >
-                                        <option value="">-- Select Programme --</option>
+                                        <option value="">Select Programme</option>
                                         @foreach($programme as $programmes)
                                             <option value="{{$programmes->programme_code}}">{{$programmes->programme_name}}</option>
                                         @endforeach
@@ -70,7 +87,7 @@
                                 <div class="col-md-4 form-group">
                                     {{ Form::label('Major', 'Major') }}
                                     <select class="form-control" name="applicant_major_2" >
-                                        <option value="">-- Select Major --</option>
+                                        <option value="">Select Major</option>
                                         @foreach($major as $majors)
                                             <option value="{{$majors->id}}">{{$majors->major_name}}</option>
                                         @endforeach
@@ -79,7 +96,7 @@
                                 <div class="col-md-8 form-group">
                                     {{ Form::label('title', '3rd Preferred Programme (Optional)') }}
                                     <select class="form-control" name="applicant_programme_3" >
-                                        <option value="">-- Select Programme --</option>
+                                        <option value="">Select Programme</option>
                                         @foreach($programme as $programmes)
                                             <option value="{{$programmes->programme_code}}">{{$programmes->programme_name}}</option>
                                         @endforeach
@@ -88,8 +105,8 @@
                                 <div class="col-md-4 form-group">
                                     {{ Form::label('Major', 'Major') }}
                                     <select class="form-control" name="applicant_major_3" >
+                                        <option value="">Select Major</option>
                                         @foreach($major as $majors)
-                                            <option value="">-- Select Major --</option>
                                             <option value="{{$majors->id}}">{{$majors->major_name}}</option>
                                         @endforeach
                                     </select>
