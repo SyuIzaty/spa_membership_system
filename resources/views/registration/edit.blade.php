@@ -3,29 +3,12 @@
 <div class="row">
     <div class="col-md-1"></div>
     <div class="col-md-10">
-        <div class="card">
-            <div class="panel-hdr">
-                <h2>Registration</h2>
-            </div>
-            <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item">
-                    <a data-toggle="tab" class="nav-link" href="#personal" role="tab">Personal Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a data-toggle="tab" class="nav-link" href="#parent" role="tab">Parent / Guardian Contact Info</a>
-                </li>
-                <li class="nav-item">
-                    <a data-toggle="tab" class="nav-link" href="#emergency" role="tab">Emergency Contact</a>
-                </li>
-                <li class="nav-item">
-                    <a data-toggle="tab" class="nav-link" href="#academic" role="tab">Academic Qualification & Subject</a>
-                </li>
-            </ul>
+        <div class="panel-hdr">
+            <h2>Registration</h2>
+        </div>
             {!! Form::model($applicant, ['method' => 'PATCH', 'route' => ['registration.update', $applicant->id]]) !!}
-
-            <div class="tab-content">
-                <div class="tab-pane active" id="personal" role="tabpanel">
                     <div class="card">
+                        <div class="card-header">Personal Profile</div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="form-group col-md-6">
@@ -38,7 +21,6 @@
                                 </div>
                             </div>
                             <hr class="mt-2 mb-3">
-                            <div class="col-md-12"><h4>Personal Profile</h4></div>
                             <div class="alert alert-danger" role="alert">
                                 * Mandatory Field
                               </div>
@@ -79,7 +61,7 @@
                                             <option value="{{ $countries->country_code }}" {{ $applicant->applicant_nationality == $countries->country_code ? 'selected="selected"' : ''}}>{{ $countries->country_name }}</option>
                                         @endforeach
                                     </select>
-                                    @error('applicant_phone')
+                                    @error('applicant_nationality')
                                         <p style="color: red">{{ $message }}</p>
                                     @enderror
                                 </div>
@@ -122,10 +104,10 @@
                                 <div class="col-md-12 form-group">
                                     {{ Form::label('title', 'Address Line 1') }} *
                                     {{ Form::text('applicant_address_1', '', ['class' => 'form-control', 'placeholder' => 'Address Line 1']) }}
+                                    @error('applicant_phone')
+                                        <p style="color: red">{{ $message }}</p>
+                                    @enderror
                                 </div>
-                                @error('applicant_phone')
-                                    <p style="color: red">{{ $message }}</p>
-                                @enderror
                                 <div class="col-md-12 form-group">
                                     {{ Form::label('title', 'Address Line 2') }}
                                     {{ Form::text('applicant_address_2', '', ['class' => 'form-control', 'placeholder' => 'Address Line 2']) }}
@@ -137,17 +119,17 @@
                                 <div class="col-md-6 form-group">
                                     {{ Form::label('title', 'City') }} *
                                     {{ Form::text('applicant_city', '', ['class' => 'form-control', 'placeholder' => 'City']) }}
+                                    @error('applicant_city')
+                                        <p style="color: red">{{ $message }}</p>
+                                    @enderror
                                 </div>
-                                @error('applicant_city')
-                                    <p style="color: red">{{ $message }}</p>
-                                @enderror
                                 <div class="col-md-6 form-group">
-                                    {{ Form::label('title', 'State') }}
+                                    {{ Form::label('title', 'State') }} *
                                     {{ Form::text('applicant_state', '', ['class' => 'form-control', 'placeholder' => 'State']) }}
+                                    @error('applicant_state')
+                                        <p style="color: red">{{ $message }}</p>
+                                    @enderror
                                 </div>
-                                @error('applicant_state')
-                                    <p style="color: red">{{ $message }}</p>
-                                @enderror
                                 <div class="col-md-6 form-group">
                                     {{ Form::label('title', 'Country') }}
                                     <select class="form-control" name="applicant_country">
@@ -161,27 +143,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-footer"> <a data-toggle="tab" class="nav-link" href="#parent" role="tab" class="btn btn-primary">Next</a></div>
                     </div>
-                </div>
-                <div class="tab-pane" id="parent" role="tabpanel">
+                    <hr class="mt-2 mb-3">
                     <div class="card">
+                        <div class="card-header">Guardian Contact Info</div>
                         <div class="card-body">
-                            <div class="row">
-                                <div class="form-group col-md-6">
-                                    {{Form::label('title', 'Applicant Name')}}
-                                    {{Form::text('applicant_name', $applicant->applicant_name, ['class' => 'form-control', 'placeholder' => 'Applicant Name', 'readonly' => 'true'])}}
-                                </div>
-                                <div class="col-md-6 form-group">
-                                    {{ Form::label('title', 'Applicant IC Number') }}
-                                    {{ Form::text('applicant_ic', $applicant->applicant_ic, ['class' => 'form-control', 'placeholder' => 'Applicant IC Number', 'readonly' => 'true']) }}
-                                </div>
-                            </div>
-                            <hr class="mt-2 mb-3">
-                            <div class="col-md-12"><h4>Guardian Contact Info</h4></div>
-                            <div class="alert alert-danger" role="alert">
-                                * Mandatory Field
-                              </div>
                             <div class="row">
                                 {{Form::hidden('applicant_id', $applicant->id)}}
                                 <div class="form-group col-md-12">
@@ -241,27 +207,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-footer"> <a data-toggle="tab" class="nav-link" href="#emergency" role="tab">Next</a></div>
                     </div>
-                </div>
-                <div class="tab-pane" id="emergency" role="tabpanel">
+                    <hr class="mt-2 mb-3">
                     <div class="card">
+                        <div class="card-header">Emergency Contact Info</div>
                         <div class="card-body">
-                            <div class="row">
-                                <div class="form-group col-md-6">
-                                    {{Form::label('title', 'Applicant Name')}}
-                                    {{Form::text('applicant_name', $applicant->applicant_name, ['class' => 'form-control', 'placeholder' => 'Applicant Name', 'readonly' => 'true'])}}
-                                </div>
-                                <div class="col-md-6 form-group">
-                                    {{ Form::label('title', 'Applicant IC Number') }}
-                                    {{ Form::text('applicant_ic', $applicant->applicant_ic, ['class' => 'form-control', 'placeholder' => 'Applicant IC Number', 'readonly' => 'true']) }}
-                                </div>
-                            </div>
-                            <hr class="mt-2 mb-3">
-                            <div class="col-md-12"><h4>Emergency Contact Info</h4></div>
-                            <div class="alert alert-danger" role="alert">
-                                * Mandatory Field
-                              </div>
                             <div class="row">
                                 {{Form::hidden('applicant_id', $applicant->id)}}
                                 <div class="form-group col-md-12">
@@ -291,11 +241,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-footer"> <a data-toggle="tab" class="nav-link" href="#academic" role="tab">Next</a></div>
                     </div>
-                </div>
-                <div class="tab-pane" id="academic" role="tabpanel">
+                    <hr class="mt-2 mb-3">
                     <div class="card">
+                        <div class="card-header">Qualification</div>
                         <div class="card-body">
                             <div class="row qualification-row">
                                 <div class="col-md-6 form-group">
@@ -317,13 +266,10 @@
                         </div>
                         <div class="card-footer">
                             <button class="btn btn-primary">Submit</button>
-
                         </div>
                     </div>
-                </div>
-            </div>
+
             {!! Form::close() !!}
-        </div>
     </div>
 </div>
 @endsection

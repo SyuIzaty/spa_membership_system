@@ -58,8 +58,6 @@ class Applicant extends Model
         return $this->hasOne('App\ApplicantStatus','applicant_id','id');
     }
 
-
-
     public function storecontact() {
     return $this->hasMany('App\ApplicantContact','applicant_id');
     }
@@ -112,5 +110,25 @@ class Applicant extends Model
     public function country()
     {
         return $this->hasOne('App\Country','country_code', 'applicant_nationality');
+    }
+
+    public function race()
+    {
+        return $this->hasOne('App\Race', 'race_code', 'applicant_race');
+    }
+
+    public function religion()
+    {
+        return $this->hasOne('App\Religion', 'religion_code', 'applicant_religion');
+    }
+
+    public function gender()
+    {
+        return $this->hasOne('App\Gender', 'gender_code', 'applicant_gender');
+    }
+
+    public function marital()
+    {
+        return $this->hasOne('App\Marital', 'marital_code', 'applicant_marital');
     }
 }

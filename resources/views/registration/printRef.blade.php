@@ -14,19 +14,19 @@
                             <div class="row">
                                 <div class="form-group col-md-8">
                                     {{Form::label('title', 'Name')}}
-                                    {{Form::text('applicant_name', $detail->applicant_name, ['class' => 'form-control', 'placeholder' => 'Applicant Name', 'required', 'readonly' => 'true'])}}
+                                    {{Form::text('applicant_name', $applicant_detail->applicant_name, ['class' => 'form-control', 'placeholder' => 'Applicant Name', 'required', 'readonly' => 'true'])}}
                                 </div>
                                 <div class="col-md-4 form-group">
                                     {{ Form::label('title', 'IC Number') }}
-                                    {{ Form::text('applicant_ic', $detail->applicant_ic, ['class' => 'form-control', 'placeholder' => 'Applicant IC Number', 'required', 'readonly' => 'true']) }}
+                                    {{ Form::text('applicant_ic', $applicant_detail->applicant_ic, ['class' => 'form-control', 'placeholder' => 'Applicant IC Number', 'required', 'readonly' => 'true']) }}
                                 </div>
                                 <div class="col-md-4 form-group">
                                     {{ Form::label('title', 'Phone Number') }}
-                                    {{ Form::text('applicant_phone', $detail->applicant_phone, ['class' => 'form-control', 'placeholder' => 'Applicant Phone', 'required', 'readonly' => 'true']) }}
+                                    {{ Form::text('applicant_phone', $applicant_detail->applicant_phone, ['class' => 'form-control', 'placeholder' => 'Applicant Phone', 'required', 'readonly' => 'true']) }}
                                 </div>
                                 <div class="col-md-4 form-group">
                                     {{ Form::label('title', 'Email') }}
-                                    {{ Form::text('applicant_email', $detail->applicant_email, ['class' => 'form-control', 'placeholder' => 'Applicant Email', 'required', 'readonly' => 'true']) }}
+                                    {{ Form::text('applicant_email', $applicant_detail->applicant_email, ['class' => 'form-control', 'placeholder' => 'Applicant Email', 'required', 'readonly' => 'true']) }}
                                 </div>
                                 <div class="col-md-4 form-group">
                                     {{ Form::label('title', 'Nationality') }}

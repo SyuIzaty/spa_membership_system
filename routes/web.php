@@ -81,6 +81,8 @@ Route::get('testCollection','ApplicantController@testCollection');
 
 //APPLICANT REGISTRATION
 Route::resource('/registration','RegistrationController');
+Route::get('registration/printRef/{id}','RegistrationController@printRef')->name('printRef');
+Route::get('registration/printReg/{id}','RegistrationController@printReg')->name('printReg');
 
 //INTAKE
 Route::resource('/intake','IntakeController');

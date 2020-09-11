@@ -20,6 +20,7 @@ use App\Subject;
 use App\Grades;
 use App\ApplicantResult;
 use App\Http\Requests\StoreApplicantRequest;
+use App\Http\Requests\StoreApplicantDetailRequest;
 
 class RegistrationController extends Controller
 {
@@ -55,23 +56,17 @@ class RegistrationController extends Controller
      */
     public function store(StoreApplicantRequest $request)
     {
-        $detail = Applicant::create([
-            'applicant_name' => $request->applicant_name,
-            'applicant_ic' => $request->applicant_ic,
-            'applicant_phone' => $request->applicant_phone,
-            'applicant_email' => $request->applicant_email,
-            'applicant_nationality' => $request->applicant_nationality,
-            'applicant_programme' => $request->applicant_programme,
-            'applicant_major' => $request->applicant_major,
-            'applicant_programme_2' => $request->applicant_programme_2,
-            'applicant_major_2' => $request->applicant_major_2,
-            'applicant_programme_3' => $request->applicant_programme_3,
-            'applicant_major_3' => $request->applicant_major_3,
-        ]);
+        $detail = Applicant::create($request->all());
 
         $applicant_detail = Applicant::where('applicant_ic',$request->applicant_ic)->with(['country','programme','programmeTwo','programmeThree','majorOne','majorTwo','majorThree'])->first();
 
-        return view('registration.printRef', compact('detail','applicant_detail'));
+        return redirect()->route('printRef', ['id' => $request->applicant_ic]);
+    }
+
+    public function printRef($id)
+    {
+        $applicant_detail = Applicant::where('applicant_ic',$id)->with(['applicantContactInfo','applicantContactInfo.country','programme','programmeTwo','programmeThree','majorOne','majorTwo','majorThree'])->first();
+        return view('registration.printRef', compact('applicant_detail'));
     }
 
     /**
@@ -82,7 +77,7 @@ class RegistrationController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -148,45 +143,7 @@ class RegistrationController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function validateApplicantContact()
-    {
-        return request()->validate([
-            'applicant_id' => 'required',
-            'applicant_address_1' => 'required|min:1|max:100',
-            'applicant_address_2' => 'max:100',
-            'applicant_poscode' => 'max:100',
-            'applicant_city' => 'required|min:1|max:100',
-            'applicant_state' => 'required|min:1|max:100',
-            'applicant_country' => 'required|min:1|max:100',
-        ]);
-    }
-
-    public function validateApplicantGuardian()
-    {
-        return request()->validate([
-            'applicant_id' => 'required',
-            'guardian_one_name' => 'required|min:1|max:100',
-            'guardian_one_relationship' => 'required|min:1|max:100',
-            'guardian_one_mobile' => 'required|min:1|max:100',
-            'guardian_one_address' => 'required|min:1|max:100',
-            'guardian_two_name' => 'required|min:1|max:100',
-            'guardian_two_relationship' => 'required|min:1|max:100',
-            'guardian_two_mobile' => 'required|min:1|max:100',
-            'guardian_two_address' => 'max:100',
-        ]);
-    }
-
-    public function validateApplicantEmergency()
-    {
-        return request()->validate([
-            'applicant_id' => 'required',
-            'emergency_name' => 'required|min:1|max:100',
-            'emergency_relationship' => 'required|min:1|max:100',
-            'emergency_phone' => 'required|min:1|max:100',
-            'emergency_address' => 'max:100',
-        ]);
-    }
-    public function update(Request $request, $id)
+    public function update(StoreApplicantDetailRequest $request, $id)
     {
         Applicant::find($id)->update([
             'applicant_name' => $request->applicant_name,
@@ -199,12 +156,11 @@ class RegistrationController extends Controller
             'applicant_race' => $request->applicant_race,
             'applicant_religion' => $request->applicant_religion,
             'applicant_dob' => $request->applicant_dob,
-            'applicant_phone' => $request->applicant_phone,
         ]);
 
-        ApplicantContact::create($this->validateApplicantContact());
-        ApplicantGuardian::create($this->validateApplicantGuardian());
-        ApplicantEmergency::create($this->validateApplicantEmergency());
+        ApplicantContact::create($request->all());
+        ApplicantGuardian::create($request->all());
+        ApplicantEmergency::create($request->all());
 
 
         $result = [];
@@ -279,7 +235,13 @@ class RegistrationController extends Controller
             }
         }
 
-        return view('registration.printReg');
+        return redirect()->route('printReg', ['id' => $id]);
+    }
+
+    public function printReg($id)
+    {
+        $applicant = Applicant::where('id',$id)->with(['applicantContactInfo','applicantContactInfo.country','programme','programmeTwo','programmeThree','majorOne','majorTwo','majorThree','country','race','religion','marital'])->get();
+        return view('registration.printReg', compact('applicant'));
     }
 
     /**

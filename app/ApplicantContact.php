@@ -17,17 +17,8 @@ class ApplicantContact extends Model
         return $this->hasOne('App\Applicant','id','applicant_id');
     }
 
-    // public function store()
-    // {
-    //     return $this->belongsTo('App\Applicant','id');
-    // }
-
-    public function store() {
-        return $this->belongsTo('App\Applicant', 'applicant_id', 'id');
-    }
-
-    public function applicantid()
+    public function country()
     {
-        return $this->hasOne('App\Applicant','id');
+        return $this->hasOne('App\Country','country_code','applicant_country');
     }
 }
