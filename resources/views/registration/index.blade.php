@@ -23,14 +23,14 @@
                                 </div>
                                 <div class="col-md-4 form-group">
                                     {{ Form::label('title', 'IC Number') }}
-                                    {{ Form::text('applicant_ic', '', ['class' => 'form-control', 'placeholder' => 'Applicant IC Number']) }}
+                                    {{ Form::number('applicant_ic', '', ['class' => 'form-control', 'placeholder' => 'Applicant IC Number']) }}
                                     @error('applicant_ic')
                                         <p style="color: red">{{ $message }}</p>
                                     @enderror
                                 </div>
                                 <div class="col-md-4 form-group">
                                     {{ Form::label('title', 'Phone Number') }}
-                                    {{ Form::text('applicant_phone', '', ['class' => 'form-control', 'placeholder' => 'Applicant Phone']) }}
+                                    {{ Form::number('applicant_phone', '', ['class' => 'form-control', 'placeholder' => 'Applicant Phone']) }}
                                     @error('applicant_phone')
                                         <p style="color: red">{{ $message }}</p>
                                     @enderror

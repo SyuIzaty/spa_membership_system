@@ -16,6 +16,7 @@ use App\ApplicantContact;
 use App\ApplicantEmergency;
 use App\ApplicantGuardian;
 use App\Qualification;
+use App\ApplicantAcademic;
 use App\Subject;
 use App\Grades;
 use App\ApplicantResult;
@@ -96,6 +97,10 @@ class RegistrationController extends Controller
         $race = Race::all();
         $religion = Religion::all();
         $subjectSpmArr = $subjectSpmAGradeArr = $subjectStamArr = $subjectStamAGradeArr = [];
+        $subjectUecArr = $subjectUecAGradeArr = [];
+        $subjectStpmArr = $subjectStpmAGradeArr = [];
+        $subjectOlevelArr = $subjectOlevelAGradeArr = [];
+
         $qualification = Qualification::all();
         $subjectspm = Subject::where('qualification_type', '1')->get();
         $gradeSpm = Grades::where('grade_type', '1')->get();
@@ -127,12 +132,81 @@ class RegistrationController extends Controller
             ];
         }
 
+        $subjectstpm = Subject::where('qualification_type', '2')->get();
+        $gradeStpm = Grades::where('grade_type', '2')->get();
+        foreach($subjectstpm as $substpm) {
+            $subjectStpmArr[] = [
+                $substpm->subject_code,
+                $substpm->subject_name
+            ];
+        }
+        foreach ($gradeStpm as $rstpm) {
+            $subjectStpmAGradeArr[] = [
+                $rstpm->id,
+                $rstpm->grade_code
+            ];
+        }
+
+        $subjectolevel = Subject::where('qualification_type', '6')->get();
+        $gradeOlevel = Grades::where('grade_type', '6')->get();
+        foreach ($subjectolevel as $subolevel) {
+            $subjectOlevelArr[] = [
+                $subolevel->subject_code,
+                $subolevel->subject_name
+            ];
+        }
+        foreach ($gradeOlevel as $rolevel) {
+            $subjectOlevelAGradeArr[] = [
+                $rolevel->id,
+                $rolevel->grade_code
+            ];
+        }
+
+        $subjectalevel = Subject::where('qualification_type', '5')->get();
+        $gradeAlevel = Grades::where('grade_type', '5')->get();
+        foreach ($subjectalevel as $subalevel) {
+            $subjectAlevelArr[] = [
+                $subalevel->subject_code,
+                $subalevel->subject_name
+            ];
+        }
+        foreach ($gradeAlevel as $ralevel) {
+            $subjectAlevelAGradeArr[] = [
+                $ralevel->id,
+                $ralevel->grade_code
+            ];
+        }
+
+        $subjectuec = Subject::where('qualification_type', '4')->get();
+        $gradeUec = Grades::where('grade_type','4')->get();
+        foreach($subjectuec as $subuec) {
+            $subjectUecArr[] = [
+                $subuec->subject_code,
+                $subuec->subject_name
+            ];
+        }
+        foreach ($gradeUec as $ruec) {
+            $subjectUecAGradeArr[] = [
+                $ruec->id,
+                $ruec->grade_code
+            ];
+        }
+
 
         $subjectSpmStr = json_encode($subjectSpmArr);
         $gradeSpmStr = json_encode($subjectSpmAGradeArr);
         $subjectStamStr = json_encode($subjectStamArr);
         $gradeStamStr = json_encode($subjectStamAGradeArr);
-        return view('registration.edit', compact('applicant','country','gender','state','marital','race','religion','qualification', 'subjectspm', 'gradeSpm', 'subjectSpmStr', 'gradeSpmStr', 'subjectstam', 'gradeStam', 'subjectStamStr', 'gradeStamStr'));
+        $subjectUecStr = json_encode($subjectUecArr);
+        $gradeUecStr = json_encode($subjectUecAGradeArr);
+        $subjectStpmStr = json_encode($subjectStpmArr);
+        $gradeStpmStr = json_encode($subjectStpmAGradeArr);
+        $subjectAlevelStr = json_encode($subjectAlevelArr);
+        $gradeAlevelStr = json_encode($subjectAlevelAGradeArr);
+        $subjectOlevelStr = json_encode($subjectOlevelArr);
+        $gradeOlevelStr = json_encode($subjectOlevelAGradeArr);
+
+        return view('registration.edit', compact('applicant','country','gender','state','marital','race','religion','qualification', 'subjectspm', 'gradeSpm', 'subjectSpmStr', 'gradeSpmStr', 'subjectstam', 'gradeStam', 'subjectStamStr', 'gradeStamStr', 'subjectuec', 'gradeUec', 'subjectUecStr', 'gradeUecStr', 'subjectstpm', 'gradeStpm', 'subjectStpmStr', 'gradeStpmStr', 'subjectalevel', 'gradeAlevel', 'subjectAlevelStr', 'gradeAlevelStr', 'subjectolevel', 'gradeOlevel', 'subjectOlevelStr', 'gradeOlevelStr'));
     }
 
     /**
@@ -202,6 +276,30 @@ class RegistrationController extends Controller
                 'type' => $request->foundation_type,
                 'cgpa' => $request->foundation_cgpa,
             ];
+
+            $academic[] = [
+                'applicant_id' => $id,
+                'type' => $request->foundation_type,
+                'applicant_study' => $request->foundation_study,
+                'applicant_year' => $request->foundation_year,
+                'applicant_major' => $request->foundation_major,
+            ];
+        }
+
+        if (isset($request->sace_cgpa)) {
+            $result[] = [
+                'applicant_id' => $id,
+                'type' => $request->sace_type,
+                'cgpa' => $request->sace_cgpa,
+            ];
+        }
+
+        if (isset($request->cat_cgpa)) {
+            $result[] = [
+                'applicant_id' => $id,
+                'type' => $request->cat_type,
+                'cgpa' => $request->cat_cgpa,
+            ];
         }
 
         if (isset($request->spm_subject) && isset($request->spm_grade_id)) {
@@ -229,9 +327,66 @@ class RegistrationController extends Controller
                 }
             }
         }
+
+        if (isset($request->stpm_subject) && isset($request->stpm_grade_id)) {
+            if (count($request->stpm_subject) > 0 && count($request->stpm_grade_id)) {
+                for ($i = 0; $i < count($request->stpm_subject); $i++) {
+                    $result[] = [
+                        'applicant_id' => $id,
+                        'type' => $request->stpm_type,
+                        'subject' => $request->stpm_subject[$i],
+                        'grade_id' => $request->stpm_grade_id[$i],
+                    ];
+                }
+            }
+        }
+
+        if (isset($request->uec_subject) && isset($request->uec_grade_id)) {
+            if (count($request->uec_subject) > 0 && count($request->uec_grade_id)) {
+                for ($i = 0; $i < count($request->uec_subject); $i++) {
+                    $result[] = [
+                        'applicant_id' => $id,
+                        'type' => $request->uec_type,
+                        'subject' => $request->uec_subject[$i],
+                        'grade_id' => $request->uec_grade_id[$i],
+                    ];
+                }
+            }
+        }
+
+        if (isset($request->alevel_subject) && isset($request->alevel_grade_id)) {
+            if (count($request->alevel_subject) > 0 && count($request->alevel_grade_id)) {
+                for ($i = 0; $i < count($request->alevel_subject); $i++) {
+                    $result[] = [
+                        'applicant_id' => $id,
+                        'type' => $request->alevel_type,
+                        'subject' => $request->alevel_subject[$i],
+                        'grade_id' => $request->alevel_grade_id[$i],
+                    ];
+                }
+            }
+        }
+
+        if (isset($request->olevel_subject) && isset($request->olevel_grade_id)) {
+            if (count($request->olevel_subject) > 0 && count($request->olevel_grade_id)) {
+                for ($i = 0; $i < count($request->olevel_subject); $i++) {
+                    $result[] = [
+                        'applicant_id' => $id,
+                        'type' => $request->olevel_type,
+                        'subject' => $request->olevel_subject[$i],
+                        'grade_id' => $request->olevel_grade_id[$i],
+                    ];
+                }
+            }
+        }
         if (count($result) > 0) {
             foreach ($result as $row) {
                 ApplicantResult::create($row);
+            }
+        }
+        if (count($academic) > 0) {
+            foreach ($academic as $app_academic) {
+                ApplicantAcademic::create($app_academic);
             }
         }
 

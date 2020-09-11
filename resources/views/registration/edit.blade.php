@@ -114,7 +114,7 @@
                                 </div>
                                 <div class="col-md-6 form-group">
                                     {{ Form::label('title', 'Postcode') }}
-                                    {{ Form::text('applicant_poscode', '', ['class' => 'form-control', 'placeholder' => 'Postcode']) }}
+                                    {{ Form::number('applicant_poscode', '', ['class' => 'form-control', 'placeholder' => 'Postcode']) }}
                                 </div>
                                 <div class="col-md-6 form-group">
                                     {{ Form::label('title', 'City') }} *
@@ -166,7 +166,7 @@
                                 </div>
                                 <div class="col-md-6 form-group">
                                     {{ Form::label('title', 'Father / Guardian I Phone Number') }} *
-                                    {{ Form::text('guardian_one_mobile', '', ['class' => 'form-control', 'placeholder' => 'Guardian Phone Number']) }}
+                                    {{ Form::number('guardian_one_mobile', '', ['class' => 'form-control', 'placeholder' => 'Guardian Phone Number']) }}
                                     @error('guardian_one_mobile')
                                         <p style="color: red">{{ $message }}</p>
                                     @enderror
@@ -196,7 +196,7 @@
                                 </div>
                                 <div class="col-md-6 form-group">
                                     {{ Form::label('title', 'Mother / Guardian II Phone Number') }} *
-                                    {{ Form::text('guardian_two_mobile', '', ['class' => 'form-control', 'placeholder' => 'Guardian Phone Number']) }}
+                                    {{ Form::number('guardian_two_mobile', '', ['class' => 'form-control', 'placeholder' => 'Guardian Phone Number']) }}
                                     @error('guardian_two_mobile')
                                         <p style="color: red">{{ $message }}</p>
                                     @enderror
@@ -230,7 +230,7 @@
                                 </div>
                                 <div class="col-md-6 form-group">
                                     {{ Form::label('title', 'Emergency Phone Number') }} *
-                                    {{ Form::text('emergency_phone', '', ['class' => 'form-control', 'placeholder' => 'Emergency Phone Number']) }}
+                                    {{ Form::number('emergency_phone', '', ['class' => 'form-control', 'placeholder' => 'Emergency Phone Number']) }}
                                     @error('emergency_phone')
                                         <p style="color: red">{{ $message }}</p>
                                     @enderror
@@ -254,7 +254,7 @@
                                         <option value="{{ $qualifications->id }}">{{ $qualifications->qualification_code }}</option>
                                         @endforeach
                                     </select>
-                                    <button class="btn btn-primary tambah-qualification">Add Qualification & Subject</button>
+                                    <button class="btn btn-primary tambah-qualification">Add Qualification</button>
                                 </div>
                             </div>
                             <div class="row mt-2 mb-3">
@@ -279,6 +279,14 @@
     var listGradeSPM = {!! $gradeSpmStr !!};
     var listSTAM = {!! $subjectStamStr !!};
     var listGradeSTAM = {!! $gradeStamStr !!};
+    var listUEC = {!! $subjectUecStr !!};
+    var listGradeUEC = {!! $gradeUecStr !!};
+    var listSTPM = {!! $subjectStpmStr !!};
+    var listGradeSTPM = {!! $gradeStpmStr !!};
+    var listALEVEL = {!! $subjectAlevelStr !!};
+    var listGradeALEVEL = {!! $gradeAlevelStr !!};
+    var listOLEVEL = {!! $subjectOlevelStr !!};
+    var listGradeOLEVEL = {!! $gradeOlevelStr !!};
 </script>
 <script src="{{ asset('/js/applicant.js')}}" type="text/javascript"></script>
 @endsection

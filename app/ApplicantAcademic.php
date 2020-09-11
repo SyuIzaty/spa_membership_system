@@ -9,6 +9,5 @@ class ApplicantAcademic extends Model
     //
     protected $table = 'applicant_academic';
     // Set mass-assignable fields
-    //JANGAN DITUKAR
-    protected $fillable = ['applicant_id','type'];
+    protected $fillable = ['applicant_id','type','applicant_study','applicant_year','applicant_major'];
 }

@@ -105,6 +105,7 @@
                             </div>
                         @endif
                     @endforeach
+                    <a class="btn btn-primary btn-block" href="{{ URL('/registration' )}}">Exit</a>
                 </div>
             </div>
         </div>
