@@ -330,7 +330,7 @@ $(document).ready(function () {
                     '<hr class="mt-2 mb-3">\
                 <div class="row">\
                     <div class="col-12">\
-                        <h5 class="mb-4">Sijil Tinggi Agama Malaysia <button class="btn btn-primary float-right" id="addalevelrow" onclick="addRowAlevel();return false;">Add Subject</button></h5>\
+                        <h5 class="mb-4">A Level <button class="btn btn-primary float-right" id="addalevelrow" onclick="addRowAlevel();return false;">Add Subject</button></h5>\
                     </div>\
                 </div>\
                 <div class="row mt-4">\
@@ -459,13 +459,21 @@ $(document).ready(function () {
                 <div class="row mt-4">\
                     <div class="col-md-12">\
                         <table class="table table-bordered" id="bachelor-table">\
-                            <thead>\
-                                <th>CGPA</th>\
-                            </thead>\
                             <tr>\
-                                <td><input type="hidden" name="bachelor_type" value="' +
-                        xval +
-                        '">\
+                                <td>University / College *<input type="hidden" name="bachelor_type" value="' +
+                                xval +
+                                '">\</td>\
+                                <td colspan="3"><input type="text" class="form-control" name="bachelor_study" placeholder="University / College" required></td>\
+                            </tr>\
+                            <tr>\
+                                <td>Major</td>\
+                                <td colspan="3"><input type="text" class="form-control" name="bachelor_major" placeholder="Major"></td>\
+                            </tr>\
+                            <tr>\
+                                <td>Graduation Year</td>\
+                                <td><input type="text" class="form-control" name="bachelor_year"></td>\
+                                <td>CGPA</td>\
+                                <td>\
                                     <input type="text" class="form-control" placeholder="CGPA" name="bachelor_cgpa" id="" required>\
                                 </td>\
                             </tr>\
@@ -494,15 +502,22 @@ $(document).ready(function () {
                 <div class="row mt-4">\
                     <div class="col-md-12">\
                         <table class="table table-bordered" id="diploma-table">\
-                            <thead>\
-                                <th>CGPA</th>\
-                            </thead>\
                             <tr>\
-                                <td><input type="hidden" name="diploma_type" value="' +
+                                <td>University / College<input type="hidden" name="diploma_type" value="' +
                         xval +
                         '">\
-                                    <input type="text" class="form-control" placeholder="CGPA" name="diploma_cgpa" id="" required>\
                                 </td>\
+                                <td colspan="3"><input type="text" class="form-control" name="diploma_study" required placeholder="University / College"></td>\
+                            </tr>\
+                            <tr>\
+                                <td>Major</td>\
+                                <td colspan="3"><input type="text" class="form-control" name="diploma_major" placeholder="Major" required></td>\
+                            </tr>\
+                            <tr>\
+                            <td>Graduation Year</td>\
+                            <td><input type="number" class="form-control" name="diploma_year" placeholder="Graduation Year" required></td>\
+                            <td>CGPA</td>\
+                            <td><input type="text" class="form-control" placeholder="CGPA" name="diploma_cgpa" id="" required></td>\
                             </tr>\
                         </table>\
                     </div>\
@@ -529,10 +544,14 @@ $(document).ready(function () {
                 <div class="row mt-4">\
                     <div class="col-md-12">\
                         <table class="table table-bordered" id="matriculation-table">\
-                            <thead>\
-                                <th>CGPA</th>\
-                            </thead>\
                             <tr>\
+                                <td>Kolej Matrikulasi *</td>\
+                                <td colspan="3"><input type="text" class="form-control" name="matriculation_study" required placeholder="Kolej Matrikulasi"></td>\
+                            </tr>\
+                            <tr>\
+                                <td>Graduation Year</td>\
+                                <td><input type="number" class="form-control" name="matriculation_year"></td>\
+                                <td>CGPA</td>\
                                 <td><input type="hidden" name="matriculation_type" value="' +
                         xval +
                         '">\
@@ -582,6 +601,146 @@ $(document).ready(function () {
                 $(".content").append(fieldWrapper);
             }
         }
+        else if (x == "SKM") {
+            var el = document.getElementById("skm-field");
+            if (el != null) {
+                alert("SKM qualifications already added!");
+            } else {
+                var fieldWrapper = $(
+                    '<div class="fieldwrapper skm-field" id="skm-field"/>'
+                );
+                var fName = $(
+                    '<hr class="mt-2 mb-3"><div class="row">\
+                    <div class="col-12">\
+                    <h5 class="mb-4">Sijil Kemahiran Malaysia </h5>\
+                    </div>\
+                </div>\
+                <div class="row mt-4">\
+                    <div class="col-md-12">\
+                        <table class="table table-bordered" id="skm-table">\
+                            <thead>\
+                                <th>SKM Level</th>\
+                            </thead>\
+                            <tr>\
+                                <td><input type="hidden" name="skm_type" value="' +
+                        xval +
+                        '">\
+                                    <input type="text" class="form-control" placeholder="SkM Level" name="skm_cgpa" id="" required>\
+                                </td>\
+                            </tr>\
+                        </table>\
+                    </div>\
+                </div>'
+                );
+                fieldWrapper.append(fName);
+                $(".content").append(fieldWrapper);
+            }
+        }
+        else if (x == "MQF") {
+            var el = document.getElementById("mqf-field");
+            if (el != null) {
+                alert("MQF qualifications already added!");
+            } else {
+                var fieldWrapper = $(
+                    '<div class="fieldwrapper mqf-field" id="mqf-field"/>'
+                );
+                var fName = $(
+                    '<hr class="mt-2 mb-3"><div class="row">\
+                    <div class="col-12">\
+                    <h5 class="mb-4">MQF </h5>\
+                    </div>\
+                </div>\
+                <div class="row mt-4">\
+                    <div class="col-md-12">\
+                        <table class="table table-bordered" id="mqf-table">\
+                            <thead>\
+                                <th>MQF Level</th>\
+                            </thead>\
+                            <tr>\
+                                <td><input type="hidden" name="mqf_type" value="' +
+                        xval +
+                        '">\
+                                    <input type="text" class="form-control" placeholder="MQF Level" name="mqf_cgpa" id="" required>\
+                                </td>\
+                            </tr>\
+                        </table>\
+                    </div>\
+                </div>'
+                );
+                fieldWrapper.append(fName);
+                $(".content").append(fieldWrapper);
+            }
+        }
+        else if (x == "KKM") {
+            var el = document.getElementById("kkm-field");
+            if (el != null) {
+                alert("KKM qualifications already added!");
+            } else {
+                var fieldWrapper = $(
+                    '<div class="fieldwrapper mqf-field" id="kkm-field"/>'
+                );
+                var fName = $(
+                    '<hr class="mt-2 mb-3"><div class="row">\
+                    <div class="col-12">\
+                    <h5 class="mb-4">Kolej Komuniti Malaysia </h5>\
+                    </div>\
+                </div>\
+                <div class="row mt-4">\
+                    <div class="col-md-12">\
+                        <table class="table table-bordered" id="kkm-table">\
+                            <thead>\
+                                <th>KKM Level</th>\
+                            </thead>\
+                            <tr>\
+                                <td><input type="hidden" name="kkm_type" value="' +
+                        xval +
+                        '">\
+                                    <input type="text" class="form-control" placeholder="KKM Level" name="kkm_cgpa" id="" required>\
+                                </td>\
+                            </tr>\
+                        </table>\
+                    </div>\
+                </div>'
+                );
+                fieldWrapper.append(fName);
+                $(".content").append(fieldWrapper);
+            }
+        }
+        else if (x == "ICAEW") {
+            var el = document.getElementById("icaew-field");
+            if (el != null) {
+                alert("ICAEW qualifications already added!");
+            } else {
+                var fieldWrapper = $(
+                    '<div class="fieldwrapper icaew-field" id="icaew-field"/>'
+                );
+                var fName = $(
+                    '<hr class="mt-2 mb-3"><div class="row">\
+                    <div class="col-12">\
+                    <h5 class="mb-4">ICAEW </h5>\
+                    </div>\
+                </div>\
+                <div class="row mt-4">\
+                    <div class="col-md-12">\
+                        <table class="table table-bordered" id="icaew-table">\
+                            <thead>\
+                                <th>ICAEW</th>\
+                            </thead>\
+                            <tr>\
+                                <td><input type="hidden" name="icaew_type" value="' +
+                        xval +
+                        '">\
+                                    <input type="text" class="form-control" placeholder="ICAEW" name="icaew_cgpa" id="" required>\
+                                </td>\
+                            </tr>\
+                        </table>\
+                    </div>\
+                </div>'
+                );
+                fieldWrapper.append(fName);
+                $(".content").append(fieldWrapper);
+            }
+        }
         else if (x == "Foundation") {
             var el = document.getElementById("foundation-field");
             if (el != null) {
@@ -603,7 +762,7 @@ $(document).ready(function () {
                             <td>University / College</td><td><input type="text" class="form-control" name="foundation_study" required placeholder="University / College"></td>\
                             </tr>\
                             <tr>\
-                            <td>Duration of Study</td><td><input type="number" class="form-control" name="foundation_year" placeholder="Duration of Study"></td>\
+                            <td>Graduationn Year</td><td><input type="number" class="form-control" name="foundation_year" placeholder="Year of Graduation"></td>\
                             </tr>\
                             <tr>\
                             <td>\
@@ -644,13 +803,13 @@ $(document).ready(function () {
                     <div class="col-md-12">\
                         <table class="table table-bordered" id="sace-table">\
                             <thead>\
-                                <th>CGPA</th>\
+                                <th>ATAR</th>\
                             </thead>\
                             <tr>\
                                 <td><input type="hidden" name="sace_type" value="' +
                         xval +
                         '">\
-                                    <input type="text" class="form-control" placeholder="SACE" name="sace_cgpa" id="" required>\
+                                    <input type="text" class="form-control" placeholder="ATAR" name="sace_cgpa" id="" required>\
                                 </td>\
                             </tr>\
                         </table>\

@@ -478,9 +478,19 @@ class ApplicantController extends Controller
                 $query->where('type','9');
             }])->first();
 
+            $skm = ApplicantResult::where('applicant_id',$id)->where('type','7')->first();
+
             $sace = ApplicantResult::where('applicant_id',$id)->where('type','10')->first();
 
             $muet = ApplicantResult::where('applicant_id',$id)->where('type','11')->first();
+
+            $mqf = ApplicantResult::where('applicant_id',$id)->where('type','14')->first();
+
+            $kkm = ApplicantResult::where('applicant_id',$id)->where('type','15')->first();
+
+            $cat = ApplicantResult::where('applicant_id',$id)->where('type','16')->first();
+
+            $icaew = ApplicantResult::where('applicant_id',$id)->where('type','17')->first();
 
             $matriculation = ApplicantResult::where('applicant_id',$id)->where('type','12')
             ->with(['applicantAcademic'=>function($query){
@@ -498,7 +508,7 @@ class ApplicantController extends Controller
             }
 
             $aapplicant = $dataappl;
-        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace','applicantresult','total_point', 'programmestatus', 'aapplicant','country','marital','religion','race','gender','state'));
+        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace','applicantresult','total_point', 'programmestatus', 'aapplicant','country','marital','religion','race','gender','state','skm','mqf','kkm','cat','icaew'));
     }
 
     public function updateApplicant(Request $request)
@@ -882,7 +892,7 @@ class ApplicantController extends Controller
 
     public function mqf($applicantt)
     {
-        $mqf = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',9)->where('cgpa','>=',2.00)->count();
+        $mqf = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',14)->where('cgpa','>=',2.00)->count();
         return compact('mqf');
     }
 
@@ -892,15 +902,9 @@ class ApplicantController extends Controller
         return compact('skm');
     }
 
-    public function komuniti($applicantt)
-    {
-        $komuniti = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',11)->count();
-        return compact('komuniti');
-    }
-
     public function kkm($applicantt)
     {
-        $kkm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',10)->where('cgpa','>=',2.00)->count();
+        $kkm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',15)->where('cgpa','>=',2.00)->count();
         return compact ('kkm');
     }
 
@@ -1144,15 +1148,7 @@ class ApplicantController extends Controller
             $status_mqf = false;
         }
 
-        $komuniti = $this->komuniti($applicantt);
-        if($komuniti['komuniti'] >= 1 && $spm['spm'])
-        {
-            $status_komuniti = true;
-        }else{
-            $status_komuniti = false;
-        }
-
-        $status = array($status_spm, $status_stpm, $status_stam, $status_olevel, $status_uec, $status_skm, $status_mqf, $status_komuniti);
+        $status = array($status_spm, $status_stpm, $status_stam, $status_olevel, $status_uec, $status_skm, $status_mqf);
 
         if(in_array(true, $status))
         {
@@ -1223,15 +1219,7 @@ class ApplicantController extends Controller
             $status_skm = false;
         }
 
-        $komuniti = $this->komuniti($applicantt);
-        if($spm['spm'] >= 1 && $skm == 1)
-        {
-            $status_komuniti = true;
-        }else{
-            $status_komuniti = false;
-        }
-
-        $status = array($status_spm, $status_stpm, $status_stam, $status_olevel, $status_uec, $status_skm, $status_mqf, $status_komuniti);
+        $status = array($status_spm, $status_stpm, $status_stam, $status_olevel, $status_uec, $status_skm, $status_mqf);
 
         if(in_array(true, $status))
         {
@@ -1418,14 +1406,6 @@ class ApplicantController extends Controller
             $status_skm = false;
         }
 
-        $komuniti = $this->komuniti($applicantt);
-        if($spm['count_math'] == 1 && $komuniti['komuniti'] == 1 && $spm['spm'] >= 2)
-        {
-            $status_komuniti = true;
-        }else{
-            $status_komuniti = false;
-        }
-
         $kkm = $this->kkm($applicantt);
         if($kkm['kkm'] == 1)
         {
@@ -1434,7 +1414,7 @@ class ApplicantController extends Controller
             $status_kkm = false;
         }
 
-        $status = array($status_spm, $status_stpm, $status_stam, $status_olevel, $status_uec, $status_skm, $status_komuniti, $status_kkm);
+        $status = array($status_spm, $status_stpm, $status_stam, $status_olevel, $status_uec, $status_skm, $status_kkm);
 
         if(in_array(true, $status))
         {
@@ -1527,7 +1507,7 @@ class ApplicantController extends Controller
     {
         $status = [];
 
-        $muet = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',18)->where('cgpa','>=',2)->count();
+        $muet = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',11)->where('cgpa','>=',2)->count();
         $cat = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',16)->where('cgpa','Pass')->count();
         if($muet >= 1 && $cat >= 1)
         {
@@ -1544,8 +1524,8 @@ class ApplicantController extends Controller
     {
         $status = [];
 
-        $muet = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',18)->where('cgpa','>=',2)->count();
-        $diploma = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',15)->where('cgpa','>=',3.00)->count();
+        $muet = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',11)->where('cgpa','>=',2)->count();
+        $diploma = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',8)->where('cgpa','>=',3.00)->count();
         if($muet >= 1 && $diploma >= 1)
         {
             $programme_code = 'PAC551';
@@ -1561,8 +1541,8 @@ class ApplicantController extends Controller
     {
         $status = [];
 
-        $muet = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',18)->where('cgpa','>=',2)->count();
-        $bachelors = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',14)->where('cgpa','>=',2.50)->count();
+        $muet = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',11)->where('cgpa','>=',2)->count();
+        $bachelors = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',9)->where('cgpa','>=',2.50)->count();
         if($muet >= 1 && $bachelors >= 1)
         {
             $programme_code = 'PAC553';
@@ -1578,8 +1558,8 @@ class ApplicantController extends Controller
     {
         $status = [];
 
-        $muet = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',18)->where('cgpa','>=',2)->count();
-        $bachelors = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',14)->where('cgpa','>=',2.50)->count();
+        $muet = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',11)->where('cgpa','>=',2)->count();
+        $bachelors = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',9)->where('cgpa','>=',2.50)->count();
         if($muet >= 1 && $bachelors >= 1)
         {
             $programme_code = 'PAC554';

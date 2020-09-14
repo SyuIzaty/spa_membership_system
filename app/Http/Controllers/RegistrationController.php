@@ -244,6 +244,14 @@ class RegistrationController extends Controller
                 'type' => $request->bachelor_type,
                 'cgpa' => $request->bachelor_cgpa,
             ];
+
+            $academic[] = [
+                'applicant_id' => $id,
+                'type' => $request->bachelor_type,
+                'applicant_study' => $request->bachelor_study,
+                'applicant_year' => $request->bachelor_year,
+                'applicant_major' => $request->bachelor_major,
+            ];
         }
 
         if (isset($request->diploma_cgpa)) {
@@ -251,6 +259,14 @@ class RegistrationController extends Controller
                 'applicant_id' => $id,
                 'type' => $request->diploma_type,
                 'cgpa' => $request->diploma_cgpa,
+            ];
+
+            $academic[] = [
+                'applicant_id' => $id,
+                'type' => $request->diploma_type,
+                'applicant_study' => $request->diploma_study,
+                'applicant_year' => $request->diploma_year,
+                'applicant_major' => $request->diploma_major,
             ];
         }
 
@@ -262,11 +278,50 @@ class RegistrationController extends Controller
             ];
         }
 
+        if (isset($request->skm_cgpa)) {
+            $result[] = [
+                'applicant_id' => $id,
+                'type' => $request->skm_type,
+                'cgpa' => $request->skm_cgpa,
+            ];
+        }
+
+        if (isset($request->mqf_cgpa)) {
+            $result[] = [
+                'applicant_id' => $id,
+                'type' => $request->mqf_type,
+                'cgpa' => $request->mqf_cgpa,
+            ];
+        }
+
+        if (isset($request->kkm_cgpa)) {
+            $result[] = [
+                'applicant_id' => $id,
+                'type' => $request->kkm_type,
+                'cgpa' => $request->kkm_cgpa,
+            ];
+        }
+
+        if (isset($request->icaew)) {
+            $result[] = [
+                'applicant_id' => $id,
+                'type' => $request->icaew_type,
+                'cgpa' => $request->icaew_cgpa,
+            ];
+        }
+
         if (isset($request->matriculation_cgpa)) {
             $result[] = [
                 'applicant_id' => $id,
                 'type' => $request->matriculation_type,
                 'cgpa' => $request->matriculation_cgpa,
+            ];
+
+            $academic[] = [
+                'applicant_id' => $id,
+                'type' => $request->matriculation_type,
+                'applicant_study' => $request->matriculation_study,
+                'applicant_year' => $request->matriculation_year,
             ];
         }
 

@@ -422,10 +422,6 @@
                                                     <td colspan="3">{{$matriculation->applicantAcademic->applicant_study}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Major</td>
-                                                    <td colspan="3">{{ $matriculation->applicantAcademic->applicant_major }}</td>
-                                                </tr>
-                                                <tr>
                                                     <td>Graduation Year</td>
                                                     <td>{{ $matriculation->applicantAcademic->applicant_year }}</td>
                                                     <td>CGPA</td>
@@ -470,6 +466,60 @@
                                                 <td>{{$degree->cgpa}}</td>
                                             </tr>
                                             </table>
+                                        @endif
+                                        @if (isset($skm))
+                                        <h5>Sijil Kemahiran Malaysia</h5>
+                                        <table class="table table-bordered table-sm">
+                                            <tr>
+                                                <td>SKM Level</td>
+                                                <td>{{ $skm->cgpa }}</td>
+                                            </tr>
+                                        </table>
+                                        @endif
+                                        @if (isset($skm))
+                                        <h5>South Australian Certificate of Education</h5>
+                                        <table class="table table-bordered table-sm">
+                                            <tr>
+                                                <td>ATAR</td>
+                                                <td>{{ $sace->cgpa }}</td>
+                                            </tr>
+                                        </table>
+                                        @endif
+                                        @if (isset($mqf))
+                                        <h5>MQF</h5>
+                                        <table class="table table-bordered table-sm">
+                                            <tr>
+                                                <td>MQF Level</td>
+                                                <td>{{ $mqf->cgpa }}</td>
+                                            </tr>
+                                        </table>
+                                        @endif
+                                        @if (isset($kkm))
+                                        <h5>Kolej Komuniti Malaysia</h5>
+                                        <table class="table table-bordered table-sm">
+                                            <tr>
+                                                <td>KKM Level</td>
+                                                <td>{{ $kkm->cgpa }}</td>
+                                            </tr>
+                                        </table>
+                                        @endif
+                                        @if (isset($cat))
+                                        <h5>Certified Accounting Technician</h5>
+                                        <table class="table table-bordered table-sm">
+                                            <tr>
+                                                <td>CAT</td>
+                                                <td>{{ $cat->cgpa }}</td>
+                                            </tr>
+                                        </table>
+                                        @endif
+                                        @if (isset($icaew))
+                                        <h5>ICAEW</h5>
+                                        <table class="table table-bordered table-sm">
+                                            <tr>
+                                                <td>ICAEW</td>
+                                                <td>{{ $icaew->cgpa }}</td>
+                                            </tr>
+                                        </table>
                                         @endif
                                     </div>
                                 </div>
@@ -560,11 +610,6 @@
                                                         </div>
                                                         <div class="col-md-3 form-group">
                                                             {{ Form::label('title', 'State') }}
-                                                            <select class="form-control" name="applicant_state">
-                                                                @foreach ($state as $states)
-                                                                    <option value="{{ $states->state_code }}" {{ $applicant->applicantContactInfo->applicant_state == $states->state_code ? 'selected="selected"' : ''}}>{{ $states->state_name }}</option>
-                                                                @endforeach
-                                                            </select>
                                                             {{ Form::text('applicant_state', $applicant->applicantContactInfo->applicant_state, ['class' => 'form-control', 'placeholder' => 'State']) }}
                                                         </div>
                                                         <div class="col-md-3 form-group">
@@ -591,7 +636,7 @@
                                                     {!! Form::open(['action' => ['ApplicantController@updateGuardian'], 'method' => 'POST'])!!}
                                                     {{Form::hidden('id', $applicant->id)}}
                                                     <div class="row">
-                                                        <div class="form-group col-md-6">
+                                                        <div class="form-group col-md-12">
                                                             {{Form::label('title', 'Name(Father / Guardian I)')}}
                                                             {{Form::text('guardian_one_name', $applicant->applicantGuardian->guardian_one_name, ['class' => 'form-control', 'placeholder' => 'Guardian Name'])}}
                                                         </div>
@@ -599,21 +644,17 @@
                                                             {{Form::label('title', 'Relationship')}}
                                                             {{Form::text('guardian_one_relationship', $applicant->applicantGuardian->guardian_one_relationship, ['class' => 'form-control', 'placeholder' => 'Relationship'])}}
                                                         </div>
-                                                        <div class="form-group col-md-4">
-                                                            {{Form::label('title', 'Nationality')}}
-                                                            {{Form::text('guardian_one_nationality', $applicant->applicantGuardian->guardian_one_nationality, ['class' => 'form-control', 'placeholder' => 'Nationality'])}}
+                                                        <div class="form-group col-md-6">
+                                                            {{Form::label('title', 'Mobile Phone')}}
+                                                            {{Form::text('guardian_one_mobile', $applicant->applicantGuardian->guardian_one_mobile, ['class' => 'form-control', 'placeholder' => 'Mobile'])}}
                                                         </div>
                                                         <div class="form-group col-md-12">
                                                             {{Form::label('title', 'Address')}}
                                                             {{Form::text('guardian_one_address', $applicant->applicantGuardian->guardian_one_address, ['class' => 'form-control', 'placeholder' => 'Address'])}}
                                                         </div>
-                                                        <div class="form-group col-md-6">
-                                                            {{Form::label('title', 'Mobile Phone')}}
-                                                            {{Form::text('guardian_one_mobile', $applicant->applicantGuardian->guardian_one_mobile, ['class' => 'form-control', 'placeholder' => 'Mobile'])}}
-                                                        </div>
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="form-group col-md-6">
+                                                    <div class="row mt-5">
+                                                        <div class="form-group col-md-12">
                                                             {{Form::label('title', 'Name(Mother / Guardian II)')}}
                                                             {{Form::text('guardian_two_name', $applicant->applicantGuardian->guardian_two_name, ['class' => 'form-control', 'placeholder' => 'Guardian Name'])}}
                                                         </div>
@@ -621,17 +662,13 @@
                                                             {{Form::label('title', 'Relationship')}}
                                                             {{Form::text('guardian_two_relationship', $applicant->applicantGuardian->guardian_two_relationship, ['class' => 'form-control', 'placeholder' => 'Relationship'])}}
                                                         </div>
-                                                        <div class="form-group col-md-4">
-                                                            {{Form::label('title', 'Nationality')}}
-                                                            {{Form::text('guardian_two_nationality', $applicant->applicantGuardian->guardian_two_nationality, ['class' => 'form-control', 'placeholder' => 'Nationality'])}}
+                                                        <div class="form-group col-md-6">
+                                                            {{Form::label('title', 'Mobile Phone')}}
+                                                            {{Form::text('guardian_two_mobile', $applicant->applicantGuardian->guardian_two_mobile, ['class' => 'form-control', 'placeholder' => 'Mobile'])}}
                                                         </div>
                                                         <div class="form-group col-md-12">
                                                             {{Form::label('title', 'Address')}}
                                                             {{Form::text('guardian_two_address', $applicant->applicantGuardian->guardian_two_address, ['class' => 'form-control', 'placeholder' => 'Address'])}}
-                                                        </div>
-                                                        <div class="form-group col-md-6">
-                                                            {{Form::label('title', 'Mobile Phone')}}
-                                                            {{Form::text('guardian_two_mobile', $applicant->applicantGuardian->guardian_two_mobile, ['class' => 'form-control', 'placeholder' => 'Mobile'])}}
                                                         </div>
                                                     </div>
                                                     @role('executive')
@@ -649,7 +686,7 @@
                                                     {!! Form::open(['action' => ['ApplicantController@updateEmergency'], 'method' => 'POST'])!!}
                                                     <div class="row">
                                                         {{Form::hidden('id', $applicant->id)}}
-                                                        <div class="form-group col-md-6">
+                                                        <div class="form-group col-md-12">
                                                             {{Form::label('title', 'Name')}}
                                                             {{Form::text('emergency_name', $applicant->applicantEmergency->emergency_name, ['class' => 'form-control', 'placeholder' => 'Name'])}}
                                                         </div>
