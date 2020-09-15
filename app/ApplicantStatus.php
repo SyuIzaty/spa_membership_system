@@ -3,12 +3,26 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class ApplicantStatus extends Model
 {
+    use LogsActivity;
     protected $table = 'applicant_status';
 
     protected $fillable = ['applicant_id','applicant_programme','applicant_status','student_id','applicant_major'];
+
+    protected static $logAttributes = ['applicant_id'];
+
+    public function getDescriptionForEvent()
+    {
+        return "Offered Programme";
+    }
+
+    public function activity()
+    {
+        return $this->hasMany('App\Activity','subject_id','id');
+    }
 
     public function programme()
     {

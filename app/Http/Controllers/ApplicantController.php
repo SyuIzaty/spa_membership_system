@@ -9,7 +9,6 @@ use App\ApplicantStatus;
 use App\ApplicantContact;
 use App\ApplicantAcademic;
 use App\Grades;
-use App\RequirementSubject;
 use App\Programme;
 use App\Country;
 use App\Religion;
@@ -21,10 +20,11 @@ use App\Qualification;
 use App\Subject;
 use App\ApplicantEmergency;
 use App\ApplicantGuardian;
-use App\RequirementStatus;
 use App\IntakeDetail;
+use App\Intakes;
 use DB;
 use Illuminate\Support\Facades\Mail;
+use Spatie\Activitylog\Models\Activity;
 use Barryvdh\DomPDF\Facade as PDF;
 
 class ApplicantController extends Controller
@@ -508,7 +508,14 @@ class ApplicantController extends Controller
             }
 
             $aapplicant = $dataappl;
-        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace','applicantresult','total_point', 'programmestatus', 'aapplicant','country','marital','religion','race','gender','state','skm','mqf','kkm','cat','icaew'));
+            $activity = [];
+            $applicant_status = ApplicantStatus::where('applicant_id',$id)->get();
+            foreach($applicant_status as $app_stat)
+            {
+                $activity = Activity::where('subject_id',$app_stat['id'])->where('subject_type','App\ApplicantStatus')->get();
+            }
+
+        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace','applicantresult','total_point', 'programmestatus', 'aapplicant','country','marital','religion','race','gender','state','skm','mqf','kkm','cat','icaew','activity'));
     }
 
     public function updateApplicant(Request $request)
@@ -1617,7 +1624,7 @@ class ApplicantController extends Controller
 
         ApplicantStatus::create($data);
 
-        $this->sendEmail($request->applicant_id);
+        // $this->sendEmail($request->applicant_id);
 
         return response()->json(['success'=>true,'status'=>'success','message'=>'Data has been saved to datatbase','Data'=>$data]);
     }
