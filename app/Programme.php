@@ -11,13 +11,35 @@ class Programme extends Model
 
     protected $table = 'programmes';
 
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'id'; 
     public $incrementing = false;
     protected $keyType = 'string';
 
     protected $fillable = [
-        'id','programme_code','programme_name','programme_duration',
+        'id','programme_code','programme_name','scroll_name','programme_name_malay','scroll_name_malay','programme_duration','programme_status', 
     ];
+
+    protected $attributes = [
+        'programme_status' => 1
+    ];
+
+    public function getActiveAttribute($attribute)
+    {
+        return [
+            0 => 'Inactive',
+            1 => 'Active'
+        ] [$attribute];
+    }
+
+    public function scopeActive($query)
+    {
+    	return $query->where('programme_status', 1);
+    }
+
+    public function scopeInactive($query)
+    {
+    	return $query->where('programme_status', 0);
+    }
 
     public function applicant()
     {

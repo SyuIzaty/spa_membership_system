@@ -14,7 +14,8 @@ class CourseController extends Controller
      */
     public function index()
     {
-        return view('course.index');
+       $course = Course::all();
+       return view('param.course.index', compact('course'));
     }
 
     /**
@@ -22,9 +23,32 @@ class CourseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function data_allCourse()
+    {
+        $course = Course::all();
+
+        return datatables()::of($course)
+        ->addColumn('action', function ($course) {
+
+            return '
+            <a href="/param/course/' . $course->id . '/edit" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i> Edit</a>
+            <a href="/param/course/' . $course->id . '" class="btn btn-sm btn-info btn-view"><i class="fal fa-eye"></i> View</a>
+            <button class="btn btn-sm btn-danger btn-delete delete" data-remote="/param/course/' . $course->id . '"> <i class="fal fa-trash"></i> Delete</button>'
+            ;
+        })
+
+        ->editColumn('created_at', function ($course) {
+
+            return date(' Y-m-d ', strtotime($course->updated_at) );
+        })
+
+        ->make(true);
+    }
+
     public function create()
     {
-        
+        return view('param.course.create');
     }
 
     /**
@@ -35,7 +59,19 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Course::create($this->validateRequestStore());
+        return redirect('param/course');
+    }
+
+    public function validateRequestStore()
+    {
+        return request()->validate([
+            'id'                => 'required|min:1|max:255|unique:courses,id',                       
+            'course_code'       => 'required|min:1|max:255|unique:courses,course_code',  
+            'course_name'       => 'required|min:1|max:255',    
+            'credit_hours'      => 'required',
+            'course_status'     => 'required',
+        ]);
     }
 
     /**
@@ -46,7 +82,8 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        //
+        $arr['course'] = $course;
+        return view('param.course.show')->with($arr);
     }
 
     /**
@@ -57,7 +94,7 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
-        //
+        return view('param.course.edit',compact('course'));
     }
 
     /**
@@ -69,7 +106,19 @@ class CourseController extends Controller
      */
     public function update(Request $request, Course $course)
     {
-        //
+        $course->update($this->validateRequestUpdate($course));
+        return redirect('param/course');
+    }
+
+    public function validateRequestUpdate(Course $course)
+    {
+        return request()->validate([
+            'id'                => 'required|min:1|max:255|unique:courses,id,'. $course->id,                       
+            'course_code'       => 'required|min:1|max:255|unique:courses,course_code,'. $course->course_code,  
+            'course_name'       => 'required|min:1|max:255',    
+            'credit_hours'      => 'required',
+            'course_status'     => 'required',
+        ]);
     }
 
     /**
@@ -78,19 +127,21 @@ class CourseController extends Controller
      * @param  \App\Course  $course
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Course $course)
+    public function destroy($id)
     {
-        //
+        $exist = Course::find($id);
+        $exist->delete();
+        return response()->json(['success'=>'Major deleted successfully.']);
     }
 
-    public function data_allcourses()
-    {
-         $students = Course::select('*');
+    // public function data_allcourses()
+    // {
+    //      $students = Course::select('*');
 
-       return datatables()::of($students)
-           ->addColumn('action', function ($students) {
-               return '<a href="/student/'.$students->SM_STUDENT_ID.'/edit" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
-           })
-           ->make(true);
-    }
+    //    return datatables()::of($students)
+    //        ->addColumn('action', function ($students) {
+    //            return '<a href="/student/'.$students->SM_STUDENT_ID.'/edit" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
+    //        })
+    //        ->make(true);
+    // }
 }
