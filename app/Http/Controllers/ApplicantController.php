@@ -1624,7 +1624,7 @@ class ApplicantController extends Controller
 
         ApplicantStatus::create($data);
 
-        // $this->sendEmail($request->applicant_id);
+        $this->sendEmail($request->applicant_id);
 
         return response()->json(['success'=>true,'status'=>'success','message'=>'Data has been saved to datatbase','Data'=>$data]);
     }
