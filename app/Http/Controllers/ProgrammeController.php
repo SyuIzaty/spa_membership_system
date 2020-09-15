@@ -26,12 +26,20 @@ class ProgrammeController extends Controller
         ->addColumn('action', function ($programmes) {
 
             return '
-            <button class="btn btn-sm btn-danger btn-delete delete" data-remote="/param/programme/' . $programmes->id . '"> Delete</button>'
+            <a href="/param/programme/' . $programmes->id . '/edit" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i> Edit</a>
+            <a href="/param/programme/' . $programmes->id . '" class="btn btn-sm btn-info btn-view"><i class="fal fa-eye"></i> View</a>
+            <button class="btn btn-sm btn-danger btn-delete delete" data-remote="/param/programme/' . $programmes->id . '"> <i class="fal fa-trash"></i> Delete</button>'
             ;
         })
 
+        ->editColumn('created_at', function ($programmes) {
+
+            return date(' Y-m-d ', strtotime($programmes->updated_at) );
+        })
+
         ->make(true);
-    }
+
+        }
 
     /**
      * Show the form for creating a new resource.
@@ -40,7 +48,7 @@ class ProgrammeController extends Controller
      */
     public function create()
     {
-        //
+        return view('param.programme.create');
     }
 
     /**
@@ -51,20 +59,23 @@ class ProgrammeController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'id' => 'required',
-            'programme_name' => 'required',
-            'programme_duration' => 'required',
-        ]);
+        Programme::create($this->validateRequestStore());
+        return redirect('param/programme');
 
-        Programme::create([
-            'id' => $request->id,
-            'programme_code' => $request->id,
-            'programme_name' => $request->programme_name,
-            'programme_duration' => $request->programme_duration,
-        ]);
-        return redirect()->back();
+    }
 
+    public function validateRequestStore()
+    {
+        return request()->validate([
+            'id'                   => 'required|min:1|max:255|unique:programmes,id',                        
+            'programme_code'       => 'required|min:1|max:255|unique:programmes,programme_code',  
+            'programme_name'       => 'required|min:1|max:255',    
+            'scroll_name'          => 'required|min:1|max:255',
+            'programme_name_malay' => 'required|min:1|max:255',  
+            'scroll_name_malay'    => 'required|min:1|max:255',  
+            'programme_status'     => 'required', 
+            'programme_duration'   => 'required',  
+        ]);
     }
 
     /**
@@ -75,7 +86,8 @@ class ProgrammeController extends Controller
      */
     public function show(Programme $programme)
     {
-        //
+        $arr['programme'] = $programme;
+        return view('param.programme.show')->with($arr);
     }
 
     /**
@@ -86,7 +98,7 @@ class ProgrammeController extends Controller
      */
     public function edit(Programme $programme)
     {
-        //
+        return view('param.programme.edit',compact('programme'));
     }
 
     /**
@@ -98,7 +110,22 @@ class ProgrammeController extends Controller
      */
     public function update(Request $request, Programme $programme)
     {
-        //
+        $programme->update($this->validateRequestUpdate($programme));
+        return redirect('param/programme');
+    }
+
+    public function validateRequestUpdate(Programme $programme)
+    {
+        return request()->validate([
+            'id'                   => 'required|min:1|max:255|unique:programmes,id,'. $programme->id,                        
+            'programme_code'       => 'required|min:1|max:255|unique:programmes,programme_code,'. $programme->programme_code,   
+            'programme_name'       => 'required|min:1|max:255',    
+            'scroll_name'          => 'required|min:1|max:255',
+            'programme_name_malay' => 'required|min:1|max:255',  
+            'scroll_name_malay'    => 'required|min:1|max:255',  
+            'programme_status'     => 'required', 
+            'programme_duration'   => 'required', 
+        ]);
     }
 
     /**
@@ -111,6 +138,6 @@ class ProgrammeController extends Controller
     {
         $exist = Programme::find($id);
         $exist->delete();
-        return response()->json(['success'=>'Intake deleted successfully.']);
+        return response()->json(['success'=>'Programme deleted successfully.']);
     }
 }

@@ -4,7 +4,7 @@
 <main id="js-page-content" role="main" class="page-content">
     <div class="subheader">
         <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-university'></i>Programme
+        <i class='subheader-icon fal fa-university'></i>Course
         </h1>
     </div>
     <div class="row">
@@ -12,7 +12,7 @@
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
                     <h2>
-                        Programme <span class="fw-300"><i>List</i></span>
+                        Course <span class="fw-300"><i>List</i></span>
                     </h2>
                     <div class="panel-toolbar">
                         <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
@@ -23,23 +23,30 @@
                 <div class="panel-container show">
                     <div class="panel-content">
                         <div class="pull-right mb-4">
-                            {{-- <a class="btn btn-primary pull-right" href="javascript:;" data-toggle="modal" id="new">Add Programme</a> --}}
-                            <a href="/param/programme/create" class="btn btn-primary ml-auto"><i class="fal fa-search-plus"></i> Add New Programme</a>
+                            <a href="/param/course/create" class="btn btn-primary ml-auto"><i class="fal fa-search-plus"></i> Add New Course</a>
                         </div>
-                        <table id="programme" class="table table-bordered table-hover table-striped w-100">
+                        <table id="course" class="table table-bordered table-hover table-striped w-100">
                             <thead>
                                 <tr class="bg-highlight">
-                                    <th>Programme Code</th>
-                                    <th>Programme Description</th>
-                                    <th>Programme Duration</th>
-                                    <th>Programme Created</th>
+                                    <th>Course Code</th>
+                                    <th>Course Name</th>
+                                    <th>Credit Hours</th>
+                                    <th>Course Created</th>
+                                    {{-- <th>Course Status</th> --}}
                                     <th>Action</th>
                                 </tr>
                                 <tr>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Code"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Description"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Duration"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Created"></td>
+                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Course Code"></td>
+                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Course Name"></td>
+                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Credit Hours"></td>
+                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Course Created"></td>
+                                    {{-- <td class="hasinput">
+                                        <select id="course_status" name="course_status" class="form-control">
+                                            <option value="">All</option>
+                                            <option value="1">Active</option>
+                                            <option value="0">Inactive</option>
+                                        </select>
+                                    </td> --}}
                                     <td class="hasinput"></td>
                                 </tr>
                             </thead>
@@ -47,42 +54,11 @@
                             </tbody>
 
                         </table>
-                        <!-- datatable end -->
                     </div>
 
                     <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">
-                        {{-- <a href="/param/programme/create" class="btn btn-primary ml-auto"><i class="fal fa-search-plus"></i> Add New Programme</a> --}}
                     </div>
-
-                    {{-- <div class="modal fade" id="crud-modal" aria-hidden="true" >
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title"> Add Programme</h4>
-                                </div>
-                                <div class="modal-body">
-                                    {!! Form::open(['action' => 'ProgrammeController@store', 'method' => 'POST']) !!}
-                                    <div class="form-group">
-                                        {{Form::label('title', 'Programme Code')}}
-                                        {{Form::text('id', '', ['class' => 'form-control', 'placeholder' => 'Programme Code'])}}
-                                    </div>
-                                    <div class="form-group">
-                                        {{Form::label('title', 'Programme Name')}}
-                                        {{Form::text('programme_name', '', ['class' => 'form-control', 'placeholder' => 'Programme Name', 'required'])}}
-                                    </div>
-                                    <div class="form-group">
-                                        {{Form::label('title', 'Programme Description')}}
-                                        {{Form::text('programme_duration', '', ['class' => 'form-control', 'placeholder' => 'Programme Duration', 'required'])}}
-                                    </div>
-                                    <div class="pull-right">
-                                        <button class="btn btn-primary" type="submit">Save</button>
-                                    </div>
-                                    {!! Form::close() !!}
-                                </div>
-                            </div>
-                        </div>
-                    </div> --}}
-
+                   
                 </div>
             </div>
         </div>
@@ -93,13 +69,10 @@
 @section('script')
 
 <script>
-    // $('#new').click(function () {
-    //     $('#crud-modal').modal('show');
-    // });
 
     $(document).ready(function()
     {
-        $('#programme thead tr .hasinput').each(function(i)
+        $('#course thead tr .hasinput').each(function(i)
         {
             $('input', this).on('keyup change', function()
             {
@@ -125,19 +98,20 @@
         });
 
 
-        var table = $('#programme').DataTable({
+        var table = $('#course').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
-                url: "/data-allProgramme",
+                url: "/data-allCourse",
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
             columns: [
-                    { data: 'id', name: 'id' },
-                    { data: 'programme_name', name: 'programme_name' },
-                    { data: 'programme_duration', name: 'programme_duration' },
+                    { data: 'course_code', name: 'course_code' },
+                    { data: 'course_name', name: 'course_name' },
+                    { data: 'credit_hours', name: 'credit_hours' },
                     { data: 'created_at', name: 'created_at' },
+                    // { data: 'course_status', name: 'course_status' },
                     { data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
@@ -147,7 +121,7 @@
                 }
         });
 
-        $('#programme').on('click', '.btn-delete[data-remote]', function (e) {
+        $('#course').on('click', '.btn-delete[data-remote]', function (e) {
             e.preventDefault();
             $.ajaxSetup({
                 headers: {
@@ -172,7 +146,7 @@
                     dataType: 'json',
                     data: {method: '_DELETE', submit: true}
                     }).always(function (data) {
-                        $('#programme').DataTable().draw(false);
+                        $('#course').DataTable().draw(false);
                     });
                 }
             })

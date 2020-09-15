@@ -350,15 +350,16 @@
                                     </li>
                                 </ul>
                             </li>
+                            
                             <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-portrait"></i>
-                                    <span class="nav-link-text" data-i18n="nav.application_intel">Program</span>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Programme</span>
                                 </a>
                                 <ul>
                                     <li>
                                         <a href="/param/programme/" title="Active Student" data-filter-tags="active_student">
-                                            <i class="fal fa-user"></i>
+                                            <i class="fal fa-list"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">Programme List</span>
                                         </a>
                                     </li>
@@ -372,6 +373,36 @@
                                         <a href="/examination" title="Active Student" data-filter-tags="active_student">
                                             <i class="fal fa-user"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">Program Detailsd</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="#" title="Application Intel" data-filter-tags="application intel">
+                                    <i class="fal fa-portrait"></i>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Course</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/param/course/" title="Active Course" data-filter-tags="active_course">
+                                            <i class="fal fa-list"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_course">Course List</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="#" title="Application Intel" data-filter-tags="application intel">
+                                    <i class="fal fa-portrait"></i>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Major</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/param/major/" title="Active Major" data-filter-tags="active_major">
+                                            <i class="fal fa-list"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_major">Major List</span>
                                         </a>
                                     </li>
                                 </ul>
