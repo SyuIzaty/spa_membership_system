@@ -121,7 +121,7 @@ class RoomSuitabilityController extends Controller
     public function validateRequestStore()
     {
         return request()->validate([
-            'code'                => 'required|min:1|max:10|unique:roomsuitabilities,code',                        
+            'code'                => 'required|min:1|max:10|unique:room_suitabilities,code',                        
             'roomtype_id'         => 'required',
             'name'                => 'required|min:1|max:100',  
             'description'         => 'required|min:1|max:1000',    
@@ -132,7 +132,7 @@ class RoomSuitabilityController extends Controller
     public function validateRequestUpdate(Roomsuitability $roomsuitability)
     {
         return request()->validate([
-            'code'                => 'required|min:1|max:10|unique:roomsuitabilities,code,'.$roomsuitability->id,                        
+            'code'                => 'required|min:1|max:10|unique:room_suitabilities,code,'.$roomsuitability->id,                        
             'roomtype_id'         => 'required',
             'name'                => 'required|min:1|max:100',  
             'description'         => 'required|min:1|max:1000',    

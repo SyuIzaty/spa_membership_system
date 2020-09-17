@@ -39,8 +39,8 @@ class RoomOwnerController extends Controller
     {
         $request->validate([
             'name'                => 'required|min:1|max:255',                        
-            'phone_number'        => 'required|regex:/(\+?0)[0-46-9]-*[0-9]{7,8}/|unique:roomowners,phone_number',  
-            'email'               => 'required|unique:roomowners,email',    
+            'phone_number'        => 'required|regex:/(\+?0)[0-46-9]-*[0-9]{7,8}/|unique:room_owners,phone_number',  
+            'email'               => 'required|unique:room_owners,email',    
             'dateofbirth'         => 'required|date', 
             'gender'              => 'required|in:male,female',    
             'active'              => 'required', 
@@ -174,8 +174,8 @@ class RoomOwnerController extends Controller
     {
         $request = [
             'name'                => 'required|min:1|max:255',   
-            'phone_number'        => 'required|regex:/(\+?0)[0-46-9]-*[0-9]{7,8}/|unique:roomowners,phone_number',
-            'email'               => 'required|unique:roomowners,email',
+            'phone_number'        => 'required|regex:/(\+?0)[0-46-9]-*[0-9]{7,8}/|unique:room_owners,phone_number',
+            'email'               => 'required|unique:room_owners,email',
             'dateofbirth'         => 'required|date', 
             'gender'              => 'required|in:male,female',    
             'active'              => 'required', 

@@ -46,7 +46,7 @@ class RoomFacilityController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'code'                => 'required|min:1|max:10|unique:roomfacilities,code',                        
+            'code'                => 'required|min:1|max:10|unique:room_facilities,code',                        
             'roomtype_id'         => 'required',  
             'roomsuitability_id'  => 'required',          
             'name'                => 'required|min:1|max:100',  
@@ -124,7 +124,7 @@ class RoomFacilityController extends Controller
     public function update(Request $request, Storefacility $storefacility, $id)
     {
         $this->validate($request,[
-            'code'                => 'required|min:1|max:10|unique:roomfacilities,code,'.$id,                        
+            'code'                => 'required|min:1|max:10|unique:room_facilities,code,'.$id,                        
             'roomtype_id'         => 'required',  
             'roomsuitability_id'  => 'required',          
             'name'                => 'required|min:1|max:100',  

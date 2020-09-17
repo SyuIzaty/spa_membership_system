@@ -10,7 +10,7 @@ class Roomfacility extends Model
     use SoftDeletes;
     
     protected $fillable = ['code', 'roomtype_id', 'roomsuitability_id', 'name','description','active'];
-    protected $table = 'roomfacilities';
+    protected $table = 'room_facilities';
 
     protected $attributes = [
         'active' => 1

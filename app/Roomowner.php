@@ -10,7 +10,7 @@ class Roomowner extends Model
     use SoftDeletes;
     
     protected $fillable = ['name','phone_number','email','dateofbirth','gender','active','image'];
-    protected $table = 'roomowners';
+    protected $table = 'room_owners';
     
     protected $attributes = [
         'active' => 1
