@@ -512,7 +512,7 @@ class ApplicantController extends Controller
             $applicant_status = ApplicantStatus::where('applicant_id',$id)->get();
             foreach($applicant_status as $app_stat)
             {
-                $activity = Activity::where('subject_id',$app_stat['id'])->where('subject_type','App\ApplicantStatus')->get();
+                $activity = Activity::where('properties->attributes->applicant_id', $app_stat['applicant_id'])->get();
             }
 
         return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace','applicantresult','total_point', 'programmestatus', 'aapplicant','country','marital','religion','race','gender','state','skm','mqf','kkm','cat','icaew','activity'));

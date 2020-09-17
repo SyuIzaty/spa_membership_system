@@ -40,11 +40,11 @@
                                                         <div class="row">
                                                             <div class="form-group col-md-6">
                                                                 {{Form::label('title', 'Name')}}
-                                                                {{Form::text('applicant_name', $applicant->applicant_name, ['class' => 'form-control', 'placeholder' => 'Applicant Name'])}}
+                                                                {{Form::text('applicant_name', $applicant->applicant_name, ['class' => 'form-control', 'placeholder' => 'Applicant Name', 'readonly' => 'true'])}}
                                                             </div>
                                                             <div class="col-md-6 form-group">
                                                                 {{ Form::label('title', 'IC Number') }}
-                                                                {{ Form::text('applicant_ic', $applicant->applicant_ic, ['class' => 'form-control', 'placeholder' => 'Applicant IC Number']) }}
+                                                                {{ Form::text('applicant_ic', $applicant->applicant_ic, ['class' => 'form-control', 'placeholder' => 'Applicant IC Number', 'readonly' => 'true']) }}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -721,12 +721,12 @@
                                     <div class="card-body">
                                         @if (isset($activity))
                                         <table class="table table-bordered">
+                                            @foreach ($activity as $activities)
                                             <tr>
-                                                @foreach ($activity as $activities)
                                                 <td>{{ $activities->created_at }}</td>
                                                 <td>{{ $activities->description }}</td>
-                                                @endforeach
                                             </tr>
+                                            @endforeach
                                         </table>
                                         @endif
                                     </div>
