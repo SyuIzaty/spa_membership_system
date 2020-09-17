@@ -24,7 +24,7 @@
                 <div class="panel-container show">
                    
                     <div class="panel-content">
-                        <table id="course" class="table table-bordered table-hover table-striped w-100">
+                        <table id="major" class="table table-bordered table-hover table-striped w-100">
                             <thead>
                                 <tr>
                                     <th colspan="10" class="bg-highlight"><i class="fal fa-list"></i> {{ strtoupper($major->major_name) }}</th>
