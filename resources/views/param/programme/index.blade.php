@@ -30,7 +30,7 @@
                             <thead>
                                 <tr class="bg-highlight">
                                     <th>Programme Code</th>
-                                    <th>Programme Description</th>
+                                    <th>Programme Name</th>
                                     <th>Programme Duration</th>
                                     <th>Programme Created</th>
                                     <th>Action</th>
