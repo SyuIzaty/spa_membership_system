@@ -18,6 +18,7 @@ use App\ApplicantGuardian;
 use App\Qualification;
 use App\ApplicantAcademic;
 use App\Subject;
+use App\Intakes;
 use App\Grades;
 use App\ApplicantResult;
 use App\Http\Requests\StoreApplicantRequest;
@@ -36,7 +37,8 @@ class RegistrationController extends Controller
         $programme = Programme::all();
         $major = Major::all();
         $state = State::all();
-        return view('registration.index', compact('country','programme','major'));
+        $intake = Intakes::where('status','1')->get();
+        return view('registration.index', compact('country','programme','major','intake'));
     }
 
     /**
@@ -439,7 +441,7 @@ class RegistrationController extends Controller
                 ApplicantResult::create($row);
             }
         }
-        if (count($academic) > 0) {
+        if (isset($academic) ) {
             foreach ($academic as $app_academic) {
                 ApplicantAcademic::create($app_academic);
             }

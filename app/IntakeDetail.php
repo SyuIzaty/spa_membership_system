@@ -29,6 +29,6 @@ class IntakeDetail extends Model
 
     public function intakes()
     {
-        return $this->hasMany('App\Intakes','id','intake_code');
+        return $this->hasOne('App\Intakes','id','intake_code');
     }
 }

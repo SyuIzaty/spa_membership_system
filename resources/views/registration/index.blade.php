@@ -14,6 +14,9 @@
                             {!! Form::open(['action' => 'RegistrationController@store', 'method' => 'POST']) !!}
                             <div class="row">
                                 <div class="form-group col-md-8">
+                                    @foreach ($intake as $intakes)
+                                        <input type="hidden" value="{{ $intakes->id }}" name="intake_id">
+                                    @endforeach
                                     <small class="text-danger">{{ $errors->first('name') }}</small>
                                     {{Form::label('title', 'Name')}}
                                     {{Form::text('applicant_name', '', ['class' => 'form-control', 'placeholder' => 'Applicant Name'])}}
@@ -79,9 +82,9 @@
                                     {{ Form::label('title', '2nd Preferred Programme (Optional)') }}
                                     <select class="form-control" name="applicant_programme_2" >
                                         <option value="">Select Programme</option>
-                                        @foreach($programme as $programmes)
-                                            <option value="{{$programmes->programme_code}}">{{$programmes->programme_name}}</option>
-                                        @endforeach
+                                        {{-- @foreach($progs as $programmes)
+                                            <option value="{{$programmes->programme->programme_code}}">{{$programmes->programme->programme_name}}</option>
+                                        @endforeach --}}
                                     </select>
                                 </div>
                                 <div class="col-md-4 form-group">
@@ -97,9 +100,9 @@
                                     {{ Form::label('title', '3rd Preferred Programme (Optional)') }}
                                     <select class="form-control" name="applicant_programme_3" >
                                         <option value="">Select Programme</option>
-                                        @foreach($programme as $programmes)
-                                            <option value="{{$programmes->programme_code}}">{{$programmes->programme_name}}</option>
-                                        @endforeach
+                                        {{-- @foreach($progs as $programmes)
+                                            <option value="{{$programmes->programme->programme_code}}">{{$programmes->programme->programme_name}}</option>
+                                        @endforeach --}}
                                     </select>
                                 </div>
                                 <div class="col-md-4 form-group">

@@ -56,10 +56,11 @@
                                                         @if(isset($applicant->applicant_name) )
                                                         {{-- @if(count($applicantresult) > 0) --}}
                                                         <table class="table table-bordered table-sm">
-                                                            <thead>
-                                                                <th>Applicant Programme</th>
-                                                                <th>Applicant Major</th>
+                                                            <thead class="bg-highlight">
+                                                                <th style="width: 30px">Applicant Programme</th>
+                                                                <th style="width: 30px">Applicant Major</th>
                                                                 <th>Result</th>
+                                                                <th>Intake Session</th>
                                                                 <th>Action</th>
                                                             </thead>
                                                             <tr id={{$applicant->id}}>
@@ -94,12 +95,33 @@
                                                                     @endif
                                                                 </td>
                                                                 <td>
+                                                                    <input type="text" class="form-control" name="applicant_intake" value="{{ $applicant->applicantIntake->intake_code }}" readonly>
+                                                                    {{-- <select name="applicant_intake" class="form-control" id="intake_1">
+                                                                        <option value="{{ $applicant->intake_id }}">{{ $applicant->applicantIntake->intake_code }}</option>
+                                                                        @foreach ($intake as $in)
+                                                                            <option value="{{ $in->id }}">{{ $in->intake_code }}</option>
+                                                                        @endforeach
+                                                                    </select> --}}
+                                                                    @if (isset($applicant->applicant_programme_2))
+                                                                    <input type="text" class="form-control" name="applicant_intake" value="{{ $applicant->applicantIntake->intake_code }}" readonly>
+                                                                    @endif
+                                                                    @if (isset($applicant->applicant_programme_3))
+                                                                    <input type="text" class="form-control" name="applicant_intake" value="{{ $applicant->applicantIntake->intake_code }}" readonly>
+                                                                    @endif
+                                                                </td>
+                                                                <td>
                                                                     @foreach($aapplicant as $aapplicant_all_app)
                                                                     @if($aapplicant_all_app['programme_status'] == '1')
-                                                                    <select name="applicant_status" class="form-control" id="status_{{$aapplicant_all_app['applicant_programme']}}">
-                                                                        <option disabled selected>Please select</option>
-                                                                        <option value="3">Selected</option>
-                                                                        <option value="4">Selected for Interview</option>
+                                                                    <select name="applicant_status" class="form-control" id="status_{{ $aapplicant_all_app['applicant_programme'] }}">
+                                                                        @if (isset($applicant->applicant_status))
+                                                                            <option value="{{ $applicant->applicant_status }}">{{ $applicant->status->status_description }}</option>
+                                                                            <option value="3">Selected</option>
+                                                                            <option value="4">Selected for Interview</option>
+                                                                        @else
+                                                                            <option disabled selected>Please Select</option>
+                                                                            <option value="3">Selected</option>
+                                                                            <option value="4">Selected for Interview</option>
+                                                                        @endif
                                                                     </select>
                                                                     @else
                                                                     <input class="form-control" value="Not Selected" name="applicant_status" disabled>
@@ -298,7 +320,7 @@
                                             @if(count($spm)!=0)
                                             <h5>SPM</h5>
                                                 <table class="table table-bordered table-sm">
-                                                <thead>
+                                                <thead class="bg-highlight">
                                                     <th>Subject Code</th>
                                                     <th>Subject Name</th>
                                                     <th>Grade</th>
@@ -315,7 +337,7 @@
                                             @if(count($stpm)!=0)
                                             <h5>STPM</h5>
                                                 <table class="table table-bordered table-sm">
-                                                <thead>
+                                                <thead class="bg-highlight">
                                                     <th>Subject Code</th>
                                                     <th>Subject Name</th>
                                                     <th>Grade</th>
@@ -332,7 +354,7 @@
                                             @if(count($stam)!=0)
                                             <h5>STAM</h5>
                                                 <table class="table table-bordered table-sm">
-                                                <thead>
+                                                <thead class="bg-highlight">
                                                     <th>Subject Code</th>
                                                     <th>Subject Name</th>
                                                     <th>Grade</th>
@@ -349,7 +371,7 @@
                                             @if(count($uec)!=0)
                                             <h5>UEC</h5>
                                                 <table class="table table-bordered table-sm">
-                                                <thead>
+                                                <thead class="bg-highlight">
                                                     <th>Subject Code</th>
                                                     <th>Subject Name</th>
                                                     <th>Grade</th>
@@ -366,7 +388,7 @@
                                             @if(count($alevel)!=0)
                                             <h5>A Level</h5>
                                                 <table class="table table-bordered table-sm">
-                                                <thead>
+                                                <thead class="bg-highlight">
                                                     <th>Subject Code</th>
                                                     <th>Subject Name</th>
                                                     <th>Grade</th>
@@ -383,7 +405,7 @@
                                             @if(count($olevel)!=0)
                                             <h5>O Level</h5>
                                                 <table class="table table-bordered table-sm">
-                                                <thead>
+                                                <thead class="bg-highlight">
                                                     <th>Subject Code</th>
                                                     <th>Subject Name</th>
                                                     <th>Grade</th>
@@ -721,6 +743,10 @@
                                     <div class="card-body">
                                         @if (isset($activity))
                                         <table class="table table-bordered">
+                                            <tr class="bg-highlight">
+                                                <td>Date</td>
+                                                <td>Activity</td>
+                                            </tr>
                                             @foreach ($activity as $activities)
                                             <tr>
                                                 <td>{{ $activities->created_at }}</td>
@@ -766,6 +792,25 @@
 
             });
         });
+        // $('#intake_1').on('change',function(){
+        //     var selectedValue = $(this).val();
+        //     var trid = $(this).closest('tr').attr('id');
+        //     console.log(selectedValue);
+        //     console.log(trid);
+        //     $.ajax({
+        //         url: "{{url('/programmestatus')}}",
+        //         method: "post",
+        //         data: { "_token": "{{ csrf_token() }}", applicant_id: trid,applicant_intake: selectedValue },
+        //         success: function(response) {
+        //         alert('Data has been updated');
+        //         return response;
+        //         },
+        //         error: function() {
+        //             alert('error');
+        //         }
+
+        //     });
+        // });
         $('#status_{{$aapplicant_all_app['applicant_programme_2']}}').on('change',function(){
             var programme = "{{$aapplicant_all_app['applicant_programme_2']}}";
             var major = "{{$applicant->applicant_major_2}}";

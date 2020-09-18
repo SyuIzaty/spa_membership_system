@@ -7,17 +7,17 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class ApplicantStatus extends Model
 {
-    use LogsActivity;
+    // use LogsActivity;
     protected $table = 'applicant_status';
 
     protected $fillable = ['applicant_id','applicant_programme','applicant_status','student_id','applicant_major'];
 
-    protected static $logAttributes = ['applicant_id'];
+    // protected static $logAttributes = ['applicant_id'];
 
-    public function getDescriptionForEvent()
-    {
-        return "Offered Programme";
-    }
+    // public function getDescriptionForEvent()
+    // {
+    //     return "Offered Programme";
+    // }
 
     public function activity()
     {

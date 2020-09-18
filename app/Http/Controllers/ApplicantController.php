@@ -421,7 +421,7 @@ class ApplicantController extends Controller
 
     public function show($id)
     {
-        $applicant = Applicant::where('id',$id)->with(['applicantContactInfo','applicantGuardian','applicantEmergency'])->first();
+        $applicant = Applicant::where('id',$id)->with(['applicantContactInfo','applicantGuardian','applicantEmergency','applicantIntake','status'])->first();
         $applicantresult = ApplicantResult::where('applicant_id',$id)->get();
         $applicantAcademic = ApplicantAcademic::where('applicant_id',$id)->get();
 
@@ -515,7 +515,9 @@ class ApplicantController extends Controller
                 $activity = Activity::where('properties->attributes->applicant_id', $app_stat['applicant_id'])->get();
             }
 
-        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace','applicantresult','total_point', 'programmestatus', 'aapplicant','country','marital','religion','race','gender','state','skm','mqf','kkm','cat','icaew','activity'));
+            $intake = Intakes::all();
+
+        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace','applicantresult','total_point', 'programmestatus', 'aapplicant','country','marital','religion','race','gender','state','skm','mqf','kkm','cat','icaew','activity','intake'));
     }
 
     public function updateApplicant(Request $request)
@@ -1624,7 +1626,7 @@ class ApplicantController extends Controller
 
         ApplicantStatus::create($data);
 
-        $this->sendEmail($request->applicant_id);
+        // $this->sendEmail($request->applicant_id);
 
         return response()->json(['success'=>true,'status'=>'success','message'=>'Data has been saved to datatbase','Data'=>$data]);
     }
