@@ -27,7 +27,7 @@
         <link rel="stylesheet" href="{{ asset('css/notifications/sweetalert2/sweetalert2.bundle.css') }}">
         {{-- <link rel="stylesheet" media="screen, print" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"> --}}
 
-        {{-- <link rel="stylesheet" media="screen, print" href="{{asset('css/select2.min.css')}}"> --}}
+        <link rel="stylesheet" media="screen, print" href="{{asset('css/select2.min.css')}}">
     </head>
     <body class="mod-bg-1 ">
         <!-- DOC: script to save and load page settings -->
@@ -118,7 +118,7 @@
         {{-- <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script> --}}
 
-        {{-- <script src="{{asset('js/select2.min.js')}}"></script> --}}
+        <script src="{{asset('js/select2.min.js')}}"></script>
 
 
         @yield('script')

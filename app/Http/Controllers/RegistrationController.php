@@ -19,6 +19,7 @@ use App\Qualification;
 use App\ApplicantAcademic;
 use App\Subject;
 use App\Intakes;
+use App\Family;
 use App\Grades;
 use App\ApplicantResult;
 use App\Http\Requests\StoreApplicantRequest;
@@ -34,8 +35,8 @@ class RegistrationController extends Controller
     public function index()
     {
         $country = Country::all();
-        $programme = Programme::all();
-        $major = Major::all();
+        $programme = Programme::all()->sortBy('programme_name');
+        $major = Major::all()->sortBy('major_name');;
         $state = State::all();
         $intake = Intakes::where('status','1')->get();
         return view('registration.index', compact('country','programme','major','intake'));
@@ -92,12 +93,13 @@ class RegistrationController extends Controller
     public function edit($id)
     {
         $applicant = Applicant::where('id', $id)->with(['applicantContactInfo','applicantEmergency'])->first();
-        $country = Country::all();
-        $gender = Gender::all();
+        $country = Country::all()->sortBy('country_name');
+        $gender = Gender::all()->sortBy('gender_name');
         $state = State::all();
-        $marital = Marital::all();
-        $race = Race::all();
-        $religion = Religion::all();
+        $marital = Marital::all()->sortBy('marital_name');
+        $race = Race::all()->sortBy('race_name');
+        $religion = Religion::all()->sortBy('religion_name');
+        $family = Family::all()->sortBy('family_name');
         $subjectSpmArr = $subjectSpmAGradeArr = $subjectStamArr = $subjectStamAGradeArr = [];
         $subjectUecArr = $subjectUecAGradeArr = [];
         $subjectStpmArr = $subjectStpmAGradeArr = [];
@@ -208,7 +210,7 @@ class RegistrationController extends Controller
         $subjectOlevelStr = json_encode($subjectOlevelArr);
         $gradeOlevelStr = json_encode($subjectOlevelAGradeArr);
 
-        return view('registration.edit', compact('applicant','country','gender','state','marital','race','religion','qualification', 'subjectspm', 'gradeSpm', 'subjectSpmStr', 'gradeSpmStr', 'subjectstam', 'gradeStam', 'subjectStamStr', 'gradeStamStr', 'subjectuec', 'gradeUec', 'subjectUecStr', 'gradeUecStr', 'subjectstpm', 'gradeStpm', 'subjectStpmStr', 'gradeStpmStr', 'subjectalevel', 'gradeAlevel', 'subjectAlevelStr', 'gradeAlevelStr', 'subjectolevel', 'gradeOlevel', 'subjectOlevelStr', 'gradeOlevelStr'));
+        return view('registration.edit', compact('applicant','country','gender','state','marital','race','religion','qualification', 'family', 'subjectspm', 'gradeSpm', 'subjectSpmStr', 'gradeSpmStr', 'subjectstam', 'gradeStam', 'subjectStamStr', 'gradeStamStr', 'subjectuec', 'gradeUec', 'subjectUecStr', 'gradeUecStr', 'subjectstpm', 'gradeStpm', 'subjectStpmStr', 'gradeStpmStr', 'subjectalevel', 'gradeAlevel', 'subjectAlevelStr', 'gradeAlevelStr', 'subjectolevel', 'gradeOlevel', 'subjectOlevelStr', 'gradeOlevelStr'));
     }
 
     /**
@@ -221,7 +223,7 @@ class RegistrationController extends Controller
 
     public function update(StoreApplicantDetailRequest $request, $id)
     {
-        Applicant::find($id)->update([
+        $applicant = Applicant::find($id)->update([
             'applicant_name' => $request->applicant_name,
             'applicant_ic' => $request->applicant_ic,
             'applicant_phone' => $request->applicant_phone,
@@ -233,6 +235,9 @@ class RegistrationController extends Controller
             'applicant_religion' => $request->applicant_religion,
             'applicant_dob' => $request->applicant_dob,
         ]);
+        if($request->hasFile('image') && $request->file('image')->isValid()){
+            $applicant->addMediaFromRequest('image')->toMediaCollection('images');
+        }
 
         ApplicantContact::create($request->all());
         ApplicantGuardian::create($request->all());
@@ -446,6 +451,8 @@ class RegistrationController extends Controller
                 ApplicantAcademic::create($app_academic);
             }
         }
+
+
 
         return redirect()->route('printReg', ['id' => $id]);
     }

@@ -5,7 +5,7 @@
     <div class="col-md-10">
         <div class="card">
             <div class="panel-hdr">
-                <h2>Registration</h2>
+                <img src="{{ public_path('img/intec_offer.png') }}" style="height: 170px; width: 650px;">
             </div>
             <div class="tab-content">
                 <div class="tab-pane active" id="personal" role="tabpanel">
@@ -19,7 +19,7 @@
                                     @endforeach
                                     <small class="text-danger">{{ $errors->first('name') }}</small>
                                     {{Form::label('title', 'Name')}}
-                                    {{Form::text('applicant_name', '', ['class' => 'form-control', 'placeholder' => 'Applicant Name'])}}
+                                    {{Form::text('applicant_name', '', ['class' => 'form-control', 'placeholder' => 'Applicant Name', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                                     @error('applicant_name')
                                         <p style="color: red">{{ $message }}</p>
                                     @enderror
@@ -47,7 +47,7 @@
                                 </div>
                                 <div class="col-md-4 form-group">
                                     {{ Form::label('title', 'Nationality') }}
-                                    <select class="form-control" name="applicant_nationality" id="applicant_nationality" >
+                                    <select class="form-control nationality" name="applicant_nationality" id="applicant_nationality" >
                                         @foreach($country as $countries)
                                             <option value="{{$countries->country_code}}">{{$countries->country_name}}</option>
                                         @endforeach
@@ -82,9 +82,9 @@
                                     {{ Form::label('title', '2nd Preferred Programme (Optional)') }}
                                     <select class="form-control" name="applicant_programme_2" >
                                         <option value="">Select Programme</option>
-                                        {{-- @foreach($progs as $programmes)
-                                            <option value="{{$programmes->programme->programme_code}}">{{$programmes->programme->programme_name}}</option>
-                                        @endforeach --}}
+                                        @foreach($programme as $programmes)
+                                            <option value="{{$programmes->programme_code}}">{{$programmes->programme_name}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="col-md-4 form-group">
@@ -100,9 +100,9 @@
                                     {{ Form::label('title', '3rd Preferred Programme (Optional)') }}
                                     <select class="form-control" name="applicant_programme_3" >
                                         <option value="">Select Programme</option>
-                                        {{-- @foreach($progs as $programmes)
-                                            <option value="{{$programmes->programme->programme_code}}">{{$programmes->programme->programme_name}}</option>
-                                        @endforeach --}}
+                                        @foreach($programme as $programmes)
+                                            <option value="{{$programmes->programme_code}}">{{$programmes->programme_name}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="col-md-4 form-group">
@@ -124,4 +124,11 @@
         </div>
     </div>
 </div>
+@endsection
+@section('script')
+    <script>
+        $(document).ready(function() {
+            $('.nationality').select2();
+        });
+    </script>
 @endsection

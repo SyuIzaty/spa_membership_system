@@ -81,6 +81,7 @@ Route::get('testCollection','ApplicantController@testCollection');
 
 //APPLICANT REGISTRATION
 Route::resource('/registration','RegistrationController');
+Route::resource('/register','RegisterController');
 Route::get('registration/printRef/{id}','RegistrationController@printRef')->name('printRef');
 Route::get('registration/printReg/{id}','RegistrationController@printReg')->name('printReg');
 
@@ -97,13 +98,13 @@ Route::get('/emails', 'IntakeController@sendEmail')->name('emails');
 
 //PARAM
 Route::resource('/intakeType', 'IntakeTypeController');
-Route::resource('param/programme', 'ProgrammeController'); 
+Route::resource('param/programme', 'ProgrammeController');
 Route::resource('param/course', 'CourseController');
-Route::resource('param/major', 'MajorController'); 
+Route::resource('param/major', 'MajorController');
 Route::post('data-intakeType', 'IntakeTypeController@data_intakeType');
-Route::post('data-allProgramme', 'ProgrammeController@data_allProgramme'); 
-Route::post('data-allMajor', 'MajorController@data_allMajor'); 
-Route::post('data-allCourse', 'CourseController@data_allCourse'); 
+Route::post('data-allProgramme', 'ProgrammeController@data_allProgramme');
+Route::post('data-allMajor', 'MajorController@data_allMajor');
+Route::post('data-allCourse', 'CourseController@data_allCourse');
 
 //OFFER LETTER
 Route::get('/offer-letter', 'EntryRequirementController@offer');
