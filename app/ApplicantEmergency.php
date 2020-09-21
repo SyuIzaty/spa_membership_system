@@ -9,4 +9,9 @@ class ApplicantEmergency extends Model
     protected $table = 'applicant_emergency';
 
     protected $fillable = ['applicant_id','emergency_name','emergency_phone','emergency_address','emergency_relationship'];
+
+    public function emergencyOne()
+    {
+        return $this->hasOne('App\Family','family_code','emergency_relationship');
+    }
 }

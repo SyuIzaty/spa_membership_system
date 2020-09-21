@@ -42,6 +42,22 @@ class RegistrationController extends Controller
         return view('registration.index', compact('country','programme','major','intake'));
     }
 
+    public function register()
+    {
+        return view('applicantRegister.index');
+    }
+
+    public function check()
+    {
+        return view('applicantRegister.check');
+    }
+
+    public function search(Request $request)
+    {
+        $applicant = Applicant::where('applicant_ic',$request->applicant_ic)->first();
+        return $this->edit($applicant->id);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -92,7 +108,7 @@ class RegistrationController extends Controller
      */
     public function edit($id)
     {
-        $applicant = Applicant::where('id', $id)->with(['applicantContactInfo','applicantEmergency'])->first();
+        $applicant = Applicant::where('id', $id)->with(['applicantContactInfo','applicantEmergency.emergencyOne','applicantGuardian.familyOne','applicantGuardian.familyTwo'])->first();
         $country = Country::all()->sortBy('country_name');
         $gender = Gender::all()->sortBy('gender_name');
         $state = State::all();
@@ -239,9 +255,38 @@ class RegistrationController extends Controller
             $applicant->addMediaFromRequest('image')->toMediaCollection('images');
         }
 
-        ApplicantContact::create($request->all());
-        ApplicantGuardian::create($request->all());
-        ApplicantEmergency::create($request->all());
+        ApplicantContact::updateOrCreate([
+            'applicant_id' => $id,
+        ],[
+            'applicant_address_1' => $request->applicant_address_1,
+            'applicant_address_2' => $request->applicant_address_2,
+            'applicant_poscode' => $request->applicant_poscode,
+            'applicant_city' => $request->applicant_city,
+            'applicant_state' => $request->applicant_state,
+            'applicant_country' => $request->applicant_country
+        ]);
+
+        ApplicantGuardian::updateOrCreate([
+            'applicant_id' => $id,
+        ],[
+            'guardian_one_name' => $request->guardian_one_name,
+            'guardian_one_relationship' => $request->guardian_one_relationship,
+            'guardian_one_mobile' => $request->guardian_one_mobile,
+            'guardian_one_address' => $request->guardian_one_address,
+            'guardian_two_name' => $request->guardian_two_name,
+            'guardian_two_relationship' => $request->guardian_two_relationship,
+            'guardian_two_mobile' => $request->guardian_two_mobile,
+            'guardian_two_address' => $request->guardian_two_address,
+        ]);
+
+        ApplicantEmergency::updateOrCreate([
+            'applicant_id' => $id,
+        ],[
+            'emergency_name' => $request->emergency_name,
+            'emergency_relationship' => $request->emergency_relationship,
+            'emergency_phone' => $request->emergency_phone,
+            'emergency_address' => $request->emergency_address
+        ]);
 
 
         $result = [];
@@ -375,6 +420,11 @@ class RegistrationController extends Controller
                     ];
                 }
             }
+            $academic_spm[] = [
+                'applicant_id' => $id,
+                'type' => $request->spm_type,
+                'applicant_study' => $request->spm_study,
+            ];
         }
 
         if (isset($request->stam_subject) && isset($request->stam_grade_id)) {
@@ -414,6 +464,11 @@ class RegistrationController extends Controller
                     ];
                 }
             }
+            $academic_uec[] = [
+                'applicant_id' => $id,
+                'type' => $request->uec_type,
+                'applicant_study' => $request->uec_study,
+            ];
         }
 
         if (isset($request->alevel_subject) && isset($request->alevel_grade_id)) {
@@ -446,9 +501,21 @@ class RegistrationController extends Controller
                 ApplicantResult::create($row);
             }
         }
-        if (isset($academic) ) {
-            foreach ($academic as $app_academic) {
-                ApplicantAcademic::create($app_academic);
+        // if (isset($academic) ) {
+        //     foreach ($academic as $app_academic) {
+        //         ApplicantAcademic::create($app_academic);
+        //     }
+        // }
+        if (isset($academic_spm) ) {
+            foreach ($academic_spm as $app_academic) {
+                $applicant_academic = ApplicantAcademic::create($app_academic);
+                $applicant_academic->addMedia($request->spm_file)->withCustomProperties(['applicant_id' => $request->applicant_id])->toMediaCollection();
+            }
+        }
+        if (isset($academic_uec) ) {
+            foreach ($academic_uec as $app_academic) {
+                $applicant_academic = ApplicantAcademic::create($app_academic);
+                $applicant_academic->addMedia($request->uec_file)->withCustomProperties(['applicant_id' => $request->applicant_id])->toMediaCollection();
             }
         }
 

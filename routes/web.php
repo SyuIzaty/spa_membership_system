@@ -81,7 +81,9 @@ Route::get('testCollection','ApplicantController@testCollection');
 
 //APPLICANT REGISTRATION
 Route::resource('/registration','RegistrationController');
-Route::resource('/register','RegisterController');
+Route::get('/applicantRegister', 'RegistrationController@register')->name('applicantRegister.index');
+Route::get('search', 'RegistrationController@search');
+Route::get('/check', 'RegistrationController@check');
 Route::get('registration/printRef/{id}','RegistrationController@printRef')->name('printRef');
 Route::get('registration/printReg/{id}','RegistrationController@printReg')->name('printReg');
 

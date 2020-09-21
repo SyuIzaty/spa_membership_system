@@ -4,10 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Applicant extends Model
+class Applicant extends Model implements HasMedia
 {
-    use LogsActivity;
+    use LogsActivity, InteractsWithMedia;
     protected $table = 'applicant';
     // Set mass-assignable fields
     protected $fillable = ['applicant_name', 'applicant_ic', 'applicant_email', 'applicant_phone', 'applicant_nationality', 'applicant_programme', 'applicant_programme_2', 'applicant_programme_3','applicant_major','applicant_major_2','applicant_major_3','programme_name', 'applicant_gender', 'applicant_religion','applicant_marital','applicant_race','applicant_dob','intake_id'];

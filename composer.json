@@ -19,6 +19,7 @@
         "laravelcollective/html": "^6.1",
         "maatwebsite/excel": "^3.1",
         "nesbot/carbon": "^2.40",
+        "select2/select2": "^4.0",
         "spatie/laravel-activitylog": "^3.14",
         "spatie/laravel-medialibrary": "^8.0.0",
         "spatie/laravel-permission": "^3.15",

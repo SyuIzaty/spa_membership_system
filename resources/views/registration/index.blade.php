@@ -58,7 +58,7 @@
                                 </div>
                                 <div class="col-md-8 form-group">
                                     {{ Form::label('title', '1st Preferred Programme (Required)') }}
-                                    <select class="form-control" name="applicant_programme" >
+                                    <select class="form-control programme1" name="applicant_programme" >
                                         @foreach($programme as $programmes)
                                             <option value="{{$programmes->programme_code}}">{{$programmes->programme_name}}</option>
                                         @endforeach
@@ -69,7 +69,7 @@
                                 </div>
                                 <div class="col-md-4 form-group">
                                     {{ Form::label('Major', 'Major') }}
-                                    <select class="form-control" name="applicant_major" >
+                                    <select class="form-control major1" name="applicant_major" >
                                         @foreach($major as $majors)
                                             <option value="{{$majors->id}}">{{$majors->major_name}}</option>
                                         @endforeach
@@ -80,7 +80,7 @@
                                 </div>
                                 <div class="col-md-8 form-group">
                                     {{ Form::label('title', '2nd Preferred Programme (Optional)') }}
-                                    <select class="form-control" name="applicant_programme_2" >
+                                    <select class="form-control programme2" name="applicant_programme_2" >
                                         <option value="">Select Programme</option>
                                         @foreach($programme as $programmes)
                                             <option value="{{$programmes->programme_code}}">{{$programmes->programme_name}}</option>
@@ -89,7 +89,7 @@
                                 </div>
                                 <div class="col-md-4 form-group">
                                     {{ Form::label('Major', 'Major') }}
-                                    <select class="form-control" name="applicant_major_2" >
+                                    <select class="form-control major2" name="applicant_major_2" >
                                         <option value="">Select Major</option>
                                         @foreach($major as $majors)
                                             <option value="{{$majors->id}}">{{$majors->major_name}}</option>
@@ -98,7 +98,7 @@
                                 </div>
                                 <div class="col-md-8 form-group">
                                     {{ Form::label('title', '3rd Preferred Programme (Optional)') }}
-                                    <select class="form-control" name="applicant_programme_3" >
+                                    <select class="form-control programme3" name="applicant_programme_3" >
                                         <option value="">Select Programme</option>
                                         @foreach($programme as $programmes)
                                             <option value="{{$programmes->programme_code}}">{{$programmes->programme_name}}</option>
@@ -107,10 +107,10 @@
                                 </div>
                                 <div class="col-md-4 form-group">
                                     {{ Form::label('Major', 'Major') }}
-                                    <select class="form-control" name="applicant_major_3" >
+                                    <select class="form-control major3" name="applicant_major_3" >
                                         <option value="">Select Major</option>
                                         @foreach($major as $majors)
-                                            <option value="{{$majors->id}}">{{$majors->major_name}}</option>
+                                        <option value="{{$majors->id}}">{{$majors->major_name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -128,7 +128,7 @@
 @section('script')
     <script>
         $(document).ready(function() {
-            $('.nationality').select2();
+            $('.nationality, .programme1, .major1, .programme2, .major2, .major3, .programme3').select2();
         });
     </script>
 @endsection

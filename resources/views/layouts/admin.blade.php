@@ -27,7 +27,7 @@
         <link rel="stylesheet" href="{{ asset('css/notifications/sweetalert2/sweetalert2.bundle.css') }}">
         {{-- <link rel="stylesheet" media="screen, print" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"> --}}
 
-        {{-- <link rel="stylesheet" media="screen, print" href="{{asset('css/select2.min.css')}}"> --}}
+        <link rel="stylesheet" media="screen, print" href="{{asset('css/select2.min.css')}}">
     </head>
     <body class="mod-bg-1 ">
         <!-- DOC: script to save and load page settings -->
@@ -350,7 +350,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            
+
                             <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-portrait"></i>

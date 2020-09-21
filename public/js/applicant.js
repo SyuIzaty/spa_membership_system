@@ -41,6 +41,13 @@ $(document).ready(function () {
                         <h5 class="mb-4">Sijil Pelajaran Malaysia <button class="btn btn-primary float-right" id="addspmrow" onclick="addRow();return false;">Add Subject</button></h5>\
                     </div>\
                 </div>\
+                <div class="row">\
+                    <div class="col-md-6"><input type="text" class="form-control" name="spm_study" placeholder="School" required></div>\
+                    <div class="col-md-6">\
+                        <input type="file" name="spm_file" id="spm_file" class="custom-file-input">\
+                        <label class="custom-file-label" for="inputGroupFile01">Upload File</label>\
+                    </div>\
+                </div>\
                 <div class="row mt-4">\
                     <div class="col-md-12">\
                         <table class="table table-bordered" id="spm-table">\
@@ -48,7 +55,7 @@ $(document).ready(function () {
                                 <th>Subject Name</th>\
                                 <th>Result</th>\
                                 <th></th>\
-                        </thead>\
+                            </thead>\
                             <tr>\
                                 <td>\
                                     <input type="hidden" name="spm_type" value="' +
@@ -68,6 +75,8 @@ $(document).ready(function () {
                                         Delete\
                                     </button>\
                                 </td>\
+                            </tr>\
+                            <tr>\
                             </tr>\
                         </table>\
                     </div>\
@@ -118,6 +127,7 @@ $(document).ready(function () {
                     <div class="col-md-12">\
                         <table class="table table-bordered" id="uec-table">\
                             <thead>\
+                            <th><input type="text" class="form-control" name="uec_study" placeholder="School" required></th>\
                                 <th>Subject Name</th>\
                                 <th>Result</th>\
                                 <th></th>\
@@ -141,6 +151,10 @@ $(document).ready(function () {
                                        Delete\
                                     </button>\
                                 </td>\
+                                <tr>\
+                                <input type="file" name="uec_file" id="uec_file" class="custom-file-input">\
+                            <label class="custom-file-label" for="inputGroupFile01">Upload File</label>\
+                                </tr>\
                             </tr>\
                         </table>\
                     </div>\
