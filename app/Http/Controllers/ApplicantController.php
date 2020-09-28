@@ -1601,6 +1601,12 @@ class ApplicantController extends Controller
         return $this->indexs();
     }
 
+    public function intakestatus(Request $request)
+    {
+        Applicant::where('id',$request->applicant_id)->update(['intake_id'=>$request->applicant_intake]);
+        return response()->json(['success'=>true,'status'=>'success','message'=>'Intake has been updated']);
+    }
+
     public function programmestatus(Request $request)
     {
         ApplicantStatus::where('applicant_id',$request->applicant_id)

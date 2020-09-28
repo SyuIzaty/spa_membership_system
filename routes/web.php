@@ -67,6 +67,7 @@ Route::get('/applicantresult','ApplicantController@indexs');
 Route::get('checkrequirements', 'ApplicantController@checkrequirements')->name('check-requirements');
 Route::post('changestatus', 'ApplicantController@changestatus');
 Route::post('programmestatus', 'ApplicantController@programmestatus');
+Route::post('intakestatus', 'ApplicantController@intakestatus');
 Route::post('updateEmergency', 'ApplicantController@updateEmergency');
 Route::post('updateGuardian', 'ApplicantController@updateGuardian');
 Route::post('updateApplicant', 'ApplicantController@updateApplicant');

@@ -55,12 +55,24 @@
                                                         <div class="card-body">
                                                         @if(isset($applicant->applicant_name) )
                                                         {{-- @if(count($applicantresult) > 0) --}}
+                                                        <table class="table table-sm">
+                                                            <tr id={{ $applicant->id }}>
+                                                                <td>Intake Sessions</td>
+                                                                <td>
+                                                                    <select name="applicant_intake" class="form-control" id="intake_1">
+                                                                        <option value="{{ $applicant->intake_id }}">{{ $applicant->applicantIntake->intake_code }}</option>
+                                                                        @foreach ($intake as $in)
+                                                                            <option value="{{ $in->id }}">{{ $in->intake_code }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
                                                         <table class="table table-bordered table-sm">
                                                             <thead class="bg-highlight">
                                                                 <th style="width: 30px">Applicant Programme</th>
                                                                 <th style="width: 30px">Applicant Major</th>
                                                                 <th>Result</th>
-                                                                <th>Intake Session</th>
                                                                 <th>Action</th>
                                                             </thead>
                                                             <tr id={{$applicant->id}}>
@@ -92,21 +104,6 @@
                                                                     @endif
                                                                     @if($applicant['programme_status_3']== '2')
                                                                         <p style="color: red">Not Qualified</p>
-                                                                    @endif
-                                                                </td>
-                                                                <td>
-                                                                    <input type="text" class="form-control" name="applicant_intake" value="{{ $applicant->applicantIntake->intake_code }}" readonly>
-                                                                    {{-- <select name="applicant_intake" class="form-control" id="intake_1">
-                                                                        <option value="{{ $applicant->intake_id }}">{{ $applicant->applicantIntake->intake_code }}</option>
-                                                                        @foreach ($intake as $in)
-                                                                            <option value="{{ $in->id }}">{{ $in->intake_code }}</option>
-                                                                        @endforeach
-                                                                    </select> --}}
-                                                                    @if (isset($applicant->applicant_programme_2))
-                                                                    <input type="text" class="form-control" name="applicant_intake" value="{{ $applicant->applicantIntake->intake_code }}" readonly>
-                                                                    @endif
-                                                                    @if (isset($applicant->applicant_programme_3))
-                                                                    <input type="text" class="form-control" name="applicant_intake" value="{{ $applicant->applicantIntake->intake_code }}" readonly>
                                                                     @endif
                                                                 </td>
                                                                 <td>
@@ -792,25 +789,26 @@
 
             });
         });
-        // $('#intake_1').on('change',function(){
-        //     var selectedValue = $(this).val();
-        //     var trid = $(this).closest('tr').attr('id');
-        //     console.log(selectedValue);
-        //     console.log(trid);
-        //     $.ajax({
-        //         url: "{{url('/programmestatus')}}",
-        //         method: "post",
-        //         data: { "_token": "{{ csrf_token() }}", applicant_id: trid,applicant_intake: selectedValue },
-        //         success: function(response) {
-        //         alert('Data has been updated');
-        //         return response;
-        //         },
-        //         error: function() {
-        //             alert('error');
-        //         }
+        $('#intake_1').on('change',function(){
+            var selectedValue = $(this).val();
+            var trid = $(this).closest('tr').attr('id');
+            console.log(selectedValue);
+            console.log(trid);
+            $.ajax({
+                url: "{{url('/intakestatus')}}",
+                method: "post",
+                data: { "_token": "{{ csrf_token() }}", applicant_id: trid,applicant_intake: selectedValue },
+                success: function(response) {
+                alert('Data has been updated');
+                return response;
+                },
+                error: function() {
+                    alert('error');
+                }
 
-        //     });
-        // });
+            });
+        });
+
         $('#status_{{$aapplicant_all_app['applicant_programme_2']}}').on('change',function(){
             var programme = "{{$aapplicant_all_app['applicant_programme_2']}}";
             var major = "{{$applicant->applicant_major_2}}";
@@ -834,6 +832,7 @@
 
             });
         });
+
         $('#status_{{$aapplicant_all_app['applicant_programme_3']}}').on('change',function(){
             var programme = "{{$aapplicant_all_app['applicant_programme_3']}}";
             var major = "{{$applicant->applicant_major_3}}";
