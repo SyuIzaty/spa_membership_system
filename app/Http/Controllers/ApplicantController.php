@@ -848,8 +848,8 @@ class ApplicantController extends Controller
             $programme_status->programme_status_3 = '2';
             $programme_status->save();
         }
-        Applicant::where('id',$applicantt['id'])->where('applicant_status',NULL)->update(['applicant_status'=>'2']);
 
+        Applicant::where('id',$applicantt['id'])->where('applicant_status',NULL)->update(['applicant_status'=>'2']);
     }
 
     public function spm($applicantt)
@@ -917,7 +917,7 @@ class ApplicantController extends Controller
         return compact ('kkm');
     }
 
-    public function iat($applicantt) //American Degree Transfer Programme
+    public function iat12($applicantt) //American Degree Transfer Programme
     {
         $status = [];
         $spm = $this->spm($applicantt);
@@ -940,15 +940,15 @@ class ApplicantController extends Controller
 
         if(in_array(true, $status))
         {
-            $programme_code = 'IAT';
+            $programme_code = 'IAT12';
             $this->accepted($applicantt, $programme_code);
         } else {
-            $programme_code = 'IAT';
+            $programme_code = 'IAT12';
             $this->rejected($applicantt, $programme_code);
         }
     }
 
-    public function ial($applicantt) //A Level Programme
+    public function ial10($applicantt) //A Level Programme
     {
         $status = [];
         $spm = $this->spm($applicantt);
@@ -971,15 +971,15 @@ class ApplicantController extends Controller
 
         if(in_array(true, $status))
         {
-            $programme_code = 'IAL';
+            $programme_code = 'IAL10';
             $this->accepted($applicantt, $programme_code);
         } else {
-            $programme_code = 'IAL';
+            $programme_code = 'IAL10';
             $this->rejected($applicantt, $programme_code);
         }
     }
 
-    public function igr($applicantt) //A Level German Programme
+    public function igr22($applicantt) //A Level German Programme
     {
         $status = [];
         $spm = $this->spm($applicantt);
@@ -1002,15 +1002,15 @@ class ApplicantController extends Controller
 
         if(in_array(true, $status))
         {
-            $programme_code = 'IGR';
+            $programme_code = 'IGR22';
             $this->accepted($applicantt, $programme_code);
         } else {
-            $programme_code = 'IGR';
+            $programme_code = 'IGR22';
             $this->rejected($applicantt, $programme_code);
         }
     }
 
-    public function iam($applicantt) //SACE International
+    public function iam10($applicantt) //SACE International
     {
         $status = [];
         $spm = $this->spm($applicantt);
@@ -1033,15 +1033,15 @@ class ApplicantController extends Controller
 
         if(in_array(true, $status))
         {
-            $programme_code = 'IAM';
+            $programme_code = 'IAM10';
             $this->accepted($applicantt, $programme_code);
         } else {
-            $programme_code = 'IAM';
+            $programme_code = 'IAM10';
             $this->rejected($applicantt, $programme_code);
         }
     }
 
-    public function ile($applicantt) //Japanese Preparatory Course
+    public function ile12($applicantt) //Japanese Preparatory Course
     {
         $status = [];
         $app_spm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->where('grade_id','<=',8)->get();
@@ -1076,29 +1076,29 @@ class ApplicantController extends Controller
 
         if(in_array(true, $status))
         {
-            $programme_code = 'ILE';
+            $programme_code = 'ILE12';
             $this->accepted($applicantt, $programme_code);
         }else{
-            $programme_code = 'ILE';
+            $programme_code = 'ILE12';
             $this->rejected($applicantt, $programme_code);
         }
     }
 
-    public function ikr($applicantt) //Korean Preparatory Course
+    public function ikr09($applicantt) //Korean Preparatory Course
     {
         $status = [];
         $spm = $this->spm($applicantt);
         if($spm['count_eng'] == 1)
         {
-            $programme_code = 'IKR';
+            $programme_code = 'IKR09';
             $this->accepted($applicantt, $programme_code);
         }else{
-            $programme_code = 'IKR';
+            $programme_code = 'IKR09';
             $this->rejected($applicantt, $programme_code);
         }
     }
 
-    public function dbm($applicantt) //Diploma in Business Management
+    public function ibm20($applicantt) //Diploma in Business Management
     {
         $status = [];
         $spm = $this->spm($applicantt);
@@ -1161,15 +1161,15 @@ class ApplicantController extends Controller
 
         if(in_array(true, $status))
         {
-            $programme_code = 'DBM';
+            $programme_code = 'IBM20';
             $this->accepted($applicantt, $programme_code);
         } else {
-            $programme_code = 'DBM';
+            $programme_code = 'IBM20';
             $this->rejected($applicantt, $programme_code);
         }
     }
 
-    public function dpmg($applicantt) //Diploma in Public Mangement and Governance
+    public function ipg20($applicantt) //Diploma in Public Mangement and Governance
     {
         $status = [];
         $spm = $this->spm($applicantt);
@@ -1232,15 +1232,15 @@ class ApplicantController extends Controller
 
         if(in_array(true, $status))
         {
-            $programme_code = 'DPMG';
+            $programme_code = 'IPG20';
             $this->accepted($applicantt, $programme_code);
         } else {
-            $programme_code = 'DPMG';
+            $programme_code = 'IPG20';
             $this->rejected($applicantt, $programme_code);
         }
     }
 
-    public function dshp($applicantt) //Diploma in Scientific Halal Practice
+    public function ihp20($applicantt) //Diploma in Scientific Halal Practice
     {
         $status = [];
         $spm = $this->spm($applicantt);
@@ -1309,15 +1309,15 @@ class ApplicantController extends Controller
 
         if(in_array(true, $status))
         {
-            $programme_code = 'DSHP';
+            $programme_code = 'IHP20';
             $this->accepted($applicantt, $programme_code);
         } else {
-            $programme_code = 'DSHP';
+            $programme_code = 'IHP20';
             $this->rejected($applicantt, $programme_code);
         }
     }
 
-    public function dia($applicantt) //Diploma in Accounting
+    public function iac20($applicantt) //Diploma in Accounting
     {
         $status = [];
         $spm = $this->spm($applicantt);
@@ -1356,15 +1356,15 @@ class ApplicantController extends Controller
 
         if(in_array(true, $status))
         {
-            $programme_code = 'DIA';
+            $programme_code = 'IAC20';
             $this->accepted($applicantt, $programme_code);
         }else{
-            $programme_code = 'DIA';
+            $programme_code = 'IAC20';
             $this->rejected($applicantt, $programme_code);
         }
     }
 
-    public function dif($applicantt) //Diploma in Islamic Finance
+    public function iif20($applicantt) //Diploma in Islamic Finance
     {
         $status = [];
         $spm = $this->spm($applicantt);
@@ -1427,15 +1427,15 @@ class ApplicantController extends Controller
 
         if(in_array(true, $status))
         {
-            $programme_code = 'DIF';
+            $programme_code = 'IIF20';
             $this->accepted($applicantt, $programme_code);
         } else {
-            $programme_code = 'DIF';
+            $programme_code = 'IIF20';
             $this->rejected($applicantt, $programme_code);
         }
     }
 
-    public function cat($applicantt) //Certified Accounting Technician
+    public function pac150($applicantt) //Certified Accounting Technician
     {
         $status = [];
         $spm = $this->spm($applicantt);
@@ -1443,15 +1443,15 @@ class ApplicantController extends Controller
 
         if($spm['count_eng'] == 1 && $spm['count_math'] == 1 && $count_malay == 1 && $spm['spm'] >= 5)
         {
-            $programme_code = 'CAT';
+            $programme_code = 'PAC150';
             $this->accepted($applicantt, $programme_code);
         }else{
-            $programme_code = 'CAT';
+            $programme_code = 'PAC150';
             $this->rejected($applicantt, $programme_code);
         }
     }
 
-    public function cfab($applicantt) //Certified in Accounting, Finance & Business
+    public function pac170($applicantt) //Certified in Accounting, Finance & Business
     {
         $status = [];
         $spm = $this->spm($applicantt);
@@ -1459,29 +1459,29 @@ class ApplicantController extends Controller
 
         if($spm['count_eng'] == 1 && $spm['count_math'] == 1 && $count_malay == 1 && $spm['spm'] >= 5)
         {
-            $programme_code = 'CFAB';
+            $programme_code = 'PAC170';
             $this->accepted($applicantt, $programme_code);
         }else {
-            $programme_code = 'CFAB';
+            $programme_code = 'PAC170';
             $this->rejected($applicantt, $programme_code);
         }
     }
 
-    public function micpa($applicantt) //The Malaysian Institute of Certified Public Accountant
+    public function pac580($applicantt) //The Malaysian Institute of Certified Public Accountant
     {
         $status = [];
         $bachelors = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',14)->where('cgpa','>=',2.50)->count();
         if($bachelors == 1)
         {
-            $programme_code = 'MICPA';
+            $programme_code = 'PAC580';
             $this->accepted($applicantt, $programme_code);
         }else{
-            $programme_code = 'MICPA';
+            $programme_code = 'PAC580';
             $this->rejected($applicantt, $programme_code);
         }
     }
 
-    public function aca($applicantt)
+    public function pac570($applicantt) //Institute of Chartered Accountants in England and Wales (ICAEW)
     {
         $status = [];
         $bachelors = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',14)->where('cgpa','>=',2.75)->count();
@@ -1504,10 +1504,10 @@ class ApplicantController extends Controller
 
         if(in_array(true, $status))
         {
-            $programme_code = 'ACA';
+            $programme_code = 'PAC570';
             $this->accepted($applicantt, $programme_code);
         }else{
-            $programme_code = 'ACA';
+            $programme_code = 'PAC570';
             $this->rejected($applicantt, $programme_code);
         }
     }

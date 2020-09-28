@@ -6,352 +6,321 @@
 <div class="row">
     <div class="col-md-1"></div>
     <div class="col-md-10">
-        {!! Form::model($applicant, ['method' => 'PATCH',  'enctype' => "multipart/form-data", 'route' => ['registration.update', $applicant->id]]) !!}
-            @csrf
-            <div class="card">
-                <div class="card-header">
-                    <div class="d-flex justify-content-center">
-                        <div class="p-2">
-                            <img src="{{ public_path('img/intec_logo.png') }}" style="height: 170px; width: 650px">
-                        </div>
-                    </div>
-                </div>
-                <div class="panel-container show">
-                    <div class="panel-content">
-                        <ul class="nav nav-tabs" role="tablist" id="app">
-                            <li class="nav-item">
-                                <a data-toggle="tab" class="nav-link" href="#details" role="tab">Applicant Details</a>
-                            </li>
-                            <li class="nav-item">
-                                <a data-toggle="tab" class="nav-link" href="#qualification" role="tab">Qualification</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content" id="tabs">
-                            <div class="tab-pane active" id="details" role="tabpanel">
-                                <div class="card">
-                                    <div class="card-header">Personal Profile</div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="form-group col-md-6">
-                                                {{Form::label('title', 'Applicant Name')}}
-                                                {{Form::text('applicant_name', $applicant->applicant_name, ['class' => 'form-control', 'placeholder' => 'Applicant Name', 'readonly' => 'true'])}}
+        <div class="panel-hdr">
+            <h2>Registration</h2>
+        </div>
+            {!! Form::model($applicant, ['method' => 'PATCH',  'enctype' => "multipart/form-data", 'route' => ['registration.update', $applicant->id]]) !!}
+                @csrf
+                <div class="card">
+                    <div class="panel-container show">
+                        <div class="panel-content">
+                            <div class="tab-content" id="tabs">
+                                <div class="tab-pane active" id="details" role="tabpanel">
+                                    <div class="card">
+                                        <div class="card-header">Personal Profile</div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    {{Form::label('title', 'Applicant Name')}}
+                                                    {{Form::text('applicant_name', $applicant->applicant_name, ['class' => 'form-control', 'placeholder' => 'Applicant Name', 'readonly' => 'true'])}}
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    {{ Form::label('title', 'Applicant IC Number') }}
+                                                    {{ Form::text('applicant_ic', $applicant->applicant_ic, ['class' => 'form-control', 'placeholder' => 'Applicant IC Number', 'readonly' => 'true']) }}
+                                                </div>
                                             </div>
-                                            <div class="col-md-6 form-group">
-                                                {{ Form::label('title', 'Applicant IC Number') }}
-                                                {{ Form::text('applicant_ic', $applicant->applicant_ic, ['class' => 'form-control', 'placeholder' => 'Applicant IC Number', 'readonly' => 'true']) }}
+                                            <hr class="mt-2 mb-3">
+                                            <div class="alert alert-danger" role="alert">
+                                                * Mandatory Field
+                                                </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-8">
+                                                    {{Form::label('title', 'Applicant Name')}} *
+                                                    {{ Form::hidden('applicant_id',$applicant->id), ['id' => 'applicant_id'] }}
+                                                    {{Form::text('applicant_name', $applicant->applicant_name, ['class' => 'form-control', 'placeholder' => 'Applicant Name', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
+                                                    @error('applicant_name')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-md-4 form-group">
+                                                    {{ Form::label('title', 'Applicant IC Number') }} *
+                                                    {{ Form::text('applicant_ic', $applicant->applicant_ic, ['class' => 'form-control', 'placeholder' => 'Applicant IC Number', 'readonly' => 'true']) }}
+                                                    @error('applicant_ic')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-group col-md-8">
+                                                    {{Form::label('title', 'Applicant Email')}} *
+                                                    {{Form::email('applicant_email', $applicant->applicant_email, ['class' => 'form-control', 'placeholder' => 'Applicant Name', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
+                                                    @error('applicant_email')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-md-4 form-group">
+                                                    {{ Form::label('title', 'Applicant Phone Number') }} *
+                                                    {{ Form::text('applicant_phone', $applicant->applicant_phone, ['class' => 'form-control', 'placeholder' => 'Applicant IC Number']) }}
+                                                    @error('applicant_phone')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    {{Form::label('title', 'Nationality')}} *
+                                                    <select class="form-control country" name="applicant_nationality">
+                                                        @foreach($country as $countries)
+                                                            <option value="{{ $countries->country_code }}" {{ $applicant->applicant_nationality == $countries->country_code ? 'selected="selected"' : ''}}>{{ $countries->country_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('applicant_nationality')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    {{ Form::label('title', 'Gender') }}
+                                                    <select class="form-control gender" name="applicant_gender">
+                                                        @foreach($gender as $genders)
+                                                            <option value="{{ $genders->gender_code }}" {{ $applicant->applicant_gender == $genders->gender_code ? 'selected="selected"' : ''}}>{{ $genders->gender_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4 form-group">
+                                                    {{ Form::label('title', 'Date of Birth') }}
+                                                    {{ Form::date('applicant_dob', '', ['class' => 'form-control']) }}
+                                                </div>
+                                                <div class="col-md-4 form-group">
+                                                    {{ Form::label('title', 'Marital Status') }}
+                                                    <select class="form-control marital" name="applicant_marital">
+                                                        @foreach ($marital as $maritals)
+                                                            <option value="{{ $maritals->marital_code }}" {{ $applicant->applicant_marital == $maritals->marital_code ? 'selected="Selected"' : ''}}>{{ $maritals->marital_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4 form-group">
+                                                    {{ Form::label('title', 'Race') }}
+                                                    <select class="form-control race" name="applicant_race">
+                                                        @foreach ($race as $races)
+                                                            <option value="{{ $races->race_code }}" {{ $applicant->applicant_race == $races->race_code ? 'selected="Selected"' : ''}}>{{ $races->race_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4 form-group">
+                                                    {{ Form::label('title', 'Religion') }}
+                                                    <select class="form-control religion" name="applicant_religion">
+                                                        @foreach ($religion as $religions)
+                                                            <option value="{{ $religions->religion_code }}" {{ $applicant->applicant_religion == $religions->religion_code ? 'selected="Selected"' : ''}}>{{ $religions->religion_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-12 form-group">
+                                                    {{ Form::label('title', 'Address Line 1') }} *
+                                                    {{ Form::text('applicant_address_1', isset($applicant->applicantContactInfo->applicant_address_1) ? $applicant->applicantContactInfo->applicant_address_1 : '', ['class' => 'form-control', 'id' => 'applicant_address_1', 'placeholder' => 'Address Line 1','onkeyup' => 'this.value = this.value.toUpperCase()']) }}
+                                                    @error('applicant_phone')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-md-12 form-group">
+                                                    {{ Form::label('title', 'Address Line 2') }}
+                                                    {{ Form::text('applicant_address_2', isset($applicant->applicantContactInfo->applicant_address_2) ? $applicant->applicantContactInfo->applicant_address_2 : '', ['class' => 'form-control', 'placeholder' => 'Address Line 2', 'onkeyup' => 'this.value = this.value.toUpperCase()']) }}
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    {{ Form::label('title', 'Postcode') }}
+                                                    {{ Form::number('applicant_poscode', isset($applicant->applicantContactInfo->applicant_poscode) ? $applicant->applicantContactInfo->applicant_poscode : '', ['class' => 'form-control', 'placeholder' => 'Postcode']) }}
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    {{ Form::label('title', 'City') }} *
+                                                    {{ Form::text('applicant_city', isset($applicant->applicantContactInfo->applicant_city) ? $applicant->applicantContactInfo->applicant_city : '', ['class' => 'form-control', 'placeholder' => 'City', 'onkeyup' => 'this.value = this.value.toUpperCase()']) }}
+                                                    @error('applicant_city')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    {{ Form::label('title', 'State') }} *
+                                                    {{ Form::text('applicant_state', isset($applicant->applicantContactInfo->applicant_state) ? $applicant->applicantContactInfo->applicant_state : '', ['class' => 'form-control', 'placeholder' => 'State', 'onkeyup' => 'this.value = this.value.toUpperCase()']) }}
+                                                    @error('applicant_state')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    {{ Form::label('title', 'Country') }}
+                                                    <select class="form-control country" name="applicant_country">
+                                                        @foreach($country as $countries)
+                                                        <option value="{{ $countries->country_code }}">{{ $countries->country_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('applicant_country')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
                                             </div>
                                         </div>
-                                        <hr class="mt-2 mb-3">
-                                        <div class="alert alert-danger" role="alert">
-                                            * Mandatory Field
+                                    </div>
+                                    <hr class="mt-2 mb-3">
+                                    <div class="card">
+                                        <div class="card-header">Guardian Contact Info</div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                {{Form::hidden('applicant_id', $applicant->id)}}
+                                                <div class="form-group col-md-12">
+                                                    {{Form::label('title', 'Father / Guardian I Name')}} *
+                                                    {{Form::text('guardian_one_name', isset($applicant->applicantGuardian->guardian_one_name) ? $applicant->applicantGuardian->guardian_one_name : '', ['class' => 'form-control', 'placeholder' => 'Guardian Name', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
+                                                    @error('guardian_one_name')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    {{ Form::label('title', 'Father / Guardian I Relation') }} *
+                                                    <select class="form-control relation" name="guardian_one_relationship">
+                                                        @if (isset($applicant->applicantGuardian->guardian_one_relationship))
+                                                        <option value="{{ $applicant->applicantGuardian->guardian_one_relationship }}">{{ $applicant->applicantGuardian->familyOne->family_name }}</option>
+                                                        @endif
+                                                        @foreach($family as $families)
+                                                        <option value="{{ $families->family_code }}">{{ $families->family_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('guardian_one_relationship')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    {{ Form::label('title', 'Father / Guardian I Phone Number') }} *
+                                                    {{ Form::number('guardian_one_mobile', isset($applicant->applicantGuardian->guardian_one_mobile) ? $applicant->applicantGuardian->guardian_one_mobile : '', ['class' => 'form-control', 'placeholder' => 'Guardian Phone Number']) }}
+                                                    @error('guardian_one_mobile')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-group col-md-12">
+                                                    {{Form::label('title', 'Father / Guardian I Address')}} *
+                                                    {{Form::text('guardian_one_address', isset($applicant->applicantGuardian->guardian_one_address) ? $applicant->applicantGuardian->guardian_one_address : '', ['class' => 'form-control', 'placeholder' => 'Guardian Address', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
+                                                    @error('guardian_one_address')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
                                             </div>
-                                        <div class="row">
-                                            <div class="form-group col-md-8">
-                                                {{Form::label('title', 'Applicant Name')}} *
-                                                {{ Form::hidden('applicant_id',$applicant->id), ['id' => 'applicant_id'] }}
-                                                {{Form::text('applicant_name', $applicant->applicant_name, ['class' => 'form-control', 'placeholder' => 'Applicant Name', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
-                                                @error('applicant_name')
-                                                    <p style="color: red">{{ $message }}</p>
-                                                @enderror
+                                            <div class="row mt-5">
+                                                <div class="form-group col-md-12">
+                                                    {{Form::label('title', 'Mother / Guardian II Name')}} *
+                                                    {{Form::text('guardian_two_name', isset($applicant->applicantGuardian->guardian_two_name) ? $applicant->applicantGuardian->guardian_two_name : '', ['class' => 'form-control', 'placeholder' => 'Guardian II Name', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
+                                                    @error('guardian_two_name')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    {{ Form::label('title', 'Mother / Guardian II Relation') }} *
+                                                    <select class="form-control relation" name="guardian_two_relationship">
+                                                        @if (isset($applicant->applicantGuardian->guardian_two_relationship))
+                                                        <option value="{{ $applicant->applicantGuardian->guardian_two_relationship }}">{{ $applicant->applicantGuardian->familyTwo->family_name }}</option>
+                                                        @endif
+                                                        @foreach($family as $families)
+                                                        <option value="{{ $families->family_code }}">{{ $families->family_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('guardian_two_relationship')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    {{ Form::label('title', 'Mother / Guardian II Phone Number') }} *
+                                                    {{ Form::number('guardian_two_mobile', isset($applicant->applicantGuardian->guardian_two_mobile) ? $applicant->applicantGuardian->guardian_two_mobile : '', ['class' => 'form-control', 'placeholder' => 'Guardian Phone Number']) }}
+                                                    @error('guardian_two_mobile')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-group col-md-12">
+                                                    {{Form::label('title', 'Mother / Guardian II Address')}}
+                                                    {{Form::text('guardian_two_address', isset($applicant->applicantGuardian->guardian_two_address) ? $applicant->applicantGuardian->guardian_two_address : '', ['class' => 'form-control', 'placeholder' => 'Guardian Address', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
+                                                </div>
                                             </div>
-                                            <div class="col-md-4 form-group">
-                                                {{ Form::label('title', 'Applicant IC Number') }} *
-                                                {{ Form::text('applicant_ic', $applicant->applicant_ic, ['class' => 'form-control', 'placeholder' => 'Applicant IC Number', 'readonly' => 'true']) }}
-                                                @error('applicant_ic')
-                                                    <p style="color: red">{{ $message }}</p>
-                                                @enderror
+                                        </div>
+                                    </div>
+                                    <hr class="mt-2 mb-3">
+                                    <div class="card">
+                                        <div class="card-header">Emergency Contact Info</div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                {{Form::hidden('applicant_id', $applicant->id)}}
+                                                <div class="form-group col-md-12">
+                                                    {{Form::label('title', 'Emergency Name')}} *
+                                                    {{Form::text('emergency_name', isset($applicant->applicantEmergency->emergency_name) ? $applicant->applicantEmergency->emergency_name : '', ['class' => 'form-control', 'placeholder' => 'Emergency Name', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
+                                                    @error('emergency_name')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    {{ Form::label('title', 'Emergency Relation') }} *
+                                                    <select class="form-control relation" name="emergency_relationship">
+                                                        @if (isset($applicant->applicantGuardian->guardian_one_relationship))
+                                                        <option value="{{ $applicant->applicantEmergency->emergency_relationship }}">{{ $applicant->applicantEmergency->emergencyOne->family_name }}</option>
+                                                        @endif
+                                                        @foreach($family as $families)
+                                                        <option value="{{ $families->family_code }}">{{ $families->family_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('emergency_relationship')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    {{ Form::label('title', 'Emergency Phone Number') }} *
+                                                    {{ Form::number('emergency_phone', isset($applicant->applicantEmergency->emergency_phone) ? $applicant->applicantEmergency->emergency_phone : '', ['class' => 'form-control', 'placeholder' => 'Emergency Phone Number']) }}
+                                                    @error('emergency_phone')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-group col-md-12">
+                                                    {{Form::label('title', 'Emergency Address')}}
+                                                    {{Form::text('emergency_address', isset($applicant->applicantEmergency->emergency_address) ? $applicant->applicantEmergency->emergency_address : '', ['class' => 'form-control', 'placeholder' => 'Guardian Address', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
+                                                </div>
                                             </div>
-                                            <div class="form-group col-md-8">
-                                                {{Form::label('title', 'Applicant Email')}} *
-                                                {{Form::email('applicant_email', $applicant->applicant_email, ['class' => 'form-control', 'placeholder' => 'Applicant Name', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
-                                                @error('applicant_email')
-                                                    <p style="color: red">{{ $message }}</p>
-                                                @enderror
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">Qualification</div>
+                                        <div class="card-body">
+                                            <div class="row qualification-row">
+                                                <div class="col-md-6 form-group">
+                                                    {{ Form::label('title', 'Qualification Type') }}
+                                                    <select class="form-control qualification" id="qualification">
+                                                        @foreach($qualification as $qualifications)
+                                                        <option value="{{ $qualifications->id }}">{{ $qualifications->qualification_code }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <button type="button" class="btn btn-primary tambah-qualification">Add Qualification</button>
+                                                </div>
                                             </div>
-                                            <div class="col-md-4 form-group">
-                                                {{ Form::label('title', 'Applicant Phone Number') }} *
-                                                {{ Form::text('applicant_phone', $applicant->applicant_phone, ['class' => 'form-control', 'placeholder' => 'Applicant IC Number']) }}
-                                                @error('applicant_phone')
-                                                    <p style="color: red">{{ $message }}</p>
-                                                @enderror
+                                            <div class="row mt-2 mb-3">
+                                                <hr>
+                                                <div class="col-12">
+                                                    <div class="content"></div>
+                                                </div>
                                             </div>
-                                            <div class="form-group col-md-4">
-                                                {{Form::label('title', 'Nationality')}} *
-                                                <select class="form-control" name="applicant_nationality">
-                                                    @foreach($country as $countries)
-                                                        <option value="{{ $countries->country_code }}" {{ $applicant->applicant_nationality == $countries->country_code ? 'selected="selected"' : ''}}>{{ $countries->country_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @error('applicant_nationality')
-                                                    <p style="color: red">{{ $message }}</p>
-                                                @enderror
-                                            </div>
-                                            <div class="form-group col-md-4">
-                                                {{ Form::label('title', 'Gender') }}
-                                                <select class="form-control" name="applicant_gender">
-                                                    @foreach($gender as $genders)
-                                                        <option value="{{ $genders->gender_code }}" {{ $applicant->applicant_gender == $genders->gender_code ? 'selected="selected"' : ''}}>{{ $genders->gender_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="col-md-4 form-group">
-                                                {{ Form::label('title', 'Date of Birth') }}
-                                                {{ Form::date('applicant_dob', '', ['class' => 'form-control']) }}
-                                            </div>
-                                            <div class="col-md-4 form-group">
-                                                {{ Form::label('title', 'Marital Status') }}
-                                                <select class="form-control" name="applicant_marital">
-                                                    @foreach ($marital as $maritals)
-                                                        <option value="{{ $maritals->marital_code }}" {{ $applicant->applicant_marital == $maritals->marital_code ? 'selected="Selected"' : ''}}>{{ $maritals->marital_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="col-md-4 form-group">
-                                                {{ Form::label('title', 'Race') }}
-                                                <select class="form-control" name="applicant_race">
-                                                    @foreach ($race as $races)
-                                                        <option value="{{ $races->race_code }}" {{ $applicant->applicant_race == $races->race_code ? 'selected="Selected"' : ''}}>{{ $races->race_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="col-md-4 form-group">
-                                                {{ Form::label('title', 'Religion') }}
-                                                <select class="form-control" name="applicant_religion">
-                                                    @foreach ($religion as $religions)
-                                                        <option value="{{ $religions->religion_code }}" {{ $applicant->applicant_religion == $religions->religion_code ? 'selected="Selected"' : ''}}>{{ $religions->religion_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="col-md-12 form-group">
-                                                {{ Form::label('title', 'Address Line 1') }} *
-                                                {{ Form::text('applicant_address_1', isset($applicant->applicantContactInfo->applicant_address_1) ? $applicant->applicantContactInfo->applicant_address_1 : '', ['class' => 'form-control', 'id' => 'applicant_address_1', 'placeholder' => 'Address Line 1','onkeyup' => 'this.value = this.value.toUpperCase()']) }}
-                                                @error('applicant_phone')
-                                                    <p style="color: red">{{ $message }}</p>
-                                                @enderror
-                                            </div>
-                                            <div class="col-md-12 form-group">
-                                                {{ Form::label('title', 'Address Line 2') }}
-                                                {{ Form::text('applicant_address_2', isset($applicant->applicantContactInfo->applicant_address_2) ? $applicant->applicantContactInfo->applicant_address_2 : '', ['class' => 'form-control', 'placeholder' => 'Address Line 2', 'onkeyup' => 'this.value = this.value.toUpperCase()']) }}
-                                            </div>
-                                            <div class="col-md-6 form-group">
-                                                {{ Form::label('title', 'Postcode') }}
-                                                {{ Form::number('applicant_poscode', isset($applicant->applicantContactInfo->applicant_poscode) ? $applicant->applicantContactInfo->applicant_poscode : '', ['class' => 'form-control', 'placeholder' => 'Postcode']) }}
-                                            </div>
-                                            <div class="col-md-6 form-group">
-                                                {{ Form::label('title', 'City') }} *
-                                                {{ Form::text('applicant_city', isset($applicant->applicantContactInfo->applicant_city) ? $applicant->applicantContactInfo->applicant_city : '', ['class' => 'form-control', 'placeholder' => 'City', 'onkeyup' => 'this.value = this.value.toUpperCase()']) }}
-                                                @error('applicant_city')
-                                                    <p style="color: red">{{ $message }}</p>
-                                                @enderror
-                                            </div>
-                                            <div class="col-md-6 form-group">
-                                                {{ Form::label('title', 'State') }} *
-                                                {{ Form::text('applicant_state', isset($applicant->applicantContactInfo->applicant_state) ? $applicant->applicantContactInfo->applicant_state : '', ['class' => 'form-control', 'placeholder' => 'State', 'onkeyup' => 'this.value = this.value.toUpperCase()']) }}
-                                                @error('applicant_state')
-                                                    <p style="color: red">{{ $message }}</p>
-                                                @enderror
-                                            </div>
-                                            <div class="col-md-6 form-group">
-                                                {{ Form::label('title', 'Country') }}
-                                                <select class="form-control" name="applicant_country">
-                                                    @foreach($country as $countries)
-                                                    <option value="{{ $countries->country_code }}">{{ $countries->country_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @error('applicant_country')
-                                                    <p style="color: red">{{ $message }}</p>
-                                                @enderror
-                                            </div>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button class="btn btn-primary" id="submit">Submit</button>
                                         </div>
                                     </div>
                                 </div>
-                                <hr class="mt-2 mb-3">
-                                <div class="card">
-                                    <div class="card-header">Guardian Contact Info</div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            {{Form::hidden('applicant_id', $applicant->id)}}
-                                            <div class="form-group col-md-12">
-                                                {{Form::label('title', 'Father / Guardian I Name')}} *
-                                                {{Form::text('guardian_one_name', isset($applicant->applicantGuardian->guardian_one_name) ? $applicant->applicantGuardian->guardian_one_name : '', ['class' => 'form-control', 'placeholder' => 'Guardian Name', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
-                                                @error('guardian_one_name')
-                                                    <p style="color: red">{{ $message }}</p>
-                                                @enderror
-                                            </div>
-                                            <div class="col-md-6 form-group">
-                                                {{ Form::label('title', 'Father / Guardian I Relation') }} *
-                                                <select class="form-control" name="guardian_one_relationship">
-                                                    @if (isset($applicant->applicantGuardian->guardian_one_relationship))
-                                                    <option value="{{ $applicant->applicantGuardian->guardian_one_relationship }}">{{ $applicant->applicantGuardian->familyOne->family_name }}</option>
-                                                    @endif
-                                                    @foreach($family as $families)
-                                                    <option value="{{ $families->family_code }}">{{ $families->family_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @error('guardian_one_relationship')
-                                                    <p style="color: red">{{ $message }}</p>
-                                                @enderror
-                                            </div>
-                                            <div class="col-md-6 form-group">
-                                                {{ Form::label('title', 'Father / Guardian I Phone Number') }} *
-                                                {{ Form::number('guardian_one_mobile', isset($applicant->applicantGuardian->guardian_one_mobile) ? $applicant->applicantGuardian->guardian_one_mobile : '', ['class' => 'form-control', 'placeholder' => 'Guardian Phone Number']) }}
-                                                @error('guardian_one_mobile')
-                                                    <p style="color: red">{{ $message }}</p>
-                                                @enderror
-                                            </div>
-                                            <div class="form-group col-md-12">
-                                                {{Form::label('title', 'Father / Guardian I Address')}} *
-                                                {{Form::text('guardian_one_address', isset($applicant->applicantGuardian->guardian_one_address) ? $applicant->applicantGuardian->guardian_one_address : '', ['class' => 'form-control', 'placeholder' => 'Guardian Address', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
-                                                @error('guardian_one_address')
-                                                    <p style="color: red">{{ $message }}</p>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="row mt-5">
-                                            <div class="form-group col-md-12">
-                                                {{Form::label('title', 'Mother / Guardian II Name')}} *
-                                                {{Form::text('guardian_two_name', isset($applicant->applicantGuardian->guardian_two_name) ? $applicant->applicantGuardian->guardian_two_name : '', ['class' => 'form-control', 'placeholder' => 'Guardian II Name', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
-                                                @error('guardian_two_name')
-                                                    <p style="color: red">{{ $message }}</p>
-                                                @enderror
-                                            </div>
-                                            <div class="col-md-6 form-group">
-                                                {{ Form::label('title', 'Mother / Guardian II Relation') }} *
-                                                <select class="form-control" name="guardian_two_relationship">
-                                                    @if (isset($applicant->applicantGuardian->guardian_two_relationship))
-                                                    <option value="{{ $applicant->applicantGuardian->guardian_two_relationship }}">{{ $applicant->applicantGuardian->familyTwo->family_name }}</option>
-                                                    @endif
-                                                    @foreach($family as $families)
-                                                    <option value="{{ $families->family_code }}">{{ $families->family_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @error('guardian_two_relationship')
-                                                    <p style="color: red">{{ $message }}</p>
-                                                @enderror
-                                            </div>
-                                            <div class="col-md-6 form-group">
-                                                {{ Form::label('title', 'Mother / Guardian II Phone Number') }} *
-                                                {{ Form::number('guardian_two_mobile', isset($applicant->applicantGuardian->guardian_two_mobile) ? $applicant->applicantGuardian->guardian_two_mobile : '', ['class' => 'form-control', 'placeholder' => 'Guardian Phone Number']) }}
-                                                @error('guardian_two_mobile')
-                                                    <p style="color: red">{{ $message }}</p>
-                                                @enderror
-                                            </div>
-                                            <div class="form-group col-md-12">
-                                                {{Form::label('title', 'Mother / Guardian II Address')}}
-                                                {{Form::text('guardian_two_address', isset($applicant->applicantGuardian->guardian_two_address) ? $applicant->applicantGuardian->guardian_two_address : '', ['class' => 'form-control', 'placeholder' => 'Guardian Address', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr class="mt-2 mb-3">
-                                <div class="card">
-                                    <div class="card-header">Emergency Contact Info</div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            {{Form::hidden('applicant_id', $applicant->id)}}
-                                            <div class="form-group col-md-12">
-                                                {{Form::label('title', 'Emergency Name')}} *
-                                                {{Form::text('emergency_name', isset($applicant->applicantEmergency->emergency_name) ? $applicant->applicantEmergency->emergency_name : '', ['class' => 'form-control', 'placeholder' => 'Emergency Name', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
-                                                @error('emergency_name')
-                                                    <p style="color: red">{{ $message }}</p>
-                                                @enderror
-                                            </div>
-                                            <div class="col-md-6 form-group">
-                                                {{ Form::label('title', 'Emergency Relation') }} *
-                                                <select class="form-control" name="emergency_relationship">
-                                                    @if (isset($applicant->applicantGuardian->guardian_one_relationship))
-                                                    <option value="{{ $applicant->applicantEmergency->emergency_relationship }}">{{ $applicant->applicantEmergency->emergencyOne->family_name }}</option>
-                                                    @endif
-                                                    @foreach($family as $families)
-                                                    <option value="{{ $families->family_code }}">{{ $families->family_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @error('emergency_relationship')
-                                                    <p style="color: red">{{ $message }}</p>
-                                                @enderror
-                                            </div>
-                                            <div class="col-md-6 form-group">
-                                                {{ Form::label('title', 'Emergency Phone Number') }} *
-                                                {{ Form::number('emergency_phone', isset($applicant->applicantEmergency->emergency_phone) ? $applicant->applicantEmergency->emergency_phone : '', ['class' => 'form-control', 'placeholder' => 'Emergency Phone Number']) }}
-                                                @error('emergency_phone')
-                                                    <p style="color: red">{{ $message }}</p>
-                                                @enderror
-                                            </div>
-                                            <div class="form-group col-md-12">
-                                                {{Form::label('title', 'Emergency Address')}}
-                                                {{Form::text('emergency_address', isset($applicant->applicantEmergency->emergency_address) ? $applicant->applicantEmergency->emergency_address : '', ['class' => 'form-control', 'placeholder' => 'Guardian Address', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-header">Qualification</div>
-                                    <div class="card-body">
-                                        <div class="row qualification-row">
-                                            <div class="col-md-6 form-group">
-                                                {{ Form::label('title', 'Qualification Type') }}
-                                                <select class="form-control qualification" id="qualification">
-                                                    @foreach($qualification as $qualifications)
-                                                    <option value="{{ $qualifications->id }}">{{ $qualifications->qualification_code }}</option>
-                                                    @endforeach
-                                                </select>
-                                                <button class="btn btn-primary tambah-qualification">Add Qualification</button>
-                                            </div>
-                                        </div>
-                                        <div class="row mt-2 mb-3">
-                                            <hr>
-                                            <div class="col-12">
-                                                <div class="content"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button class="btn btn-primary" id="submit">Submit</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane" id="qualification" role="tabpanel">
-                                {{-- <div class="card">
-                                    <div class="card-header">Qualification</div>
-                                    <div class="card-body">
-                                        <div class="row qualification-row">
-                                            <div class="col-md-6 form-group">
-                                                {{ Form::label('title', 'Qualification Type') }}
-                                                <select class="form-control qualification" id="qualification">
-                                                    @foreach($qualification as $qualifications)
-                                                    <option value="{{ $qualifications->id }}">{{ $qualifications->qualification_code }}</option>
-                                                    @endforeach
-                                                </select>
-                                                <button class="btn btn-primary tambah-qualification">Add Qualification</button>
-                                            </div>
-                                        </div>
-                                        <div class="row mt-2 mb-3">
-                                            <hr>
-                                            <div class="col-12">
-                                                <div class="content"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button class="btn btn-primary">Submit</button>
-                                    </div>
-                                </div> --}}
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-        {!! Form::close() !!}
+            {!! Form::close() !!}
     </div>
 </div>
 @endsection
 @section('script')
 <script>
+    var existing = {!! $existing !!};
+    var existingcgpa = {!! $existingcgpa !!};
+
     window.history.forward();
         function noBack() {
             window.history.forward();
     }
+
+    $(document).ready(function() {
+        $('.country, .gender, .marital, .race, .religion, .relation, .qualification').select2();
+    });
+
     var listSPM = {!! $subjectSpmStr !!};
     var listGradeSPM = {!! $gradeSpmStr !!};
     var listSTAM = {!! $subjectStamStr !!};
@@ -365,49 +334,35 @@
     var listOLEVEL = {!! $subjectOlevelStr !!};
     var listGradeOLEVEL = {!! $gradeOlevelStr !!};
 
-    $(document).ready(function() {
-        $('.nationality').select2();
-    });
+    function Delete(button,id=null)
+    {
+        var type = $(button).data('type');
+        if(id)
+        {
 
-    $(document).ready(function(){
-        var timer;
-        var timeout = 5000;
-        $('#applicant_address_1').keyup(function(){
-            if(timer){
-                clearTimeout(timer);
-            }
-            timer = setTimeout(saveData, timeout);
-        });
+            $.ajaxSetup({
+                headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
+            });
 
-        $('#submit').click(function(){
-            saveData();
-        })
-    });
-
-    function saveData(){
-        var applicant_id = $('#applicant_id').val();
-        var applicant_address_1 = $('#applicant_address_1').val();
-
-        if(applicant_address_1 != ''){
             $.ajax({
-                url: '/registration/edit',
-                type: 'patch',
-                data: {applicant_id: applicant_id, applicant_address_1: applicant_address_1 },
+                url: "{{url('/applicant/delete')}}/" + id + "/" + type + "/" + "{{$id}}",
+                type: 'post',
+                data:{"_token": $('meta[name="csrf-token"]').attr('content')},
                 success: function(response){
-                    $('#applicant_address_1').val(response);
+
                 }
             })
         }
-    }
 
-    // jQuery(function () {
-    //     jQuery.post("{{ url("/registration/edit", "applicant->id") }}", function (data) {
-    //         jQuery("[name='applicant_address_1']").val(data.applicant_address_1);
-    //     }, "json");
-    //     setInterval(function () {
-    //         jQuery.post("{{ url("/registration/edit", "applicant->id") }}", $("form").serialize());
-    //     }, 2000);
-    // });
+        if(type == "result")
+        {
+            $(button).parent().parent().remove();
+        }
+        else
+        {
+            $(button).parent().parent().parent().remove();
+        }
+    }
 </script>
 <script src="{{ asset('/js/applicant.js')}}" type="text/javascript"></script>
 @endsection

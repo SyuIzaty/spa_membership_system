@@ -6,7 +6,11 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <img src="{{ public_path('img/intec_logo.png') }}" style="height: 170px; width: 650px;">
+                    <div class="d-flex justify-content-center">
+                        <div class="p-2">
+                            <img src="{{ asset('img/intec_logo.png') }}" class="ml-5"/>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body">
                     <h2>NEW APPLICATION / CHECK APPLICATION</h2>
@@ -24,7 +28,7 @@
                             {{Form::text('applicant_ic', '', ['class' => 'form-control', 'placeholder' => 'Applicant IC', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                         </div>
                         <div class="p-2">
-                            <button type="submit" class="btn btn-primary">CONTINUE APPLICATION</button>
+                            <button type="submit" class="btn btn-primary mt-4">CONTINUE APPLICATION</button>
                         </div>
                     </div>
                     {!! Form::close() !!}

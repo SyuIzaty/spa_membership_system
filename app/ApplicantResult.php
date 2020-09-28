@@ -8,11 +8,11 @@ class ApplicantResult extends Model
 {
 
     protected $table = 'applicantresult';
-    protected $fillable = ['applicant_id','type','subject','grade_id','cgpa'];
+    protected $fillable = ['id','applicant_id','type','subject','grade_id','cgpa','created_at','updated_at'];
 
     public function applicant()
     {
-        return $this->hasMany('App\Applicant');
+        return $this->belongsTo('App\Applicant');
     }
 
     public function grading()
@@ -33,6 +33,11 @@ class ApplicantResult extends Model
     public function applicantAcademic()
     {
         return $this->hasOne('App\ApplicantAcademic','applicant_id','applicant_id');
+    }
+
+    public function qualifications()
+    {
+        return $this->hasOne('App\Qualification','id','type');
     }
 
 }

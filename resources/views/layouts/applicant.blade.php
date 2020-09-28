@@ -6,7 +6,7 @@
          <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('', 'Registration') }}</title>
         <meta name="description" content="Page Title">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, minimal-ui">
@@ -99,11 +99,9 @@
                     <!-- this overlay is activated only when mobile menu is triggered -->
                     <div class="page-content-overlay" data-action="toggle" data-class="mobile-nav-on"></div> <!-- END Page Content -->
                     <!-- BEGIN Page Footer -->
-                    <footer class="page-footer" role="contentinfo">
-                        <div class="d-flex align-items-center flex-1 text-muted">
-                            <span class="hidden-md-down fw-700">2020 </span>© INTEC Education College
-                        </div>
-                    </footer>
+                    {{-- <footer class="page-footer" role="contentinfo">
+                        <span class="hidden-md-down fw-700">2020 </span>© INTEC Education College
+                    </footer> --}}
                     <!-- END Page Footer -->
 
                 </div>

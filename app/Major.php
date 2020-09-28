@@ -11,7 +11,7 @@ class Major extends Model
 
     protected $table = 'major';
 
-    protected $primaryKey = 'id'; 
+    protected $primaryKey = 'id';
     public $incrementing = false;
     protected $keyType = 'string';
 
@@ -38,5 +38,10 @@ class Major extends Model
     public function scopeInactive($query)
     {
     	return $query->where('major_status', 0);
+    }
+
+    public function programme()
+    {
+        return $this->belongsTomany('App\Programme');
     }
 }

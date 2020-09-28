@@ -1,10 +1,76 @@
 $(document).ready(function () {
     var increment = 0;
-    $(".tambah-qualification").click(function (e) {
-        e.preventDefault();
+    // Existing
+    var appended = [];
+    existing.forEach(function(ele){
+      if(appended.indexOf(ele.qualifications.id) == -1)
+      {
+          addQualification(ele.qualifications.qualification_code,ele.qualifications.id);
+          appended.push(ele.qualifications.id);
+      }
 
-        var x = $("#qualification :selected").text();
-        var xval = $("#qualification :selected").val();
+      var letter = "addRow" + firstLetterUpper(ele.qualifications.qualification_code);
+
+      eval(letter + "('"+ele.id+"','"+ele.subject+"','"+ele.grade_id+"')")
+    });
+
+    //diploma, bachelor, matric
+    existingcgpa.forEach(function(ele){
+        if(appended.indexOf(ele.qualifications.id) == -1)
+        {
+          let data = [ele.id, ele.applicant_study, ele.applicant_major, ele.applicant_year, ele.applicant_cgpa];
+          addQualification(ele.qualifications.qualification_code,ele.qualifications.id,data);
+          appended.push(ele.qualifications.id);
+        }
+    });
+
+    $(document).on('click', '.tambah-qualification', function(e) {
+        e.preventDefault();
+         var x = $("#qualification :selected").text();
+         var xval = $("#qualification :selected").val();
+         addQualification(x,xval);
+    });
+
+    $("#addspmrow").click(function (e) {
+        e.preventDefault();
+        console.log("enter");
+    });
+    $("#addstamrow").click(function (e) {
+        e.preventDefault();
+        console.log("enter");
+    });
+    $("#adduecrow").click(function (e) {
+        e.preventDefault();
+        console.log("enter");
+    });
+    $("#addstpmrow").click(function (e) {
+        e.preventDefault();
+        console.log("enter");
+    });
+    $("#addalevelrow").click(function (e) {
+        e.preventDefault();
+        console.log("enter");
+    });
+    $("#addolevelrow").click(function (e) {
+        e.preventDefault();
+        console.log("enter");
+    });
+});
+
+
+function firstLetterUpper(text)
+{
+    var trim = text.replace(/\s/g, "");
+    return trim.substr(0,1).toUpperCase() + trim.substr(1).toLowerCase();
+}
+
+function addQualification(x,xval,data=null){
+    var myid = data ? data[0] : 0;
+    var mystudy = data ? data[1] : "";
+    var mymajor = data ? data[2] : "";
+    var myyear = data ? data[3] : "";
+    var mycgpa = data ? data[4] : "";
+    $("#qualification option[value="+xval+"]").remove();
         if (x == "SPM") {
             let spmlistarr = [];
             for (let i = 0; i < listSPM.length; i++) {
@@ -38,18 +104,14 @@ $(document).ready(function () {
                     '<hr class="mt-2 mb-3">\
                 <div class="row">\
                     <div class="col-12">\
-                        <h5 class="mb-4">Sijil Pelajaran Malaysia <button class="btn btn-primary float-right" id="addspmrow" onclick="addRow();return false;">Add Subject</button></h5>\
-                    </div>\
-                </div>\
-                <div class="row">\
-                    <div class="col-md-6"><input type="text" class="form-control" name="spm_study" placeholder="School" required></div>\
-                    <div class="col-md-6">\
-                        <input type="file" name="spm_file" id="spm_file" class="custom-file-input">\
-                        <label class="custom-file-label" for="inputGroupFile01">Upload File</label>\
+                        <h5 class="mb-4">Sijil Pelajaran Malaysia</h5>\
+                        <button class="btn btn-primary float-right" id="addspmrow" onclick="addRowSpm();return false;">Add Subject</button>\
+                        <button type="button" class="btn btn-danger float-right" data-type="qualification" onclick="Delete(this,'+xval+')">Delete Qualification</button>\
                     </div>\
                 </div>\
                 <div class="row mt-4">\
                     <div class="col-md-12">\
+                        <input type="hidden" name="spm_type" value="'+xval +'">\
                         <table class="table table-bordered" id="spm-table">\
                             <thead>\
                                 <th>Subject Name</th>\
@@ -58,9 +120,7 @@ $(document).ready(function () {
                             </thead>\
                             <tr>\
                                 <td>\
-                                    <input type="hidden" name="spm_type" value="' +
-                        xval +
-                        '">\
+                                <input type="hidden" name="exist_spm[]" value="0">\
                                     <select class="form-control" name="spm_subject[]" required>' +
                         spmlistarr.toString() +
                         '</select>\
@@ -71,12 +131,10 @@ $(document).ready(function () {
                         '</select>\
                                 </td>\
                                 <td>\
-                                    <button value="-" onclick="$(this).parent().parent().remove();" class="btn btn-danger btn-md float-right remove">\
+                                    <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-md float-right remove">\
                                         Delete\
                                     </button>\
                                 </td>\
-                            </tr>\
-                            <tr>\
                             </tr>\
                         </table>\
                     </div>\
@@ -120,23 +178,23 @@ $(document).ready(function () {
                     '<hr class="mt-2 mb-3">\
                 <div class="row">\
                     <div class="col-12">\
-                        <h5 class="mb-4">UEC <button class="btn btn-primary float-right" id="adduecrow" onclick="addRowUec();return false;">Add Subject</button></h5>\
+                        <h5 class="mb-4">UEC</h5>\
+                        <button class="btn btn-primary float-right" id="adduecrow" onclick="addRowUec();return false;">Add Subject</button>\
+                        <button type="button" class="btn btn-danger float-right" data-type="qualification" onclick="Delete(this,'+xval+')">Delete Qualification</button>\
                     </div>\
                 </div>\
                 <div class="row mt-4">\
                     <div class="col-md-12">\
+                        <input type="hidden" name="uec_type" value="'+xval +'">\
                         <table class="table table-bordered" id="uec-table">\
                             <thead>\
-                            <th><input type="text" class="form-control" name="uec_study" placeholder="School" required></th>\
                                 <th>Subject Name</th>\
                                 <th>Result</th>\
                                 <th></th>\
                         </thead>\
                             <tr>\
                                 <td>\
-                                    <input type="hidden" name="uec_type" value="' +
-                        xval +
-                        '">\
+                                <input type="hidden" name="exist_uec[]" value="0">\
                                     <select class="form-control" name="uec_subject[]" required>' +
                         ueclistarr.toString() +
                         '</select>\
@@ -147,14 +205,10 @@ $(document).ready(function () {
                         '</select>\
                                 </td>\
                                 <td>\
-                                    <button value="-" onclick="$(this).parent().parent().remove();" class="btn btn-danger btn-md float-right remove">\
+                                    <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-md float-right remove">\
                                        Delete\
                                     </button>\
                                 </td>\
-                                <tr>\
-                                <input type="file" name="uec_file" id="uec_file" class="custom-file-input">\
-                            <label class="custom-file-label" for="inputGroupFile01">Upload File</label>\
-                                </tr>\
                             </tr>\
                         </table>\
                     </div>\
@@ -198,11 +252,14 @@ $(document).ready(function () {
                     '<hr class="mt-2 mb-3">\
                 <div class="row">\
                     <div class="col-12">\
-                        <h5 class="mb-4">Sijil Tinggi Pelajaran Malaysia <button class="btn btn-primary float-right" id="addstpmrow" onclick="addRowStpm();return false;">Add Subject</button></h5>\
+                        <h5 class="mb-4">Sijil Tinggi Pelajaran Malaysia</h5>\
+                         <button class="btn btn-primary float-right" id="addstpmrow" onclick="addRowStpm();return false;">Add Subject</button>\
+                         <button type="button" class="btn btn-danger float-right" data-type="qualification" onclick="Delete(this,'+xval+')">Delete Qualification</button>\
                     </div>\
                 </div>\
                 <div class="row mt-4">\
                     <div class="col-md-12">\
+                        <input type="hidden" name="stpm_type" value="'+xval +'">\
                         <table class="table table-bordered" id="stpm-table">\
                             <thead>\
                                 <th>Subject Name</th>\
@@ -211,9 +268,7 @@ $(document).ready(function () {
                         </thead>\
                             <tr>\
                                 <td>\
-                                    <input type="hidden" name="stpm_type" value="' +
-                        xval +
-                        '">\
+                                <input type="hidden" name="exist_stpm[]" value="0">\
                                     <select class="form-control" name="stpm_subject[]" required>' +
                         stpmlistarr.toString() +
                         '</select>\
@@ -224,7 +279,7 @@ $(document).ready(function () {
                         '</select>\
                                 </td>\
                                 <td>\
-                                    <button value="-" onclick="$(this).parent().parent().remove();" class="btn btn-danger btn-md float-right remove">\
+                                    <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-md float-right remove">\
                                        Delete\
                                     </button>\
                                 </td>\
@@ -271,11 +326,14 @@ $(document).ready(function () {
                     '<hr class="mt-2 mb-3">\
                 <div class="row">\
                     <div class="col-12">\
-                        <h5 class="mb-4">O Level <button class="btn btn-primary float-right" id="addolevelrow" onclick="addRowOlevel();return false;">Add Subject</button></h5>\
+                        <h5 class="mb-4">O Level </h5>\
+                        <button class="btn btn-primary float-right" id="addolevelrow" onclick="addRowOlevel();return false;">Add Subject</button>\
+                        <button type="button" class="btn btn-danger float-right" data-type="qualification" onclick="Delete(this,'+xval+')">Delete Qualification</button>\
                     </div>\
                 </div>\
                 <div class="row mt-4">\
                     <div class="col-md-12">\
+                        <input type="hidden" name="olevel_type" value="'+xval+'">\
                         <table class="table table-bordered" id="olevel-table">\
                             <thead>\
                                 <th>Subject Name</th>\
@@ -284,9 +342,7 @@ $(document).ready(function () {
                         </thead>\
                             <tr>\
                                 <td>\
-                                    <input type="hidden" name="olevel_type" value="' +
-                        xval +
-                        '">\
+                                <input type="hidden" name="exist_olevel[]" value="0">\
                                     <select class="form-control" name="olevel_subject[]" required>' +
                         olevellistarr.toString() +
                         '</select>\
@@ -297,7 +353,7 @@ $(document).ready(function () {
                         '</select>\
                                 </td>\
                                 <td>\
-                                    <button value="-" onclick="$(this).parent().parent().remove();" class="btn btn-danger btn-md float-right remove">\
+                                    <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-md float-right remove">\
                                        Delete\
                                     </button>\
                                 </td>\
@@ -344,11 +400,14 @@ $(document).ready(function () {
                     '<hr class="mt-2 mb-3">\
                 <div class="row">\
                     <div class="col-12">\
-                        <h5 class="mb-4">A Level <button class="btn btn-primary float-right" id="addalevelrow" onclick="addRowAlevel();return false;">Add Subject</button></h5>\
+                        <h5 class="mb-4">A Level</h5>\
+                        <button class="btn btn-primary float-right" id="addalevelrow" onclick="addRowAlevel();return false;">Add Subject</button>\
+                        <button type="button" class="btn btn-danger float-right" data-type="qualification" onclick="Delete(this,'+xval+')">Delete Qualification</button>\
                     </div>\
                 </div>\
                 <div class="row mt-4">\
                     <div class="col-md-12">\
+                        <input type="hidden" name="alevel_type" value="'+xval+'">\
                         <table class="table table-bordered" id="alevel-table">\
                             <thead>\
                                 <th>Subject Name</th>\
@@ -357,9 +416,7 @@ $(document).ready(function () {
                         </thead>\
                             <tr>\
                                 <td>\
-                                    <input type="hidden" name="alevel_type" value="' +
-                        xval +
-                        '">\
+                                <input type="hidden" name="exist_alevel[]" value="0">\
                                     <select class="form-control" name="alevel_subject[]" required>' +
                         alevellistarr.toString() +
                         '</select>\
@@ -370,7 +427,7 @@ $(document).ready(function () {
                         '</select>\
                                 </td>\
                                 <td>\
-                                    <button value="-" onclick="$(this).parent().parent().remove();" class="btn btn-danger btn-md float-right remove">\
+                                    <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-md float-right remove">\
                                        Delete\
                                     </button>\
                                 </td>\
@@ -417,11 +474,14 @@ $(document).ready(function () {
                     '<hr class="mt-2 mb-3">\
                 <div class="row">\
                     <div class="col-12">\
-                        <h5 class="mb-4">Sijil Tinggi Agama Malaysia <button class="btn btn-primary float-right" id="addspmrow" onclick="addRowStam();return false;">Add Subject</button></h5>\
+                        <h5 class="mb-4">Sijil Tinggi Agama Malaysia </h5>\
+                        <button class="btn btn-primary float-right" id="addspmrow" onclick="addRowStam();return false;">Add Subject</button>\
+                        <button type="button" class="btn btn-danger float-right" data-type="qualification" onclick="Delete(this,'+xval+')">Delete Qualification</button>\
                     </div>\
                 </div>\
                 <div class="row mt-4">\
                     <div class="col-md-12">\
+                        <input type="hidden" name="stam_type" value="' +xval +'">\
                         <table class="table table-bordered" id="stam-table">\
                             <thead>\
                                 <th>Subject Name</th>\
@@ -430,9 +490,7 @@ $(document).ready(function () {
                         </thead>\
                             <tr>\
                                 <td>\
-                                    <input type="hidden" name="stam_type" value="' +
-                        xval +
-                        '">\
+                                <input type="hidden" name="exist_stam[]" value="0">\
                                     <select class="form-control" name="stam_subject[]" required>' +
                         stamlistarr.toString() +
                         '</select>\
@@ -443,7 +501,7 @@ $(document).ready(function () {
                         '</select>\
                                 </td>\
                                 <td>\
-                                    <button value="-" onclick="$(this).parent().parent().remove();" class="btn btn-danger btn-md float-right remove">\
+                                   <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-md float-right remove">\
                                        Delete\
                                     </button>\
                                 </td>\
@@ -468,27 +526,30 @@ $(document).ready(function () {
                     '<hr class="mt-2 mb-3"><div class="row">\
                     <div class="col-12">\
                     <h5 class="mb-4">Bachelor </h5>\
+                    <button type="button" class="btn btn-danger float-right" data-type="academic" onclick="Delete(this,'+xval+')">Delete Qualification</button>\
                     </div>\
                 </div>\
                 <div class="row mt-4">\
                     <div class="col-md-12">\
+                    <input type="hidden" name="bachelor_type" value="' +xval +'">\
                         <table class="table table-bordered" id="bachelor-table">\
                             <tr>\
-                                <td>University / College *<input type="hidden" name="bachelor_type" value="' +
-                                xval +
-                                '">\</td>\
-                                <td colspan="3"><input type="text" class="form-control" name="bachelor_study" placeholder="University / College" required></td>\
+                                <td>University / College *</td>\
+                                <td colspan="3">\
+                                <input type="text" class="form-control" name="bachelor_study" value="'+mystudy+'" placeholder="University / College" required>\
+                                <input type="hidden" name="exist_bachelor" value="'+myid+'">\
+                                </td>\
                             </tr>\
                             <tr>\
                                 <td>Major</td>\
-                                <td colspan="3"><input type="text" class="form-control" name="bachelor_major" placeholder="Major"></td>\
+                                <td colspan="3"><input type="text" class="form-control" value="'+mymajor+'" name="bachelor_major" placeholder="Major"></td>\
                             </tr>\
                             <tr>\
                                 <td>Graduation Year</td>\
-                                <td><input type="text" class="form-control" name="bachelor_year"></td>\
+                                <td><input type="text" class="form-control" value="'+myyear+'" name="bachelor_year"></td>\
                                 <td>CGPA</td>\
                                 <td>\
-                                    <input type="text" class="form-control" placeholder="CGPA" name="bachelor_cgpa" id="" required>\
+                                    <input type="text" class="form-control" placeholder="CGPA" value="'+mycgpa+'" name="bachelor_cgpa" id="" required>\
                                 </td>\
                             </tr>\
                         </table>\
@@ -511,6 +572,7 @@ $(document).ready(function () {
                     '<hr class="mt-2 mb-3"><div class="row">\
                     <div class="col-12">\
                     <h5 class="mb-4">Diploma </h5>\
+                    <button type="button" class="btn btn-danger float-right" data-type="academic" onclick="Delete(this,'+xval+')">Delete Qualification</button>\
                     </div>\
                 </div>\
                 <div class="row mt-4">\
@@ -521,17 +583,20 @@ $(document).ready(function () {
                         xval +
                         '">\
                                 </td>\
-                                <td colspan="3"><input type="text" class="form-control" name="diploma_study" required placeholder="University / College"></td>\
+                                <td colspan="3">\
+                                <input type="text" class="form-control" name="diploma_study" value="'+mystudy+'" required placeholder="University / College">\
+                                <input type="hidden" name="exist_diploma" value="'+myid+'">\
+                                </td>\
                             </tr>\
                             <tr>\
                                 <td>Major</td>\
-                                <td colspan="3"><input type="text" class="form-control" name="diploma_major" placeholder="Major" required></td>\
+                                <td colspan="3"><input type="text" class="form-control" name="diploma_major" value="'+mymajor+'" placeholder="Major" required></td>\
                             </tr>\
                             <tr>\
                             <td>Graduation Year</td>\
-                            <td><input type="number" class="form-control" name="diploma_year" placeholder="Graduation Year" required></td>\
+                            <td><input type="number" class="form-control" name="diploma_year" value="'+myyear+'" placeholder="Graduation Year" required></td>\
                             <td>CGPA</td>\
-                            <td><input type="text" class="form-control" placeholder="CGPA" name="diploma_cgpa" id="" required></td>\
+                            <td><input type="text" class="form-control" placeholder="CGPA" name="diploma_cgpa" value="'+mycgpa+'" id="" required></td>\
                             </tr>\
                         </table>\
                     </div>\
@@ -553,6 +618,7 @@ $(document).ready(function () {
                     '<hr class="mt-2 mb-3"><div class="row">\
                     <div class="col-12">\
                     <h5 class="mb-4">Matriculation </h5>\
+                    <button type="button" class="btn btn-danger float-right" data-type="academic" onclick="Delete(this,'+xval+')">Delete Qualification</button>\
                     </div>\
                 </div>\
                 <div class="row mt-4">\
@@ -560,16 +626,19 @@ $(document).ready(function () {
                         <table class="table table-bordered" id="matriculation-table">\
                             <tr>\
                                 <td>Kolej Matrikulasi *</td>\
-                                <td colspan="3"><input type="text" class="form-control" name="matriculation_study" required placeholder="Kolej Matrikulasi"></td>\
+                                <td colspan="3">\
+                                <input type="text" class="form-control" name="matriculation_study" value="'+mystudy+'" required placeholder="Kolej Matrikulasi">\
+                                <input type="hidden" name="exist_matriculation" value="'+myid+'">\
+                                </td>\
                             </tr>\
                             <tr>\
                                 <td>Graduation Year</td>\
-                                <td><input type="number" class="form-control" name="matriculation_year"></td>\
+                                <td><input type="number" class="form-control" value="'+myyear+'" name="matriculation_year"></td>\
                                 <td>CGPA</td>\
                                 <td><input type="hidden" name="matriculation_type" value="' +
                         xval +
                         '">\
-                                    <input type="text" class="form-control" placeholder="CGPA" name="matriculation_cgpa" id="" required>\
+                                    <input type="text" class="form-control" placeholder="CGPA" value="'+mycgpa+'" name="matriculation_cgpa" id="" required>\
                                 </td>\
                             </tr>\
                         </table>\
@@ -592,6 +661,7 @@ $(document).ready(function () {
                     '<hr class="mt-2 mb-3"><div class="row">\
                     <div class="col-12">\
                     <h5 class="mb-4">MUET </h5>\
+                    <button type="button" class="btn btn-danger float-right" data-type="academic" onclick="Delete(this,'+xval+')">Delete Qualification</button>\
                     </div>\
                 </div>\
                 <div class="row mt-4">\
@@ -601,10 +671,12 @@ $(document).ready(function () {
                                 <th>CGPA</th>\
                             </thead>\
                             <tr>\
-                                <td><input type="hidden" name="muet_type" value="' +
+                                <td>\
+                                <input type="hidden" name="exist_muet" value="'+myid+'">\
+                                <input type="hidden" name="muet_type" value="' +
                         xval +
                         '">\
-                                    <input type="text" class="form-control" placeholder="CGPA" name="muet_cgpa" id="" required>\
+                                    <input type="text" class="form-control" placeholder="CGPA" value="'+mycgpa+'" name="muet_cgpa" id="" required>\
                                 </td>\
                             </tr>\
                         </table>\
@@ -627,6 +699,7 @@ $(document).ready(function () {
                     '<hr class="mt-2 mb-3"><div class="row">\
                     <div class="col-12">\
                     <h5 class="mb-4">Sijil Kemahiran Malaysia </h5>\
+                    <button type="button" class="btn btn-danger float-right" data-type="academic" onclick="Delete(this,'+xval+')">Delete Qualification</button>\
                     </div>\
                 </div>\
                 <div class="row mt-4">\
@@ -636,10 +709,12 @@ $(document).ready(function () {
                                 <th>SKM Level</th>\
                             </thead>\
                             <tr>\
-                                <td><input type="hidden" name="skm_type" value="' +
+                                <td>\
+                                <input type="hidden" name="exist_skm" value="'+myid+'">\
+                                <input type="hidden" name="skm_type" value="' +
                         xval +
                         '">\
-                                    <input type="text" class="form-control" placeholder="SkM Level" name="skm_cgpa" id="" required>\
+                                    <input type="text" class="form-control" placeholder="SkM Level" value="'+mycgpa+'" name="skm_cgpa" id="" required>\
                                 </td>\
                             </tr>\
                         </table>\
@@ -662,6 +737,7 @@ $(document).ready(function () {
                     '<hr class="mt-2 mb-3"><div class="row">\
                     <div class="col-12">\
                     <h5 class="mb-4">MQF </h5>\
+                    <button type="button" class="btn btn-danger float-right" data-type="academic" onclick="Delete(this,'+xval+')">Delete Qualification</button>\
                     </div>\
                 </div>\
                 <div class="row mt-4">\
@@ -671,10 +747,12 @@ $(document).ready(function () {
                                 <th>MQF Level</th>\
                             </thead>\
                             <tr>\
-                                <td><input type="hidden" name="mqf_type" value="' +
+                                <td>\
+                                <input type="hidden" name="exist_mqf" value="'+myid+'">\
+                                <input type="hidden" name="mqf_type" value="' +
                         xval +
                         '">\
-                                    <input type="text" class="form-control" placeholder="MQF Level" name="mqf_cgpa" id="" required>\
+                                    <input type="text" class="form-control" placeholder="MQF Level" value="'+mycgpa+'" name="mqf_cgpa" id="" required>\
                                 </td>\
                             </tr>\
                         </table>\
@@ -697,6 +775,7 @@ $(document).ready(function () {
                     '<hr class="mt-2 mb-3"><div class="row">\
                     <div class="col-12">\
                     <h5 class="mb-4">Kolej Komuniti Malaysia </h5>\
+                    <button type="button" class="btn btn-danger float-right" data-type="academic" onclick="Delete(this,'+xval+')">Delete Qualification</button>\
                     </div>\
                 </div>\
                 <div class="row mt-4">\
@@ -706,10 +785,12 @@ $(document).ready(function () {
                                 <th>KKM Level</th>\
                             </thead>\
                             <tr>\
-                                <td><input type="hidden" name="kkm_type" value="' +
+                                <td>\
+                                <input type="hidden" name="exist_kkm" value="'+myid+'">\
+                                <input type="hidden" name="kkm_type" value="' +
                         xval +
                         '">\
-                                    <input type="text" class="form-control" placeholder="KKM Level" name="kkm_cgpa" id="" required>\
+                                    <input type="text" class="form-control" placeholder="KKM Level" value="'+mycgpa+'" name="kkm_cgpa" id="" required>\
                                 </td>\
                             </tr>\
                         </table>\
@@ -732,6 +813,7 @@ $(document).ready(function () {
                     '<hr class="mt-2 mb-3"><div class="row">\
                     <div class="col-12">\
                     <h5 class="mb-4">ICAEW </h5>\
+                    <button type="button" class="btn btn-danger float-right" data-type="academic" onclick="Delete(this,'+xval+')">Delete Qualification</button>\
                     </div>\
                 </div>\
                 <div class="row mt-4">\
@@ -741,10 +823,12 @@ $(document).ready(function () {
                                 <th>ICAEW</th>\
                             </thead>\
                             <tr>\
-                                <td><input type="hidden" name="icaew_type" value="' +
+                                <td>\
+                                <input type="hidden" name="exist_icaew" value="'+myid+'">\
+                                <input type="hidden" name="icaew_type" value="' +
                         xval +
                         '">\
-                                    <input type="text" class="form-control" placeholder="ICAEW" name="icaew_cgpa" id="" required>\
+                                    <input type="text" class="form-control" placeholder="ICAEW" value="'+mycgpa+'" name="icaew_cgpa" id="" required>\
                                 </td>\
                             </tr>\
                         </table>\
@@ -767,16 +851,23 @@ $(document).ready(function () {
                     '<hr class="mt-2 mb-3"><div class="row">\
                     <div class="col-12">\
                     <h5 class="mb-4">Foundation </h5>\
+                    <button type="button" class="btn btn-danger float-right" data-type="academic" onclick="Delete(this,'+xval+')">Delete Qualification</button>\
                     </div>\
                 </div>\
                 <div class="row mt-4">\
                     <div class="col-md-12">\
                         <table class="table table-bordered" id="foundation-table">\
                             <tr>\
-                            <td>University / College</td><td><input type="text" class="form-control" name="foundation_study" required placeholder="University / College"></td>\
+                            <td>University / College</td>\
+                            <td>\
+                            <input type="hidden" name="exist_foundation" value="'+myid+'">\
+                            <input type="text" class="form-control" name="foundation_study" value="'+mystudy+'" required placeholder="University / College"></td>\
                             </tr>\
                             <tr>\
-                            <td>Graduationn Year</td><td><input type="number" class="form-control" name="foundation_year" placeholder="Year of Graduation"></td>\
+                            <td>Graduationn Year</td>\
+                            <td>\
+                            <input type="number" class="form-control" name="foundation_year" value="'+myyear+'" placeholder="Year of Graduation">\
+                            </td>\
                             </tr>\
                             <tr>\
                             <td>\
@@ -784,11 +875,11 @@ $(document).ready(function () {
                             <input type="hidden" name="foundation_type" value="' +
                         xval +
                         '">\
-                            <input type="text" class="form-control" name="foundation_major" placeholder="Major" required>\
+                            <input type="text" class="form-control" name="foundation_major" value="'+mymajor+'" placeholder="Major" required>\
                             </td>\
                             <td>\
                             <p>CGPA</p>\
-                        <input type="text" class="form-control" placeholder="CGPA" name="foundation_cgpa" id="" required>\
+                        <input type="text" class="form-control" placeholder="CGPA" name="foundation_cgpa" value="'+mycgpa+'" id="" required>\
                             </td>\
                             </tr>\
                         </table>\
@@ -811,6 +902,7 @@ $(document).ready(function () {
                     '<hr class="mt-2 mb-3"><div class="row">\
                     <div class="col-12">\
                     <h5 class="mb-4">SACE </h5>\
+                    <button type="button" class="btn btn-danger float-right" data-type="academic" onclick="Delete(this,'+xval+')">Delete Qualification</button>\
                     </div>\
                 </div>\
                 <div class="row mt-4">\
@@ -820,10 +912,12 @@ $(document).ready(function () {
                                 <th>ATAR</th>\
                             </thead>\
                             <tr>\
-                                <td><input type="hidden" name="sace_type" value="' +
+                                <td>\
+                                <input type="hidden" name="exist_sace" value="'+myid+'">\
+                                <input type="hidden" name="sace_type" value="' +
                         xval +
                         '">\
-                                    <input type="text" class="form-control" placeholder="ATAR" name="sace_cgpa" id="" required>\
+                                    <input type="text" class="form-control" placeholder="ATAR" name="sace_cgpa" value="'+mycgpa+'" id="" required>\
                                 </td>\
                             </tr>\
                         </table>\
@@ -846,6 +940,7 @@ $(document).ready(function () {
                     '<hr class="mt-2 mb-3"><div class="row">\
                     <div class="col-12">\
                     <h5 class="mb-4">Certified Accounting Technician </h5>\
+                    <button type="button" class="btn btn-danger float-right" data-type="academic" onclick="Delete(this,'+xval+')">Delete Qualification</button>\
                     </div>\
                 </div>\
                 <div class="row mt-4">\
@@ -855,10 +950,12 @@ $(document).ready(function () {
                                 <th>CAT</th>\
                             </thead>\
                             <tr>\
-                                <td><input type="hidden" name="cat_type" value="' +
+                                <td>\
+                                <input type="hidden" name="exist_cat" value="'+myid+'">\
+                                <input type="hidden" name="cat_type" value="' +
                         xval +
                         '">\
-                                    <input type="text" class="form-control" placeholder="CAT" name="cat_cgpa" id="" required>\
+                                    <input type="text" class="form-control" placeholder="CAT" name="cat_cgpa" value="'+mycat+'" id="" required>\
                                 </td>\
                             </tr>\
                         </table>\
@@ -869,36 +966,23 @@ $(document).ready(function () {
                 $(".content").append(fieldWrapper);
             }
         }
-    });
-    $("#addspmrow").click(function (e) {
-        e.preventDefault();
-        console.log("enter");
-    });
-    $("#addstamrow").click(function (e) {
-        e.preventDefault();
-        console.log("enter");
-    });
-    $("#adduecrow").click(function (e) {
-        e.preventDefault();
-        console.log("enter");
-    });
-    $("#addstpmrow").click(function (e) {
-        e.preventDefault();
-        console.log("enter");
-    });
-    $("#addalevelrow").click(function (e) {
-        e.preventDefault();
-        console.log("enter");
-    });
-    $("#addolevelrow").click(function (e) {
-        e.preventDefault();
-        console.log("enter");
-    });
-});
+}
 
-function addRow() {
+var spmsub = [];
+function addRowSpm(id = null, sub = null,grade = null) {
+    var myid = id ? id : 0;
+    if(id)
+    {
+        $('#spm-table tbody').empty()
+    }
+
+    var rowCount = $('#spm-table tr').length;
+
     let spmlistarr = [];
+
     for (let i = 0; i < listSPM.length; i++) {
+
+        if(listSPM[i][0] && spmsub.indexOf(listSPM[i][0]) == -1)
         spmlistarr.push(
             '<option value="' +
                 listSPM[i][0] +
@@ -921,34 +1005,56 @@ function addRow() {
     var markup =
         '<tr>\
             <td>\
-                <select class="form-control" name="spm_subject[]">' +
+                <input type="hidden" name="exist_spm[]" value="'+myid+'">\
+                <select class="form-control" id="spm_subject'+rowCount+'" name="spm_subject[]">' +
         spmlistarr.toString() +
         '</select>\
             </td>\
             <td>\
-                <select class="form-control" name="spm_grade_id[]">' +
+                <select class="form-control" id="spm_grade_id'+rowCount+'" name="spm_grade_id[]">' +
         spmgredlistarr.toString() +
         '</select>\
             </td>\
             <td>\
-                <button value="-" onclick="$(this).parent().parent().remove();" class="btn btn-danger btn-md float-right remove">\
+                <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-md float-right remove">\
                    Delete\
                 </button>\
             </td>\
         </tr>';
     $("#spm-table tr:last").after(markup);
+
+    if(sub && grade)
+    {
+        spmsub.push(sub);
+        $("#spm_subject"+rowCount).val(sub);
+        $("#spm_grade_id"+rowCount).val(grade);
+    }
 }
 
-function addRowStam() {
+var stamsub = [];
+function addRowStam(id = null, sub = null,grade = null) {
+
+    var myid = id ? id : 0;
+
+    if(id)
+    {
+        $('#stam-table tbody').empty()
+    }
+
+    var rowCount = $('#stam-table tr').length;
+
     let stamlistarr = [];
     for (let i = 0; i < listSTAM.length; i++) {
-        stamlistarr.push(
-            '<option value="' +
-                listSTAM[i][0] +
-                '">' +
-                listSTAM[i][1] +
-                "</option>"
-        );
+        if(stamsub.indexOf(listSTAM[i][0]) == -1)
+        {
+            stamlistarr.push(
+                '<option value="' +
+                    listSTAM[i][0] +
+                    '">' +
+                    listSTAM[i][1] +
+                    "</option>"
+            );
+        }
     }
     let stamgredlistarr = [];
     for (let i = 0; i < listGradeSTAM.length; i++) {
@@ -964,34 +1070,54 @@ function addRowStam() {
     var markup =
         '<tr>\
             <td>\
-                <select class="form-control" name="stam_subject[]">' +
+                <input type="hidden" name="exist_stam[]" value="'+myid+'">\
+                <select class="form-control" id="stam_subject'+rowCount+'" name="stam_subject[]">' +
         stamlistarr.toString() +
         '</select>\
             </td>\
             <td>\
-                <select class="form-control" name="stam_grade_id[]">' +
+                <select class="form-control" id="stam_grade_id'+rowCount+'" name="stam_grade_id[]">' +
         stamgredlistarr.toString() +
         '</select>\
             </td>\
             <td>\
-                <button value="-" onclick="$(this).parent().parent().remove();" class="btn btn-danger btn-md float-right remove">\
+                <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-md float-right remove">\
                     Delete\
                 </button>\
             </td>\
         </tr>';
     $("#stam-table tr:last").after(markup);
+    if(sub && grade)
+    {
+        stamsub.push(sub);
+        $("#stam_subject"+rowCount).val(sub);
+        $("#stam_grade_id"+rowCount).val(grade);
+    }
 }
 
-function addRowUec() {
+var uecsub = [];
+function addRowUec(id = null, sub = null,grade = null) {
+
+    var myid = id ? id : 0;
+    if(id)
+    {
+        $('#uec-table tbody').empty()
+    }
+
+    var rowCount = $('#uec-table tr').length;
+
     let ueclistarr = [];
     for (let i = 0; i < listUEC.length; i++) {
-        ueclistarr.push(
-            '<option value="' +
-                listUEC[i][0] +
-                '">' +
-                listUEC[i][1] +
-                "</option>"
-        );
+        if(uecsub.indexOf(listUEC[i][0]) == -1)
+        {
+            ueclistarr.push(
+                '<option value="' +
+                    listUEC[i][0] +
+                    '">' +
+                    listUEC[i][1] +
+                    "</option>"
+            );
+        }
     }
     let uecgredlistarr = [];
     for (let i = 0; i < listGradeUEC.length; i++) {
@@ -1007,34 +1133,55 @@ function addRowUec() {
     var markup =
         '<tr>\
             <td>\
-                <select class="form-control" name="uec_subject[]">' +
+            <input type="hidden" name="exist_uec[]" value="'+myid+'">\
+                <select class="form-control" id="uec_subject'+rowCount+'" name="uec_subject[]">' +
         ueclistarr.toString() +
         '</select>\
             </td>\
             <td>\
-                <select class="form-control" name="uec_grade_id[]">' +
+                <select class="form-control" id="uec_grade_id'+rowCount+'" name="uec_grade_id[]">' +
         uecgredlistarr.toString() +
         '</select>\
             </td>\
             <td>\
-                <button value="-" onclick="$(this).parent().parent().remove();" class="btn btn-danger btn-md float-right remove">\
+                <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-md float-right remove">\
                     Delete\
                 </button>\
             </td>\
         </tr>';
     $("#uec-table tr:last").after(markup);
+    if(sub && grade)
+    {
+        uecsub.push(sub);
+        $("#uec_subject"+rowCount).val(sub);
+        $("#uec_grade_id"+rowCount).val(grade);
+    }
 }
 
-function addRowStpm() {
+var stpmsub = [];
+function addRowStpm(id = null, sub = null,grade = null) {
+
+    var myid = id ? id : 0;
+
+    if(id)
+    {
+        $('#stpm-table tbody').empty()
+    }
+
+    var rowCount = $('#stpm-table tr').length;
+
     let stpmlistarr = [];
     for (let i = 0; i < listSTPM.length; i++) {
-        stpmlistarr.push(
-            '<option value="' +
-                listSTPM[i][0] +
-                '">' +
-                listSTPM[i][1] +
-                "</option>"
-        );
+        if(stpmsub.indexOf(listSTPM[i][0]) == -1)
+        {
+            stpmlistarr.push(
+                '<option value="' +
+                    listSTPM[i][0] +
+                    '">' +
+                    listSTPM[i][1] +
+                    "</option>"
+            );
+        }
     }
     let stpmgredlistarr = [];
     for (let i = 0; i < listGradeSTPM.length; i++) {
@@ -1050,35 +1197,53 @@ function addRowStpm() {
     var markup =
         '<tr>\
             <td>\
-                <select class="form-control" name="stpm_subject[]">' +
+            <input type="hidden" name="exist_stpm[]" value="'+myid+'">\
+                <select class="form-control" id="stpm_subject'+rowCount+'" name="stpm_subject[]">' +
         stpmlistarr.toString() +
         '</select>\
             </td>\
             <td>\
-                <select class="form-control" name="stpm_grade_id[]">' +
+                <select class="form-control" id="stpm_grade_id'+rowCount+'" name="stpm_grade_id[]">' +
         stpmgredlistarr.toString() +
         '</select>\
             </td>\
             <td>\
-                <button value="-" onclick="$(this).parent().parent().remove();" class="btn btn-danger btn-md float-right remove">\
+               <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-md float-right remove">\
                     Delete\
                 </button>\
             </td>\
         </tr>';
     $("#stpm-table tr:last").after(markup);
+    if(sub && grade)
+    {
+        $("#stpm_subject"+rowCount).val(sub);
+        $("#stpm_grade_id"+rowCount).val(grade);
+    }
 }
 
 
-function addRowAlevel() {
+var alevelsub = [];
+function addRowAlevel(id = null, sub = null,grade = null) {
+    var myid = id ? id : 0;
+    if(id)
+    {
+        $('#alevel-table tbody').empty()
+    }
+
+    var rowCount = $('#alevel-table tr').length;
+
     let alevellistarr = [];
     for (let i = 0; i < listALEVEL.length; i++) {
-        alevellistarr.push(
-            '<option value="' +
-                listALEVEL[i][0] +
-                '">' +
-                listALEVEL[i][1] +
-                "</option>"
-        );
+        if(alevelsub.indexOf(listALEVEL[i][0]) == -1)
+        {
+            alevellistarr.push(
+                '<option value="' +
+                    listALEVEL[i][0] +
+                    '">' +
+                    listALEVEL[i][1] +
+                    "</option>"
+            );
+        }
     }
     let alevelgredlistarr = [];
     for (let i = 0; i < listGradeALEVEL.length; i++) {
@@ -1094,34 +1259,53 @@ function addRowAlevel() {
     var markup =
         '<tr>\
             <td>\
-                <select class="form-control" name="alevel_subject[]">' +
+            <input type="hidden" name="exist_alevel[]" value="'+myid+'">\
+                <select class="form-control" id="alevel_subject'+rowCount+'" name="alevel_subject[]">' +
         alevellistarr.toString() +
         '</select>\
             </td>\
             <td>\
-                <select class="form-control" name="alevel_grade_id[]">' +
+                <select class="form-control" id="alevel_grade_id'+rowCount+'" name="alevel_grade_id[]">' +
         alevelgredlistarr.toString() +
         '</select>\
             </td>\
             <td>\
-                <button value="-" onclick="$(this).parent().parent().remove();" class="btn btn-danger btn-md float-right remove">\
+                <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-md float-right remove">\
                     Delete\
                 </button>\
             </td>\
         </tr>';
     $("#alevel-table tr:last").after(markup);
+    if(sub && grade)
+    {
+        alevelsub.push(sub);
+        $("#alevel_subject"+rowCount).val(sub);
+        $("#alevel_grade_id"+rowCount).val(grade);
+    }
 }
 
-function addRowOlevel() {
+var olevelsub = [];
+function addRowOlevel(id = null, sub = null,grade = null) {
+    var myid = id ? id : 0;
+    if(id)
+    {
+        $('#olevel-table tbody').empty()
+    }
+
+    var rowCount = $('#olevel-table tr').length;
+
     let olevellistarr = [];
     for (let i = 0; i < listOLEVEL.length; i++) {
-        olevellistarr.push(
-            '<option value="' +
-                listOLEVEL[i][0] +
-                '">' +
-                listOLEVEL[i][1] +
-                "</option>"
-        );
+        if(olevelsub.indexOf(listOLEVEL[i][0]) == -1)
+        {
+            olevellistarr.push(
+                '<option value="' +
+                    listOLEVEL[i][0] +
+                    '">' +
+                    listOLEVEL[i][1] +
+                    "</option>"
+            );
+        }
     }
     let olevelgredlistarr = [];
     for (let i = 0; i < listGradeOLEVEL.length; i++) {
@@ -1137,22 +1321,29 @@ function addRowOlevel() {
     var markup =
         '<tr>\
             <td>\
-                <select class="form-control" name="olevel_subject[]">' +
+            <input type="hidden" name="exist_olevel[]" value="'+myid+'">\
+                <select class="form-control" id="olevel_subject'+rowCount+'" name="olevel_subject[]">' +
         olevellistarr.toString() +
         '</select>\
             </td>\
             <td>\
-                <select class="form-control" name="olevel_grade_id[]">' +
+                <select class="form-control" id="olevel_grade_id'+rowCount+'" name="olevel_grade_id[]">' +
         olevelgredlistarr.toString() +
         '</select>\
             </td>\
             <td>\
-                <button value="-" onclick="$(this).parent().parent().remove();" class="btn btn-danger btn-md float-right remove">\
+               <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-md float-right remove">\
                     Delete\
                 </button>\
             </td>\
         </tr>';
     $("#olevel-table tr:last").after(markup);
+    if(sub && grade)
+    {
+        olevelsub.push(sub);
+        $("#olevel_subject"+rowCount).val(sub);
+        $("#olevel_grade_id"+rowCount).val(grade);
+    }
 }
 
 

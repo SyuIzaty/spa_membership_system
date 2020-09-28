@@ -11,12 +11,12 @@ class Programme extends Model
 
     protected $table = 'programmes';
 
-    protected $primaryKey = 'id'; 
+    protected $primaryKey = 'id';
     public $incrementing = false;
     protected $keyType = 'string';
 
     protected $fillable = [
-        'id','programme_code','programme_name','scroll_name','programme_name_malay','scroll_name_malay','programme_duration','programme_status', 
+        'id','programme_code','programme_name','scroll_name','programme_name_malay','scroll_name_malay','programme_duration','programme_status',
     ];
 
     protected $attributes = [
@@ -46,14 +46,9 @@ class Programme extends Model
         $this->belongsTo('App\Applicant','applicant_programme');
     }
 
-}
+    public function major()
+    {
+        return $this->belongsToMany('App\Major');
+    }
 
-class Programme2 extends Model
-{
-    protected $table = 'programmes';
-}
-
-class Programme3 extends Model
-{
-    protected $table = 'programmes';
 }

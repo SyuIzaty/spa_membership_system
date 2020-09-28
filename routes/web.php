@@ -81,11 +81,15 @@ Route::get('testCollection','ApplicantController@testCollection');
 
 //APPLICANT REGISTRATION
 Route::resource('/registration','RegistrationController');
+Route::get('/check/{id}','RegistrationController@getUsers');
 Route::get('/applicantRegister', 'RegistrationController@register')->name('applicantRegister.index');
 Route::get('search', 'RegistrationController@search');
 Route::get('/check', 'RegistrationController@check');
 Route::get('registration/printRef/{id}','RegistrationController@printRef')->name('printRef');
 Route::get('registration/printReg/{id}','RegistrationController@printReg')->name('printReg');
+Route::get('registration-data/{id}','RegistrationController@data');
+Route::get('testmajor','RegistrationController@testmajor');
+Route::post('applicant/delete/{id}/{type}/{userid}','RegistrationController@deleteitem');
 
 //INTAKE
 Route::resource('/intake','IntakeController');
@@ -96,6 +100,13 @@ Route::get('/intake-info','IntakeController@intakeInfo');
 Route::post('updateProgramInfo', 'IntakeController@updateProgramInfo');
 Route::get('/letter', 'IntakeController@letter')->name('letter');
 Route::get('/emails', 'IntakeController@sendEmail')->name('emails');
+
+//APPLICANT REG
+// Route::get('/registration/fetch_data/{id}', 'RegistrationController@fetch_data');
+// Route::post('/registration/add_data', 'RegistrationController@add_data')->name('registration.add_data');
+// Route::post('/registration/update_data', 'RegistrationController@update_data')->name('registration.update_data');
+// Route::post('/registration/delete_data', 'RegistrationController@delete_data')->name('registration.delete_data');
+// Route::get('registration-data/{id}','RegistrationController@data');
 
 
 //PARAM
