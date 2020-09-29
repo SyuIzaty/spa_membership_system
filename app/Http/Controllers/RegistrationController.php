@@ -62,7 +62,7 @@ class RegistrationController extends Controller
 
     public function getUsers($id)
     {
-        $applicant = Applicant::where('applicant_ic', $id)->with(['applicantstatus'])->get();
+        $applicant = Applicant::where('applicant_ic', $id)->with(['applicantstatus.programme','applicantstatus.major'])->get();
         $userData['data'] = $applicant;
         echo json_encode($userData);
         // $userData[] = $applicant;

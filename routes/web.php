@@ -102,19 +102,12 @@ Route::post('updateProgramInfo', 'IntakeController@updateProgramInfo');
 Route::get('/letter', 'IntakeController@letter')->name('letter');
 Route::get('/emails', 'IntakeController@sendEmail')->name('emails');
 
-//APPLICANT REG
-// Route::get('/registration/fetch_data/{id}', 'RegistrationController@fetch_data');
-// Route::post('/registration/add_data', 'RegistrationController@add_data')->name('registration.add_data');
-// Route::post('/registration/update_data', 'RegistrationController@update_data')->name('registration.update_data');
-// Route::post('/registration/delete_data', 'RegistrationController@delete_data')->name('registration.delete_data');
-// Route::get('registration-data/{id}','RegistrationController@data');
-
 
 //PARAM
 Route::resource('/intakeType', 'IntakeTypeController');
-Route::resource('param/programme', 'ProgrammeController');
-Route::resource('param/course', 'CourseController');
-Route::resource('param/major', 'MajorController');
+Route::resource('param/programme', 'ProgrammeController')->middleware('role:super admin');
+Route::resource('param/course', 'CourseController')->middleware('role:super admin');
+Route::resource('param/major', 'MajorController')->middleware('role:super admin');
 Route::post('data-intakeType', 'IntakeTypeController@data_intakeType');
 Route::post('data-allProgramme', 'ProgrammeController@data_allProgramme');
 Route::post('data-allMajor', 'MajorController@data_allMajor');

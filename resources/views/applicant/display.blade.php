@@ -592,7 +592,7 @@
                                                             </div>
                                                             <div class="col-md-4 form-group">
                                                                 {{ Form::label('title', 'Race') }}
-                                                                <select class="form-control" name="applicant_race">
+                                                                <select class="form-control" name="applicant_race" id="applicant_race">
                                                                     @foreach ($race as $races)
                                                                         <option value="{{ $races->races_code }}" {{ $applicant->applicant_race == $races->races_code ? 'selected="selected"' : ''}}>{{ $races->race_name }}</option>
                                                                     @endforeach
@@ -600,7 +600,7 @@
                                                             </div>
                                                             <div class="col-md-4 form-group">
                                                                 {{ Form::label('title', 'Religion') }}
-                                                                <select class="form-control" name="applicant_religion">
+                                                                <select class="form-control" name="applicant_religion" id="applicant_religion">
                                                                     @foreach ($religion as $religions)
                                                                         <option value="{{ $religions->religions_code }}" {{ $applicant->applicant_religion == $religions->religion_code ? 'selected="selected"' : ''}}>{{ $religions->religion_name }}</option>
                                                                     @endforeach
@@ -661,8 +661,12 @@
                                                                 {{Form::text('guardian_one_name', $applicant->applicantGuardian->guardian_one_name, ['class' => 'form-control', 'placeholder' => 'Guardian Name'])}}
                                                             </div>
                                                             <div class="form-group col-md-6">
-                                                                {{Form::label('title', 'Relationship')}}
-                                                                {{Form::text('guardian_one_relationship', $applicant->applicantGuardian->guardian_one_relationship, ['class' => 'form-control', 'placeholder' => 'Relationship'])}}
+                                                                {{ Form::label('title', 'Relationship') }}
+                                                                <select class="form-control" name="guardian_one_relationship" id="guardian_one_relationship">
+                                                                    @foreach($family as $families)
+                                                                        <option value="{{ $families->family_code }}" {{ $applicant->applicantGuardian->guardian_one_relationship == $families->family_code ? 'selected="selected"' : '' }}>{{ $families->family_name }}</option>
+                                                                    @endforeach
+                                                                </select>
                                                             </div>
                                                             <div class="form-group col-md-6">
                                                                 {{Form::label('title', 'Mobile Phone')}}
@@ -679,8 +683,12 @@
                                                                 {{Form::text('guardian_two_name', $applicant->applicantGuardian->guardian_two_name, ['class' => 'form-control', 'placeholder' => 'Guardian Name'])}}
                                                             </div>
                                                             <div class="form-group col-md-6">
-                                                                {{Form::label('title', 'Relationship')}}
-                                                                {{Form::text('guardian_two_relationship', $applicant->applicantGuardian->guardian_two_relationship, ['class' => 'form-control', 'placeholder' => 'Relationship'])}}
+                                                                {{ Form::label('title', 'Relationship') }}
+                                                            <select class="form-control" name="guardian_two_relationship" id="guardian_two_relationship">
+                                                                @foreach($family as $families)
+                                                                    <option value="{{ $families->family_code }}" {{ $applicant->applicantGuardian->guardian_two_relationship == $families->family_code ? 'selected="selected"' : '' }}>{{ $families->family_name }}</option>
+                                                                @endforeach
+                                                            </select>
                                                             </div>
                                                             <div class="form-group col-md-6">
                                                                 {{Form::label('title', 'Mobile Phone')}}
@@ -711,8 +719,12 @@
                                                                 {{Form::text('emergency_name', $applicant->applicantEmergency->emergency_name, ['class' => 'form-control', 'placeholder' => 'Name'])}}
                                                             </div>
                                                             <div class="form-group col-md-6">
-                                                                {{Form::label('title', 'Relationship')}}
-                                                                {{Form::text('emergency_relationship', $applicant->applicantEmergency->emergency_relationship, ['class' => 'form-control', 'placeholder' => 'Relationship'])}}
+                                                                {{ Form::label('title', 'Relationship') }}
+                                                                <select class="form-control" name="emergency_relationship" id="emergency_relationship">
+                                                                    @foreach ($family as $families)
+                                                                        <option value="{{ $families->family_code }}" {{ $applicant->applicantEmergency->emergency_relationship == $families->family_code ? 'selected="selected"' : '' }}>{{ $families->family_name }}</option>
+                                                                    @endforeach
+                                                                </select>
                                                             </div>
                                                             <div class="form-group col-md-6">
                                                                 {{Form::label('title', 'Emergency Phone Number')}}

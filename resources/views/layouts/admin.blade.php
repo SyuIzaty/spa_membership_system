@@ -144,12 +144,14 @@
                                     <span class="nav-link-text" data-i18n="nav.application_intel">Admission</span>
                                 </a>
                                 <ul>
+                                    @hasanyrole('manager|executive')
                                     <li>
                                         <a href="/applicantresult" title="Pending Applicant" data-filter-tags="active_student">
                                             <i class="fal fa-user"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">Applicants</span>
                                         </a>
                                     </li>
+                                    @endhasanyrole
                                     <li>
                                         <a href="/offer-letter" title="Pending Applicant" data-filter-tags="active_student">
                                             <i class="fal fa-user"></i>
@@ -164,6 +166,7 @@
                                     </li>
                                 </ul>
                             </li>
+                            @hasanyrole('manager|executive')
                             <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-barcode-read"></i>
@@ -178,7 +181,8 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li>
+                            @endhasanyrole
+                            {{-- <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-map-marker-alt"></i>
                                     <span class="nav-link-text" data-i18n="nav.application_intel">Physical Registration</span>
@@ -203,7 +207,8 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </li>
+                            </li> --}}
+                            @hasanyrole('admin|super admin')
                             <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-portrait"></i>
@@ -230,6 +235,8 @@
                                     </li>
                                 </ul>
                             </li>
+                            @endhasanyrole
+                            @hasanyrole('admin|super admin')
                             <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-portrait"></i>
@@ -256,7 +263,9 @@
                                     </li> --}}
                                 </ul>
                             </li>
+                            @endhasanyrole
 
+                            @hasanyrole('admin|super admin')
                             <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-portrait"></i>
@@ -283,6 +292,8 @@
                                     </li> --}}
                                 </ul>
                             </li>
+                            @endhasanyrole
+                            @hasanyrole('admin|super admin')
                             <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-portrait"></i>
@@ -309,6 +320,8 @@
                                     </li> --}}
                                 </ul>
                             </li>
+                            @endhasanyrole
+                            @role('super admin')
                             <li class="nav-title">Parameter Setting</li>
                             <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
@@ -529,7 +542,7 @@
                                     </li>
                                 </ul>
                             </li>
-
+                            @endrole
 
                         </ul>
                         <div class="filter-message js-filter-message bg-success-600"></div>
