@@ -118,10 +118,10 @@
                             <div class="info-card-text">
                                 <a href="#" class="d-flex align-items-center text-white">
                                     <span class="text-truncate text-truncate-sm d-inline-block">
-                                         YUZI
+                                         {{Auth::user()->name}}
                                     </span>
                                 </a>
-                                <span class="d-inline-block text-truncate text-truncate-sm">yuzi@email.com</span>
+                                <span class="d-inline-block text-truncate text-truncate-sm">{{Auth::user()->email}}</span>
                             </div>
                             <img src="{{asset('img/card-backgrounds/cover-2-lg.png')}}" class="cover" alt="cover">
                             <a href="#" onclick="return false;" class="pull-trigger-btn" data-action="toggle" data-class="list-filter-active" data-target=".page-sidebar" data-focus="nav_filter_input">
@@ -594,20 +594,22 @@
                                                 <img src="{{asset('img/demo/avatars/avatar-m.png')}}" class="rounded-circle profile-image" alt="Dr. Codex Lantern">
                                             </span>
                                             <div class="info-card-text">
-                                                <div class="fs-lg text-truncate text-truncate-lg">YUZI</div>
-                                                <span class="text-truncate text-truncate-md opacity-80">yuzi@email.com</span>
+                                                <div class="fs-lg text-truncate text-truncate-lg">{{Auth::user()->name}}</div>
+                                                <span class="text-truncate text-truncate-md opacity-80">{{Auth::user()->email}}</span>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="dropdown-divider m-0"></div>
                                     <a class="dropdown-item fw-500 pt-3 pb-3" href="">
-                                        <form action="" method="POST">
+                                        <form action="{{ route('logout') }}" method="POST">
                                             @csrf
                                         <!--span data-i18n="drpdwn.page-logout">Logout</span-->
                                         <button type="submit" class="btn btn-danger btn-sm">Logout</button>
                                         <!--span class="float-right fw-n">&commat;codexlantern</span-->
                                         </form>
+
+                
                                     </a>
                                 </div>
                             </div>
