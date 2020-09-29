@@ -592,7 +592,7 @@
                                                             </div>
                                                             <div class="col-md-4 form-group">
                                                                 {{ Form::label('title', 'Race') }}
-                                                                <select class="form-control" name="applicant_race">
+                                                                <select class="form-control" name="applicant_race" id="applicant_race">
                                                                     @foreach ($race as $races)
                                                                         <option value="{{ $races->races_code }}" {{ $applicant->applicant_race == $races->races_code ? 'selected="selected"' : ''}}>{{ $races->race_name }}</option>
                                                                     @endforeach
@@ -600,7 +600,7 @@
                                                             </div>
                                                             <div class="col-md-4 form-group">
                                                                 {{ Form::label('title', 'Religion') }}
-                                                                <select class="form-control" name="applicant_religion">
+                                                                <select class="form-control" name="applicant_religion" id="applicant_religion">
                                                                     @foreach ($religion as $religions)
                                                                         <option value="{{ $religions->religions_code }}" {{ $applicant->applicant_religion == $religions->religion_code ? 'selected="selected"' : ''}}>{{ $religions->religion_name }}</option>
                                                                     @endforeach
@@ -642,10 +642,10 @@
                                                             </div>
                                                             @endif
                                                         </div>
-                                                        @role('executive')
+                                                        @can('update applicant detail')
                                                         <button class="btn btn-primary">Update</button>
                                                         {!! Form::close() !!}
-                                                        @endrole
+                                                        @endcan
                                                     </div>
                                                 </div>
                                                 <hr class="mt-2 mb-3">

@@ -61,16 +61,35 @@
                         var id = response['data'][i].id;
                         var applicant_name = response['data'][i].applicant_name;
                         var applicantstatus = response['data'][i].applicantstatus.applicant_status;
+                        var applicant_programme = response['data'][i].applicantstatus.programme.programme_name;
+                        var applicant_major = response['data'][i].applicantstatus.major.major_name;
+                        var applicant_year = response['data'][i].applicantstatus.programme.programme_duration;
                         if(applicantstatus == '3')
                         {
                             var tr_str =
                             "<div class='row'>"+
                                 "<div class='col-md-12'>"+
-                                    "<div class='card-header'>"+
+                                    "<div class='card-header bg-primary text-white'>"+
                                         "<div class='col-md-12'><h5>Congratulation " + applicant_name + "!</h5></div>"+
                                     "</div>"+
                                     "<div class='card'>"+
-                                        "<div class='card-body'>INTEC Education College is pleased to inform you of your admission to our Institute. <br>Please refer to the attachment below for your offer letter and registration instruction."+
+                                        "<div class='card-body'>"+
+                                        "INTEC Education College is pleased to inform you of your admission to our Institute. <br>Please refer to the attachment below for your offer letter and registration instruction."+
+                                        "<table class='table table-bordered mt-3'>"+
+                                            "<tr><td colspan='2' style='text-align:center'>Programme Details</td></tr>"+
+                                            "<tr>"+
+                                                "<td>Programme</td>"+
+                                                "<td>" + applicant_programme + "</td>"+
+                                            "</tr>"+
+                                            "<tr>"+
+                                                "<td>Major</td>"+
+                                                "<td>" + applicant_major + "</td>"+
+                                            "</tr>"+
+                                            "<tr>"+
+                                                "<td>Duration</td>"+
+                                                "<td>" + applicant_year + "</td>"+
+                                            "</tr>"+
+                                        "</table>"+
                                             "<div class='card m-3'>"+
                                                 "<div class='row'>"+
                                                     "<div class='col-md-3 ml-3 mb-3'>"+
@@ -82,12 +101,8 @@
                                     "</div>"+
                                 "</div>"+
                             "</div>";
-                        }else{
+                        }if(applicantstatus == '5'){
                             var tr_str = "<h4 class='mt-3'>Sorry " + applicant_name + "you did not meet minimum qualififcation</h4>";
-                            // var tr_str = "<tr>" +
-                            //     "<td align='center'>" + (i+1) + "</td>" +
-                            //     "<td align='center'>" + applicantstatus + "</td>" +
-                            // "</tr>";
                         }
 
                         $("#userTable").append(tr_str);
@@ -100,24 +115,6 @@
                     $("#userTable").append(tr_str);
                 }
             }
-
-            // success: function(data){
-            //     console.log(data);
-            //     var len = data.length;
-            //     $('#userTable').empty();
-            //     if(data){
-            //         $.each(data, function(key, value){
-            //             var tr_str = "<p>Congratulations" + value + "</p>"
-            //             $("#userTable").append(tr_str);
-            //         });
-            //     }if(data == ''){
-            //         var tr_str = "<tr>" +
-            //             "<td align='center' colspan='4'>No record found.</td>" +
-            //         "</tr>";
-
-            //         $("#userTable").append(tr_str);
-            //     }
-            // }
         });
     }
 </script>
