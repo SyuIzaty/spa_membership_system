@@ -105,9 +105,9 @@ Route::get('/emails', 'IntakeController@sendEmail')->name('emails');
 
 //PARAM
 Route::resource('/intakeType', 'IntakeTypeController');
-Route::resource('param/programme', 'ProgrammeController');
-Route::resource('param/course', 'CourseController');
-Route::resource('param/major', 'MajorController');
+Route::resource('param/programme', 'ProgrammeController')->middleware('role:super admin');
+Route::resource('param/course', 'CourseController')->middleware('role:super admin');
+Route::resource('param/major', 'MajorController')->middleware('role:super admin');
 Route::post('data-intakeType', 'IntakeTypeController@data_intakeType');
 Route::post('data-allProgramme', 'ProgrammeController@data_allProgramme');
 Route::post('data-allMajor', 'MajorController@data_allMajor');

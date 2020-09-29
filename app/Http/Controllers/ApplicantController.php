@@ -18,6 +18,7 @@ use App\Race;
 use App\State;
 use App\Qualification;
 use App\Subject;
+use App\Family;
 use App\ApplicantEmergency;
 use App\ApplicantGuardian;
 use App\IntakeDetail;
@@ -36,7 +37,7 @@ class ApplicantController extends Controller
 
     public function show($id)
     {
-        $applicant = Applicant::where('id',$id)->with(['applicantContactInfo','applicantGuardian','applicantEmergency','applicantIntake','status'])->first();
+        $applicant = Applicant::where('id',$id)->with(['applicantContactInfo','applicantEmergency.emergencyOne','applicantGuardian.familyOne','applicantGuardian.familyTwo','applicantIntake','status'])->first();
         $applicantresult = ApplicantResult::where('applicant_id',$id)->get();
         $applicantAcademic = ApplicantAcademic::where('applicant_id',$id)->get();
 
@@ -47,6 +48,7 @@ class ApplicantController extends Controller
         $race = Race::all();
         $gender = Gender::all();
         $state = State::all();
+        $family = Family::all()->sortBy('family_name');
 
         foreach ($applicants as $key => $applicantt)
         {
@@ -132,7 +134,7 @@ class ApplicantController extends Controller
 
             $intake = Intakes::all();
 
-        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace','applicantresult','total_point', 'programmestatus', 'aapplicant','country','marital','religion','race','gender','state','skm','mqf','kkm','cat','icaew','activity','intake'));
+        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace','applicantresult','total_point', 'programmestatus', 'aapplicant','country','marital','religion','race','gender','state','skm','mqf','kkm','cat','icaew','activity','intake','family'));
     }
 
     public function updateApplicant(Request $request)

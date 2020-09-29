@@ -33,9 +33,9 @@
                                 <li class="nav-item">
                                     <a data-toggle="tab" class="nav-link" href="#offer_all" role="tab">Offer</a>
                                 </li>
-                                <li class="nav-item">
+                                {{-- <li class="nav-item">
                                     <a data-toggle="tab" class="nav-link" href="#accepted_all" role="tab">Accept Offer</a>
-                                </li>
+                                </li> --}}
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" role="tabpanel" id="applicant_all">
@@ -180,7 +180,7 @@
                                     </table>
                                 </div>
 
-                                <div class="tab-pane" role="tabpanel" id="accepted_all">
+                                {{-- <div class="tab-pane" role="tabpanel" id="accepted_all">
                                     <table class="table table-bordered" id="accepted">
                                         <thead>
                                             <tr>
@@ -214,7 +214,7 @@
 
                                         </tbody>
                                     </table>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -430,79 +430,79 @@
                 orderCellsTop: true,
                 "order": [[ 1, "asc" ]],
                 "initComplete": function(settings, json) {
-                    var column = this.api().column(3);
-                    var select = $('<select class="form-control"><option value=""></option></select>')
-                    .appendTo( $('#intake').empty().text('Intake: ') )
-                    .on('change',function(){
-                        var val = $.fn.DataTable.util.escapeRegex(
-                            $(this).val()
-                        );
-                        column
-                        .search(val ? '^'+val+'$' : '', true, false).draw();
-                    });
-                    column.data().unique().sort().each(function (d, j){
-                        select.append( '<option value="'+d+'">'+d+'</option>' );
-                    });
+                    // var column = this.api().column(3);
+                    // var select = $('<select class="form-control"><option value=""></option></select>')
+                    // .appendTo( $('#intake').empty().text('Intake: ') )
+                    // .on('change',function(){
+                    //     var val = $.fn.DataTable.util.escapeRegex(
+                    //         $(this).val()
+                    //     );
+                    //     column
+                    //     .search(val ? '^'+val+'$' : '', true, false).draw();
+                    // });
+                    // column.data().unique().sort().each(function (d, j){
+                    //     select.append( '<option value="'+d+'">'+d+'</option>' );
+                    // });
                 }
         });
 
     });
 
-    $(document).ready(function()
-    {
-        $('#accepted thead tr .hasinput').each(function(i)
-        {
-            $('input', this).on('keyup change', function()
-            {
-                if (table.column(i).search() !== this.value)
-                {
-                    table
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
+    // $(document).ready(function()
+    // {
+    //     $('#accepted thead tr .hasinput').each(function(i)
+    //     {
+    //         $('input', this).on('keyup change', function()
+    //         {
+    //             if (table.column(i).search() !== this.value)
+    //             {
+    //                 table
+    //                     .column(i)
+    //                     .search(this.value)
+    //                     .draw();
+    //             }
+    //         });
 
-            $('select', this).on('keyup change', function()
-            {
-                if (table.column(i).search() !== this.value)
-                {
-                    table
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
+    //         $('select', this).on('keyup change', function()
+    //         {
+    //             if (table.column(i).search() !== this.value)
+    //             {
+    //                 table
+    //                     .column(i)
+    //                     .search(this.value)
+    //                     .draw();
+    //             }
+    //         });
+    //     });
 
-        var table = $('#accepted').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: "/data_acceptedapplicant",
-                type: 'POST',
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
-            },
-            columns: [
-                    { data: 'applicant_id', name: 'applicant_id' },
-                    { data: 'student_id', name: 'student_id' },
-                    { data: 'applicant_name', name: 'applicant_name' },
-                    { data: 'intake_id', name: 'intake_id' },
-                    { data: 'prog_name', name: 'prog_name' },
-                    { data: 'prog_name_2', name: 'prog_name_2' },
-                    { data: 'prog_name_3', name: 'prog_name_3' },
-                    { data: 'bm', name: 'bm' },
-                    { data: 'english', name: 'english' },
-                    { data: 'math', name: 'math' },
-                    { data: 'action', name: 'action', orderable: false, searchable: false}
-                ],
-                orderCellsTop: true,
-                "order": [[ 1, "asc" ]],
-                "initComplete": function(settings, json) {
+    //     var table = $('#accepted').DataTable({
+    //         processing: true,
+    //         serverSide: true,
+    //         ajax: {
+    //             url: "/data_acceptedapplicant",
+    //             type: 'POST',
+    //             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
+    //         },
+    //         columns: [
+    //                 { data: 'applicant_id', name: 'applicant_id' },
+    //                 { data: 'student_id', name: 'student_id' },
+    //                 { data: 'applicant_name', name: 'applicant_name' },
+    //                 { data: 'intake_id', name: 'intake_id' },
+    //                 { data: 'prog_name', name: 'prog_name' },
+    //                 { data: 'prog_name_2', name: 'prog_name_2' },
+    //                 { data: 'prog_name_3', name: 'prog_name_3' },
+    //                 { data: 'bm', name: 'bm' },
+    //                 { data: 'english', name: 'english' },
+    //                 { data: 'math', name: 'math' },
+    //                 { data: 'action', name: 'action', orderable: false, searchable: false}
+    //             ],
+    //             orderCellsTop: true,
+    //             "order": [[ 1, "asc" ]],
+    //             "initComplete": function(settings, json) {
 
-                }
-        });
-    });
+    //             }
+    //     });
+    // });
 
 </script>
 @endsection
