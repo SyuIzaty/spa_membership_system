@@ -42,12 +42,13 @@
                                     @role('executive')
                                     <button type="button" class="btn btn-info pull-right mb-5" onclick="window.location='{{ route("check-requirements") }}'">Check Requirement</button>
                                     @endrole
+                                    <span id="intake_all"></span>
                                     <table class="table table-bordered" id="applicant">
                                         <thead>
                                             <tr>
                                                 <th>NO</th>
                                                 <th>APPLICANT</th>
-                                                <th>INTAKE</th>
+                                                <th style="display:none">INTAKE</th>
                                                 <th>PROG 1</th>
                                                 <th>PROG 2</th>
                                                 <th>PROG 3</th>
@@ -59,7 +60,7 @@
                                             <tr>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Applicant Name"></td>
-                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Intake"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Intake" style="display:none"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
@@ -76,6 +77,7 @@
                                 </div>
 
                                 <div class="tab-pane" role="tabpanel" id="applicant_pass">
+                                    <span id="intake_pass"></span>
                                     <table class="table table-bordered" id="pass">
                                         <thead>
                                             <tr>
@@ -110,6 +112,7 @@
                                 </div>
 
                                 <div class="tab-pane" role="tabpanel" id="rejected_all">
+                                    <span id="intake_fail"></span>
                                     <table class="table table-bordered" id="rejected">
                                         <thead>
                                             <tr>
@@ -263,7 +266,7 @@
             columns: [
                     { data: 'id', name: 'id' },
                     { data: 'applicant_name', name: 'applicant_name' },
-                    { data: 'intake_id', name: 'intake_id' },
+                    { data: 'intake_id', name: 'intake_id', visible: false },
                     { data: 'prog_name', name: 'prog_name' },
                     { data: 'prog_name_2', name: 'prog_name_2' },
                     { data: 'prog_name_3', name: 'prog_name_3' },
@@ -275,7 +278,19 @@
                 orderCellsTop: true,
                 "order": [[ 1, "asc" ]],
                 "initComplete": function(settings, json) {
-
+                    var column = this.api().column(2);
+                    var select = $('<select class="form-control"><option value=""></option></select>')
+                    .appendTo( $('#intake_all').empty().text('Intake: ') )
+                    .on('change',function(){
+                        var val = $.fn.DataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+                        column
+                        .search(val ? '^'+val+'$' : '', true, false).draw();
+                    });
+                    column.data().unique().sort().each(function (d, j){
+                        select.append( '<option value="'+d+'">'+d+'</option>' );
+                    });
                 }
         });
     });
@@ -318,7 +333,7 @@
             columns: [
                     { data: 'id', name: 'id' },
                     { data: 'applicant_name', name: 'applicant_name' },
-                    { data: 'intake_id', name: 'intake_id' },
+                    { data: 'intake_id', name: 'intake_id', visible: false },
                     { data: 'prog_name', name: 'prog_name' },
                     { data: 'prog_name_2', name: 'prog_name_2' },
                     { data: 'prog_name_3', name: 'prog_name_3' },
@@ -330,7 +345,19 @@
                 orderCellsTop: true,
                 "order": [[ 1, "asc" ]],
                 "initComplete": function(settings, json) {
-
+                    var column = this.api().column(2);
+                    var select = $('<select class="form-control"><option value=""></option></select>')
+                    .appendTo( $('#intake_pass').empty().text('Intake: ') )
+                    .on('change',function(){
+                        var val = $.fn.DataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+                        column
+                        .search(val ? '^'+val+'$' : '', true, false).draw();
+                    });
+                    column.data().unique().sort().each(function (d, j){
+                        select.append( '<option value="'+d+'">'+d+'</option>' );
+                    });
                 }
         });
     });
@@ -373,7 +400,7 @@
             columns: [
                     { data: 'id', name: 'id' },
                     { data: 'applicant_name', name: 'applicant_name' },
-                    { data: 'intake_id', name: 'intake_id' },
+                    { data: 'intake_id', name: 'intake_id', visible:false },
                     { data: 'prog_name', name: 'prog_name' },
                     { data: 'prog_name_2', name: 'prog_name_2' },
                     { data: 'prog_name_3', name: 'prog_name_3' },
@@ -385,7 +412,19 @@
                 orderCellsTop: true,
                 "order": [[ 1, "asc" ]],
                 "initComplete": function(settings, json) {
-
+                    var column = this.api().column(2);
+                    var select = $('<select class="form-control"><option value=""></option></select>')
+                    .appendTo( $('#intake_fail').empty().text('Intake: ') )
+                    .on('change',function(){
+                        var val = $.fn.DataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+                        column
+                        .search(val ? '^'+val+'$' : '', true, false).draw();
+                    });
+                    column.data().unique().sort().each(function (d, j){
+                        select.append( '<option value="'+d+'">'+d+'</option>' );
+                    });
                 }
         });
     });
@@ -418,7 +457,7 @@
                     { data: 'id', name: 'id' },
                     { data: 'student_id', name: 'student_id' },
                     { data: 'applicant_name', name: 'applicant_name' },
-                    { data: 'intake_id', name: 'intake_id' },
+                    { data: 'intake_id', name: 'intake_id', visible:false },
                     { data: 'prog_name', name: 'prog_name' },
                     { data: 'prog_name_2', name: 'prog_name_2' },
                     { data: 'prog_name_3', name: 'prog_name_3' },
@@ -430,19 +469,19 @@
                 orderCellsTop: true,
                 "order": [[ 1, "asc" ]],
                 "initComplete": function(settings, json) {
-                    // var column = this.api().column(3);
-                    // var select = $('<select class="form-control"><option value=""></option></select>')
-                    // .appendTo( $('#intake').empty().text('Intake: ') )
-                    // .on('change',function(){
-                    //     var val = $.fn.DataTable.util.escapeRegex(
-                    //         $(this).val()
-                    //     );
-                    //     column
-                    //     .search(val ? '^'+val+'$' : '', true, false).draw();
-                    // });
-                    // column.data().unique().sort().each(function (d, j){
-                    //     select.append( '<option value="'+d+'">'+d+'</option>' );
-                    // });
+                    var column = this.api().column(3);
+                    var select = $('<select class="form-control"><option value=""></option></select>')
+                    .appendTo( $('#intake').empty().text('Intake: ') )
+                    .on('change',function(){
+                        var val = $.fn.DataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+                        column
+                        .search(val ? '^'+val+'$' : '', true, false).draw();
+                    });
+                    column.data().unique().sort().each(function (d, j){
+                        select.append( '<option value="'+d+'">'+d+'</option>' );
+                    });
                 }
         });
 

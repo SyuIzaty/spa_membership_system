@@ -25,7 +25,7 @@
                         <a class="btn btn-primary" href="{{ route('intake.create') }}"> Create Intake Info</a>
                         <table id="intake" class="table table-bordered table-hover table-striped w-100">
                             <thead>
-                                <tr>
+                                <tr class="bg-highlight">
                                     <th>Intake Code</th>
                                     <th>Intake Description</th>
                                     <th>Application Start Date</th>

@@ -66,18 +66,18 @@
                                 <a class="btn btn-info pull-right" href="javascript:;" data-toggle="modal" id="new">Add Program Info</a>
                             </div>
                             <div class="form-group">
-                                <table class="table table-bordered">
-                                    <tr>
-                                        <td>Programme Code</td>
-                                        <td>Programme Name</td>
-                                        <td>Intake Programme Description</td>
-                                        <td>Intake Type</td>
-                                        <td>Batch Code</td>
-                                        <td>Intake Date</td>
-                                        <td>Intake Time</td>
-                                        <td>Intake Venue</td>
-                                        <td>Status</td>
-                                        <td>Action</td>
+                                <table class="table table-bordered table-hover w-100">
+                                    <tr class="bg-highlight">
+                                        <th>Programme Code</th>
+                                        <th>Programme Name</th>
+                                        <th>Intake Programme Description</th>
+                                        <th>Intake Type</th>
+                                        <th>Batch Code</th>
+                                        <th>Intake Date</th>
+                                        <th>Intake Time</th>
+                                        <th>Intake Venue</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
                                     </tr>
                                     @foreach($intake_detail as $intake_del)
                                     <tr class="data-row">

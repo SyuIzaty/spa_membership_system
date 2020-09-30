@@ -60,12 +60,16 @@
                     for(var i=0; i<len; i++){
                         var id = response['data'][i].id;
                         var applicant_name = response['data'][i].applicant_name;
-                        var applicantstatus = response['data'][i].applicantstatus.applicant_status;
-                        var applicant_programme = response['data'][i].applicantstatus.programme.programme_name;
-                        var applicant_major = response['data'][i].applicantstatus.major.major_name;
-                        var applicant_year = response['data'][i].applicantstatus.programme.programme_duration;
-                        if(applicantstatus == '3')
+                        var status = response['data'][i].applicant_status;
+                        var status_1 = response['data'][i].programme_status;
+                        var status_2 = response['data'][i].programme_status_2;
+                        var status_3 = response['data'][i].programme_status_3;
+                        if(status == '3')
                         {
+                            var applicantstatus = response['data'][i].applicantstatus.applicant_status;
+                            var applicant_programme = response['data'][i].applicantstatus.programme.programme_name;
+                            var applicant_major = response['data'][i].applicantstatus.major.major_name;
+                            var applicant_year = response['data'][i].applicantstatus.programme.programme_duration;
                             var tr_str =
                             "<div class='row'>"+
                                 "<div class='col-md-12'>"+
@@ -101,8 +105,8 @@
                                     "</div>"+
                                 "</div>"+
                             "</div>";
-                        }if(applicantstatus == '5'){
-                            var tr_str = "<h4 class='mt-3'>Sorry " + applicant_name + "you did not meet minimum qualififcation</h4>";
+                        }if(status_1 == '2' && status_2 == '2' && status_3 == '2'){
+                            var tr_str = "<h4 class='mt-3'>Sorry " + applicant_name + " you did not meet minimum qualififcation</h4>";
                         }
 
                         $("#userTable").append(tr_str);
