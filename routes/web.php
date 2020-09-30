@@ -137,3 +137,7 @@ Route::post('api/roomtype/list', 'RoomTypeController@data_roomtype_list');  //ro
 Route::post('api/roomsuitability/list', 'RoomSuitabilityController@data_roomsuitability_list');  //roomsuitability
 Route::post('api/roomfacility/list', 'RoomFacilityController@data_roomfacility_list');  //roomfacility
 Route::post('api/roomowner/list', 'RoomOwnerController@data_roomowner_list');  //roomowner
+
+//Super Admin features
+Route::get('admin/adduser','UserController@create');
+Route::post('admin/storenewuser','UserController@store');

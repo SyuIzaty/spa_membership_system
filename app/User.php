@@ -12,8 +12,10 @@ use Spatie\Permission\Models\Permission;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasRoles, HasPermissions;
     protected $connection = 'auth';
+    
+    use Notifiable, HasRoles, HasPermissions;
+    
     /**
      * The attributes that are mass assignable.
      *

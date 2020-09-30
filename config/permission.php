@@ -69,7 +69,6 @@ return [
          */
 
         'role_has_permissions' => 'role_has_permissions',
-        'db_connection' => 'auth',
     ],
 
     'column_names' => [

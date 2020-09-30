@@ -138,14 +138,14 @@
                                 </a>
                             </li>
                             <li class="nav-title">Operation</li>
-                            <li>
+                            <li class="open">
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-barcode-read"></i>
                                     <span class="nav-link-text" data-i18n="nav.application_intel">Admission</span>
                                 </a>
                                 <ul>
                                     @hasanyrole('manager|executive')
-                                    <li>
+                                    <li class="active">
                                         <a href="/applicantresult" title="Pending Applicant" data-filter-tags="active_student">
                                             <i class="fal fa-user"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">Applicants</span>
@@ -546,8 +546,16 @@
 
                         </ul>
                         <div class="filter-message js-filter-message bg-success-600"></div>
-
-
+                        @can('check requirement')
+                        <div>MOHD YUZI ZALI</div>
+                        @endcan
+                        
+                        {{-- @php
+                            $user = Auth::user();
+                            $permissionNames = $user->getPermissionNames();
+                            // dd($user);
+                            dd($permissionNames);
+                        @endphp --}}
                     </nav>
                     <!-- END PRIMARY NAVIGATION -->
                     <!-- NAV FOOTER -->
