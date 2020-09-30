@@ -9,6 +9,7 @@
         <div class="panel-hdr">
             <h2>Registration</h2>
         </div>
+            @if(isset($applicant))
             {!! Form::model($applicant, ['method' => 'PATCH',  'enctype' => "multipart/form-data", 'route' => ['registration.update', $applicant->id]]) !!}
                 @csrf
                 <div class="card">
@@ -304,6 +305,13 @@
                 </div>
 
             {!! Form::close() !!}
+            @else
+                <div class="card">
+                    <div class="card-body">
+                        <h2>Your application are being processed you are not allowed to edit any information. Thank you</h2>
+                    </div>
+                </div>
+            @endif
     </div>
 </div>
 @endsection

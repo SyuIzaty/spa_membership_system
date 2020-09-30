@@ -205,7 +205,7 @@ class ApplicantController extends Controller
         return datatables()::of($applicants)
             ->addColumn('intake_id',function($applicants)
             {
-                return isset($applicants->intake_code) ? $applicants->intake_code : '';
+                return $applicants->applicantIntake->intake_code;
             })
             ->addColumn('prog_name',function($applicants)
             {
@@ -249,7 +249,7 @@ class ApplicantController extends Controller
         return datatables()::of($applicants)
             ->addColumn('intake_id',function($applicants)
             {
-                return isset($applicants->intake_code) ? $applicants->intake_code : '';
+                return $applicants->applicantIntake->intake_code;
             })
             ->addColumn('prog_name',function($applicants)
             {
@@ -294,7 +294,7 @@ class ApplicantController extends Controller
         return datatables()::of($applicants)
             ->addColumn('intake_id',function($applicants)
             {
-                return isset($applicants->intake_code) ? $applicants->intake_code : '';
+                return $applicants->applicantIntake->intake_code;
             })
             ->addColumn('prog_name',function($applicants)
             {
@@ -464,6 +464,20 @@ class ApplicantController extends Controller
         if($programme_status){
             $programme_status->programme_status_3 = '2';
             $programme_status->save();
+        }
+
+        $status_2 = Applicant::where('id',$applicantt['id'])->where('applicant_programme_2',NULL)->first();
+        $status_3 = Applicant::where('id',$applicantt['id'])->where('applicant_programme_3',NULL)->first();
+        if($status_3 || $status_2)
+        {
+            $status_3->programme_status_3 = '2';
+            $status_3->save();
+        }
+
+        if($status_2)
+        {
+            $status_2->programme_status_2 = '2';
+            $status_2->save();
         }
 
         Applicant::where('id',$applicantt['id'])->where('applicant_status',NULL)->update(['applicant_status'=>'2']);
