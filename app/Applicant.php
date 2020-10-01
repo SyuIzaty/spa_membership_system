@@ -38,6 +38,16 @@ class Applicant extends Model implements HasMedia
         return $this->hasOne('App\Programme','id','applicant_programme_3');
     }
 
+    public function offeredMajor()
+    {
+        return $this->hasOne('App\Major','id','offered_major');
+    }
+
+    public function offeredProgramme()
+    {
+        return $this->hasOne('App\Programme','id','offered_programme');
+    }
+
     public function majorOne()
     {
         return $this->hasOne('App\Major','id','applicant_major');
@@ -127,4 +137,10 @@ class Applicant extends Model implements HasMedia
     {
         return $this->hasOne('App\Status','status_code','applicant_status');
     }
+
+    public function scopeApplicantId($query, $applicantt)
+    {
+        return $query->where('id',$applicantt);
+    }
+
 }

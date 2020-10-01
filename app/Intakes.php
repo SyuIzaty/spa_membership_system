@@ -22,4 +22,9 @@ class Intakes extends Model
         return $this->hasMany('App\IntakeDetail','intake_code','id');
     }
 
+    public function scopeActive($query)
+    {
+        return $query('status','1');
+    }
+
 }

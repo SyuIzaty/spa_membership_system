@@ -66,10 +66,9 @@
                         var status_3 = response['data'][i].programme_status_3;
                         if(status == '3')
                         {
-                            var applicantstatus = response['data'][i].applicantstatus.applicant_status;
-                            var applicant_programme = response['data'][i].applicantstatus.programme.programme_name;
-                            var applicant_major = response['data'][i].applicantstatus.major.major_name;
-                            var applicant_year = response['data'][i].applicantstatus.programme.programme_duration;
+                            // var applicant_programme = response['data'][i].offeredProgramme.programme_code;
+                            // var applicant_major = response['data'][i].offeredMajor;
+                            // var applicant_year = response['data'][i].offeredProgramme;
                             var tr_str =
                             "<div class='row'>"+
                                 "<div class='col-md-12'>"+
@@ -79,21 +78,21 @@
                                     "<div class='card'>"+
                                         "<div class='card-body'>"+
                                         "INTEC Education College is pleased to inform you of your admission to our Institute. <br>Please refer to the attachment below for your offer letter and registration instruction."+
-                                        "<table class='table table-bordered mt-3'>"+
-                                            "<tr><td colspan='2' style='text-align:center'>Programme Details</td></tr>"+
-                                            "<tr>"+
-                                                "<td>Programme</td>"+
-                                                "<td>" + applicant_programme + "</td>"+
-                                            "</tr>"+
-                                            "<tr>"+
-                                                "<td>Major</td>"+
-                                                "<td>" + applicant_major + "</td>"+
-                                            "</tr>"+
-                                            "<tr>"+
-                                                "<td>Duration</td>"+
-                                                "<td>" + applicant_year + "</td>"+
-                                            "</tr>"+
-                                        "</table>"+
+                                        // "<table class='table table-bordered mt-3'>"+
+                                        //     "<tr><td colspan='2' style='text-align:center'>Programme Details</td></tr>"+
+                                        //     "<tr>"+
+                                        //         "<td>Programme</td>"+
+                                        //         "<td>" + applicant_programme + "</td>"+
+                                        //     "</tr>"+
+                                        //     "<tr>"+
+                                        //         "<td>Major</td>"+
+                                        //         "<td>" + applicant_major + "</td>"+
+                                        //     "</tr>"+
+                                        //     "<tr>"+
+                                        //         "<td>Duration</td>"+
+                                        //         "<td>" + applicant_year + "</td>"+
+                                        //     "</tr>"+
+                                        // "</table>"+
                                             "<div class='card m-3'>"+
                                                 "<div class='row'>"+
                                                     "<div class='col-md-3 ml-3 mb-3'>"+
@@ -106,7 +105,7 @@
                                 "</div>"+
                             "</div>";
                         }if(status_1 == '2' && status_2 == '2' && status_3 == '2'){
-                            var tr_str = "<h4 class='mt-3'>Sorry " + applicant_name + " you did not meet minimum qualififcation</h4>";
+                            var tr_str = "<h4 class='mt-3'>Sorry " + applicant_name + " you did not meet minimum qualification</h4>";
                         }
 
                         $("#userTable").append(tr_str);

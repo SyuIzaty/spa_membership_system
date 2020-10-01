@@ -29,7 +29,7 @@
                                 </li>
                             </ul>
                             <div class="row">
-                                <div class="tab-content col-md-8">
+                                <div class="tab-content col-md-12">
                                     <div class="tab-pane active" id="details" role="tabpanel">
                                         <hr class="mt-2 mb-3">
                                         <div class="row">
@@ -70,8 +70,8 @@
                                                         </table>
                                                         <table class="table table-bordered table-sm">
                                                             <thead class="bg-highlight">
-                                                                <th style="width: 30px">Applicant Programme</th>
-                                                                <th style="width: 30px">Applicant Major</th>
+                                                                <th>Applicant Programme</th>
+                                                                <th>Applicant Major</th>
                                                                 <th>Result</th>
                                                                 <th>Action</th>
                                                             </thead>
@@ -421,7 +421,7 @@
                                             <table class="table table-bordered table-sm">
                                                 <tr>
                                                     <td>Band</td>
-                                                    <td>{{ $muet->cgpa }}</td>
+                                                    <td>{{ $muet->applicant_cgpa }}</td>
                                                 </tr>
                                             </table>
                                             @endif
@@ -430,7 +430,7 @@
                                             <table class="table table-bordered table-sm">
                                                 <tr>
                                                     <td>ATAR</td>
-                                                    <td>{{ $sace->cgpa }}</td>
+                                                    <td>{{ $sace->applicant_cgpa }}</td>
                                                 </tr>
                                             </table>
                                             @endif
@@ -439,32 +439,51 @@
                                                 <table class="table table-bordered table-sm">
                                                     <tr>
                                                         <td>Matriculation</td>
-                                                        <td colspan="3">{{$matriculation->applicantAcademic->applicant_study}}</td>
+                                                        <td colspan="3">{{ $matriculation->applicant_study }}</td>
                                                     </tr>
                                                     <tr>
                                                         <td>Graduation Year</td>
-                                                        <td>{{ $matriculation->applicantAcademic->applicant_year }}</td>
+                                                        <td>{{ $matriculation->applicant_year }}</td>
                                                         <td>CGPA</td>
-                                                        <td>{{$matriculation->cgpa}}</td>
+                                                        <td>{{ $matriculation->applicant_cgpa }}</td>
                                                     </tr>
                                                 </table>
+                                            @endif
+                                            @if (isset($foundation))
+                                            <h5>Foundation</h5>
+                                            <table class="table table-bordered table-sm">
+                                                <tr>
+                                                    <td>Foundation</td>
+                                                    <td colspan="3">{{ $foundation->applicant_study }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Major</td>
+                                                    <td colspan="3">{{ $foundation->applicant_major }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Graduation Year</td>
+                                                    <td>{{ $foundation->applicant_year }}</td>
+                                                    <td>CGPA</td>
+                                                    <td>{{ $foundation->applicant_cgpa }}</td>
+                                                </tr>
+                                            </table>
                                             @endif
                                             @if(isset($diploma))
                                             <h5>Diploma</h5>
                                                 <table class="table table-bordered table-sm">
                                                 <tr>
                                                     <td>University</td>
-                                                    <td colspan="3">{{ $diploma->applicantAcademic->applicant_study }}</td>
+                                                    <td colspan="3">{{ $diploma->applicant_study }}</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Major</td>
-                                                    <td colspan="3">{{ $diploma->applicantAcademic->applicant_major }}</td>
+                                                    <td colspan="3">{{ $diploma->applicant_major }}</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Graduation Year</td>
-                                                    <td>{{ $diploma->applicantAcademic->applicant_year }}</td>
+                                                    <td>{{ $diploma->applicant_year }}</td>
                                                     <td>CGPA</td>
-                                                    <td>{{ $diploma->cgpa }}</td>
+                                                    <td>{{ $diploma->applicant_cgpa }}</td>
                                                 </tr>
                                                 </table>
                                             @endif
@@ -473,17 +492,17 @@
                                                 <table class="table table-bordered table-sm">
                                                 <tr>
                                                     <td>University</td>
-                                                    <td colspan="3">{{$degree->applicantAcademic->applicant_study}}</td>
+                                                    <td colspan="3">{{ $degree->applicant_study }}</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Major</td>
-                                                    <td colspan="3">{{ $degree->applicantAcademic->applicant_major }}</td>
+                                                    <td colspan="3">{{ $degree->applicant_major }}</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Graduation Year</td>
-                                                    <td>{{ $degree->applicantAcademic->applicant_year }}</td>
+                                                    <td>{{ $degree->applicant_year }}</td>
                                                     <td>CGPA</td>
-                                                    <td>{{$degree->cgpa}}</td>
+                                                    <td>{{ $degree->applicant_cgpa }}</td>
                                                 </tr>
                                                 </table>
                                             @endif
@@ -492,16 +511,16 @@
                                             <table class="table table-bordered table-sm">
                                                 <tr>
                                                     <td>SKM Level</td>
-                                                    <td>{{ $skm->cgpa }}</td>
+                                                    <td>{{ $skm->applicant_cgpa }}</td>
                                                 </tr>
                                             </table>
                                             @endif
-                                            @if (isset($skm))
+                                            @if (isset($sace))
                                             <h5>South Australian Certificate of Education</h5>
                                             <table class="table table-bordered table-sm">
                                                 <tr>
                                                     <td>ATAR</td>
-                                                    <td>{{ $sace->cgpa }}</td>
+                                                    <td>{{ $sace->applicant_cgpa }}</td>
                                                 </tr>
                                             </table>
                                             @endif
@@ -510,7 +529,7 @@
                                             <table class="table table-bordered table-sm">
                                                 <tr>
                                                     <td>MQF Level</td>
-                                                    <td>{{ $mqf->cgpa }}</td>
+                                                    <td>{{ $mqf->applicant_cgpa }}</td>
                                                 </tr>
                                             </table>
                                             @endif
@@ -519,7 +538,7 @@
                                             <table class="table table-bordered table-sm">
                                                 <tr>
                                                     <td>KKM Level</td>
-                                                    <td>{{ $kkm->cgpa }}</td>
+                                                    <td>{{ $kkm->applicant_cgpa }}</td>
                                                 </tr>
                                             </table>
                                             @endif
@@ -528,7 +547,7 @@
                                             <table class="table table-bordered table-sm">
                                                 <tr>
                                                     <td>CAT</td>
-                                                    <td>{{ $cat->cgpa }}</td>
+                                                    <td>{{ $cat->applicant_cgpa }}</td>
                                                 </tr>
                                             </table>
                                             @endif
@@ -537,7 +556,7 @@
                                             <table class="table table-bordered table-sm">
                                                 <tr>
                                                     <td>ICAEW</td>
-                                                    <td>{{ $icaew->cgpa }}</td>
+                                                    <td>{{ $icaew->applicant_cgpa }}</td>
                                                 </tr>
                                             </table>
                                             @endif
@@ -642,10 +661,10 @@
                                                             </div>
                                                             @endif
                                                         </div>
-                                                        @role('executive')
+                                                        @can('update applicant detail')
                                                         <button class="btn btn-primary">Update</button>
                                                         {!! Form::close() !!}
-                                                        @endrole
+                                                        @endcan
                                                     </div>
                                                 </div>
                                                 <hr class="mt-2 mb-3">
@@ -699,9 +718,9 @@
                                                                 {{Form::text('guardian_two_address', $applicant->applicantGuardian->guardian_two_address, ['class' => 'form-control', 'placeholder' => 'Address'])}}
                                                             </div>
                                                         </div>
-                                                        @role('executive')
+                                                        @can('update applicant detail')
                                                         <button class="btn btn-primary">Update</button>
-                                                        @endrole
+                                                        @endcan
                                                         {!! Form::close() !!}
                                                         @endif
                                                     </div>
@@ -735,9 +754,9 @@
                                                                 {{Form::text('emergency_address', $applicant->applicantEmergency->emergency_address, ['class' => 'form-control', 'placeholder' => 'Address'])}}
                                                             </div>
                                                         </div>
-                                                        @role('executive')
+                                                        @can('update applicant detail')
                                                         <button class="btn btn-primary">Update</button>
-                                                        @endrole
+                                                        @endcan
                                                         {!! Form::close() !!}
                                                         @endif
                                                     </div>
@@ -746,7 +765,7 @@
                                         </div>
                                 </div>
                             </div>
-                            <div class="tab-content col-md-4 mt-4">
+                            {{-- <div class="tab-content col-md-4 mt-4">
                                 <div class="card">
                                     <div class="card-header">Activity Log</div>
                                     <div class="card-body">
@@ -766,7 +785,7 @@
                                         @endif
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>

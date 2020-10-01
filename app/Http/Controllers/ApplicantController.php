@@ -38,10 +38,7 @@ class ApplicantController extends Controller
     public function show($id)
     {
         $applicant = Applicant::where('id',$id)->with(['applicantContactInfo','applicantEmergency.emergencyOne','applicantGuardian.familyOne','applicantGuardian.familyTwo','applicantIntake','status'])->first();
-        $applicantresult = ApplicantResult::where('applicant_id',$id)->get();
-        $applicantAcademic = ApplicantAcademic::where('applicant_id',$id)->get();
 
-        $applicants = Applicant::where('id',$id)->get()->toArray();
         $country = Country::all();
         $marital = Marital::all();
         $religion = Religion::all();
@@ -49,92 +46,68 @@ class ApplicantController extends Controller
         $gender = Gender::all();
         $state = State::all();
         $family = Family::all()->sortBy('family_name');
+        $intake = Intakes::all();
 
-        foreach ($applicants as $key => $applicantt)
+        $spm = ApplicantResult::ApplicantId($id)->Spm()->Result()->get();
+
+        $stpm = ApplicantResult::ApplicantId($id)->Stpm()->Result()->get();
+
+        $stam = ApplicantResult::ApplicantId($id)->Stam()->Result()->get();
+
+        $uec = ApplicantResult::ApplicantId($id)->Uec()->Result()->get();
+
+        $alevel = ApplicantResult::ApplicantId($id)->Alevel()->Result()->get();
+
+        $olevel = ApplicantResult::ApplicantId($id)->Olevel()->Result()->get();
+
+        $skm = ApplicantAcademic::ApplicantId($id)->Skm()->first();
+
+        $diploma = ApplicantAcademic::ApplicantId($id)->Diploma()->first();
+
+        $degree = ApplicantAcademic::ApplicantId($id)->Degree()->first();
+
+        $sace = ApplicantAcademic::ApplicantId($id)->Sace()->first();
+
+        $muet = ApplicantAcademic::ApplicantId($id)->Muet()->first();
+
+        $matriculation = ApplicantAcademic::ApplicantId($id)->Matriculation()->first();
+
+        $foundation = ApplicantAcademic::ApplicantId($id)->Foundation()->first();
+
+        $mqf = ApplicantAcademic::ApplicantId($id)->Mqf()->first();
+
+        $kkm = ApplicantAcademic::ApplicantId($id)->Kkm()->first();
+
+        $cat = ApplicantAcademic::ApplicantId($id)->Cat()->first();
+
+        $icaew = ApplicantAcademic::ApplicantId($id)->Icaew()->first();
+
+        $batch = Applicant::ApplicantId($id)->with(['applicantIntake.intakeDetails'])->first();
+        // $batch_1 = $batch->applicantIntake->intakeDetails->where('intake_programme',$batch->applicant_programme)->where('status','1')->first();
+
+        // $batch_2 = $batch->applicantIntake->intakeDetails->where('intake_programme',$batch->applicant_programme_2)->where('status','1')->first();
+
+        // $batch_3 = $batch->applicantIntake->intakeDetails->where('intake_programme',$batch->applicant_programme_3)->where('status','1')->first();
+
+        $applicant2 = Applicant::where('id',$id)->get()->toArray();
+        foreach($applicant2 as $applicantstat)
         {
-            $total_point = 0;
+            $programme_1['programme_1'] = Programme::where('id',$applicantstat['applicant_programme'])->get();
+            $programme_2['programme_2'] = Programme::where('id',$applicantstat['applicant_programme_2'])->get();
+            $programme_3['programme_3'] = Programme::where('id',$applicantstat['applicant_programme_3'])->get();
 
-            $pro = explode(',',$applicant['applicant_programme']);
-            $sta = explode(',',$applicant['programme_status']);
-            $programmestatus = [];
-            for($i=0; $i < count($pro); $i++)
-            {
-                $prog = Programme::where('id',$pro[$i])->first();
-                $programmestatus[$i]['id'] = $prog->id;
-                $programmestatus[$i]['programme'] = $prog->programme_name;
-                $programmestatus[$i]['status'] = $sta[$i];
-            }
+            $dataappl[] = array_merge($applicantstat, $programme_1, $programme_2, $programme_3);
         }
-            $spm = ApplicantResult::where('applicant_id',$id)->where('type','1')
-            ->with(['grades','subjects','applicantAcademic'=>function($query){
-                $query->where('type','1');
-            }])->get();
 
-            $stpm_result = ApplicantResult::where('applicant_id',$id)->where('type',2)->get();
-            $stpm = $stpm_result->load('grades','subjects');
+        $aapplicant = $dataappl;
+        $activity = [];
+        $applicant_status = ApplicantStatus::where('applicant_id',$id)->get();
+        foreach($applicant_status as $app_stat)
+        {
+            $activity = Activity::where('properties->attributes->applicant_id', $app_stat['applicant_id'])->get();
+        }
 
-            $stam_result = ApplicantResult::where('applicant_id',$id)->where('type',3)->get();
-            $stam = $stam_result->load('grades','subjects');
-
-            $uec_result = ApplicantResult::where('applicant_id',$id)->where('type',4)->get();
-            $uec = $uec_result->load('grades','subjects');
-
-            $alevel_result = ApplicantResult::where('applicant_id',$id)->where('type',5)->get();
-            $alevel = $alevel_result->load('grades','subjects');
-
-            $olevel_result = ApplicantResult::where('applicant_id',$id)->where('type',6)->get();
-            $olevel = $olevel_result->load('grades','subjects');
-
-            $diploma = ApplicantResult::where('applicant_id',$id)->where('type','8')
-            ->with(['applicantAcademic'=>function($query){
-                $query->where('type','8');
-            }])->first();
-
-            $degree = ApplicantResult::where('applicant_id',$id)->where('type','9')
-            ->with(['applicantAcademic'=>function($query){
-                $query->where('type','9');
-            }])->first();
-
-            $skm = ApplicantResult::where('applicant_id',$id)->where('type','7')->first();
-
-            $sace = ApplicantResult::where('applicant_id',$id)->where('type','10')->first();
-
-            $muet = ApplicantResult::where('applicant_id',$id)->where('type','11')->first();
-
-            $mqf = ApplicantResult::where('applicant_id',$id)->where('type','14')->first();
-
-            $kkm = ApplicantResult::where('applicant_id',$id)->where('type','15')->first();
-
-            $cat = ApplicantResult::where('applicant_id',$id)->where('type','16')->first();
-
-            $icaew = ApplicantResult::where('applicant_id',$id)->where('type','17')->first();
-
-            $matriculation = ApplicantResult::where('applicant_id',$id)->where('type','12')
-            ->with(['applicantAcademic'=>function($query){
-                $query->where('type','12');
-            }])->first();
-
-            $applicant2 = Applicant::where('id',$id)->get()->toArray();
-            foreach($applicant2 as $applicantstat)
-            {
-                $programme_1['programme_1'] = Programme::where('id',$applicantstat['applicant_programme'])->get();
-                $programme_2['programme_2'] = Programme::where('id',$applicantstat['applicant_programme_2'])->get();
-                $programme_3['programme_3'] = Programme::where('id',$applicantstat['applicant_programme_3'])->get();
-
-                $dataappl[] = array_merge($applicantstat, $programme_1, $programme_2, $programme_3);
-            }
-
-            $aapplicant = $dataappl;
-            $activity = [];
-            $applicant_status = ApplicantStatus::where('applicant_id',$id)->get();
-            foreach($applicant_status as $app_stat)
-            {
-                $activity = Activity::where('properties->attributes->applicant_id', $app_stat['applicant_id'])->get();
-            }
-
-            $intake = Intakes::all();
-
-        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace','applicantresult','total_point', 'programmestatus', 'aapplicant','country','marital','religion','race','gender','state','skm','mqf','kkm','cat','icaew','activity','intake','family'));
+        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace', 'aapplicant','country','marital','religion','race','gender','state','skm','mqf','kkm','cat','icaew','activity','intake','family','foundation'));
     }
 
     public function updateApplicant(Request $request)
@@ -185,15 +158,6 @@ class ApplicantController extends Controller
     public function indexs()
     {
         return view('applicant.applicantresult');
-    }
-
-    public function testCollection()
-    {
-        // $applicant = Applicantstatus::where('applicant_status','5')->get();
-        // $applicants = $applicant->load('applicant','programme','major','applicantresult','applicantresult.grades','applicant.applicantIntake','statusResult');
-        // foreach($applicants as $app){
-        //     dd($app->applicant->statusResult->colour);
-        // }
     }
 
     public function data_allapplicant()
@@ -287,7 +251,7 @@ class ApplicantController extends Controller
     public function data_rejectedapplicant()
     {
         // $applicant = Applicant::where('applicant_status',NULL)->get();
-        $applicant = Applicant::where('programme_status','2')->where('programme_status_2','2')->orWhere('programme_status_2',NULL)->where('programme_status_3','2')->orWhere('programme_status_3',NULL)->get();
+        $applicant = Applicant::where('programme_status','2')->where('programme_status_2','2')->where('programme_status_3','2')->get();
         $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','applicantstatus','applicantIntake');
 
 
@@ -331,29 +295,29 @@ class ApplicantController extends Controller
 
     public function data_offerapplicant()
     {
-        $applicant = Applicantstatus::where('applicant_status','3')->get();
-        $applicants = $applicant->load('applicant','programme','major','applicantresult','applicantresult.grades','applicant.applicantIntake');
+        $applicant = Applicant::where('applicant_status','3')->get();
+        $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','applicantstatus','applicantIntake');
         return datatables()::of($applicants)
             ->addColumn('applicant_name',function($applicants)
             {
-                return $applicants->applicant->applicant_name;
+                return $applicants->applicant_name;
             })
             ->addColumn('intake_id',function($applicants)
             {
-                return $applicants->applicant->applicantIntake->intake_code;
+                return $applicants->applicantIntake->intake_code;
             })
             ->addColumn('prog_name',function($applicants)
             {
-                return '<div style="color:'.$applicants->applicant->statusResult->colour.'">'.$applicants->applicant->applicant_programme.'</div>';
+                return '<div style="color:'.$applicants->statusResult->colour.'">'.$applicants->applicant_programme.'</div>';
             })
             ->addColumn('prog_name_2',function($applicants)
             {
-                return isset($applicants->applicant->applicant_programme_2) ? '<div style="color:'.$applicants->applicant->statusResultTwo->colour.'">'.$applicants->applicant->applicant_programme_2.'</div>' : '';
+                return isset($applicants->applicant_programme_2) ? '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->applicant_programme_2.'</div>' : '';
 
             })
             ->addColumn('prog_name_3',function($applicants)
             {
-                return isset($applicants->applicant->applicant_programme_2) ? '<div style="color:'.$applicants->applicant->statusResultThree->colour.'">'.$applicants->applicant->applicant_programme_3.'</div>' : '';
+                return isset($applicants->applicant_programme_2) ? '<div style="color:'.$applicants->statusResultThree->colour.'">'.$applicants->applicant_programme_3.'</div>' : '';
             })
             ->addColumn('bm',function($applicants){
                 return $applicants->applicantresult->where('subject',1103)->isEmpty() ? '': $applicants->applicantresult->where('subject',1103)->first()->grades->grade_code;
@@ -366,9 +330,9 @@ class ApplicantController extends Controller
             })
 
            ->addColumn('action', function ($applicants) {
-               return '<a href="/applicant/'.$applicants->applicant->id.'" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Detail</a>
-               <a href="'.action('IntakeController@letter', ['applicant_id' => $applicants->applicant->id]).'" class="btn btn-sm btn-info">Offer Letter</a>
-               <a href="'.action('IntakeController@sendEmail', ['applicant_id' => $applicants->applicant->id, 'intake_id' => $applicants->applicant->intake_id]).'" class="btn btn-sm btn-primary">Send Email</a>
+               return '<a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Detail</a>
+               <a href="'.action('IntakeController@letter', ['applicant_id' => $applicants->id]).'" class="btn btn-sm btn-info">Offer Letter</a>
+               <a href="'.action('IntakeController@sendEmail', ['applicant_id' => $applicants->id, 'intake_id' => $applicants->intake_id]).'" class="btn btn-sm btn-primary">Send Email</a>
                ';
            })
            ->rawColumns(['prog_name','prog_name_2','prog_name_3','action'])
@@ -485,7 +449,7 @@ class ApplicantController extends Controller
 
     public function spm($applicantt)
     {
-        $app_spm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->where('grade_id','<=',8)->get();
+        $app_spm = ApplicantResult::where('applicant_id',$applicantt['id'])->Spm()->where('grade_id','<=',8)->get();
         $spm = $app_spm->count();
         $count_eng = $app_spm->where('subject',1119)->count();
         $count_math = $app_spm->where('subject',1449)->count();
@@ -495,7 +459,7 @@ class ApplicantController extends Controller
 
     public function stpm($applicantt)
     {
-        $app_stpm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',2)->where('grade_id','<=',17)->get();
+        $app_stpm = ApplicantResult::where('applicant_id',$applicantt['id'])->Stpm()->where('grade_id','<=',17)->get();
         $stpm = $app_stpm->count();
 
         $count_math_m = $app_stpm->where('subject',950)->count();
@@ -506,7 +470,7 @@ class ApplicantController extends Controller
 
     public function stam($applicantt)
     {
-        $app_stam = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',3)->where('grade_id','<=',15)->get();
+        $app_stam = ApplicantResult::where('applicant_id',$applicantt['id'])->Stam()->where('grade_id','<=',15)->get();
         $stam = $app_stam->count();
 
         return compact('app_stam', 'stam');
@@ -514,7 +478,7 @@ class ApplicantController extends Controller
 
     public function uec($applicantt)
     {
-        $app_uec = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',4)->where('grade_id','<=',25)->get();
+        $app_uec = ApplicantResult::where('applicant_id',$applicantt['id'])->Uec()->where('grade_id','<=',25)->get();
         $uec = $app_uec->count();
         $count_math = $app_uec->where('subject','UEC104')->count();
         return compact('app_uec', 'uec', 'count_math');
@@ -522,7 +486,7 @@ class ApplicantController extends Controller
 
     public function olevel($applicantt)
     {
-        $app_olevel = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',6)->where('grade_id','<=',45)->get();
+        $app_olevel = ApplicantResult::where('applicant_id',$applicantt['id'])->Olevel()->where('grade_id','<=',45)->get();
         $olevel = $app_olevel->count();
         $count_eng = $app_olevel->where('subject','CIE1119')->count();
         $count_math_a = $app_olevel->where('subject','CIE4937')->count();
@@ -532,19 +496,19 @@ class ApplicantController extends Controller
 
     public function mqf($applicantt)
     {
-        $mqf = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',14)->where('cgpa','>=',2.00)->count();
+        $mqf = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Mqf()->where('applicant_cgpa','>=',2.00)->count();
         return compact('mqf');
     }
 
     public function skm($applicantt)
     {
-        $skm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',7)->count();
+        $skm = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Skm()->count();
         return compact('skm');
     }
 
     public function kkm($applicantt)
     {
-        $kkm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',15)->where('cgpa','>=',2.00)->count();
+        $kkm = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Kkm()->where('applicant_cgpa','>=',2.00)->count();
         return compact ('kkm');
     }
 
@@ -928,7 +892,7 @@ class ApplicantController extends Controller
             $status_olevel = false;
         }
 
-        $sace = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',10)->where('cgpa','>=',50)->count();
+        $sace = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Sace()->where('cgpa','>=',50)->count();
         if($sace == 1)
         {
             $status_sace = true;
@@ -1101,7 +1065,7 @@ class ApplicantController extends Controller
     public function pac580($applicantt) //The Malaysian Institute of Certified Public Accountant
     {
         $status = [];
-        $bachelors = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',14)->where('cgpa','>=',2.50)->count();
+        $bachelors = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Degree()->where('applicant_cgpa','>=',2.50)->count();
         if($bachelors == 1)
         {
             $programme_code = 'PAC580';
@@ -1115,7 +1079,7 @@ class ApplicantController extends Controller
     public function pac570($applicantt) //Institute of Chartered Accountants in England and Wales (ICAEW)
     {
         $status = [];
-        $bachelors = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',14)->where('cgpa','>=',2.75)->count();
+        $bachelors = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Degree()->where('applicant_cgpa','>=',2.75)->count();
         if($bachelors == 1)
         {
             $status_bach = true;
@@ -1123,7 +1087,7 @@ class ApplicantController extends Controller
             $status_bach = false;
         }
 
-        $icaew = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',17)->count();
+        $icaew = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Icaew()->count();
         if($icaew == 1)
         {
             $status_icaew = true;
@@ -1147,8 +1111,8 @@ class ApplicantController extends Controller
     {
         $status = [];
 
-        $muet = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',11)->where('cgpa','>=',2)->count();
-        $cat = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',16)->where('cgpa','Pass')->count();
+        $muet = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Muet()->where('applicant_cgpa','>=',2)->count();
+        $cat = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Cat()->where('applicant_cgpa','Pass')->count();
         if($muet >= 1 && $cat >= 1)
         {
             $programme_code = 'PAC552';
@@ -1164,8 +1128,8 @@ class ApplicantController extends Controller
     {
         $status = [];
 
-        $muet = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',11)->where('cgpa','>=',2)->count();
-        $diploma = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',8)->where('cgpa','>=',3.00)->count();
+        $muet = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Muet()->where('applicant_cgpa','>=',2)->count();
+        $diploma = ApplicantAcadmic::where('applicant_id',$applicantt['id'])->Diploma()->where('applicant_cgpa','>=',3.00)->count();
         if($muet >= 1 && $diploma >= 1)
         {
             $programme_code = 'PAC551';
@@ -1181,8 +1145,8 @@ class ApplicantController extends Controller
     {
         $status = [];
 
-        $muet = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',11)->where('cgpa','>=',2)->count();
-        $bachelors = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',9)->where('cgpa','>=',2.50)->count();
+        $muet = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Muet()->where('applicant_cgpa','>=',2)->count();
+        $bachelors = ApplicantResult::where('applicant_id',$applicantt['id'])->Degree()->where('applicant_cgpa','>=',2.50)->count();
         if($muet >= 1 && $bachelors >= 1)
         {
             $programme_code = 'PAC553';
@@ -1198,8 +1162,8 @@ class ApplicantController extends Controller
     {
         $status = [];
 
-        $muet = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',11)->where('cgpa','>=',2)->count();
-        $bachelors = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',9)->where('cgpa','>=',2.50)->count();
+        $muet = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Muet()->where('applicant_cgpa','>=',2)->count();
+        $bachelors = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Degree()->where('applicant_cgpa','>=',2.50)->count();
         if($muet >= 1 && $bachelors >= 1)
         {
             $programme_code = 'PAC554';
@@ -1240,52 +1204,40 @@ class ApplicantController extends Controller
 
     public function programmestatus(Request $request)
     {
-        ApplicantStatus::where('applicant_id',$request->applicant_id)
-        ->where('applicant_programme',$request->applicant_programme)
-        ->delete();
-
         $applicant = Applicant::where('id',$request->applicant_id)->first();
         do {
             $year = substr((date("Y",strtotime($applicant->created_at))),-2);
             $random = mt_rand(1000,9999);
             $student_id = $year . '1117' . $random;
-         } while ( ApplicantStatus::where('student_id', $student_id )->exists() );
+         } while ( Applicant::where('student_id', $student_id )->exists() );
 
-        $data = [
-            'applicant_id' => $request->applicant_id,
-            'applicant_programme' => $request->applicant_programme,
-            'applicant_major' => $request->applicant_major,
-            'applicant_status' => $request->applicant_status,
-            'student_id' => $student_id,
-        ];
 
-        Applicant::where('id',$request->applicant_id)->update(['applicant_status'=>$request->applicant_status]);
+        Applicant::where('id',$request->applicant_id)->update(['applicant_status'=>$request->applicant_status, 'offered_programme'=>$request->applicant_programme, 'offered_major'=>$request->applicant_major, 'student_id'=>$student_id]);
 
-        ApplicantStatus::create($data);
 
         // $this->sendEmail($request->applicant_id);
 
-        return response()->json(['success'=>true,'status'=>'success','message'=>'Data has been saved to datatbase','Data'=>$data]);
+        return response()->json(['success'=>true,'status'=>'success','message'=>'Data has been saved to database']);
     }
 
     public function sendEmail($applicants_id)
     {
-        $details = ApplicantStatus::where('applicant_id',$applicants_id)->where('applicant_status','3')->with(['applicant','programme','major'])->first();
+        $details = Applicant::where('id',$applicants_id)->where('applicant_status','3')->with(['offeredMajor','offeredProgramme'])->first();
         foreach($details as $detail)
         {
-            $intakes = IntakeDetail::where('status', '1')->where('intake_code', $detail->applicant->intake_id)->where('intake_programme', $detail->applicant_programme)
+            $intakes = IntakeDetail::where('status', '1')->where('intake_code', $detail->intake_id)->where('intake_programme', $detail->offered_programme)
             ->first();
         }
         $report = PDF::loadView('intake.pdf', compact('detail', 'intakes'));
         $data = [
-            'receiver_name' => $details->applicant->applicant_name,
+            'receiver_name' => $details->applicant_name,
             'details' => 'This offer letter is appended with this email. Please refer to the attachment for your registration instructions.',
         ];
 
         Mail::send('intake.offer-letter', $data, function ($message) use ($details, $report) {
-            $message->subject('Congratulations, ' . $details->applicant->applicant_name);
-            $message->to(!empty($details->applicant->applicant_email) ? $details->applicant->applicant_email : 'jane-doe@email.com');
-            $message->attachData($report->output(), 'Offer_Letter_' . $details->applicant->applicant_name . '.pdf');
+            $message->subject('Congratulations, ' . $details->applicant_name);
+            $message->to(!empty($details->applicant_email) ? $details->applicant_email : 'jane-doe@email.com');
+            $message->attachData($report->output(), 'Offer_Letter_' . $details->applicant_name . '.pdf');
         });
     }
 

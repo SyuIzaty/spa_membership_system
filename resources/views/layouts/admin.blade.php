@@ -138,24 +138,23 @@
                                 </a>
                             </li>
                             <li class="nav-title">Operation</li>
+                            @can('check requirement')
                             <li class="open">
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-barcode-read"></i>
                                     <span class="nav-link-text" data-i18n="nav.application_intel">Admission</span>
                                 </a>
                                 <ul>
-                                    @hasanyrole('manager|executive')
                                     <li class="active">
                                         <a href="/applicantresult" title="Pending Applicant" data-filter-tags="active_student">
                                             <i class="fal fa-user"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">Applicants</span>
                                         </a>
                                     </li>
-                                    @endhasanyrole
                                     <li>
-                                        <a href="/offer-letter" title="Pending Applicant" data-filter-tags="active_student">
+                                        <a href="/intake" title="Intake Information" data-filter-tags="active_student">
                                             <i class="fal fa-user"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Intake Detail</span>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Intake Information</span>
                                         </a>
                                     </li>
                                     <li>
@@ -166,22 +165,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            @hasanyrole('manager|executive')
-                            <li>
-                                <a href="#" title="Application Intel" data-filter-tags="application intel">
-                                    <i class="fal fa-barcode-read"></i>
-                                    <span class="nav-link-text" data-i18n="nav.application_intel">Intake</span>
-                                </a>
-                                <ul>
-                                    <li>
-                                        <a href="/intake" title="Intake Information" data-filter-tags="active_student">
-                                            <i class="fal fa-user"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Intake Information</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            @endhasanyrole
+                            @endcan
                             {{-- <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-map-marker-alt"></i>
@@ -208,7 +192,7 @@
                                     </li>
                                 </ul>
                             </li> --}}
-                            @hasanyrole('admin|super admin')
+                            @can('view parameter')
                             <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-portrait"></i>
@@ -235,8 +219,8 @@
                                     </li>
                                 </ul>
                             </li>
-                            @endhasanyrole
-                            @hasanyrole('admin|super admin')
+                            @endcan
+                            @can('view parameter')
                             <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-portrait"></i>
@@ -263,9 +247,9 @@
                                     </li> --}}
                                 </ul>
                             </li>
-                            @endhasanyrole
+                            @endcan
 
-                            @hasanyrole('admin|super admin')
+                            @can('view parameter')
                             <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-portrait"></i>
@@ -292,8 +276,8 @@
                                     </li> --}}
                                 </ul>
                             </li>
-                            @endhasanyrole
-                            @hasanyrole('admin|super admin')
+                            @endcan
+                            @can('view parameter')
                             <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-portrait"></i>
@@ -320,8 +304,8 @@
                                     </li> --}}
                                 </ul>
                             </li>
-                            @endhasanyrole
-                            @role('super admin')
+                            @endcan
+                            @can('view parameter')
                             <li class="nav-title">Parameter Setting</li>
                             <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
@@ -542,14 +526,12 @@
                                     </li>
                                 </ul>
                             </li>
-                            @endrole
+                            @endcan
 
                         </ul>
                         <div class="filter-message js-filter-message bg-success-600"></div>
-                        @can('check requirement')
-                        <div>MOHD YUZI ZALI</div>
-                        @endcan
-                        
+
+
                         {{-- @php
                             $user = Auth::user();
                             $permissionNames = $user->getPermissionNames();
@@ -630,7 +612,7 @@
                                         <!--span class="float-right fw-n">&commat;codexlantern</span-->
                                         </form>
 
-                
+
                                     </a>
                                 </div>
                             </div>

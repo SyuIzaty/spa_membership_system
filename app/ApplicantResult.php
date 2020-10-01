@@ -40,4 +40,44 @@ class ApplicantResult extends Model
         return $this->hasOne('App\Qualification','id','type');
     }
 
+    public function scopeResult($query)
+    {
+        return $query->with(['grades','subjects','applicantAcademic']);
+    }
+
+    public function scopeApplicantId($query, $id)
+    {
+        return $query->where('applicant_id',$id);
+    }
+
+    public function scopeSpm($query)
+    {
+        return $query->where('type','1');
+    }
+
+    public function scopeStpm($query)
+    {
+        return $query->where('type','2');
+    }
+
+    public function scopeStam($query)
+    {
+        return $query->where('type','3');
+    }
+
+    public function scopeUec($query)
+    {
+        return $query->where('type','4');
+    }
+
+    public function scopeAlevel($query)
+    {
+        return $query->where('type','5');
+    }
+
+    public function scopeOlevel($query)
+    {
+        return $query->where('type','6');
+    }
+
 }

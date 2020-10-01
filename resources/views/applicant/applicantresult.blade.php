@@ -39,9 +39,9 @@
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" role="tabpanel" id="applicant_all">
-                                    @role('executive')
+                                    @can('check requirement')
                                     <button type="button" class="btn btn-info pull-right mb-5" onclick="window.location='{{ route("check-requirements") }}'">Check Requirement</button>
-                                    @endrole
+                                    @endcan
                                     <span id="intake_all"></span>
                                     <table class="table table-bordered" id="applicant">
                                         <thead>

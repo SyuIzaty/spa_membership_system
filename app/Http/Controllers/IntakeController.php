@@ -195,9 +195,9 @@ class IntakeController extends Controller
 
     public function letter(Request $request)
     {
-        $details = ApplicantStatus::where('applicant_id',$request->applicant_id)->with(['applicant','major','programme'])->get();
+        $details = Applicant::where('id',$request->applicant_id)->with(['offeredMajor','offeredProgramme'])->get();
         foreach($details as $detail){
-            $intakes = IntakeDetail::where('intake_code', $detail->applicant->intake_id)->where('intake_programme',$detail->applicant_programme)
+            $intakes = IntakeDetail::where('intake_code', $detail->intake_id)->where('intake_programme',$detail->offered_programme)
                 ->where('status','1')->with(['intakes'])->first();
         }
 
@@ -207,20 +207,20 @@ class IntakeController extends Controller
 
     public function sendEmail(Request $request)
     {
-        $detail = ApplicantStatus::where('applicant_id',$request->applicant_id)->with(['applicant','programme','major'])->first();
-        $intakes = IntakeDetail::where('status', '1')->where('intake_code', $request->intake_id)->where('intake_programme', $detail->applicant_programme)
+        $detail = Applicant::where('id',$request->applicant_id)->with(['offeredMajor','offeredProgramme'])->first();
+        $intakes = IntakeDetail::where('status', '1')->where('intake_code', $request->intake_id)->where('intake_programme', $detail->offered_programme)
             ->first();
 
         $report = PDF::loadView('intake.pdf', compact('detail', 'intakes'));
         $data = [
-            'receiver_name' => $detail->applicant->applicant_name,
+            'receiver_name' => $detail->applicant_name,
             'details' => 'This offer letter is appended with this email. Please refer to the attachment for your registration instructions.',
         ];
 
         Mail::send('intake.offer-letter', $data, function ($message) use ($detail, $report) {
-            $message->subject('Congratulations, ' . $detail->applicant->applicant_name);
-            $message->to(!empty($detail->applicant->applicant_email) ? $detail->applicant->applicant_email : 'jane-doe@email.com');
-            $message->attachData($report->output(), 'Offer_Letter_' . $detail->applicant->applicant_name . '.pdf');
+            $message->subject('Congratulations, ' . $detail->applicant_name);
+            $message->to(!empty($detail->applicant_email) ? $detail->applicant_email : 'jane-doe@email.com');
+            $message->attachData($report->output(), 'Offer_Letter_' . $detail->applicant_name . '.pdf');
         });
         return redirect()->back();
     }

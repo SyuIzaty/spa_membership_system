@@ -39,7 +39,6 @@ class RegistrationController extends Controller
         $country = Country::all();
         $programme = Programme::all()->sortBy('programme_name');
         $major = Major::all()->sortBy('major_name');
-        $state = State::all();
         $intake = Intakes::where('status','1')->get();
         return view('registration.index', compact('country','programme','major','intake'));
     }
@@ -62,7 +61,7 @@ class RegistrationController extends Controller
 
     public function getUsers($id)
     {
-        $applicant = Applicant::where('applicant_ic', $id)->with(['applicantstatus.programme','applicantstatus.major'])->get();
+        $applicant = Applicant::where('applicant_ic', $id)->with(['offeredProgramme','offeredMajor'])->get();
         $userData['data'] = $applicant;
         echo json_encode($userData);
         // $userData[] = $applicant;
