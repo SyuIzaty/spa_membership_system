@@ -83,11 +83,11 @@ class ApplicantController extends Controller
         $icaew = ApplicantAcademic::ApplicantId($id)->Icaew()->first();
 
         $batch = Applicant::ApplicantId($id)->with(['applicantIntake.intakeDetails'])->first();
-        // $batch_1 = $batch->applicantIntake->intakeDetails->where('intake_programme',$batch->applicant_programme)->where('status','1')->first();
+        $batch_1 = $batch->applicantIntake->intakeDetails->where('intake_programme',$batch->applicant_programme)->where('status','1')->first();
 
-        // $batch_2 = $batch->applicantIntake->intakeDetails->where('intake_programme',$batch->applicant_programme_2)->where('status','1')->first();
+        $batch_2 = $batch->applicantIntake->intakeDetails->where('intake_programme',$batch->applicant_programme_2)->where('status','1')->first();
 
-        // $batch_3 = $batch->applicantIntake->intakeDetails->where('intake_programme',$batch->applicant_programme_3)->where('status','1')->first();
+        $batch_3 = $batch->applicantIntake->intakeDetails->where('intake_programme',$batch->applicant_programme_3)->where('status','1')->first();
 
         $applicant2 = Applicant::where('id',$id)->get()->toArray();
         foreach($applicant2 as $applicantstat)

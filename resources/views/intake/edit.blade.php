@@ -130,7 +130,11 @@
                         </div>
                         <div class="form-group">
                             {{Form::label('title', 'Batch Code')}}
-                            {{Form::text('batch_code', '', ['class' => 'form-control', 'placeholder' => 'Batch Code', 'required'])}}
+                            <select class="form-control" name="batch_code">
+                                @foreach ($batch as $batches)
+                                    <option value="{{ $batches->batch_code }}">{{ $batches->batch_name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
                             {{Form::label('title', 'Intake Type')}}
@@ -191,7 +195,11 @@
                             </div>
                             <div class="form-group">
                                 {{Form::label('title', 'Batch Code')}}
-                                {{Form::text('batch_code', '', ['class' => 'form-control', 'id' => 'batch_code' ,'placeholder' => 'Batch Code', 'required'])}}
+                                <select name="batch_code" id="batch_code" class="form-control">
+                                    @foreach($batch as $batches)
+                                      <option value="{{ $batches->batch_code }}">{{ $batches->batch_name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="form-group">
                                 {{Form::label('title', 'Intake Type')}}
@@ -228,6 +236,10 @@
 @endsection
 @section('script')
     <script type="text/javascript">
+        $(document).ready(function() {
+            $('.batch').select2();
+        });
+
          $('#new').click(function () {
             $('#crud-modal').modal('show');
         });

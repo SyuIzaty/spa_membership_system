@@ -532,6 +532,8 @@ function addQualification(x,xval,data=null){
                 <div class="row mt-4">\
                     <div class="col-md-12">\
                     <input type="hidden" name="bachelor_type" value="' +xval +'">\
+                        <input type="file" name="degree_file" id="degree_file" class="custom-file-input>\
+                        <label class="custom-file-label" for="inputGroupFile01">Upload File</label>\
                         <table class="table table-bordered" id="bachelor-table">\
                             <tr>\
                                 <td>University / College *</td>\

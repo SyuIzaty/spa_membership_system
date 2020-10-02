@@ -43,15 +43,6 @@ class RegistrationController extends Controller
         return view('registration.index', compact('country','programme','major','intake'));
     }
 
-    public function testmajor()
-    {
-        $applicant_major = MajorProgramme::where('programme_id','IAM11')->with('major')->get();
-        foreach($applicant_major as $app_maj)
-        {
-            dd($app_maj->major->first()->major_code);
-        }
-    }
-
     public function data($id)
     {
         $all = Programme::find($id);
@@ -322,7 +313,7 @@ class RegistrationController extends Controller
         $result = [];
         if (isset($request->bachelor_cgpa)) {
 
-            $academic[] = [
+            $academic_degree[] = [
                 'id' => $request->exist_bachelor,
                 'applicant_id' => $id,
                 'type' => $request->bachelor_type,
@@ -331,6 +322,16 @@ class RegistrationController extends Controller
                 'applicant_major' => $request->bachelor_major,
                 'applicant_cgpa' => $request->bachelor_cgpa,
             ];
+
+            // $academic[] = [
+            //     'id' => $request->exist_bachelor,
+            //     'applicant_id' => $id,
+            //     'type' => $request->bachelor_type,
+            //     'applicant_study' => $request->bachelor_study,
+            //     'applicant_year' => $request->bachelor_year,
+            //     'applicant_major' => $request->bachelor_major,
+            //     'applicant_cgpa' => $request->bachelor_cgpa,
+            // ];
         }
 
         if (isset($request->diploma_cgpa)) {
@@ -548,6 +549,22 @@ class RegistrationController extends Controller
                 else
                 {
                     ApplicantAcademic::create($arow);
+                }
+            }
+        }
+
+        if (isset($academic_degree)) {
+            foreach ($academic_degree as $arow) {
+                if( isset($arow['id']) && $arow['id'] )
+                {
+                    $applicant_academic = ApplicantAcademic::where('id',$arow['id'])->update($arow);
+                    $app = ApplicantAcademic::where('applicant_id',$request->applicant_id)->update($arow);
+                    $app->addMedia($request->degree_file)->withCustomProperties(['applicant_id' => $request->applicant_id])->toMediaCollection();
+                }
+                else
+                {
+                    $applicant_academic = ApplicantAcademic::create($arow);
+                    $applicant_academic->addMedia($request->degree_file)->withCustomProperties(['applicant_id' => $request->applicant_id])->toMediaCollection();
                 }
             }
         }

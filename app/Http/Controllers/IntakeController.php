@@ -10,6 +10,7 @@ use App\Intakes;
 use App\IntakeType;
 use App\Programme;
 use App\Major;
+use App\Batch;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Mail;
@@ -107,7 +108,9 @@ class IntakeController extends Controller
         $intake_detail = $intake_details->load('programme', 'intakeType');
         $programme = Programme::all();
         $intake_type = IntakeType::all();
-        return view('intake.edit', compact('intake', 'intake_detail', 'programme', 'intake_type'));
+        $batch = Batch::where('status','1')->get();
+
+        return view('intake.edit', compact('intake', 'intake_detail', 'programme', 'intake_type', 'batch'));
     }
 
     /**
