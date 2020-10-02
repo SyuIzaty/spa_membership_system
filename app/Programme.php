@@ -51,4 +51,9 @@ class Programme extends Model
         return $this->belongsToMany('App\Major');
     }
 
+    public function student()
+    {
+        return $this->belongsTo('App\Student','programme_code');
+    }
+
 }

@@ -28,6 +28,8 @@
         {{-- <link rel="stylesheet" media="screen, print" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"> --}}
 
         <link rel="stylesheet" media="screen, print" href="{{asset('css/select2.min.css')}}">
+        
+        @yield('css')
     </head>
     <body class="mod-bg-1 ">
         <!-- DOC: script to save and load page settings -->
@@ -527,6 +529,171 @@
                                 </ul>
                             </li>
                             @endcan
+
+                            {{-- @can('view profile')--}}
+                            <li class="nav-title">MAIN NAVIGATION [STUDENT]</li>
+                            <li>
+                                <a href="#" title="Stud_dashboard" data-filter-tags="stud_dashboard">
+                                    <i class="fal fa-object-group"></i>
+                                    <span class="nav-link-text" data-i18n="nav.stud_dashboard">Dashboard</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#" title="Stud_profile" data-filter-tags="stud_profile">
+                                    <i class="fal fa-male"></i>
+                                    <span class="nav-link-text" data-i18n="nav.stud_profile">Profile</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/student/biodata/basic_info/2" title="Basic_info" data-filter-tags="basic_info">
+                                            <span class="nav-link-text" data-i18n="nav.basic_info">Personal Info</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/student/biodata/addressContact_info/2" title="Address_info" data-filter-tags="address_info">
+                                            <span class="nav-link-text" data-i18n="nav.address_info">Update Contact Info</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="#" title="Stud_register" data-filter-tags="stud_register">
+                                    <i class="fal fa-briefcase"></i>
+                                    <span class="nav-link-text" data-i18n="nav.stud_register">Registration</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/student/registration/course_register" title="Course_register" data-filter-tags="course_register">
+                                            <span class="nav-link-text" data-i18n="nav.course_register">Course Registration</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/student/registration/credit_exemption" title="Credit_exempt" data-filter-tags="credit_exempt">
+                                            <span class="nav-link-text" data-i18n="nav.credit_exempt">Credit Exemption</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/student/registration/project_info" title="eProject" data-filter-tags="e_project">
+                                            <span class="nav-link-text" data-i18n="nav.e_project">Project Info</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" title="Industrial_training" data-filter-tags="industrial_training">
+                                            <span class="nav-link-text" data-i18n="nav.industrial_training">Industrial Training</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="#" title="Examination" data-filter-tags="examination">
+                                    <i class="fal fa-chart-bar"></i>
+                                    <span class="nav-link-text" data-i18n="nav.examination">Examination</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/student/examination/course_performance" title="Course_perform" data-filter-tags="course_perform">
+                                            <span class="nav-link-text" data-i18n="nav.course_perform">Course Performance</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/student/examination/exam_details" title="Exam_details" data-filter-tags="exam_details">
+                                            <span class="nav-link-text" data-i18n="nav.exam_details">Examination Details</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="#" title="Graduation" data-filter-tags="graduate">
+                                    <i class="fal fa-graduation-cap"></i>
+                                    <span class="nav-link-text" data-i18n="nav.graduate">Graduation</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/student/graduation/graduation_info" title="Graduate_audit" data-filter-tags="graduate_audit">
+                                            <span class="nav-link-text" data-i18n="nav.graduate_audit">Graduation Audit Checklist</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="#" title="Stud_account" data-filter-tags="stud_account">
+                                    <i class="fal fa-book"></i>
+                                    <span class="nav-link-text" data-i18n="nav.stud_account">Student Account</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/student/financial/stud_statement" title="Financial" data-filter-tags="financial">
+                                            <span class="nav-link-text" data-i18n="nav.financial">Financial Statement</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="#" title="Others" data-filter-tags="others">
+                                    <i class="fal fa-map-signs"></i>
+                                    <span class="nav-link-text" data-i18n="nav.others">Others</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/student/others/activity_trans" title="Activities" data-filter-tags="activities">
+                                            <span class="nav-link-text" data-i18n="nav.activities">Activities Transcript</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/student/others/residential_rcrd" title="Residential" data-filter-tags="residential">
+                                            <span class="nav-link-text" data-i18n="nav.residential">Residential Record</span>
+                                        </a>
+                                    </li>
+                                    {{-- <li>
+                                        <a href="/student/others/resident_electric" title="Resident_sticker" data-filter-tags="resident_sticker">
+                                            <span class="nav-link-text" data-i18n="nav.resident_sticker">Residential Electric Sticker</span>
+                                        </a>
+                                    </li> --}}
+                                    <li>
+                                        <a href="/student/others/vehicle_rcrd" title="Vehicle" data-filter-tags="vehicle">
+                                            <span class="nav-link-text" data-i18n="nav.vehicle">Vehicle Record</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="#" title="Services" data-filter-tags="services">
+                                    <i class="fal fa-sun"></i>
+                                    <span class="nav-link-text" data-i18n="nav.services">Services</span>
+                                </a>
+                                <ul>
+                                    {{-- <li>
+                                        <a href="#" title="Bus_track" data-filter-tags="bus_track">
+                                            <span class="nav-link-text" data-i18n="nav.bus_track">INTEC Bus Tracking</span>
+                                        </a>
+                                    </li> --}}
+                                    {{-- <li>
+                                        <a href="#" title="Wifi" data-filter-tags="wifi">
+                                            <span class="nav-link-text" data-i18n="nav.wifi">Wifi@INTEC</span>
+                                        </a>
+                                    </li> --}}
+                                    <li>
+                                        <a href="/student/services/sw_download" title="Software" data-filter-tags="software">
+                                            <span class="nav-link-text" data-i18n="nav.software">Software Downloads</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="#" title="Sign_out" data-filter-tags="sign_out">
+                                    <i class="fal fa-sign-out-alt"></i>
+                                    <span class="nav-link-text" data-i18n="nav.sign_out">Sign Out</span>
+                                </a>
+                            </li>
+                            {{-- @endcan --}}
 
                         </ul>
                         <div class="filter-message js-filter-message bg-success-600"></div>

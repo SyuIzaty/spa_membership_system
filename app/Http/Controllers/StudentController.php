@@ -3,6 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Student;
+use App\StudentContact;
+use App\Country;
+use App\Religion;
+use App\Marital;
+use App\Gender;
+use App\Race;
+use App\State;
+use App\StudentGuardian;
+use App\StudentEmergency;
+use App\CreditExemption;
+use App\ProjectInfo;
 use Illuminate\Http\Request;
 use Datatables;
 
@@ -18,7 +29,7 @@ class StudentController extends Controller
         //$students = Student::take(10)->get();
         // $students = Student::whereRaw("REGEXP_LIKE(sm_student_id, '^[[:digit:]]+$')")->whereNotNull('sm_student_name')->take(10)->get();
         // dd($students);
-        return view('student.index');
+        // return view('student.index');
     }
 
     public function indexFiltered($id)
@@ -27,6 +38,140 @@ class StudentController extends Controller
             return view('student.index_nonnumericid');
         else if($id == 2)
             return view('student.index_nullname');
+    }
+
+    public function basic_info($id)
+    {
+        $student = Student::where('id', $id)->with(['studentContactInfo.country', 'studentGuardian', 'studentEmergency', 'race', 'gender', 'religion', 'programme'])->first();
+
+        // dd($student);
+        return view('student.biodata.basic_info', compact('student'));
+    }
+
+    public function addressContact_info($id)
+    {
+        $student = Student::where('id', $id)->with(['studentContactInfo.country', 'studentContactInfo.state'])->first();
+        $country = Country::all();
+        $state = State::all();
+
+        // dd($student);
+        return view('student.biodata.addressContact_info', compact('student', 'country', 'state'));
+    }
+
+    public function updateStudent(Request $request)
+    {
+        Student::where('id', $request->id)->update([
+            'students_phone' => $request->students_phone,
+            'students_email' => $request->students_email,
+        ]);
+        StudentContact::where('students_id', $request->id)->update([
+            'students_address_1' => $request->students_address_1,
+            'students_address_2' => $request->students_address_2,
+            'students_poscode'   => $request->students_poscode,
+            'students_city'      => $request->students_city,
+            'students_country'   => $request->students_country, 
+            'students_state'     => $request->students_state, 
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function course_register()
+    {
+        return view('student.registration.course_register');
+    }
+
+    public function credit_exemption()
+    {
+        // $credit_exemp = CreditExemption::all();
+        // return view('student.registration.credit_exemption', compact('credit_exemp'));
+        return view('student.registration.credit_exemption');
+    }
+
+    // public function data_allCourse_exemp()
+    // {
+    //     $credit_exemp = CreditExemption::all();
+
+    //     return datatables()::of($credit_exemp)
+
+    //     ->make(true);
+    // }
+
+    public function project_info()
+    {
+        // $project = ProjectInfo::all();
+        return view('student.registration.project_info');
+    }
+
+    // public function data_allProject()
+    // {
+    //     $project = ProjectInfo::all();
+
+    //     return datatables()::of($project)
+
+    //     ->make(true);
+    // }
+
+    public function course_performance()
+    {
+        return view('student.examination.course_performance');
+    }
+
+    // public function course_performance(Request $request)
+    // {
+    //     $year = $request->year; //db column name @
+    //     $year = $date->format("Y");  @
+    //     $year = date("Y", $date);
+
+    //     // selection for request year
+    //     if(isset($year) && !empty($year))
+    //         $req_year = $year; // get from column year
+    //     else
+    //         $req_year = date('Y'); // get current year
+
+    //     $find = MODEL::has('relationFunc')->where('year', $req_year)->get(); // relation dengan tbl findings - 'relationFunc' refer kepada model ?
+
+    //     return view ('student.examination.course_performance', compact('find', 'req_year'));
+    // }
+
+    public function exam_details()
+    {
+        return view('student.examination.exam_details');
+    }
+
+    public function graduation_info()
+    {
+        return view('student.graduation.graduation_info');
+    }
+
+    public function stud_statement()
+    {
+        return view('student.financial.stud_statement');
+    }
+
+    public function activity_transcript()
+    {
+        return view('student.others.activity_trans');
+    }
+
+    public function residential_record()
+    {
+        return view('student.others.residential_rcrd');
+    }
+
+    public function residential_electric()
+    {
+        return view('student.others.resident_electric');
+    }
+
+    public function vehicle_record()
+    {
+        return view('student.others.vehicle_rcrd');
+    }
+
+    public function sw_download()
+    {
+        return view('student.services.sw_download');
     }
 
     /**

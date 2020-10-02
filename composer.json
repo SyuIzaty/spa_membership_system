@@ -21,7 +21,6 @@
         "nesbot/carbon": "^2.40",
         "select2/select2": "^4.0",
         "spatie/laravel-activitylog": "^3.14",
-        "spatie/laravel-medialibrary": "^8.0.0",
         "spatie/laravel-permission": "^3.15",
         "yajra/laravel-datatables-oracle": "^9.9",
         "yajra/laravel-oci8": "^7.0"

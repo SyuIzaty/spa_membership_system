@@ -116,6 +116,32 @@ Route::post('data-allCourse', 'CourseController@data_allCourse');
 //OFFER LETTER
 Route::get('/offer-letter', 'EntryRequirementController@offer');
 
+//STUDENTS:
+//biodata
+Route::get('/student/biodata/basic_info/{id}', 'StudentController@basic_info'); 
+Route::get('/student/biodata/addressContact_info/{id}', 'StudentController@addressContact_info'); 
+Route::post('updateStudent', 'StudentController@updateStudent');
+//registration
+Route::get('/student/registration/course_register', 'StudentController@course_register'); 
+Route::get('/student/registration/credit_exemption', 'StudentController@credit_exemption'); 
+Route::get('/student/registration/project_info', 'StudentController@project_info'); 
+// Route::post('data-allCourse_exemp', 'StudentController@data-allCourse_exemp');  
+// Route::post('data-allProject', 'StudentController@data-allProject'); 
+// //examination
+Route::get('/student/examination/course_performance', 'StudentController@course_performance')->name('course_performance'); 
+Route::get('/student/examination/exam_details', 'StudentController@exam_details'); 
+//graduation
+Route::get('/student/graduation/graduation_info', 'StudentController@graduation_info'); 
+//financial
+Route::get('/student/financial/stud_statement', 'StudentController@stud_statement'); 
+//others
+Route::get('/student/others/activity_trans', 'StudentController@activity_transcript');
+Route::get('/student/others/residential_rcrd', 'StudentController@residential_record');
+Route::get('/student/others/vehicle_rcrd', 'StudentController@vehicle_record');
+// Route::get('/student/others/resident_electric', 'StudentController@residential_electric');
+//services
+Route::get('student/services/sw_download', 'StudentController@sw_download');
+
 //AJAX DATA STUDENTS
 Route::post('data_allstudents', 'StudentController@data_allstudents');
 Route::post('data_studentWithNonNumericId', 'StudentController@data_studentWithNonNumericId');
