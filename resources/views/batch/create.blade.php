@@ -48,9 +48,17 @@
                                         </div>
                                         <div class="form-group col-md-6">
                                             {{ Form::label('title', 'Status') }}
-                                            <select class="form-control" name="status" id="status">
+                                            <select class="form-control status" name="status" id="status">
                                                 <option value="1">Active</option>
                                                 <option value="0">Inactive</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            {{ Form::label('title', 'Programme') }}
+                                            <select class="form-control programme" name="programme_code" id="programme_code">
+                                                @foreach ($programme as $programmes)
+                                                    <option value="{{ $programmes->programme_code }}">{{ $programmes->programme_name }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                         <button class="btn btn-primary">Submit</button>
@@ -68,7 +76,7 @@
 @section('script')
     <script>
         $(document).ready(function() {
-            $('.status').select2();
+            $('.status, .programme').select2();
         });
     </script>
 @endsection

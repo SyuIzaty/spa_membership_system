@@ -81,4 +81,9 @@ class ApplicantAcademic extends Model implements HasMedia
     {
         return $query->where('type','17');
     }
+
+    public function file()
+    {
+        return $this->hasOne('App\Files','fkey','applicant_id');
+    }
 }

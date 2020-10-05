@@ -67,7 +67,6 @@ class IntakeController extends Controller
             'intake_type_description' => 'required',
         ]);
 
-        // IntakeType::create($request->only(['intake_type_code', 'intake_type_description']));
         Intakes::where('status', '1')->update(['status' => 0]);
         Intakes::create([
             'intake_code' => $request->intake_type_code,
@@ -79,9 +78,15 @@ class IntakeController extends Controller
             'status' => '1'
         ]);
 
-        // return $this->showProgramInfo($request->intake_type_code);
         return redirect()->route('intake.index')
             ->with('success', 'Intake created successfully');
+    }
+
+    public function data($id) //Fetch Batch
+    {
+        $intake_batch = IntakeDetail::pluck('batch_code')->all();
+        $batch = Batch::Active()->whereNotIn('batch_code', $intake_batch)->where('programme_code',$id)->get();
+        return response()->json($batch);
     }
 
     /**
@@ -101,14 +106,16 @@ class IntakeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id) // Display Intake & Intake Details
     {
         $intake = Intakes::find($id);
         $intake_details = IntakeDetail::where('intake_code', $id)->get();
         $intake_detail = $intake_details->load('programme', 'intakeType');
         $programme = Programme::all();
         $intake_type = IntakeType::all();
-        $batch = Batch::where('status','1')->get();
+
+        $intake_batch = IntakeDetail::pluck('batch_code')->all();
+        $batch = Batch::Active()->whereNotIn('batch_code', $intake_batch)->get();
 
         return view('intake.edit', compact('intake', 'intake_detail', 'programme', 'intake_type', 'batch'));
     }
@@ -120,7 +127,7 @@ class IntakeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id) // Update Intake
     {
 
         $this->validate($request, [
@@ -151,7 +158,7 @@ class IntakeController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function destroy($id)
+    public function destroy($id) // Delete Intakes
     {
         $exist = Intakes::find($id);
         $exist->delete();
@@ -185,16 +192,16 @@ class IntakeController extends Controller
         return response()->json(['success', 'Successfully deleted!']);
     }
 
-    public function offer()
-    {
-        $applicants = Applicantstatus::where('applicant_status', 'Selected')->with(['applicant', 'programme'])->get();
-        foreach ($applicants as $apps) {
-            $app = IntakeDetail::where('intake_code', $apps->applicant->intake_id)->where('intake_programme', $apps->applicant_programme)
-                ->where('status', '1')->with(['intakes'])->get();
-        }
+    // public function offer()
+    // {
+    //     $applicants = Applicantstatus::where('applicant_status', 'Selected')->with(['applicant', 'programme'])->get();
+    //     foreach ($applicants as $apps) {
+    //         $app = IntakeDetail::where('intake_code', $apps->applicant->intake_id)->where('intake_programme', $apps->applicant_programme)
+    //             ->where('status', '1')->with(['intakes'])->get();
+    //     }
 
-        return view('intake.offer', compact('applicants'));
-    }
+    //     return view('intake.offer', compact('applicants'));
+    // }
 
     public function letter(Request $request)
     {

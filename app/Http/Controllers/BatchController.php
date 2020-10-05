@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreBatchRequest;
 use App\Batch;
+use App\Programme;
 
 class BatchController extends Controller
 {
@@ -47,7 +48,8 @@ class BatchController extends Controller
      */
     public function create()
     {
-        return view('batch.create');
+        $programme = Programme::all();
+        return view('batch.create', compact('programme'));
     }
 
     /**
@@ -83,8 +85,16 @@ class BatchController extends Controller
     public function edit($id)
     {
         $batch = Batch::find($id);
-        return view('batch.edit', compact('batch'));
+        $programme = Programme::all();
+        return view('batch.edit', compact('batch', 'programme'));
     }
+
+    // public function data($id)
+    // {
+    //     $all = Batch::find($id);
+    //     $applicant_major = $all->major;
+    //     return response()->json($applicant_major);
+    // }
 
     /**
      * Update the specified resource in storage.

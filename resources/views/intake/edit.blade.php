@@ -118,7 +118,7 @@
                         <input name="intake_code" value="{{$intake->id}}" hidden>
                         <div class="form-group">
                             {{Form::label('title', 'Program Code')}}
-                            <select name="intake_programme" id="intake_code" class="form-control">
+                            <select name="intake_programme" id="intake_programme" class="form-control">
                                 @foreach($programme as $programmes)
                                   <option value="{{ $programmes->id }}">{{ $programmes->programme_code }}</option>
                                 @endforeach
@@ -130,10 +130,7 @@
                         </div>
                         <div class="form-group">
                             {{Form::label('title', 'Batch Code')}}
-                            <select class="form-control" name="batch_code">
-                                @foreach ($batch as $batches)
-                                    <option value="{{ $batches->batch_code }}">{{ $batches->batch_name }}</option>
-                                @endforeach
+                            <select class="form-control" name="batch_code" id="batch_code">
                             </select>
                         </div>
                         <div class="form-group">
@@ -240,8 +237,37 @@
             $('.batch').select2();
         });
 
-         $('#new').click(function () {
+        $('#new').click(function () {
             $('#crud-modal').modal('show');
+        });
+
+        $(document).ready(function () {
+            $('#intake_programme').on('change', function() {
+                var programme = $(this).val();
+                if(programme) {
+                    $.ajax({
+                        url: '/programme-batch/' + programme,
+                        type: "GET",
+                        data: {"_token":"{{ csrf_token() }}"},
+                        dataType: "json",
+                        success: function(data) {
+                            console.log(data);
+                            if(data) {
+                                $('#batch_code').empty();
+                                $('#batch_code').focus;
+                                $('#batch_code').append('<option value="">Select Batch</option>');
+                                $.each(data, function(key, value){
+                                    $('select[name="batch_code"]').append('<option value="'+ value.batch_code +'">' + value.batch_code + '</option>');
+                                });
+                            }else{
+                                $('#batch_code').empty();
+                            }
+                        }
+                    });
+                }else{
+                    $('#batch_code').empty();
+                }
+            });
         });
 
         $(document).ready(function() {

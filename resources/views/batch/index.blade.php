@@ -29,6 +29,7 @@
                                     <th>Batch Code</th>
                                     <th>Batch Name</th>
                                     <th>Batch Description</th>
+                                    <th>Programme</th>
                                     <th>Status</th>
                                     <th></th>
                                 </tr>
@@ -36,6 +37,7 @@
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search Batch Code"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search Batch Name"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search Batch Description"></td>
+                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search Status"></td>
                                     <td class="hasinput"></td>
                                 </tr>
@@ -104,6 +106,7 @@
                     { data: 'batch_code', name: 'batch_code' },
                     { data: 'batch_name', name: 'batch_name' },
                     { data: 'batch_description', name: 'batch_description'},
+                    { data: 'programme_code', name: 'programme_code'},
                     { data: 'batch_status', name: 'batch_status'},
                     { data: 'action', name: 'action', orderable: false, searchable: false}
                 ],

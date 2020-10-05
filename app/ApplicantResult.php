@@ -40,9 +40,14 @@ class ApplicantResult extends Model
         return $this->hasOne('App\Qualification','id','type');
     }
 
+    public function file()
+    {
+        return $this->hasOne('App\Files','fkey','applicant_id');
+    }
+
     public function scopeResult($query)
     {
-        return $query->with(['grades','subjects','applicantAcademic']);
+        return $query->with(['grades','subjects','applicantAcademic','file']);
     }
 
     public function scopeApplicantId($query, $id)

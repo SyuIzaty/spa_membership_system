@@ -23,6 +23,7 @@ use App\ApplicantEmergency;
 use App\ApplicantGuardian;
 use App\IntakeDetail;
 use App\Intakes;
+use App\Files;
 use DB;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Activitylog\Models\Activity;
@@ -35,7 +36,7 @@ class ApplicantController extends Controller
         $this->middleware('auth');
     }
 
-    public function show($id)
+    public function show($id) // Display applicant detail, academic result
     {
         $applicant = Applicant::where('id',$id)->with(['applicantContactInfo','applicantEmergency.emergencyOne','applicantGuardian.familyOne','applicantGuardian.familyTwo','applicantIntake','status'])->first();
 
@@ -48,46 +49,75 @@ class ApplicantController extends Controller
         $family = Family::all()->sortBy('family_name');
         $intake = Intakes::all();
 
-        $spm = ApplicantResult::ApplicantId($id)->Spm()->Result()->get();
+        $spm = ApplicantResult::ApplicantId($id)->Spm()->with(['grades','subjects','applicantAcademic','file'=>function($query){
+            $query->where('fkey2','1');
+        }])->get();
 
-        $stpm = ApplicantResult::ApplicantId($id)->Stpm()->Result()->get();
+        $stpm = ApplicantResult::ApplicantId($id)->Stpm()->with(['grades','subjects','applicantAcademic','file'=>function($query){
+            $query->where('fkey2','2');
+        }])->get();
 
-        $stam = ApplicantResult::ApplicantId($id)->Stam()->Result()->get();
+        $stam = ApplicantResult::ApplicantId($id)->Stam()->with(['grades','subjects','applicantAcademic','file'=>function($query){
+            $query->where('fkey2','3');
+        }])->get();
 
-        $uec = ApplicantResult::ApplicantId($id)->Uec()->Result()->get();
+        $uec = ApplicantResult::ApplicantId($id)->Uec()->with(['grades','subjects','applicantAcademic','file'=>function($query){
+            $query->where('fkey2','4');
+        }])->get();
 
-        $alevel = ApplicantResult::ApplicantId($id)->Alevel()->Result()->get();
+        $alevel = ApplicantResult::ApplicantId($id)->Alevel()->with(['grades','subjects','applicantAcademic','file'=>function($query){
+            $query->where('fkey2','5');
+        }])->get();
 
-        $olevel = ApplicantResult::ApplicantId($id)->Olevel()->Result()->get();
+        $olevel = ApplicantResult::ApplicantId($id)->Olevel()->with(['grades','subjects','applicantAcademic','file'=>function($query){
+            $query->where('fkey2','6');
+        }])->Result()->get();
 
-        $skm = ApplicantAcademic::ApplicantId($id)->Skm()->first();
+        $skm = ApplicantAcademic::ApplicantId($id)->Skm()->with(['file'=>function($query){
+            $query->where('fkey2','7');
+        }])->first();
 
-        $diploma = ApplicantAcademic::ApplicantId($id)->Diploma()->first();
+        $diploma = ApplicantAcademic::ApplicantId($id)->Diploma()->with(['file'=>function($query){
+            $query->where('fkey2','8');
+        }])->first();
 
-        $degree = ApplicantAcademic::ApplicantId($id)->Degree()->first();
+        $degree = ApplicantAcademic::ApplicantId($id)->Degree()->with(['file'=>function($query){
+            $query->where('fkey2','9');
+        }])->first();
 
-        $sace = ApplicantAcademic::ApplicantId($id)->Sace()->first();
+        $sace = ApplicantAcademic::ApplicantId($id)->Sace()->with(['file'=>function($query){
+            $query->where('fkey2','10');
+        }])->first();
 
-        $muet = ApplicantAcademic::ApplicantId($id)->Muet()->first();
+        $muet = ApplicantAcademic::ApplicantId($id)->Muet()->with(['file'=>function($query){
+            $query->where('fkey2','11');
+        }])->first();
 
-        $matriculation = ApplicantAcademic::ApplicantId($id)->Matriculation()->first();
+        $matriculation = ApplicantAcademic::ApplicantId($id)->Matriculation()->with(['file'=>function($query){
+            $query->where('fkey2','12');
+        }])->first();
 
-        $foundation = ApplicantAcademic::ApplicantId($id)->Foundation()->first();
+        $foundation = ApplicantAcademic::ApplicantId($id)->Foundation()->with(['file'=>function($query){
+            $query->where('fkey2','13');
+        }])->first();
 
-        $mqf = ApplicantAcademic::ApplicantId($id)->Mqf()->first();
+        $mqf = ApplicantAcademic::ApplicantId($id)->Mqf()->with(['file'=>function($query){
+            $query->where('fkey2','14');
+        }])->first();
 
-        $kkm = ApplicantAcademic::ApplicantId($id)->Kkm()->first();
+        $kkm = ApplicantAcademic::ApplicantId($id)->Kkm()->with(['file'=>function($query){
+            $query->where('fkey2','15');
+        }])->first();
 
-        $cat = ApplicantAcademic::ApplicantId($id)->Cat()->first();
+        $cat = ApplicantAcademic::ApplicantId($id)->Cat()->with(['file'=>function($query){
+            $query->where('fkey2','16');
+        }])->first();
 
-        $icaew = ApplicantAcademic::ApplicantId($id)->Icaew()->first();
+        $icaew = ApplicantAcademic::ApplicantId($id)->Icaew()->with(['file'=>function($query){
+            $query->where('fkey2','17');
+        }])->first();
 
         $batch = Applicant::ApplicantId($id)->with(['applicantIntake.intakeDetails'])->first();
-        $batch_1 = $batch->applicantIntake->intakeDetails->where('intake_programme',$batch->applicant_programme)->where('status','1')->first();
-
-        $batch_2 = $batch->applicantIntake->intakeDetails->where('intake_programme',$batch->applicant_programme_2)->where('status','1')->first();
-
-        $batch_3 = $batch->applicantIntake->intakeDetails->where('intake_programme',$batch->applicant_programme_3)->where('status','1')->first();
 
         $applicant2 = Applicant::where('id',$id)->get()->toArray();
         foreach($applicant2 as $applicantstat)
@@ -101,16 +131,15 @@ class ApplicantController extends Controller
 
         $aapplicant = $dataappl;
         $activity = [];
-        $applicant_status = ApplicantStatus::where('applicant_id',$id)->get();
+        $applicant_status = Applicant::where('id',$id)->get();
         foreach($applicant_status as $app_stat)
         {
             $activity = Activity::where('properties->attributes->applicant_id', $app_stat['applicant_id'])->get();
         }
-
         return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace', 'aapplicant','country','marital','religion','race','gender','state','skm','mqf','kkm','cat','icaew','activity','intake','family','foundation'));
     }
 
-    public function updateApplicant(Request $request)
+    public function updateApplicant(Request $request) // Update applicant detail
     {
         Applicant::where('id', $request->id)->update([
             'applicant_name' => $request->applicant_name,
@@ -136,7 +165,7 @@ class ApplicantController extends Controller
         return redirect()->back();
     }
 
-    public function updateEmergency(Request $request)
+    public function updateEmergency(Request $request) // Update applicant emergency detail
     {
         $this->validate($request, [
             'emergency_name' => 'required',
@@ -149,7 +178,7 @@ class ApplicantController extends Controller
         return redirect()->back();
     }
 
-    public function updateGuardian(Request $request)
+    public function updateGuardian(Request $request) // Update applicant guardian detail
     {
         ApplicantGuardian::where('applicant_id',$request->id)->update($request->except(['_token']));
         return redirect()->back();
@@ -160,7 +189,7 @@ class ApplicantController extends Controller
         return view('applicant.applicantresult');
     }
 
-    public function data_allapplicant()
+    public function data_allapplicant() // Datatable: display unprocessed applicant
     {
         $applicant = Applicant::where('applicant_status',NULL)->get();
         $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','statusResultThree','programmeThree','applicantstatus','applicantIntake');
@@ -204,7 +233,7 @@ class ApplicantController extends Controller
            ->make(true);
     }
 
-    public function data_passapplicant()
+    public function data_passapplicant() // Datatable: applicant pass minimum requirement
     {
         $applicant = Applicant::where('programme_status','1')->orWhere('programme_status_2','1')->orWhere('programme_status_3','1')->get();
         $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','statusResultThree','programmeThree','applicantstatus','applicantIntake');
@@ -248,7 +277,7 @@ class ApplicantController extends Controller
            ->make(true);
     }
 
-    public function data_rejectedapplicant()
+    public function data_rejectedapplicant() // Datatable: Applicant who does not meet minimum requirement
     {
         // $applicant = Applicant::where('applicant_status',NULL)->get();
         $applicant = Applicant::where('programme_status','2')->where('programme_status_2','2')->where('programme_status_3','2')->get();
@@ -293,7 +322,7 @@ class ApplicantController extends Controller
            ->make(true);
     }
 
-    public function data_offerapplicant()
+    public function data_offerapplicant() //Datatable: offer applicant
     {
         $applicant = Applicant::where('applicant_status','3')->get();
         $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','applicantstatus','applicantIntake');

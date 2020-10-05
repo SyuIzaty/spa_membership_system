@@ -840,7 +840,6 @@
         <link rel="stylesheet" media="screen, print" href="{{asset('css/formplugins/select2/select2.bundle.css')}}">
         <script src="{{asset('js/formplugins/select2/select2.bundle.js')}}"></script>
 
-
         @yield('script')
     </body>
 </html>
