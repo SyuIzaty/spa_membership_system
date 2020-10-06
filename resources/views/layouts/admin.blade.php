@@ -147,10 +147,22 @@
                                     <span class="nav-link-text" data-i18n="nav.application_intel">Admission</span>
                                 </a>
                                 <ul>
-                                    <li class="active">
+                                    <li>
                                         <a href="/applicantresult" title="Pending Applicant" data-filter-tags="active_student">
                                             <i class="fal fa-user"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Applicants</span>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">New Applicants</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/passapplicant" title="Pending Applicant" data-filter-tags="active_student">
+                                            <i class="fal fa-check"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Pass Applicants</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/failapplicant" title="Pending Applicant" data-filter-tags="active_student">
+                                            <i class="fal fa-minus"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Not Qualified</span>
                                         </a>
                                     </li>
                                     <li>

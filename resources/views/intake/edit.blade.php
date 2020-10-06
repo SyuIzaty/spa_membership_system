@@ -89,7 +89,7 @@
                                         <td class="intake_date">{{$intake_del->intake_date}}</td>
                                         <td class="intake_time">{{$intake_del->intake_time}}</td>
                                         <td class="intake_venue">{{$intake_del->intake_venue}}</td>
-                                        <td class="status">
+                                        <td >
                                             @if ($intake_del->status == '1') Active @endif
                                             @if ($intake_del->status == '0') Inactive @endif
                                         </td>

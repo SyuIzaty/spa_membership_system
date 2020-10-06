@@ -563,7 +563,7 @@ class RegistrationController extends Controller
 
         foreach($destinationPath as $dp)
         {
-            File::delete(public_path()."/".$dp->web_path);
+            File::delete(storage_path()."/".$dp->web_path);
         }
         files::where('fkey',$userid)->where('fkey2',$qualificationid)->delete();
 
@@ -573,7 +573,7 @@ class RegistrationController extends Controller
             File::makeDirectory($path, 0777, true, true);
         }
 
-        $destinationPath=public_path()."/".$path;
+        $destinationPath=storage_path()."/".$path;
         $extension = $file->getClientOriginalExtension();
         $originalName=$file->getClientOriginalName();
         $fileSize=$file->getSize();
@@ -598,7 +598,7 @@ class RegistrationController extends Controller
         $destinationPath =  files::where('fkey',$userid)->where('fkey2',$id)->select('web_path')->get();
         foreach($destinationPath as $dp)
         {
-            File::delete(public_path()."/".$dp->web_path);
+            File::delete(storage_path()."/".$dp->web_path);
         }
         files::where('fkey',$userid)->where('fkey2',$id)->delete();
 

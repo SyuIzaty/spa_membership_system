@@ -25,6 +25,9 @@
                                     <a data-toggle="tab" class="nav-link" href="#details" role="tab">Applicant Details</a>
                                 </li>
                                 <li class="nav-item">
+                                    <a data-toggle="tab" class="nav-link" href="#qualification" role="tab">Qualification</a>
+                                </li>
+                                <li class="nav-item">
                                     <a data-toggle="tab" class="nav-link" href="#academic" role="tab">Personal Information</a>
                                 </li>
                             </ul>
@@ -45,6 +48,14 @@
                                                             <div class="col-md-6 form-group">
                                                                 {{ Form::label('title', 'IC Number') }}
                                                                 {{ Form::text('applicant_ic', $applicant->applicant_ic, ['class' => 'form-control', 'placeholder' => 'Applicant IC Number', 'readonly' => 'true']) }}
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                {{ Form::label('title', 'Email') }}
+                                                                {{ Form::text('applicant_email', $applicant->applicant_email, ['class' => 'form-control', 'readonly' => 'true']) }}
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                {{ Form::label('title', 'Phone Number') }}
+                                                                {{ Form::text('applicant_phone', $applicant->applicant_phone, ['class' => 'form-control', 'readonly' => 'true']) }}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -316,13 +327,14 @@
                                                 @endif
                                             </div>
                                         </div>
-                                        <hr class="mt-2 mb-3">
+                                    </div>
+                                    <div class="tab-pane" id="qualification" role="tabpanel">
                                         <div class="card">
                                             <div class="card-header">Applicant Academic</div>
                                             <div class="card-body">
                                             @if(count($spm)!=0)
                                             <h5>SPM</h5>
-                                            {!! isset($spm->first()->file->web_path) ? '<a href="' . url($spm->first()->file->web_path) . '">Supporting Document</a>' : '' !!}
+                                            {!! isset($spm->first()->file->web_path) ? '<a href="storage' . url($spm->first()->file->web_path) . '">Supporting Document</a>' : 'No Supporting Document' !!}
                                                 <table class="table table-bordered table-sm">
                                                 <thead class="bg-highlight">
                                                     <th>Subject Code</th>
@@ -340,7 +352,7 @@
                                             @endif
                                             @if(count($stpm)!=0)
                                             <h5>STPM</h5>
-                                            {!! isset($stpm->first()->file->web_path) ? '<a href="' . url($stpm->first()->file->web_path) . '">Supporting Document</a>' : '' !!}
+                                            {!! isset($stpm->first()->file->web_path) ? '<a href="' . url($stpm->first()->file->web_path) . '">Supporting Document</a>' : 'No Supporting Document' !!}
                                                 <table class="table table-bordered table-sm">
                                                 <thead class="bg-highlight">
                                                     <th>Subject Code</th>
@@ -358,7 +370,7 @@
                                             @endif
                                             @if(count($stam)!=0)
                                             <h5>STAM</h5>
-                                            {!! isset($stam->first()->file->web_path) ? '<a href="' . url($stam->first()->file->web_path) . '">Supporting Document</a>' : '' !!}
+                                            {!! isset($stam->first()->file->web_path) ? '<a href="' . url($stam->first()->file->web_path) . '">Supporting Document</a>' : 'No Supporting Document' !!}
                                                 <table class="table table-bordered table-sm">
                                                 <thead class="bg-highlight">
                                                     <th>Subject Code</th>
@@ -376,7 +388,7 @@
                                             @endif
                                             @if(count($uec)!=0)
                                             <h5>UEC</h5>
-                                            {!! isset($uec->first()->file->web_path) ? '<a href="' . url($uec->first()->file->web_path) . '">Supporting Document</a>' : '' !!}
+                                            {!! isset($uec->first()->file->web_path) ? '<a href="' . url($uec->first()->file->web_path) . '">Supporting Document</a>' : 'No Supporting Document' !!}
                                                 <table class="table table-bordered table-sm">
                                                 <thead class="bg-highlight">
                                                     <th>Subject Code</th>
@@ -394,7 +406,7 @@
                                             @endif
                                             @if(count($alevel)!=0)
                                             <h5>A Level</h5>
-                                            {!! isset($alevel->first()->file->web_path) ? '<a href="' . url($alevel->first()->file->web_path) . '">Supporting Document</a>' : '' !!}
+                                            {!! isset($alevel->first()->file->web_path) ? '<a href="' . url($alevel->first()->file->web_path) . '">Supporting Document</a>' : 'No Supporting Document' !!}
                                                 <table class="table table-bordered table-sm">
                                                 <thead class="bg-highlight">
                                                     <th>Subject Code</th>
@@ -412,7 +424,7 @@
                                             @endif
                                             @if(count($olevel)!=0)
                                             <h5>O Level</h5>
-                                            {!! isset($olevel->first()->file->web_path) ? '<a href="' . url($olevel->first()->file->web_path) . '">Supporting Document</a>' : '' !!}
+                                            {!! isset($olevel->first()->file->web_path) ? '<a href="' . url($olevel->first()->file->web_path) . '">Supporting Document</a>' : 'No Supporting Document' !!}
                                                 <table class="table table-bordered table-sm">
                                                 <thead class="bg-highlight">
                                                     <th>Subject Code</th>
@@ -430,7 +442,7 @@
                                             @endif
                                             @if(isset($muet))
                                             <h5>MUET</h5>
-                                            {!! isset($muet->first()->file->web_path) ? '<a href="' . url($muet->first()->file->web_path) . '">Supporting Document</a>' : '' !!}
+                                            {!! isset($muet->first()->file->web_path) ? '<a href="' . url($muet->first()->file->web_path) . '">Supporting Document</a>' : 'No Supporting Document' !!}
                                             <table class="table table-bordered table-sm">
                                                 <tr>
                                                     <td>Band</td>
@@ -440,7 +452,7 @@
                                             @endif
                                             @if(isset($matriculation))
                                             <h5>Matriculation</h5>
-                                            {!! isset($matriculation->first()->file->web_path) ? '<a href="' . url($matriculation->first()->file->web_path) . '">Supporting Document</a>' : '' !!}
+                                            {!! isset($matriculation->first()->file->web_path) ? '<a href="' . url($matriculation->first()->file->web_path) . '">Supporting Document</a>' : 'No Supporting Document' !!}
                                                 <table class="table table-bordered table-sm">
                                                     <tr>
                                                         <td>Matriculation</td>
@@ -456,7 +468,7 @@
                                             @endif
                                             @if (isset($foundation))
                                             <h5>Foundation</h5>
-                                            {!! isset($foundation->first()->file->web_path) ? '<a href="' . url($foundation->first()->file->web_path) . '">Supporting Document</a>' : '' !!}
+                                            {!! isset($foundation->first()->file->web_path) ? '<a href="' . url($foundation->first()->file->web_path) . '">Supporting Document</a>' : 'No Supporting Document' !!}
                                             <table class="table table-bordered table-sm">
                                                 <tr>
                                                     <td>Foundation</td>
@@ -476,7 +488,7 @@
                                             @endif
                                             @if(isset($diploma))
                                             <h5>Diploma</h5>
-                                            {!! isset($diploma->first()->file->web_path) ? '<a href="' . url($diploma->first()->file->web_path) . '">Supporting Document</a>' : '' !!}
+                                            {!! isset($diploma->first()->file->web_path) ? '<a href="' . url($diploma->first()->file->web_path) . '">Supporting Document</a>' : 'No Supporting Document' !!}
                                                 <table class="table table-bordered table-sm">
                                                 <tr>
                                                     <td>University</td>
@@ -496,7 +508,7 @@
                                             @endif
                                             @if(isset($degree))
                                             <h5>Degree</h5>
-                                            {!! isset($degree->first()->file->web_path) ? '<a href="' . url($degree->first()->file->web_path) . '">Supporting Document</a>' : '' !!}
+                                            {!! isset($degree->first()->file->web_path) ? '<a href="' . url($degree->first()->file->web_path) . '">Supporting Document</a>' : 'No Supporting Document' !!}
                                                 <table class="table table-bordered table-sm">
                                                 <tr>
                                                     <td>University</td>
@@ -516,7 +528,7 @@
                                             @endif
                                             @if (isset($skm))
                                             <h5>Sijil Kemahiran Malaysia</h5>
-                                            {!! isset($skm->first()->file->web_path) ? '<a href="' . url($skm->first()->file->web_path) . '">Supporting Document</a>' : '' !!}
+                                            {!! isset($skm->first()->file->web_path) ? '<a href="' . url($skm->first()->file->web_path) . '">Supporting Document</a>' : 'No Supporting Document' !!}
                                             <table class="table table-bordered table-sm">
                                                 <tr>
                                                     <td>SKM Level</td>
@@ -526,7 +538,7 @@
                                             @endif
                                             @if (isset($sace))
                                             <h5>South Australian Certificate of Education</h5>
-                                            {!! isset($sace->first()->file->web_path) ? '<a href="' . url($sace->first()->file->web_path) . '">Supporting Document</a>' : '' !!}
+                                            {!! isset($sace->first()->file->web_path) ? '<a href="' . url($sace->first()->file->web_path) . '">Supporting Document</a>' : 'No Supporting Document' !!}
                                             <table class="table table-bordered table-sm">
                                                 <tr>
                                                     <td>ATAR</td>
@@ -536,7 +548,7 @@
                                             @endif
                                             @if (isset($mqf))
                                             <h5>MQF</h5>
-                                            {!! isset($mqf->first()->file->web_path) ? '<a href="' . url($mqf->first()->file->web_path) . '">Supporting Document</a>' : '' !!}
+                                            {!! isset($mqf->first()->file->web_path) ? '<a href="' . url($mqf->first()->file->web_path) . '">Supporting Document</a>' : 'No Supporting Document' !!}
                                             <table class="table table-bordered table-sm">
                                                 <tr>
                                                     <td>MQF Level</td>
@@ -546,7 +558,7 @@
                                             @endif
                                             @if (isset($kkm))
                                             <h5>Kolej Komuniti Malaysia</h5>
-                                            {!! isset($kkm->first()->file->web_path) ? '<a href="' . url($kkm->first()->file->web_path) . '">Supporting Document</a>' : '' !!}
+                                            {!! isset($kkm->first()->file->web_path) ? '<a href="' . url($kkm->first()->file->web_path) . '">Supporting Document</a>' : 'No Supporting Document' !!}
                                             <table class="table table-bordered table-sm">
                                                 <tr>
                                                     <td>KKM Level</td>
@@ -556,7 +568,7 @@
                                             @endif
                                             @if (isset($cat))
                                             <h5>Certified Accounting Technician</h5>
-                                            {!! isset($cat->first()->file->web_path) ? '<a href="' . url($cat->first()->file->web_path) . '">Supporting Document</a>' : '' !!}
+                                            {!! isset($cat->first()->file->web_path) ? '<a href="' . url($cat->first()->file->web_path) . '">Supporting Document</a>' : 'No Supporting Document' !!}
                                             <table class="table table-bordered table-sm">
                                                 <tr>
                                                     <td>CAT</td>
@@ -566,7 +578,7 @@
                                             @endif
                                             @if (isset($icaew))
                                             <h5>ICAEW</h5>
-                                            {!! isset($icaew->first()->file->web_path) ? '<a href="' . url($icaew->first()->file->web_path) . '">Supporting Document</a>' : '' !!}
+                                            {!! isset($icaew->first()->file->web_path) ? '<a href="' . url($icaew->first()->file->web_path) . '">Supporting Document</a>' : 'No Supporting Document' !!}
                                             <table class="table table-bordered table-sm">
                                                 <tr>
                                                     <td>ICAEW</td>

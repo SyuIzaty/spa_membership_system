@@ -63,6 +63,9 @@ Route::resource('space/roomowner', 'RoomOwnerController');  //roomowner
 
 
 Route::get('/applicantresult','ApplicantController@indexs');
+Route::get('/passapplicant','ApplicantController@applicant_pass');
+Route::get('/failapplicant','ApplicantController@applicant_fail');
+Route::get('/offerapplicant','ApplicantController@applicant_offer');
 Route::get('checkrequirements', 'ApplicantController@checkrequirements')->name('check-requirements');
 Route::post('changestatus', 'ApplicantController@changestatus');
 Route::post('programmestatus', 'ApplicantController@programmestatus');

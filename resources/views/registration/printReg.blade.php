@@ -1,8 +1,8 @@
 @extends('layouts.applicant')
 @section('content')
 <div class="row">
-    <div class="col-md-1"></div>
-    <div class="col-md-10">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
         <div class="card">
             <div class="card-header">
                 <h5>Successfull Application</h5>
@@ -105,7 +105,7 @@
                             </div>
                         @endif
                     @endforeach
-                    <a class="btn btn-primary btn-block" href="{{ URL('/registration' )}}">Exit</a>
+                    <a class="btn btn-primary" href="{{ URL('/registration' )}}">Exit</a><a class="btn btn-primary" href="">Edit Application</a>
                 </div>
             </div>
         </div>

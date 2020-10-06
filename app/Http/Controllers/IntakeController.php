@@ -11,6 +11,8 @@ use App\IntakeType;
 use App\Programme;
 use App\Major;
 use App\Batch;
+use App\Http\Requests\StoreIntakeRequest;
+use App\Http\Requests\StoreIntakeDetailRequest;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Mail;
@@ -32,14 +34,20 @@ class IntakeController extends Controller
 
     public function data_allintake()
     {
+        $intake = Intakes::pluck('id')->all();
+        $applicant = Applicant::whereNotIn('intake_id', $intake)->get();
         $intakeInfo = Intakes::select('*');
 
         return datatables()::of($intakeInfo)
         ->addColumn('action', function ($intakeInfo) {
+            if(isset($applicant)){
 
-            return '<a href="/intake/'.$intakeInfo->id.'/edit" class="btn btn-sm btn-primary"> Edit</a>
-            <button class="btn btn-sm btn-danger btn-delete delete" data-remote="/intake/' . $intakeInfo->id . '"> Delete</button>'
-            ;
+            }else{
+                return '<a href="/intake/'.$intakeInfo->id.'/edit" class="btn btn-sm btn-primary"> Edit</a>
+                <button class="btn btn-sm btn-danger btn-delete delete" data-remote="/intake/' . $intakeInfo->id . '"> Delete</button>'
+                ;
+            }
+
         })
 
         ->make(true);
@@ -62,11 +70,6 @@ class IntakeController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'intake_type_code' => 'required',
-            'intake_type_description' => 'required',
-        ]);
-
         Intakes::where('status', '1')->update(['status' => 0]);
         Intakes::create([
             'intake_code' => $request->intake_type_code,
@@ -117,7 +120,10 @@ class IntakeController extends Controller
         $intake_batch = IntakeDetail::pluck('batch_code')->all();
         $batch = Batch::Active()->whereNotIn('batch_code', $intake_batch)->get();
 
-        return view('intake.edit', compact('intake', 'intake_detail', 'programme', 'intake_type', 'batch'));
+        $applicant_intake = Applicant::where('intake_id',$id)->pluck('offered_programme')->all();
+        $offer_intake = IntakeDetail::where('intake_code',$id)->whereNotIn('intake_programme',$applicant_intake)->pluck('intake_programme')->all();
+
+        return view('intake.edit', compact('intake', 'intake_detail', 'programme', 'intake_type', 'batch', 'offer_intake'));
     }
 
     /**
@@ -127,18 +133,8 @@ class IntakeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) // Update Intake
+    public function update(StoreIntakeRequest $request, $id) // Update Intake
     {
-
-        $this->validate($request, [
-            'intake_code' => 'required',
-            'intake_description' => 'required',
-            'intake_app_open' => 'required',
-            'intake_app_close' => 'required',
-            'intake_check_open' => 'required',
-            'intake_check_close' => 'required',
-        ]);
-
         Intakes::find($id)->update($request->all());
 
         return redirect()->route('intake.index')
@@ -175,10 +171,6 @@ class IntakeController extends Controller
 
     public function createProgramInfo(Request $request)
     {
-        $request->validate([
-            'intake_code' => 'required'
-        ]);
-
         IntakeDetail::where('intake_programme', $request->intake_programme)->where('intake_code', $request->intake_code)->where('status', '1')->update(['status' => 0]);
         IntakeDetail::create($request->all());
         IntakeDetail::where('status', Null)->where('intake_programme', $request->intake_programme)->where('intake_code', $request->intake_code)->update(['status' => 1]);
@@ -236,18 +228,8 @@ class IntakeController extends Controller
     }
 
 
-    public function updateProgramInfo(Request $request)
+    public function updateProgramInfo(StoreIntakeDetailRequest $request)
     {
-         $this->validate($request, [
-             'intake_programme' => 'required',
-             'intake_programme_description' => 'required',
-             'intake_date' => 'required',
-             'intake_time' => 'required',
-             'intake_venue' => 'required',
-             'intake_type' =>'required',
-             'batch_code' =>'required',
-         ]);
-
          IntakeDetail::find($request->id)->update($request->all());
 
          return $this->showProgramInfo($request->intake_code);

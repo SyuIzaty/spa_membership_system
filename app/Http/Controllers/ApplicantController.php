@@ -196,6 +196,21 @@ class ApplicantController extends Controller
         return view('applicant.applicantresult');
     }
 
+    public function applicant_pass()
+    {
+        return view('applicant.applicantpass');
+    }
+
+    public function applicant_fail()
+    {
+        return view('applicant.applicantfail');
+    }
+
+    public function applicant_offer()
+    {
+        return view('applicant.applicantoffer');
+    }
+
     public function data_allapplicant() // Datatable: display unprocessed applicant
     {
         $applicant = Applicant::where('applicant_status',NULL)->get();
