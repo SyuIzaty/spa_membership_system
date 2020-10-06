@@ -124,6 +124,7 @@ Route::post('data-allCourse', 'CourseController@data_allCourse');
 //biodata
 Route::get('/student/biodata/basic_info/{id}', 'StudentController@basic_info');
 Route::get('/student/biodata/addressContact_info/{id}', 'StudentController@addressContact_info');
+Route::get('/student/biodata/addressContact_edit/{id}', 'StudentController@addressContact_edit');
 Route::post('updateStudent', 'StudentController@updateStudent');
 //registration
 Route::get('/student/registration/course_register', 'StudentController@course_register');
