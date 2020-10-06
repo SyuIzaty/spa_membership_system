@@ -32,7 +32,8 @@
                                         <thead>
                                             @if(isset($student->studentContactInfo))
                                             <tr>
-                                                <td width="21%"><b>Address :</b></td>
+                                                <p><span class="text-danger">*</span><b> Required fields</b></p>
+                                                <td width="21%"><b><span class="text-danger">*</span> Address :</b></td>
                                                 <td colspan="10">
                                                     {{ Form::text('students_address_1', $student->studentContactInfo->students_address_1, ['class' => 'form-control', 'placeholder' => 'Address 1']) }}<br>
                                                     @error('students_address_1')
@@ -46,14 +47,14 @@
                                             </tr>
 
                                             <tr>
-                                                <td width="21%"><b>Postcode :</b></td>
+                                                <td width="21%"><b><span class="text-danger">*</span> Postcode :</b></td>
                                                 <td colspan="5">
                                                     {{ Form::text('students_poscode', $student->studentContactInfo->students_poscode, ['class' => 'form-control', 'placeholder' => 'Postcode']) }}<br>
                                                     @error('students_poscode')
                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                     @enderror
                                                 </td>
-                                                <td width="21%"><b>City :</b></td>
+                                                <td width="21%"><b><span class="text-danger">*</span> City :</b></td>
                                                 <td colspan="5">
                                                     {{ Form::text('students_city', $student->studentContactInfo->students_city, ['class' => 'form-control', 'placeholder' => 'City']) }}<br>
                                                     @error('students_city')
@@ -63,7 +64,7 @@
                                             </tr>
 
                                             <tr>
-                                                <td width="21%"><b>State :</b></td>
+                                                <td width="21%"><b><span class="text-danger">*</span> State :</b></td>
                                                 <td colspan="5">
                                                     <select class="form-control" name="students_state" id="students_state" >
                                                         @foreach($state as $states)
@@ -74,7 +75,7 @@
                                                         @enderror
                                                     </select>
                                                 </td>
-                                                <td width="21%"><b>Country :</b></td>
+                                                <td width="21%"><b><span class="text-danger">*</span> Country :</b></td>
                                                 <td colspan="5">
                                                     <select class="form-control" name="students_country" id="students_country" >
                                                         @foreach($country as $countries)
@@ -89,14 +90,14 @@
                                             @endif
 
                                             <tr>
-                                                <td width="21%"><b>Phone No. :</b></td>
+                                                <td width="21%"><b><span class="text-danger">*</span> Phone No. :</b></td>
                                                 <td colspan="5">
                                                 {{ Form::text('students_phone', $student->students_phone, ['class' => 'form-control' , 'placeholder' => 'Student Phone']) }} <br>
                                                     @error('students_phone')
                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                     @enderror
                                                  Example: <span style="color:red">+60</span><span style="color:blue">12</span><span style="color:green">3456789</span> (International Telephone Number)</td>
-                                                <td width="21%"><b>Email :</b></td>
+                                                <td width="21%"><b><span class="text-danger">*</span> Email :</b></td>
                                                 <td colspan="5">
                                                 {{ Form::email('students_email', $student->students_email, ['class' => 'form-control', 'placeholder' => 'Student Email']) }}<br>
                                                     @error('students_email')
