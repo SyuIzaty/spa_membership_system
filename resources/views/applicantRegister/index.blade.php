@@ -38,3 +38,7 @@
     </div>
 </body>
 @endsection
+@section('script')
+    <script>
+    </script>
+@endsection

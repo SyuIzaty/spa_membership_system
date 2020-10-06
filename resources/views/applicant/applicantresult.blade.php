@@ -47,7 +47,7 @@
                                         <thead>
                                             <tr>
                                                 <th>NO</th>
-                                                <th>APPLICANT</th>
+                                                <th style="width: 10%">APPLICANT</th>
                                                 <th style="display:none">INTAKE</th>
                                                 <th>PROG 1</th>
                                                 <th>PROG 2</th>
@@ -55,7 +55,7 @@
                                                 <th>BM</th>
                                                 <th>ENG</th>
                                                 <th>MATH</th>
-                                                <th>ACTION</th>
+                                                <th style="width: 10%">ACTION</th>
                                             </tr>
                                             <tr>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
@@ -82,15 +82,15 @@
                                         <thead>
                                             <tr>
                                                 <th>NO</th>
-                                                <th>APPLICANT</th>
-                                                <th>INTAKE</th>
+                                                <th style="width: 10%">APPLICANT</th>
+                                                <th style="display:none">INTAKE</th>
                                                 <th>PROG 1</th>
                                                 <th>PROG 2</th>
                                                 <th>PROG 3</th>
                                                 <th>BM</th>
                                                 <th>ENG</th>
                                                 <th>MATH</th>
-                                                <th>ACTION</th>
+                                                <th style="width: 10%">ACTION</th>
                                             </tr>
                                             <tr>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
@@ -117,15 +117,15 @@
                                         <thead>
                                             <tr>
                                                 <th>NO</th>
-                                                <th>APPLICANT</th>
-                                                <th>INTAKE</th>
+                                                <th style="width: 10%">APPLICANT</th>
+                                                <th style="display:none">INTAKE</th>
                                                 <th>PROG 1</th>
                                                 <th>PROG 2</th>
                                                 <th>PROG 3</th>
                                                 <th>BM</th>
                                                 <th>ENG</th>
                                                 <th>MATH</th>
-                                                <th>ACTION</th>
+                                                <th style="width: 10%">ACTION</th>
                                             </tr>
                                             <tr>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
@@ -151,17 +151,17 @@
                                     <table class="table table-bordered" id="offer">
                                         <thead>
                                             <tr>
-                                                <th>NO</th>
-                                                <th>STUDENT ID</th>
-                                                <th>APPLICANT</th>
+                                                <th style="width: 1%">NO</th>
+                                                <th style="width: 5%">STUDENT ID</th>
+                                                <th style="width: 15%">APPLICANT</th>
                                                 <th>INTAKE</th>
-                                                <th>PROG 1</th>
-                                                <th>PROG 2</th>
-                                                <th>PROG 3</th>
-                                                <th>BM</th>
-                                                <th>ENG</th>
-                                                <th>MATH</th>
-                                                <th>ACTION</th>
+                                                <th style="width: 5%">PROG 1</th>
+                                                <th style="width: 5%">PROG 2</th>
+                                                <th style="width: 5%">PROG 3</th>
+                                                <th style="width: 5%">BM</th>
+                                                <th style="width: 5%">ENG</th>
+                                                <th style="width: 5%">MATH</th>
+                                                <th style="width: 50%">ACTION</th>
                                             </tr>
                                             <tr>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
@@ -173,8 +173,8 @@
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Bahasa Melayu"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search English"></td>
-                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Mathematics"></td>
-                                                <td></td>
+                                                <td class="hasinput" style="width: 2px"><input type="text" class="form-control" placeholder="Search Mathematics"></td>
+                                                <td style="width: 50px"></td>
                                             </tr>
                                         </thead>
                                         <tbody>

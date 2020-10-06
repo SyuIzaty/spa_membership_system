@@ -138,6 +138,11 @@ class Applicant extends Model implements HasMedia
         return $this->hasOne('App\Status','status_code','applicant_status');
     }
 
+    public function intakeDetail()
+    {
+        return $this->hasOne('App\IntakeDetail', 'intake_code', 'intake_id');
+    }
+
     public function scopeApplicantId($query, $applicantt)
     {
         return $query->where('id',$applicantt);

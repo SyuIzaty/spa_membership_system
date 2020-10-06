@@ -24,6 +24,7 @@ use App\ApplicantGuardian;
 use App\IntakeDetail;
 use App\Intakes;
 use App\Files;
+use App\Batch;
 use DB;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Activitylog\Models\Activity;
@@ -38,7 +39,13 @@ class ApplicantController extends Controller
 
     public function show($id) // Display applicant detail, academic result
     {
-        $applicant = Applicant::where('id',$id)->with(['applicantContactInfo','applicantEmergency.emergencyOne','applicantGuardian.familyOne','applicantGuardian.familyTwo','applicantIntake','status'])->first();
+        $applicant = Applicant::where('id',$id)->with(['applicantContactInfo','applicantEmergency.emergencyOne','applicantGuardian.familyOne','applicantGuardian.familyTwo','applicantIntake','status','intakeDetail'])->first();
+
+        $batch_1 = IntakeDetail::Intake($applicant->intake_id)->Active()->where('intake_programme',$applicant->applicant_programme)->first();
+
+        $batch_2 = IntakeDetail::Intake($applicant->intake_id)->Active()->where('intake_programme',$applicant->applicant_programme_2)->first();
+
+        $batch_3 = IntakeDetail::Intake($applicant->intake_id)->Active()->where('intake_programme',$applicant->applicant_programme_3)->first();
 
         $country = Country::all();
         $marital = Marital::all();
@@ -136,7 +143,7 @@ class ApplicantController extends Controller
         {
             $activity = Activity::where('properties->attributes->applicant_id', $app_stat['applicant_id'])->get();
         }
-        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace', 'aapplicant','country','marital','religion','race','gender','state','skm','mqf','kkm','cat','icaew','activity','intake','family','foundation'));
+        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace', 'aapplicant','country','marital','religion','race','gender','state','skm','mqf','kkm','cat','icaew','activity','intake','family','foundation','batch_1','batch_2','batch_3'));
     }
 
     public function updateApplicant(Request $request) // Update applicant detail
@@ -227,7 +234,7 @@ class ApplicantController extends Controller
             })
 
            ->addColumn('action', function ($applicants) {
-               return '<a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Detail</a>';
+               return '<a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"><i class="fal fa-user"></i></a>';
            })
            ->rawColumns(['prog_name','prog_name_2','prog_name_3','action'])
            ->make(true);
@@ -271,7 +278,7 @@ class ApplicantController extends Controller
             })
 
            ->addColumn('action', function ($applicants) {
-               return '<a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Detail</a>';
+               return '<a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"><i class="fal fa-user"></i></a>';
            })
            ->rawColumns(['prog_name','prog_name_2','prog_name_3','action'])
            ->make(true);
@@ -316,7 +323,7 @@ class ApplicantController extends Controller
             })
 
            ->addColumn('action', function ($applicants) {
-               return '<a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Detail</a>';
+               return '<a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"><i class="fal fa-user"></i></a>';
            })
            ->rawColumns(['prog_name','prog_name_2','prog_name_3','action'])
            ->make(true);
@@ -359,9 +366,9 @@ class ApplicantController extends Controller
             })
 
            ->addColumn('action', function ($applicants) {
-               return '<a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Detail</a>
-               <a href="'.action('IntakeController@letter', ['applicant_id' => $applicants->id]).'" class="btn btn-sm btn-info">Offer Letter</a>
-               <a href="'.action('IntakeController@sendEmail', ['applicant_id' => $applicants->id, 'intake_id' => $applicants->intake_id]).'" class="btn btn-sm btn-primary">Send Email</a>
+               return '<a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"> <i class="fal fa-user"></i></a>
+               <a href="'.action('IntakeController@letter', ['applicant_id' => $applicants->id]).'" class="btn btn-sm btn-info"><i class="fal fa-envelope"></i></a>
+               <a href="'.action('IntakeController@sendEmail', ['applicant_id' => $applicants->id, 'intake_id' => $applicants->intake_id]).'" class="btn btn-sm btn-primary"><i class="fal fa-file-alt"></i></a>
                ';
            })
            ->rawColumns(['prog_name','prog_name_2','prog_name_3','action'])
@@ -1241,7 +1248,7 @@ class ApplicantController extends Controller
          } while ( Applicant::where('student_id', $student_id )->exists() );
 
 
-        Applicant::where('id',$request->applicant_id)->update(['applicant_status'=>$request->applicant_status, 'offered_programme'=>$request->applicant_programme, 'offered_major'=>$request->applicant_major, 'student_id'=>$student_id]);
+        Applicant::where('id',$request->applicant_id)->update(['applicant_status'=>$request->applicant_status, 'offered_programme'=>$request->applicant_programme, 'offered_major'=>$request->applicant_major, 'batch_code'=>$request->batch_code ,'student_id'=>$student_id]);
 
 
         // $this->sendEmail($request->applicant_id);

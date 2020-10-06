@@ -72,6 +72,7 @@
                                                             <thead class="bg-highlight">
                                                                 <th>Applicant Programme</th>
                                                                 <th>Applicant Major</th>
+                                                                <th>Batch Code</th>
                                                                 <th>Result</th>
                                                                 <th>Action</th>
                                                             </thead>
@@ -85,6 +86,11 @@
                                                                     <p>{{ $applicant->applicant_major }}</p>
                                                                     <p>{{ $applicant->applicant_major_2 }}</p>
                                                                     <p>{{ $applicant->applicant_major_3 }}</p>
+                                                                </td>
+                                                                <td>
+                                                                    <p>{{ isset($batch_1->batch_code) ? $batch_1->batch_code : '' }}</p>
+                                                                    <p>{{ isset($batch_2->batch_code) ? $batch_2->batch_code : '' }}</p>
+                                                                    <p>{{ isset($batch_3->batch_code) ? $batch_3->batch_code : '' }}</p>
                                                                 </td>
                                                                 <td>
                                                                     @if($applicant['programme_status']== '1')
@@ -583,7 +589,7 @@
                                                         <div class="row">
                                                             <div class="form-group col-md-12">
                                                                 {{Form::label('title', 'Name')}}
-                                                                {{Form::text('applicant_name', $applicant->applicant_name, ['class' => 'form-control', 'placeholder' => 'Applicant Name'])}}
+                                                                {{Form::text('applicant_name', $applicant->applicant_name, ['class' => 'form-control', 'placeholder' => 'Applicant Name', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                                                             </div>
                                                             <div class="col-md-6 form-group">
                                                                 {{ Form::label('title', 'IC Number') }}
@@ -603,7 +609,7 @@
                                                             </div>
                                                             <div class="col-md-6 form-group">
                                                                 {{ Form::label('title', 'Gender') }}
-                                                                <select class="form-control" name="applicant_gender" id="applicant_gender" >
+                                                                <select class="form-control gender" name="applicant_gender" id="applicant_gender" >
                                                                     @foreach($gender as $genders)
                                                                         <option value="{{$genders->gender_code}}"  {{ $applicant->applicant_gender == $genders->gender_code ? 'selected="selected"' : '' }}>{{$genders->gender_name}}</option>
                                                                     @endforeach
@@ -611,7 +617,7 @@
                                                             </div>
                                                             <div class="col-md-6 form-group">
                                                                 {{ Form::label('title', 'Marital') }}
-                                                                <select class="form-control" name="applicant_marital" id="applicant_marital">
+                                                                <select class="form-control marital" name="applicant_marital" id="applicant_marital">
                                                                     @foreach($marital as $maritals)
                                                                         <option value="{{ $maritals->marital_code }}" {{ $applicant->applicant_marital == $maritals->marital_code ? 'selected="selected"' : ''}}>{{ $maritals->marital_name }}</option>
                                                                     @endforeach
@@ -619,7 +625,7 @@
                                                             </div>
                                                             <div class="col-md-4 form-group">
                                                                 {{ Form::label('title', 'Race') }}
-                                                                <select class="form-control" name="applicant_race" id="applicant_race">
+                                                                <select class="form-control race" name="applicant_race" id="applicant_race">
                                                                     @foreach ($race as $races)
                                                                         <option value="{{ $races->race_code }}" {{ $applicant->applicant_race == $races->race_code ? 'selected="Selected"' : ''}}>{{ $races->race_name }}</option>
                                                                     @endforeach
@@ -627,7 +633,7 @@
                                                             </div>
                                                             <div class="col-md-4 form-group">
                                                                 {{ Form::label('title', 'Religion') }}
-                                                                <select class="form-control" name="applicant_religion" id="applicant_religion">
+                                                                <select class="form-control religion" name="applicant_religion" id="applicant_religion">
                                                                     @foreach ($religion as $religions)
                                                                         <option value="{{ $religions->religion_code }}" {{ $applicant->applicant_religion == $religions->religion_code ? 'selected="selected"' : ''}}>{{ $religions->religion_name }}</option>
                                                                     @endforeach
@@ -635,7 +641,7 @@
                                                             </div>
                                                             <div class="col-md-4 form-group">
                                                                 {{ Form::label('title', 'Nationality') }}
-                                                                <select class="form-control" name="applicant_nationality" id="applicant_nationality" >
+                                                                <select class="form-control country" name="applicant_nationality" id="applicant_nationality" >
                                                                     @foreach($country as $countries)
                                                                         <option value="{{$countries->country_code}}"  {{ $applicant->applicant_nationality == $countries->country_code ? 'selected="selected"' : '' }}>{{$countries->country_name}}</option>
                                                                     @endforeach
@@ -644,24 +650,24 @@
                                                             @if(isset($applicant->applicantContactInfo))
                                                             <div class="col-md-12 form-group">
                                                                 {{ Form::label('title', 'Address') }}
-                                                                {{ Form::text('applicant_address_1', $applicant->applicantContactInfo->applicant_address_1, ['class' => 'form-control', 'placeholder' => 'Address 1']) }}<br>
-                                                                {{ Form::text('applicant_address_2', $applicant->applicantContactInfo->applicant_address_2, ['class' => 'form-control', 'placeholder' => 'Address 2']) }}
+                                                                {{ Form::text('applicant_address_1', $applicant->applicantContactInfo->applicant_address_1, ['class' => 'form-control', 'placeholder' => 'Address 1', 'onkeyup' => 'this.value = this.value.toUpperCase()']) }}<br>
+                                                                {{ Form::text('applicant_address_2', $applicant->applicantContactInfo->applicant_address_2, ['class' => 'form-control', 'placeholder' => 'Address 2', 'onkeyup' => 'this.value = this.value.toUpperCase()']) }}
                                                             </div>
                                                             <div class="col-md-3 form-group">
                                                                 {{ Form::label('title', 'Postcode') }}
-                                                                {{ Form::text('applicant_poscode', $applicant->applicantContactInfo->applicant_poscode, ['class' => 'form-control', 'placeholder' => 'Postcode']) }}
+                                                                {{ Form::text('applicant_poscode', $applicant->applicantContactInfo->applicant_poscode, ['class' => 'form-control', 'placeholder' => 'Postcode', 'onkeyup' => 'this.value = this.value.toUpperCase()']) }}
                                                             </div>
                                                             <div class="col-md-3 form-group">
                                                                 {{ Form::label('title', 'City') }}
-                                                                {{ Form::text('applicant_city', $applicant->applicantContactInfo->applicant_city, ['class' => 'form-control', 'placeholder' => 'Applicant City']) }}
+                                                                {{ Form::text('applicant_city', $applicant->applicantContactInfo->applicant_city, ['class' => 'form-control', 'placeholder' => 'Applicant City', 'onkeyup' => 'this.value = this.value.toUpperCase()']) }}
                                                             </div>
                                                             <div class="col-md-3 form-group">
                                                                 {{ Form::label('title', 'State') }}
-                                                                {{ Form::text('applicant_state', $applicant->applicantContactInfo->applicant_state, ['class' => 'form-control', 'placeholder' => 'State']) }}
+                                                                {{ Form::text('applicant_state', $applicant->applicantContactInfo->applicant_state, ['class' => 'form-control', 'placeholder' => 'State', 'onkeyup' => 'this.value = this.value.toUpperCase()']) }}
                                                             </div>
                                                             <div class="col-md-3 form-group">
                                                                 {{ Form::label('title', 'Country') }}
-                                                                <select class="form-control" name="applicant_country" id="applicant_country" >
+                                                                <select class="form-control country" name="applicant_country" id="applicant_country" >
                                                                     @foreach($country as $countries)
                                                                         <option value="{{$countries->country_code}}"  {{ $applicant->applicantContactInfo->applicant_country == $countries->country_code ? 'selected="selected"' : '' }}>{{$countries->country_name}}</option>
                                                                     @endforeach
@@ -685,11 +691,11 @@
                                                         <div class="row">
                                                             <div class="form-group col-md-12">
                                                                 {{Form::label('title', 'Name(Father / Guardian I)')}}
-                                                                {{Form::text('guardian_one_name', $applicant->applicantGuardian->guardian_one_name, ['class' => 'form-control', 'placeholder' => 'Guardian Name'])}}
+                                                                {{Form::text('guardian_one_name', $applicant->applicantGuardian->guardian_one_name, ['class' => 'form-control', 'placeholder' => 'Guardian Name', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                                                             </div>
                                                             <div class="form-group col-md-6">
                                                                 {{ Form::label('title', 'Relationship') }}
-                                                                <select class="form-control" name="guardian_one_relationship" id="guardian_one_relationship">
+                                                                <select class="form-control relation" name="guardian_one_relationship" id="guardian_one_relationship">
                                                                     @foreach($family as $families)
                                                                         <option value="{{ $families->family_code }}" {{ $applicant->applicantGuardian->guardian_one_relationship == $families->family_code ? 'selected="selected"' : '' }}>{{ $families->family_name }}</option>
                                                                     @endforeach
@@ -701,17 +707,17 @@
                                                             </div>
                                                             <div class="form-group col-md-12">
                                                                 {{Form::label('title', 'Address')}}
-                                                                {{Form::text('guardian_one_address', $applicant->applicantGuardian->guardian_one_address, ['class' => 'form-control', 'placeholder' => 'Address'])}}
+                                                                {{Form::text('guardian_one_address', $applicant->applicantGuardian->guardian_one_address, ['class' => 'form-control', 'placeholder' => 'Address', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                                                             </div>
                                                         </div>
                                                         <div class="row mt-5">
                                                             <div class="form-group col-md-12">
                                                                 {{Form::label('title', 'Name(Mother / Guardian II)')}}
-                                                                {{Form::text('guardian_two_name', $applicant->applicantGuardian->guardian_two_name, ['class' => 'form-control', 'placeholder' => 'Guardian Name'])}}
+                                                                {{Form::text('guardian_two_name', $applicant->applicantGuardian->guardian_two_name, ['class' => 'form-control', 'placeholder' => 'Guardian Name', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                                                             </div>
                                                             <div class="form-group col-md-6">
                                                                 {{ Form::label('title', 'Relationship') }}
-                                                            <select class="form-control" name="guardian_two_relationship" id="guardian_two_relationship">
+                                                            <select class="form-control relation" name="guardian_two_relationship" id="guardian_two_relationship">
                                                                 @foreach($family as $families)
                                                                     <option value="{{ $families->family_code }}" {{ $applicant->applicantGuardian->guardian_two_relationship == $families->family_code ? 'selected="selected"' : '' }}>{{ $families->family_name }}</option>
                                                                 @endforeach
@@ -723,7 +729,7 @@
                                                             </div>
                                                             <div class="form-group col-md-12">
                                                                 {{Form::label('title', 'Address')}}
-                                                                {{Form::text('guardian_two_address', $applicant->applicantGuardian->guardian_two_address, ['class' => 'form-control', 'placeholder' => 'Address'])}}
+                                                                {{Form::text('guardian_two_address', $applicant->applicantGuardian->guardian_two_address, ['class' => 'form-control', 'placeholder' => 'Address', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                                                             </div>
                                                         </div>
                                                         @can('update applicant detail')
@@ -743,11 +749,11 @@
                                                             {{Form::hidden('id', $applicant->id)}}
                                                             <div class="form-group col-md-12">
                                                                 {{Form::label('title', 'Name')}}
-                                                                {{Form::text('emergency_name', $applicant->applicantEmergency->emergency_name, ['class' => 'form-control', 'placeholder' => 'Name'])}}
+                                                                {{Form::text('emergency_name', $applicant->applicantEmergency->emergency_name, ['class' => 'form-control', 'placeholder' => 'Name', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                                                             </div>
                                                             <div class="form-group col-md-6">
                                                                 {{ Form::label('title', 'Relationship') }}
-                                                                <select class="form-control" name="emergency_relationship" id="emergency_relationship">
+                                                                <select class="form-control relation" name="emergency_relationship" id="emergency_relationship">
                                                                     @foreach ($family as $families)
                                                                         <option value="{{ $families->family_code }}" {{ $applicant->applicantEmergency->emergency_relationship == $families->family_code ? 'selected="selected"' : '' }}>{{ $families->family_name }}</option>
                                                                     @endforeach
@@ -759,7 +765,7 @@
                                                             </div>
                                                             <div class="form-group col-md-12">
                                                                 {{Form::label('title', 'Address')}}
-                                                                {{Form::text('emergency_address', $applicant->applicantEmergency->emergency_address, ['class' => 'form-control', 'placeholder' => 'Address'])}}
+                                                                {{Form::text('emergency_address', $applicant->applicantEmergency->emergency_address, ['class' => 'form-control', 'placeholder' => 'Address', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                                                             </div>
                                                         </div>
                                                         @can('update applicant detail')
@@ -803,11 +809,15 @@
 @endsection
 @section('script')
 <script>
+    $(document).ready(function() {
+        $('.country, .gender, .marital, .race, .religion, .relation').select2();
+    });
     @foreach($aapplicant as $aapplicant_all_app)
     $(function(){
         $('#status_{{$aapplicant_all_app['applicant_programme']}}').on('change',function(){
             var programme = "{{$aapplicant_all_app['applicant_programme']}}";
             var major = "{{$applicant->applicant_major}}";
+            var batch = "{{ isset($batch_1->batch_code) ? $batch_1->batch_code : '' }}";
             var selectedValue = $(this).val();
             var trid = $(this).closest('tr').attr('id');
             console.log(programme);
@@ -817,7 +827,7 @@
             $.ajax({
                 url: "{{url('/programmestatus')}}",
                 method: "post",
-                data: { "_token": "{{ csrf_token() }}", applicant_id: trid, applicant_programme: programme, applicant_major: major,applicant_status: selectedValue },
+                data: { "_token": "{{ csrf_token() }}", applicant_id: trid, applicant_programme: programme, applicant_major: major, batch_code: batch, applicant_status: selectedValue },
                 success: function(response) {
                 alert('Data has been updated');
                 return response;
@@ -851,6 +861,7 @@
         $('#status_{{$aapplicant_all_app['applicant_programme_2']}}').on('change',function(){
             var programme = "{{$aapplicant_all_app['applicant_programme_2']}}";
             var major = "{{$applicant->applicant_major_2}}";
+            var batch = "{{ isset($batch_2->batch_code) ? $batch_2->batch_code : '' }}";
             var selectedValue = $(this).val();
             var trid = $(this).closest('tr').attr('id');
             console.log(programme);
@@ -860,7 +871,7 @@
             $.ajax({
                 url: "{{url('/programmestatus')}}",
                 method: "post",
-                data: { "_token": "{{ csrf_token() }}", applicant_id: trid, applicant_programme: programme,applicant_major: major,applicant_status: selectedValue },
+                data: { "_token": "{{ csrf_token() }}", applicant_id: trid, applicant_programme: programme,applicant_major: major, batch_code: batch, applicant_status: selectedValue },
                 success: function(response) {
                 alert('Data has been updated');
                 return response;
@@ -875,6 +886,7 @@
         $('#status_{{$aapplicant_all_app['applicant_programme_3']}}').on('change',function(){
             var programme = "{{$aapplicant_all_app['applicant_programme_3']}}";
             var major = "{{$applicant->applicant_major_3}}";
+            var batch = "{{ isset($batch_3->batch_code) ? $batch_3->batch_code : '' }}";
             var selectedValue = $(this).val();
             var trid = $(this).closest('tr').attr('id');
             console.log(programme);
@@ -884,7 +896,7 @@
             $.ajax({
                 url: "{{url('/programmestatus')}}",
                 method: "post",
-                data: { "_token": "{{ csrf_token() }}", applicant_id: trid, applicant_programme: programme,applicant_major: major,applicant_status: selectedValue },
+                data: { "_token": "{{ csrf_token() }}", applicant_id: trid, applicant_programme: programme,applicant_major: major, batch_code: batch, applicant_status: selectedValue },
                 success: function(response) {
                 alert('Data has been updated');
                 return response;

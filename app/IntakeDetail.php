@@ -31,4 +31,29 @@ class IntakeDetail extends Model
     {
         return $this->hasOne('App\Intakes','id','intake_code');
     }
+
+    public function programmeOne()
+    {
+        return $this->hasOne('App\Applicant','applicant_programme','intake_programme');
+    }
+
+    public function programmeTwo()
+    {
+        return $this->hasOne('App\Applicant','applicant_programme_2','intake_programme');
+    }
+
+    public function programmeThree()
+    {
+        return $this->hasOne('App\Applicant','applicant_programme_3','intake_programme');
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status','1');
+    }
+
+    public function scopeIntake($query,$intake_code)
+    {
+        return $query->where('intake_code',$intake_code);
+    }
 }

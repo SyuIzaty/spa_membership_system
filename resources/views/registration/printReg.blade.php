@@ -11,7 +11,7 @@
                 <div class="row">
                     @foreach ($applicant as $applicant_detail)
                         <div class="form-group col-md-12">
-                            <h5>Congratulation {{ $applicant_detail->applicant_name }}!! Your submission have been submitted</h5>
+                            <h5>Congratulation {{ $applicant_detail->applicant_name }}!! Your application is being processed</h5>
                         </div>
                         <div class="form-group col-md-8">
                             {{ Form::label('title','Name') }}

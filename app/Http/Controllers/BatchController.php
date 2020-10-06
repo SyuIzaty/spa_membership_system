@@ -60,6 +60,7 @@ class BatchController extends Controller
      */
     public function store(StoreBatchRequest $request)
     {
+        Batch::where('programme_code',$request->programme_code)->where('status','1')->update(['status'=>0]);
         Batch::create($request->all());
 
         return redirect()->route('batch.index');

@@ -36,6 +36,7 @@ class RegistrationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
         $country = Country::all();
@@ -74,7 +75,12 @@ class RegistrationController extends Controller
     public function search(Request $request)
     {
         $applicant = Applicant::where('applicant_ic',$request->applicant_ic)->first();
-        return $this->edit($applicant->id);
+        if($applicant->applicant_status == NULL)
+        {
+            return $this->edit($applicant->id);
+        }else{
+            return $this->printReg($applicant->id);
+        }
     }
 
     /**
@@ -553,6 +559,14 @@ class RegistrationController extends Controller
 
     public function uploadFile($file,$qualificationid,$userid)
     {
+        $destinationPath =  files::where('fkey',$userid)->where('fkey2',$qualificationid)->select('web_path')->get();
+
+        foreach($destinationPath as $dp)
+        {
+            File::delete(public_path()."/".$dp->web_path);
+        }
+        files::where('fkey',$userid)->where('fkey2',$qualificationid)->delete();
+
         $type="Qualification";
         $path = "private/upload/".$type."/";
         if(!File::exists($path)) {
@@ -581,6 +595,13 @@ class RegistrationController extends Controller
 
     public function deleteitem($id,$type,$userid)
     {
+        $destinationPath =  files::where('fkey',$userid)->where('fkey2',$id)->select('web_path')->get();
+        foreach($destinationPath as $dp)
+        {
+            File::delete(public_path()."/".$dp->web_path);
+        }
+        files::where('fkey',$userid)->where('fkey2',$id)->delete();
+
         if($type == "result"){
             ApplicantResult::where('id',$id)->delete();
         }
@@ -594,6 +615,8 @@ class RegistrationController extends Controller
         {
             ApplicantAcademic::where('type',$id)->where('applicant_id',$userid)->delete();
         }
+
+
     }
 
     public function printReg($id)
