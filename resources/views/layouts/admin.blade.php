@@ -536,7 +536,7 @@
                             </li>
                             @endcan
 
-                            {{-- @can('view profile')--}}
+                            @role('student')
                             <li class="nav-title">MAIN NAVIGATION [STUDENT]</li>
                             <li>
                                 <a href="#" title="Stud_dashboard" data-filter-tags="stud_dashboard">
@@ -552,12 +552,12 @@
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="/student/biodata/basic_info/2" title="Basic_info" data-filter-tags="basic_info">
+                                        <a href="/student/biodata/basic_info/{{Auth::user()->id}}" title="Basic_info" data-filter-tags="basic_info">
                                             <span class="nav-link-text" data-i18n="nav.basic_info">Personal Info</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="/student/biodata/addressContact_info/2" title="Address_info" data-filter-tags="address_info">
+                                        <a href="/student/biodata/addressContact_info/{{Auth::user()->id}}" title="Contact_info" data-filter-tags="contact_info">
                                             <span class="nav-link-text" data-i18n="nav.address_info">Update Contact Info</span>
                                         </a>
                                     </li>
@@ -694,16 +694,15 @@
                             </li>
 
                             <li>
-                                <a href="#" title="Sign_out" data-filter-tags="sign_out">
-                                    <i class="fal fa-sign-out-alt"></i>
-                                    <span class="nav-link-text" data-i18n="nav.sign_out">Sign Out</span>
-                                </a>
+                                <form action="{{ route('logout') }}" id="logout-form"  method="POST">
+                                    @csrf
+                                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"> <i class="fal fa-sign-out-alt"></i>Sign Out</a>
+                                </form> 
                             </li>
-                            {{-- @endcan --}}
+                            @endrole
 
                         </ul>
                         <div class="filter-message js-filter-message bg-success-600"></div>
-
 
                         {{-- @php
                             $user = Auth::user();

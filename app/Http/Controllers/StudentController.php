@@ -3,19 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Student;
-use App\StudentContact;
 use App\Country;
 use App\Religion;
 use App\Marital;
 use App\Gender;
 use App\Race;
 use App\State;
+use App\StudentContact;
 use App\StudentGuardian;
 use App\StudentEmergency;
 use App\CreditExemption;
 use App\ProjectInfo;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreStudentContactRequest;
 use Datatables;
+use Auth;
+use Session;
 
 class StudentController extends Controller
 {
@@ -43,7 +46,7 @@ class StudentController extends Controller
     public function basic_info($id)
     {
         $student = Student::where('id', $id)->with(['studentContactInfo.country', 'studentGuardian', 'studentEmergency', 'race', 'gender', 'religion', 'programme'])->first();
-
+        
         // dd($student);
         return view('student.biodata.basic_info', compact('student'));
     }
@@ -54,16 +57,25 @@ class StudentController extends Controller
         $country = Country::all();
         $state = State::all();
 
-        // dd($student);
         return view('student.biodata.addressContact_info', compact('student', 'country', 'state'));
     }
 
-    public function updateStudent(Request $request)
+    public function addressContact_edit($id)
+    {
+        $student = Student::where('id', $id)->with(['studentContactInfo.country', 'studentContactInfo.state'])->first();
+        $country = Country::all();
+        $state = State::all();
+
+        return view('student.biodata.addressContact_edit', compact('student', 'country', 'state'));
+    }
+
+    public function updateStudent(StoreStudentContactRequest $request)
     {
         Student::where('id', $request->id)->update([
             'students_phone' => $request->students_phone,
             'students_email' => $request->students_email,
         ]);
+        
         StudentContact::where('students_id', $request->id)->update([
             'students_address_1' => $request->students_address_1,
             'students_address_2' => $request->students_address_2,
@@ -73,7 +85,8 @@ class StudentController extends Controller
             'students_state'     => $request->students_state, 
         ]);
 
-        return redirect()->back();
+        Session::flash('message', 'Information updated successfully');
+        return redirect('/student/biodata/addressContact_info/'. Auth::user()->id );
     }
 
     public function course_register()
