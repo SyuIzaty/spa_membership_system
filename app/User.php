@@ -14,7 +14,7 @@ class User extends Authenticatable
 {
     protected $connection = 'auth';
     
-    use Notifiable, HasRoles, HasPermissions;
+    use Notifiable, HasRoles;
     
     /**
      * The attributes that are mass assignable.
