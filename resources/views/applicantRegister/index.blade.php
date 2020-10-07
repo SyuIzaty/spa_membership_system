@@ -13,22 +13,26 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <h2>NEW APPLICATION / CHECK APPLICATION</h2>
-                    <p>If you wish to apply for any programme or check your application, click on one of the button below.</p>
+                    <div class="d-flex justify-content-center">
+                        <div class="p-2"><h3>NEW APPLICATION</h3></div>
+                    </div>
                     <div class="d-flex justify-content-center">
                         <div class="p-2"><a href="{{ route('registration.index') }}" class="btn btn-primary">NEW APPLICATION</a></div>
-                        <div class="p-2"><a href="/check" class="btn btn-primary">CHECK APPLICATION</a></div>
                     </div>
                     <hr class="mt-2 mb-3">
-                    <h2>CONTINUE WITH EXISTING APPLICATION</h2>
+                    <div class="d-flex justify-content-center">
+                        <div class="p-2"><h2>CONTINUE WITH EXISTING APPLICATION / CHECK APPLICATION</h2></div>
+                    </div>
                     {!! Form::open(['action' => 'RegistrationController@search', 'method' => 'GET']) !!}
                     <div class="d-flex justify-content-center">
                         <div class="p-2">
                             {{Form::label('title', 'IC Number')}}
                             {{Form::text('applicant_ic', '', ['class' => 'form-control', 'placeholder' => 'Applicant IC', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                         </div>
+                    </div>
+                    <div class="d-flex justify-content-center">
                         <div class="p-2">
-                            <button type="submit" class="btn btn-primary mt-4">CONTINUE APPLICATION</button>
+                            <button type="submit" class="btn btn-primary mt-4">CONTINUE APPLICATION / CHECK APPLICATION</button>
                         </div>
                     </div>
                     {!! Form::close() !!}
@@ -37,8 +41,4 @@
         </div>
     </div>
 </body>
-@endsection
-@section('script')
-    <script>
-    </script>
 @endsection

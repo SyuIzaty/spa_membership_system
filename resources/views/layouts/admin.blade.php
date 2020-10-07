@@ -143,7 +143,7 @@
                             @can('check requirement')
                             <li class="open">
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
-                                    <i class="fal fa-barcode-read"></i>
+                                    <i class="fal fa-address-book"></i>
                                     <span class="nav-link-text" data-i18n="nav.application_intel">Admission</span>
                                 </a>
                                 <ul>
@@ -166,14 +166,20 @@
                                         </a>
                                     </li>
                                     <li>
+                                        <a href="/offerapplicant" title="Pending Applicant" data-filter-tags="active_student">
+                                            <i class="fal fa-envelope"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Offered Applicant</span>
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a href="/intake" title="Intake Information" data-filter-tags="active_student">
-                                            <i class="fal fa-user"></i>
+                                            <i class="fal fa-list"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">Intake Information</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="/batch" title="Batch" data-filter-tags="batch">
-                                            <i class="fal fa-user"></i>
+                                            <i class="fal fa-address-card"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">Batch</span>
                                         </a>
                                     </li>
@@ -709,7 +715,7 @@
                                 <form action="{{ route('logout') }}" id="logout-form"  method="POST">
                                     @csrf
                                     <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"> <i class="fal fa-sign-out-alt"></i>Sign Out</a>
-                                </form> 
+                                </form>
                             </li>
                             @endrole
 

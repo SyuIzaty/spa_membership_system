@@ -82,10 +82,10 @@ Route::post('/data_acceptedapplicant', 'ApplicantController@data_acceptedapplica
 
 //APPLICANT REGISTRATION
 Route::resource('/registration','RegistrationController');
-Route::get('/check/{id}','RegistrationController@getUsers');
+// Route::get('/check/{id}','RegistrationController@getUsers');
 Route::get('/applicantRegister', 'RegistrationController@register')->name('applicantRegister.index');
 Route::get('search', 'RegistrationController@search');
-Route::get('/check', 'RegistrationController@check');
+Route::get('applicantRegister/check/{id}', 'RegistrationController@check');
 Route::get('registration/printRef/{id}','RegistrationController@printRef')->name('printRef');
 Route::get('registration/printReg/{id}','RegistrationController@printReg')->name('printReg');
 Route::get('registration-data/{id}','RegistrationController@data');

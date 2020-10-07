@@ -25,6 +25,7 @@ use App\ApplicantResult;
 use App\Status;
 use App\MajorProgramme;
 use App\Files;
+use Carbon\Carbon;
 use App\Http\Requests\StoreApplicantRequest;
 use App\Http\Requests\StoreApplicantDetailRequest;
 use File;
@@ -67,20 +68,24 @@ class RegistrationController extends Controller
         return view('applicantRegister.index');
     }
 
-    public function check()
+    public function check($id)
     {
-        return view('applicantRegister.check');
+        $applicant = Applicant::where('id',$id)->where('applicant_status','3')->with(['offeredProgramme','offeredMajor'])->get();
+
+        return view('applicantRegister.check', compact('applicant'));
     }
 
     public function search(Request $request)
     {
-        $applicant = Applicant::where('applicant_ic',$request->applicant_ic)->first();
-        if($applicant->applicant_status == NULL)
-        {
-            return $this->edit($applicant->id);
-        }else{
-            return $this->printReg($applicant->id);
-        }
+        $intake = Intakes::where('status','1')->where('intake_app_open','<=',Carbon::Now())->where('intake_app_close','>=',Carbon::now())->first();
+
+        $check = Intakes::where('status','1')->where('intake_check_open','<=',Carbon::Now())->where('intake_check_close','>=',Carbon::now())->first();
+
+        $applicant = Applicant::where('applicant_ic',$request->applicant_ic)->with('applicantIntake')->get();
+
+        $check_applicant = Applicant::where('applicant_ic',$request->applicant_ic)->where('intake_id',$intake->id)->first();
+
+        return view('applicantRegister.display', compact('applicant','intake','check','check_applicant'));
     }
 
     /**
@@ -101,11 +106,24 @@ class RegistrationController extends Controller
      */
     public function store(StoreApplicantRequest $request)
     {
-        $detail = Applicant::create($request->all());
+        $applicant = Applicant::all();
+        $exist = $applicant->filter(function ($value) use ($request){
+            return $value['applicant_ic'] === $request->applicant_ic && $value['intake_id'] === $request->intake_id;
+        })->count()>0;
 
-        $applicant_detail = Applicant::where('applicant_ic',$request->applicant_ic)->with(['country','programme','programmeTwo','programmeThree','majorOne','majorTwo','majorThree'])->first();
+        if($exist)
+        {
+            $applicant_id = Applicant::where('applicant_ic',$request->applicant_ic)->where('intake_id',$request->intake_id)->first();
 
-        return redirect()->route('printRef', ['id' => $request->applicant_ic]);
+            return $this->edit($applicant_id->id);
+
+        }else{
+            $detail = Applicant::create($request->all());
+
+            $applicant_detail = Applicant::where('applicant_ic',$request->applicant_ic)->with(['country','programme','programmeTwo','programmeThree','majorOne','majorTwo','majorThree'])->first();
+
+            return redirect()->route('printRef', ['id' => $request->applicant_ic]);
+        }
     }
 
     public function printRef($id)
@@ -122,7 +140,7 @@ class RegistrationController extends Controller
      */
     public function show($id)
     {
-
+        return view('applicantRegister.display',compact($id));
     }
 
     /**

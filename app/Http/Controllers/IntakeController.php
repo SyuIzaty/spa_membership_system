@@ -34,18 +34,19 @@ class IntakeController extends Controller
 
     public function data_allintake()
     {
-        $intake = Intakes::pluck('id')->all();
-        $applicant = Applicant::whereNotIn('intake_id', $intake)->get();
+        $applicant = Applicant::pluck('intake_id')->all();
+        $intaked = Intakes::whereNotIn('id',$applicant)->pluck('id')->all();
+
         $intakeInfo = Intakes::select('*');
 
         return datatables()::of($intakeInfo)
-        ->addColumn('action', function ($intakeInfo) {
-            if(isset($applicant)){
-
-            }else{
+        ->addColumn('action', function ($intakeInfo) use ($intaked) {
+            if(in_array($intakeInfo->id, $intaked)){
                 return '<a href="/intake/'.$intakeInfo->id.'/edit" class="btn btn-sm btn-primary"> Edit</a>
                 <button class="btn btn-sm btn-danger btn-delete delete" data-remote="/intake/' . $intakeInfo->id . '"> Delete</button>'
-                ;
+            ;
+            }else{
+                return '<a href="/intake/'.$intakeInfo->id.'/edit" class="btn btn-sm btn-primary"> Edit</a>';
             }
 
         })
@@ -112,16 +113,17 @@ class IntakeController extends Controller
     public function edit($id) // Display Intake & Intake Details
     {
         $intake = Intakes::find($id);
-        $intake_details = IntakeDetail::where('intake_code', $id)->get();
-        $intake_detail = $intake_details->load('programme', 'intakeType');
         $programme = Programme::all();
         $intake_type = IntakeType::all();
+
+        $intake_details = IntakeDetail::where('intake_code', $id)->get();
+        $intake_detail = $intake_details->load('programme', 'intakeType');
 
         $intake_batch = IntakeDetail::pluck('batch_code')->all();
         $batch = Batch::Active()->whereNotIn('batch_code', $intake_batch)->get();
 
         $applicant_intake = Applicant::where('intake_id',$id)->pluck('offered_programme')->all();
-        $offer_intake = IntakeDetail::where('intake_code',$id)->whereNotIn('intake_programme',$applicant_intake)->pluck('intake_programme')->all();
+        $offer_intake = $intake_details->whereNotIn('intake_programme',$applicant_intake)->pluck('intake_programme')->all();
 
         return view('intake.edit', compact('intake', 'intake_detail', 'programme', 'intake_type', 'batch', 'offer_intake'));
     }

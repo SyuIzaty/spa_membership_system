@@ -94,8 +94,10 @@
                                             @if ($intake_del->status == '0') Inactive @endif
                                         </td>
                                         <td>
-                                            <button class="btn btn-primary" data-toggle="modal" data-id="{{$intake_del->id}}" id="edit">Edit</button>
-                                            <button class="btn btn-danger deleteProgram" data-id="{{$intake_del->id}}" data-action="{{route('deleteProgramInfo', $intake_del->id)}}">Delete</button>
+                                            @if (in_array($intake_del->intake_programme, $offer_intake))
+                                                <button class="btn btn-primary" data-toggle="modal" data-id="{{$intake_del->id}}" id="edit">Edit</button>
+                                                <button class="btn btn-danger deleteProgram" data-id="{{$intake_del->id}}" data-action="{{route('deleteProgramInfo', $intake_del->id)}}">Delete</button>
+                                            @endif
                                         </td>
                                     </tr>
                                     @endforeach

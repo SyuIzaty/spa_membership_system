@@ -51,7 +51,7 @@
                                                 </div>
                                                 <div class="form-group col-md-8">
                                                     {{Form::label('title', 'Applicant Email')}} *
-                                                    {{Form::email('applicant_email', $applicant->applicant_email, ['class' => 'form-control', 'placeholder' => 'Applicant Name', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
+                                                    {{Form::email('applicant_email', $applicant->applicant_email, ['class' => 'form-control', 'placeholder' => 'Applicant Name'])}}
                                                     @error('applicant_email')
                                                         <p style="color: red">{{ $message }}</p>
                                                     @enderror
