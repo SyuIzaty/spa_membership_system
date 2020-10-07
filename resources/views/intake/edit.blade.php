@@ -193,14 +193,6 @@
                                 {{Form::text('intake_programme_description', '', ['id' => 'programme_desc','class' => 'form-control','placeholder' => 'Intake Description'])}}
                             </div>
                             <div class="form-group">
-                                {{Form::label('title', 'Batch Code')}}
-                                <select name="batch_code" id="batch_code" class="form-control">
-                                    @foreach($batch as $batches)
-                                      <option value="{{ $batches->batch_code }}">{{ $batches->batch_name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
                                 {{Form::label('title', 'Intake Type')}}
                                 <select name="intake_type" id="intake_type_code" class="form-control">
                                     @foreach($intake_type as $intaketype)
@@ -290,7 +282,6 @@
                 var intake_time = row.children(".intake_time").text();
                 var intake_venue = row.children(".intake_venue").text();
                 var intake_type_code = row.children(".intake_type_code").text();
-                var batch_code = row.children(".batch_code").text();
                 var status = row.children(".status").text();
                 $("#program_id").val(id);
                 $("#programme_code").val(programme_code);
@@ -299,7 +290,6 @@
                 $("#intake_time").val(intake_time);
                 $("#intake_venue").val(intake_venue);
                 $("#intake_type_code").val(intake_type_code);
-                $("#batch_code").val(batch_code);
                 $("#status").val(status);
             })
             $('#editModal').on('hide.bs.modal', function() {

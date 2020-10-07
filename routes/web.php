@@ -70,6 +70,7 @@ Route::get('checkrequirements', 'ApplicantController@checkrequirements')->name('
 Route::post('changestatus', 'ApplicantController@changestatus');
 Route::post('programmestatus', 'ApplicantController@programmestatus');
 Route::post('intakestatus', 'ApplicantController@intakestatus');
+Route::post('appstat', 'ApplicantController@appstat');
 Route::post('updateEmergency', 'ApplicantController@updateEmergency');
 Route::post('updateGuardian', 'ApplicantController@updateGuardian');
 Route::post('updateApplicant', 'ApplicantController@updateApplicant');

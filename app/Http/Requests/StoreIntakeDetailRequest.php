@@ -30,12 +30,10 @@ class StoreIntakeDetailRequest extends FormRequest
     {
         return [
             'intake_programme' => 'required',
-            'intake_programme_description' => 'required',
             'intake_date' => 'required',
             'intake_time' => 'required',
             'intake_venue' => 'required',
             'intake_type' =>'required',
-            'batch_code' =>'required',
         ];
     }
 }

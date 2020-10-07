@@ -26,9 +26,11 @@
                         @endif
                     </div>
                     @foreach($applicant as $applicants)
-                        <div class="d-flex justify-content-lg-center">
-                            <div class="p-2"><a href="/registration/{{ $applicants->id }}/edit" class="btn btn-primary">Edit Intake {{ $applicants->applicantIntake->intake_code }}</a></div>
-                        </div>
+                        @if($applicants->status == NULL)
+                            <div class="d-flex justify-content-lg-center">
+                                <div class="p-2"><a href="/registration/{{ $applicants->id }}/edit" class="btn btn-primary">Edit Intake {{ $applicants->applicantIntake->intake_code }}</a></div>
+                            </div>
+                        @endif
                     @endforeach
                 </div>
             </div>

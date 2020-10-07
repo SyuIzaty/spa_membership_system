@@ -65,7 +65,8 @@ class RegistrationController extends Controller
 
     public function register()
     {
-        return view('applicantRegister.index');
+        $intake = Intakes::where('status','1')->where('intake_app_open','<=',Carbon::Now())->where('intake_app_close','>=',Carbon::now())->first();
+        return view('applicantRegister.index', compact('intake'));
     }
 
     public function check($id)

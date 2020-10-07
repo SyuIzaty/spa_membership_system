@@ -66,7 +66,7 @@
                                                         <div class="card-body">
                                                         @if(isset($applicant->applicant_name) )
                                                         {{-- @if(count($applicantresult) > 0) --}}
-                                                        <table class="table table-sm">
+                                                        {{-- <table class="table table-sm">
                                                             <tr id={{ $applicant->id }}>
                                                                 <td>Intake Sessions</td>
                                                                 <td>
@@ -78,7 +78,39 @@
                                                                     </select>
                                                                 </td>
                                                             </tr>
-                                                        </table>
+                                                            <tr id="{{ $applicant->id }}">
+                                                                <td>Applicant Status</td>
+                                                                <td>
+                                                                    <select class="form-control" id="app_stat" name="app_stat">
+                                                                        <option disabled selected>Please select</option>
+                                                                        <option value="">Register</option>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                        </table> --}}
+                                                        {!! Form::open(['action' => ['ApplicantController@intakestatus'], 'method' => 'POST'])!!}
+                                                            <div class="row">
+                                                                <div class="col-md-5 form-group">
+                                                                    <input type="hidden" name="applicant_id" value="{{ $applicant->id }}">
+                                                                    {{ Form::label('title', 'Intake Session') }}
+                                                                    <select name="intake_id" class="form-control" id="intake_id">
+                                                                        <option value="{{ $applicant->intake_id }}">{{ $applicant->applicantIntake->intake_code }}</option>
+                                                                        @foreach ($intake as $in)
+                                                                            <option value="{{ $in->id }}">{{ $in->intake_code }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-md-5 form-group">
+                                                                    {{ Form::label('title', 'Applicant Status') }}
+                                                                    <select class="form-control" id="applicant_status" name="applicant_status">
+                                                                        @foreach ($applicant_status as $app_stat)
+                                                                            <option value="{{ $app_stat->status_code }}" {{ $applicant->applicant_status == $app_stat->status_code ? 'selected="selected"' : ''}}>{{ $app_stat->status_description }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-md-2"><button class="btn btn-primary mt-4">Submit</button></div>
+                                                            </div>
+                                                            {!! Form::close() !!}
                                                         <table class="table table-bordered table-sm">
                                                             <thead class="bg-highlight">
                                                                 <th>Applicant Programme</th>
@@ -334,7 +366,7 @@
                                             <div class="card-body">
                                             @if(count($spm)!=0)
                                             <h5>SPM</h5>
-                                            {!! isset($spm->first()->file->web_path) ? '<a href="storage' . url($spm->first()->file->web_path) . '">Supporting Document</a>' : 'No Supporting Document' !!}
+                                            {!! isset($spm->first()->file->web_path) ? '<a href="' .  storage_path($spm->first()->file->web_path) . '">Supporting Document</a>' : 'No Supporting Document' !!}
                                                 <table class="table table-bordered table-sm">
                                                 <thead class="bg-highlight">
                                                     <th>Subject Code</th>
@@ -840,25 +872,6 @@
                 url: "{{url('/programmestatus')}}",
                 method: "post",
                 data: { "_token": "{{ csrf_token() }}", applicant_id: trid, applicant_programme: programme, applicant_major: major, batch_code: batch, applicant_status: selectedValue },
-                success: function(response) {
-                alert('Data has been updated');
-                return response;
-                },
-                error: function() {
-                    alert('error');
-                }
-
-            });
-        });
-        $('#intake_1').on('change',function(){
-            var selectedValue = $(this).val();
-            var trid = $(this).closest('tr').attr('id');
-            console.log(selectedValue);
-            console.log(trid);
-            $.ajax({
-                url: "{{url('/intakestatus')}}",
-                method: "post",
-                data: { "_token": "{{ csrf_token() }}", applicant_id: trid,applicant_intake: selectedValue },
                 success: function(response) {
                 alert('Data has been updated');
                 return response;

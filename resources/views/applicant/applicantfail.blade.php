@@ -4,14 +4,14 @@
     <main id="js-page-content" role="main" class="page-content">
         <div class="subheader">
             <h1 class="subheader-title">
-                <i class='subheader-icon fal fa-table'></i> Applicant
+                <i class='subheader-icon fal fa-table'></i> Applicant Not Qualified
             </h1>
         </div>
         <div class="row">
             <div class="col-xl-12">
                 <div id="panel-1" class="panel">
                     <div class="panel-hdr">
-                        <h2>Applicant</h2>
+                        <h2>Applicant Not Qualified</h2>
                         <div class="panel-toolbar">
                             <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
                             <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
@@ -25,15 +25,15 @@
                                 <thead>
                                     <tr>
                                         <th>NO</th>
-                                        <th style="width: 10%">APPLICANT</th>
-                                        <th style="display:none">INTAKE</th>
+                                        <th>APPLICANT</th>
+                                        <th>INTAKE</th>
                                         <th>PROG 1</th>
                                         <th>PROG 2</th>
                                         <th>PROG 3</th>
                                         <th>BM</th>
                                         <th>ENG</th>
                                         <th>MATH</th>
-                                        <th style="width: 10%">ACTION</th>
+                                        <th>ACTION</th>
                                     </tr>
                                     <tr>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
@@ -101,7 +101,7 @@
             columns: [
                     { data: 'id', name: 'id' },
                     { data: 'applicant_name', name: 'applicant_name' },
-                    { data: 'intake_id', name: 'intake_id', visible:false },
+                    { data: 'intake_id', name: 'intake_id' },
                     { data: 'prog_name', name: 'prog_name' },
                     { data: 'prog_name_2', name: 'prog_name_2' },
                     { data: 'prog_name_3', name: 'prog_name_3' },
