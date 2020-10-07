@@ -134,7 +134,7 @@
                         <ul id="js-nav-menu" class="nav-menu">
                             <li class="nav-title">Dashboard</li>
                             <li>
-                                <a href="#" title="Application Intel" data-filter-tags="application intel">
+                                <a href="/home" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-chart-pie"></i>
                                     <span class="nav-link-text" data-i18n="nav.application_intel">Home</span>
                                 </a>
@@ -852,5 +852,7 @@
         <script src="{{asset('js/formplugins/select2/select2.bundle.js')}}"></script>
 
         @yield('script')
+
+
     </body>
 </html>
