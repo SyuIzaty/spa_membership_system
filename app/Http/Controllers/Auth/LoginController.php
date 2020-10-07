@@ -26,7 +26,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/student';
+    protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
@@ -50,7 +50,8 @@ class LoginController extends Controller
         $fieldType = filter_var($request->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
         if(auth()->attempt(array($fieldType => $input['username'], 'password' => $input['password'])))
         {
-            return redirect()->route('student.index');
+            // return redirect()->route('student.index');
+            return redirect('home');
         }else{
             return redirect()->route('login')
                 ->with('error','Email-Address And Password Are Wrong.');

@@ -1,23 +1,41 @@
-@extends('layouts.form')
+@extends('layouts.admin')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
+<main id="js-page-content" role="main" class="page-content">
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+    <div class="row">
+        <div class="col-xl-12">
+            <div id="panel-1" class="panel">
+                <div class="panel-hdr">
+                    <h2>
+                        Dashboard <small>information</small> <span class="fw-300"><i> </i></span>
+                    </h2>
+                    <div class="panel-toolbar">
+                        <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
+                        <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
+                        <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10" data-original-title="Close"></button>
+                    </div>
 
-                    You are logged in!
                 </div>
+
+                <div class="panel-container show">
+                    <div class="panel-content">
+                        Welcome to INTEC Student Information Management System.
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
-</div>
+
+</main>
 @endsection
+
+@section('script')
+
+<script>
+
+</script>
+
+@endsection
+

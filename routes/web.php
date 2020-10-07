@@ -13,10 +13,10 @@
 
 Route::get('/', function () {
 
-   return view('welcome');
+   return redirect('/login');
 });
 
-
+Route::get('home','DashboardController@index');
 
 
 Auth::routes();
