@@ -94,6 +94,11 @@ class StudentController extends Controller
         return view('student.registration.course_register');
     }
 
+    public function course_pdf()
+    {
+        return view('student.registration.courseSlip_pdf');
+    }
+
     public function credit_exemption()
     {
         // $credit_exemp = CreditExemption::all();

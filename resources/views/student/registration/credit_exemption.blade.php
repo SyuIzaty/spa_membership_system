@@ -15,44 +15,44 @@
                         <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10" data-original-title="Close"></button>
                     </div>
                 </div>
+                
+                <div class="alert alert-warning alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <h5><i class="icon fal fa-info"></i> Message</h5>
+                    Please check your credit exemption details. If have an errors, please consult your academic advisor or faculty
+                </div> 
+
                 <div class="panel-container show">
                     <div class="panel-content">
-                        {{-- <div class="pull-right mb-4">
-                        </div> --}}
+                        <div class="card card-primary card-outline">
+                            <div class="card-header bg-highlight">
+                                <h5 class="card-title w-100">CREDIT EXEMPTION REGISTERED</h5>
+                            </div><br>
 
-                        <div class="alert alert-warning alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                            <h5><i class="icon fal fa-info"></i> Message</h5>
-                            Please check your credit exemption details. If have an errors, please consult your academic advisor or faculty
-                        </div> 
+                            <table id=" " class="table table-bordered table-hover table-striped w-100">
+                                <thead>
+                                    <tr class="bg-highlight">
+                                        <th>Course Code</th>
+                                        <th>Course Name</th>
+                                        <th>Credit</th>
+                                        <th>Session</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Course Code"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Course Name"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Credit"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Session"></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                </tbody>
 
-                        <div class="card-header">
-                            <h5 class="card-title w-100">CREDIT EXEMPTION REGISTERED</h5>
-                        </div><br>
-
-                        <table id=" " class="table table-bordered table-hover table-striped w-100">
-                            <thead>
-                                <tr class="bg-highlight">
-                                    <th>Course Code</th>
-                                    <th>Course Name</th>
-                                    <th>Credit</th>
-                                    <th>Session</th>
-                                </tr>
-                                <tr>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Course Code"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Course Name"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Credit"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Session"></td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                            </tbody>
-
-                        </table>
+                            </table>
+                        </div>
                     </div>
 
                     <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">

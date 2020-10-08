@@ -129,6 +129,7 @@ Route::get('/student/biodata/addressContact_edit/{id}', 'StudentController@addre
 Route::post('updateStudent', 'StudentController@updateStudent');
 //registration
 Route::get('/student/registration/course_register', 'StudentController@course_register');
+Route::get('/student/registration/courseSlip_pdf', 'StudentController@course_pdf');
 Route::get('/student/registration/credit_exemption', 'StudentController@credit_exemption');
 Route::get('/student/registration/project_info', 'StudentController@project_info');
 // Route::post('data-allCourse_exemp', 'StudentController@data-allCourse_exemp');
