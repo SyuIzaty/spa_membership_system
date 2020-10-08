@@ -1035,7 +1035,7 @@ function addQualification(x,xval,data=null){
         if(myfiles[xval])
         {
             console.log('In')
-            $('#existfile'+xval).append(`<a href="${ "/storage/" + myfiles[xval][0].web_path}" target="_blank">View</a> | <a href="${publicpath + "/" + myfiles[xval][0].web_path}" download >Download</a> `);
+            $('#existfile'+xval).append(`<a href="${publicpath}/qualificationfile/${myfiles[xval][0].file_name}/View" target="_blank">View</a> | <a href="${publicpath}/qualificationfile/${myfiles[xval][0].file_name}/Download">Download</a> `);
         }
 }
 

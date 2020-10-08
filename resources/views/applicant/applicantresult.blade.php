@@ -21,7 +21,7 @@
                     <div class="panel-container show">
                         <div class="panel-content">
                             @can('check requirement')
-                                    <button type="button" class="btn btn-info pull-right mb-5" onclick="window.location='{{ route("check-requirements") }}'">Check Requirement</button>
+                                    <button type="button" class="btn btn-info pull-right" onclick="window.location='{{ route("check-requirements") }}'">Check Requirement</button>
                                     @endcan
                                     <div class="intake_pass" id="intake_all"></div>
                                     <table class="table table-bordered" id="applicant">

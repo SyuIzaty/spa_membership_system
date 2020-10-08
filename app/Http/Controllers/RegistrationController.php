@@ -29,6 +29,8 @@ use Carbon\Carbon;
 use App\Http\Requests\StoreApplicantRequest;
 use App\Http\Requests\StoreApplicantDetailRequest;
 use File;
+use Storage;
+use Response;
 
 class RegistrationController extends Controller
 {
@@ -576,40 +578,63 @@ class RegistrationController extends Controller
         return redirect()->route('printReg', ['id' => $id]);
     }
 
+    public function qualificationfile($filename,$type)
+    {
+        $path = storage_path().'/'.'app'.'/qualification/'.$filename;
+
+        if($type == "Download")
+        {
+            if (file_exists($path)) {
+                return Response::download($path);
+            }
+        }
+        else
+        {
+            $file = File::get($path);
+            $filetype = File::mimeType($path);
+
+            $response = Response::make($file, 200);
+            $response->header("Content-Type", $type);
+
+            return $response;
+        }
+
+    }
+
     public function uploadFile($file,$qualificationid,$userid)
     {
-        $destinationPath =  files::where('fkey',$userid)->where('fkey2',$qualificationid)->select('web_path')->get();
-
-        foreach($destinationPath as $dp)
-        {
-            File::delete(storage_path()."/".$dp->web_path);
-        }
-        files::where('fkey',$userid)->where('fkey2',$qualificationid)->delete();
+        $this->deleteStorage($qualificationid,$userid);
 
         $type="Qualification";
-        $path = "private/upload/".$type."/";
-        if(!File::exists($path)) {
-            File::makeDirectory($path, 0777, true, true);
-        }
-
-        $destinationPath=storage_path()."/".$path;
+        $path=storage_path()."/qualification/";
         $extension = $file->getClientOriginalExtension();
         $originalName=$file->getClientOriginalName();
         $fileSize=$file->getSize();
         $fileName= $originalName;
-        $upload_success = $file->move($destinationPath, $fileName);
+        $file->storeAs('/qualification', $fileName);
         files::create(
             [
-             'Type' => $type,
-             'Fkey' => $userid,
-             'Fkey2' => $qualificationid,
-             'File_Name' => $originalName,
-             'File_Size' => $fileSize,
-             'Web_Path' => $path.$fileName,
+             'type' => $type,
+             'fkey' => $userid,
+             'fkey2' => $qualificationid,
+             'file_name' => $originalName,
+             'file_size' => $fileSize,
+             'web_path' => "app/qualification/".$fileName,
              'created_at' => date("Y-m-d H:i:s"),
              'updated_at' => date("Y-m-d H:i:s")
             ]
         );
+    }
+
+    public function deleteStorage($id,$userid)
+    {
+        $myfile =  files::where('fkey',$userid)->where('fkey2',$id)->select('web_path')->first();
+        if($myfile)
+        {
+            $path = storage_path().'/'.$myfile->web_path;
+            unlink($path);
+            files::where('fkey',$userid)->where('fkey2',$id)->delete();
+        }
     }
 
     public function deleteitem($id,$type,$userid)

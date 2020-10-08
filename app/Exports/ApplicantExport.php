@@ -21,9 +21,10 @@ class ApplicantExport implements FromCollection
     */
     public function collection()
     {
-        $applicant = Applicant::where('intake_id',$this->intake)->where('batch_code',$this->batch)->where('applicant_programme',$this->programme)->where('applicant_status',$this->status)->with(['applicantIntake'])->get();
+        $applicant = Applicant::where('intake_id',$this->intake)->where('batch_code',$this->batch)->where('applicant_programme',$this->programme)->where('applicant_status',$this->status)->with(['applicantIntake','status'])->get();
         $changed = $applicant->map(function ($value, $key) {
             $value['intake_id'] = $value['applicantIntake']['intake_code'];
+            $value['applicant_status'] = $value['status']['status_description'];
             return $value;
         });
         return $changed;

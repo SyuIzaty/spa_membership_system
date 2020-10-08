@@ -95,6 +95,7 @@ Route::get('registration/printReg/{id}','RegistrationController@printReg')->name
 Route::get('registration-data/{id}','RegistrationController@data');
 Route::get('testmajor','RegistrationController@testmajor');
 Route::post('applicant/delete/{id}/{type}/{userid}','RegistrationController@deleteitem');
+Route::get('qualificationfile/{filename}/{type}','RegistrationController@qualificationfile');
 
 //INTAKE
 Route::resource('/intake','IntakeController');
