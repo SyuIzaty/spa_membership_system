@@ -28,12 +28,9 @@
                                         <th>STUDENT ID</th>
                                         <th>APPLICANT</th>
                                         <th>INTAKE</th>
-                                        <th>PROG 1</th>
-                                        <th>PROG 2</th>
-                                        <th>PROG 3</th>
-                                        <th>BM</th>
-                                        <th>ENG</th>
-                                        <th>MATH</th>
+                                        <th>BATCH</th>
+                                        <th>PROG</th>
+                                        <th>MAJOR</th>
                                         <th>ACTION</th>
                                     </tr>
                                     <tr>
@@ -41,12 +38,9 @@
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Student ID"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Name"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Intake"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Batch"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Programme"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Programme"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Programme"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="BM"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Eng"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Math"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Major"></td>
                                         <td></td>
                                     </tr>
                                 </thead>
@@ -94,12 +88,9 @@
                     { data: 'student_id', name: 'student_id' },
                     { data: 'applicant_name', name: 'applicant_name' },
                     { data: 'intake_id', name: 'intake_id' },
-                    { data: 'prog_name', name: 'prog_name' },
-                    { data: 'prog_name_2', name: 'prog_name_2' },
-                    { data: 'prog_name_3', name: 'prog_name_3' },
-                    { data: 'bm', name: 'bm' },
-                    { data: 'english', name: 'english' },
-                    { data: 'math', name: 'math' },
+                    { data: 'batch_code', name: 'batch_code' },
+                    { data: 'offered_programme', name: 'offered_programme' },
+                    { data: 'offered_major', name: 'offered_major' },
                     { data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,

@@ -80,6 +80,9 @@ Route::post('/data_rejectedapplicant', 'ApplicantController@data_rejectedapplica
 Route::post('/data_passapplicant', 'ApplicantController@data_passapplicant');
 Route::post('/data_offerapplicant', 'ApplicantController@data_offerapplicant');
 Route::post('/data_acceptedapplicant', 'ApplicantController@data_acceptedapplicant');
+Route::get('/export_applicant', 'ApplicantController@applicant_all');
+Route::get('export', 'ApplicantController@export');
+Route::post('export', 'ApplicantController@export');
 
 //APPLICANT REGISTRATION
 Route::resource('/registration','RegistrationController');

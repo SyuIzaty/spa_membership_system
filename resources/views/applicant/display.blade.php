@@ -366,7 +366,7 @@
                                             <div class="card-body">
                                             @if(count($spm)!=0)
                                             <h5>SPM</h5>
-                                            {!! isset($spm->first()->file->web_path) ? '<a href="' .  storage_path($spm->first()->file->web_path) . '">Supporting Document</a>' : 'No Supporting Document' !!}
+                                            {!! isset($spm->first()->file->web_path) ? '<a href="' .  url($spm->first()->file->web_path) . '">Supporting Document</a>' : 'No Supporting Document' !!}
                                                 <table class="table table-bordered table-sm">
                                                 <thead class="bg-highlight">
                                                     <th>Subject Code</th>

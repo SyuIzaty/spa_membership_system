@@ -5,9 +5,9 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
-class ApplicantAcademic extends Model implements HasMedia
+class ApplicantAcademic extends Model
 {
-    use InteractsWithMedia, SoftDeletes;
+    use SoftDeletes;
     protected $table = 'applicant_academic';
     // Set mass-assignable fields
     protected $fillable = ['applicant_id','applicant_study','applicant_year','applicant_major','applicant_cgpa','type','updated_at','created_at'];

@@ -30,6 +30,8 @@ use DB;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Activitylog\Models\Activity;
 use Barryvdh\DomPDF\Facade as PDF;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ApplicantExport;
 
 class ApplicantController extends Controller
 {
@@ -350,7 +352,7 @@ class ApplicantController extends Controller
     public function data_offerapplicant() //Datatable: offer applicant
     {
         $applicant = Applicant::where('applicant_status','3')->get();
-        $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','applicantstatus','applicantIntake');
+        $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','applicantstatus','applicantIntake','batch');
         return datatables()::of($applicants)
             ->addColumn('applicant_name',function($applicants)
             {
@@ -360,38 +362,34 @@ class ApplicantController extends Controller
             {
                 return $applicants->applicantIntake->intake_code;
             })
-            ->addColumn('prog_name',function($applicants)
-            {
-                return '<div style="color:'.$applicants->statusResult->colour.'">'.$applicants->applicant_programme.'</div>';
-            })
-            ->addColumn('prog_name_2',function($applicants)
-            {
-                return isset($applicants->applicant_programme_2) ? '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->applicant_programme_2.'</div>' : '';
-
-            })
-            ->addColumn('prog_name_3',function($applicants)
-            {
-                return isset($applicants->applicant_programme_2) ? '<div style="color:'.$applicants->statusResultThree->colour.'">'.$applicants->applicant_programme_3.'</div>' : '';
-            })
-            ->addColumn('bm',function($applicants){
-                return $applicants->applicantresult->where('subject',1103)->isEmpty() ? '': $applicants->applicantresult->where('subject',1103)->first()->grades->grade_code;
-            })
-            ->addColumn('english',function($applicants){
-                return $applicants->applicantresult->where('subject',1119)->isEmpty() ? '': $applicants->applicantresult->where('subject',1119)->first()->grades->grade_code;
-            })
-            ->addColumn('math',function($applicants){
-                return $applicants->applicantresult->where('subject',1449)->isEmpty() ? '': $applicants->applicantresult->where('subject',1449)->first()->grades->grade_code;
-            })
-
-           ->addColumn('action', function ($applicants) {
+            ->addColumn('action', function ($applicants) {
                return '<div class="btn-block pull-right">
                <a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary pull-right"> <i class="fal fa-user"></i></a>
                <a href="'.action('IntakeController@letter', ['applicant_id' => $applicants->id]).'" class="btn btn-sm btn-info pull-right"><i class="fal fa-envelope"></i></a>
                <a href="'.action('IntakeController@sendEmail', ['applicant_id' => $applicants->id, 'intake_id' => $applicants->intake_id]).'" class="btn btn-sm btn-primary pull-right"><i class="fal fa-file-alt"></i></a>
                </div>';
-           })
-           ->rawColumns(['prog_name','prog_name_2','prog_name_3','action'])
-           ->make(true);
+            })
+            ->rawColumns(['prog_name','prog_name_2','prog_name_3','action'])
+            ->make(true);
+    }
+
+    public function applicant_all()
+    {
+        $intake = Intakes::all();
+        $batch = Batch::all();
+        $status = Status::all();
+        $programme = Programme::all();
+        return view('applicant.applicantall', compact('intake', 'batch', 'status', 'programme'));
+    }
+
+    public function export(Request $request)
+    {
+        $intake = $request->intake;
+        $batch = $request->batch;
+        $programme = $request->programme;
+        $status = $request->status;
+
+        return Excel::download(new ApplicantExport($intake, $batch, $programme, $status), 'applicant.xlsx');
     }
 
     public function data_acceptedapplicant()

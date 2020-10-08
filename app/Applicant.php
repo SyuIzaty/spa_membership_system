@@ -143,6 +143,11 @@ class Applicant extends Model
         return $this->hasOne('App\IntakeDetail', 'intake_code', 'intake_id');
     }
 
+    public function batch()
+    {
+        return $this->hasOne('App\Batch','batch_code','batch_code');
+    }
+
     public function scopeApplicantId($query, $applicantt)
     {
         return $query->where('id',$applicantt);
