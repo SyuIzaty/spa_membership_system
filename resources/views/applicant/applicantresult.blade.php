@@ -21,7 +21,10 @@
                     <div class="panel-container show">
                         <div class="panel-content">
                             @can('check requirement')
+                            <form action="{{ route('applicant-check') }}" method="post" name="form">
+                                @csrf
                                     <button type="button" class="btn btn-info pull-right" onclick="window.location='{{ route("check-requirements") }}'">Check Requirement</button>
+                                    <button type="submit" class="btn btn-primary pull-right"><i class="fal fa-user"></i> Check Individual</button>
                                     @endcan
                                     <div class="intake_pass" id="intake_all"></div>
                                     <table class="table table-bordered" id="applicant">
@@ -90,6 +93,7 @@
                                     </tbody>
                                 </table>
                             </div> --}}
+                            </form>
                         </div>
                     </div>
                 </div>

@@ -78,6 +78,7 @@ Route::post('appstat', 'ApplicantController@appstat');
 Route::post('updateEmergency', 'ApplicantController@updateEmergency');
 Route::post('updateGuardian', 'ApplicantController@updateGuardian');
 Route::post('updateApplicant', 'ApplicantController@updateApplicant');
+Route::post('/applicant-check', 'ApplicantController@applicantcheck')->name('applicant-check');
 
 Route::post('/data_incompleteapplicant', 'ApplicantController@data_incompleteapplicant');
 Route::post('/data_allapplicant', 'ApplicantController@data_allapplicant');

@@ -58,6 +58,7 @@ class ApplicantController extends Controller
         $state = State::all();
         $family = Family::all()->sortBy('family_name');
         $intake = Intakes::all();
+        $programme = Programme::all();
 
         $spm = ApplicantResult::ApplicantId($id)->Spm()->with(['grades','subjects','applicantAcademic','file'=>function($query){
             $query->where('fkey2','1');
@@ -91,7 +92,7 @@ class ApplicantController extends Controller
             $query->where('fkey2','8');
         }])->first();
 
-        $degree = ApplicantAcademic::ApplicantId($id)->Degree()->with(['file'=>function($query){
+        $degree = ApplicantAcademic::ApplicantId($id)->where('type','9')->with(['file'=>function($query){
             $query->where('fkey2','9');
         }])->first();
 
@@ -148,7 +149,7 @@ class ApplicantController extends Controller
         }
 
         $applicant_status = Status::where('status_code','>=','3')->get();
-        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace', 'aapplicant','country','marital','religion','race','gender','state','skm','mqf','kkm','cat','icaew','activity','intake','family','foundation','applicant_status', 'batch_1','batch_2','batch_3'));
+        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace', 'aapplicant','country','marital','religion','race','gender','state','skm','mqf','kkm','cat','icaew','activity','intake','family','foundation','applicant_status', 'batch_1','batch_2','batch_3','programme'));
     }
 
     public function updateApplicant(Request $request) // Update applicant detail
@@ -259,7 +260,9 @@ class ApplicantController extends Controller
             })
 
            ->addColumn('action', function ($applicants) {
-               return '<input type="checkbox" name="id" value='.$applicants->id.'><a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"><i class="fal fa-user"></i></a>';
+               return '<input type="checkbox" name="student_checkbox[]" value="'.$applicants->id.'" class="student_checkbox">
+               <a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"><i class="fal fa-user"></i></a>'
+               ;
            })
            ->rawColumns(['prog_name','prog_name_2','prog_name_3','action'])
            ->make(true);
@@ -500,7 +503,7 @@ class ApplicantController extends Controller
             $programme_status_3->programme_status_3 = '1';
             $programme_status_3->save();
         }
-        Applicant::where('id',$applicantt['id'])->where('applicant_status',NULL)->orWhere('applicant_status','0')->update(['applicant_status'=>'5']);
+        Applicant::where('id',$applicantt['id'])->update(['applicant_status'=>'5']);
     }
 
     public function rejected($applicantt, $programme_code)
@@ -523,7 +526,17 @@ class ApplicantController extends Controller
             $programme_status->save();
         }
 
-        Applicant::where('id',$applicantt['id'])->where('applicant_status',NULL)->orWhere('applicant_status','0')->update(['applicant_status'=>'5']);
+        $status_2 = Applicant::where('id',$applicantt['id'])->where('applicant_programme_2',NULL)->first();
+        $status_3 = Applicant::where('id',$applicantt['id'])->where('applicant_programme_3',NULL)->first();
+        if($status_2 || $status_3){
+            $status_3->programme_status_3 = '2';
+            $status_3->save();
+        }if($status_2){
+            $status_2->programme_status_2 = '2';
+            $status_2->save();
+        }
+
+        Applicant::where('id',$applicantt['id'])->update(['applicant_status'=>'5']);
     }
 
     public function spm($applicantt)
@@ -1144,7 +1157,7 @@ class ApplicantController extends Controller
     public function pac580($applicantt) //The Malaysian Institute of Certified Public Accountant
     {
         $status = [];
-        $bachelors = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Degree()->where('applicant_cgpa','>=',2.50)->count();
+        $bachelors = ApplicantAcademic::where('applicant_id',$applicantt['id'])->where('type','9')->where('applicant_cgpa','>=',2.50)->count();
         if($bachelors == 1)
         {
             $programme_code = 'PAC580';
@@ -1158,7 +1171,7 @@ class ApplicantController extends Controller
     public function pac570($applicantt) //Institute of Chartered Accountants in England and Wales (ICAEW)
     {
         $status = [];
-        $bachelors = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Degree()->where('applicant_cgpa','>=',2.75)->count();
+        $bachelors = ApplicantAcademic::where('applicant_id',$applicantt['id'])->where('type','9')->where('applicant_cgpa','>=',2.75)->count();
         if($bachelors == 1)
         {
             $status_bach = true;
@@ -1225,7 +1238,7 @@ class ApplicantController extends Controller
         $status = [];
 
         $muet = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Muet()->where('applicant_cgpa','>=',2)->count();
-        $bachelors = ApplicantResult::where('applicant_id',$applicantt['id'])->Degree()->where('applicant_cgpa','>=',2.50)->count();
+        $bachelors = ApplicantAcademic::where('applicant_id',$applicantt['id'])->where('type','9')->where('applicant_cgpa','>=',2.50)->count();
         if($muet >= 1 && $bachelors >= 1)
         {
             $programme_code = 'PAC553';
@@ -1242,7 +1255,7 @@ class ApplicantController extends Controller
         $status = [];
 
         $muet = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Muet()->where('applicant_cgpa','>=',2)->count();
-        $bachelors = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Degree()->where('applicant_cgpa','>=',2.50)->count();
+        $bachelors = ApplicantAcademic::where('applicant_id',$applicantt['id'])->where('type','9')->where('applicant_cgpa','>=',2.50)->count();
         if($muet >= 1 && $bachelors >= 1)
         {
             $programme_code = 'PAC554';
@@ -1256,7 +1269,7 @@ class ApplicantController extends Controller
 
     public function checkrequirements()
     {
-        $applicants = Applicant::where('applicant_status', NULL)->orWhere('applicant_status','0')->orWhere('applicant_status','00')->orWhere('applicant_status','A1')->get()->toArray();
+        $applicants = Applicant::where('applicant_status', NULL)->orWhere('applicant_status','0')->orWhere('applicant_status','A1')->get()->toArray();
         $programme = Programme::all();
         foreach ($applicants as $applicantt)
         {
@@ -1273,6 +1286,29 @@ class ApplicantController extends Controller
 
         }
         return $this->indexs();
+    }
+
+    public function applicantcheck(Request $request)
+    {
+        foreach ($request->student_checkbox as $applicant_id) {
+            $applicants = Applicant::where('id',$applicant_id)->get()->toArray();
+            $programme = Programme::all();
+            foreach ($applicants as $applicantt)
+            {
+                $programme_1 = $applicantt['applicant_programme'];
+                $programme_2 = $applicantt['applicant_programme_2'];
+                $programme_3 = $applicantt['applicant_programme_3'];
+                if(isset($applicantt['applicant_programme'])){
+                    $this->$programme_1($applicantt);
+                }if(isset($applicantt['applicant_programme_2'])){
+                    $this->$programme_2($applicantt);
+                }if(isset($applicantt['applicant_programme_3'])){
+                    $this->$programme_3($applicantt);
+                }
+
+            }
+        }
+        return redirect()->back();
     }
 
     public function intakestatus(Request $request)

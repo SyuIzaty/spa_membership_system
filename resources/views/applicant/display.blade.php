@@ -24,6 +24,11 @@
                                 <li class="nav-item">
                                     <a data-toggle="tab" class="nav-link" href="#details" role="tab">Applicant Details</a>
                                 </li>
+                                @if ($applicant->programme_status == '2' && $applicant->programme_status_2 == '2' && $applicant->programme_status_3 == '2')
+                                <li class="nav-item">
+                                    <a data-toggle="tab" class="nav-link" href="#individual" role="tab">Requirement Check</a>
+                                </li>
+                                @endif
                                 <li class="nav-item">
                                     <a data-toggle="tab" class="nav-link" href="#qualification" role="tab">Qualification</a>
                                 </li>
@@ -62,7 +67,8 @@
                                                 </div>
                                                 <hr class="mt-2 mb-3">
                                                 <div class="card">
-                                                    <div class="card-header">Offer Program</div>
+                                                    @if ($applicant->applicant_status != 00)
+                                                        <div class="card-header">Offer Program</div>
                                                         <div class="card-body">
                                                         @if(isset($applicant->applicant_name) )
                                                         {!! Form::open(['action' => ['ApplicantController@intakestatus'], 'method' => 'POST'])!!}
@@ -88,97 +94,98 @@
                                                                 <div class="col-md-2"><button class="btn btn-primary mt-4">Submit</button></div>
                                                             </div>
                                                             {!! Form::close() !!}
-                                                        <table class="table table-bordered table-sm">
-                                                            <thead class="bg-highlight">
-                                                                <th>Applicant Programme</th>
-                                                                <th>Applicant Major</th>
-                                                                <th>Batch Code</th>
-                                                                <th>Result</th>
-                                                                <th>Offer</th>
-                                                                <th>Action</th>
-                                                            </thead>
-                                                            {!! Form::open(['action' => ['ApplicantController@applicantstatus'], 'method' => 'POST'])!!}
-                                                            <tr>
-                                                                <input type="hidden" name="id" value="{{ $applicant->id }}">
-                                                                <input type="hidden" name="batch_code" value="{{ isset($batch_1->batch_code) ? $batch_1->batch_code : '' }}">
-                                                                <td>{{ Form::text('applicant_programme', $applicant->applicant_programme, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
-                                                                <td>{{ Form::text('applicant_major', $applicant->applicant_major, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
-                                                                <td>
-                                                                    @isset($applicant->batch_code)
-                                                                    {{ Form::text('batch_code', $applicant->batch_code, ['class' => 'form-control', 'readonly' => 'true']) }}
-                                                                    @endisset
-                                                                </td>
-                                                                <td>
-                                                                    @if($applicant->programme_status == '1')
-                                                                        <p style="color: green">Qualified</p>
-                                                                    @endif
-                                                                    @if($applicant->programme_status == '2')
-                                                                        <p style="color: red">Not Qualified</p>
-                                                                    @endif
-                                                                </td>
-                                                                <td>
-                                                                    {{ Form::checkbox('applicant_status', '3') }}
-                                                                </td>
-                                                                <td><div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div></td>
-                                                            </tr>
-                                                            {!! Form::close() !!}
-                                                            @isset($applicant->applicant_programme_2)
-                                                            {!! Form::open(['action' => ['ApplicantController@applicantstatus'], 'method' => 'POST'])!!}
-                                                            <tr>
-                                                                <input type="hidden" name="id" value="{{ $applicant->id }}">
-                                                                <input type="hidden" name="batch_code" value="{{ isset($batch_2->batch_code) ? $batch_2->batch_code : '' }}">
-                                                                <td>{{ Form::text('applicant_programme', $applicant->applicant_programme_2, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
-                                                                <td>{{ Form::text('applicant_major', $applicant->applicant_major_2, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
-                                                                <td>
-                                                                    @isset($applicant->batch_code)
-                                                                    {{ Form::text('batch_code', $applicant->batch_code, ['class' => 'form-control', 'readonly' => 'true']) }}
-                                                                    @endisset
-                                                                </td>
-                                                                <td>
-                                                                    @if($applicant->programme_status_2 == '1')
-                                                                        <p style="color: green">Qualified</p>
-                                                                    @endif
-                                                                    @if($applicant->programme_status_2 == '2')
-                                                                        <p style="color: red">Not Qualified</p>
-                                                                    @endif
-                                                                </td>
-                                                                <td>
-                                                                    {{ Form::checkbox('applicant_status', '3') }}
-                                                                </td>
-                                                                <td><div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div></td>
-                                                            </tr>
-                                                            {!! Form::close() !!}
-                                                            @endisset
-                                                            @isset($applicant->applicant_programme_3)
-                                                            {!! Form::open(['action' => ['ApplicantController@applicantstatus'], 'method' => 'POST'])!!}
-                                                            <tr>
-                                                                <input type="hidden" name="id" value="{{ $applicant->id }}">
-                                                                <input type="hidden" name="batch_code" value="{{ isset($batch_3->batch_code) ? $batch_3->batch_code : '' }}">
-                                                                <td>{{ Form::text('applicant_programme', $applicant->applicant_programme_3, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
-                                                                <td>{{ Form::text('applicant_major', $applicant->applicant_major_3, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
-                                                                <td>
-                                                                    @isset($applicant->batch_code)
-                                                                    {{ Form::text('batch_code', $applicant->batch_code, ['class' => 'form-control', 'readonly' => 'true']) }}
-                                                                    @endisset
-                                                                </td>
-                                                                <td>
-                                                                    @if($applicant->programme_status_3 == '1')
-                                                                        <p style="color: green">Qualified</p>
-                                                                    @endif
-                                                                    @if($applicant->programme_status_3 == '2')
-                                                                        <p style="color: red">Not Qualified</p>
-                                                                    @endif
-                                                                </td>
-                                                                <td>
-                                                                    {{ Form::checkbox('applicant_status', '3') }}
-                                                                </td>
-                                                                <td><div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div></td>
-                                                            </tr>
-                                                            {!! Form::close() !!}
-                                                            @endisset
-                                                        </table>
+                                                            <table class="table table-bordered table-sm">
+                                                                <thead class="bg-highlight">
+                                                                    <th>Applicant Programme</th>
+                                                                    <th>Applicant Major</th>
+                                                                    <th>Batch Code</th>
+                                                                    <th>Result</th>
+                                                                    <th>Offer</th>
+                                                                    <th>Action</th>
+                                                                </thead>
+                                                                {!! Form::open(['action' => ['ApplicantController@applicantstatus'], 'method' => 'POST'])!!}
+                                                                <tr>
+                                                                    <input type="hidden" name="id" value="{{ $applicant->id }}">
+                                                                    <input type="hidden" name="batch_code" value="{{ isset($batch_1->batch_code) ? $batch_1->batch_code : '' }}">
+                                                                    <td>{{ Form::text('applicant_programme', $applicant->applicant_programme, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
+                                                                    <td>{{ Form::text('applicant_major', $applicant->applicant_major, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
+                                                                    <td>
+                                                                        @isset($applicant->batch_code)
+                                                                        {{ Form::text('batch_code', $applicant->batch_code, ['class' => 'form-control', 'readonly' => 'true']) }}
+                                                                        @endisset
+                                                                    </td>
+                                                                    <td>
+                                                                        @if($applicant->programme_status == '1')
+                                                                            <p style="color: green">Qualified</p>
+                                                                        @endif
+                                                                        @if($applicant->programme_status == '2')
+                                                                            <p style="color: red">Not Qualified</p>
+                                                                        @endif
+                                                                    </td>
+                                                                    <td>
+                                                                        {{ Form::checkbox('applicant_status', '3') }}
+                                                                    </td>
+                                                                    <td><div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div></td>
+                                                                </tr>
+                                                                {!! Form::close() !!}
+                                                                @isset($applicant->applicant_programme_2)
+                                                                {!! Form::open(['action' => ['ApplicantController@applicantstatus'], 'method' => 'POST'])!!}
+                                                                <tr>
+                                                                    <input type="hidden" name="id" value="{{ $applicant->id }}">
+                                                                    <input type="hidden" name="batch_code" value="{{ isset($batch_2->batch_code) ? $batch_2->batch_code : '' }}">
+                                                                    <td>{{ Form::text('applicant_programme', $applicant->applicant_programme_2, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
+                                                                    <td>{{ Form::text('applicant_major', $applicant->applicant_major_2, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
+                                                                    <td>
+                                                                        @isset($applicant->batch_code)
+                                                                        {{ Form::text('batch_code', $applicant->batch_code, ['class' => 'form-control', 'readonly' => 'true']) }}
+                                                                        @endisset
+                                                                    </td>
+                                                                    <td>
+                                                                        @if($applicant->programme_status_2 == '1')
+                                                                            <p style="color: green">Qualified</p>
+                                                                        @endif
+                                                                        @if($applicant->programme_status_2 == '2')
+                                                                            <p style="color: red">Not Qualified</p>
+                                                                        @endif
+                                                                    </td>
+                                                                    <td>
+                                                                        {{ Form::checkbox('applicant_status', '3') }}
+                                                                    </td>
+                                                                    <td><div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div></td>
+                                                                </tr>
+                                                                {!! Form::close() !!}
+                                                                @endisset
+                                                                @isset($applicant->applicant_programme_3)
+                                                                {!! Form::open(['action' => ['ApplicantController@applicantstatus'], 'method' => 'POST'])!!}
+                                                                <tr>
+                                                                    <input type="hidden" name="id" value="{{ $applicant->id }}">
+                                                                    <input type="hidden" name="batch_code" value="{{ isset($batch_3->batch_code) ? $batch_3->batch_code : '' }}">
+                                                                    <td>{{ Form::text('applicant_programme', $applicant->applicant_programme_3, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
+                                                                    <td>{{ Form::text('applicant_major', $applicant->applicant_major_3, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
+                                                                    <td>
+                                                                        @isset($applicant->batch_code)
+                                                                        {{ Form::text('batch_code', $applicant->batch_code, ['class' => 'form-control', 'readonly' => 'true']) }}
+                                                                        @endisset
+                                                                    </td>
+                                                                    <td>
+                                                                        @if($applicant->programme_status_3 == '1')
+                                                                            <p style="color: green">Qualified</p>
+                                                                        @endif
+                                                                        @if($applicant->programme_status_3 == '2')
+                                                                            <p style="color: red">Not Qualified</p>
+                                                                        @endif
+                                                                    </td>
+                                                                    <td>
+                                                                        {{ Form::checkbox('applicant_status', '3') }}
+                                                                    </td>
+                                                                    <td><div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div></td>
+                                                                </tr>
+                                                                {!! Form::close() !!}
+                                                                @endisset
+                                                            </table>
                                                         @endif
                                                     </div>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -353,7 +360,32 @@
                                             </div>
                                         @endif
                                     </div>
+                                    <div class="tab-pane" id="individual" role="tabpanel">
+                                        <hr class="mt-2 mb-3">
+                                        <div class="card">
+                                            <div class="card-header">Requirement Check</div>
+                                            <div class="card-body">
+                                                <a href="" class="btn btn-primary">Check Requirement</a>
+                                                <table class="table table-bordered table-hover table-sm">
+                                                    <thead class="bg-highlight">
+                                                        <th>Programme Code</th>
+                                                        <th>Programme Name</th>
+                                                        <th>Programme Duration</th>
+                                                        <th>Result</th>
+                                                    </thead>
+                                                    @foreach ($programme as $programmes)
+                                                        <tr>
+                                                            <td>{{ $programmes->programme_code }}</td>
+                                                            <td>{{ $programmes->programme_name }}</td>
+                                                            <td>{{ $programmes->programme_duration }}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="tab-pane" id="qualification" role="tabpanel">
+                                        <hr class="mt-2 mb-3">
                                         <div class="card">
                                             <div class="card-header">Applicant Academic</div>
                                             <div class="card-body">
