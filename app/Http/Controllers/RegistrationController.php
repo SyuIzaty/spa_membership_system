@@ -303,6 +303,7 @@ class RegistrationController extends Controller
             'applicant_race' => $request->applicant_race,
             'applicant_religion' => $request->applicant_religion,
             'applicant_dob' => $request->applicant_dob,
+            'applicant_status' => 'A1',
         ]);
         if($request->hasFile('image') && $request->file('image')->isValid()){
             $applicant->addMediaFromRequest('image')->toMediaCollection('images');

@@ -58,7 +58,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Export</button>
+                                <button type="submit" class="btn btn-primary form-group">Export</button>
                             </div>
                             {!! Form::close() !!}
                         </div>

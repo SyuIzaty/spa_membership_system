@@ -65,29 +65,6 @@
                                                     <div class="card-header">Offer Program</div>
                                                         <div class="card-body">
                                                         @if(isset($applicant->applicant_name) )
-                                                        {{-- @if(count($applicantresult) > 0) --}}
-                                                        {{-- <table class="table table-sm">
-                                                            <tr id={{ $applicant->id }}>
-                                                                <td>Intake Sessions</td>
-                                                                <td>
-                                                                    <select name="applicant_intake" class="form-control" id="intake_1">
-                                                                        <option value="{{ $applicant->intake_id }}">{{ $applicant->applicantIntake->intake_code }}</option>
-                                                                        @foreach ($intake as $in)
-                                                                            <option value="{{ $in->id }}">{{ $in->intake_code }}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </td>
-                                                            </tr>
-                                                            <tr id="{{ $applicant->id }}">
-                                                                <td>Applicant Status</td>
-                                                                <td>
-                                                                    <select class="form-control" id="app_stat" name="app_stat">
-                                                                        <option disabled selected>Please select</option>
-                                                                        <option value="">Register</option>
-                                                                    </select>
-                                                                </td>
-                                                            </tr>
-                                                        </table> --}}
                                                         {!! Form::open(['action' => ['ApplicantController@intakestatus'], 'method' => 'POST'])!!}
                                                             <div class="row">
                                                                 <div class="col-md-5 form-group">
@@ -117,86 +94,88 @@
                                                                 <th>Applicant Major</th>
                                                                 <th>Batch Code</th>
                                                                 <th>Result</th>
+                                                                <th>Offer</th>
                                                                 <th>Action</th>
                                                             </thead>
-                                                            <tr id={{$applicant->id}}>
+                                                            {!! Form::open(['action' => ['ApplicantController@applicantstatus'], 'method' => 'POST'])!!}
+                                                            <tr>
+                                                                <input type="hidden" name="id" value="{{ $applicant->id }}">
+                                                                <input type="hidden" name="batch_code" value="{{ isset($batch_1->batch_code) ? $batch_1->batch_code : '' }}">
+                                                                <td>{{ Form::text('applicant_programme', $applicant->applicant_programme, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
+                                                                <td>{{ Form::text('applicant_major', $applicant->applicant_major, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
                                                                 <td>
-                                                                    <p>{{ $applicant->applicant_programme }}</p>
-                                                                    <p>{{ $applicant->applicant_programme_2 }}</p>
-                                                                    <p>{{ $applicant->applicant_programme_3 }}</p>
+                                                                    @isset($applicant->batch_code)
+                                                                    {{ Form::text('batch_code', $applicant->batch_code, ['class' => 'form-control', 'readonly' => 'true']) }}
+                                                                    @endisset
                                                                 </td>
                                                                 <td>
-                                                                    <p>{{ $applicant->applicant_major }}</p>
-                                                                    <p>{{ $applicant->applicant_major_2 }}</p>
-                                                                    <p>{{ $applicant->applicant_major_3 }}</p>
-                                                                </td>
-                                                                <td>
-                                                                    <p>{{ isset($batch_1->batch_code) ? $batch_1->batch_code : '' }}</p>
-                                                                    <p>{{ isset($batch_2->batch_code) ? $batch_2->batch_code : '' }}</p>
-                                                                    <p>{{ isset($batch_3->batch_code) ? $batch_3->batch_code : '' }}</p>
-                                                                </td>
-                                                                <td>
-                                                                    @if($applicant['programme_status']== '1')
+                                                                    @if($applicant->programme_status == '1')
                                                                         <p style="color: green">Qualified</p>
                                                                     @endif
-                                                                    @if($applicant['programme_status']== '2')
-                                                                        <p style="color: red">Not Qualified</p>
-                                                                    @endif
-                                                                    @if($applicant['programme_status_2']== '1')
-                                                                        <p style="color: green">Qualified</p>
-                                                                    @endif
-                                                                    @if($applicant['programme_status_2']== '2')
-                                                                        <p style="color: red">Not Qualified</p>
-                                                                    @endif
-                                                                    @if($applicant['programme_status_3']== '1')
-                                                                        <p style="color: green">Qualified</p>
-                                                                    @endif
-                                                                    @if($applicant['programme_status_3']== '2')
+                                                                    @if($applicant->programme_status == '2')
                                                                         <p style="color: red">Not Qualified</p>
                                                                     @endif
                                                                 </td>
                                                                 <td>
-                                                                    @foreach($aapplicant as $aapplicant_all_app)
-                                                                    @if($aapplicant_all_app['programme_status'] == '1')
-                                                                    <select name="applicant_status" class="form-control" id="status_{{ $aapplicant_all_app['applicant_programme'] }}">
-                                                                        @if (isset($applicant->applicant_status))
-                                                                            <option value="{{ $applicant->applicant_status }}">{{ $applicant->status->status_description }}</option>
-                                                                            <option value="3">Selected</option>
-                                                                            <option value="4">Selected for Interview</option>
-                                                                        @else
-                                                                            <option disabled selected>Please Select</option>
-                                                                            <option value="3">Selected</option>
-                                                                            <option value="4">Selected for Interview</option>
-                                                                        @endif
-                                                                    </select>
-                                                                    @else
-                                                                    <input class="form-control" value="Not Selected" name="applicant_status" disabled>
-                                                                    @endif
-                                                                    @endforeach
-                                                                    @foreach($aapplicant as $aapplicant_all_app)
-                                                                    @if($aapplicant_all_app['programme_status_2'] == '1')
-                                                                    <select name="applicant_status" class="form-control" id="status_{{$aapplicant_all_app['applicant_programme_2']}}">
-                                                                        <option disabled selected>Please select</option>
-                                                                        <option value="3">Selected</option>
-                                                                        <option value="4">Selected for Interview</option>
-                                                                    </select>
-                                                                    @else
-                                                                    <input class="form-control" value="Not Selected" name="applicant_status" disabled>
-                                                                    @endif
-                                                                    @endforeach
-                                                                    @foreach($aapplicant as $aapplicant_all_app)
-                                                                    @if($aapplicant_all_app['programme_status_3'] == '1')
-                                                                    <select name="applicant_status_3" class="form-control" id="status_{{$aapplicant_all_app['applicant_programme_3']}}">
-                                                                        <option disabled selected>Please select</option>
-                                                                        <option value="3">Selected</option>
-                                                                        <option value="4">Selected for Interview</option>
-                                                                    </select>
-                                                                    @else
-                                                                    <input class="form-control" value="Not Selected" name="applicant_status" disabled>
-                                                                    @endif
-                                                                    @endforeach
+                                                                    {{ Form::checkbox('applicant_status', '3') }}
                                                                 </td>
+                                                                <td><div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div></td>
                                                             </tr>
+                                                            {!! Form::close() !!}
+                                                            @isset($applicant->applicant_programme_2)
+                                                            {!! Form::open(['action' => ['ApplicantController@applicantstatus'], 'method' => 'POST'])!!}
+                                                            <tr>
+                                                                <input type="hidden" name="id" value="{{ $applicant->id }}">
+                                                                <input type="hidden" name="batch_code" value="{{ isset($batch_2->batch_code) ? $batch_2->batch_code : '' }}">
+                                                                <td>{{ Form::text('applicant_programme', $applicant->applicant_programme_2, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
+                                                                <td>{{ Form::text('applicant_major', $applicant->applicant_major_2, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
+                                                                <td>
+                                                                    @isset($applicant->batch_code)
+                                                                    {{ Form::text('batch_code', $applicant->batch_code, ['class' => 'form-control', 'readonly' => 'true']) }}
+                                                                    @endisset
+                                                                </td>
+                                                                <td>
+                                                                    @if($applicant->programme_status_2 == '1')
+                                                                        <p style="color: green">Qualified</p>
+                                                                    @endif
+                                                                    @if($applicant->programme_status_2 == '2')
+                                                                        <p style="color: red">Not Qualified</p>
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    {{ Form::checkbox('applicant_status', '3') }}
+                                                                </td>
+                                                                <td><div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div></td>
+                                                            </tr>
+                                                            {!! Form::close() !!}
+                                                            @endisset
+                                                            @isset($applicant->applicant_programme_3)
+                                                            {!! Form::open(['action' => ['ApplicantController@applicantstatus'], 'method' => 'POST'])!!}
+                                                            <tr>
+                                                                <input type="hidden" name="id" value="{{ $applicant->id }}">
+                                                                <input type="hidden" name="batch_code" value="{{ isset($batch_3->batch_code) ? $batch_3->batch_code : '' }}">
+                                                                <td>{{ Form::text('applicant_programme', $applicant->applicant_programme_3, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
+                                                                <td>{{ Form::text('applicant_major', $applicant->applicant_major_3, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
+                                                                <td>
+                                                                    @isset($applicant->batch_code)
+                                                                    {{ Form::text('batch_code', $applicant->batch_code, ['class' => 'form-control', 'readonly' => 'true']) }}
+                                                                    @endisset
+                                                                </td>
+                                                                <td>
+                                                                    @if($applicant->programme_status_3 == '1')
+                                                                        <p style="color: green">Qualified</p>
+                                                                    @endif
+                                                                    @if($applicant->programme_status_3 == '2')
+                                                                        <p style="color: red">Not Qualified</p>
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    {{ Form::checkbox('applicant_status', '3') }}
+                                                                </td>
+                                                                <td><div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div></td>
+                                                            </tr>
+                                                            {!! Form::close() !!}
+                                                            @endisset
                                                         </table>
                                                         @endif
                                                     </div>
@@ -359,6 +338,20 @@
                                                 @endif
                                             </div>
                                         </div>
+                                        <hr class="mt-2 mb-3">
+                                        @if ($applicant->applicant_status == '3')
+                                            <div class="card">
+                                                <div class="card-header">Cancel Offer</div>
+                                                <div class="card-body">
+                                                    {!! Form::open(['action' => ['ApplicantController@cancelOffer'], 'method' => 'POST'])!!}
+                                                        <input type="hidden" name="applicant_id" value="{{ $applicant->id }}">
+                                                        {{ Form::label('title', 'Reason') }}
+                                                        {{ Form::textarea('cancel_reason',isset($applicant->applicantstatus) ? $applicant->applicantstatus->cancel_reason : '',['class' => 'form-control', 'placeholder' => 'Reason']) }}
+                                                        <button class="btn btn-primary">Submit</button>
+                                                    {!! Form::close() !!}
+                                                </div>
+                                            </div>
+                                        @endif
                                     </div>
                                     <div class="tab-pane" id="qualification" role="tabpanel">
                                         <div class="card">
@@ -920,91 +913,4 @@
             </div>
         </div>
     </main>
-@endsection
-@section('script')
-<script>
-    $(document).ready(function() {
-        $('.country, .gender, .marital, .race, .religion, .relation').select2();
-    });
-    @foreach($aapplicant as $aapplicant_all_app)
-    $(function(){
-        $('#status_{{$aapplicant_all_app['applicant_programme']}}').on('change',function(){
-            var programme = "{{$aapplicant_all_app['applicant_programme']}}";
-            var major = "{{$applicant->applicant_major}}";
-            var batch = "{{ isset($batch_1->batch_code) ? $batch_1->batch_code : '' }}";
-            var selectedValue = $(this).val();
-            var trid = $(this).closest('tr').attr('id');
-            console.log(programme);
-            console.log(major);
-            console.log(selectedValue);
-            console.log(trid);
-            $.ajax({
-                url: "{{url('/programmestatus')}}",
-                method: "post",
-                data: { "_token": "{{ csrf_token() }}", applicant_id: trid, applicant_programme: programme, applicant_major: major, batch_code: batch, applicant_status: selectedValue },
-                success: function(response) {
-                alert('Data has been updated');
-                return response;
-                },
-                error: function() {
-                    alert('error');
-                }
-
-            });
-        });
-
-        $('#status_{{$aapplicant_all_app['applicant_programme_2']}}').on('change',function(){
-            var programme = "{{$aapplicant_all_app['applicant_programme_2']}}";
-            var major = "{{$applicant->applicant_major_2}}";
-            var batch = "{{ isset($batch_2->batch_code) ? $batch_2->batch_code : '' }}";
-            var selectedValue = $(this).val();
-            var trid = $(this).closest('tr').attr('id');
-            console.log(programme);
-            console.log(major);
-            console.log(selectedValue);
-            console.log(trid);
-            $.ajax({
-                url: "{{url('/programmestatus')}}",
-                method: "post",
-                data: { "_token": "{{ csrf_token() }}", applicant_id: trid, applicant_programme: programme,applicant_major: major, batch_code: batch, applicant_status: selectedValue },
-                success: function(response) {
-                alert('Data has been updated');
-                return response;
-                },
-                error: function() {
-                    alert('error');
-                }
-
-            });
-        });
-
-        $('#status_{{$aapplicant_all_app['applicant_programme_3']}}').on('change',function(){
-            var programme = "{{$aapplicant_all_app['applicant_programme_3']}}";
-            var major = "{{$applicant->applicant_major_3}}";
-            var batch = "{{ isset($batch_3->batch_code) ? $batch_3->batch_code : '' }}";
-            var selectedValue = $(this).val();
-            var trid = $(this).closest('tr').attr('id');
-            console.log(programme);
-            console.log(major);
-            console.log(selectedValue);
-            console.log(trid);
-            $.ajax({
-                url: "{{url('/programmestatus')}}",
-                method: "post",
-                data: { "_token": "{{ csrf_token() }}", applicant_id: trid, applicant_programme: programme,applicant_major: major, batch_code: batch, applicant_status: selectedValue },
-                success: function(response) {
-                alert('Data has been updated');
-                return response;
-                },
-                error: function() {
-                    alert('error');
-                }
-
-            });
-        });
-    });
-    @endforeach
-</script>
-
-
 @endsection

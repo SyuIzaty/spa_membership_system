@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreBatchRequest;
 use App\Batch;
 use App\Programme;
+use App\IntakeDetail;
 
 class BatchController extends Controller
 {
@@ -21,6 +22,9 @@ class BatchController extends Controller
 
     public function data_allbatch()
     {
+        $intake = IntakeDetail::pluck('batch_code')->all();
+        $batches = Batch::whereNotIn('batch_code',$intake)->pluck('batch_code')->all();
+
         $batch = Batch::all();
         return datatables()::of($batch)
         ->addColumn('batch_status',function($batch){
@@ -31,11 +35,12 @@ class BatchController extends Controller
                 return 'Inactive';
             }
         })
-        ->addColumn('action', function ($batch) {
-
-            return '<a href="/batch/'.$batch->id.'/edit" class="btn btn-sm btn-primary"> Edit</a>
-            <button class="btn btn-sm btn-danger btn-delete delete" data-remote="/batch/' . $batch->id . '"> Delete</button>'
-            ;
+        ->addColumn('action', function ($batch) use ($intake) {
+            if(!in_array($batch->batch_code, $intake)){
+                return '<a href="/batch/'.$batch->id.'/edit" class="btn btn-sm btn-primary"> Edit</a>
+                <button class="btn btn-sm btn-danger btn-delete delete" data-remote="/batch/' . $batch->id . '"> Delete</button>'
+                ;
+            }
         })
 
         ->make(true);

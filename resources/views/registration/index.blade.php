@@ -15,6 +15,7 @@
             <div class="card-body">
                 {!! Form::open(['action' => 'RegistrationController@store', 'method' => 'POST']) !!}
                 <div class="row">
+                    <input type="hidden" name="applicant_status" value="00">
                     <div class="form-group col-md-8">
                         @foreach ($intake as $intakes)
                             <input type="hidden" value="{{ $intakes->id }}" name="intake_id">

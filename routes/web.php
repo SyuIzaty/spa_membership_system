@@ -63,18 +63,23 @@ Route::resource('space/roomowner', 'RoomOwnerController');  //roomowner
 
 
 Route::get('/applicantresult','ApplicantController@indexs');
+Route::get('/incomplete','ApplicantController@applicant_incomplete');
 Route::get('/passapplicant','ApplicantController@applicant_pass');
 Route::get('/failapplicant','ApplicantController@applicant_fail');
 Route::get('/offerapplicant','ApplicantController@applicant_offer');
 Route::get('checkrequirements', 'ApplicantController@checkrequirements')->name('check-requirements');
+Route::get('checkindividual', 'ApplicantController@checkindividual')->name('check-individual');
 Route::post('changestatus', 'ApplicantController@changestatus');
-Route::post('programmestatus', 'ApplicantController@programmestatus');
+// Route::post('programmestatus', 'ApplicantController@programmestatus');
+Route::post('applicantstatus', 'ApplicantController@applicantstatus');
 Route::post('intakestatus', 'ApplicantController@intakestatus');
+Route::post('cancelOffer', 'ApplicantController@cancelOffer');
 Route::post('appstat', 'ApplicantController@appstat');
 Route::post('updateEmergency', 'ApplicantController@updateEmergency');
 Route::post('updateGuardian', 'ApplicantController@updateGuardian');
 Route::post('updateApplicant', 'ApplicantController@updateApplicant');
 
+Route::post('/data_incompleteapplicant', 'ApplicantController@data_incompleteapplicant');
 Route::post('/data_allapplicant', 'ApplicantController@data_allapplicant');
 Route::post('/data_rejectedapplicant', 'ApplicantController@data_rejectedapplicant');
 Route::post('/data_passapplicant', 'ApplicantController@data_passapplicant');

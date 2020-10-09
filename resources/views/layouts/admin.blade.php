@@ -148,6 +148,12 @@
                                 </a>
                                 <ul>
                                     <li>
+                                        <a href="/incomplete" title="Pending Applicant" data-filter-tags="active_student">
+                                            <i class="fal fa-clipboard-list"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Incomplete Application</span>
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a href="/applicantresult" title="Pending Applicant" data-filter-tags="active_student">
                                             <i class="fal fa-user"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">New Applicants</span>
@@ -183,13 +189,13 @@
                                             <span class="nav-link-text" data-i18n="nav.active_student">Batch</span>
                                         </a>
                                     </li>
-                                    {{-- <li>
+                                    <li>
                                         <a href="/export_applicant" title="Batch" data-filter-tags="batch">
                                             <i class="fal fa-file-excel"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">Export</span>
                                         </a>
                                     </li>
-                                    <li>
+                                    {{-- <li>
                                         <a href="/course" title="Active Student" data-filter-tags="active_student">
                                             <i class="fal fa-user"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">Offer Histroy</span>

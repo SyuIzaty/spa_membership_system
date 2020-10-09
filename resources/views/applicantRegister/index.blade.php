@@ -18,7 +18,7 @@
                         <div class="p-2"><h3>NEW APPLICATION</h3></div>
                     </div>
                     <div class="d-flex justify-content-center">
-                            <div class="p-2"><a href="{{ route('registration.index') }}" class="btn btn-primary">NEW APPLICATION</a></div>
+                        <div class="p-2"><a href="{{ route('registration.index') }}" class="btn btn-primary">NEW APPLICATION</a></div>
                     </div>
                     @endisset
                     <hr class="mt-2 mb-3">
