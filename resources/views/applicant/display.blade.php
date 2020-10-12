@@ -365,22 +365,47 @@
                                         <div class="card">
                                             <div class="card-header">Requirement Check</div>
                                             <div class="card-body">
-                                                <a href="" class="btn btn-primary">Check Requirement</a>
-                                                <table class="table table-bordered table-hover table-sm">
-                                                    <thead class="bg-highlight">
-                                                        <th>Programme Code</th>
-                                                        <th>Programme Name</th>
-                                                        <th>Programme Duration</th>
-                                                        <th>Result</th>
-                                                    </thead>
-                                                    @foreach ($programme as $programmes)
-                                                        <tr>
-                                                            <td>{{ $programmes->programme_code }}</td>
-                                                            <td>{{ $programmes->programme_name }}</td>
-                                                            <td>{{ $programmes->programme_duration }}</td>
-                                                        </tr>
-                                                    @endforeach
-                                                </table>
+                                                <form action="{{ route('checkIndividual') }}" method="post" name="form">
+                                                    @csrf
+                                                    <input type="hidden" name="applicant_id" value="{{ $applicant->id }}">
+                                                    <button type="submit" class="btn btn-primary">Recheck</button>
+                                                </form>
+                                                @isset($applicant_recheck)
+                                                <p class="mt-3">Qualified Programme</p>
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <th>Programme Code</th>
+                                                            <th>Major</th>
+                                                            <th>Offer</th>
+                                                            <th>Action</th>
+                                                        </thead>
+                                                        @foreach ($applicant_recheck as $app_recheck)
+                                                        <form action="{{ route('qualifiedProgramme') }}" method="post" name="form">
+                                                            <input type="hidden" name="applicant_id" value="{{ $applicant->id }}">
+                                                            @csrf
+                                                            <tr>
+                                                                <td>{{ Form::text('programme_code', $app_recheck->programme_code, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
+                                                                <td>
+                                                                    <select class="form-control" name="major">
+                                                                        <?php
+                                                                            $major_list = $app_recheck->programme->major;
+                                                                            $test = $major_list->each(function($item, $value){
+                                                                        ?>
+                                                                        <option name="major_code" value="{{ $item['major_code'] }}">{{ $item['major_code'] }}</option>
+                                                                        <?php
+                                                                            });
+                                                                        ?>
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="checkbox" name="check" value="">
+                                                                </td>
+                                                                <td><div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div></td>
+                                                            </tr>
+                                                        </form>
+                                                        @endforeach
+                                                    </table>
+                                                @endisset
                                             </div>
                                         </div>
                                     </div>

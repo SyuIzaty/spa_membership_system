@@ -26,6 +26,7 @@
                                     <tr>
                                         <th>NO</th>
                                         <th>APPLICANT</th>
+                                        <th>IC</th>
                                         <th>INTAKE</th>
                                         <th>PROG 1</th>
                                         <th>PROG 2</th>
@@ -35,6 +36,7 @@
                                     <tr>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Applicant Name"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Applicant IC"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Intake"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
@@ -95,6 +97,7 @@
             columns: [
                     { data: 'id', name: 'id' },
                     { data: 'applicant_name', name: 'applicant_name' },
+                    { data: 'applicant_ic', name: 'applicant_ic' },
                     { data: 'intake_id', name: 'intake_id' },
                     { data: 'prog_name', name: 'prog_name' },
                     { data: 'prog_name_2', name: 'prog_name_2' },

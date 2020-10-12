@@ -26,6 +26,7 @@ use App\Intakes;
 use App\Files;
 use App\Batch;
 use App\Status;
+use App\ApplicantRecheck;
 use DB;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Activitylog\Models\Activity;
@@ -50,6 +51,8 @@ class ApplicantController extends Controller
 
         $batch_3 = IntakeDetail::Intake($applicant->intake_id)->Active()->where('intake_programme',$applicant->applicant_programme_3)->first();
 
+        $applicant_recheck = ApplicantRecheck::where('applicant_id', $id)->with(['programme'])->get();
+
         $country = Country::all();
         $marital = Marital::all();
         $religion = Religion::all();
@@ -58,7 +61,6 @@ class ApplicantController extends Controller
         $state = State::all();
         $family = Family::all()->sortBy('family_name');
         $intake = Intakes::all();
-        $programme = Programme::all();
 
         $spm = ApplicantResult::ApplicantId($id)->Spm()->with(['grades','subjects','applicantAcademic','file'=>function($query){
             $query->where('fkey2','1');
@@ -149,7 +151,7 @@ class ApplicantController extends Controller
         }
 
         $applicant_status = Status::where('status_code','>=','3')->get();
-        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace', 'aapplicant','country','marital','religion','race','gender','state','skm','mqf','kkm','cat','icaew','activity','intake','family','foundation','applicant_status', 'batch_1','batch_2','batch_3','programme'));
+        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace', 'aapplicant','country','marital','religion','race','gender','state','skm','mqf','kkm','cat','icaew','activity','intake','family','foundation','applicant_status', 'batch_1','batch_2','batch_3','applicant_recheck'));
     }
 
     public function updateApplicant(Request $request) // Update applicant detail
@@ -504,6 +506,15 @@ class ApplicantController extends Controller
             $programme_status_3->save();
         }
         Applicant::where('id',$applicantt['id'])->update(['applicant_status'=>'5']);
+
+        $app = Applicant::where('id',$applicantt['id'])->first();
+        if($app['programme_status'] == '2' && $app['programme_status_2'] == '2' && $app['programme_status_3'] == '2')
+        {
+            ApplicantRecheck::create([
+                'applicant_id' => $app['id'],
+                'programme_code' => $programme_code,
+            ]);
+        }
     }
 
     public function rejected($applicantt, $programme_code)
@@ -724,6 +735,37 @@ class ApplicantController extends Controller
             $this->accepted($applicantt, $programme_code);
         } else {
             $programme_code = 'IAM10';
+            $this->rejected($applicantt, $programme_code);
+        }
+    }
+
+    public function iam11($applicantt) //SACE International
+    {
+        $status = [];
+        $spm = $this->spm($applicantt);
+        if($spm['count_eng'] == 1 && $spm['count_math'] == 1 && $spm['spm'] >= 5)
+        {
+            $status_spm = true;
+        }else{
+            $status_spm = false;
+        }
+
+        $olevel = $this->olevel($applicantt);
+        if($olevel['count_eng'] == 1  && ($olevel['count_math_a'] == 1 || $olevel['count_math_d'] == 1) && $olevel['olevel'] >= 5)
+        {
+            $status_olevel = true;
+        }else{
+            $status_olevel = false;
+        }
+
+        $status = array($status_spm, $status_olevel);
+
+        if(in_array(true, $status))
+        {
+            $programme_code = 'IAM11';
+            $this->accepted($applicantt, $programme_code);
+        } else {
+            $programme_code = 'IAM11';
             $this->rejected($applicantt, $programme_code);
         }
     }
@@ -984,7 +1026,7 @@ class ApplicantController extends Controller
             $status_olevel = false;
         }
 
-        $sace = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Sace()->where('cgpa','>=',50)->count();
+        $sace = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Sace()->where('applicant_cgpa','>=',50)->count();
         if($sace == 1)
         {
             $status_sace = true;
@@ -1221,7 +1263,7 @@ class ApplicantController extends Controller
         $status = [];
 
         $muet = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Muet()->where('applicant_cgpa','>=',2)->count();
-        $diploma = ApplicantAcadmic::where('applicant_id',$applicantt['id'])->Diploma()->where('applicant_cgpa','>=',3.00)->count();
+        $diploma = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Diploma()->where('applicant_cgpa','>=',3.00)->count();
         if($muet >= 1 && $diploma >= 1)
         {
             $programme_code = 'PAC551';
@@ -1308,6 +1350,45 @@ class ApplicantController extends Controller
 
             }
         }
+        return redirect()->back();
+    }
+
+    public function checkIndividual(Request $request)
+    {
+        $applicants = Applicant::where('id', $request->applicant_id)->get()->toArray();
+        $programme = Programme::all();
+        foreach ($applicants as $applicantt) {
+            foreach ($programme as $programmes) {
+                $programme_func = $programmes->programme_code;
+                $this->$programme_func($applicantt);
+            }
+        }
+        return redirect()->back();
+    }
+
+    public function qualifiedProgramme(Request $request)
+    {
+        $applicant = Applicant::where('id',$request->applicant_id)->first();
+        do {
+            $year = substr((date("Y",strtotime($applicant->created_at))),-2);
+            $random = mt_rand(1000,9999);
+            $student_id = $year . '1117' . $random;
+         } while ( Applicant::where('student_id', $student_id )->exists() );
+
+        Applicant::where('id',$request->applicant_id)->update(['offered_programme' => $request->programme_code, 'offered_major' => $request->major, 'applicant_status' => '3', 'student_id' => $student_id]);
+
+        $intake = Applicant::where('id',$request->applicant_id)->where('offered_programme',$request->programme_code)->where('offered_major',$request->major)->with(['intakeDetail'=>function($query) use ($request){
+            $query->where('status','1')->where('intake_programme',$request->programme_code);
+        }])->first();
+
+        if(isset($intake->intakeDetail->batch_code)){
+            $offer = Applicant::where('id',$request->applicant_id)->update(['batch_code' => $intake->intakeDetail->batch_code]);
+        }else{
+            Applicant::where('id',$request->applicant_id)->update(['offered_programme' => '', 'offered_major' => '', 'applicant_status' => '5', 'student_id' => '']);
+            return '<script type="text/javascript">alert("Programme not offered for this intake");history.go(-1);;
+            </script>';
+        }
+
         return redirect()->back();
     }
 
