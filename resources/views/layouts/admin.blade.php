@@ -184,6 +184,12 @@
                                         </a>
                                     </li>
                                     <li>
+                                        <a href="/offeredprogramme" title="Batch" data-filter-tags="batch">
+                                            <i class="fal fa-file-excel"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Offered Programme</span>
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a href="/batch" title="Batch" data-filter-tags="batch">
                                             <i class="fal fa-address-card"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">Batch</span>
@@ -203,15 +209,14 @@
                                     </li> --}}
                                 </ul>
                             </li>
-                            @endcan
-                            {{-- <li>
+                            <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-map-marker-alt"></i>
                                     <span class="nav-link-text" data-i18n="nav.application_intel">Physical Registration</span>
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="/student" title="Active Student" data-filter-tags="active_student">
+                                        <a href="/new_student" title="Active Student" data-filter-tags="active_student">
                                             <i class="fal fa-user"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">New Student</span>
                                         </a>
@@ -229,7 +234,8 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </li> --}}
+                            </li>
+                            @endcan
                             @can('view parameter')
                             <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">

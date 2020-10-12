@@ -394,6 +394,27 @@ class ApplicantController extends Controller
            ->make(true);
     }
 
+    public function test()
+    {
+        // $intake = Intakes::where('status','1')->with(['intakeDetails'])->get();
+        // dd($intake);
+        $test = Applicant::where('applicant_status','3')->get();
+        dd($test);
+    }
+
+    public function data_offeredprogramme() // Datatable: incomplete applicant
+    {
+        $programme = Intakes::where('status','1')->with(['intakeDetails'])->get();
+
+        return datatables()::of($programme)
+            ->addColumn('action', function ($programme) {
+                return '
+                <input type="checkbox">';
+            })
+            ->rawColumns(['intake_id','action'])
+            ->make(true);
+    }
+
     public function data_offerapplicant() //Datatable: offer applicant
     {
         $applicant = Applicant::where('applicant_status','3')->get();
@@ -480,6 +501,33 @@ class ApplicantController extends Controller
            ->addColumn('action', function ($applicants) {
                return '<a href="/applicant/'.$applicants->applicant->id.'" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Detail</a>
                ';
+           })
+           ->rawColumns(['prog_name','prog_name_2','prog_name_3','action'])
+           ->make(true);
+    }
+
+    public function newStudent()
+    {
+        $applicant = Applicant::where('applicant_status','3')->get();
+        return view('applicant.newstudent', compact('applicant'));
+    }
+
+    public function data_newstudent()
+    {
+        $applicant = Applicant::where('applicant_status','3')->get();
+
+        return datatables()::of($applicant)
+            ->addColumn('applicant_name',function($applicant)
+            {
+                return $applicant->applicant_name;
+            })
+            ->addColumn('applicant_ic',function($applicant)
+            {
+                return $applicant->applicant_ic;
+            })
+
+           ->addColumn('action', function ($applicants) {
+               return '<a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"><i class="fal fa-user"></i></a>';
            })
            ->rawColumns(['prog_name','prog_name_2','prog_name_3','action'])
            ->make(true);
@@ -1442,6 +1490,11 @@ class ApplicantController extends Controller
 
         Applicant::where('id',$request->id)->update(['offered_programme' => $request->applicant_programme, 'offered_major' => $request->applicant_major, 'applicant_status' => '3', 'batch_code' => $request->batch_code, 'student_id' => $student_id]);
         return redirect()->back();
+    }
+
+    public function offeredprogramme()
+    {
+        return view('applicant.offeredprogramme');
     }
 
     public function sendEmail($applicants_id)

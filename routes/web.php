@@ -71,7 +71,7 @@ Route::get('/offerapplicant','ApplicantController@applicant_offer');
 Route::get('checkrequirements', 'ApplicantController@checkrequirements')->name('check-requirements');
 Route::get('checkindividual', 'ApplicantController@checkindividual')->name('check-individual');
 Route::post('changestatus', 'ApplicantController@changestatus');
-// Route::post('programmestatus', 'ApplicantController@programmestatus');
+Route::get('offeredprogramme', 'ApplicantController@offeredprogramme');
 Route::post('applicantstatus', 'ApplicantController@applicantstatus');
 Route::post('intakestatus', 'ApplicantController@intakestatus');
 Route::post('cancelOffer', 'ApplicantController@cancelOffer');
@@ -81,6 +81,8 @@ Route::post('updateGuardian', 'ApplicantController@updateGuardian');
 Route::post('updateApplicant', 'ApplicantController@updateApplicant');
 Route::post('/applicant-check', 'ApplicantController@applicantcheck')->name('applicant-check');
 
+Route::post('/data_offeredprogramme', 'ApplicantController@data_offeredprogramme');
+Route::get('/data_newstudent', 'ApplicantController@data_newStudent');
 Route::post('/data_incompleteapplicant', 'ApplicantController@data_incompleteapplicant');
 Route::post('/data_allapplicant', 'ApplicantController@data_allapplicant');
 Route::post('/data_rejectedapplicant', 'ApplicantController@data_rejectedapplicant');
@@ -88,9 +90,10 @@ Route::post('/data_passapplicant', 'ApplicantController@data_passapplicant');
 Route::post('/data_offerapplicant', 'ApplicantController@data_offerapplicant');
 Route::post('/data_acceptedapplicant', 'ApplicantController@data_acceptedapplicant');
 Route::get('/export_applicant', 'ApplicantController@applicant_all');
+Route::get('/new_student', 'ApplicantController@newStudent');
+Route::get('/test', 'ApplicantController@test');
 Route::get('export', 'ApplicantController@export');
 Route::post('export', 'ApplicantController@export');
-
 //APPLICANT REGISTRATION
 Route::resource('/registration','RegistrationController');
 // Route::get('/check/{id}','RegistrationController@getUsers');
