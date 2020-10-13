@@ -148,6 +148,12 @@
                                 </a>
                                 <ul>
                                     <li>
+                                        <a href="/sponsorapplicant" title="Pending Applicant" data-filter-tags="active_student">
+                                            <i class="fal fa-upload"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Upload Sponsor Applicant</span>
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a href="/incomplete" title="Pending Applicant" data-filter-tags="active_student">
                                             <i class="fal fa-clipboard-list"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">Incomplete Application</span>
@@ -216,7 +222,7 @@
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="/new_student" title="Active Student" data-filter-tags="active_student">
+                                        <a href="/physical-registration" title="Active Student" data-filter-tags="active_student">
                                             <i class="fal fa-user"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">New Student</span>
                                         </a>

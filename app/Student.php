@@ -12,10 +12,10 @@ class Student extends Model
     // public $incrementing = false;
 
     protected $table = 'students';
-    protected $fillable = ['students_name', 'students_ic', 'students_email', 'students_phone', 'students_nationality', 'students_marital', 'students_race', 'students_dob', 'students_programme', 'programme_status', 'students_gender', 'students_religion', 'students_major', 'intake_id'];
+    protected $fillable = ['students_name', 'students_ic', 'students_email', 'students_phone', 'students_nationality', 'students_marital', 'students_race', 'students_dob', 'students_programme', 'programme_status', 'students_gender', 'students_religion', 'students_major', 'intake_id', 'students_id', 'students_status'];
     protected $primaryKey = 'id';
-    // protected $foreignKey = ['students_id', 'race_code', 'gender_code', 'religion_code'];   
-    
+    // protected $foreignKey = ['students_id', 'race_code', 'gender_code', 'religion_code'];
+
     public function studentContactInfo()
     {
         return $this->hasOne('App\StudentContact','students_id'); //model StudentContact
@@ -28,27 +28,27 @@ class Student extends Model
 
     public function gender()
     {
-        return $this->hasOne('App\Gender','gender_code', 'students_gender'); 
+        return $this->hasOne('App\Gender','gender_code', 'students_gender');
     }
 
     public function religion()
     {
-        return $this->hasOne('App\Religion','religion_code', 'students_religion'); 
+        return $this->hasOne('App\Religion','religion_code', 'students_religion');
     }
 
     public function programme()
     {
-        return $this->hasOne('App\Programme','programme_code', 'students_programme'); 
+        return $this->hasOne('App\Programme','programme_code', 'students_programme');
     }
 
     public function studentGuardian()
     {
-        return $this->hasOne('App\StudentGuardian','students_id'); 
+        return $this->hasOne('App\StudentGuardian','students_id');
     }
 
     public function studentEmergency()
     {
-        return $this->hasOne('App\StudentEmergency','students_id'); 
+        return $this->hasOne('App\StudentEmergency','students_id');
     }
-    
+
 }

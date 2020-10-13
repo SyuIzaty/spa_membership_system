@@ -117,7 +117,14 @@ class RegistrationController extends Controller
         if($exist)
         {
             $applicant_id = Applicant::where('applicant_ic',$request->applicant_ic)->where('intake_id',$request->intake_id)->first();
-
+            Applicant::where('id',$applicant_id->id)->update([
+                'applicant_programme'=>$request->applicant_programme,
+                'applicant_major'=>$request->applicant_major,
+                'applicant_programme_2'=>$request->applicant_programme_2,
+                'applicant_major_2'=>$request->applicant_major_2,
+                'applicant_programme_3'=>$request->applicant_programme_3,
+                'applicant_major_3'=>$request->applicant_major_3,
+                ]);
             return $this->edit($applicant_id->id);
 
         }else{

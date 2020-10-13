@@ -20,6 +20,7 @@
                         @foreach ($intake as $intakes)
                             <input type="hidden" value="{{ $intakes->id }}" name="intake_id">
                         @endforeach
+                        <input type="hidden" value="Private" name="sponsor_code">
                         <small class="text-danger">{{ $errors->first('name') }}</small>
                         {{Form::label('title', 'Name')}}
                         {{Form::text('applicant_name', '', ['class' => 'form-control', 'placeholder' => 'Applicant Name', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
