@@ -16,6 +16,8 @@ Route::get('/', function () {
    return redirect('/login');
 });
 
+Route::view('/reset_password', 'auth.passwords.email')->name('reset_password');
+
 Route::get('home','DashboardController@index');
 
 
