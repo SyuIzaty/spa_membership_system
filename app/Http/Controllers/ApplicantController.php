@@ -53,7 +53,7 @@ class ApplicantController extends Controller
         $batch_3 = IntakeDetail::Intake($applicant->intake_id)->Active()->where('intake_programme',$applicant->applicant_programme_3)->first();
 
         $applicant_recheck = ApplicantRecheck::where('applicant_id', $id)->with(['programme'])->get();
-
+        $qualification = Qualification::all();
         $country = Country::all();
         $marital = Marital::all();
         $religion = Religion::all();
@@ -152,7 +152,7 @@ class ApplicantController extends Controller
         }
 
         $applicant_status = Status::where('status_code','>=','3')->get();
-        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace', 'aapplicant','country','marital','religion','race','gender','state','skm','mqf','kkm','cat','icaew','activity','intake','family','foundation','applicant_status', 'batch_1','batch_2','batch_3','applicant_recheck'));
+        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace', 'aapplicant','country','marital','religion','race','gender','state','skm','mqf','kkm','cat','icaew','activity','intake','family','foundation','applicant_status', 'batch_1','batch_2','batch_3','applicant_recheck','qualification'));
     }
 
     public function updateApplicant(Request $request) // Update applicant detail
@@ -1430,16 +1430,6 @@ class ApplicantController extends Controller
         return redirect()->back();
     }
 
-    public function sendUpdateApplicant(Request $request)
-    {
-        $applicant = Applicant::where('intake_id',$request->check)->get()->toArray();
-        foreach($applicant as $applicants)
-        {
-            Applicant::where('intake_id',$request->check)->where('batch_code',$request->batch_code)->where('offered_programme',$request->intake_programme)->update(['applicant_status'=>'3']);
-        }
-        return redirect()->back()->with('message', 'Status Updated');
-    }
-
     // public function programmestatus(Request $request)
     // {
     //     $applicant = Applicant::where('id',$request->applicant_id)->first();
@@ -1478,29 +1468,43 @@ class ApplicantController extends Controller
             $student_id = $year . '1117' . $random;
          } while ( Applicant::where('student_id', $student_id )->exists() );
 
-        Applicant::where('id',$request->id)->update(['offered_programme' => $request->applicant_programme, 'offered_major' => $request->applicant_major, 'applicant_status' => '3', 'batch_code' => $request->batch_code, 'student_id' => $student_id]);
+        Applicant::where('id',$request->id)->update(['offered_programme' => $request->applicant_programme, 'offered_major' => $request->applicant_major, 'applicant_status' => '3', 'batch_code' => $request->batch_code, 'student_id' => $student_id, 'applicant_qualification' => $request->applicant_qualification]);
         return redirect()->back();
+    }
+
+    public function sendUpdateApplicant(Request $request)
+    {
+        foreach($request->check as $batch_code){
+            Applicant::where('batch_code',$batch_code)->where('intake_id',$request->intake_id)->update(['applicant_status'=>'3']);
+            $applicant = Applicant::where('batch_code',$batch_code)->where('intake_id',$request->intake_id)->get();
+            foreach($applicant as $apps){
+                $this->sendEmail($apps['id']);
+            }
+        }
+        return redirect()->back()->with('message', 'Email send and status updated');
     }
 
     public function sendEmail($applicants_id)
     {
-        $details = Applicant::where('id',$applicants_id)->where('applicant_status','3')->with(['offeredMajor','offeredProgramme'])->first();
-        foreach($details as $detail)
-        {
-            $intakes = IntakeDetail::where('status', '1')->where('intake_code', $detail->intake_id)->where('intake_programme', $detail->offered_programme)
-            ->first();
-        }
+        $detail = Applicant::where('id',$applicants_id)->where('applicant_status','3')->with(['offeredMajor','offeredProgramme'])->first();
+
+        $intakes = IntakeDetail::where('status', '1')->where('intake_code', $detail->intake_id)->where('intake_programme', $detail->offered_programme)->first();
+
         $report = PDF::loadView('intake.pdf', compact('detail', 'intakes'));
         $data = [
-            'receiver_name' => $details->applicant_name,
+            'receiver_name' => $detail->applicant_name,
             'details' => 'This offer letter is appended with this email. Please refer to the attachment for your registration instructions.',
         ];
 
-        Mail::send('intake.offer-letter', $data, function ($message) use ($details, $report) {
-            $message->subject('Congratulations, ' . $details->applicant_name);
-            $message->to(!empty($details->applicant_email) ? $details->applicant_email : 'jane-doe@email.com');
-            $message->attachData($report->output(), 'Offer_Letter_' . $details->applicant_name . '.pdf');
+        Mail::send('intake.offer-letter', $data, function ($message) use ($detail, $report) {
+            $message->subject('Congratulations, ' . $detail->applicant_name);
+            $message->to(!empty($detail->applicant_email) ? $detail->applicant_email : 'jane-doe@email.com');
+            $message->attachData($report->output(), 'Offer_Letter_' . $detail->applicant_name . '.pdf');
         });
+
+        Applicant::where('id',$applicants_id)->update(['applicant_status'=>'3A']);
+
+        IntakeDetail::where('intake_code',$detail->intake_id)->where('batch_code',$detail['batch_code'])->update(['intake_status'=>'Offered']);
     }
 
 }

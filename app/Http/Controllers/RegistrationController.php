@@ -73,7 +73,7 @@ class RegistrationController extends Controller
 
     public function check($id)
     {
-        $applicant = Applicant::where('id',$id)->where('applicant_status','3')->with(['offeredProgramme','offeredMajor'])->get();
+        $applicant = Applicant::where('id',$id)->where('applicant_status','3A')->with(['offeredProgramme','offeredMajor'])->get();
 
         return view('applicantRegister.check', compact('applicant'));
     }

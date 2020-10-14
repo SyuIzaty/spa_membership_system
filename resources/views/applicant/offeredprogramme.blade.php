@@ -35,6 +35,7 @@
                                         <th>NO</th>
                                         <th>PROGRAMME CODE</th>
                                         <th>BATCH CODE</th>
+                                        <th>INTAKE STATUS</th>
                                         <th>ACTION</th>
                                     </tr>
                                 </thead>
@@ -42,9 +43,11 @@
                                     @foreach ($intake->first()->intakeDetails as $intakes)
                                         <tr>
                                             <td>{{ $intakes->id }}</td>
-                                            <td>{{ $intakes->intake_programme }}<input type="hidden" name="intake_programme" value="{{ $intakes->intake_programme }}"></td>
-                                            <td>{{ $intakes->batch_code }} <input type="hidden" name="batch_code" value="{{ $intakes->batch_code }}"></td>
-                                            <td><input type="checkbox" name="check[]" value="{{ $intakes->intake_code }}"></td>
+                                            <input type="hidden" name="intake_id" value="{{ $intakes->intake_code }}">
+                                            <td>{{ $intakes->intake_programme }}</td>
+                                            <td>{{ $intakes->batch_code }}</td>
+                                            <td style="text-transform: uppercase">{{ $intakes->intake_status }}</td>
+                                            <td><input type="checkbox" name="check[]" value="{{ $intakes->batch_code }}"></td>
                                         </tr>
                                     @endforeach
                                 </tbody>

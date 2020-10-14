@@ -100,6 +100,7 @@
                                                                     <th>Applicant Major</th>
                                                                     <th>Batch Code</th>
                                                                     <th>Result</th>
+                                                                    <th>Applicant Qualification (ACCA)</th>
                                                                     <th>Offer</th>
                                                                     <th>Action</th>
                                                                 </thead>
@@ -123,9 +124,23 @@
                                                                         @endif
                                                                     </td>
                                                                     <td>
-                                                                        {{ Form::checkbox('applicant_status', '3') }}
+                                                                        <select class="form-control" name="applicant_qualification">
+                                                                            <option disabled selected>Please select</option>
+                                                                            @foreach ($qualification as $app_qualification)
+                                                                                <option value="{{ $app_qualification->id }}">{{ $app_qualification->qualification_name }}</option>
+                                                                            @endforeach
+                                                                        </select>
                                                                     </td>
-                                                                    <td><div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div></td>
+                                                                    <td>
+                                                                        @if ($applicant->programme_status == '1')
+                                                                            {{ Form::checkbox('applicant_status', '3') }}
+                                                                        @endif
+                                                                    </td>
+                                                                    <td>
+                                                                        @if ($applicant->programme_status == '1')
+                                                                        <div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div>
+                                                                        @endif
+                                                                    </td>
                                                                 </tr>
                                                                 {!! Form::close() !!}
                                                                 @isset($applicant->applicant_programme_2)
@@ -136,8 +151,8 @@
                                                                     <td>{{ Form::text('applicant_programme', $applicant->applicant_programme_2, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
                                                                     <td>{{ Form::text('applicant_major', $applicant->applicant_major_2, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
                                                                     <td>
-                                                                        @isset($applicant->batch_code)
-                                                                        {{ Form::text('batch_code', $applicant->batch_code, ['class' => 'form-control', 'readonly' => 'true']) }}
+                                                                        @isset($batch_2->batch_code)
+                                                                        {{ Form::text('batch_code', $batch_2->batch_code, ['class' => 'form-control', 'readonly' => 'true']) }}
                                                                         @endisset
                                                                     </td>
                                                                     <td>
@@ -149,9 +164,23 @@
                                                                         @endif
                                                                     </td>
                                                                     <td>
-                                                                        {{ Form::checkbox('applicant_status', '3') }}
+                                                                        <select class="form-control" name="applicant_qualification">
+                                                                            <option disabled selected>Please select</option>
+                                                                            @foreach ($qualification as $app_qualification)
+                                                                                <option value="{{ $app_qualification->id }}">{{ $app_qualification->qualification_name }}</option>
+                                                                            @endforeach
+                                                                        </select>
                                                                     </td>
-                                                                    <td><div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div></td>
+                                                                    <td>
+                                                                        @if($applicant->programme_status_2 == '1')
+                                                                        {{ Form::checkbox('applicant_status', '3') }}
+                                                                        @endif
+                                                                    </td>
+                                                                    <td>
+                                                                        @if ($applicant->programme_status_2 == '1')
+                                                                        <div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div>
+                                                                        @endif
+                                                                    </td>
                                                                 </tr>
                                                                 {!! Form::close() !!}
                                                                 @endisset
@@ -163,8 +192,8 @@
                                                                     <td>{{ Form::text('applicant_programme', $applicant->applicant_programme_3, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
                                                                     <td>{{ Form::text('applicant_major', $applicant->applicant_major_3, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
                                                                     <td>
-                                                                        @isset($applicant->batch_code)
-                                                                        {{ Form::text('batch_code', $applicant->batch_code, ['class' => 'form-control', 'readonly' => 'true']) }}
+                                                                        @isset($batch_3->batch_code)
+                                                                        {{ Form::text('batch_code', $batch_3->batch_code, ['class' => 'form-control', 'readonly' => 'true']) }}
                                                                         @endisset
                                                                     </td>
                                                                     <td>
@@ -176,9 +205,23 @@
                                                                         @endif
                                                                     </td>
                                                                     <td>
-                                                                        {{ Form::checkbox('applicant_status', '3') }}
+                                                                        <select class="form-control" name="applicant_qualification">
+                                                                            <option disabled selected>Please select</option>
+                                                                            @foreach ($qualification as $app_qualification)
+                                                                                <option value="{{ $app_qualification->id }}">{{ $app_qualification->qualification_name }}</option>
+                                                                            @endforeach
+                                                                        </select>
                                                                     </td>
-                                                                    <td><div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div></td>
+                                                                    <td>
+                                                                        @if ($applicant->programme_status_3 == '1')
+                                                                            {{ Form::checkbox('applicant_status', '3') }}
+                                                                        @endif
+                                                                    </td>
+                                                                    <td>
+                                                                        @if ($applicant->programme_status_3 == '1')
+                                                                        <div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div>
+                                                                        @endif
+                                                                    </td>
                                                                 </tr>
                                                                 {!! Form::close() !!}
                                                                 @endisset
@@ -367,8 +410,10 @@
                                             <div class="card-body">
                                                 <form action="{{ route('checkIndividual') }}" method="post" name="form">
                                                     @csrf
+                                                    @if ($applicant_recheck->count() == 0)
                                                     <input type="hidden" name="applicant_id" value="{{ $applicant->id }}">
                                                     <button type="submit" class="btn btn-primary">Recheck</button>
+                                                    @endif
                                                 </form>
                                                 @isset($applicant_recheck)
                                                 <p class="mt-3">Qualified Programme</p>
