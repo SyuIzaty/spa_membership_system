@@ -13,16 +13,16 @@ use Spatie\Permission\Models\Permission;
 class User extends Authenticatable
 {
     protected $connection = 'auth';
-    
+
     use Notifiable, HasRoles;
-    
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'username',
+        'id' , 'name', 'email', 'password', 'username',
     ];
 
     /**

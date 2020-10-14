@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use App\Applicant;
 use App\Student;
+use App\Intakes;
+use App\User;
 
 class PhysicalRegistrationController extends Controller
 {
@@ -20,11 +23,14 @@ class PhysicalRegistrationController extends Controller
 
     public function data_newstudent()
     {
-        $applicant = Applicant::where('applicant_status','3')->get();
+        $intake = Intakes::where('status','1')->first();
+        $applicant = Applicant::where('intake_id',$intake['id'])->where('applicant_status','7A')->orWhere('applicant_status','3A')->get();
 
         return datatables()::of($applicant)
            ->addColumn('action', function ($applicant) {
-               return '<button type="submit" class="btn btn-primary pull-right" name="check" value="'.$applicant->id.'">Register</button>';
+               if($applicant['applicant_status'] == '3A'){
+                    return '<button type="submit" class="btn btn-primary pull-right" name="check" value="'.$applicant->id.'">Register</button>';
+               }
            })
            ->rawColumns(['action'])
            ->make(true);
@@ -51,6 +57,14 @@ class PhysicalRegistrationController extends Controller
             'students_status' => $applicant['applicant_status'],
             'intake_id' => $applicant['intake_id'],
             'students_id' => $applicant['student_id'],
+        ]);
+        $password = Hash::make($applicant['applicant_ic']);
+        User::create([
+            'id' => $applicant['student_id'],
+            'name' => $applicant['applicant_name'],
+            'username' => $applicant['student_id'],
+            'email' => $applicant['applicant_email'],
+            'password' => $password,
         ]);
 
         return redirect()->back()->with('message', 'Students have been added');

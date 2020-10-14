@@ -1475,8 +1475,7 @@ class ApplicantController extends Controller
     public function sendUpdateApplicant(Request $request)
     {
         foreach($request->check as $batch_code){
-            Applicant::where('batch_code',$batch_code)->where('intake_id',$request->intake_id)->update(['applicant_status'=>'3']);
-            $applicant = Applicant::where('batch_code',$batch_code)->where('intake_id',$request->intake_id)->get();
+            $applicant = Applicant::where('batch_code',$batch_code)->where('intake_id',$request->intake_id)->where('applicant_status','3')->get();
             foreach($applicant as $apps){
                 $this->sendEmail($apps['id']);
             }

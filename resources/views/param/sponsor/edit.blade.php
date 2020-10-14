@@ -4,7 +4,7 @@
     <main id="js-page-content" role="main" class="page-content">
         <div class="subheader">
             <h1 class="subheader-title">
-                <i class='subheader-icon fal fa-table'></i> Intake
+                <i class='subheader-icon fal fa-table'></i> Sponsor
             </h1>
         </div>
         <div class="row">
