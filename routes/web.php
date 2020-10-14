@@ -115,6 +115,11 @@ Route::get('testmajor','RegistrationController@testmajor');
 Route::post('applicant/delete/{id}/{type}/{userid}','RegistrationController@deleteitem');
 Route::get('qualificationfile/{filename}/{type}','RegistrationController@qualificationfile');
 
+//SPONSOR
+Route::resource('param/sponsor','SponsorController');
+Route::get('/test','SponsorController@test');
+Route::post('/data_sponsor', 'SponsorController@data_sponsor');
+
 //INTAKE
 Route::resource('/intake','IntakeController');
 Route::post('/data-allintake', 'IntakeController@data_allintake');

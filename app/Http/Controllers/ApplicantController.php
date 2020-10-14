@@ -46,11 +46,11 @@ class ApplicantController extends Controller
     {
         $applicant = Applicant::where('id',$id)->with(['applicantContactInfo','applicantEmergency.emergencyOne','applicantGuardian.familyOne','applicantGuardian.familyTwo','applicantIntake','status','intakeDetail','applicantstatus'])->first();
 
-        $batch_1 = IntakeDetail::Intake($applicant->intake_id)->Active()->where('intake_programme',$applicant->applicant_programme)->first();
+        $batch_1 = IntakeDetail::where('intake_code',$applicant->intake_id)->where('status','1')->where('intake_programme',$applicant->applicant_programme)->first();
 
-        $batch_2 = IntakeDetail::Intake($applicant->intake_id)->Active()->where('intake_programme',$applicant->applicant_programme_2)->first();
+        $batch_2 = IntakeDetail::where('intake_code',$applicant->intake_id)->where('status','1')->where('intake_programme',$applicant->applicant_programme_2)->first();
 
-        $batch_3 = IntakeDetail::Intake($applicant->intake_id)->Active()->where('intake_programme',$applicant->applicant_programme_3)->first();
+        $batch_3 = IntakeDetail::where('intake_code',$applicant->intake_id)->where('status','1')->where('intake_programme',$applicant->applicant_programme_3)->first();
 
         $applicant_recheck = ApplicantRecheck::where('applicant_id', $id)->with(['programme'])->get();
         $qualification = Qualification::all();

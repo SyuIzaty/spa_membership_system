@@ -355,8 +355,24 @@
                                 </ul>
                             </li>
                             @endcan
-                            @can('view parameter')
+                            {{-- @can('view parameter') --}}
                             <li class="nav-title">Parameter Setting</li>
+                            <li>
+                                <a href="#" title="Application Intel" data-filter-tags="application intel">
+                                    <i class="fal fa-portrait"></i>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Sponsor</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <li>
+                                            <a href="/param/sponsor" title="Active Student" data-filter-tags="active_student">
+                                                <i class="fal fa-user"></i>
+                                                <span class="nav-link-text" data-i18n="nav.active_student">Sponsor Detail</span>
+                                            </a>
+                                        </li>
+                                    </li>
+                                </ul>
+                            </li>
                             <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-portrait"></i>
@@ -576,7 +592,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            @endcan
+                            {{-- @endcan --}}
 
                             @role('student')
                             <li class="nav-title">MAIN NAVIGATION [STUDENT]</li>
