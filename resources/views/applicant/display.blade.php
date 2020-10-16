@@ -37,7 +37,7 @@
                                 </li>
                             </ul>
                             <div class="row">
-                                <div class="tab-content col-md-12">
+                                <div class="tab-content col-md-8">
                                     <div class="tab-pane active" id="details" role="tabpanel">
                                         <hr class="mt-2 mb-3">
                                         <div class="row">
@@ -67,13 +67,12 @@
                                                 </div>
                                                 <hr class="mt-2 mb-3">
                                                 <div class="card">
-                                                    @if ($applicant->applicant_status != 00)
-                                                        <div class="card-header">Offer Program</div>
+                                                    @if ($applicant->applicant_status != '00')
+                                                        <div class="card-header">Program Selection</div>
                                                         <div class="card-body">
-                                                        @if(isset($applicant->applicant_name) )
                                                         {!! Form::open(['action' => ['ApplicantController@intakestatus'], 'method' => 'POST'])!!}
                                                             <div class="row">
-                                                                <div class="col-md-5 form-group">
+                                                                <div class="col-md-10 form-group">
                                                                     <input type="hidden" name="applicant_id" value="{{ $applicant->id }}">
                                                                     {{ Form::label('title', 'Intake Session') }}
                                                                     <select name="intake_id" class="form-control" id="intake_id">
@@ -83,14 +82,14 @@
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
-                                                                <div class="col-md-5 form-group">
+                                                                {{-- <div class="col-md-5 form-group">
                                                                     {{ Form::label('title', 'Applicant Status') }}
                                                                     <select class="form-control" id="applicant_status" name="applicant_status">
                                                                         @foreach ($applicant_status as $app_stat)
                                                                             <option value="{{ $app_stat->status_code }}" {{ $applicant->applicant_status == $app_stat->status_code ? 'selected="selected"' : ''}}>{{ $app_stat->status_description }}</option>
                                                                         @endforeach
                                                                     </select>
-                                                                </div>
+                                                                </div> --}}
                                                                 <div class="col-md-2"><button class="btn btn-primary mt-4">Submit</button></div>
                                                             </div>
                                                             {!! Form::close() !!}
@@ -101,7 +100,6 @@
                                                                     <th>Batch Code</th>
                                                                     <th>Result</th>
                                                                     <th>Applicant Qualification (ACCA)</th>
-                                                                    <th>Offer</th>
                                                                     <th>Action</th>
                                                                 </thead>
                                                                 {!! Form::open(['action' => ['ApplicantController@applicantstatus'], 'method' => 'POST'])!!}
@@ -130,11 +128,6 @@
                                                                                 <option value="{{ $app_qualification->id }}">{{ $app_qualification->qualification_name }}</option>
                                                                             @endforeach
                                                                         </select>
-                                                                    </td>
-                                                                    <td>
-                                                                        @if ($applicant->programme_status == '1')
-                                                                            {{ Form::checkbox('applicant_status', '3') }}
-                                                                        @endif
                                                                     </td>
                                                                     <td>
                                                                         @if ($applicant->programme_status == '1')
@@ -170,11 +163,6 @@
                                                                                 <option value="{{ $app_qualification->id }}">{{ $app_qualification->qualification_name }}</option>
                                                                             @endforeach
                                                                         </select>
-                                                                    </td>
-                                                                    <td>
-                                                                        @if($applicant->programme_status_2 == '1')
-                                                                        {{ Form::checkbox('applicant_status', '3') }}
-                                                                        @endif
                                                                     </td>
                                                                     <td>
                                                                         @if ($applicant->programme_status_2 == '1')
@@ -214,11 +202,6 @@
                                                                     </td>
                                                                     <td>
                                                                         @if ($applicant->programme_status_3 == '1')
-                                                                            {{ Form::checkbox('applicant_status', '3') }}
-                                                                        @endif
-                                                                    </td>
-                                                                    <td>
-                                                                        @if ($applicant->programme_status_3 == '1')
                                                                         <div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div>
                                                                         @endif
                                                                     </td>
@@ -226,7 +209,14 @@
                                                                 {!! Form::close() !!}
                                                                 @endisset
                                                             </table>
-                                                        @endif
+                                                        @isset($applicant->offered_programme)
+                                                            <div class="alert alert-success">
+                                                                <ul>
+                                                                    <li>Offered Programme: {{ $applicant->offered_programme }}</li>
+                                                                    <li>Offered Major: {{ $applicant->offered_major }}</li>
+                                                                </ul>
+                                                            </div>
+                                                        @endisset
                                                     </div>
                                                     @endif
                                                 </div>
@@ -236,44 +226,44 @@
                                         <div class="card">
                                             <div class="card-header">Minimum Qualification</div>
                                             <div class="card-body">
-                                                @if(($applicant->programme_status == '2' && $applicant->applicant_programme == 'IAT12') || ( $applicant->programme_status_2 == '2' && $applicant->applicant_programme_2 == 'IAT12') || ($applicant->programme_status_3 == '2' && $applicant->applicant_programme_3 == 'IAT12'))
+                                                @if(($applicant->applicant_programme == 'IAT12') || ( $applicant->applicant_programme_2 == 'IAT12') || ($applicant->applicant_programme_3 == 'IAT12'))
                                                     <p>American Degree Transfer Programme</p>
                                                     <ul>
                                                         <li>Pass SPM / O-Level with minimum five (5) credits including English and Mathematics or other equivalent qualifications recognised by Malaysian Government.</li>
                                                     </ul>
                                                 @endif
-                                                @if(($applicant->programme_status == '2' && $applicant->applicant_programme == 'IAL10') || ( $applicant->programme_status_2 == '2' && $applicant->applicant_programme_2 == 'IAL10') || ($applicant->programme_status_3 == '2' && $applicant->applicant_programme_3 == 'IAL10'))
+                                                @if(($applicant->applicant_programme == 'IAL10') || ( $applicant->applicant_programme_2 == 'IAL10') || ($applicant->applicant_programme_3 == 'IAL10'))
                                                     <p>A Level Programme</p>
                                                     <ul>
                                                         <li>Pass SPM / O-Level with minimum five (5) credits including English and Mathematics or other equivalent qualifications recognised by Malaysian Government.</li>
                                                     </ul>
                                                 @endif
-                                                @if(($applicant->programme_status == '2' && $applicant->applicant_programme == 'IGR22') || ( $applicant->programme_status_2 == '2' && $applicant->applicant_programme_2 == 'IGR22') || ($applicant->programme_status_3 == '2' && $applicant->applicant_programme_3 == 'IGR22'))
+                                                @if(($applicant->applicant_programme == 'IGR22') || ( $applicant->applicant_programme_2 == 'IGR22') || ($applicant->applicant_programme_3 == 'IGR22'))
                                                     <p>A Level German Programme</p>
                                                     <ul>
                                                         <li>Pass SPM / O-Level with minimum five (5) credits including English and Mathematics or other equivalent qualifications recognised by Malaysian Government.</li>
                                                     </ul>
                                                 @endif
-                                                @if(($applicant->programme_status == '2' && $applicant->applicant_programme == 'IAM11') || ( $applicant->programme_status_2 == '2' && $applicant->applicant_programme_2 == 'IAM11') || ($applicant->programme_status_3 == '2' && $applicant->applicant_programme_3 == 'IAM11'))
+                                                @if(($applicant->applicant_programme == 'IAM11') || ( $applicant->applicant_programme_2 == 'IAM11') || ($applicant->applicant_programme_3 == 'IAM11'))
                                                     <p>SACE International</p>
                                                     <ul>
                                                         <li>Pass SPM / O-Level with minimum five (5) credits including English and Mathematics or other equivalent qualifications recognised by Malaysian Government.</li>
                                                     </ul>
                                                 @endif
-                                                @if(($applicant->programme_status == '2' && $applicant->applicant_programme == 'ILE12') || ( $applicant->programme_status_2 == '2' && $applicant->applicant_programme_2 == 'ILE12') || ($applicant->programme_status_3 == '2' && $applicant->applicant_programme_3 == 'ILE12'))
+                                                @if(($applicant->applicant_programme == 'ILE12') || ($applicant->applicant_programme_2 == 'ILE12') || ($applicant->applicant_programme_3 == 'ILE12'))
                                                     <p>Japanese Preparatory Course</p>
                                                     <ol>
                                                         <li>Science: Minimum credit in 5 subjects including Mathematics <b>OR</b> any science subject in SPM / GCE O-Level or equivalent <b>OR</b></li>
                                                         <li>Non-Science: Minimum credit in 5 subjects including Mathematics in SPM / GCE O-Level or equivalent</li>
                                                     </ol>
                                                 @endif
-                                                @if(($applicant->programme_status == '2' && $applicant->applicant_programme == 'IKR09') || ( $applicant->programme_status_2 == '2' && $applicant->applicant_programme_2 == 'IKR09') || ($applicant->programme_status_3 == '2' && $applicant->applicant_programme_3 == 'IKR09'))
+                                                @if(($applicant->applicant_programme == 'IKR09') || ($applicant->applicant_programme_2 == 'IKR09') || ($applicant->applicant_programme_3 == 'IKR09'))
                                                     <p>Korean Preparatory Course</p>
                                                     <ul>
                                                         <li>Open (Minimum ability and knowledge in English)</li>
                                                     </ul>
                                                 @endif
-                                                @if(($applicant->programme_status == '2' && $applicant->applicant_programme == 'IBM20') || ( $applicant->programme_status_2 == '2' && $applicant->applicant_programme_2 == 'IBM20') || ($applicant->programme_status_3 == '2' && $applicant->applicant_programme_3 == 'IBM20'))
+                                                @if(($applicant->applicant_programme == 'IBM20') || ($applicant->applicant_programme_2 == 'IBM20') || ($applicant->applicant_programme_3 == 'IBM20'))
                                                     <p>Diploma in Business Management</p>
                                                     <ol>
                                                         <li>Obtain a minimum of 3 credits in Sijil Pelajaran Malaysia (SPM) <b>OR</b></li>
@@ -286,7 +276,7 @@
                                                         <li>Pass certificate (MQF Level 3) in a related field with at least CGPA 2.00</li>
                                                     </ol>
                                                 @endif
-                                                @if(($applicant->programme_status == '2' && $applicant->applicant_programme == 'IPG20') || ( $applicant->programme_status_2 == '2' && $applicant->applicant_programme_2 == 'IPG20') || ($applicant->programme_status_3 == '2' && $applicant->applicant_programme_3 == 'IPG20'))
+                                                @if(($applicant->applicant_programme == 'IPG20') || ($applicant->applicant_programme_2 == 'IPG20') || ($applicant->applicant_programme_3 == 'IPG20'))
                                                     <p>Diploma in Public Management and Governance</p>
                                                     <ol>
                                                         <li>Obtain a minimum of 3 credits in Sijil Pelajaran Malaysia (SPM) <b>OR</b></li>
@@ -298,7 +288,7 @@
                                                         <li>Pass Community College Certificate which is equivalent with MQF level 3 in related field with minimum ONE credit in SPM <b>OR</b></li>
                                                     </ol>
                                                 @endif
-                                                @if(($applicant->programme_status == '2' && $applicant->applicant_programme == 'IHP20') || ( $applicant->programme_status_2 == '2' && $applicant->applicant_programme_2 == 'IHP20') || ($applicant->programme_status_3 == '2' && $applicant->applicant_programme_3 == 'IHP20'))
+                                                @if(($applicant->applicant_programme == 'IHP20') || ($applicant->applicant_programme_2 == 'IHP20') || ($applicant->applicant_programme_3 == 'IHP20'))
                                                     <p>Diploma in Scientific Halal and Practice</p>
                                                     <ol>
                                                         <li>Sijil Pelajaran Malaysia (SPM)</li>
@@ -313,7 +303,7 @@
                                                         <li>A-Level: Pass with minimum C in three (3) subjects including Biology and Chemistry</li>
                                                     </ol>
                                                 @endif
-                                                @if(($applicant->programme_status == '2' && $applicant->applicant_programme == 'IAC20') || ( $applicant->programme_status_2 == '2' && $applicant->applicant_programme_2 == 'IAC20') || ($applicant->programme_status_3 == '2' && $applicant->applicant_programme_3 == 'IAC20'))
+                                                @if(($applicant->applicant_programme == 'IAC20') || ($applicant->applicant_programme_2 == 'IAC20') || ($applicant->applicant_programme_3 == 'IAC20'))
                                                     <p>Diploma in Accounting</p>
                                                     <ol>
                                                         <li>Pass Sijil Pelajaran Malaysia (SPM) or equivalent, with at least three credits, including Mathematics and pass English <b>OR</b></li>
@@ -322,7 +312,7 @@
                                                         <li>Pass Sijil Kemahiran Malaysia (SKM) Level 3 in related field and pass SPM with minimum one credit in any subject, credit in Mathematics and pass English in SPM level <b>OR</b></li>
                                                     </ol>
                                                 @endif
-                                                @if(($applicant->programme_status == '2' && $applicant->applicant_programme == 'IIF20') || ( $applicant->programme_status_2 == '2' && $applicant->applicant_programme_2 == 'IIF20') || ($applicant->programme_status_3 == '2' && $applicant->applicant_programme_3 == 'IIF20'))
+                                                @if(($applicant->applicant_programme == 'IIF20') || ($applicant->applicant_programme_2 == 'IIF20') || ($applicant->applicant_programme_3 == 'IIF20'))
                                                     <p>Diploma in Islamic Finance</p>
                                                     <ol>
                                                         <li>Pass Sijil Pelajaran Malaysia (SPM) with at least credit in three subjects and pass Mathematics <b>OR</b></li>
@@ -334,52 +324,52 @@
                                                         <li>Pass Comunity College Certificate which is equivalent to KKM Level 3 in related field <b>AND</b> pass SPM with a minimum credit for one subject and <b>PASS</b> Mathematics at SPM level</li>
                                                     </ol>
                                                 @endif
-                                                @if(($applicant->programme_status == '2' && $applicant->applicant_programme == 'PAC150') || ( $applicant->programme_status_2 == '2' && $applicant->applicant_programme_2 == 'PAC150') || ($applicant->programme_status_3 == '2' && $applicant->applicant_programme_3 == 'PAC150'))
+                                                @if(($applicant->applicant_programme == 'PAC150') || ($applicant->applicant_programme_2 == 'PAC150') || ($applicant->applicant_programme_3 == 'PAC150'))
                                                     <p>Certified Accounting Technician</p>
                                                     <ol>
                                                         <li>Pass Sijil Pelajaran Malaysia (SPM) with at least five credits including Bahasa Malaysia, Mathematics and English <b>OR</b></li>
                                                         <li>Other qualifications with equivalent recognition by the Malaysian Government.</li>
                                                     </ol>
                                                 @endif
-                                                @if(($applicant->programme_status == '2' && $applicant->applicant_programme == 'PAC170') || ( $applicant->programme_status_2 == '2' && $applicant->applicant_programme_2 == 'PAC170') || ($applicant->programme_status_3 == '2' && $applicant->applicant_programme_3 == 'PAC170'))
+                                                @if(($applicant->applicant_programme == 'PAC170') || ($applicant->applicant_programme_2 == 'PAC170') || ($applicant->applicant_programme_3 == 'PAC170'))
                                                     <p>Certified in Finance, Accounting & Business (CFAB)</p>
                                                     <ol>
                                                         <li>Pass Sijil Pelajaran Malaysia (SPM) with at least creditfive credits including Bahasa Malaysia, Mathematics and English <b>OR</b></li>
                                                         <li>Other qualifications with equivalent recognition by the Malaysian Government.</li>
                                                     </ol>
                                                 @endif
-                                                @if(($applicant->programme_status == '2' && $applicant->applicant_programme == 'PAC580') || ( $applicant->programme_status_2 == '2' && $applicant->applicant_programme_2 == 'PAC580') || ($applicant->programme_status_3 == '2' && $applicant->applicant_programme_3 == 'PAC580'))
+                                                @if(($applicant->applicant_programme == 'PAC580') || ($applicant->applicant_programme_2 == 'PAC580') || ($applicant->applicant_programme_3 == 'PAC580'))
                                                     <p>The Malaysian Institute of Certified Public Accountants (MICPA)</p>
                                                     <ol>
                                                         <li>Degree holder with CGPA of at least 3.00; 5.0 (New Zealand); 4.0 (Australia)</li>
                                                         <li>Degree must be from universities which are accredited by MICPA in order to obtain full exemption</li>
                                                     </ol>
                                                 @endif
-                                                @if(($applicant->programme_status == '2' && $applicant->applicant_programme == 'PAC551') || ( $applicant->programme_status_2 == '2' && $applicant->applicant_programme_2 == 'PAC551') || ($applicant->programme_status_3 == '2' && $applicant->applicant_programme_3 == 'PAC551'))
+                                                @if(($applicant->applicant_programme == 'PAC551') || ($applicant->applicant_programme_2 == 'PAC551') || ($applicant->applicant_programme_3 == 'PAC551'))
                                                     <p>The Association of Chartered Certified Accountants (ACCA)(UK) from Diploma</p>
                                                     <ul>
                                                         <li>Diploma in Accountancy (Level 4, KKM) with minimum CGPA of 3.00</li>
                                                     </ul>
                                                 @endif
-                                                @if(($applicant->programme_status == '2' && $applicant->applicant_programme == 'PAC552') || ( $applicant->programme_status_2 == '2' && $applicant->applicant_programme_2 == 'PAC552') || ($applicant->programme_status_3 == '2' && $applicant->applicant_programme_3 == 'PAC552'))
+                                                @if(($applicant->applicant_programme == 'PAC552') || ($applicant->applicant_programme_2 == 'PAC552') || ($applicant->applicant_programme_3 == 'PAC552'))
                                                     <p>The Association of Chartered Certified Accountants (ACCA)(UK) from CAT</p>
                                                     <ul>
                                                         <li>Pass Certified Accounting Technician (CAT)</li>
                                                     </ul>
                                                 @endif
-                                                @if(($applicant->programme_status == '2' && $applicant->applicant_programme == 'PAC553') || ( $applicant->programme_status_2 == '2' && $applicant->applicant_programme_2 == 'PAC553') || ($applicant->programme_status_3 == '2' && $applicant->applicant_programme_3 == 'PAC553'))
+                                                @if(($applicant->applicant_programme == 'PAC553') || ($applicant->applicant_programme_2 == 'PAC553') || ($applicant->applicant_programme_3 == 'PAC553'))
                                                     <p>The Association of Chartered Certified Accountants (ACCA)(UK) from CAT</p>
                                                     <ul>
                                                         <li>Bachelor of Accountancy or with related fields with CGPA of at least 2.50</li>
                                                     </ul>
                                                 @endif
-                                                @if(($applicant->programme_status == '2' && $applicant->applicant_programme == 'PAC554') || ( $applicant->programme_status_2 == '2' && $applicant->applicant_programme_2 == 'PAC554') || ($applicant->programme_status_3 == '2' && $applicant->applicant_programme_3 == 'PAC554'))
+                                                @if(($applicant->applicant_programme == 'PAC554') || ($applicant->applicant_programme_2 == 'PAC554') || ($applicant->applicant_programme_3 == 'PAC554'))
                                                     <p>The Association of Chartered Certified Accountants (ACCA)(UK) from CAT</p>
                                                     <ul>
                                                         <li>Bachelor of Accountancy or with related fields with CGPA of at least 2.50</li>
                                                     </ul>
                                                 @endif
-                                                @if(($applicant->programme_status == '2' && $applicant->applicant_programme == 'PAC570') || ( $applicant->programme_status_2 == '2' && $applicant->applicant_programme_2 == 'PAC570') || ($applicant->programme_status_3 == '2' && $applicant->applicant_programme_3 == 'PAC570'))
+                                                @if(($applicant->applicant_programme == 'PAC570') || ($applicant->applicant_programme_2 == 'PAC570') || ($applicant->applicant_programme_3 == 'PAC570'))
                                                     <p>The Association of Chartered Certified Accountants (ACA) for Institute of Chartered Accountants in England and Wales (ICAEW)</p>
                                                     <ol>
                                                         <li>Pass ICAEW Certificate in Finance, Accounting, and Business (ICAEW CFAB) <b>OR</b></li>
@@ -421,7 +411,6 @@
                                                         <thead>
                                                             <th>Programme Code</th>
                                                             <th>Major</th>
-                                                            <th>Offer</th>
                                                             <th>Action</th>
                                                         </thead>
                                                         @foreach ($applicant_recheck as $app_recheck)
@@ -441,9 +430,6 @@
                                                                             });
                                                                         ?>
                                                                     </select>
-                                                                </td>
-                                                                <td>
-                                                                    <input type="checkbox" name="check" value="">
                                                                 </td>
                                                                 <td><div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div></td>
                                                             </tr>
@@ -988,7 +974,7 @@
                                         </div>
                                 </div>
                             </div>
-                            {{-- <div class="tab-content col-md-4 mt-4">
+                            <div class="tab-content col-md-4 mt-4">
                                 <div class="card">
                                     <div class="card-header">Activity Log</div>
                                     <div class="card-body">
@@ -1008,7 +994,7 @@
                                         @endif
                                     </div>
                                 </div>
-                            </div> --}}
+                            </div>
                         </div>
                     </div>
                 </div>

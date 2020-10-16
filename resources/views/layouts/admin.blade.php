@@ -141,12 +141,12 @@
                             </li>
                             <li class="nav-title">Operation</li>
                             @can('check requirement')
-                            <li class="open">
+                            <li class="open"> <!-- change active kalau nak activate dropdown-->
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-address-book"></i>
                                     <span class="nav-link-text" data-i18n="nav.application_intel">Admission</span>
                                 </a>
-                                <ul>
+                                <ul class="collapsable-list">
                                     <li>
                                         <a href="/sponsorapplicant" title="Pending Applicant" data-filter-tags="active_student">
                                             <i class="fal fa-upload"></i>
@@ -898,7 +898,12 @@
         <script src="{{asset('js/formplugins/select2/select2.bundle.js')}}"></script>
 
         @yield('script')
-
+        <script>
+            $('.collapsable-list li a').on('click', function(){
+                $('.collapsable-list').find('a').next().collapse('hide');
+                $(this).next().collapse('toggle');
+            });
+        </script>
 
     </body>
 </html>

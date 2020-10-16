@@ -43,10 +43,22 @@ class RegistrationController extends Controller
     public function index()
     {
         $country = Country::all();
-        $programme = Programme::all()->sortBy('programme_name');
+        // $programme = Programme::all()->sortBy('programme_name');
+        $programme = Intakes::where('status','1')->with(['intakeDetails.programme','intakeDetails'=>function($query){
+            $query->where('status','1');
+        }])->first();
+
         $major = Major::all()->sortBy('major_name');
         $intake = Intakes::where('status','1')->get();
         return view('registration.index', compact('country','programme','major','intake'));
+    }
+
+    public function test()
+    {
+        $test = Intakes::where('status','1')->with(['intakeDetails'=>function($query){
+            $query->where('status','1');
+        }])->get();
+        dd($test);
     }
 
     public function data($id)
@@ -131,6 +143,8 @@ class RegistrationController extends Controller
             $detail = Applicant::create($request->all());
 
             $applicant_detail = Applicant::where('applicant_ic',$request->applicant_ic)->with(['country','programme','programmeTwo','programmeThree','majorOne','majorTwo','majorThree'])->first();
+
+            Applicant::firstRegistration($applicant_detail['id']);
 
             return redirect()->route('printRef', ['id' => $request->applicant_ic]);
         }
@@ -311,6 +325,7 @@ class RegistrationController extends Controller
             'applicant_religion' => $request->applicant_religion,
             'applicant_dob' => $request->applicant_dob,
             'applicant_status' => 'A1',
+            'applicant_qualification' => $request->highest_qualification,
         ]);
         if($request->hasFile('image') && $request->file('image')->isValid()){
             $applicant->addMediaFromRequest('image')->toMediaCollection('images');
@@ -582,6 +597,7 @@ class RegistrationController extends Controller
             }
         }
 
+        Applicant::completeApplication($id);
 
         return redirect()->route('printReg', ['id' => $id]);
     }

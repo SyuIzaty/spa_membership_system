@@ -117,7 +117,7 @@ Route::get('qualificationfile/{filename}/{type}','RegistrationController@qualifi
 
 //SPONSOR
 Route::resource('param/sponsor','SponsorController');
-Route::get('/test','SponsorController@test');
+Route::get('/test','RegistrationController@test');
 Route::post('/data_sponsor', 'SponsorController@data_sponsor');
 
 //INTAKE

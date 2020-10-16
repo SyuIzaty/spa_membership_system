@@ -28,6 +28,7 @@
                                         <th>APPLICANT</th>
                                         <th>IC</th>
                                         <th>INTAKE</th>
+                                        <th>SPONSOR</th>
                                         <th>PROG 1</th>
                                         <th>PROG 2</th>
                                         <th>PROG 3</th>
@@ -38,6 +39,7 @@
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Applicant Name"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Applicant IC"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Intake"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Sponsor"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
@@ -99,6 +101,7 @@
                     { data: 'applicant_name', name: 'applicant_name' },
                     { data: 'applicant_ic', name: 'applicant_ic' },
                     { data: 'intake_id', name: 'intake_id' },
+                    { data: 'sponsor_code', name: 'sponsor_code' },
                     { data: 'prog_name', name: 'prog_name' },
                     { data: 'prog_name_2', name: 'prog_name_2' },
                     { data: 'prog_name_3', name: 'prog_name_3' },

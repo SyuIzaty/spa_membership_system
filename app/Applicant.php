@@ -12,11 +12,40 @@ class Applicant extends Model
     use LogsActivity;
     protected $table = 'applicant';
     // Set mass-assignable fields
-    protected $fillable = ['applicant_name', 'applicant_ic', 'applicant_email', 'applicant_phone', 'applicant_status','applicant_nationality', 'applicant_programme', 'applicant_programme_2', 'applicant_programme_3','applicant_major','applicant_major_2','applicant_major_3','programme_name', 'applicant_gender', 'applicant_religion','applicant_marital','applicant_race','applicant_dob','intake_id','sponsor_code'];
+    protected $fillable = ['applicant_name', 'applicant_ic', 'applicant_email', 'applicant_phone', 'applicant_status','applicant_nationality', 'applicant_programme', 'applicant_programme_2', 'applicant_programme_3','applicant_major','applicant_major_2','applicant_major_3','programme_name', 'applicant_gender', 'applicant_religion','applicant_marital','applicant_race','applicant_dob','intake_id','sponsor_code','applicant_qualification'];
     protected $primaryKey = 'id';
     protected $foreignKey = 'applicant_id';
 
-    protected static $logAttributes = true;
+    public static function firstRegistration($applicant) // First time registration
+    {
+        activity()->log('First Time Registration')->update(['subject_id'=>$applicant, 'subject_type'=>'App\Applicant']);
+    }
+
+    public static function completeApplication($applicant) // Complete Application
+    {
+        activity()->log('Application Complete')->update(['subject_id'=>$applicant, 'subject_type'=>'App\Applicant']);
+    }
+
+    public static function changeIntake($applicant) // Change Intake Session
+    {
+        activity()->log('Change Intake Session')->update(['subject_id'=>$applicant, 'subject_type'=>'App\Applicant']);
+    }
+
+    public static function requirementCheck($applicant) // Requirement Check
+    {
+        activity()->log('Requirement Check')->update(['subject_id'=>$applicant, 'subject_type'=>'App\Applicant']);
+    }
+
+    public static function recheckQualification($applicant) // Recheck Qualified Programme
+    {
+        activity()->log('Recheck Qualification')->update(['subject_id'=>$applicant, 'subject_type'=>'App\Applicant']);
+    }
+
+    public static function updateStatus($applicant, $programme, $major) // Offer Programme
+    {
+        activity()->log('Offer Programe')->update(['subject_id'=>$applicant, 'subject_type'=>'App\Applicant', 'properties'=>['programme'=>$programme]]);
+    }
+
 
     public function applicantresult()
     {

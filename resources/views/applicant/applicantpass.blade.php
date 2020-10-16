@@ -28,12 +28,10 @@
                                         <th>APPLICANT</th>
                                         <th>IC</th>
                                         <th>INTAKE</th>
+                                        <th>SPONSOR CODE</th>
                                         <th>PROG 1</th>
                                         <th>PROG 2</th>
                                         <th>PROG 3</th>
-                                        <th>BM</th>
-                                        <th>ENG</th>
-                                        <th>MATH</th>
                                         <th>ACTION</th>
                                     </tr>
                                     <tr>
@@ -41,12 +39,10 @@
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Applicant Name"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Applicant IC"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Intake"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Sponsor"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Bahasa Melayu"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search English"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Mathematics"></td>
                                         <td></td>
                                     </tr>
                                 </thead>
@@ -104,12 +100,10 @@
                     { data: 'applicant_name', name: 'applicant_name' },
                     { data: 'applicant_ic', name: 'applicant_ic'},
                     { data: 'intake_id', name: 'intake_id'},
+                    { data: 'sponsor_code', name: 'sponsor_code'},
                     { data: 'prog_name', name: 'prog_name' },
                     { data: 'prog_name_2', name: 'prog_name_2' },
                     { data: 'prog_name_3', name: 'prog_name_3' },
-                    { data: 'bm', name: 'bm' },
-                    { data: 'english', name: 'english' },
-                    { data: 'math', name: 'math' },
                     { data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,

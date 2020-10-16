@@ -276,6 +276,15 @@
                                         <div class="card-header">Qualification</div>
                                         <div class="card-body">
                                             <div class="row qualification-row">
+                                                <div class="col-md-12 form-group">
+                                                    {{ Form::label('title', 'Highest Qualification') }}
+                                                    <select class="form-control qualification" name="highest_qualification">
+                                                        @foreach($qualification as $qualifications)
+                                                        <option value="{{ $qualifications->id }}" {{ $applicant->applicant_qualification == $qualifications->id ? 'selected="selected"' : ''}}>{{ $qualifications->qualification_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-12" style="color: red">** Note: Please input all your qualification</div>
                                                 <div class="col-md-6 form-group">
                                                     {{ Form::label('title', 'Qualification Type') }}
                                                     <select class="form-control qualification" id="qualification">

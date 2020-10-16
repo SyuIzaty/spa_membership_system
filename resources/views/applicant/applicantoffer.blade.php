@@ -29,6 +29,7 @@
                                         <th>APPLICANT</th>
                                         <th>IC</th>
                                         <th>INTAKE</th>
+                                        <th>SPONSOR</th>
                                         <th>BATCH</th>
                                         <th>PROG</th>
                                         <th>MAJOR</th>
@@ -40,6 +41,7 @@
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Name"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="IC"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Intake"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Sponsor"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Batch"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Programme"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Major"></td>
@@ -91,6 +93,7 @@
                     { data: 'applicant_name', name: 'applicant_name' },
                     { data: 'applicant_ic', name: 'applicant_ic' },
                     { data: 'intake_id', name: 'intake_id' },
+                    { data: 'sponsor_code', name: 'sponsor_code' },
                     { data: 'batch_code', name: 'batch_code' },
                     { data: 'offered_programme', name: 'offered_programme' },
                     { data: 'offered_major', name: 'offered_major' },

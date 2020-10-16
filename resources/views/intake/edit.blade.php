@@ -94,8 +94,8 @@
                                             @if ($intake_del->status == '0') Inactive @endif
                                         </td>
                                         <td>
+                                            <button class="btn btn-primary" data-toggle="modal" data-id="{{$intake_del->id}}" id="edit">Edit</button>
                                             @if (in_array($intake_del->intake_programme, $offer_intake))
-                                                <button class="btn btn-primary" data-toggle="modal" data-id="{{$intake_del->id}}" id="edit">Edit</button>
                                                 <button class="btn btn-danger deleteProgram" data-id="{{$intake_del->id}}" data-action="{{route('deleteProgramInfo', $intake_del->id)}}">Delete</button>
                                             @endif
                                         </td>
@@ -157,6 +157,7 @@
                             {{Form::label('title', 'Intake Venue')}}
                             {{Form::text('intake_venue', '', ['class' => 'form-control', 'placeholder' => 'Intake Venue', 'required'])}}
                         </div>
+                        <input type="hidden" name="intake_quota" value="1">
                         <div class="footer">
                             <button class="btn btn-primary pull-right">Save</button>
                         </div>
@@ -213,6 +214,14 @@
                             <div class="form-group">
                                 {{Form::label('title', 'Intake Venue')}}
                                 {{Form::text('intake_venue', '', ['class' => 'form-control', 'id' => 'intake_venue' ,'placeholder' => 'Intake Venue', 'required'])}}
+                            </div>
+                            <div class="form-group">
+                                {{Form::label('title', 'Sufficient Quota')}}
+                                <select class="form-control" name="intake_quota">
+                                    <option disabled selected>Please select</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
                             </div>
                             <div class="modal-footer">
                                 <button class="btn btn-primary">Save</button>
