@@ -278,7 +278,7 @@
                                             <div class="row qualification-row">
                                                 <div class="col-md-12 form-group">
                                                     {{ Form::label('title', 'Highest Qualification') }}
-                                                    <select class="form-control qualification" name="highest_qualification">
+                                                    <select class="form-control qua" name="highest_qualification">
                                                         @foreach($qualification as $qualifications)
                                                         <option value="{{ $qualifications->id }}" {{ $applicant->applicant_qualification == $qualifications->id ? 'selected="selected"' : ''}}>{{ $qualifications->qualification_name }}</option>
                                                         @endforeach
@@ -329,7 +329,7 @@
     }
 
     $(document).ready(function() {
-        $('.country, .gender, .marital, .race, .religion, .relation, .qualification').select2();
+        $('.country, .gender, .marital, .race, .religion, .relation, .qualification, .qua').select2();
     });
 
     var listSPM = {!! $subjectSpmStr !!};

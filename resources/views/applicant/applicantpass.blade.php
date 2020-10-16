@@ -109,7 +109,7 @@
                 orderCellsTop: true,
                 "order": [[ 1, "asc" ]],
                 "initComplete": function(settings, json) {
-                    var column = this.api().column(2);
+                    var column = this.api().column(3);
                     var select = $('<select class="form-control"><option value=""></option></select>')
                     .appendTo( $('#intake_pass').empty().text('Intake: ') )
                     .on('change',function(){

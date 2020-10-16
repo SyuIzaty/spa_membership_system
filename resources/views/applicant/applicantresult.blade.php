@@ -23,13 +23,14 @@
                             @can('check requirement')
                             <form action="{{ route('applicant-check') }}" method="post" name="form">
                                 @csrf
-                                    <button type="button" class="btn btn-info pull-right" onclick="window.location='{{ route("check-requirements") }}'">Check All</button>
-                                    <button type="submit" class="btn btn-primary pull-right"><i class="fal fa-user"></i> Check Multiple</button>
+                                    <button type="button" class="btn btn-info float-right" onclick="window.location='{{ route("check-requirements") }}'">Check All</button>
+                                    <button type="submit" class="btn btn-primary float-right mr-2">Check Multiple</button>
                                     @endcan
                                     <div class="intake_pass" id="intake_all"></div>
                                     <table class="table table-bordered" id="applicant">
                                         <thead>
                                             <tr>
+                                                <th></th>
                                                 <th>NO</th>
                                                 <th>APPLICANT</th>
                                                 <th>IC</th>
@@ -44,6 +45,7 @@
                                                 <th>ACTION</th>
                                             </tr>
                                             <tr>
+                                                <td></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Applicant Name"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Applicant IC"></td>
@@ -144,6 +146,7 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
             columns: [
+                    { data: 'checkone', name: 'checkone', orderable: false, searchable: false},
                     { data: 'id', name: 'id' },
                     { data: 'applicant_name', name: 'applicant_name' },
                     { data: 'applicant_ic', name: 'applicant_ic' },
@@ -160,7 +163,7 @@
                 orderCellsTop: true,
                 "order": [[ 1, "asc" ]],
                 "initComplete": function(settings, json) {
-                    var column = this.api().column(2);
+                    var column = this.api().column(4);
                     var select = $('<select class="form-control"><option value=""></option></select>')
                     .appendTo( $('#intake_all').empty().text('Intake: ') )
                     .on('change',function(){

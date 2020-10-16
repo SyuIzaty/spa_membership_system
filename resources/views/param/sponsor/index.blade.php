@@ -21,7 +21,7 @@
                     <div class="panel-container show">
                         <div class="panel-content">
                             <span id="intake_fail"></span>
-                            <a class="btn btn-primary" href="{{ route('sponsor.create') }}"> Create Intake Info</a>
+                            <a class="btn btn-primary" href="{{ route('sponsor.create') }}"> Create Sponsor Detail</a>
                             <table class="table table-bordered" id="sponsor">
                                 <thead>
                                     <tr>

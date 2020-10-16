@@ -70,6 +70,11 @@
                                                     @if ($applicant->applicant_status != '00')
                                                         <div class="card-header">Program Selection</div>
                                                         <div class="card-body">
+                                                        @if(session()->has('message'))
+                                                        <div class="alert alert-success">
+                                                            {{ session()->get('message') }}
+                                                        </div>
+                                                        @endif
                                                         {!! Form::open(['action' => ['ApplicantController@intakestatus'], 'method' => 'POST'])!!}
                                                             <div class="row">
                                                                 <div class="col-md-10 form-group">
@@ -210,13 +215,21 @@
                                                                 @endisset
                                                             </table>
                                                         @isset($applicant->offered_programme)
-                                                            <div class="alert alert-success">
-                                                                <ul>
-                                                                    <li>Offered Programme: {{ $applicant->offered_programme }}</li>
-                                                                    <li>Offered Major: {{ $applicant->offered_major }}</li>
-                                                                    <li>Batch Code: {{ $applicant->batch_code }}</li>
-                                                                </ul>
-                                                            </div>
+                                                            <table class="table table-bordered table-sm">
+                                                                <th colspan="2" style="text-align:center">Offered Programme</th>
+                                                                <tr>
+                                                                    <td>Offer Programme</td>
+                                                                    <td>{{ $applicant->offered_programme }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Offered Major</td>
+                                                                    <td>{{ $applicant->offered_major }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Batch Code</td>
+                                                                    <td>{{ $applicant->batch_code }}</td>
+                                                                </tr>
+                                                            </table>
                                                         @endisset
                                                     </div>
                                                     @endif

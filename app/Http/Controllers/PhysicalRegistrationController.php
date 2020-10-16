@@ -8,6 +8,7 @@ use App\Applicant;
 use App\Student;
 use App\Intakes;
 use App\User;
+use DB;
 
 class PhysicalRegistrationController extends Controller
 {
@@ -66,6 +67,7 @@ class PhysicalRegistrationController extends Controller
             'email' => $applicant['applicant_email'],
             'password' => $password,
         ]);
+        DB::insert('INSERT INTO auth.model_has_roles(role_id,model_type,model_id) VALUES (?,?,?)',['5','App\User',$applicant['student_id']]);
 
         return redirect()->back()->with('message', 'Students have been added');
     }

@@ -32,15 +32,6 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    {{ Form::label('title', 'Batch') }}
-                                    <select class="form-control" name="batch" id="batch" >
-                                        <option value="">Select Batch</option>
-                                        @foreach($batch as $batches)
-                                            <option value="{{$batches->batch_code}}">{{$batches->batch_code}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-6 form-group">
                                     {{ Form::label('title', 'Programme') }}
                                     <select class="form-control" name="programme" id="programme" >
                                         <option value="">Select Programme</option>
@@ -58,8 +49,8 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <button type="submit" class="btn btn-primary form-group">Export</button>
                             </div>
+                            <button type="submit" class="btn btn-primary btn-md form-group mt-2">Export</button>
                             {!! Form::close() !!}
                         </div>
                     </div>

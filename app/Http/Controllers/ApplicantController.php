@@ -239,6 +239,9 @@ class ApplicantController extends Controller
 
 
         return datatables()::of($applicants)
+            ->addColumn('checkone', function ($applicants) {
+                return '<input type="checkbox" name="student_checkbox[]" value="'.$applicants->id.'" class="student_checkbox">';
+            })
             ->addColumn('intake_id',function($applicants)
             {
                 return $applicants->applicantIntake->intake_code;
@@ -268,13 +271,12 @@ class ApplicantController extends Controller
             // ->addColumn('math',function($applicants){
             //     return $applicants->applicantresult->where('subject',1449)->isEmpty() ? '': $applicants->applicantresult->where('subject',1449)->first()->grades->grade_code;
             // })
-
            ->addColumn('action', function ($applicants) {
-               return '<input type="checkbox" name="student_checkbox[]" value="'.$applicants->id.'" class="student_checkbox">
+               return '
                <a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"><i class="fal fa-user"></i></a>'
                ;
            })
-           ->rawColumns(['prog_name','prog_name_2','prog_name_3','action'])
+           ->rawColumns(['prog_name','prog_name_2','prog_name_3','action','checkone'])
            ->make(true);
     }
 
@@ -484,11 +486,10 @@ class ApplicantController extends Controller
     public function export(Request $request)
     {
         $intake = $request->intake;
-        $batch = $request->batch;
         $programme = $request->programme;
         $status = $request->status;
 
-        return Excel::download(new ApplicantExport($intake, $batch, $programme, $status), 'applicant.xlsx');
+        return Excel::download(new ApplicantExport($intake, $programme, $status), 'applicant.xlsx');
     }
 
     public function data_acceptedapplicant()
@@ -1513,7 +1514,7 @@ class ApplicantController extends Controller
 
         Applicant::where('id',$request->id)->update(['offered_programme' => $request->applicant_programme, 'offered_major' => $request->applicant_major, 'applicant_status' => '3', 'batch_code' => $request->batch_code, 'student_id' => $student_id, 'applicant_qualification' => $request->applicant_qualification]);
         Applicant::updateStatus($applicant['id'], $request->applicant_programme, $request->applicant_major);
-        return redirect()->back();
+        return redirect()->back()->with('message', 'Programme Offered');
     }
 
     public function sendUpdateApplicant(Request $request)

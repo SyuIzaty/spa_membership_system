@@ -9,10 +9,9 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 class ApplicantExport implements FromCollection
 {
     use Exportable;
-    public function __construct(String $intake = null , String $batch = null, String $programme = null, String $status = null)
+    public function __construct(String $intake = null , String $programme = null, String $status = null)
     {
         $this->intake = $intake;
-        $this->batch = $batch;
         $this->programme = $programme;
         $this->status = $status;
     }
@@ -21,7 +20,7 @@ class ApplicantExport implements FromCollection
     */
     public function collection()
     {
-        $applicant = Applicant::where('intake_id',$this->intake)->where('batch_code',$this->batch)->where('applicant_programme',$this->programme)->where('applicant_status',$this->status)->with(['applicantIntake','status'])->get();
+        $applicant = Applicant::where('intake_id',$this->intake)->where('applicant_programme',$this->programme)->where('applicant_status',$this->status)->with(['applicantIntake','status'])->get();
         $changed = $applicant->map(function ($value, $key) {
             $value['intake_id'] = $value['applicantIntake']['intake_code'];
             $value['applicant_status'] = $value['status']['status_description'];

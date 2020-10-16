@@ -44,16 +44,16 @@
                                     <div class="row form-group">
                                         <div class="col-md-6">
                                             {{Form::label('title', 'Sponsor Code')}}
-                                            {{Form::text('sponsor_code', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Code'])}}
+                                            {{Form::text('sponsor_code', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Code', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                                         </div>
                                         <div class="col-md-6">
                                             {{Form::label('title', 'Sponsor Name')}}
-                                            {{Form::text('sponsor_name', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Name'])}}
+                                            {{Form::text('sponsor_name', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Name', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         {{Form::label('title', 'Sponsor Detail')}}
-                                        {{Form::text('sponsor_detail', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Detail'])}}
+                                        {{Form::text('sponsor_detail', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Detail', 'onkeyup' => 'this.value = this.value.toUpperCase()' ])}}
                                     </div>
                                     <div class="row form-group">
                                         <div class="col-md-6">
@@ -67,20 +67,20 @@
                                     </div>
                                     <div class="form-group">
                                         {{Form::label('title', 'Sponsor Address I')}}
-                                        {{Form::text('sponsor_address_1', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Address 1'])}}
+                                        {{Form::text('sponsor_address_1', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Address 1', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                                     </div>
                                     <div class="form-group">
                                         {{Form::label('title', 'Sponsor Address II')}}
-                                        {{Form::text('sponsor_address_2', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Address II'])}}
+                                        {{Form::text('sponsor_address_2', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Address II', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                                     </div>
                                     <div class="row form-group">
                                         <div class="col-md-6">
                                             {{Form::label('title', 'Sponsor Contact Person')}}
-                                            {{Form::text('sponsor_person', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Contact Person'])}}
+                                            {{Form::text('sponsor_person', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Contact Person', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                                         </div>
                                         <div class="col-md-6">
                                             {{Form::label('title', 'Sponsor Dept')}}
-                                            {{Form::text('sponsor_dept', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Email'])}}
+                                            {{Form::text('sponsor_dept', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Email', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -90,15 +90,15 @@
                                     <div class="row form-group">
                                         <div class="col-md-4">
                                             {{Form::label('title', 'Sponsor Postcode')}}
-                                            {{Form::number('sponsor_poscode', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Postcode'])}}
+                                            {{Form::number('sponsor_poscode', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Postcode', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                                         </div>
                                         <div class="col-md-4">
                                             {{Form::label('title', 'Sponsor City')}}
-                                            {{Form::text('sponsor_city', '', ['class' => 'form-control', 'placeholder' => 'Sponsor City'])}}
+                                            {{Form::text('sponsor_city', '', ['class' => 'form-control', 'placeholder' => 'Sponsor City', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                                         </div>
                                         <div class="col-md-4">
                                             {{Form::label('title', 'Sponsor State')}}
-                                            {{Form::text('sponsor_state', '', ['class' => 'form-control', 'placeholder' => 'Sponsor State'])}}
+                                            {{Form::text('sponsor_state', '', ['class' => 'form-control', 'placeholder' => 'Sponsor State', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                                         </div>
                                     </div>
                                     <button class="btn btn-primary">Submit</button>
