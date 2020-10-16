@@ -47,22 +47,6 @@ Route::resource('space/roomowner', 'RoomOwnerController');  //roomowner
 
 //APPLICANTS
 
-// Route::get('/applicant','ApplicantController@create');
-
-// Route::post('applicant/{applicant}/showapp','ApplicantController@showapp')->name('applicant.showapp');
-// Route::get('applicant/{applicant}/profile','ApplicantController@profile')->name('applicant.profile');
-// Route::get('applicant/{applicant}/contact','ApplicantController@createcontact')->name('applicant.createcontact');
-// Route::get('applicant/{applicant}/contactinfo','ApplicantController@contactinfo')->name('applicant.contactinfo');
-// Route::get('applicant/{applicant}/prefprogramme','ApplicantController@prefprogramme')->name('applicant.prefprogramme');
-// Route::get('applicant/{applicant}/address','ApplicantController@address')->name('applicant.address');
-// Route::post('applicant/{applicant}/storecontact','ApplicantController@storecontact')->name('applicant.storecontact');
-// Route::get('applicant/{applicant}/updateprogramme','ApplicantController@updateprogramme')->name('applicant.updateprogramme');
-// Route::get('applicant/{applicant}/updatecontact','ApplicantController@updatecontact')->name('applicant.updatecontact');
-// Route::get('applicant/{applicant}/academic','ApplicantController@createacademic')->name('applicant.createacademic');
-// Route::get('applicant/{applicant}/storeacademic','ApplicantController@storeacademic')->name('applicant.storeacademic');
-// Route::get('applicant/{applicant}/academicinfo','ApplicantController@academicinfo')->name('applicant.academicinfo');
-// Route::get('applicant/{applicant}/updateacademic','ApplicantController@updateacademic')->name('applicant.updateacademic');
-
 Route::post('/display', 'ApplicantController@checkIndividual')->name('checkIndividual');
 Route::post('/qualifiedProgramme', 'ApplicantController@qualifiedProgramme')->name('qualifiedProgramme');
 Route::get('/applicantresult','ApplicantController@indexs');
@@ -70,6 +54,7 @@ Route::get('/incomplete','ApplicantController@applicant_incomplete');
 Route::get('/passapplicant','ApplicantController@applicant_pass');
 Route::get('/failapplicant','ApplicantController@applicant_fail');
 Route::get('/offerapplicant','ApplicantController@applicant_offer');
+Route::get('/applicantupdatestat', 'ApplicantController@applicant_updatestat');
 Route::get('checkrequirements', 'ApplicantController@checkrequirements')->name('check-requirements');
 Route::get('checkindividual', 'ApplicantController@checkindividual')->name('check-individual');
 Route::post('changestatus', 'ApplicantController@changestatus');
@@ -90,6 +75,7 @@ Route::post('/data_allapplicant', 'ApplicantController@data_allapplicant');
 Route::post('/data_rejectedapplicant', 'ApplicantController@data_rejectedapplicant');
 Route::post('/data_passapplicant', 'ApplicantController@data_passapplicant');
 Route::post('/data_offerapplicant', 'ApplicantController@data_offerapplicant');
+Route::post('/data_statusapplicant', 'ApplicantController@data_statusapplicant');
 Route::post('/data_acceptedapplicant', 'ApplicantController@data_acceptedapplicant');
 Route::get('/export_applicant', 'ApplicantController@applicant_all');
 Route::get('export', 'ApplicantController@export');
@@ -117,7 +103,7 @@ Route::get('qualificationfile/{filename}/{type}','RegistrationController@qualifi
 
 //SPONSOR
 Route::resource('param/sponsor','SponsorController');
-Route::get('/test','RegistrationController@test');
+Route::get('/test','ApplicantController@test');
 Route::post('/data_sponsor', 'SponsorController@data_sponsor');
 
 //INTAKE

@@ -184,6 +184,12 @@
                                         </a>
                                     </li>
                                     <li>
+                                        <a href="/applicantupdatestat" title="Pending Applicant" data-filter-tags="active_student">
+                                            <i class="fal fa-plus"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Update Applicant Status</span>
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a href="/intake" title="Intake Information" data-filter-tags="active_student">
                                             <i class="fal fa-list"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">Intake Information</span>

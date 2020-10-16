@@ -227,6 +227,11 @@ class ApplicantController extends Controller
         return view('applicant.applicantoffer');
     }
 
+    public function applicant_updatestat()
+    {
+        return view('applicant.applicantstatus');
+    }
+
     public function data_allapplicant() // Datatable: display unprocessed applicant
     {
         $applicant = Applicant::where('applicant_status',NULL)->orWhere('applicant_status','0')->orWhere('applicant_status','A1')->get();
@@ -368,6 +373,46 @@ class ApplicantController extends Controller
             ->make(true);
     }
 
+    public function data_statusapplicant() //Datatable: Update Applicant Status
+    {
+        $intake = Intakes::where('status','1')->first();
+        $applicant = Applicant::where('intake_id',$intake['id'])->get();
+        $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','applicantstatus','applicantIntake','batch','status');
+        return datatables()::of($applicants)
+            ->addColumn('applicant_name',function($applicants)
+            {
+                return $applicants->applicant_name;
+            })
+            ->addColumn('intake_id',function($applicants)
+            {
+                return $applicants->applicantIntake->intake_code;
+            })
+            ->addColumn('applicant_status',function($applicants)
+            {
+                return $applicants->status->status_description;
+            })
+            ->addColumn('action', function ($applicants) {
+               return '<div class="btn-block pull-right">
+               <a href="/applicant/'.$applicants->id.'/edit" class="btn btn-sm btn-primary pull-right">Update Status</a>
+               </div>';
+            })
+            ->rawColumns(['prog_name','prog_name_2','prog_name_3','action'])
+            ->make(true);
+    }
+
+    public function edit($id)
+    {
+        $applicant = Applicant::find($id);
+        $status = Status::all();
+        return view('applicant.edit', compact('status', 'applicant'));
+    }
+
+    public function store(Request $request)
+    {
+        Applicant::where('id',$request->applicant_id)->update(['applicant_status'=>$request->applicant_status]);
+        return redirect()->back()->with('message', 'Update Status');
+    }
+
     public function data_incompleteapplicant() // Datatable: incomplete applicant
     {
         $applicant = Applicant::where('applicant_status','00')->get();
@@ -405,7 +450,10 @@ class ApplicantController extends Controller
 
     public function offeredprogramme()
     {
-        $intake = Intakes::where('status','1')->with(['intakeDetails'])->get();
+        // $intake = Intakes::where('status','1')->with(['intakeDetails'])->get();
+
+        $intake = Intakes::where('status','1')->with(['intakeDetails.applicant'])->get();
+
         return view('applicant.offeredprogramme', compact('intake'));
     }
 
@@ -1396,7 +1444,9 @@ class ApplicantController extends Controller
             $student_id = $year . '1117' . $random;
          } while ( Applicant::where('student_id', $student_id )->exists() );
 
-        Applicant::where('id',$request->applicant_id)->update(['offered_programme' => $request->programme_code, 'offered_major' => $request->major, 'applicant_status' => '3', 'student_id' => $student_id]);
+        $batch = IntakeDetail::where('status','1')->where('intake_programme',$request->programme_code)->where('intake_code',$request->intake_id)->first();
+
+        Applicant::where('id',$request->applicant_id)->update(['offered_programme' => $request->programme_code, 'offered_major' => $request->major, 'applicant_status' => '3', 'student_id' => $student_id, 'batch_code'=>$batch['batch_code']]);
 
         $intake = Applicant::where('id',$request->applicant_id)->where('offered_programme',$request->programme_code)->where('offered_major',$request->major)->with(['intakeDetail'=>function($query) use ($request){
             $query->where('status','1')->where('intake_programme',$request->programme_code);

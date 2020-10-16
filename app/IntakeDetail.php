@@ -22,6 +22,11 @@ class IntakeDetail extends Model
         return $this->hasOne('App\Programme','id','intake_programme');
     }
 
+    public function applicant()
+    {
+        return $this->hasMany('App\Applicant','batch_code','batch_code');
+    }
+
     public function intakeType()
     {
         return $this->hasOne('App\IntakeType','id','intake_type');

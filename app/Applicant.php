@@ -16,6 +16,7 @@ class Applicant extends Model
     protected $primaryKey = 'id';
     protected $foreignKey = 'applicant_id';
 
+    // Activity Log
     public static function firstRegistration($applicant) // First time registration
     {
         activity()->log('First Time Registration')->update(['subject_id'=>$applicant, 'subject_type'=>'App\Applicant']);
@@ -47,6 +48,7 @@ class Applicant extends Model
     }
 
 
+    // Relation
     public function applicantresult()
     {
         return $this->hasMany('App\ApplicantResult', 'applicant_id', 'id');

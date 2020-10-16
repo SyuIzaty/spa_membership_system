@@ -125,7 +125,7 @@
                                                                         <select class="form-control" name="applicant_qualification">
                                                                             <option disabled selected>Please select</option>
                                                                             @foreach ($qualification as $app_qualification)
-                                                                                <option value="{{ $app_qualification->id }}">{{ $app_qualification->qualification_name }}</option>
+                                                                            <option value="{{ $app_qualification->id }}" {{ $applicant->applicant_qualification == $app_qualification->id ? 'selected="selected"' : ''}}>{{ $app_qualification->qualification_code }}</option>
                                                                             @endforeach
                                                                         </select>
                                                                     </td>
@@ -160,7 +160,7 @@
                                                                         <select class="form-control" name="applicant_qualification">
                                                                             <option disabled selected>Please select</option>
                                                                             @foreach ($qualification as $app_qualification)
-                                                                                <option value="{{ $app_qualification->id }}">{{ $app_qualification->qualification_name }}</option>
+                                                                            <option value="{{ $app_qualification->id }}" {{ $applicant->applicant_qualification == $app_qualification->id ? 'selected="selected"' : ''}}>{{ $app_qualification->qualification_code }}</option>
                                                                             @endforeach
                                                                         </select>
                                                                     </td>
@@ -196,7 +196,7 @@
                                                                         <select class="form-control" name="applicant_qualification">
                                                                             <option disabled selected>Please select</option>
                                                                             @foreach ($qualification as $app_qualification)
-                                                                                <option value="{{ $app_qualification->id }}">{{ $app_qualification->qualification_name }}</option>
+                                                                            <option value="{{ $app_qualification->id }}" {{ $applicant->applicant_qualification == $app_qualification->id ? 'selected="selected"' : ''}}>{{ $app_qualification->qualification_code }}</option>
                                                                             @endforeach
                                                                         </select>
                                                                     </td>
@@ -214,6 +214,7 @@
                                                                 <ul>
                                                                     <li>Offered Programme: {{ $applicant->offered_programme }}</li>
                                                                     <li>Offered Major: {{ $applicant->offered_major }}</li>
+                                                                    <li>Batch Code: {{ $applicant->batch_code }}</li>
                                                                 </ul>
                                                             </div>
                                                         @endisset
@@ -410,12 +411,13 @@
                                                     <table class="table table-bordered">
                                                         <thead>
                                                             <th>Programme Code</th>
-                                                            <th>Major</th>
+                                                            <th>Major Code</th>
                                                             <th>Action</th>
                                                         </thead>
                                                         @foreach ($applicant_recheck as $app_recheck)
                                                         <form action="{{ route('qualifiedProgramme') }}" method="post" name="form">
                                                             <input type="hidden" name="applicant_id" value="{{ $applicant->id }}">
+                                                            <input type="hidden" name="intake_id" value="{{ $applicant->intake_id }}">
                                                             @csrf
                                                             <tr>
                                                                 <td>{{ Form::text('programme_code', $app_recheck->programme_code, ['class' => 'form-control', 'readonly' => 'true']) }}</td>

@@ -35,7 +35,8 @@
                                         <th>NO</th>
                                         <th>PROGRAMME CODE</th>
                                         <th>BATCH CODE</th>
-                                        <th>INTAKE STATUS</th>
+                                        <th>TOTAL APPLICANT</th>
+                                        <th>EMAIL SEND</th>
                                         <th>ACTION</th>
                                     </tr>
                                 </thead>
@@ -46,8 +47,13 @@
                                             <input type="hidden" name="intake_id" value="{{ $intakes->intake_code }}">
                                             <td>{{ $intakes->intake_programme }}</td>
                                             <td>{{ $intakes->batch_code }}</td>
-                                            <td style="text-transform: uppercase">{{ $intakes->intake_status }}</td>
-                                            <td><input type="checkbox" name="check[]" value="{{ $intakes->batch_code }}"></td>
+                                            <td>{{ $intakes->applicant->count() }}</td>
+                                            <td>{{ $intakes->applicant->where('applicant_status','3A')->count() }}/{{ $intakes->applicant->count() }}</td>
+                                            <td>
+                                                @if($intakes['intake_quota'] == '1')
+                                                <input type="checkbox" name="check[]" value="{{ $intakes->batch_code }}">
+                                                @endif
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
