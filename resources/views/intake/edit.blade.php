@@ -116,7 +116,7 @@
                         <h4 class="modal-title"> Add Program Info</h4>
                     </div>
                     <div class="modal-body">
-                        {!! Form::open(['action' => 'IntakeController@createProgramInfo', 'method' => 'POST']) !!}
+                        {!! Form::open(['action' => 'IntakeController@createProgramInfo', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                         <input name="intake_code" value="{{$intake->id}}" hidden>
                         <div class="form-group">
                             {{Form::label('title', 'Program Code')}}
@@ -132,7 +132,7 @@
                         </div>
                         <div class="form-group">
                             {{Form::label('title', 'Batch Code')}}
-                            <select class="form-control" name="batch_code" id="batch_code">
+                            <select class="form-control" name="batch_code" id="batches_code">
                             </select>
                         </div>
                         <div class="form-group">
@@ -157,6 +157,10 @@
                             {{Form::label('title', 'Intake Venue')}}
                             {{Form::text('intake_venue', '', ['class' => 'form-control', 'placeholder' => 'Intake Venue', 'required'])}}
                         </div>
+                        <div class="form-group">
+                            {{Form::label('title', 'File')}}
+                            {{Form::file('file[]', ['class' => 'form-control','multiple' => 'multiple', 'accept' => 'application/pdf'])}}
+                        </div>
                         <input type="hidden" name="intake_quota" value="1">
                         <div class="footer">
                             <button class="btn btn-primary pull-right">Save</button>
@@ -174,7 +178,7 @@
                             <h4 class="modal-title"> Edit Program Info</h4>
                         </div>
                         <div class="modal-body">
-                            {!! Form::open(['action' => 'IntakeController@updateProgramInfo', 'method' => 'POST', 'id' => 'edit-form']) !!}
+                            {!! Form::open(['action' => 'IntakeController@updateProgramInfo', 'method' => 'POST', 'id' => 'edit-form', 'enctype' => 'multipart/form-data']) !!}
                             @csrf
                             <input name="id" id="program_id" hidden>
                             <input name="intake_code" value="{{$intake['id']}}" hidden>
@@ -192,6 +196,10 @@
                             <div class="form-group">
                                 {{Form::label('title', 'Intake Description')}}
                                 {{Form::text('intake_programme_description', '', ['id' => 'programme_desc','class' => 'form-control','placeholder' => 'Intake Description'])}}
+                            </div>
+                            <div class="form-group">
+                                {{Form::label('title', 'Batch Code')}}
+                                {{Form::text('batch_code', '', ['class' => 'form-control', 'id' => 'batch_code' ,'placeholder' => 'Batch Code', 'required'])}}
                             </div>
                             <div class="form-group">
                                 {{Form::label('title', 'Intake Type')}}
@@ -222,6 +230,13 @@
                                     <option value="1">Yes</option>
                                     <option value="0">No</option>
                                 </select>
+                            </div>
+                            <div id="existfile">
+
+                            </div>
+                            <div class="form-group">
+                                {{Form::label('title', 'File')}}
+                                {{Form::file('file[]', ['class' => 'form-control','multiple' => 'multiple', 'accept' => 'application/pdf'])}}
                             </div>
                             <div class="modal-footer">
                                 <button class="btn btn-primary">Save</button>
@@ -263,12 +278,12 @@
                                     $('select[name="batch_code"]').append('<option value="'+ value.batch_code +'">' + value.batch_code + '</option>');
                                 });
                             }else{
-                                $('#batch_code').empty();
+                                $('#batches_code').empty();
                             }
                         }
                     });
                 }else{
-                    $('#batch_code').empty();
+                    $('#batches_code').empty();
                 }
             });
         });
@@ -291,6 +306,7 @@
                 var intake_time = row.children(".intake_time").text();
                 var intake_venue = row.children(".intake_venue").text();
                 var intake_type_code = row.children(".intake_type_code").text();
+                var batch_code = row.children(".batch_code").text();
                 var status = row.children(".status").text();
                 $("#program_id").val(id);
                 $("#programme_code").val(programme_code);
@@ -299,13 +315,41 @@
                 $("#intake_time").val(intake_time);
                 $("#intake_venue").val(intake_venue);
                 $("#intake_type_code").val(intake_type_code);
+                $("#batch_code").val(batch_code);
                 $("#status").val(status);
+
+                $.ajax({
+                    type: 'GET',
+                    url: "{{url('getIntakeFiles')}}/" + batch_code,
+                    success: function (respond) {
+                        $('#existfile').empty();
+                        respond.files.forEach(function(ele){
+                            $('#existfile').append(`
+                                <div id="attachment${ele.id}">
+                                <a href="{{url('storageFile')}}/${ele.file_name}/View" target="_blank">View</a> | <a href="{{url('storageFile')}}/${ele.file_name}/Download">Download</i> | <a href="#" onclick="DeleteFile(${ele.id})">Delete</a> <br/>
+                                </div>
+                            `);
+                        });
+
+                    }
+                });
             })
             $('#editModal').on('hide.bs.modal', function() {
                 $('.edit-item-trigger-clicked').removeClass('edit-item-trigger-clicked')
                 $("#edit-form").trigger("reset");
             })
         });
+
+        function DeleteFile(Id)
+        {
+            $.ajax({
+                type: 'GET',
+                url: "{{url('deleteStorage')}}/" + Id,
+                success: function (respond) {
+                    $('#attachment'+Id).remove();
+                }
+            });
+        }
 
         $('.deleteProgram').click(function() {
             console.log('asdaa');

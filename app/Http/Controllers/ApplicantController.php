@@ -35,6 +35,9 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ApplicantExport;
 use App\Imports\ApplicantImport;
 use Auth;
+use App\AttachmentFile;
+use File;
+use Response;
 
 class ApplicantController extends Controller
 {
@@ -412,6 +415,10 @@ class ApplicantController extends Controller
     public function store(Request $request)
     {
         Applicant::where('id',$request->applicant_id)->update(['applicant_status'=>$request->applicant_status]);
+        $applicant = Applicant::where('id',$request->applicant_id)->first();
+        if($applicant->applicant_status == '00' || $applicant->applicant_status == 'A1'){
+            Applicant::where('id',$request->applicant_id)->update(['programme_status'=>'','programme_status_2'=>'','programme_status_3'=>'']);
+        }
         return redirect()->back()->with('message', 'Update Status');
     }
 
@@ -474,22 +481,52 @@ class ApplicantController extends Controller
         return back()->with('success','Applicant Imported');
     }
 
-    public function applicant_all()
+    public function applicant_all(Request $request)
     {
-        $intake = Intakes::all();
-        $batch = Batch::all();
-        $status = Status::all();
-        $programme = Programme::all();
-        return view('applicant.applicantall', compact('intake', 'batch', 'status', 'programme'));
+
+        $intake = Intakes::select('id','intake_code')->get();
+
+        $program = Programme::select('id','programme_code')->get();
+
+        $batch = IntakeDetail::select('id','batch_code')->get();
+
+        $status = Status::select('status_code','status_description')->get();
+
+        // $cond = "batch_code != '' "; asal
+        $cond = "1";
+
+        $selectedintake = $request->intake;
+        $selectedprogramme = $request->program;
+        $selectedbatch = $request->batch_code;
+        $selectedstatus = $request->status;
+        if($request->intake && $request->intake != "All")
+        {
+            $cond .= " AND intake_id = ".$request->intake;
+        }
+
+        if($request->program && $request->program != "All")
+        {
+            $cond .= " AND offered_programme = '".$request->program."' ";
+        }
+
+        if($request->batch_code && $request->batch_code != "All")
+        {
+            $cond .= " AND batch_code = '".$request->batch_code."' ";
+        }
+
+        if($request->status && $request->status != "All")
+        {
+            $cond .= " AND applicant_status = '".$request->status."' ";
+        }
+
+        $list = Applicant::with(['offeredProgramme', 'intake', 'status'])->whereRaw($cond)->get();
+
+        return view('applicant.applicantall',compact('intake','program','batch','request','list','selectedintake','selectedprogramme','selectedbatch','status','selectedstatus'));
     }
 
-    public function export(Request $request)
+    public function export($intake = null,$programme = null,$batch = null, $status = null)
     {
-        $intake = $request->intake;
-        $programme = $request->programme;
-        $status = $request->status;
-
-        return Excel::download(new ApplicantExport($intake, $programme, $status), 'applicant.xlsx');
+        return Excel::download(new ApplicantExport($intake, $programme, $batch, $status), 'applicant.xlsx');
     }
 
     public function data_acceptedapplicant()
@@ -1544,6 +1581,16 @@ class ApplicantController extends Controller
             $message->subject('Congratulations, ' . $detail->applicant_name);
             $message->to(!empty($detail->applicant_email) ? $detail->applicant_email : 'jane-doe@email.com');
             $message->attachData($report->output(), 'Offer_Letter_' . $detail->applicant_name . '.pdf');
+            $file = AttachmentFile::where('batch_code',$detail['batch_code'])->get();
+            foreach($file as $files){
+                $path = storage_path().'/app/batch/'.$files->file_name;
+                if(file_exists($path)){
+                    $message->attach($path, [
+                        'as' => $files->file_name,
+                        'mime' => 'application/pdf',
+                    ]);
+                }
+            }
         });
 
         Applicant::where('id',$applicants_id)->update(['applicant_status'=>'3A']);

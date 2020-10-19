@@ -35,6 +35,7 @@ class IntakeDetail extends Model
     public function intakes()
     {
         return $this->hasOne('App\Intakes','id','intake_code');
+        // return $this->belongsTo('App\Intakes','id','intake_code');
     }
 
     public function programmeOne()

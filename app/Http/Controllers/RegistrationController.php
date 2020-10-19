@@ -311,7 +311,7 @@ class RegistrationController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function update(StoreApplicantDetailRequest $request, $id)
+    public function update(StoreApplicantDetailRequest $request, $id, $type = null)
     {
         $applicant = Applicant::find($id)->update([
             'applicant_name' => $request->applicant_name,
@@ -595,6 +595,10 @@ class RegistrationController extends Controller
             {
                 $this->uploadFile($request->file[$key],$request->filetype[$key],$id);
             }
+        }
+
+        if($type){
+            return 1;
         }
 
         Applicant::completeApplication($id);

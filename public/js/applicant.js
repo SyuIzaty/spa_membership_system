@@ -2,32 +2,39 @@ $(document).ready(function () {
     var increment = 0;
     // Existing
     var appended = [];
-    existing.forEach(function(ele){
-      if(appended.indexOf(ele.qualifications.id) == -1)
-      {
-          addQualification(ele.qualifications.qualification_code,ele.qualifications.id);
-          appended.push(ele.qualifications.id);
-      }
 
-      var letter = "addRow" + firstLetterUpper(ele.qualifications.qualification_code);
+    if(existing)
+    {
+        existing.forEach(function(ele){
+          if(appended.indexOf(ele.qualifications.id) == -1)
+          {
+              addQualification(ele.qualifications.qualification_code,ele.qualifications.id);
+              appended.push(ele.qualifications.id);
+          }
 
-      eval(letter + "('"+ele.id+"','"+ele.subject+"','"+ele.grade_id+"')")
-    });
+          var letter = "addRow" + firstLetterUpper(ele.qualifications.qualification_code);
+
+          eval(letter + "('"+ele.id+"','"+ele.subject+"','"+ele.grade_id+"')")
+        });
+    }
 
     //diploma, bachelor, matric
-    existingcgpa.forEach(function(ele){
-        if(appended.indexOf(ele.qualifications.id) == -1)
-        {
-          let data = [ele.id, ele.applicant_study, ele.applicant_major, ele.applicant_year, ele.applicant_cgpa];
-          addQualification(ele.qualifications.qualification_code,ele.qualifications.id,data);
-          appended.push(ele.qualifications.id);
-        }
-    });
+    if(existingcgpa)
+    {
+        existingcgpa.forEach(function(ele){
+            if(appended.indexOf(ele.qualifications.id) == -1)
+            {
+              let data = [ele.id, ele.applicant_study, ele.applicant_major, ele.applicant_year, ele.applicant_cgpa];
+              addQualification(ele.qualifications.qualification_code,ele.qualifications.id,data);
+              appended.push(ele.qualifications.id);
+            }
+        });
+    }
 
     $(document).on('click', '.tambah-qualification', function(e) {
         e.preventDefault();
-         var x = $("#qualification :selected").text();
-         var xval = $("#qualification :selected").val();
+         var x = $("#qualificationselect :selected").text();
+         var xval = $("#qualificationselect :selected").val();
          addQualification(x,xval);
     });
 

@@ -78,8 +78,9 @@ Route::post('/data_offerapplicant', 'ApplicantController@data_offerapplicant');
 Route::post('/data_statusapplicant', 'ApplicantController@data_statusapplicant');
 Route::post('/data_acceptedapplicant', 'ApplicantController@data_acceptedapplicant');
 Route::get('/export_applicant', 'ApplicantController@applicant_all');
-Route::get('export', 'ApplicantController@export');
-Route::post('export', 'ApplicantController@export');
+Route::get('/export', 'ApplicantController@export');
+Route::post('/export', 'ApplicantController@export');
+Route::get('exportapplicant/{intake?}/{programme?}/{batch?}/{status?}','ApplicantController@export');
 // Route::post('/import_excel/import', 'ApplicantController@import')
 Route::post('import-excel','ApplicantController@import');
 
@@ -90,6 +91,8 @@ Route::post('/new-student', 'PhysicalRegistrationController@newstudent')->name('
 
 //APPLICANT REGISTRATION
 Route::resource('/registration','RegistrationController');
+Route::patch('update/{id}/{type}','RegistrationController@update');
+
 // Route::get('/check/{id}','RegistrationController@getUsers');
 Route::get('/applicantRegister', 'RegistrationController@register')->name('applicantRegister.index');
 Route::get('search', 'RegistrationController@search');
@@ -116,6 +119,9 @@ Route::post('updateProgramInfo', 'IntakeController@updateProgramInfo');
 Route::get('/letter', 'IntakeController@letter')->name('letter');
 Route::get('/emails', 'IntakeController@sendEmail')->name('emails');
 Route::get('programme-batch/{id}','IntakeController@data');
+Route::get('getIntakeFiles/{batchCode}','IntakeController@getIntakeFiles');
+Route::get('storageFile/{filename}/{type}','IntakeController@storageFile');
+Route::get('deleteStorage/{id}','IntakeController@deleteStorage');
 
 //BATCH
 Route::resource('/batch', 'BatchController');

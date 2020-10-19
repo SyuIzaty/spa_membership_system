@@ -9,8 +9,9 @@ use App\Intakes;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
+use Maatwebsite\Excel\Concerns\WithValidation;
 
-class ApplicantImport implements ToModel, WithHeadingRow
+class ApplicantImport implements ToModel, WithHeadingRow, WithValidation
 {
     /**
     * @param array $row
@@ -29,7 +30,7 @@ class ApplicantImport implements ToModel, WithHeadingRow
             'applicant_race' => $row['race'],
             'applicant_religion' => $row['religion'],
             'intake_id' => $intakes['id'],
-            'applicant_status' => '00',
+            'applicant_status' => 'A1',
         ]);
 
         ApplicantContact::create([
@@ -50,5 +51,16 @@ class ApplicantImport implements ToModel, WithHeadingRow
             'guardian_two_mobile' => $row['mother_phone'],
             'guardian_two_address' => $row['mother_address'],
         ]);
+    }
+
+    public function rules(): array
+    {
+        return [
+            'gender' => 'string|required|max:1',
+            'race' => 'required|digits:4|numeric',
+            'religion' => 'string|required|max:1',
+            'phone' => 'numeric',
+            'postcode' => 'numeric',
+        ];
     }
 }

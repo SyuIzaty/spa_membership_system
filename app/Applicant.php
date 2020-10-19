@@ -174,6 +174,11 @@ class Applicant extends Model
         return $this->hasOne('App\IntakeDetail', 'intake_code', 'intake_id');
     }
 
+    public function intake()
+    {
+        return $this->hasOne('App\Intakes','id','intake_id');
+    }
+
     public function batch()
     {
         return $this->hasOne('App\Batch','batch_code','batch_code');

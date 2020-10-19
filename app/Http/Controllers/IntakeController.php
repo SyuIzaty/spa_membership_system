@@ -16,6 +16,9 @@ use App\Http\Requests\StoreIntakeDetailRequest;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Mail;
+use App\AttachmentFile;
+use File;
+use Response;
 
 class IntakeController extends Controller
 {
@@ -176,6 +179,7 @@ class IntakeController extends Controller
         IntakeDetail::where('intake_programme', $request->intake_programme)->where('intake_code', $request->intake_code)->where('status', '1')->update(['status' => 0]);
         IntakeDetail::create($request->all());
         IntakeDetail::where('status', Null)->where('intake_programme', $request->intake_programme)->where('intake_code', $request->intake_code)->update(['status' => 1]);
+        $this->uploadFile($request->file,$request->batch_code);
         return $this->showProgramInfo($request->intake_code);
     }
 
@@ -232,8 +236,72 @@ class IntakeController extends Controller
 
     public function updateProgramInfo(StoreIntakeDetailRequest $request)
     {
-         IntakeDetail::find($request->id)->update($request->all());
+        IntakeDetail::find($request->id)->update($request->all());
 
-         return $this->showProgramInfo($request->intake_code);
+        $this->uploadFile($request->file,$request->batch_code);
+
+        return $this->showProgramInfo($request->intake_code);
+    }
+
+    public function uploadFile($file,$bc)
+    {
+        $path=storage_path()."/batch/";
+        for($x = 0; $x < count($file) ; $x ++)
+        {
+            $extension = $file[$x]->getClientOriginalExtension();
+            $originalName= $file[$x]->getClientOriginalName();
+            $fileSize= $file[$x]->getSize();
+            $fileName= $originalName;
+            $file[$x]->storeAs('/batch', $fileName);
+            AttachmentFile::create(
+                [
+                 'batch_code' => $bc,
+                 'file_name' => $originalName,
+                 'file_size' => $fileSize,
+                 'web_path' => "app/batch/".$fileName,
+                ]
+            );
+        }
+    }
+
+    public function deleteStorage($id)
+    {
+        $myfile =  AttachmentFile::where('id',$id)->select('web_path')->first();
+        if($myfile)
+        {
+            $path = storage_path().'/'.$myfile->web_path;
+            unlink($path);
+            AttachmentFile::where('id',$id)->delete();
+        }
+    }
+
+    public function storageFile($filename,$type)
+    {
+        $path = storage_path().'/'.'app'.'/batch/'.$filename;
+
+        if($type == "Download")
+        {
+            if (file_exists($path)) {
+                return Response::download($path);
+            }
+        }
+        else
+        {
+            $file = File::get($path);
+            $filetype = File::mimeType($path);
+
+            $response = Response::make($file, 200);
+            $response->header("Content-Type", $filetype);
+
+            return $response;
+        }
+
+    }
+
+    public function getIntakeFiles($batchCode)
+    {
+        $files = AttachmentFile::where('batch_code',$batchCode)->get();
+
+        return response()->json(compact('files'));
     }
 }

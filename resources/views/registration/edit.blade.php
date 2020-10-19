@@ -9,11 +9,19 @@
         <div class="panel-hdr">
             <h2>Registration</h2>
         </div>
-            {!! Form::model($applicant, ['method' => 'PATCH',  'enctype' => "multipart/form-data", 'route' => ['registration.update', $applicant->id]]) !!}
+            {!! Form::model($applicant, ['method' => 'PATCH',  'enctype' => "multipart/form-data", 'route' => ['registration.update', $applicant->id], 'id' => "upload_form"]) !!}
                 @csrf
                 <div class="card">
                     <div class="panel-container show">
                         <div class="panel-content">
+                            <ul class="nav nav-tabs" role="tablist" id="app">
+                                <li class="nav-item">
+                                    <a data-toggle="tab" class="nav-link" href="#details" role="tab">Applicant Details</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a data-toggle="tab" class="nav-link" href="#qualification" role="tab">Qualification</a>
+                                </li>
+                            </ul>
                             <div class="tab-content" id="tabs">
                                 <div class="tab-pane active" id="details" role="tabpanel">
                                     <div class="card">
@@ -273,21 +281,33 @@
                                         </div>
                                     </div>
                                     <div class="card">
+                                        <div class="card-header">Highest Qualification</div>
+                                        <div class="card-body">
+                                            <div class="col-md-12 form-group">
+                                                {{ Form::label('title', 'Highest Qualification') }}
+                                                <select class="form-control qua" name="highest_qualification" required>
+                                                    <option disabled selected value="">Please select</option>
+                                                    @foreach($qualification as $qualifications)
+                                                    <option value="{{ $qualifications->id }}" {{ $applicant->applicant_qualification == $qualifications->id ? 'selected="selected"' : ''}}>{{ $qualifications->qualification_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer">
+                                            <a href="#qualification" class="btn btn-info" onclick="navigate('Next')">Next</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="qualification" role="tabpanel">
+                                    <div class="card">
                                         <div class="card-header">Qualification</div>
                                         <div class="card-body">
+                                            <div class="col-md-12" style="color: red">** Note: Please input all your qualification</div>
                                             <div class="row qualification-row">
-                                                <div class="col-md-12 form-group">
-                                                    {{ Form::label('title', 'Highest Qualification') }}
-                                                    <select class="form-control qua" name="highest_qualification">
-                                                        @foreach($qualification as $qualifications)
-                                                        <option value="{{ $qualifications->id }}" {{ $applicant->applicant_qualification == $qualifications->id ? 'selected="selected"' : ''}}>{{ $qualifications->qualification_name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-12" style="color: red">** Note: Please input all your qualification</div>
                                                 <div class="col-md-6 form-group">
                                                     {{ Form::label('title', 'Qualification Type') }}
-                                                    <select class="form-control qualification" id="qualification">
+                                                    <select class="form-control qualification" id="qualificationselect" required>
+                                                        <option disabled selected value="">Please select</option>
                                                         @foreach($qualification as $qualifications)
                                                         <option value="{{ $qualifications->id }}">{{ $qualifications->qualification_code }}</option>
                                                         @endforeach
@@ -303,6 +323,7 @@
                                             </div>
                                         </div>
                                         <div class="card-footer">
+                                            <a href="#details" class="btn btn-info" onclick="navigate('Previous')">Previous</a>
                                             <button class="btn btn-primary" id="submit">Submit</button>
                                         </div>
                                     </div>
@@ -345,6 +366,24 @@
     var listOLEVEL = {!! $subjectOlevelStr !!};
     var listGradeOLEVEL = {!! $gradeOlevelStr !!};
 
+    $(document).ready(function(){
+
+        var currenturl = window.location.href;
+        if(currenturl.indexOf('#') !== -1)
+        {
+            console.log('im #')
+            $('#app a[href="#' + currenturl.split('#')[1] + '"]').tab('show');
+        }
+        else
+        {
+            console.log('nth')
+            $('#app a[href="#details"]').tab('show');
+        }
+
+        setInterval(function(){autoSave()},30000);
+
+    });
+
     function Delete(button,id=null)
     {
         var type = $(button).data('type');
@@ -373,6 +412,32 @@
         {
             $(button).parent().parent().parent().remove();
         }
+    }
+
+    function navigate(type)
+    {
+        if(type == "Previous")
+        {
+            $('#app a[href="#details"]').tab('show');
+        }
+        else
+        {
+            $('#app a[href="#qualification"]').tab('show');
+        }
+    }
+
+    function autoSave()
+    {
+      $.ajax({
+          url: '{{url("update")."/".$applicant->id}}/auto',
+          method: "POST",
+          contentType: false,
+          processData: false,
+          data:new FormData($("#upload_form")[0]),
+          success: function(response){
+
+          }
+        });
     }
 </script>
 <script src="{{ asset('/js/applicant.js')}}" type="text/javascript"></script>
