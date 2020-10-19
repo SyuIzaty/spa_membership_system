@@ -48,7 +48,7 @@ class ApplicantController extends Controller
 
     public function show($id) // Display applicant detail, academic result
     {
-        $applicant = Applicant::where('id',$id)->with(['applicantContactInfo','applicantEmergency.emergencyOne','applicantGuardian.familyOne','applicantGuardian.familyTwo','applicantIntake','status','intakeDetail','applicantstatus'])->first();
+        $applicant = Applicant::where('id',$id)->with(['applicantContactInfo','applicantEmergency.emergencyOne','applicantGuardian.familyOne','applicantGuardian.familyTwo','applicantIntake','status','intakeDetail','applicantstatus','programmeStatus','programmeStatusTwo','programmeStatusThree'])->first();
 
         $batch_1 = IntakeDetail::where('intake_code',$applicant->intake_id)->where('status','1')->where('intake_programme',$applicant->applicant_programme)->first();
 
@@ -235,9 +235,9 @@ class ApplicantController extends Controller
         return view('applicant.applicantstatus');
     }
 
-    public function data_allapplicant() // Datatable: display unprocessed applicant
+    public function data_allapplicant() // Datatable: display complete application
     {
-        $applicant = Applicant::where('applicant_status',NULL)->orWhere('applicant_status','0')->orWhere('applicant_status','A1')->get();
+        $applicant = Applicant::where('applicant_status',NULL)->orWhere('applicant_status','0')->get();
         $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','statusResultThree','programmeThree','applicantstatus','applicantIntake','status');
 
 
@@ -251,7 +251,7 @@ class ApplicantController extends Controller
             })
             ->addColumn('prog_name',function($applicants)
             {
-                return '<div style="color:'.$applicants->statusResult->colour.'">'.$applicants->programme->programme_code.'</div>';
+                return isset($applicants->programme->programme_code) ? '<div style="color:'.$applicants->statusResult->colour.'">'.$applicants->programme->programme_code.'</div>' : '';
             })
             ->addColumn('prog_name_2',function($applicants)
             {
@@ -285,7 +285,7 @@ class ApplicantController extends Controller
 
     public function data_passapplicant() // Datatable: applicant pass minimum requirement
     {
-        $applicant = Applicant::where('programme_status','1')->orWhere('programme_status_2','1')->orWhere('programme_status_3','1')->get();
+        $applicant = Applicant::where('programme_status','4A')->orWhere('programme_status_2','4A')->orWhere('programme_status_3','4A')->get();
         $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','statusResultThree','programmeThree','applicantstatus','applicantIntake');
 
 
@@ -321,7 +321,7 @@ class ApplicantController extends Controller
     public function data_rejectedapplicant() // Datatable: Applicant who does not meet minimum requirement
     {
         // $applicant = Applicant::where('applicant_status',NULL)->get();
-        $applicant = Applicant::where('programme_status','2')->where('programme_status_2','2')->where('programme_status_3','2')->get();
+        $applicant = Applicant::where('applicant_status','3G')->orWhere('applicant_status','3R')->get();
         $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','applicantstatus','applicantIntake');
 
 
@@ -356,7 +356,7 @@ class ApplicantController extends Controller
 
     public function data_offerapplicant() //Datatable: offer applicant
     {
-        $applicant = Applicant::where('applicant_status','3')->get();
+        $applicant = Applicant::where('applicant_status','5A')->get();
         $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','applicantstatus','applicantIntake','batch');
         return datatables()::of($applicants)
             ->addColumn('applicant_name',function($applicants)
@@ -407,7 +407,8 @@ class ApplicantController extends Controller
 
     public function edit($id)
     {
-        $applicant = Applicant::find($id);
+        $applicant_all = Applicant::find($id);
+        $applicant = $applicant_all->load('gender','marital','race','religion','country');
         $status = Status::all();
         return view('applicant.edit', compact('status', 'applicant'));
     }
@@ -582,25 +583,25 @@ class ApplicantController extends Controller
         $applicants = Applicant::where('id',$applicantt['id'])->get();
         if($applicantt['applicant_programme'] == $programme_code){
             $programme_status = $applicants->where('applicant_programme',$programme_code)->first();
-            $programme_status->programme_status = '1';
+            $programme_status->programme_status = '4A';
             $programme_status->save();
 
         }
         if($applicantt['applicant_programme_2'] == $programme_code){
             $programme_status_2 = $applicants->where('applicant_programme_2',$programme_code)->first();
-            $programme_status_2->programme_status_2 = '1';
+            $programme_status_2->programme_status_2 = '4A';
             $programme_status_2->save();
 
         }
         if($applicantt['applicant_programme_3'] == $programme_code){
             $programme_status_3 = $applicants->where('applicant_programme_3',$programme_code)->first();
-            $programme_status_3->programme_status_3 = '1';
+            $programme_status_3->programme_status_3 = '4A';
             $programme_status_3->save();
         }
-        Applicant::where('id',$applicantt['id'])->update(['applicant_status'=>'5']);
+        Applicant::where('id',$applicantt['id'])->update(['applicant_status'=>'4A']);
 
         $app = Applicant::where('id',$applicantt['id'])->first();
-        if($app['programme_status'] == '2' && $app['programme_status_2'] == '2' && $app['programme_status_3'] == '2')
+        if($app['programme_status'] == '3G' && $app['programme_status_2'] == '3G' && $app['programme_status_3'] == '3G')
         {
             ApplicantRecheck::create([
                 'applicant_id' => $app['id'],
@@ -613,33 +614,33 @@ class ApplicantController extends Controller
     {
         $programme_status = Applicant::where('id',$applicantt['id'])->where('applicant_programme',$programme_code)->first();
         if($programme_status){
-            $programme_status->programme_status = '2';
+            $programme_status->programme_status = '3G';
             $programme_status->save();
         }
 
         $programme_status = Applicant::where('id',$applicantt['id'])->where('applicant_programme_2',$programme_code)->first();
         if($programme_status){
-            $programme_status->programme_status_2 = '2';
+            $programme_status->programme_status_2 = '3G';
             $programme_status->save();
         }
 
         $programme_status = Applicant::where('id',$applicantt['id'])->where('applicant_programme_3',$programme_code)->first();
         if($programme_status){
-            $programme_status->programme_status_3 = '2';
+            $programme_status->programme_status_3 = '3G';
             $programme_status->save();
         }
 
         $status_2 = Applicant::where('id',$applicantt['id'])->where('applicant_programme_2',NULL)->first();
         $status_3 = Applicant::where('id',$applicantt['id'])->where('applicant_programme_3',NULL)->first();
         if($status_2 || $status_3){
-            $status_3->programme_status_3 = '2';
+            $status_3->programme_status_3 = '3G';
             $status_3->save();
         }if($status_2){
-            $status_2->programme_status_2 = '2';
+            $status_2->programme_status_2 = '3G';
             $status_2->save();
         }
 
-        Applicant::where('id',$applicantt['id'])->update(['applicant_status'=>'5']);
+        Applicant::where('id',$applicantt['id'])->update(['applicant_status'=>'3G']);
     }
 
     public function spm($applicantt)
@@ -1469,8 +1470,14 @@ class ApplicantController extends Controller
                 $this->$programme_func($applicantt);
             }
         }
+        $applicant_check = ApplicantRecheck::where('applicant_id',$applicantt['id'])->get();
+        if($applicant_check->count() != 0){
+            Applicant::where('id',$applicantt['id'])->update(['applicant_status'=>'4A']);
+        }else{
+            Applicant::where('id',$applicantt['id'])->update(['applicant_status'=>'3R']);
+        }
         Applicant::recheckQualification($applicantt['id']);
-        return redirect()->back();
+        return redirect()->back()->with('message','Recheck requirement done');
     }
 
     public function qualifiedProgramme(Request $request)
@@ -1484,7 +1491,7 @@ class ApplicantController extends Controller
 
         $batch = IntakeDetail::where('status','1')->where('intake_programme',$request->programme_code)->where('intake_code',$request->intake_id)->first();
 
-        Applicant::where('id',$request->applicant_id)->update(['offered_programme' => $request->programme_code, 'offered_major' => $request->major, 'applicant_status' => '3', 'student_id' => $student_id, 'batch_code'=>$batch['batch_code']]);
+        Applicant::where('id',$request->applicant_id)->update(['offered_programme' => $request->programme_code, 'offered_major' => $request->major, 'applicant_status' => '5A', 'student_id' => $student_id, 'batch_code'=>$batch['batch_code']]);
 
         $intake = Applicant::where('id',$request->applicant_id)->where('offered_programme',$request->programme_code)->where('offered_major',$request->major)->with(['intakeDetail'=>function($query) use ($request){
             $query->where('status','1')->where('intake_programme',$request->programme_code);
@@ -1496,12 +1503,12 @@ class ApplicantController extends Controller
         if(isset($intake->intakeDetail->batch_code)){
             $offer = Applicant::where('id',$request->applicant_id)->update(['batch_code' => $intake->intakeDetail->batch_code]);
         }else{
-            Applicant::where('id',$request->applicant_id)->update(['offered_programme' => '', 'offered_major' => '', 'applicant_status' => '5', 'student_id' => '']);
+            Applicant::where('id',$request->applicant_id)->update(['offered_programme' => '', 'offered_major' => '', 'applicant_status' => '4A', 'student_id' => '']);
             return '<script type="text/javascript">alert("Programme not offered for this intake");history.go(-1);;
             </script>';
         }
 
-        return redirect()->back();
+        return redirect()->back()->with('message', 'Programme Offered');
     }
 
     public function intakestatus(Request $request)
@@ -1534,7 +1541,7 @@ class ApplicantController extends Controller
         ],[
             'applicant_programme' => $applicant->offered_programme,
             'applicant_major' => $applicant->offered_major,
-            'applicant_status' => '6',
+            'applicant_status' => '4A',
             'cancel_reason' => $request->cancel_reason,
         ]);
         return redirect()->back();
@@ -1549,7 +1556,7 @@ class ApplicantController extends Controller
             $student_id = $year . '1117' . $random;
          } while ( Applicant::where('student_id', $student_id )->exists() );
 
-        Applicant::where('id',$request->id)->update(['offered_programme' => $request->applicant_programme, 'offered_major' => $request->applicant_major, 'applicant_status' => '3', 'batch_code' => $request->batch_code, 'student_id' => $student_id, 'applicant_qualification' => $request->applicant_qualification]);
+        Applicant::where('id',$request->id)->update(['offered_programme' => $request->applicant_programme, 'offered_major' => $request->applicant_major, 'applicant_status' => '5A', 'batch_code' => $request->batch_code, 'student_id' => $student_id, 'applicant_qualification' => $request->applicant_qualification]);
         Applicant::updateStatus($applicant['id'], $request->applicant_programme, $request->applicant_major);
         return redirect()->back()->with('message', 'Programme Offered');
     }
@@ -1557,7 +1564,7 @@ class ApplicantController extends Controller
     public function sendUpdateApplicant(Request $request)
     {
         foreach($request->check as $batch_code){
-            $applicant = Applicant::where('batch_code',$batch_code)->where('intake_id',$request->intake_id)->where('applicant_status','3')->get();
+            $applicant = Applicant::where('batch_code',$batch_code)->where('intake_id',$request->intake_id)->where('applicant_status','5A')->get();
             foreach($applicant as $apps){
                 $this->sendEmail($apps['id']);
             }
@@ -1567,7 +1574,7 @@ class ApplicantController extends Controller
 
     public function sendEmail($applicants_id)
     {
-        $detail = Applicant::where('id',$applicants_id)->where('applicant_status','3')->with(['offeredMajor','offeredProgramme'])->first();
+        $detail = Applicant::where('id',$applicants_id)->where('applicant_status','5A')->with(['offeredMajor','offeredProgramme'])->first();
 
         $intakes = IntakeDetail::where('status', '1')->where('intake_code', $detail->intake_id)->where('intake_programme', $detail->offered_programme)->first();
 
@@ -1593,7 +1600,7 @@ class ApplicantController extends Controller
             }
         });
 
-        Applicant::where('id',$applicants_id)->update(['applicant_status'=>'3A']);
+        Applicant::where('id',$applicants_id)->update(['email_sent'=>'1']);
 
         IntakeDetail::where('intake_code',$detail->intake_id)->where('batch_code',$detail['batch_code'])->update(['intake_status'=>'Offered']);
     }

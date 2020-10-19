@@ -324,7 +324,7 @@ class RegistrationController extends Controller
             'applicant_race' => $request->applicant_race,
             'applicant_religion' => $request->applicant_religion,
             'applicant_dob' => $request->applicant_dob,
-            'applicant_status' => 'A1',
+            'applicant_status' => '0',
             'applicant_qualification' => $request->highest_qualification,
         ]);
         if($request->hasFile('image') && $request->file('image')->isValid()){

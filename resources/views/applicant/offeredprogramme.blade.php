@@ -48,7 +48,7 @@
                                             <td>{{ $intakes->intake_programme }}</td>
                                             <td>{{ $intakes->batch_code }}</td>
                                             <td>{{ $intakes->applicant->count() }}</td>
-                                            <td>{{ $intakes->applicant->where('applicant_status','3A')->count() }}/{{ $intakes->applicant->count() }}</td>
+                                            <td>{{ $intakes->applicant->where('email_sent','1')->count() }}/{{ $intakes->applicant->count() }}</td>
                                             <td>
                                                 @if($intakes['intake_quota'] == '1')
                                                 <input type="checkbox" name="check[]" value="{{ $intakes->batch_code }}">

@@ -25,12 +25,12 @@ class PhysicalRegistrationController extends Controller
     public function data_newstudent()
     {
         $intake = Intakes::where('status','1')->first();
-        $applicant = Applicant::where('intake_id',$intake['id'])->where('applicant_status','7A')->orWhere('applicant_status','3A')->get();
+        $applicant = Applicant::where('intake_id',$intake['id'])->where('applicant_status','7A')->orWhere('applicant_status','5A')->get();
 
         return datatables()::of($applicant)
            ->addColumn('action', function ($applicant) {
-               if($applicant['applicant_status'] == '3A'){
-                    return '<button type="submit" class="btn btn-primary pull-right" name="check" value="'.$applicant->id.'">Register</button>';
+               if($applicant['applicant_status'] == '5A'){
+                    return '<button type="submit" class="btn btn-primary pull-right btn-sm" name="check" value="'.$applicant->id.'">Register</button>';
                }
            })
            ->rawColumns(['action'])

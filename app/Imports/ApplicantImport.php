@@ -30,7 +30,7 @@ class ApplicantImport implements ToModel, WithHeadingRow, WithValidation
             'applicant_race' => $row['race'],
             'applicant_religion' => $row['religion'],
             'intake_id' => $intakes['id'],
-            'applicant_status' => 'A1',
+            'applicant_status' => '0',
         ]);
 
         ApplicantContact::create([

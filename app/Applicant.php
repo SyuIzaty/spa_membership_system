@@ -12,7 +12,7 @@ class Applicant extends Model
     use LogsActivity;
     protected $table = 'applicant';
     // Set mass-assignable fields
-    protected $fillable = ['applicant_name', 'applicant_ic', 'applicant_email', 'applicant_phone', 'applicant_status','applicant_nationality', 'applicant_programme', 'applicant_programme_2', 'applicant_programme_3','applicant_major','applicant_major_2','applicant_major_3','programme_name', 'applicant_gender', 'applicant_religion','applicant_marital','applicant_race','applicant_dob','intake_id','sponsor_code','applicant_qualification'];
+    protected $fillable = ['applicant_name', 'applicant_ic', 'applicant_email', 'applicant_phone', 'applicant_status','applicant_nationality', 'applicant_programme', 'applicant_programme_2', 'applicant_programme_3','applicant_major','applicant_major_2','applicant_major_3','programme_name', 'applicant_gender', 'applicant_religion','applicant_marital','applicant_race','applicant_dob','intake_id','sponsor_code','applicant_qualification','email_sent'];
     protected $primaryKey = 'id';
     protected $foreignKey = 'applicant_id';
 
@@ -99,19 +99,34 @@ class Applicant extends Model
         return $this->hasOne('App\ApplicantStatus','applicant_id','id');
     }
 
+    public function programmeStatus()
+    {
+        return $this->hasOne('App\Status','status_code','programme_status');
+    }
+
+    public function programmeStatusTwo()
+    {
+        return $this->hasOne('App\Status','status_code','programme_status_2');
+    }
+
+    public function programmeStatusThree()
+    {
+        return $this->hasOne('App\Status','status_code','programme_status_3');
+    }
+
     public function statusResult()
     {
-        return $this->hasOne('App\RequirementStatus','id','programme_status')->withDefault();
+        return $this->hasOne('App\RequirementStatus','status','programme_status')->withDefault();
     }
 
     public function statusResultTwo()
     {
-        return $this->hasOne('App\RequirementStatus','id','programme_status_2')->withDefault();
+        return $this->hasOne('App\RequirementStatus','status','programme_status_2')->withDefault();
     }
 
     public function statusResultThree()
     {
-        return $this->hasOne('App\RequirementStatus','id','programme_status_3')->withDefault();
+        return $this->hasOne('App\RequirementStatus','status','programme_status_3')->withDefault();
     }
 
     public function applicantAcademic()

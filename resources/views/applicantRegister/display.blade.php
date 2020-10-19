@@ -26,7 +26,7 @@
                         @endif
                     </div>
                     @foreach($applicant as $applicants)
-                        @if($applicants->applicant_status == '00' || $applicants->applicant_status == 'A1')
+                        @if($applicants->applicant_status == '00' || $applicants->applicant_status == '0')
                             <div class="d-flex justify-content-lg-center">
                                 <div class="p-2"><a href="/registration/{{ $applicants->id }}/edit" class="btn btn-primary">Edit Intake {{ $applicants->applicantIntake->intake_code }}</a></div>
                             </div>

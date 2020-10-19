@@ -24,7 +24,7 @@
                                 <li class="nav-item">
                                     <a data-toggle="tab" class="nav-link" href="#details" role="tab">Applicant Details</a>
                                 </li>
-                                @if ($applicant->programme_status == '2' && $applicant->programme_status_2 == '2' && $applicant->programme_status_3 == '2')
+                                @if ($applicant->programme_status == '3G' && $applicant->programme_status_2 == '3G' && $applicant->programme_status_3 == '3G')
                                 <li class="nav-item">
                                     <a data-toggle="tab" class="nav-link" href="#individual" role="tab">Requirement Check</a>
                                 </li>
@@ -87,14 +87,6 @@
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
-                                                                {{-- <div class="col-md-5 form-group">
-                                                                    {{ Form::label('title', 'Applicant Status') }}
-                                                                    <select class="form-control" id="applicant_status" name="applicant_status">
-                                                                        @foreach ($applicant_status as $app_stat)
-                                                                            <option value="{{ $app_stat->status_code }}" {{ $applicant->applicant_status == $app_stat->status_code ? 'selected="selected"' : ''}}>{{ $app_stat->status_description }}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div> --}}
                                                                 <div class="col-md-2"><button class="btn btn-primary mt-4">Submit</button></div>
                                                             </div>
                                                             {!! Form::close() !!}
@@ -119,23 +111,28 @@
                                                                         @endisset
                                                                     </td>
                                                                     <td>
-                                                                        @if($applicant->programme_status == '1')
+                                                                        @isset($applicant->programme_status)
+                                                                            <p>{{ $applicant->programmeStatus->status_description }}</p>
+                                                                        @endisset
+                                                                        {{-- @if($applicant->programme_status == '4A')
                                                                             <p style="color: green">Qualified</p>
                                                                         @endif
-                                                                        @if($applicant->programme_status == '2')
+                                                                        @if($applicant->programme_status == '3G')
                                                                             <p style="color: red">Not Qualified</p>
-                                                                        @endif
+                                                                        @endif --}}
                                                                     </td>
                                                                     <td>
+                                                                        @if($applicant->programme_status == '4A')
                                                                         <select class="form-control" name="applicant_qualification">
                                                                             <option disabled selected>Please select</option>
                                                                             @foreach ($qualification as $app_qualification)
                                                                             <option value="{{ $app_qualification->id }}" {{ $applicant->applicant_qualification == $app_qualification->id ? 'selected="selected"' : ''}}>{{ $app_qualification->qualification_code }}</option>
                                                                             @endforeach
                                                                         </select>
+                                                                        @endif
                                                                     </td>
                                                                     <td>
-                                                                        @if ($applicant->programme_status == '1')
+                                                                        @if ($applicant->programme_status == '4A')
                                                                         <div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div>
                                                                         @endif
                                                                     </td>
@@ -154,23 +151,22 @@
                                                                         @endisset
                                                                     </td>
                                                                     <td>
-                                                                        @if($applicant->programme_status_2 == '1')
-                                                                            <p style="color: green">Qualified</p>
-                                                                        @endif
-                                                                        @if($applicant->programme_status_2 == '2')
-                                                                            <p style="color: red">Not Qualified</p>
-                                                                        @endif
+                                                                        @isset($applicant->programme_status_2)
+                                                                            <p>{{ $applicant->programmeStatusTwo->status_description }}</p>
+                                                                        @endisset
                                                                     </td>
                                                                     <td>
+                                                                        @if ($applicant->programme_status_2 == '4A')
                                                                         <select class="form-control" name="applicant_qualification">
                                                                             <option disabled selected>Please select</option>
                                                                             @foreach ($qualification as $app_qualification)
                                                                             <option value="{{ $app_qualification->id }}" {{ $applicant->applicant_qualification == $app_qualification->id ? 'selected="selected"' : ''}}>{{ $app_qualification->qualification_code }}</option>
                                                                             @endforeach
                                                                         </select>
+                                                                        @endif
                                                                     </td>
                                                                     <td>
-                                                                        @if ($applicant->programme_status_2 == '1')
+                                                                        @if ($applicant->programme_status_2 == '4A')
                                                                         <div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div>
                                                                         @endif
                                                                     </td>
@@ -190,23 +186,22 @@
                                                                         @endisset
                                                                     </td>
                                                                     <td>
-                                                                        @if($applicant->programme_status_3 == '1')
-                                                                            <p style="color: green">Qualified</p>
-                                                                        @endif
-                                                                        @if($applicant->programme_status_3 == '2')
-                                                                            <p style="color: red">Not Qualified</p>
-                                                                        @endif
+                                                                        @isset($applicant->programme_status_3)
+                                                                            <p>{{ $applicant->programmeStatusThree->status_description }}</p>
+                                                                        @endisset
                                                                     </td>
                                                                     <td>
+                                                                        @if ($applicant->programme_status_3 == '4A')
                                                                         <select class="form-control" name="applicant_qualification">
                                                                             <option disabled selected>Please select</option>
                                                                             @foreach ($qualification as $app_qualification)
                                                                             <option value="{{ $app_qualification->id }}" {{ $applicant->applicant_qualification == $app_qualification->id ? 'selected="selected"' : ''}}>{{ $app_qualification->qualification_code }}</option>
                                                                             @endforeach
                                                                         </select>
+                                                                        @endif
                                                                     </td>
                                                                     <td>
-                                                                        @if ($applicant->programme_status_3 == '1')
+                                                                        @if ($applicant->programme_status_3 == '4A')
                                                                         <div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div>
                                                                         @endif
                                                                     </td>
@@ -392,7 +387,7 @@
                                                 @endif
                                             </div>
                                         </div>
-                                        <hr class="mt-2 mb-3">
+                                        {{-- <hr class="mt-2 mb-3">
                                         @if ($applicant->applicant_status == '3')
                                             <div class="card">
                                                 <div class="card-header">Cancel Offer</div>
@@ -405,7 +400,7 @@
                                                     {!! Form::close() !!}
                                                 </div>
                                             </div>
-                                        @endif
+                                        @endif --}}
                                     </div>
                                     <div class="tab-pane" id="individual" role="tabpanel">
                                         <hr class="mt-2 mb-3">
@@ -421,6 +416,12 @@
                                                 </form>
                                                 @isset($applicant_recheck)
                                                 <p class="mt-3">Qualified Programme</p>
+                                                @if ($message = Session::get('success'))
+                                                    <div class="alert alert-success alert-block">
+                                                        <button type="button" class="close" data-dismiss="alert">x</button>
+                                                        <strong>{{ $message }}</strong>
+                                                    </div>
+                                                @endif
                                                     <table class="table table-bordered">
                                                         <thead>
                                                             <th>Programme Code</th>
