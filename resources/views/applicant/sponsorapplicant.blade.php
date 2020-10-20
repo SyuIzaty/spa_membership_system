@@ -36,16 +36,7 @@
                                     <strong>{{ $message }}</strong>
                                 </div>
                             @endif
-                            {{-- {!! Form::open(['action' => 'ApplicantController@import', 'method' => 'POST']) !!}
-                            @csrf
-                            <table class="table table-bordered">
-                                <tr>
-                                    <td>Upload File</td>
-                                    <td><input type="file" name="select_file"></td>
-                                    <td><input type="submit" name="upload" value="upload"></td>
-                                </tr>
-                            </table>
-                            {!! Form::close() !!} --}}
+
                             <form action={{ url('import-excel') }} method="post" name="importform" enctype="multipart/form-data">
                                 @csrf
                                 <input type="file" name="import_file" class="form-control">

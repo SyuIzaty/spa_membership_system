@@ -44,7 +44,7 @@
 
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label>Programme</label>
+                                        <label>Programme Offered</label>
                                         <select class="form-control" name="program" id="program">
                                             <option>All</option>
                                             @foreach($program as $pro)

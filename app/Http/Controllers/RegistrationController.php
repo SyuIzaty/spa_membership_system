@@ -25,6 +25,7 @@ use App\ApplicantResult;
 use App\Status;
 use App\MajorProgramme;
 use App\Files;
+use App\AttachmentFile;
 use Carbon\Carbon;
 use App\Http\Requests\StoreApplicantRequest;
 use App\Http\Requests\StoreApplicantDetailRequest;
@@ -85,7 +86,7 @@ class RegistrationController extends Controller
 
     public function check($id)
     {
-        $applicant = Applicant::where('id',$id)->where('applicant_status','3A')->with(['offeredProgramme','offeredMajor'])->get();
+        $applicant = Applicant::where('id',$id)->where('applicant_status','5A')->with(['offeredProgramme','offeredMajor','attachmentFile'])->first();
 
         return view('applicantRegister.check', compact('applicant'));
     }
@@ -96,9 +97,9 @@ class RegistrationController extends Controller
 
         $check = Intakes::where('status','1')->where('intake_check_open','<=',Carbon::Now())->where('intake_check_close','>=',Carbon::now())->first();
 
-        $applicant = Applicant::where('applicant_ic',$request->applicant_ic)->with('applicantIntake')->get();
+        $applicant = Applicant::where('applicant_ic',$request->applicant_ic)->where('intake_id',$intake->id)->with('applicantIntake')->get();
 
-        $check_applicant = Applicant::where('applicant_ic',$request->applicant_ic)->where('intake_id',$intake->id)->first();
+        $check_applicant = Applicant::where('applicant_ic',$request->applicant_ic)->where('intake_id',$check->id)->first();
 
         return view('applicantRegister.display', compact('applicant','intake','check','check_applicant'));
     }
@@ -627,6 +628,18 @@ class RegistrationController extends Controller
             return $response;
         }
 
+    }
+
+    public function attachmentFile($filename,$type)
+    {
+        $path = storage_path().'/'.'app'.'/batch/'.$filename;
+
+        if($type == "Download")
+        {
+            if (file_exists($path)) {
+                return Response::download($path);
+            }
+        }
     }
 
     public function uploadFile($file,$qualificationid,$userid)

@@ -83,6 +83,7 @@ Route::post('/export', 'ApplicantController@export');
 Route::get('exportapplicant/{intake?}/{programme?}/{batch?}/{status?}','ApplicantController@export');
 // Route::post('/import_excel/import', 'ApplicantController@import')
 Route::post('import-excel','ApplicantController@import');
+Route::get('attachmentFile/{filename}/{type}','ApplicantController@sponsorAttachment');
 
 //PHYSICAL REGISTRATION
 Route::resource('/physical-registration', 'PhysicalRegistrationController');
@@ -103,6 +104,7 @@ Route::get('registration-data/{id}','RegistrationController@data');
 Route::get('testmajor','RegistrationController@testmajor');
 Route::post('applicant/delete/{id}/{type}/{userid}','RegistrationController@deleteitem');
 Route::get('qualificationfile/{filename}/{type}','RegistrationController@qualificationfile');
+Route::get('attachmentFile/{filename}/{type}','RegistrationController@attachmentFile');
 
 //SPONSOR
 Route::resource('param/sponsor','SponsorController');

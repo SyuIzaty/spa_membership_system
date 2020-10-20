@@ -199,6 +199,16 @@ class Applicant extends Model
         return $this->hasOne('App\Batch','batch_code','batch_code');
     }
 
+    public function qualification()
+    {
+        return $this->hasOne('App\Qualification','id','applicant_qualification');
+    }
+
+    public function attachmentFile()
+    {
+        return $this->hasMany('App\AttachmentFile','batch_code','batch_code');
+    }
+
     public function scopeApplicantId($query, $applicantt)
     {
         return $query->where('id',$applicantt);
