@@ -20,6 +20,12 @@
                     </div>
                     <div class="panel-container show">
                         <div class="panel-content">
+                            @if(session()->has('message'))
+                                <div class="alert alert-success alert-block">
+                                    <button type="button" class="close" data-dismiss="alert">x</button>
+                                    <strong>{{ session()->get('message') }}</strong>
+                                </div>
+                            @endif
                             <span id="intake"></span>
                             <table class="table table-bordered" id="offer">
                                 <thead>

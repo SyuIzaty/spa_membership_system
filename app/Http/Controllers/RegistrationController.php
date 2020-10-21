@@ -325,7 +325,7 @@ class RegistrationController extends Controller
             'applicant_race' => $request->applicant_race,
             'applicant_religion' => $request->applicant_religion,
             'applicant_dob' => $request->applicant_dob,
-            'applicant_status' => '0',
+            'applicant_status' => '00',
             'applicant_qualification' => $request->highest_qualification,
         ]);
         if($request->hasFile('image') && $request->file('image')->isValid()){
@@ -574,6 +574,7 @@ class RegistrationController extends Controller
                     $app = ApplicantResult::create($row);
                     $appid = $app->id;
                 }
+                Applicant::where('id',$row['applicant_id'])->update(['applicant_status' => '0']);
             }
         }
 
@@ -587,6 +588,7 @@ class RegistrationController extends Controller
                 {
                     ApplicantAcademic::create($arow);
                 }
+                Applicant::where('id',$arow['applicant_id'])->update(['applicant_status' => '0']);
             }
         }
 

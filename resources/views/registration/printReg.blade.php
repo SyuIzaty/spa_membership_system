@@ -105,7 +105,7 @@
                             </div>
                         @endif
                     @endforeach
-                    <a class="btn btn-primary" href="{{ URL('/registration' )}}">Exit</a><a class="btn btn-primary" href="">Edit Application</a>
+                    <a class="btn btn-primary" href="{{ URL('/applicantRegister' )}}">Exit</a>
                 </div>
             </div>
         </div>

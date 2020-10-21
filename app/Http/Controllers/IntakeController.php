@@ -230,7 +230,10 @@ class IntakeController extends Controller
             $message->to(!empty($detail->applicant_email) ? $detail->applicant_email : 'jane-doe@email.com');
             $message->attachData($report->output(), 'Offer_Letter_' . $detail->applicant_name . '.pdf');
         });
-        return redirect()->back();
+
+        Applicant::where('id',$request->applicant_id)->update(['email_sent'=>'1']);
+
+        return redirect()->back()->with('message', 'Email send and status updated');
     }
 
 

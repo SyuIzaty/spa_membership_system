@@ -34,10 +34,12 @@ use Barryvdh\DomPDF\Facade as PDF;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ApplicantExport;
 use App\Imports\ApplicantImport;
+use App\Jobs\SendEmail;
 use Auth;
 use App\AttachmentFile;
 use File;
 use Response;
+use Artisan;
 
 class ApplicantController extends Controller
 {
@@ -285,7 +287,8 @@ class ApplicantController extends Controller
 
     public function data_passapplicant() // Datatable: applicant pass minimum requirement
     {
-        $applicant = Applicant::where('programme_status','4A')->orWhere('programme_status_2','4A')->orWhere('programme_status_3','4A')->get();
+        $applicant = Applicant::where('applicant_status','4A')->get();
+        // $applicant = Applicant::where('programme_status','4A')->orWhere('programme_status_2','4A')->orWhere('programme_status_3','4A')->get();
         $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','statusResultThree','programmeThree','applicantstatus','applicantIntake');
 
 
@@ -608,6 +611,16 @@ class ApplicantController extends Controller
                 'programme_code' => $programme_code,
             ]);
         }
+
+        $status_2 = Applicant::where('id',$applicantt['id'])->where('applicant_programme_2',NULL)->first();
+        $status_3 = Applicant::where('id',$applicantt['id'])->where('applicant_programme_3',NULL)->first();
+        if($status_2 || $status_3){
+            $status_3->programme_status_3 = '3G';
+            $status_3->save();
+        }if($status_2){
+            $status_2->programme_status_2 = '3G';
+            $status_2->save();
+        }
     }
 
     public function rejected($applicantt, $programme_code)
@@ -640,7 +653,11 @@ class ApplicantController extends Controller
             $status_2->save();
         }
 
-        Applicant::where('id',$applicantt['id'])->update(['applicant_status'=>'3G']);
+        $status_1 = Applicant::where('id',$applicantt['id'])->first();
+
+        if($status_1->programme_status == '3G' && $status_2->programme_status_2 == '3G' && $status_3->programme_status_3 == '3G'){
+            Applicant::where('id',$applicantt['id'])->update(['applicant_status'=>'3G']);
+        }
     }
 
     public function spm($applicantt)
@@ -828,37 +845,6 @@ class ApplicantController extends Controller
             $this->accepted($applicantt, $programme_code);
         } else {
             $programme_code = 'IAM10';
-            $this->rejected($applicantt, $programme_code);
-        }
-    }
-
-    public function iam11($applicantt) //SACE International
-    {
-        $status = [];
-        $spm = $this->spm($applicantt);
-        if($spm['count_eng'] == 1 && $spm['count_math'] == 1 && $spm['spm'] >= 5)
-        {
-            $status_spm = true;
-        }else{
-            $status_spm = false;
-        }
-
-        $olevel = $this->olevel($applicantt);
-        if($olevel['count_eng'] == 1  && ($olevel['count_math_a'] == 1 || $olevel['count_math_d'] == 1) && $olevel['olevel'] >= 5)
-        {
-            $status_olevel = true;
-        }else{
-            $status_olevel = false;
-        }
-
-        $status = array($status_spm, $status_olevel);
-
-        if(in_array(true, $status))
-        {
-            $programme_code = 'IAM11';
-            $this->accepted($applicantt, $programme_code);
-        } else {
-            $programme_code = 'IAM11';
             $this->rejected($applicantt, $programme_code);
         }
     }
@@ -1289,16 +1275,19 @@ class ApplicantController extends Controller
         }
     }
 
-    public function pac580($applicantt) //The Malaysian Institute of Certified Public Accountant
+    public function pac551($applicantt) //The Association of Certified Chartered Accountant ACCA from Diploma
     {
         $status = [];
-        $bachelors = ApplicantAcademic::where('applicant_id',$applicantt['id'])->where('type','9')->where('applicant_cgpa','>=',2.50)->count();
-        if($bachelors == 1)
+
+        $muet = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Muet()->where('applicant_cgpa','>=',2)->count();
+        $diploma = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Diploma()->where('applicant_cgpa','>=',3.00)->count();
+        if($muet >= 1 && $diploma >= 1)
         {
-            $programme_code = 'PAC580';
+            $programme_code = 'PAC551';
             $this->accepted($applicantt, $programme_code);
-        }else{
-            $programme_code = 'PAC580';
+        }else
+        {
+            $programme_code = 'PAC551';
             $this->rejected($applicantt, $programme_code);
         }
     }
@@ -1334,73 +1323,70 @@ class ApplicantController extends Controller
         }
     }
 
-    public function pac552($applicantt) //The Association of Certified Chartered Accountant ACCA from CAT
-    {
-        $status = [];
+    // public function pac580($applicantt) //The Malaysian Institute of Certified Public Accountant
+    // {
+    //     $status = [];
+    //     $bachelors = ApplicantAcademic::where('applicant_id',$applicantt['id'])->where('type','9')->where('applicant_cgpa','>=',2.50)->count();
+    //     if($bachelors == 1)
+    //     {
+    //         $programme_code = 'PAC580';
+    //         $this->accepted($applicantt, $programme_code);
+    //     }else{
+    //         $programme_code = 'PAC580';
+    //         $this->rejected($applicantt, $programme_code);
+    //     }
+    // }
 
-        $muet = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Muet()->where('applicant_cgpa','>=',2)->count();
-        $cat = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Cat()->where('applicant_cgpa','Pass')->count();
-        if($muet >= 1 && $cat >= 1)
-        {
-            $programme_code = 'PAC552';
-            $this->accepted($applicantt, $programme_code);
-        }else
-        {
-            $programme_code = 'PAC552';
-            $this->rejected($applicantt, $programme_code);
-        }
-    }
+    // public function pac552($applicantt) //The Association of Certified Chartered Accountant ACCA from CAT
+    // {
+    //     $status = [];
 
-    public function pac551($applicantt) //The Association of Certified Chartered Accountant ACCA from Diploma
-    {
-        $status = [];
+    //     $muet = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Muet()->where('applicant_cgpa','>=',2)->count();
+    //     $cat = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Cat()->where('applicant_cgpa','Pass')->count();
+    //     if($muet >= 1 && $cat >= 1)
+    //     {
+    //         $programme_code = 'PAC552';
+    //         $this->accepted($applicantt, $programme_code);
+    //     }else
+    //     {
+    //         $programme_code = 'PAC552';
+    //         $this->rejected($applicantt, $programme_code);
+    //     }
+    // }
 
-        $muet = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Muet()->where('applicant_cgpa','>=',2)->count();
-        $diploma = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Diploma()->where('applicant_cgpa','>=',3.00)->count();
-        if($muet >= 1 && $diploma >= 1)
-        {
-            $programme_code = 'PAC551';
-            $this->accepted($applicantt, $programme_code);
-        }else
-        {
-            $programme_code = 'PAC551';
-            $this->rejected($applicantt, $programme_code);
-        }
-    }
+    // public function pac553($applicantt) //The Association of Certified Chartered Accountant ACCA from Degree Full Time
+    // {
+    //     $status = [];
 
-    public function pac553($applicantt) //The Association of Certified Chartered Accountant ACCA from Degree Full Time
-    {
-        $status = [];
+    //     $muet = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Muet()->where('applicant_cgpa','>=',2)->count();
+    //     $bachelors = ApplicantAcademic::where('applicant_id',$applicantt['id'])->where('type','9')->where('applicant_cgpa','>=',2.50)->count();
+    //     if($muet >= 1 && $bachelors >= 1)
+    //     {
+    //         $programme_code = 'PAC553';
+    //         $this->accepted($applicantt, $programme_code);
+    //     }else
+    //     {
+    //         $programme_code = 'PAC553';
+    //         $this->rejected($applicantt, $programme_code);
+    //     }
+    // }
 
-        $muet = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Muet()->where('applicant_cgpa','>=',2)->count();
-        $bachelors = ApplicantAcademic::where('applicant_id',$applicantt['id'])->where('type','9')->where('applicant_cgpa','>=',2.50)->count();
-        if($muet >= 1 && $bachelors >= 1)
-        {
-            $programme_code = 'PAC553';
-            $this->accepted($applicantt, $programme_code);
-        }else
-        {
-            $programme_code = 'PAC553';
-            $this->rejected($applicantt, $programme_code);
-        }
-    }
+    // public function pac554($applicantt) //The Association of Certified Chartered Accountant ACCA from Degree Part Time
+    // {
+    //     $status = [];
 
-    public function pac554($applicantt) //The Association of Certified Chartered Accountant ACCA from Degree Part Time
-    {
-        $status = [];
-
-        $muet = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Muet()->where('applicant_cgpa','>=',2)->count();
-        $bachelors = ApplicantAcademic::where('applicant_id',$applicantt['id'])->where('type','9')->where('applicant_cgpa','>=',2.50)->count();
-        if($muet >= 1 && $bachelors >= 1)
-        {
-            $programme_code = 'PAC554';
-            $this->accepted($applicantt, $programme_code);
-        }else
-        {
-            $programme_code = 'PAC554';
-            $this->rejected($applicantt, $programme_code);
-        }
-    }
+    //     $muet = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Muet()->where('applicant_cgpa','>=',2)->count();
+    //     $bachelors = ApplicantAcademic::where('applicant_id',$applicantt['id'])->where('type','9')->where('applicant_cgpa','>=',2.50)->count();
+    //     if($muet >= 1 && $bachelors >= 1)
+    //     {
+    //         $programme_code = 'PAC554';
+    //         $this->accepted($applicantt, $programme_code);
+    //     }else
+    //     {
+    //         $programme_code = 'PAC554';
+    //         $this->rejected($applicantt, $programme_code);
+    //     }
+    // }
 
     public function checkrequirements()
     {
@@ -1460,7 +1446,6 @@ class ApplicantController extends Controller
     public function checkIndividual(Request $request)
     {
         $applicants = Applicant::where('id', $request->applicant_id)->get()->toArray();
-        // $programme = Programme::all();
         $programme = Intakes::where('status','1')->with(['intakeDetails'=>function($query){
             $query->where('status','1');
         }])->get();
@@ -1483,11 +1468,8 @@ class ApplicantController extends Controller
     public function qualifiedProgramme(Request $request)
     {
         $applicant = Applicant::where('id',$request->applicant_id)->first();
-        do {
-            $year = substr((date("Y",strtotime($applicant->created_at))),-2);
-            $random = mt_rand(1000,9999);
-            $student_id = $year . '1117' . $random;
-         } while ( Applicant::where('student_id', $student_id )->exists() );
+
+        $student_id = $this->studentId($applicant);
 
         $batch = IntakeDetail::where('status','1')->where('intake_programme',$request->programme_code)->where('intake_code',$request->intake_id)->first();
 
@@ -1498,7 +1480,6 @@ class ApplicantController extends Controller
         }])->first();
 
         Applicant::updateStatus($request->applicant_id, $request->programme_code, $request->major);
-        return redirect()->back();
 
         if(isset($intake->intakeDetail->batch_code)){
             $offer = Applicant::where('id',$request->applicant_id)->update(['batch_code' => $intake->intakeDetail->batch_code]);
@@ -1518,21 +1499,6 @@ class ApplicantController extends Controller
         return redirect()->back();
     }
 
-    // public function programmestatus(Request $request)
-    // {
-    //     $applicant = Applicant::where('id',$request->applicant_id)->first();
-    //     do {
-    //         $year = substr((date("Y",strtotime($applicant->created_at))),-2);
-    //         $random = mt_rand(1000,9999);
-    //         $student_id = $year . '1117' . $random;
-    //      } while ( Applicant::where('student_id', $student_id )->exists() );
-
-
-    //     Applicant::where('id',$request->applicant_id)->update(['applicant_status'=>$request->applicant_status, 'offered_programme'=>$request->applicant_programme, 'offered_major'=>$request->applicant_major, 'batch_code'=>$request->batch_code ,'student_id'=>$student_id]);
-
-    //     return response()->json(['success'=>true,'status'=>'success','message'=>'Data has been saved to database']);
-    // }
-
     public function cancelOffer(Request $request)
     {
         $applicant = Applicant::where('id',$request->applicant_id)->first();
@@ -1550,11 +1516,8 @@ class ApplicantController extends Controller
     public function applicantstatus(Request $request)
     {
         $applicant = Applicant::where('id',$request->id)->first();
-        do {
-            $year = substr((date("Y",strtotime($applicant->created_at))),-2);
-            $random = mt_rand(1000,9999);
-            $student_id = $year . '1117' . $random;
-         } while ( Applicant::where('student_id', $student_id )->exists() );
+
+        $student_id = $this->studentId($applicant);
 
         Applicant::where('id',$request->id)->update(['offered_programme' => $request->applicant_programme, 'offered_major' => $request->applicant_major, 'applicant_status' => '5A', 'batch_code' => $request->batch_code, 'student_id' => $student_id, 'applicant_qualification' => $request->applicant_qualification]);
         Applicant::updateStatus($applicant['id'], $request->applicant_programme, $request->applicant_major);
@@ -1570,6 +1533,16 @@ class ApplicantController extends Controller
             }
         }
         return redirect()->back()->with('message', 'Email send and status updated');
+    }
+
+    public function studentId($applicant)
+    {
+        do {
+            $year = substr((date("Y",strtotime($applicant->created_at))),-2);
+            $random = mt_rand(1000,9999);
+            $student_id = $year . '1117' . $random;
+        } while ( Applicant::where('student_id', $student_id )->exists() );
+        return $student_id;
     }
 
     public function sendEmail($applicants_id)
@@ -1588,16 +1561,16 @@ class ApplicantController extends Controller
             $message->subject('Congratulations, ' . $detail->applicant_name);
             $message->to(!empty($detail->applicant_email) ? $detail->applicant_email : 'jane-doe@email.com');
             $message->attachData($report->output(), 'Offer_Letter_' . $detail->applicant_name . '.pdf');
-            $file = AttachmentFile::where('batch_code',$detail['batch_code'])->get();
-            foreach($file as $files){
-                $path = storage_path().'/app/batch/'.$files->file_name;
-                if(file_exists($path)){
-                    $message->attach($path, [
-                        'as' => $files->file_name,
-                        'mime' => 'application/pdf',
-                    ]);
-                }
-            }
+            // $file = AttachmentFile::where('batch_code',$detail['batch_code'])->get();
+            // foreach($file as $files){
+            //     $path = storage_path().'/app/batch/'.$files->file_name;
+            //     if(file_exists($path)){
+            //         $message->attach($path, [
+            //             'as' => $files->file_name,
+            //             'mime' => 'application/pdf',
+            //         ]);
+            //     }
+            // }
         });
 
         Applicant::where('id',$applicants_id)->update(['email_sent'=>'1']);

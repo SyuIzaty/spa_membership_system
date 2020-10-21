@@ -8,6 +8,7 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use DB;
 
 class ApplicantExport implements FromCollection, WithHeadings
 {
@@ -47,38 +48,60 @@ class ApplicantExport implements FromCollection, WithHeadings
         }
 
         $list =  Applicant::whereRaw($cond)
-        ->leftJoin('applicantresult','applicant.id','=','applicantresult.applicant_id')
+        ->leftjoin('applicantresult','applicant.id','=',
+        DB::Raw('applicantresult.applicant_id') )
         ->join('grades','applicantresult.grade_id','=','grades.id')
         ->join('genders','genders.gender_code','=','applicant.applicant_gender')
         ->join('intakes','intakes.id','=','applicant.intake_id')
         ->join('qualifications','qualifications.id','=','applicant.applicant_qualification')
-        ->whereIn('applicantresult.subject',['1103','1119','1449'])
         ->get();
 
+        $collected1 = collect($list)->groupBy('applicant_id')->toarray();
+
         $collected = collect($list)->groupBy('applicant_id')->transform(function($item,$key){
-            $data = [];
+            $data = [
+                'Name' => "",
+                'IC' => "",
+                'Email' => "",
+                'Phone' => "",
+                'Gender' => "",
+                'Intake' => "",
+                'Student ID' => "",
+                'Batch' => "",
+                'Program' => "",
+                'Major' => "",
+                'Sponsor' => "",
+                'Qualification' => "",
+                '1103' => "",
+                '1119' => "",
+                '1449' => ""
+            ];
             foreach($item as $ikey => $ivalue)
             {
                 if($ikey == 0)
                 {
-                    array_push($data,$ivalue->applicant_name);
-                    array_push($data,$ivalue->applicant_ic);
-                    array_push($data,$ivalue->applicant_email);
-                    array_push($data,$ivalue->applicant_phone);
-                    array_push($data,$ivalue->gender_name);
-                    array_push($data,$ivalue->intake_code);
-                    array_push($data,$ivalue->student_id);
-                    array_push($data,$ivalue->batch_code);
-                    array_push($data,$ivalue->offered_programme);
-                    array_push($data,$ivalue->offered_major);
-                    array_push($data,$ivalue->sponsor_code);
-                    array_push($data,$ivalue->qualification_code);
+                    $data['Name'] =$ivalue->applicant_name;
+                    $data['IC'] =$ivalue->applicant_ic;
+                    $data['Email'] =$ivalue->applicant_email;
+                    $data['Phone'] =$ivalue->applicant_phone;
+                    $data['Gender'] =$ivalue->gender_name;
+                    $data['Intake'] =$ivalue->intake_code;
+                    $data['Student ID'] =$ivalue->student_id;
+                    $data['Batch'] =$ivalue->batch_code;
+                    $data['Program'] =$ivalue->offered_programme;
+                    $data['Major'] =$ivalue->offered_major;
+                    $data['Sponsor'] =$ivalue->sponsor_code;
+                    $data['Qualification'] =$ivalue->qualification_code;
                 }
-                array_push($data,$ivalue->grade_code);
-            }
 
+                if( in_array($ivalue->subject,['1103','1119','1449']) )
+                {
+                    $data[$ivalue->subject] = $ivalue->grade_code;
+                }
+            }
             return $data;
         });
+
         return $collected;
     }
 

@@ -195,3 +195,9 @@ Route::post('api/roomowner/list', 'RoomOwnerController@data_roomowner_list');  /
 //Super Admin features
 Route::get('admin/adduser','UserController@create');
 Route::post('admin/storenewuser','UserController@store');
+
+//Queue
+Route::get('/startQueue',function(){
+    exec('php artisan queue:work --tries=2 &');
+    return 1;
+})->name('startQueue');

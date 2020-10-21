@@ -29,8 +29,8 @@
                         @enderror
                     </div>
                     <div class="col-md-4 form-group">
-                        {{ Form::label('title', 'IC Number') }}
-                        {{ Form::number('applicant_ic', '', ['class' => 'form-control', 'placeholder' => 'Applicant IC Number']) }}
+                        {{ Form::label('title', 'IC Number / Passport') }}
+                        {{ Form::number('applicant_ic', '', ['class' => 'form-control', 'placeholder' => 'Applicant IC Number', 'placeholder' => 'Eg: 991023106960']) }}
                         @error('applicant_ic')
                             <p style="color: red">{{ $message }}</p>
                         @enderror
@@ -58,7 +58,7 @@
                         </select>
                     </div>
                     <div class="col-md-12">
-                        <h4>Preffered Programme</h4>
+                        <h4>Preferred Programme</h4>
                     </div>
                     <div class="col-md-8 form-group">
                         {{ Form::label('title', '1st Preferred Programme (Required)') }}

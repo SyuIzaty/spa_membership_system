@@ -120,14 +120,14 @@
                                                 </div>
                                                 <div class="col-md-12 form-group">
                                                     {{ Form::label('title', 'Address Line 1') }} *
-                                                    {{ Form::text('applicant_address_1', isset($applicant->applicantContactInfo->applicant_address_1) ? $applicant->applicantContactInfo->applicant_address_1 : '', ['class' => 'form-control', 'id' => 'applicant_address_1', 'placeholder' => 'Address Line 1','onkeyup' => 'this.value = this.value.toUpperCase()']) }}
+                                                    {{ Form::text('applicant_address_1', isset($applicant->applicantContactInfo->applicant_address_1) ? $applicant->applicantContactInfo->applicant_address_1 : '', ['id' => 'applicant_address_1', 'class' => 'form-control', 'id' => 'applicant_address_1', 'placeholder' => 'Address Line 1','onkeyup' => 'this.value = this.value.toUpperCase()']) }}
                                                     @error('applicant_phone')
                                                         <p style="color: red">{{ $message }}</p>
                                                     @enderror
                                                 </div>
                                                 <div class="col-md-12 form-group">
                                                     {{ Form::label('title', 'Address Line 2') }}
-                                                    {{ Form::text('applicant_address_2', isset($applicant->applicantContactInfo->applicant_address_2) ? $applicant->applicantContactInfo->applicant_address_2 : '', ['class' => 'form-control', 'placeholder' => 'Address Line 2', 'onkeyup' => 'this.value = this.value.toUpperCase()']) }}
+                                                    {{ Form::text('applicant_address_2', isset($applicant->applicantContactInfo->applicant_address_2) ? $applicant->applicantContactInfo->applicant_address_2 : '', ['id' => 'applicant_address_2', 'class' => 'form-control', 'placeholder' => 'Address Line 2', 'onkeyup' => 'this.value = this.value.toUpperCase()']) }}
                                                 </div>
                                                 <div class="col-md-6 form-group">
                                                     {{ Form::label('title', 'Postcode') }}
@@ -197,7 +197,9 @@
                                                 </div>
                                                 <div class="form-group col-md-12">
                                                     {{Form::label('title', 'Father / Guardian I Address')}} *
-                                                    {{Form::text('guardian_one_address', isset($applicant->applicantGuardian->guardian_one_address) ? $applicant->applicantGuardian->guardian_one_address : '', ['class' => 'form-control', 'placeholder' => 'Guardian Address', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
+                                                    <input type="checkbox" id="same" name="same" onchange= "addressFunction()"/>
+                                                    <label for = "same">Same as applicant address.</label><br>
+                                                    {{Form::text('guardian_one_address', isset($applicant->applicantGuardian->guardian_one_address) ? $applicant->applicantGuardian->guardian_one_address : '', ['id' => 'guardian_one_address', 'class' => 'form-control', 'placeholder' => 'Guardian Address', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                                                     @error('guardian_one_address')
                                                         <p style="color: red">{{ $message }}</p>
                                                     @enderror
@@ -233,8 +235,10 @@
                                                     @enderror
                                                 </div>
                                                 <div class="form-group col-md-12">
+                                                    <input type="checkbox" id="same2" name="same2" onchange= "address2Function()"/>
+                                                    <label for = "same2">Same as applicant address.</label><br>
                                                     {{Form::label('title', 'Mother / Guardian II Address')}}
-                                                    {{Form::text('guardian_two_address', isset($applicant->applicantGuardian->guardian_two_address) ? $applicant->applicantGuardian->guardian_two_address : '', ['class' => 'form-control', 'placeholder' => 'Guardian Address', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
+                                                    {{Form::text('guardian_two_address', isset($applicant->applicantGuardian->guardian_two_address) ? $applicant->applicantGuardian->guardian_two_address : '', ['id' => 'guardian_two_address', 'class' => 'form-control', 'placeholder' => 'Guardian Address', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                                                 </div>
                                             </div>
                                         </div>
@@ -244,23 +248,29 @@
                                         <div class="card-header">Emergency Contact Info</div>
                                         <div class="card-body">
                                             <div class="row">
-                                                {{Form::hidden('applicant_id', $applicant->id)}}
+                                                <label for="chkEmergency" class="form-group col-md-12">
+                                                    <input type="checkbox" id="chkEmergency" onclick="EnableEmergency()" />
+                                                    Fill in if other than guardian
+                                                </label>
+                                                <input type="hidden" name="applicant_id" id="em_applicant_id" disabled="disabled" value="{{ $applicant->id }}">
                                                 <div class="form-group col-md-12">
                                                     {{Form::label('title', 'Emergency Name')}} *
-                                                    {{Form::text('emergency_name', isset($applicant->applicantEmergency->emergency_name) ? $applicant->applicantEmergency->emergency_name : '', ['class' => 'form-control', 'placeholder' => 'Emergency Name', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
+                                                    {{Form::text('emergency_name', isset($applicant->applicantEmergency->emergency_name) ? $applicant->applicantEmergency->emergency_name : '', ['id' => 'emergency_name', 'class' => 'form-control', 'placeholder' => 'Emergency Name', 'onkeyup' => 'this.value = this.value.toUpperCase()', 'disabled' => 'disabled'])}}
                                                     @error('emergency_name')
                                                         <p style="color: red">{{ $message }}</p>
                                                     @enderror
                                                 </div>
                                                 <div class="col-md-6 form-group">
                                                     {{ Form::label('title', 'Emergency Relation') }} *
-                                                    <select class="form-control relation" name="emergency_relationship">
-                                                        @if (isset($applicant->applicantGuardian->guardian_one_relationship))
+                                                    <select class="form-control relation" name="emergency_relationship" id="emergency_relationship" disabled="disabled">
+                                                        @if (isset($applicant->applicantEmergency->emergency_relationship))
                                                         <option value="{{ $applicant->applicantEmergency->emergency_relationship }}">{{ $applicant->applicantEmergency->emergencyOne->family_name }}</option>
-                                                        @endif
+                                                        @else
+                                                        <option disabled selected>Please select</option>
                                                         @foreach($family as $families)
                                                         <option value="{{ $families->family_code }}">{{ $families->family_name }}</option>
                                                         @endforeach
+                                                        @endif
                                                     </select>
                                                     @error('emergency_relationship')
                                                         <p style="color: red">{{ $message }}</p>
@@ -268,14 +278,14 @@
                                                 </div>
                                                 <div class="col-md-6 form-group">
                                                     {{ Form::label('title', 'Emergency Phone Number') }} *
-                                                    {{ Form::number('emergency_phone', isset($applicant->applicantEmergency->emergency_phone) ? $applicant->applicantEmergency->emergency_phone : '', ['class' => 'form-control', 'placeholder' => 'Emergency Phone Number']) }}
+                                                    {{ Form::number('emergency_phone', isset($applicant->applicantEmergency->emergency_phone) ? $applicant->applicantEmergency->emergency_phone : '', ['id' => 'emergency_phone', 'class' => 'form-control', 'placeholder' => 'Emergency Phone Number', 'disabled' => 'disabled']) }}
                                                     @error('emergency_phone')
                                                         <p style="color: red">{{ $message }}</p>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group col-md-12">
                                                     {{Form::label('title', 'Emergency Address')}}
-                                                    {{Form::text('emergency_address', isset($applicant->applicantEmergency->emergency_address) ? $applicant->applicantEmergency->emergency_address : '', ['class' => 'form-control', 'placeholder' => 'Guardian Address', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
+                                                    {{Form::text('emergency_address', isset($applicant->applicantEmergency->emergency_address) ? $applicant->applicantEmergency->emergency_address : '', ['id' => 'emergency_address', 'class' => 'form-control', 'placeholder' => 'Guardian Address', 'onkeyup' => 'this.value = this.value.toUpperCase()', 'disabled' => 'disabled'])}}
                                                 </div>
                                             </div>
                                         </div>
@@ -302,11 +312,11 @@
                                     <div class="card">
                                         <div class="card-header">Qualification</div>
                                         <div class="card-body">
-                                            <div class="col-md-12" style="color: red">** Note: Please input all your qualification</div>
+                                            <div class="col-md-12" style="color: red">** Note: Please keyin all your qualification</div>
                                             <div class="row qualification-row">
                                                 <div class="col-md-6 form-group">
                                                     {{ Form::label('title', 'Qualification Type') }}
-                                                    <select class="form-control qualification" id="qualificationselect" required>
+                                                    <select class="form-control qualification" id="qualificationselect">
                                                         <option disabled selected value="">Please select</option>
                                                         @foreach($qualification as $qualifications)
                                                         <option value="{{ $qualifications->id }}">{{ $qualifications->qualification_code }}</option>
@@ -352,6 +362,52 @@
     $(document).ready(function() {
         $('.country, .gender, .marital, .race, .religion, .relation, .qualification, .qua').select2();
     });
+
+    function addressFunction()
+    {
+        if (document.getElementById('same').checked)
+        {
+            document.getElementById('guardian_one_address').value=document.getElementById('applicant_address_1').value;
+        }
+        else
+        {
+            document.getElementById('guardian_one_address').value="";
+        }
+    }
+
+    function address2Function()
+    {
+        if (document.getElementById('same2').checked)
+        {
+            document.getElementById('guardian_two_address').value=document.getElementById('guardian_one_address').value;
+        }
+        else
+        {
+            document.getElementById('guardian_two_address').value="";
+        }
+    }
+
+    function EnableEmergency()
+    {
+        var chkEmergency = document.getElementById("chkEmergency")
+        var em_applicant_id = document.getElementById("em_applicant_id");
+        var emergency_name = document.getElementById("emergency_name");
+        var emergency_relationship = document.getElementById("emergency_relationship");
+        var emergency_phone = document.getElementById("emergency_phone");
+        var emergency_address = document.getElementById("emergency_address");
+        emergency_name.disabled = chkEmergency.checked ? false : true;
+        emergency_relationship.disabled = chkEmergency.checked ? false : true;
+        emergency_address.disabled = chkEmergency.checked ? false : true;
+        emergency_phone.disabled = chkEmergency.checked ? false : true;
+        em_applicant_id.disabled = chkEmergency.checked ? false : true;
+        if(!em_applicant_id.disabled && !emergency_name.disabled && !emergency_relationship.disabled && !emergency_address.disabled && !emergency_phone.disabled){
+            em_applicant_id.focus();
+            emergency_name.focus();
+            emergency_relationship.focus();
+            emergency_address.focus();
+            emergency_phone.focus();
+        }
+    }
 
     var listSPM = {!! $subjectSpmStr !!};
     var listGradeSPM = {!! $gradeSpmStr !!};

@@ -28,8 +28,8 @@
                     {!! Form::open(['action' => 'RegistrationController@search', 'method' => 'GET']) !!}
                     <div class="d-flex justify-content-center">
                         <div class="p-2">
-                            {{Form::label('title', 'IC Number')}}
-                            {{Form::text('applicant_ic', '', ['class' => 'form-control', 'placeholder' => 'Applicant IC', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
+                            {{Form::label('title', 'IC Number / Passport')}}
+                            {{Form::text('applicant_ic', '', ['class' => 'form-control', 'placeholder' => 'Applicant IC', 'onkeyup' => 'this.value = this.value.toUpperCase()', 'placeholder' => 'Eg: 991023106960'])}}
                         </div>
                     </div>
                     <div class="d-flex justify-content-center">

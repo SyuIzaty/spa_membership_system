@@ -132,7 +132,7 @@
                                                                         @endif
                                                                     </td>
                                                                     <td>
-                                                                        @if ($applicant->programme_status == '4A')
+                                                                        @if ($applicant->programme_status == '4A' && $applicant->applicant_status != '5A')
                                                                         <div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div>
                                                                         @endif
                                                                     </td>
@@ -166,7 +166,7 @@
                                                                         @endif
                                                                     </td>
                                                                     <td>
-                                                                        @if ($applicant->programme_status_2 == '4A')
+                                                                        @if ($applicant->programme_status_2 == '4A' && $applicant->applicant_status != '5A')
                                                                         <div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div>
                                                                         @endif
                                                                     </td>
@@ -201,7 +201,7 @@
                                                                         @endif
                                                                     </td>
                                                                     <td>
-                                                                        @if ($applicant->programme_status_3 == '4A')
+                                                                        @if ($applicant->programme_status_3 == '4A' && $applicant->applicant_status != '5A')
                                                                         <div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div>
                                                                         @endif
                                                                     </td>
@@ -447,7 +447,11 @@
                                                                         ?>
                                                                     </select>
                                                                 </td>
-                                                                <td><div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div></td>
+                                                                <td>
+                                                                    @if ($applicant->applicant_status != '5A')
+                                                                    <div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div>
+                                                                    @endif
+                                                                </td>
                                                             </tr>
                                                         </form>
                                                         @endforeach

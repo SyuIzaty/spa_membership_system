@@ -36,7 +36,6 @@ class StoreApplicantRequest extends FormRequest
             'applicant_email' => 'required|min:1|max:100',
             'applicant_nationality' => 'required',
             'applicant_programme' => 'required',
-            'applicant_major' => 'required',
         ];
     }
 }
