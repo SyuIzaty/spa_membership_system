@@ -97,9 +97,17 @@ class RegistrationController extends Controller
 
         $check = Intakes::where('status','1')->where('intake_check_open','<=',Carbon::Now())->where('intake_check_close','>=',Carbon::now())->first();
 
-        $applicant = Applicant::where('applicant_ic',$request->applicant_ic)->where('intake_id',$intake->id)->with('applicantIntake')->get();
+        if(is_null($intake)){
+            $applicant = 'NULL';
+        }else{
+            $applicant = Applicant::where('applicant_ic',$request->applicant_ic)->where('intake_id',$intake->id)->with('applicantIntake')->get();
+        }
 
-        $check_applicant = Applicant::where('applicant_ic',$request->applicant_ic)->where('intake_id',$check->id)->first();
+        if(is_null($check)){
+            $check_applicant = 'NULL';
+        }else{
+            $check_applicant = Applicant::where('applicant_ic',$request->applicant_ic)->where('intake_id',$check->id)->first();
+        }
 
         return view('applicantRegister.display', compact('applicant','intake','check','check_applicant'));
     }

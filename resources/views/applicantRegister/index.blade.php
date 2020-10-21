@@ -23,7 +23,7 @@
                     @endisset
                     <hr class="mt-2 mb-3">
                     <div class="d-flex justify-content-center">
-                        <div class="p-2"><h2>CONTINUE WITH EXISTING APPLICATION / CHECK APPLICATION</h2></div>
+                        <div class="p-2"><h3 style="text-align: center">CONTINUE WITH EXISTING APPLICATION <br> OR CHECK APPLICATION</h3></div>
                     </div>
                     {!! Form::open(['action' => 'RegistrationController@search', 'method' => 'GET']) !!}
                     <div class="d-flex justify-content-center">

@@ -29,7 +29,7 @@ class StoreBatchRequest extends FormRequest
     public function rules()
     {
         return [
-            'batch_code' => 'required|min:1|max:20',
+            'batch_code' => 'required|min:1|max:20|unique:batches,batch_code',
             'batch_name' => 'required|min:1|max:50',
         ];
     }

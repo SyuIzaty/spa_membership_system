@@ -7,7 +7,7 @@
             <div class="card-header">
                 <div class="d-flex justify-content-center">
                     <div class="p-2">
-                        <img src="{{ asset('img/intec_logo.png') }}" style="height: 200px; width: 650px"/>
+                        <img src="{{ asset('img/intec_logo.png') }}" class="ml-5"/>
                     </div>
                 </div>
             </div>
@@ -136,7 +136,6 @@
                             if(data){
                                 $('#applicant_major').empty();
                                 $('#applicant_major').focus;
-                                $('#applicant_major').append('<option value="">Select Major</option>');
                                 $.each(data, function(key, value){
                                     $('select[name="applicant_major"]').append('<option value="'+ value.major_code +'">' + value.major_name + '</option>');
                                 });
@@ -163,7 +162,7 @@
                             if(data){
                                 $('#applicant_major_2').empty();
                                 $('#applicant_major_2').focus;
-                                $('#applicant_major_2').append('<option value="">Select Major</option>');
+                                // $('#applicant_major_2').append('<option value="">Select Major</option>');
                                 $.each(data, function(key, value){
                                     $('select[name="applicant_major_2"]').append('<option value="'+ value.major_code +'">' + value.major_name + '</option>');
                                 });
@@ -190,7 +189,6 @@
                             if(data){
                                 $('#applicant_major_3').empty();
                                 $('#applicant_major_3').focus;
-                                $('#applicant_major_3').append('<option value="">Select Major</option>');
                                 $.each(data, function(key, value){
                                     $('select[name="applicant_major_3"]').append('<option value="'+ value.major_code +'">' + value.major_name + '</option>');
                                 });

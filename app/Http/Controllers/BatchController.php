@@ -109,7 +109,7 @@ class BatchController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreBatchRequest $request, $id)
+    public function update(Request $request, $id)
     {
         Batch::find($id)->update($request->all());
 

@@ -241,7 +241,9 @@ class IntakeController extends Controller
     {
         IntakeDetail::find($request->id)->update($request->all());
 
-        $this->uploadFile($request->file,$request->batch_code);
+        if(isset($request->file)){
+            $this->uploadFile($request->file,$request->batch_code);
+        }
 
         return $this->showProgramInfo($request->intake_code);
     }

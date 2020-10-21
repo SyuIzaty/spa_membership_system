@@ -9,6 +9,8 @@
         <div class="panel-hdr">
             <h2>Registration</h2>
         </div>
+        @if($applicant->applicant_status == '0' || $applicant->applicant_status == '0')
+
             {!! Form::model($applicant, ['method' => 'PATCH',  'enctype' => "multipart/form-data", 'route' => ['registration.update', $applicant->id], 'id' => "upload_form"]) !!}
                 @csrf
                 <div class="card">
@@ -344,6 +346,19 @@
                 </div>
 
             {!! Form::close() !!}
+        @else
+        <div class="card h-100">
+            <div class="d-flex justify-content-lg-center">
+                <div class="p-2">
+                    <div class="card">
+                        <div class="card-body">
+                            Your application is being processed. You are not allowed to edit you details. Thank you
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
 </div>
 @endsection

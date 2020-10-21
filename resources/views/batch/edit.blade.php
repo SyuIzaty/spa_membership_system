@@ -57,9 +57,17 @@
                                                 @endif
                                             </select>
                                         </div>
+                                        <div class="form-group col-md-12">
+                                            {{ Form::label('title', 'Program') }}
+                                            <select class="form-control programme" name="programme_code" id="programme_code" >
+                                                @foreach($programme as $programmes)
+                                                    <option value="{{$programmes->programme_code}}"  {{ $batch->programme_code == $programmes->programme_code ? 'selected="selected"' : '' }}>{{$programmes->programme_name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
                                     {{Form::hidden('_method', 'PUT')}}
-                                    <button class="btn btn-primary">Submit</button>
+                                    <button class="btn btn-primary mt-3">Submit</button>
                                 {!! Form::close() !!}
                         </div>
                     </div>
@@ -72,7 +80,7 @@
 @section('script')
 <script>
     $(document).ready(function() {
-        $('.status').select2();
+        $('.status, .programme').select2();
     });
 
 </script>

@@ -197,10 +197,7 @@
                                 {{Form::label('title', 'Intake Description')}}
                                 {{Form::text('intake_programme_description', '', ['id' => 'programme_desc','class' => 'form-control','placeholder' => 'Intake Description'])}}
                             </div>
-                            <div class="form-group">
-                                {{Form::label('title', 'Batch Code')}}
-                                {{Form::text('batch_code', '', ['class' => 'form-control', 'id' => 'batch_code' ,'placeholder' => 'Batch Code', 'required'])}}
-                            </div>
+                                {{Form::hidden('batch_code', '', ['class' => 'form-control', 'id' => 'batch_code' ,'placeholder' => 'Batch Code', 'required'])}}
                             <div class="form-group">
                                 {{Form::label('title', 'Intake Type')}}
                                 <select name="intake_type" id="intake_type_code" class="form-control">
