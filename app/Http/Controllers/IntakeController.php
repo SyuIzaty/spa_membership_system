@@ -179,13 +179,19 @@ class IntakeController extends Controller
         IntakeDetail::where('intake_programme', $request->intake_programme)->where('intake_code', $request->intake_code)->where('status', '1')->update(['status' => 0]);
         IntakeDetail::create($request->all());
         IntakeDetail::where('status', Null)->where('intake_programme', $request->intake_programme)->where('intake_code', $request->intake_code)->update(['status' => 1]);
-        $this->uploadFile($request->file,$request->batch_code);
+        if(isset($request->file)){
+            $this->uploadFile($request->file,$request->batch_code);
+        }
         return $this->showProgramInfo($request->intake_code);
     }
 
     public function deleteProgramInfo($id)
     {
         $exist = IntakeDetail::find($id);
+        $exist_file = AttachmentFile::where('batch_code',$exist['batch_code'])->get();
+        foreach($exist_file as $file_exist){
+            $file_exist->delete();
+        }
         $exist->delete();
         return response()->json(['success', 'Successfully deleted!']);
     }

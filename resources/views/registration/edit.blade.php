@@ -106,19 +106,21 @@
                                                 </div>
                                                 <div class="col-md-4 form-group">
                                                     {{ Form::label('title', 'Race') }}
-                                                    <select class="form-control race" name="applicant_race">
+                                                    <select class="form-control race" name="applicant_race" id="applicant_race">
                                                         @foreach ($race as $races)
                                                             <option value="{{ $races->race_code }}" {{ $applicant->applicant_race == $races->race_code ? 'selected="Selected"' : ''}}>{{ $races->race_name }}</option>
                                                         @endforeach
                                                     </select>
+                                                    <input class="form-control" type="text" id="user_race" name="user_race" placeholder="Race" disabled="disabled" />
                                                 </div>
                                                 <div class="col-md-4 form-group">
                                                     {{ Form::label('title', 'Religion') }}
-                                                    <select class="form-control religion" name="applicant_religion">
+                                                    <select class="form-control religion" name="applicant_religion" id="applicant_religion">
                                                         @foreach ($religion as $religions)
                                                             <option value="{{ $religions->religion_code }}" {{ $applicant->applicant_religion == $religions->religion_code ? 'selected="Selected"' : ''}}>{{ $religions->religion_name }}</option>
                                                         @endforeach
                                                     </select>
+                                                    <input class="form-control" type="text" id="user_religion" name="user_religion" placeholder="Religion" disabled="disabled" />
                                                 </div>
                                                 <div class="col-md-12 form-group">
                                                     {{ Form::label('title', 'Address Line 1') }} *
@@ -199,7 +201,7 @@
                                                 </div>
                                                 <div class="form-group col-md-12">
                                                     {{Form::label('title', 'Father / Guardian I Address')}} *
-                                                    <input type="checkbox" id="same" name="same" onchange= "addressFunction()"/>
+                                                    <input type="checkbox" id="same_one" name="same_one" onchange= "addressFunction('one')"/>
                                                     <label for = "same">Same as applicant address.</label><br>
                                                     {{Form::text('guardian_one_address', isset($applicant->applicantGuardian->guardian_one_address) ? $applicant->applicantGuardian->guardian_one_address : '', ['id' => 'guardian_one_address', 'class' => 'form-control', 'placeholder' => 'Guardian Address', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                                                     @error('guardian_one_address')
@@ -251,7 +253,7 @@
                                         <div class="card-body">
                                             <div class="row">
                                                 <label for="chkEmergency" class="form-group col-md-12">
-                                                    <input type="checkbox" id="chkEmergency" onclick="EnableEmergency()" />
+                                                    <input type="checkbox" id="chkEmergency" name="chkEmergency" onclick="EnableEmergency()" />
                                                     Fill in if other than guardian
                                                 </label>
                                                 <input type="hidden" name="applicant_id" id="em_applicant_id" disabled="disabled" value="{{ $applicant->id }}">
@@ -378,17 +380,17 @@
         $('.country, .gender, .marital, .race, .religion, .relation, .qualification, .qua').select2();
     });
 
-    function addressFunction()
+    function addressFunction(type)
     {
-        if (document.getElementById('same').checked)
+        var address = "";
+        if($('#same_'+type).is(':checked'))
         {
-            document.getElementById('guardian_one_address').value=document.getElementById('applicant_address_1').value;
+            address = $('#applicant_address_1').val() + "," + $('#applicant_address_2').val() + "," + $('input[name=applicant_poscode]').val() + "," + $('input[name=applicant_city]').val() + "," + $('input[name=applicant_state]').val() + "," + $('select[name=applicant_country] option:selected').text()
         }
-        else
-        {
-            document.getElementById('guardian_one_address').value="";
-        }
+
+        $('#guardian_'+type+'_address').val(address);
     }
+
 
     function address2Function()
     {
@@ -423,6 +425,26 @@
             emergency_phone.focus();
         }
     }
+
+    $(function () {
+        $("#applicant_race").change(function () {
+            if ($(this).val() == '0000') {
+                $("#user_race").removeAttr("disabled");
+                $("#user_race").focus();
+            } else {
+                $("#user_race").attr("disabled", "disabled");
+            }
+        });
+
+        $("#applicant_religion").change(function () {
+            if ($(this).val() == '0') {
+                $("#user_religion").removeAttr("disabled");
+                $("#user_religion").focus();
+            } else {
+                $("#user_religion").attr("disabled", "disabled");
+            }
+        });
+    });
 
     var listSPM = {!! $subjectSpmStr !!};
     var listGradeSPM = {!! $gradeSpmStr !!};

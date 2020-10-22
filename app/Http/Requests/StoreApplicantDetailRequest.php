@@ -29,12 +29,12 @@ class StoreApplicantDetailRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'applicant_id' => 'required',
-            'emergency_name' => 'max:100',
-            'emergency_relationship' => 'max:100',
-            'emergency_phone' => 'max:100',
-            'emergency_address' => 'max:100',
+            // 'emergency_name' => 'required|min:1|max:100',
+            // 'emergency_relationship' => 'required|min:1|max:100',
+            // 'emergency_phone' => 'required|min:1|max:100',
+            // 'emergency_address' => 'max:100',
             'applicant_address_1' => 'required|min:1|max:100',
             'applicant_address_2' => 'max:100',
             'applicant_poscode' => 'max:100',
@@ -50,5 +50,14 @@ class StoreApplicantDetailRequest extends FormRequest
             'guardian_two_mobile' => 'required|min:1|max:100',
             'guardian_two_address' => 'max:100',
         ];
+        $input = $this->input();
+        if( isset($input['chkEmergency']) )
+        {
+            $rules['emergency_name'] =  'required|min:1|max:100';
+            $rules['emergency_relationship'] = 'required|min:1|max:100';
+            $rules['emergency_phone'] = 'required|min:1|max:100';
+            $rules['emergency_address'] = 'max:100';
+        }
+        return $rules;
     }
 }

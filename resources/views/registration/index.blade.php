@@ -7,7 +7,7 @@
             <div class="card-header">
                 <div class="d-flex justify-content-center">
                     <div class="p-2">
-                        <img src="{{ asset('img/intec_logo.png') }}" class="ml-5"/>
+                        <img src="{{ asset('img/intec_logo.png') }}" class="responsive"/>
                     </div>
                 </div>
             </div>

@@ -50,7 +50,7 @@ class ApplicantController extends Controller
 
     public function show($id) // Display applicant detail, academic result
     {
-        $applicant = Applicant::where('id',$id)->with(['applicantContactInfo','applicantEmergency.emergencyOne','applicantGuardian.familyOne','applicantGuardian.familyTwo','applicantIntake','status','intakeDetail','applicantstatus','programmeStatus','programmeStatusTwo','programmeStatusThree'])->first();
+        $applicant = Applicant::where('id',$id)->with(['applicantresult','applicantContactInfo','applicantEmergency.emergencyOne','applicantGuardian.familyOne','applicantGuardian.familyTwo','applicantIntake','status','intakeDetail','applicantstatus','programmeStatus','programmeStatusTwo','programmeStatusThree'])->first();
 
         $batch_1 = IntakeDetail::where('intake_code',$applicant->intake_id)->where('status','1')->where('intake_programme',$applicant->applicant_programme)->first();
 
@@ -1435,12 +1435,19 @@ class ApplicantController extends Controller
 
     public function test()
     {
-        $test = Intakes::where('status','1')->with(['intakeDetails'=>function($query){
-            $query->where('status','1');
-        }])->get();
-        foreach($test->first()->intakeDetails as $tests){
-            dump($tests->intake_programme);
+        // $test = Intakes::where('status','1')->with(['intakeDetails'=>function($query){
+        //     $query->where('status','1');
+        // }])->get();
+        // foreach($test->first()->intakeDetails as $tests){
+        //     dump($tests->intake_programme);
+        // }
+
+        $app = DB::select('SELECT * FROM auth.model_has_roles INNER JOIN auth.users ON
+                        auth.model_has_roles.model_id = auth.users.id WHERE auth.model_has_roles.model_id = "5"');
+        foreach($app as $p){
+            $test = $p->name;
         }
+        dump ($test);
     }
 
     public function checkIndividual(Request $request)

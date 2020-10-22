@@ -322,6 +322,16 @@ class RegistrationController extends Controller
 
     public function update(StoreApplicantDetailRequest $request, $id, $type = null)
     {
+        if($request->applicant_race == '0000'){
+            $applicant_race = $request->user_race;
+        }else{
+            $applicant_race = $request->applicant_race;
+        }
+        if($request->applicant_religion == '0'){
+            $applicant_religion = $request->user_religion;
+        }else{
+            $applicant_religion = $request->applicant_religion;
+        }
         $applicant = Applicant::find($id)->update([
             'applicant_name' => $request->applicant_name,
             'applicant_ic' => $request->applicant_ic,
@@ -330,8 +340,8 @@ class RegistrationController extends Controller
             'applicant_nationality' => $request->applicant_nationality,
             'applicant_gender' => $request->applicant_gender,
             'applicant_marital' => $request->applicant_marital,
-            'applicant_race' => $request->applicant_race,
-            'applicant_religion' => $request->applicant_religion,
+            'applicant_race' => $applicant_race,
+            'applicant_religion' => $applicant_religion,
             'applicant_dob' => $request->applicant_dob,
             'applicant_status' => '00',
             'applicant_qualification' => $request->highest_qualification,
@@ -364,256 +374,257 @@ class RegistrationController extends Controller
             'guardian_two_address' => $request->guardian_two_address,
         ]);
 
-        ApplicantEmergency::updateOrCreate([
-            'applicant_id' => $id,
-        ],[
-            'emergency_name' => $request->emergency_name,
-            'emergency_relationship' => $request->emergency_relationship,
-            'emergency_phone' => $request->emergency_phone,
-            'emergency_address' => $request->emergency_address
-        ]);
-
-
-        $result = [];
-        if (isset($request->bachelor_cgpa)) {
-            $academic[] = [
-                'id' => $request->exist_bachelor,
+        if($type != "auto"){
+            ApplicantEmergency::updateOrCreate([
                 'applicant_id' => $id,
-                'type' => $request->bachelor_type,
-                'applicant_study' => $request->bachelor_study,
-                'applicant_year' => $request->bachelor_year,
-                'applicant_major' => $request->bachelor_major,
-                'applicant_cgpa' => $request->bachelor_cgpa,
-            ];
-        }
+            ],[
+                'emergency_name' => $request->emergency_name,
+                'emergency_relationship' => $request->emergency_relationship,
+                'emergency_phone' => $request->emergency_phone,
+                'emergency_address' => $request->emergency_address
+            ]);
 
-        if (isset($request->diploma_cgpa)) {
 
-            $academic[] = [
-                'id' => $request->exist_diploma,
-                'applicant_id' => $id,
-                'type' => $request->diploma_type,
-                'applicant_study' => $request->diploma_study,
-                'applicant_year' => $request->diploma_year,
-                'applicant_major' => $request->diploma_major,
-                'applicant_cgpa' => $request->diploma_cgpa,
-            ];
-        }
+            $result = [];
+            if (isset($request->bachelor_cgpa)) {
+                $academic[] = [
+                    'id' => $request->exist_bachelor,
+                    'applicant_id' => $id,
+                    'type' => $request->bachelor_type,
+                    'applicant_study' => $request->bachelor_study,
+                    'applicant_year' => $request->bachelor_year,
+                    'applicant_major' => $request->bachelor_major,
+                    'applicant_cgpa' => $request->bachelor_cgpa,
+                ];
+            }
 
-        if (isset($request->muet_cgpa)) {
-            $academic[] = [
-                'id' => $request->exist_muet,
-                'applicant_id' => $id,
-                'type' => $request->muet_type,
-                'applicant_cgpa' => $request->muet_cgpa,
-            ];
-        }
+            if (isset($request->diploma_cgpa)) {
 
-        if (isset($request->skm_cgpa)) {
-            $academic[] = [
-                'id' => $request->exist_skm,
-                'applicant_id' => $id,
-                'type' => $request->skm_type,
-                'applicant_cgpa' => $request->skm_cgpa,
-            ];
-        }
+                $academic[] = [
+                    'id' => $request->exist_diploma,
+                    'applicant_id' => $id,
+                    'type' => $request->diploma_type,
+                    'applicant_study' => $request->diploma_study,
+                    'applicant_year' => $request->diploma_year,
+                    'applicant_major' => $request->diploma_major,
+                    'applicant_cgpa' => $request->diploma_cgpa,
+                ];
+            }
 
-        if (isset($request->mqf_cgpa)) {
-            $academic[] = [
-                'id' => $request->exist_mqf,
-                'applicant_id' => $id,
-                'type' => $request->mqf_type,
-                'applicant_cgpa' => $request->mqf_cgpa,
-            ];
-        }
+            if (isset($request->muet_cgpa)) {
+                $academic[] = [
+                    'id' => $request->exist_muet,
+                    'applicant_id' => $id,
+                    'type' => $request->muet_type,
+                    'applicant_cgpa' => $request->muet_cgpa,
+                ];
+            }
 
-        if (isset($request->kkm_cgpa)) {
-            $academic[] = [
-                'id' => $request->exist_kkm,
-                'applicant_id' => $id,
-                'type' => $request->kkm_type,
-                'applicant_cgpa' => $request->kkm_cgpa,
-            ];
-        }
+            if (isset($request->skm_cgpa)) {
+                $academic[] = [
+                    'id' => $request->exist_skm,
+                    'applicant_id' => $id,
+                    'type' => $request->skm_type,
+                    'applicant_cgpa' => $request->skm_cgpa,
+                ];
+            }
 
-        if (isset($request->icaew)) {
-            $academic[] = [
-                'id' => $request->exist_icaew,
-                'applicant_id' => $id,
-                'type' => $request->icaew_type,
-                'applicant_cgpa' => $request->icaew_cgpa,
-            ];
-        }
+            if (isset($request->mqf_cgpa)) {
+                $academic[] = [
+                    'id' => $request->exist_mqf,
+                    'applicant_id' => $id,
+                    'type' => $request->mqf_type,
+                    'applicant_cgpa' => $request->mqf_cgpa,
+                ];
+            }
 
-        if (isset($request->matriculation_cgpa)) {
-            $academic[] = [
-                'id' => $request->exist_matriculation,
-                'applicant_id' => $id,
-                'type' => $request->matriculation_type,
-                'applicant_study' => $request->matriculation_study,
-                'applicant_year' => $request->matriculation_year,
-                'applicant_cgpa' => $request->matriculation_cgpa,
-            ];
-        }
+            if (isset($request->kkm_cgpa)) {
+                $academic[] = [
+                    'id' => $request->exist_kkm,
+                    'applicant_id' => $id,
+                    'type' => $request->kkm_type,
+                    'applicant_cgpa' => $request->kkm_cgpa,
+                ];
+            }
 
-        if (isset($request->foundation_cgpa)) {
+            if (isset($request->icaew)) {
+                $academic[] = [
+                    'id' => $request->exist_icaew,
+                    'applicant_id' => $id,
+                    'type' => $request->icaew_type,
+                    'applicant_cgpa' => $request->icaew_cgpa,
+                ];
+            }
 
-            $academic[] = [
-                'id' => $request->exist_foundation,
-                'applicant_id' => $id,
-                'type' => $request->foundation_type,
-                'applicant_study' => $request->foundation_study,
-                'applicant_year' => $request->foundation_year,
-                'applicant_major' => $request->foundation_major,
-                'applicant_cgpa' => $request->foundation_cgpa,
-            ];
-        }
+            if (isset($request->matriculation_cgpa)) {
+                $academic[] = [
+                    'id' => $request->exist_matriculation,
+                    'applicant_id' => $id,
+                    'type' => $request->matriculation_type,
+                    'applicant_study' => $request->matriculation_study,
+                    'applicant_year' => $request->matriculation_year,
+                    'applicant_cgpa' => $request->matriculation_cgpa,
+                ];
+            }
 
-        if (isset($request->sace_cgpa)) {
-            $academic[] = [
-                'id' => $request->exist_sace,
-                'applicant_id' => $id,
-                'type' => $request->sace_type,
-                'applicant_cgpa' => $request->sace_cgpa,
-            ];
-        }
+            if (isset($request->foundation_cgpa)) {
 
-        if (isset($request->cat_cgpa)) {
-            $academic[] = [
-                'id' => $request->exist_cat,
-                'applicant_id' => $id,
-                'type' => $request->cat_type,
-                'applicant_cgpa' => $request->cat_cgpa,
-            ];
-        }
+                $academic[] = [
+                    'id' => $request->exist_foundation,
+                    'applicant_id' => $id,
+                    'type' => $request->foundation_type,
+                    'applicant_study' => $request->foundation_study,
+                    'applicant_year' => $request->foundation_year,
+                    'applicant_major' => $request->foundation_major,
+                    'applicant_cgpa' => $request->foundation_cgpa,
+                ];
+            }
 
-        if (isset($request->spm_subject) && isset($request->spm_grade_id)) {
-            if (count($request->spm_subject) > 0 && count($request->spm_grade_id)) {
-                for ($i = 0; $i < count($request->spm_subject); $i++) {
-                    $result[] = [
-                        'id' => $request->exist_spm[$i],
-                        'applicant_id' => $id,
-                        'type' => $request->spm_type,
-                        'subject' => $request->spm_subject[$i],
-                        'grade_id' => $request->spm_grade_id[$i],
-                    ];
+            if (isset($request->sace_cgpa)) {
+                $academic[] = [
+                    'id' => $request->exist_sace,
+                    'applicant_id' => $id,
+                    'type' => $request->sace_type,
+                    'applicant_cgpa' => $request->sace_cgpa,
+                ];
+            }
+
+            if (isset($request->cat_cgpa)) {
+                $academic[] = [
+                    'id' => $request->exist_cat,
+                    'applicant_id' => $id,
+                    'type' => $request->cat_type,
+                    'applicant_cgpa' => $request->cat_cgpa,
+                ];
+            }
+
+            if (isset($request->spm_subject) && isset($request->spm_grade_id)) {
+                if (count($request->spm_subject) > 0 && count($request->spm_grade_id)) {
+                    for ($i = 0; $i < count($request->spm_subject); $i++) {
+                        $result[] = [
+                            'id' => $request->exist_spm[$i],
+                            'applicant_id' => $id,
+                            'type' => $request->spm_type,
+                            'subject' => $request->spm_subject[$i],
+                            'grade_id' => $request->spm_grade_id[$i],
+                        ];
+                    }
                 }
             }
-        }
 
-        if (isset($request->stam_subject) && isset($request->stam_grade_id)) {
-            if (count($request->stam_subject) > 0 && count($request->stam_grade_id)) {
-                for ($i = 0; $i < count($request->stam_subject); $i++) {
-                    $result[] = [
-                        'id' => $request->exist_stam[$i],
-                        'applicant_id' => $id,
-                        'type' => $request->stam_type,
-                        'subject' => $request->stam_subject[$i],
-                        'grade_id' => $request->stam_grade_id[$i],
-                    ];
+            if (isset($request->stam_subject) && isset($request->stam_grade_id)) {
+                if (count($request->stam_subject) > 0 && count($request->stam_grade_id)) {
+                    for ($i = 0; $i < count($request->stam_subject); $i++) {
+                        $result[] = [
+                            'id' => $request->exist_stam[$i],
+                            'applicant_id' => $id,
+                            'type' => $request->stam_type,
+                            'subject' => $request->stam_subject[$i],
+                            'grade_id' => $request->stam_grade_id[$i],
+                        ];
+                    }
                 }
             }
-        }
 
-        if (isset($request->stpm_subject) && isset($request->stpm_grade_id)) {
-            if (count($request->stpm_subject) > 0 && count($request->stpm_grade_id)) {
-                for ($i = 0; $i < count($request->stpm_subject); $i++) {
-                    $result[] = [
-                        'id' => $request->exist_stpm[$i],
-                        'applicant_id' => $id,
-                        'type' => $request->stpm_type,
-                        'subject' => $request->stpm_subject[$i],
-                        'grade_id' => $request->stpm_grade_id[$i],
-                    ];
+            if (isset($request->stpm_subject) && isset($request->stpm_grade_id)) {
+                if (count($request->stpm_subject) > 0 && count($request->stpm_grade_id)) {
+                    for ($i = 0; $i < count($request->stpm_subject); $i++) {
+                        $result[] = [
+                            'id' => $request->exist_stpm[$i],
+                            'applicant_id' => $id,
+                            'type' => $request->stpm_type,
+                            'subject' => $request->stpm_subject[$i],
+                            'grade_id' => $request->stpm_grade_id[$i],
+                        ];
+                    }
                 }
             }
-        }
 
-        if (isset($request->uec_subject) && isset($request->uec_grade_id)) {
-            if (count($request->uec_subject) > 0 && count($request->uec_grade_id)) {
-                for ($i = 0; $i < count($request->uec_subject); $i++) {
-                    $result[] = [
-                        'id' => $request->exist_uec[$i],
-                        'applicant_id' => $id,
-                        'type' => $request->uec_type,
-                        'subject' => $request->uec_subject[$i],
-                        'grade_id' => $request->uec_grade_id[$i],
-                    ];
+            if (isset($request->uec_subject) && isset($request->uec_grade_id)) {
+                if (count($request->uec_subject) > 0 && count($request->uec_grade_id)) {
+                    for ($i = 0; $i < count($request->uec_subject); $i++) {
+                        $result[] = [
+                            'id' => $request->exist_uec[$i],
+                            'applicant_id' => $id,
+                            'type' => $request->uec_type,
+                            'subject' => $request->uec_subject[$i],
+                            'grade_id' => $request->uec_grade_id[$i],
+                        ];
+                    }
                 }
             }
-        }
 
-        if (isset($request->alevel_subject) && isset($request->alevel_grade_id)) {
-            if (count($request->alevel_subject) > 0 && count($request->alevel_grade_id)) {
-                for ($i = 0; $i < count($request->alevel_subject); $i++) {
-                    $result[] = [
-                        'id' => $request->exist_alevel[$i],
-                        'applicant_id' => $id,
-                        'type' => $request->alevel_type,
-                        'subject' => $request->alevel_subject[$i],
-                        'grade_id' => $request->alevel_grade_id[$i],
-                    ];
+            if (isset($request->alevel_subject) && isset($request->alevel_grade_id)) {
+                if (count($request->alevel_subject) > 0 && count($request->alevel_grade_id)) {
+                    for ($i = 0; $i < count($request->alevel_subject); $i++) {
+                        $result[] = [
+                            'id' => $request->exist_alevel[$i],
+                            'applicant_id' => $id,
+                            'type' => $request->alevel_type,
+                            'subject' => $request->alevel_subject[$i],
+                            'grade_id' => $request->alevel_grade_id[$i],
+                        ];
+                    }
                 }
             }
-        }
 
-        if (isset($request->olevel_subject) && isset($request->olevel_grade_id)) {
-            if (count($request->olevel_subject) > 0 && count($request->olevel_grade_id)) {
-                for ($i = 0; $i < count($request->olevel_subject); $i++) {
-                    $result[] = [
-                        'id' => $request->exist_olevel[$i],
-                        'applicant_id' => $id,
-                        'type' => $request->olevel_type,
-                        'subject' => $request->olevel_subject[$i],
-                        'grade_id' => $request->olevel_grade_id[$i],
-                    ];
+            if (isset($request->olevel_subject) && isset($request->olevel_grade_id)) {
+                if (count($request->olevel_subject) > 0 && count($request->olevel_grade_id)) {
+                    for ($i = 0; $i < count($request->olevel_subject); $i++) {
+                        $result[] = [
+                            'id' => $request->exist_olevel[$i],
+                            'applicant_id' => $id,
+                            'type' => $request->olevel_type,
+                            'subject' => $request->olevel_subject[$i],
+                            'grade_id' => $request->olevel_grade_id[$i],
+                        ];
+                    }
                 }
             }
-        }
-        if (count($result) > 0) {
-            foreach ($result as $row) {
-                if( isset($row['id']) && $row['id'] )
-                {
-                    $appid = $row['id'];
-                    ApplicantResult::where('id',$row['id'])->update($row);
+            if (count($result) > 0) {
+                foreach ($result as $row) {
+                    if( isset($row['id']) && $row['id'] )
+                    {
+                        $appid = $row['id'];
+                        ApplicantResult::where('id',$row['id'])->update($row);
+                    }
+                    else
+                    {
+                        $app = ApplicantResult::create($row);
+                        $appid = $app->id;
+                    }
+                    Applicant::where('id',$row['applicant_id'])->update(['applicant_status' => '0']);
                 }
-                else
-                {
-                    $app = ApplicantResult::create($row);
-                    $appid = $app->id;
-                }
-                Applicant::where('id',$row['applicant_id'])->update(['applicant_status' => '0']);
             }
-        }
 
-        if (isset($academic)) {
-            foreach ($academic as $arow) {
-                if( isset($arow['id']) && $arow['id'] )
-                {
-                    ApplicantAcademic::where('id',$arow['id'])->update($arow);
+            if (isset($academic)) {
+                foreach ($academic as $arow) {
+                    if( isset($arow['id']) && $arow['id'] )
+                    {
+                        ApplicantAcademic::where('id',$arow['id'])->update($arow);
+                    }
+                    else
+                    {
+                        ApplicantAcademic::create($arow);
+                    }
+                    Applicant::where('id',$arow['applicant_id'])->update(['applicant_status' => '0']);
                 }
-                else
-                {
-                    ApplicantAcademic::create($arow);
-                }
-                Applicant::where('id',$arow['applicant_id'])->update(['applicant_status' => '0']);
             }
-        }
 
-        if($request->hasFile('file'))
-        {
-            foreach($request->file as $key => $value)
+            if($request->hasFile('file'))
             {
-                $this->uploadFile($request->file[$key],$request->filetype[$key],$id);
+                foreach($request->file as $key => $value)
+                {
+                    $this->uploadFile($request->file[$key],$request->filetype[$key],$id);
+                }
             }
+
+            if($type){
+                return 1;
+            }
+
+            Applicant::completeApplication($id);
         }
-
-        if($type){
-            return 1;
-        }
-
-        Applicant::completeApplication($id);
-
         return redirect()->route('printReg', ['id' => $id]);
     }
 

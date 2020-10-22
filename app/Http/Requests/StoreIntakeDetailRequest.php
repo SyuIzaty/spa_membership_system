@@ -34,7 +34,6 @@ class StoreIntakeDetailRequest extends FormRequest
             'intake_time' => 'required',
             'intake_venue' => 'required',
             'intake_type' =>'required',
-            'intake_quota' => 'required',
         ];
     }
 }

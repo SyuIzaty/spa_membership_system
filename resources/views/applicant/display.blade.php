@@ -235,6 +235,9 @@
                                         <div class="card">
                                             <div class="card-header">Minimum Qualification</div>
                                             <div class="card-body">
+                                                @if(($applicant->applicant_programme == ''))
+                                                    <p>No Information Found</p>
+                                                @endif
                                                 @if(($applicant->applicant_programme == 'IAT12') || ( $applicant->applicant_programme_2 == 'IAT12') || ($applicant->applicant_programme_3 == 'IAT12'))
                                                     <p>American Degree Transfer Programme</p>
                                                     <ul>
@@ -465,6 +468,9 @@
                                         <div class="card">
                                             <div class="card-header">Applicant Academic</div>
                                             <div class="card-body">
+                                            @if($applicant->applicantresult->count() == 0)
+                                            <p>No Information Found</p>
+                                            @endif
                                             @if(count($spm)!=0)
                                             <h5>SPM</h5>
                                             @if(isset($spm->first()->file->web_path))
@@ -951,6 +957,8 @@
                                                         <button class="btn btn-primary">Update</button>
                                                         @endcan
                                                         {!! Form::close() !!}
+                                                        @else
+                                                        <p>No Information Found</p>
                                                         @endif
                                                     </div>
                                                 </div>
@@ -987,6 +995,8 @@
                                                         <button class="btn btn-primary">Update</button>
                                                         @endcan
                                                         {!! Form::close() !!}
+                                                        @else
+                                                        <p>No Information Found</p>
                                                         @endif
                                                     </div>
                                                 </div>

@@ -5,7 +5,11 @@
     <div class="col-md-8">
         <div class="card">
             <div class="card-header">
-                <h5>Successfull Application</h5>
+                <div class="d-flex justify-content-center">
+                    <div class="p-2">
+                        <img src="{{ asset('img/intec_logo.png') }}" class="responsive"/>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -35,11 +39,19 @@
                         </div>
                         <div class="form-group col-md-4">
                             {{ Form::label('title','Religion') }}
+                            @if(isset($applicant_detail->religion))
                             {{ Form::text('', $applicant_detail->religion->religion_name, ['class' => 'form-control', 'readonly' => 'true']) }}
+                            @else
+                            {{ Form::text('', $applicant_detail->applicant_religion, ['class' => 'form-control', 'readonly' => 'true']) }}
+                            @endif
                         </div>
                         <div class="col-md-4 form-group">
                             {{ Form::label('title', 'Race') }}
+                            @if(isset($applicant_detail->race))
                             {{ Form::text('', $applicant_detail->race->race_name, ['class' => 'form-control', 'readonly' => 'true']) }}
+                            @else
+                            {{ Form::text('', $applicant_detail->applicant_race, ['class' => 'form-control', 'readonly' => 'true']) }}
+                            @endif
                         </div>
                         <div class="form-group col-md-6">
                             {{ Form::Label('title', 'Gender') }}
@@ -76,14 +88,16 @@
                         <div class="col-md-12">
                             <h4>Preffered Programme</h4>
                         </div>
-                        <div class="col-md-6 form-group">
-                            {{ Form::label('title', '1st Preferred Programme (Required)') }}
-                            {{ Form::text('', $applicant_detail->programme->programme_name, ['class' => 'form-control', 'readonly' => 'true']) }}
-                        </div>
-                        <div class="col-md-6 form-group">
-                            {{ Form::label('title', '1st Preferred Major (Required)') }}
-                            {{ Form::text('', $applicant_detail->majorOne->major_name, ['class' => 'form-control', 'readonly' => 'true']) }}
-                        </div>
+                        @if(isset($applicant_detail->applicant_programme))
+                            <div class="col-md-6 form-group">
+                                {{ Form::label('title', '2nd Preffered Programme') }}
+                                {{ Form::text('', $applicant_detail->programme->programme_name, ['class' => 'form-control', 'readonly' => 'true']) }}
+                            </div>
+                            <div class="col-md-6 form-group">
+                                {{ Form::label('title', '2nd Preferred Major') }}
+                                {{ Form::text('', $applicant_detail->majorOne->major_name, ['class' => 'form-control', 'readonly' => 'true']) }}
+                            </div>
+                        @endif
                         @if(isset($applicant_detail->applicant_programme_2))
                             <div class="col-md-6 form-group">
                                 {{ Form::label('title', '2nd Preffered Programme') }}

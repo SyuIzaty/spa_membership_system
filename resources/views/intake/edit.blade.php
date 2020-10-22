@@ -222,8 +222,7 @@
                             </div>
                             <div class="form-group">
                                 {{Form::label('title', 'Sufficient Quota')}}
-                                <select class="form-control" name="intake_quota">
-                                    <option disabled selected>Please select</option>
+                                <select class="form-control" name="batch_quota" id="batch_quota">
                                     <option value="1">Yes</option>
                                     <option value="0">No</option>
                                 </select>
@@ -305,6 +304,7 @@
                 var intake_type_code = row.children(".intake_type_code").text();
                 var batch_code = row.children(".batch_code").text();
                 var status = row.children(".status").text();
+                var intake_quota = row.children(".intake_quota").text();
                 $("#program_id").val(id);
                 $("#programme_code").val(programme_code);
                 $("#programme_desc").val(programme_desc);
@@ -314,6 +314,7 @@
                 $("#intake_type_code").val(intake_type_code);
                 $("#batch_code").val(batch_code);
                 $("#status").val(status);
+                $("#intake_quota").val(intake_quota);
 
                 $.ajax({
                     type: 'GET',

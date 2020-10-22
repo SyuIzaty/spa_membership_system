@@ -8,22 +8,26 @@
                 <div class="card-header">
                     <div class="d-flex justify-content-center">
                         <div class="p-2">
-                            <img src="{{ asset('img/intec_logo.png') }}" class="ml-5"/>
+                            <img src="{{ asset('img/intec_logo.png') }}" class="responsive"/>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
                     @isset($intake)
                     <div class="d-flex justify-content-center">
-                        <div class="p-2"><h3>NEW APPLICATION</h3></div>
+                        <div class="p-2"><h3>NEW APPLICATION</h3><p>If you wish to apply for any INTEC programme, click on the button below.</p></div>
                     </div>
                     <div class="d-flex justify-content-center">
-                        <div class="p-2"><a href="{{ route('registration.index') }}" class="btn btn-primary">NEW APPLICATION</a></div>
+                        <div class="p-2"><a href="{{ route('registration.index') }}" class="btn btn-success"><i class="fal fa-pencil-alt"></i> NEW APPLICATION</a></div>
                     </div>
                     @endisset
-                    <hr class="mt-2 mb-3">
+                    <hr class="mt-2 mb-3" style="border: 1px solid #ececec">
                     <div class="d-flex justify-content-center">
-                        <div class="p-2"><h3 style="text-align: center">CONTINUE WITH EXISTING APPLICATION <br> OR CHECK APPLICATION</h3></div>
+                        <div class="p-2">
+                            <h3>CONTINUE WITH EXISTING APPLICATION <br> OR CHECK APPLICATION</h3>
+                            <br>
+                            <p>If you have made application for any INTEC programme before and wish <br>to continue with your application or you wish to check your status for any <br>application , kindly login below.</p>
+                        </div>
                     </div>
                     {!! Form::open(['action' => 'RegistrationController@search', 'method' => 'GET']) !!}
                     <div class="d-flex justify-content-center">
@@ -34,7 +38,7 @@
                     </div>
                     <div class="d-flex justify-content-center">
                         <div class="p-2">
-                            <button type="submit" class="btn btn-primary mt-4">CONTINUE APPLICATION / CHECK APPLICATION</button>
+                            <button type="submit" class="btn btn-primary mt-4"><i class="fal fa-search"></i> CONTINUE APPLICATION / CHECK APPLICATION</button>
                         </div>
                     </div>
                     {!! Form::close() !!}
