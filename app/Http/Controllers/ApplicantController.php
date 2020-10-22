@@ -371,10 +371,10 @@ class ApplicantController extends Controller
                 return $applicants->applicantIntake->intake_code;
             })
             ->addColumn('action', function ($applicants) {
-               return '<div class="btn-block pull-right">
-               <a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary pull-right"> <i class="fal fa-user"></i></a>
-               <a href="'.action('IntakeController@letter', ['applicant_id' => $applicants->id]).'" class="btn btn-sm btn-info pull-right"><i class="fal fa-envelope"></i></a>
-               <a href="'.action('IntakeController@sendEmail', ['applicant_id' => $applicants->id, 'intake_id' => $applicants->intake_id]).'" class="btn btn-sm btn-primary pull-right"><i class="fal fa-file-alt"></i></a>
+               return '<div class="btn-block float-right">
+               <a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"> <i class="fal fa-user"></i></a>
+               <a href="'.action('IntakeController@letter', ['applicant_id' => $applicants->id]).'" class="btn btn-sm btn-info "><i class="fal fa-file-alt"></i></a>
+               <a href="'.action('IntakeController@sendEmail', ['applicant_id' => $applicants->id, 'intake_id' => $applicants->intake_id]).'" class="btn btn-sm btn-primary "><i class="fal fa-envelope"></i></a>
                </div>';
             })
             ->rawColumns(['prog_name','prog_name_2','prog_name_3','action'])

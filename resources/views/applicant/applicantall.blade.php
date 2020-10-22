@@ -68,15 +68,15 @@
                             </form>
 
                             <table class="table table-bordered" id="applicantTable">
-                                <thead class="bg-highlight">
-                                    <th>Id</th>
-                                    <th>Name</th>
+                                <thead class="bg-primary-50 text-center">
+                                    <th>ID</th>
+                                    <th>NAME</th>
                                     <th>IC</th>
-                                    <th>Email</th>
-                                    <th>Intake Code</th>
-                                    <th>Program Code</th>
-                                    <th>Batch Code</th>
-                                    <th>Status</th>
+                                    <th>EMAIL</th>
+                                    <th>INTAKE CODE</th>
+                                    <th>PROGRAMME CODE</th>
+                                    <th>BATCH CODE</th>
+                                    <th>STATUS</th>
                                 </thead>
                                 @if($selectedintake || $selectedprogramme || $selectedbatch || $selectedstatus)
                                 <tbody>

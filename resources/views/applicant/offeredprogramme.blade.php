@@ -22,7 +22,7 @@
                         <div class="panel-content">
                             <span id="intake_fail"></span>
                             {!! Form::open(['action' => ['ApplicantController@sendupdateApplicant'], 'method' => 'POST'])!!}
-                            <button type="submit" class="btn btn-primary pull-right"><i class="fal fa-user"></i> Send Email & Update Status</button>
+                            {{-- <button type="submit" class="btn btn-primary pull-right mb-3 float-right"><i class="fal fa-envelope"></i> Send Email & Update Status</button> --}}
                             @if(session()->has('message'))
                                 <div class="alert alert-success alert-block">
                                     <button type="button" class="close" data-dismiss="alert">x</button>
@@ -31,7 +31,7 @@
                             @endif
                             <table class="table table-bordered" id="rejected">
                                 <thead>
-                                    <tr>
+                                    <tr class="bg-primary-50 text-center">
                                         <th>NO</th>
                                         <th>PROGRAMME CODE</th>
                                         <th>BATCH CODE</th>
@@ -52,12 +52,17 @@
                                             <td>
                                                 @if($intakes['intake_quota'] == '1')
                                                 <input type="checkbox" name="check[]" value="{{ $intakes->batch_code }}">
+                                                @else
+                                                <div class="badge border border-danger text-danger">Insufficient Quota</div>
                                                 @endif
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
+                            <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">
+                                <button type="submit" class="btn btn-success float-right ml-auto"><i class="fal fa-envelope"></i> Send Email & Update Status</button>
+                            </div>
                             {!! Form::close() !!}
                         </div>
                     </div>

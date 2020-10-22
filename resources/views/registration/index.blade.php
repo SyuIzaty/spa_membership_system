@@ -109,7 +109,7 @@
                         </select>
                     </div>
                 </div>
-                <button class="btn btn-primary">Submit</button>
+                <button class="btn btn-primary float-right"><i class="fal fa-check"></i> Submit</button>
                 {!! Form::close() !!}
             </div>
         </div>

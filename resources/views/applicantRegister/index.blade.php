@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
-            <div class="card">
+            <div class="card d-flex align-items-stretch">
                 <div class="card-header">
                     <div class="d-flex justify-content-center">
                         <div class="p-2">

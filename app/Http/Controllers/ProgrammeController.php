@@ -67,14 +67,14 @@ class ProgrammeController extends Controller
     public function validateRequestStore()
     {
         return request()->validate([
-            'id'                   => 'required|min:1|max:255|unique:programmes,id',                        
-            'programme_code'       => 'required|min:1|max:255|unique:programmes,programme_code',  
-            'programme_name'       => 'required|min:1|max:255',    
+            'id'                   => 'required|min:1|max:255|unique:programmes,id',
+            'programme_code'       => 'required|min:1|max:255|unique:programmes,programme_code',
+            'programme_name'       => 'required|min:1|max:255',
             'scroll_name'          => 'required|min:1|max:255',
-            'programme_name_malay' => 'required|min:1|max:255',  
-            'scroll_name_malay'    => 'required|min:1|max:255',  
-            'programme_status'     => 'required', 
-            'programme_duration'   => 'required',  
+            'programme_name_malay' => 'required|min:1|max:255',
+            'scroll_name_malay'    => 'required|min:1|max:255',
+            'programme_status'     => 'required',
+            'programme_duration'   => 'required',
         ]);
     }
 
@@ -117,14 +117,14 @@ class ProgrammeController extends Controller
     public function validateRequestUpdate(Programme $programme)
     {
         return request()->validate([
-            'id'                   => 'required|min:1|max:255|unique:programmes,id,'. $programme->id,                        
-            'programme_code'       => 'required|min:1|max:255|unique:programmes,programme_code,'. $programme->programme_code,   
-            'programme_name'       => 'required|min:1|max:255',    
+            'id'                   => 'required|min:1|max:255|unique:programmes,id,'. $programme->id,
+            'programme_code'       => 'required|min:1|max:255|unique:programmes,programme_code,'. $programme->programme_code,
+            'programme_name'       => 'required|min:1|max:255',
             'scroll_name'          => 'required|min:1|max:255',
-            'programme_name_malay' => 'required|min:1|max:255',  
-            'scroll_name_malay'    => 'required|min:1|max:255',  
-            'programme_status'     => 'required', 
-            'programme_duration'   => 'required', 
+            'programme_name_malay' => 'required|min:1|max:255',
+            'scroll_name_malay'    => 'required|min:1|max:255',
+            'programme_status'     => 'required',
+            'programme_duration'   => 'required',
         ]);
     }
 

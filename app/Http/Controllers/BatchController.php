@@ -40,6 +40,8 @@ class BatchController extends Controller
                 return '<a href="/batch/'.$batch->id.'/edit" class="btn btn-sm btn-primary"> Edit</a>
                 <button class="btn btn-sm btn-danger btn-delete delete" data-remote="/batch/' . $batch->id . '"> Delete</button>'
                 ;
+            }else{
+                return '<div class="badge border border-danger text-danger">Batch Used</div>';
             }
         })
 

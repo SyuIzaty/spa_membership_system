@@ -22,17 +22,16 @@
                 </div>
                 <div class="panel-container show">
                     <div class="panel-content">
-                        <a class="btn btn-primary" href="{{ route('intake.create') }}"> Create Intake Info</a>
                         <table id="intake" class="table table-bordered table-hover table-striped w-100">
                             <thead>
-                                <tr class="bg-highlight">
-                                    <th>Intake Code</th>
-                                    <th>Intake Description</th>
-                                    <th>Application Start Date</th>
-                                    <th>Application End Date</th>
-                                    <th>Check Status Start Date</th>
-                                    <th>Check Status End Date</th>
-                                    <th>Action</th>
+                                <tr class="bg-primary-50 text-center">
+                                    <th>INTAKE CODE</th>
+                                    <th>INTAKE DESCRIPTION</th>
+                                    <th>APPLICANTION START DATE</th>
+                                    <th>APPLICANTION END DATE</th>
+                                    <th>CHECK STATUS START DATE</th>
+                                    <th>CHECK STATUS END DATE</th>
+                                    <th>ACTION</th>
                                 </tr>
                                 <tr>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search Intake Code"></td>
@@ -52,7 +51,7 @@
                     </div>
 
                     <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">
-
+                        <a class="btn btn-primary float-right ml-auto" href="{{ route('intake.create') }}"> Create Intake</a>
 
                     </div>
 

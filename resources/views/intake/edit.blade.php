@@ -67,36 +67,34 @@
                             </div>
                             <div class="form-group">
                                 <table class="table table-bordered table-hover w-100">
-                                    <tr class="bg-highlight">
-                                        <th>Programme Code</th>
-                                        <th>Programme Name</th>
-                                        <th>Intake Programme Description</th>
-                                        <th>Intake Type</th>
-                                        <th>Batch Code</th>
-                                        <th>Intake Date</th>
-                                        <th>Intake Time</th>
-                                        <th>Intake Venue</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
+                                    <tr class="bg-primary-100 text-center">
+                                        <th>PROGRAMME CODE</th>
+                                        <th>INTAKE TYPE</th>
+                                        <th>BATCH</th>
+                                        <th>DATE</th>
+                                        <th>TIME</th>
+                                        <th>VENUR</th>
+                                        <th>STATUS</th>
+                                        <th>SUFFICIENT QUOTA</th>
+                                        <th>ACTION</th>
                                     </tr>
                                     @foreach($intake_detail as $intake_del)
                                     <tr class="data-row">
                                         <td class="programme_code">{{$intake_del->programme->programme_code}}</td>
-                                        <td class="programme_name">{{$intake_del->programme->programme_name}}</td>
-                                        <td class="programme_desc">{{ $intake_del->intake_programme_description }}</td>
                                         <td class="intake_type_code">{{$intake_del->intake_type}}</td>
                                         <td class="batch_code">{{$intake_del->batch_code}}</td>
                                         <td class="intake_date">{{$intake_del->intake_date}}</td>
                                         <td class="intake_time">{{$intake_del->intake_time}}</td>
                                         <td class="intake_venue">{{$intake_del->intake_venue}}</td>
-                                        <td >
+                                        <td>
                                             @if ($intake_del->status == '1') Active @endif
                                             @if ($intake_del->status == '0') Inactive @endif
                                         </td>
+                                        <td class="intake_quota">{{$intake_del->intake_quota ? "Yes" : "No"}}</td>
                                         <td>
-                                            <button class="btn btn-primary" data-toggle="modal" data-id="{{$intake_del->id}}" id="edit">Edit</button>
+                                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-id="{{$intake_del->id}}" id="edit">Edit</button>
                                             @if (in_array($intake_del->intake_programme, $offer_intake))
-                                                <button class="btn btn-danger deleteProgram" data-id="{{$intake_del->id}}" data-action="{{route('deleteProgramInfo', $intake_del->id)}}">Delete</button>
+                                                <button class="btn btn-danger btn-sm deleteProgram" data-id="{{$intake_del->id}}" data-action="{{route('deleteProgramInfo', $intake_del->id)}}">Delete</button>
                                             @endif
                                         </td>
                                     </tr>
@@ -222,7 +220,7 @@
                             </div>
                             <div class="form-group">
                                 {{Form::label('title', 'Sufficient Quota')}}
-                                <select class="form-control" name="batch_quota" id="batch_quota">
+                                <select name="intake_quota" id="intake_quota" class="form-control">
                                     <option value="1">Yes</option>
                                     <option value="0">No</option>
                                 </select>
@@ -304,7 +302,7 @@
                 var intake_type_code = row.children(".intake_type_code").text();
                 var batch_code = row.children(".batch_code").text();
                 var status = row.children(".status").text();
-                var intake_quota = row.children(".intake_quota").text();
+                var intake_quota = row.children(".intake_quota").text() == "Yes" ? "1" : "0";
                 $("#program_id").val(id);
                 $("#programme_code").val(programme_code);
                 $("#programme_desc").val(programme_desc);
@@ -314,7 +312,7 @@
                 $("#intake_type_code").val(intake_type_code);
                 $("#batch_code").val(batch_code);
                 $("#status").val(status);
-                $("#intake_quota").val(intake_quota);
+                $('#intake_quota').val(intake_quota).change();
 
                 $.ajax({
                     type: 'GET',

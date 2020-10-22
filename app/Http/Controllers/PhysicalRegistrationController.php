@@ -31,6 +31,8 @@ class PhysicalRegistrationController extends Controller
            ->addColumn('action', function ($applicant) {
                if($applicant['applicant_status'] == '5A'){
                     return '<button type="submit" class="btn btn-primary pull-right btn-sm" name="check" value="'.$applicant->id.'">Register</button>';
+               }else{
+                   return '<div class="badge border border-success text-success">Registered</div>';
                }
            })
            ->rawColumns(['action'])

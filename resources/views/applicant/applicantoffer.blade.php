@@ -26,10 +26,14 @@
                                     <strong>{{ session()->get('message') }}</strong>
                                 </div>
                             @endif
-                            <span id="intake"></span>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="intake" class="col-md-12 float-left mb-3"></div>
+                                </div>
+                            </div>
                             <table class="table table-bordered" id="offer">
                                 <thead>
-                                    <tr>
+                                    <tr class="bg-primary-50 text-center">
                                         <th>NO</th>
                                         <th>STUDENT ID</th>
                                         <th>APPLICANT</th>

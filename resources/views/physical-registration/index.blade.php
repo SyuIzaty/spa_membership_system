@@ -30,7 +30,7 @@
                             @endif
                             <table class="table table-bordered" id="newstudent">
                                 <thead>
-                                    <tr>
+                                    <tr class="bg-primary-50 text-center">
                                         <th>NO</th>
                                         <th>STUDENT ID</th>
                                         <th>APPLICANT NAME</th>

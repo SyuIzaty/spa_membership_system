@@ -23,13 +23,19 @@
                             @can('check requirement')
                             <form action="{{ route('applicant-check') }}" method="post" name="form">
                                 @csrf
-                                    <button type="button" class="btn btn-info float-right" onclick="window.location='{{ route("check-requirements") }}'">Check All</button>
-                                    <button type="submit" class="btn btn-primary float-right mr-2">Check Multiple</button>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="intake_pass col-md-12 float-left mb-3" id="intake_all"></div>
+                                        </div>
+                                        <div class="col-md-6 mt-3">
+                                            {{-- <button type="button" class="btn btn-success float-right" onclick="window.location='{{ route("check-requirements") }}'">Check All</button>
+                                            <button type="submit" class="btn btn-primary float-right mr-2">Check Multiple</button> --}}
+                                        </div>
+                                    </div>
                                     @endcan
-                                    <div class="intake_pass" id="intake_all"></div>
                                     <table class="table table-bordered" id="applicant">
                                         <thead>
-                                            <tr>
+                                            <tr class="bg-primary-50 text-center">
                                                 <th></th>
                                                 <th>NO</th>
                                                 <th>APPLICANT</th>
@@ -51,9 +57,9 @@
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Applicant IC"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Intake"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Sponsor"></td>
-                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
-                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
-                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme"></td>
+                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme"></td>
                                                 {{-- <td class="hasinput"><input type="text" class="form-control" placeholder="Search Bahasa Melayu"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search English"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Mathematics"></td> --}}
@@ -64,41 +70,10 @@
 
                                         </tbody>
                                     </table>
-                            {{-- <div class="tab-pane" role="tabpanel" id="accepted_all">
-                                <table class="table table-bordered" id="accepted">
-                                    <thead>
-                                        <tr>
-                                            <th>NO</th>
-                                            <th>STUDENT ID</th>
-                                            <th>APPLICANT</th>
-                                            <th>INTAKE</th>
-                                            <th>PROG 1</th>
-                                            <th>PROG 2</th>
-                                            <th>PROG 3</th>
-                                            <th>BM</th>
-                                            <th>ENG</th>
-                                            <th>MATH</th>
-                                            <th>ACTION</th>
-                                        </tr>
-                                        <tr>
-                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
-                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Student ID"></td>
-                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Applicant Name"></td>
-                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Intake"></td>
-                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
-                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
-                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
-                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Bahasa Melayu"></td>
-                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search English"></td>
-                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Mathematics"></td>
-                                            <td></td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                    </tbody>
-                                </table>
-                            </div> --}}
+                                    <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">
+                                        <button type="button" class="btn btn-success ml-auto mr-2" onclick="window.location='{{ route("check-requirements") }}'">Check All</button>
+                                        <button type="submit" class="btn btn-primary float-right">Check Multiple</button>
+                                    </div>
                             </form>
                         </div>
                     </div>

@@ -474,7 +474,7 @@
                                             @if(count($spm)!=0)
                                             <h5>SPM</h5>
                                             @if(isset($spm->first()->file->web_path))
-                                                <a target="_blank" href="{{ url('qualificationfile')."/".$spm->first()->file->file_name }}/View"">Supporting Document</a>
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$spm->first()->file->file_name }}/Download"">Supporting Document</a>
                                             @else
                                                 <p>No Supporting Document</p>
                                             @endif
@@ -498,7 +498,7 @@
                                             @if(count($stpm)!=0)
                                             <h5>STPM</h5>
                                             @if(isset($stpm->first()->file->web_path))
-                                                <a target="_blank" href="{{ url('qualificationfile')."/".$stpm->first()->file->file_name }}/View"">Supporting Document</a>
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$stpm->first()->file->file_name }}/Download"">Supporting Document</a>
                                             @else
                                                 <p>No Supporting Document</p>
                                             @endif
@@ -520,7 +520,7 @@
                                             @if(count($stam)!=0)
                                             <h5>STAM</h5>
                                             @if(isset($stam->first()->file->web_path))
-                                                <a target="_blank" href="{{ url('qualificationfile')."/".$stam->first()->file->file_name }}/View"">Supporting Document</a>
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$stam->first()->file->file_name }}/Download"">Supporting Document</a>
                                             @else
                                                 <p>No Supporting Document</p>
                                             @endif
@@ -542,7 +542,7 @@
                                             @if(count($uec)!=0)
                                             <h5>UEC</h5>
                                             @if(isset($uec->first()->file->web_path))
-                                                <a target="_blank" href="{{ url('qualificationfile')."/".$uec->first()->file->file_name }}/View"">Supporting Document</a>
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$uec->first()->file->file_name }}/Download"">Supporting Document</a>
                                             @else
                                                 <p>No Supporting Document</p>
                                             @endif
@@ -564,7 +564,7 @@
                                             @if(count($alevel)!=0)
                                             <h5>A Level</h5>
                                             @if(isset($alevel->first()->file->web_path))
-                                                <a target="_blank" href="{{ url('qualificationfile')."/".$alevel->first()->file->file_name }}/View"">Supporting Document</a>
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$alevel->first()->file->file_name }}/Download"">Supporting Document</a>
                                             @else
                                                 <p>No Supporting Document</p>
                                             @endif
@@ -586,7 +586,7 @@
                                             @if(count($olevel)!=0)
                                             <h5>O Level</h5>
                                             @if(isset($olevel->first()->file->web_path))
-                                                <a target="_blank" href="{{ url('qualificationfile')."/".$olevel->first()->file->file_name }}/View"">Supporting Document</a>
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$olevel->first()->file->file_name }}/Download"">Supporting Document</a>
                                             @else
                                                 <p>No Supporting Document</p>
                                             @endif
@@ -608,7 +608,7 @@
                                             @if(isset($muet))
                                             <h5>MUET</h5>
                                             @if(isset($muet->first()->file->web_path))
-                                                <a target="_blank" href="{{ url('qualificationfile')."/".$muet->first()->file->file_name }}/View"">Supporting Document</a>
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$muet->first()->file->file_name }}/Download"">Supporting Document</a>
                                             @else
                                                 <p>No Supporting Document</p>
                                             @endif
@@ -622,7 +622,7 @@
                                             @if(isset($matriculation))
                                             <h5>Matriculation</h5>
                                             @if(isset($matriculation->first()->file->web_path))
-                                                <a target="_blank" href="{{ url('qualificationfile')."/".$matriculation->first()->file->file_name }}/View"">Supporting Document</a>
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$matriculation->first()->file->file_name }}/Download"">Supporting Document</a>
                                             @else
                                                 <p>No Supporting Document</p>
                                             @endif
@@ -642,7 +642,7 @@
                                             @if (isset($foundation))
                                             <h5>Foundation</h5>
                                             @if(isset($foundation->first()->file->web_path))
-                                                <a target="_blank" href="{{ url('qualificationfile')."/".$foundation->first()->file->file_name }}/View"">Supporting Document</a>
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$foundation->first()->file->file_name }}/Download"">Supporting Document</a>
                                             @else
                                                 <p>No Supporting Document</p>
                                             @endif
@@ -666,7 +666,7 @@
                                             @if(isset($diploma))
                                             <h5>Diploma</h5>
                                             @if(isset($diploma->first()->file->web_path))
-                                                <a target="_blank" href="{{ url('qualificationfile')."/".$diploma->first()->file->file_name }}/View"">Supporting Document</a>
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$diploma->first()->file->file_name }}/Download"">Supporting Document</a>
                                             @else
                                                 <p>No Supporting Document</p>
                                             @endif
@@ -690,7 +690,7 @@
                                             @if(isset($degree))
                                             <h5>Degree</h5>
                                             @if(isset($degree->first()->file->web_path))
-                                                <a target="_blank" href="{{ url('qualificationfile')."/".$degree->first()->file->file_name }}/View"">Supporting Document</a>
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$degree->first()->file->file_name }}/Download"">Supporting Document</a>
                                             @else
                                                 <p>No Supporting Document</p>
                                             @endif
@@ -714,7 +714,7 @@
                                             @if (isset($skm))
                                             <h5>Sijil Kemahiran Malaysia</h5>
                                             @if(isset($skm->first()->file->web_path))
-                                                <a target="_blank" href="{{ url('qualificationfile')."/".$skm->first()->file->file_name }}/View"">Supporting Document</a>
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$skm->first()->file->file_name }}/Download"">Supporting Document</a>
                                             @else
                                                 <p>No Supporting Document</p>
                                             @endif
@@ -728,7 +728,7 @@
                                             @if (isset($sace))
                                             <h5>South Australian Certificate of Education</h5>
                                             @if(isset($sace->first()->file->web_path))
-                                                <a target="_blank" href="{{ url('qualificationfile')."/".$sace->first()->file->file_name }}/View"">Supporting Document</a>
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$sace->first()->file->file_name }}/Download"">Supporting Document</a>
                                             @else
                                                 <p>No Supporting Document</p>
                                             @endif
@@ -742,7 +742,7 @@
                                             @if (isset($mqf))
                                             <h5>MQF</h5>
                                             @if(isset($mqf->first()->file->web_path))
-                                                <a target="_blank" href="{{ url('qualificationfile')."/".$mqf->first()->file->file_name }}/View"">Supporting Document</a>
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$mqf->first()->file->file_name }}/Download"">Supporting Document</a>
                                             @else
                                                 <p>No Supporting Document</p>
                                             @endif
@@ -756,7 +756,7 @@
                                             @if (isset($kkm))
                                             <h5>Kolej Komuniti Malaysia</h5>
                                             @if(isset($kkm->first()->file->web_path))
-                                                <a target="_blank" href="{{ url('qualificationfile')."/".$kkm->first()->file->file_name }}/View"">Supporting Document</a>
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$kkm->first()->file->file_name }}/Download"">Supporting Document</a>
                                             @else
                                                 <p>No Supporting Document</p>
                                             @endif
@@ -770,7 +770,7 @@
                                             @if (isset($cat))
                                             <h5>Certified Accounting Technician</h5>
                                             @if(isset($cat->first()->file->web_path))
-                                                <a target="_blank" href="{{ url('qualificationfile')."/".$cat->first()->file->file_name }}/View"">Supporting Document</a>
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$cat->first()->file->file_name }}/Download"">Supporting Document</a>
                                             @else
                                                 <p>No Supporting Document</p>
                                             @endif
@@ -784,7 +784,7 @@
                                             @if (isset($icaew))
                                             <h5>ICAEW</h5>
                                             @if(isset($icaew->first()->file->web_path))
-                                                <a target="_blank" href="{{ url('qualificationfile')."/".$icaew->first()->file->file_name }}/View"">Supporting Document</a>
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$icaew->first()->file->file_name }}/Download"">Supporting Document</a>
                                             @else
                                                 <p>No Supporting Document</p>
                                             @endif
@@ -897,7 +897,7 @@
                                                             @endif
                                                         </div>
                                                         @can('update applicant detail')
-                                                        <button class="btn btn-primary">Update</button>
+                                                        <button class="btn btn-primary btn-sm float-right"><i class="fal fa-arrow-alt-from-bottom"></i> Update</button>
                                                         {!! Form::close() !!}
                                                         @endcan
                                                     </div>
@@ -954,7 +954,7 @@
                                                             </div>
                                                         </div>
                                                         @can('update applicant detail')
-                                                        <button class="btn btn-primary">Update</button>
+                                                        <button class="btn btn-primary btn-sm float-right mt-4"><i class="fal fa-arrow-alt-from-bottom"></i> Update</button>
                                                         @endcan
                                                         {!! Form::close() !!}
                                                         @else
@@ -992,7 +992,7 @@
                                                             </div>
                                                         </div>
                                                         @can('update applicant detail')
-                                                        <button class="btn btn-primary">Update</button>
+                                                        <button class="btn btn-primary btn-sm float-right mt-4"><i class="fal fa-arrow-alt-from-bottom"></i> Update</button>
                                                         @endcan
                                                         {!! Form::close() !!}
                                                         @else
@@ -1031,4 +1031,11 @@
             </div>
         </div>
     </main>
+@endsection
+@section('script')
+<script>
+    $(document).ready(function() {
+        $('.country, .gender, .marital, .race, .religion, .relation, .qualification, .qua').select2();
+    });
+</script>
 @endsection

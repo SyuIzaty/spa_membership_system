@@ -22,15 +22,14 @@
                 </div>
                 <div class="panel-container show">
                     <div class="panel-content">
-                        <a class="btn btn-primary" href="{{ route('batch.create') }}"> Create Batch</a>
                         <table id="batch" class="table table-bordered table-hover table-striped w-100">
                             <thead>
-                                <tr class="bg-highlight">
-                                    <th>Batch Code</th>
-                                    <th>Batch Name</th>
-                                    <th>Batch Description</th>
-                                    <th>Programme</th>
-                                    <th>Status</th>
+                                <tr class="bg-primary-50 text-center">
+                                    <th>BATCH CODE</th>
+                                    <th>BATCH NAME</th>
+                                    <th>BATCH DESCRIPTION</th>
+                                    <th>PROGRAM</th>
+                                    <th>STATUS</th>
                                     <th></th>
                                 </tr>
                                 <tr>
@@ -50,7 +49,7 @@
                     </div>
 
                     <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">
-
+                        <a class="btn btn-success ml-auto float-right" href="{{ route('batch.create') }}"> Create Batch</a>
 
                     </div>
 

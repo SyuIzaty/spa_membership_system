@@ -28,7 +28,7 @@
                                 <div class="tab-pane active" id="details" role="tabpanel">
                                     <div class="card">
                                         <div class="card-header">Personal Profile</div>
-                                        <div class="card-body">
+                                        <div class="card-body m-3">
                                             <div class="row">
                                                 <div class="form-group col-md-6">
                                                     {{Form::label('title', 'Applicant Name')}}
@@ -165,10 +165,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <hr class="mt-2 mb-3">
                                     <div class="card">
                                         <div class="card-header">Guardian Contact Info</div>
-                                        <div class="card-body">
+                                        <div class="card-body m-3">
                                             <div class="row">
                                                 {{Form::hidden('applicant_id', $applicant->id)}}
                                                 <div class="form-group col-md-12">
@@ -247,10 +246,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <hr class="mt-2 mb-3">
                                     <div class="card">
                                         <div class="card-header">Emergency Contact Info</div>
-                                        <div class="card-body">
+                                        <div class="card-body m-3">
                                             <div class="row">
                                                 <label for="chkEmergency" class="form-group col-md-12">
                                                     <input type="checkbox" id="chkEmergency" name="chkEmergency" onclick="EnableEmergency()" />
@@ -308,14 +306,14 @@
                                             </div>
                                         </div>
                                         <div class="card-footer">
-                                            <a href="#qualification" class="btn btn-info" onclick="navigate('Next')">Next</a>
+                                            <a href="#qualification" class="btn btn-primary btn-sm float-right" onclick="navigate('Next')"><i class="fal fa-arrow-alt-from-left"></i> Next</a>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="qualification" role="tabpanel">
                                     <div class="card">
                                         <div class="card-header">Qualification</div>
-                                        <div class="card-body">
+                                        <div class="card-body m-3">
                                             <div class="col-md-12" style="color: red">** Note: Please keyin all your qualification</div>
                                             <div class="row qualification-row">
                                                 <div class="col-md-6 form-group">
@@ -326,7 +324,7 @@
                                                         <option value="{{ $qualifications->id }}">{{ $qualifications->qualification_code }}</option>
                                                         @endforeach
                                                     </select>
-                                                    <button type="button" class="btn btn-primary tambah-qualification">Add Qualification</button>
+                                                    <button type="button" class="btn btn-primary btn-sm mt-3 tambah-qualification"><i class="fal fa-plus"></i> Add Qualification</button>
                                                 </div>
                                             </div>
                                             <div class="row mt-2 mb-3">
@@ -337,8 +335,8 @@
                                             </div>
                                         </div>
                                         <div class="card-footer">
-                                            <a href="#details" class="btn btn-info" onclick="navigate('Previous')">Previous</a>
-                                            <button class="btn btn-primary" id="submit">Submit</button>
+                                            <a href="#details" class="btn btn-primary btn-sm mr-2" onclick="navigate('Previous')"><i class="fal fa-arrow-alt-from-right"></i> Previous</a>
+                                            <button class="btn btn-success btn-sm float-right" id="submit"><i class="fal fa-check"></i> Submit</button>
                                         </div>
                                     </div>
                                 </div>

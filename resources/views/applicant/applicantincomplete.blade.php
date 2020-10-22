@@ -20,10 +20,15 @@
                     </div>
                     <div class="panel-container show">
                         <div class="panel-content">
-                            <span id="intake_fail"></span>
+                            {{-- <span id="intake_fail"></span> --}}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="intake_fail" class="col-md-12 mb-3 float-left"></div>
+                                </div>
+                            </div>
                             <table class="table table-bordered" id="rejected">
                                 <thead>
-                                    <tr>
+                                    <tr class="bg-primary-50 text-center">
                                         <th>NO</th>
                                         <th>APPLICANT</th>
                                         <th>IC</th>
@@ -110,7 +115,7 @@
                 orderCellsTop: true,
                 "order": [[ 1, "asc" ]],
                 "initComplete": function(settings, json) {
-                    var column = this.api().column(2);
+                    var column = this.api().column(3);
                     var select = $('<select class="form-control"><option value=""></option></select>')
                     .appendTo( $('#intake_fail').empty().text('Intake: ') )
                     .on('change',function(){

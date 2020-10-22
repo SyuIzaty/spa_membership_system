@@ -102,7 +102,6 @@ class RegistrationController extends Controller
         }else{
             $applicant = Applicant::where('applicant_ic',$request->applicant_ic)->where('intake_id',$intake->id)->with('applicantIntake')->get();
         }
-
         if(is_null($check)){
             $check_applicant = 'NULL';
         }else{
@@ -145,6 +144,7 @@ class RegistrationController extends Controller
                 'applicant_major_2'=>$request->applicant_major_2,
                 'applicant_programme_3'=>$request->applicant_programme_3,
                 'applicant_major_3'=>$request->applicant_major_3,
+                'applicant_status'=>'00',
                 ]);
             return $this->edit($applicant_id->id);
 
@@ -343,7 +343,6 @@ class RegistrationController extends Controller
             'applicant_race' => $applicant_race,
             'applicant_religion' => $applicant_religion,
             'applicant_dob' => $request->applicant_dob,
-            'applicant_status' => '00',
             'applicant_qualification' => $request->highest_qualification,
         ]);
         if($request->hasFile('image') && $request->file('image')->isValid()){

@@ -31,10 +31,10 @@
                     </div>
                     <hr class="mt-2 mb-3" style="border: 1px solid #ececec">
                     @if($applicant != 'NULL')
+                        @foreach($applicant as $applicants)
                         <div class="d-flex justify-content-lg-center">
                             <h2>EDIT APPLICATION</h2>
                         </div>
-                        @foreach($applicant as $applicants)
                             @if($applicants->applicant_status == '00' || $applicants->applicant_status == '0')
                                 <div class="d-flex justify-content-lg-center">
                                     <div class="p-2"><p>If you wish to continue with your application, click on the button below</p></div>

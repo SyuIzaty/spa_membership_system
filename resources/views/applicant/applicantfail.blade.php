@@ -4,14 +4,14 @@
     <main id="js-page-content" role="main" class="page-content">
         <div class="subheader">
             <h1 class="subheader-title">
-                <i class='subheader-icon fal fa-table'></i> Applicant Not Qualified
+                <i class='subheader-icon fal fa-table'></i> Not Qualified
             </h1>
         </div>
         <div class="row">
             <div class="col-xl-12">
                 <div id="panel-1" class="panel">
                     <div class="panel-hdr">
-                        <h2>Applicant Not Qualified</h2>
+                        <h2>Not Qualified</h2>
                         <div class="panel-toolbar">
                             <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
                             <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
@@ -20,10 +20,14 @@
                     </div>
                     <div class="panel-container show">
                         <div class="panel-content">
-                            <span id="intake_fail"></span>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="intake_fail" class="mb-3 col-md-12 float-left"></div>
+                                </div>
+                            </div>
                             <table class="table table-bordered" id="rejected">
                                 <thead>
-                                    <tr>
+                                    <tr class="bg-primary-50 text-center">
                                         <th>NO</th>
                                         <th>APPLICANT</th>
                                         <th>IC</th>

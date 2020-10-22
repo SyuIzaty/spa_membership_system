@@ -85,10 +85,10 @@
                             {{ Form::label('title', 'Country') }}
                             {{ Form::text('', $applicant_detail->applicantContactInfo->country->country_name, ['class' => 'form-control', 'placeholder' => 'Country', 'readonly' => 'true']) }}
                         </div>
+                        @if(isset($applicant_detail->applicant_programme))
                         <div class="col-md-12">
                             <h4>Preffered Programme</h4>
                         </div>
-                        @if(isset($applicant_detail->applicant_programme))
                             <div class="col-md-6 form-group">
                                 {{ Form::label('title', '2nd Preffered Programme') }}
                                 {{ Form::text('', $applicant_detail->programme->programme_name, ['class' => 'form-control', 'readonly' => 'true']) }}
@@ -119,7 +119,9 @@
                             </div>
                         @endif
                     @endforeach
-                    <a class="btn btn-primary" href="{{ URL('/applicantRegister' )}}">Exit</a>
+                    <div class="col-md-12">
+                        <a class="btn btn-primary" href="{{ URL('/applicantRegister' )}}"><i class="fal fa-arrow-alt-from-left"></i> Exit</a>
+                    </div>
                 </div>
             </div>
         </div>

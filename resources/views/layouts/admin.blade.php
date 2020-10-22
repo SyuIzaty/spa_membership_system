@@ -223,7 +223,7 @@
                             </li>
                             <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
-                                    <i class="fal fa-map-marker-alt"></i>
+                                    <i class="fal fa-user"></i>
                                     <span class="nav-link-text" data-i18n="nav.application_intel">Physical Registration</span>
                                 </a>
                                 <ul>
@@ -361,7 +361,7 @@
                                 </ul>
                             </li>
                             @endcan
-                            {{-- @can('view parameter') --}}
+                            @can('view parameter')
                             <li class="nav-title">Parameter Setting</li>
                             <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
@@ -598,7 +598,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            {{-- @endcan --}}
+                            @endcan
 
                             @role('student')
                             <li class="nav-title">MAIN NAVIGATION [STUDENT]</li>
