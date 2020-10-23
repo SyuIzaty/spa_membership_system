@@ -27,6 +27,7 @@ use App\Files;
 use App\Batch;
 use App\Status;
 use App\ApplicantRecheck;
+use App\User;
 use DB;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Activitylog\Models\Activity;
@@ -155,7 +156,13 @@ class ApplicantController extends Controller
         foreach($applicant_status as $app_stat)
         {
             // $activity = Activity::where('properties->attributes->applicant_id', $app_stat['applicant_id'])->get();
-            $activity = Activity::where('subject_id',$app_stat['id'])->where('description','!=','created')->where('description','!=','updated')->get();
+            // $activity = Activity::where('subject_id',$app_stat['id'])->where('description','!=','created')->where('description','!=','updated')->get();
+            $activity = DB::table('activity_log')
+            ->leftjoin('auth.users', 'activity_log.causer_id', '=', 'auth.users.id')
+            ->select('auth.users.name', 'activity_log.description', 'activity_log.created_at')
+            ->where('activity_log.subject_id',$app_stat['id'])
+            ->where('description','!=','created')->where('description','!=','updated')
+            ->get();
         }
 
         $applicant_status = Status::where('status_code','>=','3')->get();
@@ -214,7 +221,9 @@ class ApplicantController extends Controller
 
     public function applicant_incomplete()
     {
-        return view('applicant.applicantincomplete');
+        $intake = Intakes::where('status','1')->first();
+        $intakes = json_encode($intake);
+        return view('applicant.applicantincomplete',compact('intakes'));
     }
 
     public function applicant_pass()
@@ -235,6 +244,11 @@ class ApplicantController extends Controller
     public function applicant_updatestat()
     {
         return view('applicant.applicantstatus');
+    }
+
+    public function applicant_published()
+    {
+        return view('applicant.applicantpublished');
     }
 
     public function data_allapplicant() // Datatable: display complete application
@@ -357,9 +371,53 @@ class ApplicantController extends Controller
            ->make(true);
     }
 
+    public function test()
+    {
+        $user = User::where('id','4')->first();
+        if($user->can('offer letter')){
+            dd('yes');
+        }else{
+            dd('no');
+        }
+
+
+    }
+
     public function data_offerapplicant() //Datatable: offer applicant
     {
         $applicant = Applicant::where('applicant_status','5A')->get();
+        $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','applicantstatus','applicantIntake','batch');
+        return datatables()::of($applicants)
+            ->addColumn('applicant_name',function($applicants)
+            {
+                return $applicants->applicant_name;
+            })
+            ->addColumn('intake_id',function($applicants)
+            {
+                return $applicants->applicantIntake->intake_code;
+            })
+            ->addColumn('action', function ($applicants) {
+                $user = User::where('id',Auth::user()->id)->first();
+
+                if($user->can('offer letter')){
+                    return '<div class="btn-block float-right">
+                    <a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"> <i class="fal fa-user"></i></a>
+                    <a href="'.action('IntakeController@letter', ['applicant_id' => $applicants->id]).'" class="btn btn-sm btn-info "><i class="fal fa-file-alt"></i></a>
+                    <a href="'.action('IntakeController@sendEmail', ['applicant_id' => $applicants->id, 'intake_id' => $applicants->intake_id]).'" class="btn btn-sm btn-primary "><i class="fal fa-envelope"></i></a>
+                    </div>';
+                }else{
+                    return '<div class="btn-block float-right">
+                    <a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"> <i class="fal fa-user"></i></a>
+                    </div>';
+                }
+            })
+            ->rawColumns(['prog_name','prog_name_2','prog_name_3','action'])
+            ->make(true);
+    }
+
+    public function data_publishedapplicant() //Datatable: offer letter published
+    {
+        $applicant = Applicant::where('applicant_status','5C')->get();
         $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','applicantstatus','applicantIntake','batch');
         return datatables()::of($applicants)
             ->addColumn('applicant_name',function($applicants)
@@ -1323,71 +1381,6 @@ class ApplicantController extends Controller
         }
     }
 
-    // public function pac580($applicantt) //The Malaysian Institute of Certified Public Accountant
-    // {
-    //     $status = [];
-    //     $bachelors = ApplicantAcademic::where('applicant_id',$applicantt['id'])->where('type','9')->where('applicant_cgpa','>=',2.50)->count();
-    //     if($bachelors == 1)
-    //     {
-    //         $programme_code = 'PAC580';
-    //         $this->accepted($applicantt, $programme_code);
-    //     }else{
-    //         $programme_code = 'PAC580';
-    //         $this->rejected($applicantt, $programme_code);
-    //     }
-    // }
-
-    // public function pac552($applicantt) //The Association of Certified Chartered Accountant ACCA from CAT
-    // {
-    //     $status = [];
-
-    //     $muet = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Muet()->where('applicant_cgpa','>=',2)->count();
-    //     $cat = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Cat()->where('applicant_cgpa','Pass')->count();
-    //     if($muet >= 1 && $cat >= 1)
-    //     {
-    //         $programme_code = 'PAC552';
-    //         $this->accepted($applicantt, $programme_code);
-    //     }else
-    //     {
-    //         $programme_code = 'PAC552';
-    //         $this->rejected($applicantt, $programme_code);
-    //     }
-    // }
-
-    // public function pac553($applicantt) //The Association of Certified Chartered Accountant ACCA from Degree Full Time
-    // {
-    //     $status = [];
-
-    //     $muet = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Muet()->where('applicant_cgpa','>=',2)->count();
-    //     $bachelors = ApplicantAcademic::where('applicant_id',$applicantt['id'])->where('type','9')->where('applicant_cgpa','>=',2.50)->count();
-    //     if($muet >= 1 && $bachelors >= 1)
-    //     {
-    //         $programme_code = 'PAC553';
-    //         $this->accepted($applicantt, $programme_code);
-    //     }else
-    //     {
-    //         $programme_code = 'PAC553';
-    //         $this->rejected($applicantt, $programme_code);
-    //     }
-    // }
-
-    // public function pac554($applicantt) //The Association of Certified Chartered Accountant ACCA from Degree Part Time
-    // {
-    //     $status = [];
-
-    //     $muet = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Muet()->where('applicant_cgpa','>=',2)->count();
-    //     $bachelors = ApplicantAcademic::where('applicant_id',$applicantt['id'])->where('type','9')->where('applicant_cgpa','>=',2.50)->count();
-    //     if($muet >= 1 && $bachelors >= 1)
-    //     {
-    //         $programme_code = 'PAC554';
-    //         $this->accepted($applicantt, $programme_code);
-    //     }else
-    //     {
-    //         $programme_code = 'PAC554';
-    //         $this->rejected($applicantt, $programme_code);
-    //     }
-    // }
-
     public function checkrequirements()
     {
         $applicants = Applicant::where('applicant_status', NULL)->orWhere('applicant_status','0')->orWhere('applicant_status','A1')->get()->toArray();
@@ -1431,23 +1424,6 @@ class ApplicantController extends Controller
             Applicant::requirementCheck($applicantt['id']);
         }
         return redirect()->back();
-    }
-
-    public function test()
-    {
-        // $test = Intakes::where('status','1')->with(['intakeDetails'=>function($query){
-        //     $query->where('status','1');
-        // }])->get();
-        // foreach($test->first()->intakeDetails as $tests){
-        //     dump($tests->intake_programme);
-        // }
-
-        $app = DB::select('SELECT * FROM auth.model_has_roles INNER JOIN auth.users ON
-                        auth.model_has_roles.model_id = auth.users.id WHERE auth.model_has_roles.model_id = "5"');
-        foreach($app as $p){
-            $test = $p->name;
-        }
-        dump ($test);
     }
 
     public function checkIndividual(Request $request)
@@ -1580,7 +1556,7 @@ class ApplicantController extends Controller
             // }
         });
 
-        Applicant::where('id',$applicants_id)->update(['email_sent'=>'1']);
+        Applicant::where('id',$applicants_id)->update(['email_sent'=>'1', 'applicant_status'=>'5C']);
 
         IntakeDetail::where('intake_code',$detail->intake_id)->where('batch_code',$detail['batch_code'])->update(['intake_status'=>'Offered']);
     }

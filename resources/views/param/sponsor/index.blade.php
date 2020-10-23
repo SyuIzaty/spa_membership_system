@@ -21,10 +21,9 @@
                     <div class="panel-container show">
                         <div class="panel-content">
                             <span id="intake_fail"></span>
-                            <a class="btn btn-primary" href="{{ route('sponsor.create') }}"> Create Sponsor Detail</a>
                             <table class="table table-bordered" id="sponsor">
                                 <thead>
-                                    <tr>
+                                    <tr class="bg-primary-50 text-center">
                                         <th>NO</th>
                                         <th>SPONSOR CODE</th>
                                         <th>SPONSOR NAME</th>
@@ -44,6 +43,9 @@
                                 <tbody>
                                 </tbody>
                             </table>
+                            <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">
+                                <a class="btn btn-primary btn-sm float-right ml-auto" href="{{ route('sponsor.create') }}"> Create Sponsor Detail</a>
+                            </div>
                         </div>
                     </div>
                 </div>

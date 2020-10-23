@@ -43,7 +43,7 @@
                                     <div class="p-2"><a href="/registration/{{ $applicants->id }}/edit" class="btn btn-primary">EDIT INTAKE {{ $applicants->applicantIntake->intake_code }}</a></div>
                                 </div>
                             @endif
-                            @if($applicants->applicant_status == '4A' || $applicants->applicant_status == '3G' || $applicants->applicant_status == '3R' || $applicants->applicant_status == '5A')
+                            @if($applicants->applicant_status == '4A' || $applicants->applicant_status == '3G' || $applicants->applicant_status == '3R' || $applicants->applicant_status == '5A' || $applicants->applicant_status == '5C')
                                 <div class="d-flex justify-content-lg-center">
                                     <div class="p-2">
                                         <div class="card">

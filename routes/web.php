@@ -54,6 +54,7 @@ Route::get('/incomplete','ApplicantController@applicant_incomplete');
 Route::get('/passapplicant','ApplicantController@applicant_pass');
 Route::get('/failapplicant','ApplicantController@applicant_fail');
 Route::get('/offerapplicant','ApplicantController@applicant_offer');
+Route::get('/publishedoffer','ApplicantController@applicant_published');
 Route::get('/applicantupdatestat', 'ApplicantController@applicant_updatestat');
 Route::get('checkrequirements', 'ApplicantController@checkrequirements')->name('check-requirements');
 Route::get('checkindividual', 'ApplicantController@checkindividual')->name('check-individual');
@@ -75,6 +76,7 @@ Route::post('/data_allapplicant', 'ApplicantController@data_allapplicant');
 Route::post('/data_rejectedapplicant', 'ApplicantController@data_rejectedapplicant');
 Route::post('/data_passapplicant', 'ApplicantController@data_passapplicant');
 Route::post('/data_offerapplicant', 'ApplicantController@data_offerapplicant');
+Route::post('/data_publishedapplicant', 'ApplicantController@data_publishedapplicant');
 Route::post('/data_statusapplicant', 'ApplicantController@data_statusapplicant');
 Route::post('/data_acceptedapplicant', 'ApplicantController@data_acceptedapplicant');
 Route::get('/export_applicant', 'ApplicantController@applicant_all');
@@ -126,8 +128,8 @@ Route::get('storageFile/{filename}/{type}','IntakeController@storageFile');
 Route::get('deleteStorage/{id}','IntakeController@deleteStorage');
 
 //BATCH
-Route::resource('/batch', 'BatchController');
-Route::post('/data-allbatch', 'BatchController@data_allbatch');
+Route::resource('/batch', 'BatchController')->middleware('can:check requirement');
+Route::post('/data-allbatch', 'BatchController@data_allbatch')->middleware('can:check requirement');
 
 //PARAM
 Route::resource('/intakeType', 'IntakeTypeController');

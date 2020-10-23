@@ -184,6 +184,18 @@
                                         </a>
                                     </li>
                                     <li>
+                                        <a href="/offeredprogramme" title="Batch" data-filter-tags="batch">
+                                            <i class="fal fa-file-excel"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Offered Programme</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/publishedoffer" title="Batch" data-filter-tags="batch">
+                                            <i class="fal fa-envelope"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Published Offer Letter</span>
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a href="/applicantupdatestat" title="Pending Applicant" data-filter-tags="active_student">
                                             <i class="fal fa-plus"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">Update Applicant Status</span>
@@ -193,12 +205,6 @@
                                         <a href="/intake" title="Intake Information" data-filter-tags="active_student">
                                             <i class="fal fa-list"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">Intake Information</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/offeredprogramme" title="Batch" data-filter-tags="batch">
-                                            <i class="fal fa-file-excel"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Offered Programme</span>
                                         </a>
                                     </li>
                                     <li>
@@ -361,8 +367,8 @@
                                 </ul>
                             </li>
                             @endcan
-                            @can('view parameter')
                             <li class="nav-title">Parameter Setting</li>
+                            @can('check requirement')
                             <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-portrait"></i>
@@ -379,6 +385,8 @@
                                     </li>
                                 </ul>
                             </li>
+                            @endcan
+                            @can('view parameter')
                             <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-portrait"></i>
