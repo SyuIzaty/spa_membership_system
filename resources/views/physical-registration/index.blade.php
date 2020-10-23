@@ -21,6 +21,7 @@
                     <div class="panel-container show">
                         <div class="panel-content">
                             <span id="intake_fail"></span>
+                            <form action="{{ route('new-student') }}" method="post" name="form">
                             @csrf
                             @if(session()->has('message'))
                                 <div class="alert alert-success">
@@ -53,6 +54,7 @@
                                 <tbody>
                                 </tbody>
                             </table>
+                            </form>
                         </div>
                     </div>
                 </div>

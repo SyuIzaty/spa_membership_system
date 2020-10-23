@@ -38,51 +38,73 @@
                                 {{ session()->get('message') }}
                             </div>
                         @endif
-                        <div class="card-body">
-                            {!! Form::open(['action' => 'SponsorController@store', 'method' => 'POST']) !!}
-                                <table class="table table-bordered">
-                                    <tr>
-                                        <td>Sponsor Code</td>
-                                        <td colspan="3">{{Form::text('sponsor_code', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Code', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Sponsor Name</td>
-                                        <td>{{Form::text('sponsor_name', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Name', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}</td>
-                                        <td>Sponsor Detail</td>
-                                        <td>{{Form::text('sponsor_detail', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Detail', 'onkeyup' => 'this.value = this.value.toUpperCase()' ])}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Department</td>
-                                        <td>{{Form::text('sponsor_dept', '', ['class' => 'form-control', 'placeholder' => 'Department', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}</td>
-                                        <td>Contact Person</td>
-                                        <td>{{Form::text('sponsor_person', '', ['class' => 'form-control', 'placeholder' => 'Contact Person', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Phone Number</td>
-                                        <td>{{Form::number('sponsor_number', '', ['class' => 'form-control', 'placeholder' => 'Phone Number'])}}</td>
-                                        <td>Email</td>
-                                        <td>{{Form::email('sponsor_email', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Email'])}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Address I</td>
-                                        <td>{{Form::text('sponsor_address_1', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Address 1', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Address II</td>
-                                        <td>{{Form::text('sponsor_address_2', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Address II', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}</td>
-                                        <td>Postcode</td>
-                                        <td>{{Form::number('sponsor_poscode', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Postcode', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>City</td>
-                                        <td>{{Form::text('sponsor_city', '', ['class' => 'form-control', 'placeholder' => 'Sponsor City', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}</td>
-                                        <td>State</td>
-                                        <td>{{Form::text('sponsor_state', '', ['class' => 'form-control', 'placeholder' => 'Sponsor State', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}</td>
-                                    </tr>
-                                </table>
-                                <button class="btn btn-primary float-right mb-3 btn-sm">Submit</button>
-                            {!! Form::close() !!}
-                        </div>
+                        <table class="table table-bordered">
+                            <div class="card-body">
+                                {!! Form::open(['action' => 'SponsorController@store', 'method' => 'POST']) !!}
+                                    <div class="row form-group">
+                                        <div class="col-md-6">
+                                            {{Form::label('title', 'Sponsor Code')}}
+                                            {{Form::text('sponsor_code', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Code', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
+                                        </div>
+                                        <div class="col-md-6">
+                                            {{Form::label('title', 'Sponsor Name')}}
+                                            {{Form::text('sponsor_name', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Name', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        {{Form::label('title', 'Sponsor Detail')}}
+                                        {{Form::text('sponsor_detail', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Detail', 'onkeyup' => 'this.value = this.value.toUpperCase()' ])}}
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-6">
+                                            {{Form::label('title', 'Sponsor Number')}}
+                                            {{Form::number('sponsor_number', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Number'])}}
+                                        </div>
+                                        <div class="col-md-6">
+                                            {{Form::label('title', 'Sponsor Email')}}
+                                            {{Form::email('sponsor_email', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Email'])}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        {{Form::label('title', 'Sponsor Address I')}}
+                                        {{Form::text('sponsor_address_1', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Address 1', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
+                                    </div>
+                                    <div class="form-group">
+                                        {{Form::label('title', 'Sponsor Address II')}}
+                                        {{Form::text('sponsor_address_2', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Address II', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-6">
+                                            {{Form::label('title', 'Sponsor Contact Person')}}
+                                            {{Form::text('sponsor_person', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Contact Person', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
+                                        </div>
+                                        <div class="col-md-6">
+                                            {{Form::label('title', 'Sponsor Dept')}}
+                                            {{Form::text('sponsor_dept', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Email', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        {{Form::label('title', 'Sponsor Addresee')}}
+                                        {{Form::text('sponsor_addresee', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Number'])}}
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-4">
+                                            {{Form::label('title', 'Sponsor Postcode')}}
+                                            {{Form::number('sponsor_poscode', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Postcode', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
+                                        </div>
+                                        <div class="col-md-4">
+                                            {{Form::label('title', 'Sponsor City')}}
+                                            {{Form::text('sponsor_city', '', ['class' => 'form-control', 'placeholder' => 'Sponsor City', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
+                                        </div>
+                                        <div class="col-md-4">
+                                            {{Form::label('title', 'Sponsor State')}}
+                                            {{Form::text('sponsor_state', '', ['class' => 'form-control', 'placeholder' => 'Sponsor State', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary">Submit</button>
+                                {!! Form::close() !!}
+                            </div>
+                        </table>
                     </div>
                 </div>
             </div>
