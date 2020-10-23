@@ -130,7 +130,11 @@ class LeadController extends Controller
         $lead = Lead::where('id', $id)->first(); 
         $lead_note = LeadNote::where('leads_id', $id)->get()->last(); 
         
-        $applicant = Applicant::where('applicant_ic', $lead->leads_ic)->first();
+        $applicant = ''; 
+
+        if(isset($lead->leads_ic) && !empty($lead->leads_ic))
+            $applicant = Applicant::where('applicant_ic', $lead->leads_ic)->first();
+
         $programme = Programme::all();
         $intakes = Intakes::all();
         $status = LeadStatus::all();
