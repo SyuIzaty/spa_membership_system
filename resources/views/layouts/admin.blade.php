@@ -162,25 +162,25 @@
                                     <li>
                                         <a href="/applicantresult" title="Pending Applicant" data-filter-tags="active_student">
                                             <i class="fal fa-user"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">New Applicants</span>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Pending Application</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="/passapplicant" title="Pending Applicant" data-filter-tags="active_student">
                                             <i class="fal fa-check"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Pass Applicants</span>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Passed Application</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="/failapplicant" title="Pending Applicant" data-filter-tags="active_student">
                                             <i class="fal fa-minus"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Not Qualified</span>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Unqualified Application</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="/offerapplicant" title="Pending Applicant" data-filter-tags="active_student">
                                             <i class="fal fa-envelope"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Offered Applicant</span>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Offered Application</span>
                                         </a>
                                     </li>
                                     <li>
@@ -198,7 +198,7 @@
                                     <li>
                                         <a href="/offeredprogramme" title="Batch" data-filter-tags="batch">
                                             <i class="fal fa-file-excel"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Offered Programme</span>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Publish Offer Letter</span>
                                         </a>
                                     </li>
                                     <li>
@@ -210,7 +210,7 @@
                                     <li>
                                         <a href="/export_applicant" title="Batch" data-filter-tags="batch">
                                             <i class="fal fa-file-excel"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Export</span>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Reports</span>
                                         </a>
                                     </li>
                                     {{-- <li>
