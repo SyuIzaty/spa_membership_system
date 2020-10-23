@@ -131,6 +131,23 @@ Route::get('deleteStorage/{id}','IntakeController@deleteStorage');
 Route::resource('/batch', 'BatchController')->middleware('can:check requirement');
 Route::post('/data-allbatch', 'BatchController@data_allbatch')->middleware('can:check requirement');
 
+//LEAD
+Route::get('/lead/active_lead', 'LeadController@activeLead');
+Route::post('api/lead/list', 'LeadController@data_lead_list');  //datatable
+Route::get('/lead/new_lead', 'LeadController@newLead'); 
+Route::get('/lead/follow_lead/{id}', 'LeadController@followLead')->name('followLead'); 
+Route::post('updateFollow', 'LeadController@updateFollow');
+Route::post('newLeadStore', 'LeadController@newLeadStore')->name('newLead');
+Route::delete('lead/active_lead/{id}', 'LeadController@deleteLeadInfo');
+Route::post('api/followTrack/list', 'LeadController@data_followTrack_list');  //datatable
+Route::get('/lead/edit_followLead/{id}', 'LeadController@editFollowLead')->name('editFollow');
+Route::post('updateEditFollow', 'LeadController@updateEditFollow');
+Route::delete('deleteFollowInfo/{id}', 'LeadController@deleteFollowInfo')->name('deleteFollowInfo');
+Route::post('createfollowinfo','LeadController@createFollowInfo');
+Route::get('/lead/inactive_lead', 'LeadController@inactiveLead');
+Route::post('api/inactiveLead/list', 'LeadController@data_inactiveLead_list');  //datatable
+Route::post('updateAssign', 'LeadController@updateAssign');
+
 //PARAM
 Route::resource('/intakeType', 'IntakeTypeController');
 Route::resource('param/programme', 'ProgrammeController')->middleware('can: view parameter');

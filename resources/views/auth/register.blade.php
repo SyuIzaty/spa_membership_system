@@ -111,7 +111,7 @@
                             
                         <!-- Submit Button -->
                             <div class="form-group col-lg-12 mx-auto mb-0">
-                                <button type="submit" class="btn btn-blue btn-block py-2">
+                                <button type="submit" class="btn btn-blue btn-block py-2 w-100">
                                     <span class="font-weight-bold">Register account</span>
                                 </button>
                             </div>

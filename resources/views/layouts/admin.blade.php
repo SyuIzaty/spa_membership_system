@@ -162,25 +162,25 @@
                                     <li>
                                         <a href="/applicantresult" title="Pending Applicant" data-filter-tags="active_student">
                                             <i class="fal fa-user"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">New Applicants</span>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Pending Application</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="/passapplicant" title="Pending Applicant" data-filter-tags="active_student">
                                             <i class="fal fa-check"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Pass Applicants</span>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Passed Application</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="/failapplicant" title="Pending Applicant" data-filter-tags="active_student">
                                             <i class="fal fa-minus"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Not Qualified</span>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Unqualified Application</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="/offerapplicant" title="Pending Applicant" data-filter-tags="active_student">
                                             <i class="fal fa-envelope"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Offered Applicant</span>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Offered Application</span>
                                         </a>
                                     </li>
                                     <li>
@@ -208,6 +208,15 @@
                                         </a>
                                     </li>
                                     <li>
+<<<<<<< HEAD
+=======
+                                        <a href="/offeredprogramme" title="Batch" data-filter-tags="batch">
+                                            <i class="fal fa-file-excel"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Publish Offer Letter</span>
+                                        </a>
+                                    </li>
+                                    <li>
+>>>>>>> f0bea202fb251309d1281a23ed1aaef54895c0f3
                                         <a href="/batch" title="Batch" data-filter-tags="batch">
                                             <i class="fal fa-address-card"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">Batch</span>
@@ -216,7 +225,7 @@
                                     <li>
                                         <a href="/export_applicant" title="Batch" data-filter-tags="batch">
                                             <i class="fal fa-file-excel"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Export</span>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Reports</span>
                                         </a>
                                     </li>
                                     {{-- <li>
@@ -607,6 +616,29 @@
                                 </ul>
                             </li>
                             @endcan
+
+                            @role('sales manager|sales executive')
+                            <li class="open">
+                                <a href="#" title="Sales Intel" data-filter-tags="sales intel">
+                                    <i class="fal fa-bullhorn"></i>
+                                    <span class="nav-link-text" data-i18n="nav.sales_intel">Sales</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/lead/active_lead" title="Active Leads" data-filter-tags="active_leads">
+                                            <i class="fal fa-check"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_leads">Active Leads</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/lead/inactive_lead" title="Inactive Leads" data-filter-tags="inactive_leads">
+                                            <i class="fal fa-minus"></i>
+                                            <span class="nav-link-text" data-i18n="nav.inactive_leads">Inactive Leads</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            @endrole
 
                             @role('student')
                             <li class="nav-title">MAIN NAVIGATION [STUDENT]</li>
