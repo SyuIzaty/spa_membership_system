@@ -1013,11 +1013,13 @@
                                             <tr class="bg-highlight">
                                                 <td>Date</td>
                                                 <td>Activity</td>
+                                                <td>User</td>
                                             </tr>
                                             @foreach ($activity as $activities)
                                             <tr>
                                                 <td>{{ $activities->created_at }}</td>
                                                 <td>{{ $activities->description }}</td>
+                                                <td>{{ $activities->name }}</td>
                                             </tr>
                                             @endforeach
                                         </table>
