@@ -15,16 +15,16 @@
                 <div class="card-body">
                     <hr class="mt-2 mb-3">
                     <div class="d-flex justify-content-lg-center">
-                        @if($check_applicant != 'NULL')
+                        @if(!($check_applicant->isEmpty()))
                             <div class="row">
                                 <div class="d-flex justify-content-lg-center col-md-12">
                                     <h2>CHECK APPLICATION</h2>
                                 </div>
                                 <div class="d-flex justify-content-lg-center col-md-12">
-                                    If you have made application for any INTEC programme before and <br>wish to continue with your application, Click the button below
+                                    If you have made application for any INTEC programme before and <br>wish to check your application, Click the button below
                                 </div>
                                 <div class="d-flex justify-content-lg-center col-md-12">
-                                    <div class="p-2"><a href="/applicantRegister/check/{{ $check_applicant->id }}" class="btn btn-primary mt-3">CHECK APPLICATION</a></div>
+                                    <div class="p-2"><a href="/applicantRegister/check/{{ $check_applicant->first()->id }}" class="btn btn-primary mt-3">CHECK APPLICATION</a></div>
                                 </div>
                             </div>
                         @endif
@@ -48,7 +48,7 @@
                                     <div class="p-2">
                                         <div class="card">
                                             <div class="card-body">
-                                                Your application is being processed. You are not allowed to edit you details. Thank you
+                                                Your application is being processed. You are not allowed to edit your details. Thank you
                                             </div>
                                         </div>
                                     </div>

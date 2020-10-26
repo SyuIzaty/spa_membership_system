@@ -119,6 +119,7 @@
                         <div class="form-group">
                             {{Form::label('title', 'Program Code')}}
                             <select name="intake_programme" id="intake_programme" class="form-control">
+                                <option disabled selected>Please select</option>
                                 @foreach($programme as $programmes)
                                   <option value="{{ $programmes->id }}">{{ $programmes->programme_code }}</option>
                                 @endforeach

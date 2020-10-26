@@ -45,13 +45,35 @@ class RegistrationController extends Controller
     {
         $country = Country::all();
         // $programme = Programme::all()->sortBy('programme_name');
-        $programme = Intakes::where('status','1')->with(['intakeDetails.programme','intakeDetails'=>function($query){
+        // $programme = Intakes::where('status','1')->with(['intakeDetails.programme','intakeDetails'=>function($query){
+        //     $query->where('status','1');
+        // }])->first();
+
+        $intake = Intakes::where('intake_app_open','<=',Carbon::Now())->where('intake_app_close','>=',Carbon::now())
+        ->with([
+        'intakeDetails.programme',
+        'intakeDetails'=>function($query){
             $query->where('status','1');
-        }])->first();
+        }])->get();
+        $all_programme = [];
+        $exist = [];
+        foreach($intake as $intakes) {
+            foreach($intakes->intakeDetails as $test) {
+                if( !in_array($test->programme->programme_code,$exist) )
+                {
+                    $all_programme[]  = [
+                        "Code" => $test->programme->programme_code,
+                        "Name" => $test->programme->programme_name
+                    ];
+                    array_push($exist,$test->programme->programme_code);
+                }
+            }
+        }
 
         $major = Major::all()->sortBy('major_name');
-        $intake = Intakes::where('status','1')->get();
-        return view('registration.index', compact('country','programme','major','intake'));
+        // $intake = Intakes::where('status','1')->get();
+        $intake =  Intakes::where('intake_app_open','<=',Carbon::Now())->where('intake_app_close','>=',Carbon::now())->get();
+        return view('registration.index', compact('country','major','all_programme','intake'));
     }
 
     public function test()
@@ -80,35 +102,41 @@ class RegistrationController extends Controller
 
     public function register()
     {
-        $intake = Intakes::where('status','1')->where('intake_app_open','<=',Carbon::Now())->where('intake_app_close','>=',Carbon::now())->first();
+        $intake = Intakes::where('intake_app_open','<=',Carbon::Now())->where('intake_app_close','>=',Carbon::now())->count();
         return view('applicantRegister.index', compact('intake'));
     }
 
     public function check($id)
     {
-        $applicant = Applicant::where('id',$id)->where('applicant_status','5A')->with(['offeredProgramme','offeredMajor','attachmentFile'])->first();
+        $applicant = Applicant::where('id',$id)->where('applicant_status','5C')->with(['offeredProgramme','offeredMajor','attachmentFile'])->first();
 
         return view('applicantRegister.check', compact('applicant'));
     }
 
     public function search(Request $request)
     {
-        $intake = Intakes::where('status','1')->where('intake_app_open','<=',Carbon::Now())->where('intake_app_close','>=',Carbon::now())->first();
+        $intake = Intakes::where('intake_app_open','<=',Carbon::Now())->where('intake_app_close','>=',Carbon::now())->get();
 
-        $check = Intakes::where('status','1')->where('intake_check_open','<=',Carbon::Now())->where('intake_check_close','>=',Carbon::now())->first();
+        $check = Intakes::where('intake_check_open','<=',Carbon::Now())->where('intake_check_close','>=',Carbon::now())->get();
 
-        if(is_null($intake)){
-            $applicant = 'NULL';
-        }else{
-            $applicant = Applicant::where('applicant_ic',$request->applicant_ic)->where('intake_id',$intake->id)->with('applicantIntake')->get();
+        foreach($intake as $intakes){
+            if($intakes == 'NULL'){
+                $applicant = 'NULL';
+            }else{
+                $applicant = Applicant::where('applicant_ic',$request->applicant_ic)->where('intake_id',$intakes->id)->with('applicantIntake')->get();
+            }
         }
-        if(is_null($check)){
+        if($check->count()!=0){
+            foreach($check as $checks){
+                $check_applicant = Applicant::where('applicant_ic',$request->applicant_ic)->where('intake_id',$checks->id)->get();
+            }
+        }
+        else{
             $check_applicant = 'NULL';
-        }else{
-            $check_applicant = Applicant::where('applicant_ic',$request->applicant_ic)->where('intake_id',$check->id)->first();
         }
 
-        return view('applicantRegister.display', compact('applicant','intake','check','check_applicant'));
+
+        return view('applicantRegister.display', compact('applicant','intakes','check_applicant','checks'));
     }
 
     /**

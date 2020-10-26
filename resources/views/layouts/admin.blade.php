@@ -208,15 +208,13 @@
                                         </a>
                                     </li>
                                     <li>
-<<<<<<< HEAD
-=======
+
                                         <a href="/offeredprogramme" title="Batch" data-filter-tags="batch">
                                             <i class="fal fa-file-excel"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">Publish Offer Letter</span>
                                         </a>
                                     </li>
                                     <li>
->>>>>>> f0bea202fb251309d1281a23ed1aaef54895c0f3
                                         <a href="/batch" title="Batch" data-filter-tags="batch">
                                             <i class="fal fa-address-card"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">Batch</span>

@@ -106,8 +106,8 @@
                                                                     <td>{{ Form::text('applicant_programme', $applicant->applicant_programme, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
                                                                     <td>{{ Form::text('applicant_major', $applicant->applicant_major, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
                                                                     <td>
-                                                                        @isset($batch_1->batch_code)
-                                                                        {{ Form::text('batch_code', $batch_1->batch_code, ['class' => 'form-control', 'readonly' => 'true']) }}
+                                                                        @isset($batch_1->first()->batch_code)
+                                                                        {{ Form::text('batch_code', $batch_1->first()->batch_code, ['class' => 'form-control', 'readonly' => 'true']) }}
                                                                         @endisset
                                                                     </td>
                                                                     <td>
@@ -146,8 +146,8 @@
                                                                     <td>{{ Form::text('applicant_programme', $applicant->applicant_programme_2, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
                                                                     <td>{{ Form::text('applicant_major', $applicant->applicant_major_2, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
                                                                     <td>
-                                                                        @isset($batch_2->batch_code)
-                                                                        {{ Form::text('batch_code', $batch_2->batch_code, ['class' => 'form-control', 'readonly' => 'true']) }}
+                                                                        @isset($batch_2->first()->batch_code)
+                                                                        {{ Form::text('batch_code', $batch_2->first()->batch_code, ['class' => 'form-control', 'readonly' => 'true']) }}
                                                                         @endisset
                                                                     </td>
                                                                     <td>
@@ -181,8 +181,8 @@
                                                                     <td>{{ Form::text('applicant_programme', $applicant->applicant_programme_3, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
                                                                     <td>{{ Form::text('applicant_major', $applicant->applicant_major_3, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
                                                                     <td>
-                                                                        @isset($batch_3->batch_code)
-                                                                        {{ Form::text('batch_code', $batch_3->batch_code, ['class' => 'form-control', 'readonly' => 'true']) }}
+                                                                        @isset($batch_3->first()->batch_code)
+                                                                        {{ Form::text('batch_code', $batch_3->first()->batch_code, ['class' => 'form-control', 'readonly' => 'true']) }}
                                                                         @endisset
                                                                     </td>
                                                                     <td>

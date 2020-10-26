@@ -17,9 +17,10 @@
                 <div class="row">
                     <input type="hidden" name="applicant_status" value="00">
                     <div class="form-group col-md-8">
-                        @foreach ($intake as $intakes)
+                        {{-- @foreach ($intake as $intakes)
                             <input type="hidden" value="{{ $intakes->id }}" name="intake_id">
-                        @endforeach
+                        @endforeach --}}
+                        <input type="hidden" value="{{ $intake->first()->id }}" name="intake_id">
                         <input type="hidden" value="Private" name="sponsor_code">
                         <small class="text-danger">{{ $errors->first('name') }}</small>
                         {{Form::label('title', 'Name')}}
@@ -64,8 +65,16 @@
                         {{ Form::label('title', '1st Preferred Programme (Required)') }}
                         <select class="form-control programme1" name="applicant_programme" id="applicant_programme">
                             <option value="">Select Programme</option>
-                            @foreach($programme->intakeDetails as $programmes)
+                            {{-- @foreach($programme->intakeDetails as $programmes)
                                 <option value="{{$programmes->programme->programme_code}}">{{$programmes->programme->programme_name}}</option>
+                            @endforeach --}}
+                            {{-- @foreach ($all_programme as $programmes)
+                                @foreach ($programmes->intakeDetails as $prog_list)
+                                    <option value="{{ $prog_list->programme->programme_code }}">{{ $prog_list->programme->programme_code }}</option>
+                                @endforeach
+                            @endforeach --}}
+                            @foreach ($all_programme as $key => $programmes)
+                                <option value="{{ $programmes['Code'] }}">{{ $programmes['Name'] }}</option>
                             @endforeach
                         </select>
                         @error('applicant_programme')
@@ -84,8 +93,13 @@
                         {{ Form::label('title', '2nd Preferred Programme (Optional)') }}
                         <select class="form-control programme2" name="applicant_programme_2" id="applicant_programme_2">
                             <option value="">Select Programme</option>
-                            @foreach($programme->intakeDetails as $programmes)
-                                <option value="{{$programmes->programme->programme_code}}">{{$programmes->programme->programme_name}}</option>
+                            {{-- @foreach ($all_programme as $programmes)
+                                @foreach ($programmes->intakeDetails as $prog_list)
+                                    <option value="{{ $prog_list->programme->programme_code }}">{{ $prog_list->programme->programme_name }}</option>
+                                @endforeach
+                            @endforeach --}}
+                            @foreach ($all_programme as $key => $programmes)
+                                <option value="{{ $programmes['Code'] }}">{{ $programmes['Name'] }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -98,8 +112,13 @@
                         {{ Form::label('title', '3rd Preferred Programme (Optional)') }}
                         <select class="form-control programme3" name="applicant_programme_3" id="applicant_programme_3">
                             <option value="">Select Programme</option>
-                            @foreach($programme->intakeDetails as $programmes)
-                                <option value="{{$programmes->programme->programme_code}}">{{$programmes->programme->programme_name}}</option>
+                            {{-- @foreach ($all_programme as $programmes)
+                                @foreach ($programmes->intakeDetails as $prog_list)
+                                    <option value="{{ $prog_list->programme->programme_code }}">{{ $prog_list->programme->programme_name }}</option>
+                                @endforeach
+                            @endforeach --}}
+                            @foreach ($all_programme as $key => $programmes)
+                                <option value="{{ $programmes['Code'] }}">{{ $programmes['Name'] }}</option>
                             @endforeach
                         </select>
                     </div>

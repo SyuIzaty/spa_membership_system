@@ -41,7 +41,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($intake->first()->intakeDetails as $intakes)
+                                    @foreach ($intake as $intake_all)
+                                        @foreach ($intake_all->intakeDetails as $intakes)
                                         <tr>
                                             <td>{{ $intakes->id }}</td>
                                             <input type="hidden" name="intake_id" value="{{ $intakes->intake_code }}">
@@ -57,6 +58,7 @@
                                                 @endif
                                             </td>
                                         </tr>
+                                        @endforeach
                                     @endforeach
                                 </tbody>
                             </table>

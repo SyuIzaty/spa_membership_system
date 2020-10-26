@@ -13,14 +13,14 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    @isset($intake)
+                    @if($intake!=0)
                     <div class="d-flex justify-content-center">
                         <div class="p-2"><h3>NEW APPLICATION</h3><p>If you wish to apply for any INTEC programme, click on the button below.</p></div>
                     </div>
                     <div class="d-flex justify-content-center">
                         <div class="p-2"><a href="{{ route('registration.index') }}" class="btn btn-success"><i class="fal fa-pencil-alt"></i> NEW APPLICATION</a></div>
                     </div>
-                    @endisset
+                    @endif
                     <hr class="mt-2 mb-3" style="border: 1px solid #ececec">
                     <div class="d-flex justify-content-center">
                         <div class="p-2">

@@ -28,13 +28,14 @@
                             @endif
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div id="intake" class="col-md-12 float-left mb-3"></div>
+                                    <div id="intake_fail" class="mb-3 col-md-12 float-left"></div>
                                 </div>
                             </div>
                             <table class="table table-bordered" id="offer">
                                 <thead>
                                     <tr class="bg-primary-50 text-center">
                                         <th>NO</th>
+                                        <th></th>
                                         <th>STUDENT ID</th>
                                         <th>APPLICANT</th>
                                         <th>IC</th>
@@ -47,6 +48,7 @@
                                     </tr>
                                     <tr>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="ID"></td>
+                                        <td></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Student ID"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Name"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="IC"></td>
@@ -74,6 +76,11 @@
 
     $(document).ready(function()
     {
+        $(function(){
+            $('.select2').select2();
+            showdefault();
+        });
+
         $('#offer thead tr .hasinput').each(function(i)
         {
             $('input', this).on('keyup change', function()
@@ -97,8 +104,10 @@
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
+            columnDefs: [{ "visible": false,"targets":[1]}],
             columns: [
                     { data: 'id', name: 'id' },
+                    { data: 'applicant_intake.status' },
                     { data: 'student_id', name: 'student_id' },
                     { data: 'applicant_name', name: 'applicant_name' },
                     { data: 'applicant_ic', name: 'applicant_ic' },
@@ -112,21 +121,48 @@
                 orderCellsTop: true,
                 "order": [[ 1, "asc" ]],
                 "initComplete": function(settings, json) {
-                    var column = this.api().column(4);
-                    var select = $('<select class="form-control"><option value=""></option></select>')
-                    .appendTo( $('#intake').empty().text('Intake: ') )
+                    var column = this.api().column(5);
+                    var select = $('<select id="filterselect" class="select2 form-control" multiple></select>')
+                    .appendTo( $('#intake_fail').empty().text('Intake: ') )
                     .on('change',function(){
-                        var val = $.fn.DataTable.util.escapeRegex(
-                            $(this).val()
-                        );
-                        column
-                        .search(val ? '^'+val+'$' : '', true, false).draw();
+                        // var val = $.fn.DataTable.util.escapeRegex(
+                        //     $(this).val()
+                        // );
+                        var selected = $(this).val().join('|');
+                        if(selected)
+                        {
+                            table
+                            .columns()
+                            .search( '' )
+                            .column(5)
+                            .search(selected ? selected : '', true, false).draw();
+                        }
                     });
-                    column.data().unique().sort().each(function (d, j){
-                        select.append( '<option value="'+d+'">'+d+'</option>' );
-                    });
+
+                    @foreach($intakecode as $key => $ic)
+                    select.append('<option value="{{ $ic["intake_code"] }}" <?php if($ic["status"] == "1") echo "selected" ?> >{{ $ic["intake_code"] }}</option>' );
+                    @endforeach
+                    $('#filterselect').select2();
                 }
         });
+
+        function showdefault()
+        {
+            var value = [];
+            @foreach($intakecode as $ic)
+              if( "{{ $ic["status"] }}" == "1")
+              {
+                value.push("{{ $ic["intake_code"] }}");
+              }
+            @endforeach
+
+            table
+            .column(1)
+            .search("1",true,false)
+            .column(5)
+            .search(value ? value.join('|') : '', true, false)
+            .draw();
+        }
 
     });
 

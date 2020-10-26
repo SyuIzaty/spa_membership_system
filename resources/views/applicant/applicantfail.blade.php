@@ -4,14 +4,14 @@
     <main id="js-page-content" role="main" class="page-content">
         <div class="subheader">
             <h1 class="subheader-title">
-                <i class='subheader-icon fal fa-table'></i> Not Qualified
+                <i class='subheader-icon fal fa-table'></i> Unqualified Application
             </h1>
         </div>
         <div class="row">
             <div class="col-xl-12">
                 <div id="panel-1" class="panel">
                     <div class="panel-hdr">
-                        <h2>Not Qualified</h2>
+                        <h2>Unqualified Application</h2>
                         <div class="panel-toolbar">
                             <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
                             <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
@@ -29,6 +29,7 @@
                                 <thead>
                                     <tr class="bg-primary-50 text-center">
                                         <th>NO</th>
+                                        <th></th>
                                         <th>APPLICANT</th>
                                         <th>IC</th>
                                         <th>INTAKE</th>
@@ -40,6 +41,7 @@
                                     </tr>
                                     <tr>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
+                                        <td></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Applicant Name"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search IC"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Intake"></td>
@@ -67,6 +69,11 @@
 
     $(document).ready(function()
     {
+        $(function(){
+            $('.select2').select2();
+            showdefault();
+        });
+
         $('#rejected thead tr .hasinput').each(function(i)
         {
             $('input', this).on('keyup change', function()
@@ -100,8 +107,10 @@
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
+            columnDefs: [{ "visible": false,"targets":[1]}],
             columns: [
                     { data: 'id', name: 'id' },
+                    { data: 'applicant_intake.status' },
                     { data: 'applicant_name', name: 'applicant_name' },
                     { data: 'applicant_ic', name: 'applicant_ic' },
                     { data: 'intake_id', name: 'intake_id' },
@@ -114,21 +123,54 @@
                 orderCellsTop: true,
                 "order": [[ 1, "asc" ]],
                 "initComplete": function(settings, json) {
-                    var column = this.api().column(3);
-                    var select = $('<select class="form-control"><option value=""></option></select>')
+                    var column = this.api().column(4);
+                    var select = $('<select id="filterselect" class="select2 form-control" multiple></select>')
                     .appendTo( $('#intake_fail').empty().text('Intake: ') )
                     .on('change',function(){
-                        var val = $.fn.DataTable.util.escapeRegex(
-                            $(this).val()
-                        );
-                        column
-                        .search(val ? '^'+val+'$' : '', true, false).draw();
+                        // var val = $.fn.DataTable.util.escapeRegex(
+                        //     $(this).val()
+                        // );
+                        var selected = $(this).val().join('|');
+                        if(selected)
+                        {
+                            table
+                            .columns()
+                            .search( '' )
+                            .column(4)
+                            .search(selected ? selected : '', true, false).draw();
+                        }
                     });
-                    column.data().unique().sort().each(function (d, j){
-                        select.append( '<option value="'+d+'">'+d+'</option>' );
-                    });
+
+                    @foreach($intakecode as $key => $ic)
+                    select.append('<option value="{{ $ic["intake_code"] }}" <?php if($ic["status"] == "1") echo "selected" ?> >{{ $ic["intake_code"] }}</option>' );
+                    @endforeach
+                    $('#filterselect').select2();
+
+                    // column.data().unique().sort().each(function (d, j){
+                    //     select.append( '<option value="'+d+'">'+d+'</option>' );
+                    // });
                 }
         });
+
+        function showdefault()
+        {
+            var value = [];
+            @foreach($intakecode as $ic)
+              if( "{{ $ic["status"] }}" == "1")
+              {
+                value.push("{{ $ic["intake_code"] }}");
+              }
+            @endforeach
+
+            table
+            .column(1)
+            .search("1",true,false)
+            .column(4)
+            .search(value ? value.join('|') : '', true, false)
+            .draw();
+        }
+
+
     });
 
 
