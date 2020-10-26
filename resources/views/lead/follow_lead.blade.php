@@ -35,8 +35,8 @@
                                             
                                             <div class="card-body">
                                                 @if (Session::has('message'))
-                                                    <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}</div>
-                                                @endif
+                                                <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}</div>
+                                            @endif
                                                 <table id="new_lead" class="table table-bordered table-hover table-striped w-100">
                                                     <thead>
                                                         <tr>
@@ -133,55 +133,7 @@
                                                                     </td>
                                                             </div>
                                                         </tr>
-
-                                                        <tr>
-                                                            <div class="form-group">
-                                                                <td width="16%"><label class="form-label" for="progs">Applicant Programmes:</label></td>
-                                                                    <td colspan="7">
-                                                                        @if(!empty($applicant))
-                                                                        @if(isset($applicant->applicant_programme) && !empty($applicant->applicant_programme))
-                                                                            <input type="text" class="form-control" value="{{ $applicant->programme->programme_name }}" disabled></div><br>
-                                                                        @endif
-                                                                        @if(isset($applicant->applicant_programme_2) && !empty($applicant->applicant_programme_2))
-                                                                            <input type="text" class="form-control" value="{{ $applicant->programmeTwo->programme_name }}" disabled></div><br>
-                                                                        @endif
-                                                                        @if(isset($applicant->applicant_programme_3) && !empty($applicant->applicant_programme_3))
-                                                                            <input type="text" class="form-control" value="{{ $applicant->programmeThree->programme_name }}" disabled></div>
-                                                                        @endif
-                                                                        @else
-                                                                            <input type="text" class="form-control" value="-- NO DATA --" disabled></div>
-                                                                        @endif
-                                                                    </td>
-                                                            </div>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <div class="form-group">
-                                                                <td width="16%"><label class="form-label" for="intake"> Intake:</label></td>
-                                                                <td colspan="7">
-                                                                    <input type="text" class="form-control"  value="{{ $applicant->applicantIntake->intake_code ?? '-- NO DATA -- ' }}" disabled>
-                                                                </td>
-                                                            </div>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <div class="form-group">
-                                                                <td width="16%"><label class="form-label" for="offer_prog"> Offer Programme:</label></td>
-                                                                <td colspan="7">
-                                                                    <input type="text" class="form-control"  value="{{ $applicant->offeredProgramme->programme_name ?? '-- NO DATA -- ' }}" disabled>
-                                                                </td>
-                                                            </div>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <div class="form-group">
-                                                                <td width="16%"><label class="form-label" for="stat"> Status:</label></td>
-                                                                <td colspan="7">
-                                                                    <input type="text" class="form-control"  value="{{ $applicant->status->status_description ?? '-- NO DATA -- ' }}" disabled>
-                                                                </td>
-                                                            </div>
-                                                        </tr>
-                                                        
+  
                                                     </thead>
                                                 </table>
                                                     <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Update</button>
@@ -193,13 +145,83 @@
                                 <br>
 
                                 <div class="col-sm-8">
+
+                                    <div class="card card-primary card-outline">
+                                        <div class="card-header">
+                                            <h5 class="card-title w-100">LEAD TRACKS</h5>
+                                        </div>
+                                        
+                                        <div class="card-body">
+                                            
+                                            <table id="track" class="table table-bordered table-hover table-striped w-100">
+                                                <thead>
+                                                    
+                                                    <tr>
+                                                        <div class="form-group">
+                                                                <td width="12%"><label class="form-label" for="progs">Programme 1:</label></td>
+                                                                <td colspan="2">
+                                                                    @if(!empty($applicant))
+                                                                    @if(isset($applicant->applicant_programme) && !empty($applicant->applicant_programme))
+                                                                        <input type="text" class="form-control" value="{{ $applicant->programme->programme_name }}" disabled></div><br>
+                                                                    @endif
+                                                                    @else
+                                                                        <input type="text" class="form-control" value="-- NO DATA --" disabled></div>
+                                                                    @endif
+                                                                </td>
+                                                                <td width="12%"><label class="form-label" for="progs">Programme 2:</label></td>
+                                                                <td colspan="2">
+                                                                    @if(!empty($applicant))
+                                                                    @if(isset($applicant->applicant_programme_2) && !empty($applicant->applicant_programme_2))
+                                                                        <input type="text" class="form-control" value="{{ $applicant->programmeTwo->programme_name }}" disabled></div><br>
+                                                                    @endif
+                                                                    @else
+                                                                        <input type="text" class="form-control" value="-- NO DATA --" disabled></div>
+                                                                    @endif
+                                                                </td>
+                                                                <td width="12%"><label class="form-label" for="progs">Programme 3:</label></td>
+                                                                <td colspan="2">
+                                                                    @if(!empty($applicant))
+                                                                    @if(isset($applicant->applicant_programme_3) && !empty($applicant->applicant_programme_3))
+                                                                        <input type="text" class="form-control" value="{{ $applicant->programmeThree->programme_name }}" disabled></div>
+                                                                    @endif
+                                                                    @else
+                                                                        <input type="text" class="form-control" value="-- NO DATA --" disabled></div>
+                                                                    @endif
+                                                                </td>
+                                                        </div>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <div class="form-group">
+                                                            <td width="12%"><label class="form-label" for="intake"> Intake:</label></td>
+                                                            <td colspan="2">
+                                                                <input type="text" class="form-control"  value="{{ $applicant->applicantIntake->intake_code ?? '-- NO DATA -- ' }}" disabled>
+                                                            </td>
+                                                            <td width="12%"><label class="form-label" for="offer_prog"> Offer Programme:</label></td>
+                                                            <td colspan="2">
+                                                                <input type="text" class="form-control"  value="{{ $applicant->offeredProgramme->programme_name ?? '-- NO DATA -- ' }}" disabled>
+                                                            </td>
+                                                            <td width="12%"><label class="form-label" for="stat"> Status:</label></td>
+                                                            <td colspan="2">
+                                                                <input type="text" class="form-control"  value="{{ $applicant->status->status_description ?? '-- NO DATA -- ' }}" disabled>
+                                                            </td>
+                                                        </div>
+                                                    </tr>
+            
+                                                </thead>
+                                            </table>
+
+                                        </div>
+
+                                    </div>
+
+                                    <br>
+
                                     <div class="card card-primary card-outline">
                                         <div class="card-header">
                                             <h5 class="card-title w-100">FOLLOW UP LISTS</h5>
                                         </div>
-                                        @if (Session::has('notification'))
-                                            <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('notification') }}</div>
-                                        @endif
+                                        
                                         <div class="card-body">
                                             <table class="table table-bordered table-hover table-striped w-100" style="table-layout:fixed">
                                                 <thead>
@@ -211,6 +233,7 @@
                                                         <th>Status</th>
                                                         <th>Action</th>
                                                     </tr>
+                                                    
                                                     @foreach($lead->lead_notes as $leadNotes)
                                                     <tr align="center"  class="data-row">
                                                         <td>{{ $no++ }}</td>
@@ -225,7 +248,7 @@
                                                             @if ($leadNotes->status_id == '4') Close @endif
                                                         </td>
                                                         <td>
-                                                            <a href="/lead/edit_followLead/{{ $leadNotes->id }}" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i> Edit</a>
+                                                           <a href="/lead/edit_followLead/{{ $leadNotes->id }}" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i> Edit</a>
                                                             <button class="btn btn-danger btn-sm deleteFollow" data-id="{{$leadNotes->id}}" data-action="{{route('deleteFollowInfo', $leadNotes->id)}}"><i class="fal fa-trash"></i> Delete</button>
                                                             <meta name="csrf-token" content="{{ csrf_token() }}">
                                                         </td>
@@ -243,7 +266,7 @@
                                 </div>
                                    
                             </div>
-                            {{-- </form> --}}
+                           
                         </div>
                     </div>
 
@@ -256,7 +279,7 @@
                                 <div class="modal-body">
                                     {!! Form::open(['action' => 'LeadController@createFollowInfo', 'method' => 'POST']) !!}
                                     {{Form::hidden('id', $lead->id)}}
-
+                                    
                                         <div class="form-group">
                                             <td width="15%"><label class="form-label" for="follow_type_id"> Follow Up Type :</label></td>
                                             <td colspan="7">
@@ -316,6 +339,7 @@
                                      
                                     <div class="footer">
                                         <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
+                                        <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
                                     </div>
                                     {!! Form::close() !!}
                                 </div>

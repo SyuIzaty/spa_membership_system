@@ -103,11 +103,11 @@ class LeadController extends Controller
         $id = Auth::user()->id;
 
         Lead::create([
-            'leads_name'    => $request->leads_name,
+            'leads_name'    => strtoupper($request->leads_name),
             'leads_email'   => $request->leads_email,
             'leads_phone'   => $request->leads_phone,
             'leads_ic'      => $request->leads_ic,
-            'leads_source'  => $request->leads_source, 
+            'leads_source'  => strtoupper($request->leads_source), 
             'leads_prog1'   => $request->leads_prog1, 
             'leads_prog2'   => $request->leads_prog2, 
             'leads_prog3'   => $request->leads_prog3, 
@@ -148,11 +148,11 @@ class LeadController extends Controller
         $lead = Lead::where('id', $request->id)->first();
 
         $lead->update([
-            'leads_name'    => $request->leads_name,
+            'leads_name'    => strtoupper($request->leads_name),
             'leads_email'   => $request->leads_email,
             'leads_phone'   => $request->leads_phone,
             'leads_ic'      => $request->leads_ic,
-            'leads_source'  => $request->leads_source,
+            'leads_source'  => strtoupper($request->leads_source),
             'leads_prog1'   => $request->leads_prog1,
             'leads_prog2'   => $request->leads_prog2,
             'leads_prog3'   => $request->leads_prog3,
