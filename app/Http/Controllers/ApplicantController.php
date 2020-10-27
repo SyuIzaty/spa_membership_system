@@ -226,14 +226,16 @@ class ApplicantController extends Controller
 
     public function activeIntake()
     {
-        $intae = Intakes::select('intake_code','status')->get();
+        $intae = Intakes::select('intake_code','status','intake_app_open','intake_app_close')->get();
 
         $intakecode = [];
         foreach($intae as $ic)
         {
             $intakecode[$ic->intake_code] = [
                 'intake_code' => $ic->intake_code,
-                'status' => $ic->status
+                'status' => $ic->status,
+                'intake_app_open' => $ic->intake_app_open,
+                'intake_app_close' => $ic->intake_app_close,
             ];
         }
         return $intakecode;
@@ -562,6 +564,64 @@ class ApplicantController extends Controller
         return back()->with('success','Applicant Imported');
     }
 
+    public function data_allexport(Request $request) // Datatable: all applicant
+    {
+        $cond = "1";
+        if($request->intake && $request->intake != "All")
+        {
+            $cond .= " AND intake_id = ".$request->intake;
+        }
+
+        if($request->program && $request->program != "All")
+        {
+            $cond .= " AND (applicant_programme = '".$request->program."' OR applicant_programme_2 = '".$request->program."' OR applicant_programme_3 = '".$request->program."')";
+        }
+
+        if($request->batch && $request->batch != "All")
+        {
+            $cond .= " AND batch_code = '".$request->batch."' ";
+        }
+
+        if( $request->status != "" && $request->status != "All")
+        {
+            $cond .= " AND applicant_status = '".$request->status."' ";
+        }
+
+        $applicant = Applicant::whereRaw($cond)->get();
+        $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','statusResultThree','programmeThree','applicantstatus','applicantIntake','status');
+
+        return datatables()::of($applicants)
+            ->addColumn('intake_id',function($applicants)
+            {
+                return $applicants->applicantIntake->intake_code;
+            })
+            ->addColumn('prog_name',function($applicants)
+            {
+                return isset($applicants->programme->programme_code) ? '<div style="color:'.$applicants->statusResult->colour.'">'.$applicants->programme->programme_code.'</div>' : '';
+            })
+            ->addColumn('prog_name_2',function($applicants)
+            {
+                return isset($applicants->programmeTwo->programme_code) ? '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->programmeTwo->programme_code.'</div>' : '';
+
+            })
+            ->addColumn('prog_name_3',function($applicants)
+            {
+                return isset($applicants->programmeThree->programme_code) ? '<div style="color:'.$applicants->statusResultThree->colour.'">'.$applicants->programmeThree->programme_code.'</div>' : '';
+
+            })
+            ->addColumn('bm',function($applicants){
+                return $applicants->applicantresult->where('subject',1103)->isEmpty() ? '': $applicants->applicantresult->where('subject',1103)->first()->grades->grade_code;
+            })
+            ->addColumn('english',function($applicants){
+                return $applicants->applicantresult->where('subject',1119)->isEmpty() ? '': $applicants->applicantresult->where('subject',1119)->first()->grades->grade_code;
+            })
+            ->addColumn('math',function($applicants){
+                return $applicants->applicantresult->where('subject',1449)->isEmpty() ? '': $applicants->applicantresult->where('subject',1449)->first()->grades->grade_code;
+            })
+           ->rawColumns(['prog_name','prog_name_2','prog_name_3'])
+           ->make(true);
+    }
+
     public function applicant_all(Request $request)
     {
 
@@ -580,27 +640,7 @@ class ApplicantController extends Controller
         $selectedprogramme = $request->program;
         $selectedbatch = $request->batch_code;
         $selectedstatus = $request->status;
-        if($request->intake && $request->intake != "All")
-        {
-            $cond .= " AND intake_id = ".$request->intake;
-        }
-
-        if($request->program && $request->program != "All")
-        {
-            $cond .= " AND offered_programme = '".$request->program."' ";
-        }
-
-        if($request->batch_code && $request->batch_code != "All")
-        {
-            $cond .= " AND batch_code = '".$request->batch_code."' ";
-        }
-
-        if($request->status && $request->status != "All")
-        {
-            $cond .= " AND applicant_status = '".$request->status."' ";
-        }
-
-        $list = Applicant::with(['offeredProgramme', 'intake', 'status'])->whereRaw($cond)->get();
+        $list = [];
 
         return view('applicant.applicantall',compact('intake','program','batch','request','list','selectedintake','selectedprogramme','selectedbatch','status','selectedstatus'));
     }
@@ -1557,14 +1597,14 @@ class ApplicantController extends Controller
             'applicant_qualification' => $request->applicant_qualification
         ]);
 
-        Applicant::updateStatus($applicant['id'], $request->applicant_programme, $request->applicant_major);
+        // Applicant::updateStatus($applicant['id'], $request->applicant_programme, $request->applicant_major);
         return redirect()->back()->with('message', 'Programme Offered');
     }
 
     public function sendUpdateApplicant(Request $request)
     {
         foreach($request->check as $batch_code){
-            $applicant = Applicant::where('batch_code',$batch_code)->where('intake_id',$request->intake_id)->where('applicant_status','5A')->get();
+            $applicant = Applicant::where('batch_code',$batch_code)->where('applicant_status','5A')->get();
             foreach($applicant as $apps){
                 $this->sendEmail($apps['id']);
             }

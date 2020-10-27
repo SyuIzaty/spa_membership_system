@@ -4,14 +4,14 @@
     <main id="js-page-content" role="main" class="page-content">
         <div class="subheader">
             <h1 class="subheader-title">
-                <i class='subheader-icon fal fa-table'></i> Qualified
+                <i class='subheader-icon fal fa-table'></i> Passed Application
             </h1>
         </div>
         <div class="row">
             <div class="col-xl-12">
                 <div id="panel-1" class="panel">
                     <div class="panel-hdr">
-                        <h2>Qualified</h2>
+                        <h2>Passed Application</h2>
                         <div class="panel-toolbar">
                             <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
                             <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
@@ -29,7 +29,6 @@
                                 <thead>
                                     <tr class="bg-primary-50 text-center">
                                         <th>NO</th>
-                                        <th></th>
                                         <th>APPLICANT</th>
                                         <th>IC</th>
                                         <th>INTAKE</th>
@@ -38,10 +37,11 @@
                                         <th>PROG 2</th>
                                         <th>PROG 3</th>
                                         <th>ACTION</th>
+                                        <th></th>
+                                        <th></th>
                                     </tr>
                                     <tr>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
-                                        <td></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Applicant Name"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Applicant IC"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Intake"></td>
@@ -49,6 +49,8 @@
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
+                                        <td></td>
+                                        <td></td>
                                         <td></td>
                                     </tr>
                                 </thead>
@@ -106,10 +108,9 @@
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
-            columnDefs: [{ "visible": false,"targets":[1]}],
+            columnDefs: [{ "visible": false,"targets":[8]}, { "visible": false,"targets":[9]}],
             columns: [
                     { data: 'id', name: 'id' },
-                    { data: 'applicant_intake.status' },
                     { data: 'applicant_name', name: 'applicant_name' },
                     { data: 'applicant_ic', name: 'applicant_ic'},
                     { data: 'intake_id', name: 'intake_id'},
@@ -117,12 +118,14 @@
                     { data: 'prog_name', name: 'prog_name' },
                     { data: 'prog_name_2', name: 'prog_name_2' },
                     { data: 'prog_name_3', name: 'prog_name_3' },
+                    { data: 'applicant_intake.intake_app_close' },
+                    { data: 'applicant_intake.intake_app_open' },
                     { data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
                 "order": [[ 1, "asc" ]],
                 "initComplete": function(settings, json) {
-                    var column = this.api().column(4);
+                    var column = this.api().column(3);
                     var select = $('<select id="filterselect" class="select2 form-control" multiple></select>')
                     .appendTo( $('#intake_fail').empty().text('Intake: ') )
                     .on('change',function(){
@@ -135,13 +138,13 @@
                             table
                             .columns()
                             .search( '' )
-                            .column(4)
+                            .column(3)
                             .search(selected ? selected : '', true, false).draw();
                         }
                     });
 
                     @foreach($intakecode as $key => $ic)
-                    select.append('<option value="{{ $ic["intake_code"] }}" <?php if($ic["status"] == "1") echo "selected" ?> >{{ $ic["intake_code"] }}</option>' );
+                    select.append('<option value="{{ $ic["intake_code"] }}"<?php if($ic["intake_app_close"] >= now() && $ic["intake_app_open"] <= now()) echo "selected" ?> >{{ $ic["intake_code"] }}</option>' );
                     @endforeach
                     $('#filterselect').select2();
                 }
@@ -151,16 +154,16 @@
         {
             var value = [];
             @foreach($intakecode as $ic)
-              if( "{{ $ic["status"] }}" == "1")
+              if( "{{ $ic["intake_app_close"] }}" >= "{{ now() }}" && "{{ $ic["intake_app_open"] }}" <= "{{ now() }}")
               {
                 value.push("{{ $ic["intake_code"] }}");
               }
             @endforeach
 
             table
-            .column(1)
+            .column(8)
             .search("1",true,false)
-            .column(4)
+            .column(3)
             .search(value ? value.join('|') : '', true, false)
             .draw();
         }

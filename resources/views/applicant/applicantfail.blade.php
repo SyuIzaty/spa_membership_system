@@ -29,7 +29,6 @@
                                 <thead>
                                     <tr class="bg-primary-50 text-center">
                                         <th>NO</th>
-                                        <th></th>
                                         <th>APPLICANT</th>
                                         <th>IC</th>
                                         <th>INTAKE</th>
@@ -37,11 +36,12 @@
                                         <th>PROG 1</th>
                                         <th>PROG 2</th>
                                         <th>PROG 3</th>
+                                        <th></th>
+                                        <th></th>
                                         <th>ACTION</th>
                                     </tr>
                                     <tr>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
-                                        <td></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Applicant Name"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search IC"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Intake"></td>
@@ -49,6 +49,8 @@
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
+                                        <td></td>
+                                        <td></td>
                                         <td></td>
                                     </tr>
                                 </thead>
@@ -107,10 +109,9 @@
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
-            columnDefs: [{ "visible": false,"targets":[1]}],
+            columnDefs: [{ "visible": false,"targets":[8]}, { "visible": false,"targets":[9]}],
             columns: [
                     { data: 'id', name: 'id' },
-                    { data: 'applicant_intake.status' },
                     { data: 'applicant_name', name: 'applicant_name' },
                     { data: 'applicant_ic', name: 'applicant_ic' },
                     { data: 'intake_id', name: 'intake_id' },
@@ -118,12 +119,14 @@
                     { data: 'prog_name', name: 'prog_name' },
                     { data: 'prog_name_2', name: 'prog_name_2' },
                     { data: 'prog_name_3', name: 'prog_name_3' },
+                    { data: 'applicant_intake.intake_app_close' },
+                    { data: 'applicant_intake.intake_app_open' },
                     { data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
                 "order": [[ 1, "asc" ]],
                 "initComplete": function(settings, json) {
-                    var column = this.api().column(4);
+                    var column = this.api().column(3);
                     var select = $('<select id="filterselect" class="select2 form-control" multiple></select>')
                     .appendTo( $('#intake_fail').empty().text('Intake: ') )
                     .on('change',function(){
@@ -136,19 +139,15 @@
                             table
                             .columns()
                             .search( '' )
-                            .column(4)
+                            .column(3)
                             .search(selected ? selected : '', true, false).draw();
                         }
                     });
 
                     @foreach($intakecode as $key => $ic)
-                    select.append('<option value="{{ $ic["intake_code"] }}" <?php if($ic["status"] == "1") echo "selected" ?> >{{ $ic["intake_code"] }}</option>' );
+                    select.append('<option value="{{ $ic["intake_code"] }}" <?php if($ic["intake_app_close"] >= now() && $ic["intake_app_open"] <= now()) echo "selected" ?> >{{ $ic["intake_code"] }}</option>' );
                     @endforeach
                     $('#filterselect').select2();
-
-                    // column.data().unique().sort().each(function (d, j){
-                    //     select.append( '<option value="'+d+'">'+d+'</option>' );
-                    // });
                 }
         });
 
@@ -156,16 +155,16 @@
         {
             var value = [];
             @foreach($intakecode as $ic)
-              if( "{{ $ic["status"] }}" == "1")
+              if( "{{ $ic["intake_app_close"] }}" >= "{{ now() }}" && "{{ $ic["intake_app_open"] }}" <= "{{ now() }}")
               {
                 value.push("{{ $ic["intake_code"] }}");
               }
             @endforeach
 
             table
-            .column(1)
+            .column(8)
             .search("1",true,false)
-            .column(4)
+            .column(3)
             .search(value ? value.join('|') : '', true, false)
             .draw();
         }

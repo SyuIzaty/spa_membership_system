@@ -1037,7 +1037,7 @@
 @section('script')
 <script>
     $(document).ready(function() {
-        $('.country, .gender, .marital, .race, .religion, .relation, .qualification, .qua').select2();
+        $('.country, .gender, .marital, .race, .religion, .relation, .qualification, .qua, #intake_id').select2();
     });
 </script>
 @endsection

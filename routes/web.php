@@ -71,6 +71,7 @@ Route::post('/applicant-check', 'ApplicantController@applicantcheck')->name('app
 Route::get('/sponsorapplicant', 'ApplicantController@sponsorapplicant');
 Route::post('sendupdateApplicant', 'ApplicantController@sendupdateApplicant');
 
+Route::post('/data_allexport', 'ApplicantController@data_allexport');
 Route::post('/data_incompleteapplicant', 'ApplicantController@data_incompleteapplicant');
 Route::post('/data_allapplicant', 'ApplicantController@data_allapplicant');
 Route::post('/data_rejectedapplicant', 'ApplicantController@data_rejectedapplicant');
@@ -134,8 +135,8 @@ Route::post('/data-allbatch', 'BatchController@data_allbatch')->middleware('can:
 //LEAD
 Route::get('/lead/active_lead', 'LeadController@activeLead');
 Route::post('api/lead/list', 'LeadController@data_lead_list');  //datatable
-Route::get('/lead/new_lead', 'LeadController@newLead'); 
-Route::get('/lead/follow_lead/{id}', 'LeadController@followLead')->name('followLead'); 
+Route::get('/lead/new_lead', 'LeadController@newLead');
+Route::get('/lead/follow_lead/{id}', 'LeadController@followLead')->name('followLead');
 Route::post('updateFollow', 'LeadController@updateFollow');
 Route::post('newLeadStore', 'LeadController@newLeadStore')->name('newLead');
 Route::delete('lead/active_lead/{id}', 'LeadController@deleteLeadInfo');
@@ -220,3 +221,4 @@ Route::get('/startQueue',function(){
     exec('php artisan queue:work --tries=2 &');
     return 1;
 })->name('startQueue');
+

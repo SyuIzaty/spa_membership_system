@@ -4,14 +4,14 @@
     <main id="js-page-content" role="main" class="page-content">
         <div class="subheader">
             <h1 class="subheader-title">
-                <i class='subheader-icon fal fa-table'></i> Applicant Offer
+                <i class='subheader-icon fal fa-table'></i> Offered Application
             </h1>
         </div>
         <div class="row">
             <div class="col-xl-12">
                 <div id="panel-1" class="panel">
                     <div class="panel-hdr">
-                        <h2>Applicant Offer</h2>
+                        <h2>Offered Application</h2>
                         <div class="panel-toolbar">
                             <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
                             <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
@@ -35,7 +35,6 @@
                                 <thead>
                                     <tr class="bg-primary-50 text-center">
                                         <th>NO</th>
-                                        <th></th>
                                         <th>STUDENT ID</th>
                                         <th>APPLICANT</th>
                                         <th>IC</th>
@@ -44,11 +43,12 @@
                                         <th>BATCH</th>
                                         <th>PROG</th>
                                         <th>MAJOR</th>
+                                        <th></th>
+                                        <th></th>
                                         <th>ACTION</th>
                                     </tr>
                                     <tr>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="ID"></td>
-                                        <td></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Student ID"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Name"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="IC"></td>
@@ -57,6 +57,8 @@
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Batch"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Programme"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Major"></td>
+                                        <td></td>
+                                        <td></td>
                                         <td></td>
                                     </tr>
                                 </thead>
@@ -104,10 +106,9 @@
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
-            columnDefs: [{ "visible": false,"targets":[1]}],
+            columnDefs: [{ "visible": false,"targets":[9]}, { "visible": false,"targets":[10]}],
             columns: [
                     { data: 'id', name: 'id' },
-                    { data: 'applicant_intake.status' },
                     { data: 'student_id', name: 'student_id' },
                     { data: 'applicant_name', name: 'applicant_name' },
                     { data: 'applicant_ic', name: 'applicant_ic' },
@@ -116,12 +117,14 @@
                     { data: 'batch_code', name: 'batch_code' },
                     { data: 'offered_programme', name: 'offered_programme' },
                     { data: 'offered_major', name: 'offered_major' },
+                    { data: 'applicant_intake.intake_app_close' },
+                    { data: 'applicant_intake.intake_app_open' },
                     { data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
                 "order": [[ 1, "asc" ]],
                 "initComplete": function(settings, json) {
-                    var column = this.api().column(5);
+                    var column = this.api().column(4);
                     var select = $('<select id="filterselect" class="select2 form-control" multiple></select>')
                     .appendTo( $('#intake_fail').empty().text('Intake: ') )
                     .on('change',function(){
@@ -134,13 +137,13 @@
                             table
                             .columns()
                             .search( '' )
-                            .column(5)
+                            .column(4)
                             .search(selected ? selected : '', true, false).draw();
                         }
                     });
 
                     @foreach($intakecode as $key => $ic)
-                    select.append('<option value="{{ $ic["intake_code"] }}" <?php if($ic["status"] == "1") echo "selected" ?> >{{ $ic["intake_code"] }}</option>' );
+                    select.append('<option value="{{ $ic["intake_code"] }}" <?php if($ic["intake_app_close"] >= now() && $ic["intake_app_open"] <= now()) echo "selected" ?> >{{ $ic["intake_code"] }}</option>' );
                     @endforeach
                     $('#filterselect').select2();
                 }
@@ -150,16 +153,16 @@
         {
             var value = [];
             @foreach($intakecode as $ic)
-              if( "{{ $ic["status"] }}" == "1")
+              if( "{{ $ic["intake_app_close"] }}" >= "{{ now() }}" && "{{ $ic["intake_app_open"] }}" <= "{{ now() }}")
               {
                 value.push("{{ $ic["intake_code"] }}");
               }
             @endforeach
 
             table
-            .column(1)
+            .column(9)
             .search("1",true,false)
-            .column(5)
+            .column(4)
             .search(value ? value.join('|') : '', true, false)
             .draw();
         }

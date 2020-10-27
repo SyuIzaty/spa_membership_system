@@ -74,15 +74,15 @@ class IntakeController extends Controller
 
     public function store(Request $request)
     {
-        Intakes::where('status', '1')->update(['status' => 0]);
+        // Intakes::where('status', '1')->update(['status' => 0]);
         Intakes::create([
             'intake_code' => $request->intake_type_code,
             'intake_description' => $request->intake_type_description,
             'intake_app_open' => $request->intake_app_open,
             'intake_app_close' => $request->intake_app_close,
             'intake_check_open' => $request->intake_check_open,
-            'intake_check_close' => $request->intake_check_close,
-            'status' => '1'
+            'intake_check_close' => $request->intake_check_close
+            // 'status' => '1'
         ]);
 
         return redirect()->route('intake.index')

@@ -63,7 +63,7 @@
                                         {{ Form::text('', $applicant_detail->majorThree->major_name, ['class' => 'form-control', 'readonly' => 'true']) }}
                                     </div>
                                 @endif
-                                <a class="btn btn-primary" href="{{ URL('/registration/'.$applicant_detail->id.'/edit' )}}">Proceed with Application</a>
+                                <a class="btn btn-primary float-right" href="{{ URL('/registration/'.$applicant_detail->id.'/edit' )}}">Proceed with Application</a>
                             </div>
                         </div>
                     </div>
