@@ -22,7 +22,7 @@
                 </div>
                 <div class="panel-container show">
                     <div class="panel-content">
-                        <a class="btn btn-primary pull-right" href="/lead/new_lead"><i class="fal fa-plus-square"></i> Add New Lead</a><br><br>
+                        
                         <table id="lead" class="table table-bordered table-hover table-striped w-100">
                             <thead>
                                 <tr class="bg-primary-50 text-center">
@@ -56,7 +56,9 @@
                             </thead>
                         </table>
                     </div>
-
+                    <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">
+                        <a class="btn btn-primary ml-auto" href="/lead/new_lead"><i class="fal fa-plus-square"></i> Add New Lead</a><br><br>
+                    </div>
                 </div>
             </div>
         </div>

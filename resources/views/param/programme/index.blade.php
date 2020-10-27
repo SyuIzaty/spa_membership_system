@@ -23,12 +23,11 @@
                 <div class="panel-container show">
                     <div class="panel-content">
                         <div class="pull-right mb-4">
-                            {{-- <a class="btn btn-primary pull-right" href="javascript:;" data-toggle="modal" id="new">Add Programme</a> --}}
-                            <a href="/param/programme/create" class="btn btn-primary ml-auto"><i class="fal fa-search-plus"></i> Add New Programme</a>
+                           
                         </div>
                         <table id="programme" class="table table-bordered table-hover table-striped w-100">
                             <thead>
-                                <tr class="bg-highlight">
+                                <tr class="bg-primary-50 text-center">
                                     <th>Programme Code</th>
                                     <th>Programme Name</th>
                                     <th>Programme Duration</th>
@@ -47,41 +46,11 @@
                             </tbody>
 
                         </table>
-                        <!-- datatable end -->
                     </div>
 
                     <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">
-                        {{-- <a href="/param/programme/create" class="btn btn-primary ml-auto"><i class="fal fa-search-plus"></i> Add New Programme</a> --}}
+                        <a href="/param/programme/create" class="btn btn-primary ml-auto"><i class="fal fa-search-plus"></i> Add New Programme</a>
                     </div>
-
-                    {{-- <div class="modal fade" id="crud-modal" aria-hidden="true" >
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title"> Add Programme</h4>
-                                </div>
-                                <div class="modal-body">
-                                    {!! Form::open(['action' => 'ProgrammeController@store', 'method' => 'POST']) !!}
-                                    <div class="form-group">
-                                        {{Form::label('title', 'Programme Code')}}
-                                        {{Form::text('id', '', ['class' => 'form-control', 'placeholder' => 'Programme Code'])}}
-                                    </div>
-                                    <div class="form-group">
-                                        {{Form::label('title', 'Programme Name')}}
-                                        {{Form::text('programme_name', '', ['class' => 'form-control', 'placeholder' => 'Programme Name', 'required'])}}
-                                    </div>
-                                    <div class="form-group">
-                                        {{Form::label('title', 'Programme Description')}}
-                                        {{Form::text('programme_duration', '', ['class' => 'form-control', 'placeholder' => 'Programme Duration', 'required'])}}
-                                    </div>
-                                    <div class="pull-right">
-                                        <button class="btn btn-primary" type="submit">Save</button>
-                                    </div>
-                                    {!! Form::close() !!}
-                                </div>
-                            </div>
-                        </div>
-                    </div> --}}
 
                 </div>
             </div>
@@ -93,9 +62,6 @@
 @section('script')
 
 <script>
-    // $('#new').click(function () {
-    //     $('#crud-modal').modal('show');
-    // });
 
     $(document).ready(function()
     {

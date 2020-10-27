@@ -23,11 +23,11 @@
                 <div class="panel-container show">
                     <div class="panel-content">
                         <div class="pull-right mb-4">
-                            <a href="/param/course/create" class="btn btn-primary ml-auto"><i class="fal fa-search-plus"></i> Add New Course</a>
+                           
                         </div>
                         <table id="course" class="table table-bordered table-hover table-striped w-100">
                             <thead>
-                                <tr class="bg-highlight">
+                                <tr class="bg-primary-50 text-center">
                                     <th>Course Code</th>
                                     <th>Course Name</th>
                                     <th>Credit Hours</th>
@@ -57,6 +57,7 @@
                     </div>
 
                     <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">
+                        <a href="/param/course/create" class="btn btn-primary ml-auto"><i class="fal fa-search-plus"></i> Add New Course</a>
                     </div>
                    
                 </div>

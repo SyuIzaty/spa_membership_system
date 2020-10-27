@@ -27,7 +27,7 @@
                     <table id="course" class="table table-bordered table-hover table-striped w-100">
                         <thead>
                             <tr>
-                                <th colspan="10" class="bg-highlight"><i class="fal fa-list"></i> {{ strtoupper($course->course_name) }}</th>
+                                <th colspan="10" class="bg-primary-50"><i class="fal fa-list"></i> {{ strtoupper($course->course_name) }}</th>
                             </tr>
                             <tr>
                                 <div class="form-group">   
