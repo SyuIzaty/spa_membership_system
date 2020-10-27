@@ -53,7 +53,7 @@ class ApplicantController extends Controller
 
     public function show($id) // Display applicant detail, academic result
     {
-        $applicant = Applicant::where('id',$id)->with(['applicantresult','applicantContactInfo','applicantEmergency.emergencyOne','applicantGuardian.familyOne','applicantGuardian.familyTwo','applicantIntake','status','intakeDetail','applicantstatus','programmeStatus','programmeStatusTwo','programmeStatusThree'])->first();
+        $applicant = Applicant::where('id',$id)->with(['applicantresult','applicantContactInfo','applicantEmergency.emergencyOne','applicantGuardian.familyOne','applicantGuardian.familyTwo','applicantIntake','status','intakeDetail','applicantstatus','programmeStatus','programmeStatusTwo','programmeStatusThree','applicantIntakeOffer'])->first();
 
         // $batch_1 = IntakeDetail::where('intake_code',$applicant->intake_id)->where('status','1')->where('intake_programme',$applicant->applicant_programme)->first();
 
@@ -283,7 +283,9 @@ class ApplicantController extends Controller
 
     public function applicant_published()
     {
-        return view('applicant.applicantpublished');
+        $intakecode = $this->activeIntake();
+
+        return view('applicant.applicantpublished',compact('intakecode'));
     }
 
     public function data_allapplicant() // Datatable: display complete application
@@ -551,7 +553,15 @@ class ApplicantController extends Controller
 
     public function sponsorapplicant()
     {
-        return view('applicant.sponsorapplicant');
+        $intake = Intakes::where('intake_app_open','<=',Carbon::Now())->where('intake_app_close','>=',Carbon::now())->get();
+        return view('applicant.sponsorapplicant', compact('intake'));
+    }
+
+    public function sponsorTemplate(){
+
+        $file = storage_path()."/downloads/SPONSOR_APPLICANT.xlsx";
+        $headers = array('Content-Type: application/xlsx',);
+        return Response::download($file, 'SPONSOR_APPLICANT.xlsx',$headers);
     }
 
     public function import(Request $request) // Upload data from sponsor
@@ -1543,22 +1553,22 @@ class ApplicantController extends Controller
             $query->where('status','1')->where('intake_programme',$request->programme_code);
         }])->first();
 
-        Applicant::updateStatus($request->applicant_id, $request->programme_code, $request->major);
-
         if(isset($intake->intakeDetail->batch_code)){
-            $offer = Applicant::where('id',$request->applicant_id)->update(['batch_code' => $intake->intakeDetail->batch_code]);
+            $offer = Applicant::where('id',$request->applicant_id)->update(['batch_code' => $intake->intakeDetail->batch_code, 'intake_offer' => $intake->intake_id]);
         }else{
             Applicant::where('id',$request->applicant_id)->update(['offered_programme' => '', 'offered_major' => '', 'applicant_status' => '4A', 'student_id' => '']);
             return '<script type="text/javascript">alert("Programme not offered for this intake");history.go(-1);;
             </script>';
         }
 
+        Applicant::updateStatus($request->applicant_id, $request->programme_code, $request->major);
+
         return redirect()->back()->with('message', 'Programme Offered');
     }
 
     public function intakestatus(Request $request)
     {
-        Applicant::where('id',$request->applicant_id)->update(['intake_id'=>$request->intake_id]);
+        Applicant::where('id',$request->applicant_id)->update(['intake_id'=>$request->intake_id, 'intake_offer'=>$request->intake_offer]);
         Applicant::changeIntake($request->applicant_id);
         return redirect()->back();
     }
@@ -1594,10 +1604,11 @@ class ApplicantController extends Controller
             'batch_code' => $request->batch_code,
             'student_id' => $student_id,
             'intake_id' => $intake->intake_code,
+            'intake_offer' => $intake->intake_code,
             'applicant_qualification' => $request->applicant_qualification
         ]);
 
-        // Applicant::updateStatus($applicant['id'], $request->applicant_programme, $request->applicant_major);
+        Applicant::updateStatus($applicant['id'], $request->applicant_programme, $request->applicant_major);
         return redirect()->back()->with('message', 'Programme Offered');
     }
 
@@ -1626,7 +1637,7 @@ class ApplicantController extends Controller
     {
         $detail = Applicant::where('id',$applicants_id)->where('applicant_status','5A')->with(['offeredMajor','offeredProgramme'])->first();
 
-        $intakes = IntakeDetail::where('status', '1')->where('intake_code', $detail->intake_id)->where('intake_programme', $detail->offered_programme)->first();
+        $intakes = IntakeDetail::where('status', '1')->where('intake_code', $detail->intake_id)->where('intake_programme', $detail->offered_programme)->where('batch_code',$detail->batch_code)->first();
 
         $report = PDF::loadView('intake.pdf', compact('detail', 'intakes'));
         $data = [

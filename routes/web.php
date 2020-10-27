@@ -70,6 +70,7 @@ Route::post('updateApplicant', 'ApplicantController@updateApplicant');
 Route::post('/applicant-check', 'ApplicantController@applicantcheck')->name('applicant-check');
 Route::get('/sponsorapplicant', 'ApplicantController@sponsorapplicant');
 Route::post('sendupdateApplicant', 'ApplicantController@sendupdateApplicant');
+Route::get('/sponsorTemplate','ApplicantController@sponsorTemplate');
 
 Route::post('/data_allexport', 'ApplicantController@data_allexport');
 Route::post('/data_incompleteapplicant', 'ApplicantController@data_incompleteapplicant');

@@ -73,8 +73,12 @@
                                         </tbody>
                                     </table>
                                     <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">
-                                        <button type="button" class="btn btn-success ml-auto mr-2" onclick="window.location='{{ route("check-requirements") }}'"><i class="fal fa-check-circle"></i> Check All</button>
-                                        <button type="submit" class="btn btn-primary float-right"><i class="fal fa-check"></i> Check Multiple</button>
+                                        <button type="button" class="btn btn-success ml-auto mr-2" onclick="window.location='{{ route("check-requirements") }}'"><i class="fal fa-check-circle"></i> Run All</button>
+                                        <button type="submit" class="btn btn-primary float-right"><i class="fal fa-check"></i> Run Selected</button>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 text-danger">** Run All: All applicants</div>
+                                        <div class="col-md-12 text-danger">** Run Selected: Selected applicants</div>
                                     </div>
                             </form>
                         </div>

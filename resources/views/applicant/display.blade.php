@@ -67,7 +67,7 @@
                                                 </div>
                                                 <hr class="mt-2 mb-3">
                                                 <div class="card">
-                                                    @if ($applicant->applicant_status != '00')
+                                                    @if ( isset($applicant->applicant_programme) )
                                                         <div class="card-header">Program Selection</div>
                                                         <div class="card-body">
                                                         @if(session()->has('message'))
@@ -75,28 +75,13 @@
                                                             {{ session()->get('message') }}
                                                         </div>
                                                         @endif
-                                                        {!! Form::open(['action' => ['ApplicantController@intakestatus'], 'method' => 'POST'])!!}
-                                                            <div class="row">
-                                                                <div class="col-md-10 form-group">
-                                                                    <input type="hidden" name="applicant_id" value="{{ $applicant->id }}">
-                                                                    {{ Form::label('title', 'Intake Session') }}
-                                                                    <select name="intake_id" class="form-control" id="intake_id">
-                                                                        <option value="{{ $applicant->intake_id }}">{{ $applicant->applicantIntake->intake_code }}</option>
-                                                                        @foreach ($intake as $in)
-                                                                            <option value="{{ $in->id }}">{{ $in->intake_code }}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                                <div class="col-md-2"><button class="btn btn-primary mt-4">Submit</button></div>
-                                                            </div>
-                                                            {!! Form::close() !!}
                                                             <table class="table table-bordered table-sm">
-                                                                <thead class="bg-highlight">
+                                                                <thead class="bg-primary-50 text-center">
                                                                     <th>Applicant Programme</th>
                                                                     <th>Applicant Major</th>
                                                                     <th>Batch Code</th>
                                                                     <th>Result</th>
-                                                                    <th>Applicant Qualification (ACCA)</th>
+                                                                    <th>Highest Qualification</th>
                                                                     <th>Action</th>
                                                                 </thead>
                                                                 {!! Form::open(['action' => ['ApplicantController@applicantstatus'], 'method' => 'POST'])!!}
@@ -224,9 +209,38 @@
                                                                     <td>Batch Code</td>
                                                                     <td>{{ $applicant->batch_code }}</td>
                                                                 </tr>
+                                                                {!! Form::open(['action' => ['ApplicantController@intakestatus'], 'method' => 'POST'])!!}
+                                                                <tr>
+                                                                    <td>Intake Session Apply</td>
+                                                                    <td>
+                                                                        <input type="hidden" name="applicant_id" value="{{ $applicant->id }}">
+                                                                        <select name="intake_id" class="form-control" id="intake_id">
+                                                                            <option value="{{ $applicant->intake_id }}">{{ $applicant->applicantIntake->intake_code }}</option>
+                                                                            @foreach ($intake as $in)
+                                                                                <option value="{{ $in->id }}">{{ $in->intake_code }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Intake Session Offer</td>
+                                                                    <td>
+                                                                        <select class="form-control" name="intake_offer" id="intake_offer">
+                                                                            <option disabled selected>Please select</option>
+                                                                            @foreach ($intake as $in)
+                                                                                <option value="{{ $in->id }}" {{ $applicant->intake_offer == $in->id ? 'selected="Selected"' : ''}}>{{ $in->intake_code }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
                                                             </table>
+                                                            <button class="btn btn-primary btn-sm mt-2 float-right">Update</button>
+                                                            {!! Form::close() !!}
                                                         @endisset
                                                     </div>
+                                                    @else
+                                                    <div class="card-header">Program Selection</div>
+                                                    <div class="card-body"><p>No Information Found</p></div>
                                                     @endif
                                                 </div>
                                             </div>
@@ -426,11 +440,11 @@
                                                     </div>
                                                 @endif
                                                     <table class="table table-bordered">
-                                                        <thead>
-                                                            <th>Programme Code</th>
-                                                            <th>Major Code</th>
-                                                            <th>Action</th>
-                                                        </thead>
+                                                        <tr class="bg-primary-50 text-center">
+                                                            <td>Programme Code</td>
+                                                            <td>Major Code</td>
+                                                            <td>Action</td>
+                                                        </tr>
                                                         @foreach ($applicant_recheck as $app_recheck)
                                                         <form action="{{ route('qualifiedProgramme') }}" method="post" name="form">
                                                             <input type="hidden" name="applicant_id" value="{{ $applicant->id }}">
@@ -451,7 +465,7 @@
                                                                     </select>
                                                                 </td>
                                                                 <td>
-                                                                    @if ($applicant->applicant_status != '5A')
+                                                                    @if ($applicant->applicant_status != '5A' || $applicant->applicant_status != '5C')
                                                                     <div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div>
                                                                     @endif
                                                                 </td>
@@ -1010,7 +1024,7 @@
                                     <div class="card-body">
                                         @if (isset($activity))
                                         <table class="table table-bordered">
-                                            <tr class="bg-highlight">
+                                            <tr class="bg-primary-50 text-center">
                                                 <td>Date</td>
                                                 <td>Activity</td>
                                                 <td>User</td>
@@ -1037,7 +1051,7 @@
 @section('script')
 <script>
     $(document).ready(function() {
-        $('.country, .gender, .marital, .race, .religion, .relation, .qualification, .qua, #intake_id').select2();
+        $('.country, .gender, .marital, .race, .religion, .relation, .qualification, .qua, #intake_id ,#intake_offer').select2();
     });
 </script>
 @endsection

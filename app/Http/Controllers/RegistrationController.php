@@ -108,7 +108,7 @@ class RegistrationController extends Controller
 
     public function check($id)
     {
-        $applicant = Applicant::where('id',$id)->where('applicant_status','5C')->with(['offeredProgramme','offeredMajor','attachmentFile'])->first();
+        $applicant = Applicant::where('id',$id)->with(['offeredProgramme','offeredMajor','attachmentFile'])->first();
 
         return view('applicantRegister.check', compact('applicant'));
     }
@@ -172,7 +172,6 @@ class RegistrationController extends Controller
                 'applicant_major_2'=>$request->applicant_major_2,
                 'applicant_programme_3'=>$request->applicant_programme_3,
                 'applicant_major_3'=>$request->applicant_major_3,
-                'applicant_status'=>'00',
                 ]);
             return $this->edit($applicant_id->id);
 
@@ -183,7 +182,8 @@ class RegistrationController extends Controller
 
             Applicant::firstRegistration($applicant_detail['id']);
 
-            return redirect()->route('printRef', ['id' => $request->applicant_ic]);
+            return $this->edit($applicant_detail->id);
+            // return redirect()->route('printRef', ['id' => $request->applicant_ic]);
         }
     }
 

@@ -15,6 +15,7 @@
                 <div class="card-body">
                     <hr class="mt-2 mb-3">
                     @if (isset($applicant) )
+                        @if ($applicant->applicant_status == '5C')
                         <div class="d-flex justify-content-lg-center">
                             {{-- @foreach ($applicant as $applicants) --}}
                             <div class="p-2">
@@ -56,6 +57,33 @@
                             </div>
                             {{-- @endforeach --}}
                         </div>
+                        @endif
+                        @if ($applicant->applicant_status == '3R')
+                        <div class="d-flex justify-content-lg-center">
+                            {{-- @foreach ($applicant as $applicants) --}}
+                            <div class="p-2">
+                                <div class="card">
+                                    <div class="card-body">
+                                        SORRY YOU DID NOT MEET MINIMUM QUALIFICATION
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- @endforeach --}}
+                        </div>
+                        @endif
+                        @if ($applicant->applicant_status == '0' || $applicant->applicant_status == '3G' || $applicant->applicant_status == '4A' || $applicant->applicant_status == '5A')
+                        <div class="d-flex justify-content-lg-center">
+                            {{-- @foreach ($applicant as $applicants) --}}
+                            <div class="p-2">
+                                <div class="card">
+                                    <div class="card-body">
+                                        YOUR APPLICATION IS BEING PROCESSED
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- @endforeach --}}
+                        </div>
+                        @endif
                     @else
                         <div class="d-flex justify-content-lg-center">
                             <div class="p-2">

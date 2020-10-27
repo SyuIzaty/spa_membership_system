@@ -6,6 +6,7 @@ use App\Applicant;
 use App\ApplicantContact;
 use App\ApplicantGuardian;
 use App\Intakes;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
@@ -20,7 +21,7 @@ class ApplicantImport implements ToModel, WithHeadingRow, WithValidation
     */
     public function model(array $row)
     {
-        $intakes = Intakes::where('status','1')->first();
+        $intakes = Intakes::where('intake_app_open','<=',Carbon::Now())->where('intake_app_close','>=',Carbon::now())->first();
         $applicant = Applicant::create([
             'applicant_name' => $row['name'],
             'applicant_email' => $row['email'],

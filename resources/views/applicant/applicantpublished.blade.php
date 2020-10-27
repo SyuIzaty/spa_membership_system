@@ -43,6 +43,8 @@
                                         <th>BATCH</th>
                                         <th>PROG</th>
                                         <th>MAJOR</th>
+                                        <th></th>
+                                        <th></th>
                                         <th>ACTION</th>
                                     </tr>
                                     <tr>
@@ -55,6 +57,8 @@
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Batch"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Programme"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Major"></td>
+                                        <td></td>
+                                        <td></td>
                                         <td></td>
                                     </tr>
                                 </thead>
@@ -97,6 +101,7 @@
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
+            columnDefs: [{ "visible": false,"targets":[9]}, { "visible": false,"targets":[10]}],
             columns: [
                     { data: 'id', name: 'id' },
                     { data: 'student_id', name: 'student_id' },
@@ -107,26 +112,69 @@
                     { data: 'batch_code', name: 'batch_code' },
                     { data: 'offered_programme', name: 'offered_programme' },
                     { data: 'offered_major', name: 'offered_major' },
+                    { data: 'applicant_intake.intake_app_close' },
+                    { data: 'applicant_intake.intake_app_open' },
                     { data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
                 "order": [[ 1, "asc" ]],
                 "initComplete": function(settings, json) {
+                    // var column = this.api().column(4);
+                    // var select = $('<select class="form-control"><option value=""></option></select>')
+                    // .appendTo( $('#intake').empty().text('Intake: ') )
+                    // .on('change',function(){
+                    //     var val = $.fn.DataTable.util.escapeRegex(
+                    //         $(this).val()
+                    //     );
+                    //     column
+                    //     .search(val ? '^'+val+'$' : '', true, false).draw();
+                    // });
+                    // column.data().unique().sort().each(function (d, j){
+                    //     select.append( '<option value="'+d+'">'+d+'</option>' );
+                    // });
+
                     var column = this.api().column(4);
-                    var select = $('<select class="form-control"><option value=""></option></select>')
+                    var select = $('<select id="filterselect" class="select2 form-control" multiple></select>')
                     .appendTo( $('#intake').empty().text('Intake: ') )
                     .on('change',function(){
-                        var val = $.fn.DataTable.util.escapeRegex(
-                            $(this).val()
-                        );
-                        column
-                        .search(val ? '^'+val+'$' : '', true, false).draw();
+                        // var val = $.fn.DataTable.util.escapeRegex(
+                        //     $(this).val()
+                        // );
+                        var selected = $(this).val().join('|');
+                        if(selected)
+                        {
+                            table
+                            .columns()
+                            .search( '' )
+                            .column(4)
+                            .search(selected ? selected : '', true, false).draw();
+                        }
                     });
-                    column.data().unique().sort().each(function (d, j){
-                        select.append( '<option value="'+d+'">'+d+'</option>' );
-                    });
+
+                    @foreach($intakecode as $key => $ic)
+                    select.append('<option value="{{ $ic["intake_code"] }}" <?php if($ic["intake_app_close"] >= now() && $ic["intake_app_open"] <= now()) echo "selected" ?> >{{ $ic["intake_code"] }}</option>' );
+                    @endforeach
+                    $('#filterselect').select2();
                 }
         });
+
+        function showdefault()
+        {
+            var value = [];
+            @foreach($intakecode as $ic)
+              if( "{{ $ic["intake_app_close"] }}" >= "{{ now() }}" && "{{ $ic["intake_app_open"] }}" <= "{{ now() }}")
+              {
+                value.push("{{ $ic["intake_code"] }}");
+              }
+            @endforeach
+
+            table
+            .column(9)
+            .search("1",true,false)
+            .column(4)
+            .search(value ? value.join('|') : '', true, false)
+            .draw();
+        }
 
     });
 

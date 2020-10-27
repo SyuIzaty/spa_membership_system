@@ -207,13 +207,12 @@
                                             <span class="nav-link-text" data-i18n="nav.active_student">Intake Information</span>
                                         </a>
                                     </li>
-                                    <li>
-
+                                    {{-- <li>
                                         <a href="/offeredprogramme" title="Batch" data-filter-tags="batch">
                                             <i class="fal fa-file-excel"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">Publish Offer Letter</span>
                                         </a>
-                                    </li>
+                                    </li> --}}
                                     <li>
                                         <a href="/batch" title="Batch" data-filter-tags="batch">
                                             <i class="fal fa-address-card"></i>

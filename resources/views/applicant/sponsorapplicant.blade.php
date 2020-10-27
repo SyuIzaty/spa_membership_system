@@ -39,9 +39,23 @@
 
                             <form action={{ url('import-excel') }} method="post" name="importform" enctype="multipart/form-data">
                                 @csrf
-                                <input type="file" name="import_file" class="form-control">
-                                <br>
-                                <button class="btn btn-primary">Import File</button>
+                                <div class="row">
+                                    {{-- <div class="col-md-6">
+                                        <p>Intake Session</p>
+                                        <select name="intake_id" class="form-control" id="intake_id">
+                                            @foreach ($intake as $intakes)
+                                                <option value="{{ $intakes->id }}">{{ $intakes->intake_code }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div> --}}
+                                    <div class="col-md-6">
+                                        <p>Upload Applicant</p>
+                                        <input type="file" name="import_file" class="form-control">
+                                        <br>
+                                    </div>
+                                </div>
+                                <button class="btn btn-success btn-sm float-right mb-3">Import File</button>
+                                <a href="/sponsorTemplate" class="btn btn-primary btn-sm float-right mr-2 mb-3">Download Template</a>
                             </form>
                         </div>
                     </div>
@@ -52,6 +66,8 @@
 @endsection
 @section('script')
 <script>
-
+    $(document).ready(function() {
+        $('#intake_id').select2();
+    });
 </script>
 @endsection

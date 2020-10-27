@@ -51,10 +51,14 @@
                                             <td>{{ $intakes->applicant->count() }}</td>
                                             <td>{{ $intakes->applicant->where('email_sent','1')->count() }}/{{ $intakes->applicant->count() }}</td>
                                             <td>
-                                                @if($intakes['intake_quota'] == '1')
+                                                @if($intakes['intake_quota'] == '1' && !($intakes->applicant->where('email_sent','1')->count() == $intakes->applicant->count()))
                                                 <input type="checkbox" name="check[]" value="{{ $intakes->batch_code }}">
-                                                @else
+                                                @endif
+                                                @if($intakes['intake_quota'] == '0')
                                                 <div class="badge border border-danger text-danger">Insufficient Quota</div>
+                                                @endif
+                                                @if ($intakes['intake_quota'] == '1' && ($intakes->applicant->where('email_sent','1')->count() == $intakes->applicant->count()))
+                                                <div class="badge border border-primary text-primary">All Sent</div>
                                                 @endif
                                             </td>
                                         </tr>
@@ -63,7 +67,7 @@
                                 </tbody>
                             </table>
                             <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">
-                                <button type="submit" class="btn btn-success float-right ml-auto"><i class="fal fa-envelope"></i> Send Email & Update Status</button>
+                                <button type="submit" class="btn btn-success float-right ml-auto"><i class="fal fa-envelope"></i> Publish Offer Letter</button>
                             </div>
                             {!! Form::close() !!}
                         </div>

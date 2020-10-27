@@ -25,7 +25,8 @@ class SendEmail implements ShouldQueue
 
     public function __construct($applicants_id)
     {
-        $applicants_id = $this->applicants_id;
+        // $applicants_id = $this->applicants_id;
+        $this->applicants_id = $applicants_id;
     }
 
     /**
@@ -40,7 +41,7 @@ class SendEmail implements ShouldQueue
 
         if($detail)
         {
-            $intakes = IntakeDetail::where('status', '1')->where('intake_code', $detail->intake_id)->where('intake_programme', $detail->offered_programme)->first();
+            $intakes = IntakeDetail::where('status', '1')->where('intake_code', $detail->intake_id)->where('intake_programme', $detail->offered_programme)->where('batch_code',$detail->batch_code)->first();
 
             $report = PDF::loadView('intake.pdf', compact('detail', 'intakes'));
             $data = [
