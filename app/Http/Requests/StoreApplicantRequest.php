@@ -31,8 +31,8 @@ class StoreApplicantRequest extends FormRequest
     {
         return [
             'applicant_name' => 'required|min:1|max:100',
-            'applicant_ic' => 'required|min:1|max:20',
-            'applicant_phone' => 'required|min:1|max:20',
+            'applicant_ic' => 'required|min:1|max:12',
+            'applicant_phone' => 'required|numeric|min:1',
             'applicant_email' => 'required|min:1|max:100',
             'applicant_nationality' => 'required',
             'applicant_programme' => 'required',

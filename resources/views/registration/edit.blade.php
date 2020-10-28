@@ -15,7 +15,7 @@
                 @csrf
                 <div class="card">
                     <div class="panel-container show">
-                        <div class="panel-content">
+                        <div class="panel-content mt-3">
                             <ul class="nav nav-tabs" role="tablist" id="app">
                                 <li class="nav-item">
                                     <a data-toggle="tab" class="nav-link" href="#details" role="tab">Applicant Details</a>
@@ -24,7 +24,7 @@
                                     <a data-toggle="tab" class="nav-link" href="#qualification" role="tab">Qualification</a>
                                 </li>
                             </ul>
-                            <div class="tab-content" id="tabs">
+                            <div class="tab-content mt-3" id="tabs">
                                 <div class="tab-pane active" id="details" role="tabpanel">
                                     <div class="card">
                                         <div class="card-header">Personal Profile</div>
@@ -94,7 +94,7 @@
                                                 </div>
                                                 <div class="col-md-4 form-group">
                                                     {{ Form::label('title', 'Date of Birth') }}
-                                                    {{ Form::date('applicant_dob', '', ['class' => 'form-control']) }}
+                                                    {{ Form::date('applicant_dob', isset($applicant->applicant_dob) ? $applicant->applicant_dob : '', ['id' => 'applicant_dob', 'class' => 'form-control']) }}
                                                 </div>
                                                 <div class="col-md-4 form-group">
                                                     {{ Form::label('title', 'Marital Status') }}
@@ -111,7 +111,7 @@
                                                             <option value="{{ $races->race_code }}" {{ $applicant->applicant_race == $races->race_code ? 'selected="Selected"' : ''}}>{{ $races->race_name }}</option>
                                                         @endforeach
                                                     </select>
-                                                    <input class="form-control" type="text" id="user_race" name="user_race" placeholder="Race" disabled="disabled" />
+                                                    {{ Form::text('other_race', isset($applicant->other_race) ? $applicant->other_race : '', ['id' => 'other_race', 'class' => 'form-control', 'placeholder' => 'Race', 'readonly' => 'true' ,'onkeyup' => 'this.value = this.value.toUpperCase()']) }}
                                                 </div>
                                                 <div class="col-md-4 form-group">
                                                     {{ Form::label('title', 'Religion') }}
@@ -120,7 +120,7 @@
                                                             <option value="{{ $religions->religion_code }}" {{ $applicant->applicant_religion == $religions->religion_code ? 'selected="Selected"' : ''}}>{{ $religions->religion_name }}</option>
                                                         @endforeach
                                                     </select>
-                                                    <input class="form-control" type="text" id="user_religion" name="user_religion" placeholder="Religion" disabled="disabled" />
+                                                    {{ Form::text('other_religion', isset($applicant->other_religion) ? $applicant->other_religion : '', ['id' => 'other_religion', 'class' => 'form-control', 'placeholder' => 'Religion', 'readonly' => 'readonly' ,'onkeyup' => 'this.value = this.value.toUpperCase()']) }}
                                                 </div>
                                                 <div class="col-md-12 form-group">
                                                     {{ Form::label('title', 'Address Line 1') }} *
@@ -134,7 +134,7 @@
                                                     {{ Form::text('applicant_address_2', isset($applicant->applicantContactInfo->applicant_address_2) ? $applicant->applicantContactInfo->applicant_address_2 : '', ['id' => 'applicant_address_2', 'class' => 'form-control', 'placeholder' => 'Address Line 2', 'onkeyup' => 'this.value = this.value.toUpperCase()']) }}
                                                 </div>
                                                 <div class="col-md-6 form-group">
-                                                    {{ Form::label('title', 'Postcode') }}
+                                                    {{ Form::label('title', 'Postcode') }} *
                                                     {{ Form::number('applicant_poscode', isset($applicant->applicantContactInfo->applicant_poscode) ? $applicant->applicantContactInfo->applicant_poscode : '', ['class' => 'form-control', 'placeholder' => 'Postcode']) }}
                                                 </div>
                                                 <div class="col-md-6 form-group">
@@ -193,7 +193,7 @@
                                                 </div>
                                                 <div class="col-md-6 form-group">
                                                     {{ Form::label('title', 'Father / Guardian I Phone Number') }} *
-                                                    {{ Form::number('guardian_one_mobile', isset($applicant->applicantGuardian->guardian_one_mobile) ? $applicant->applicantGuardian->guardian_one_mobile : '', ['class' => 'form-control', 'placeholder' => 'Guardian Phone Number']) }}
+                                                    {{ Form::text('guardian_one_mobile', isset($applicant->applicantGuardian->guardian_one_mobile) ? $applicant->applicantGuardian->guardian_one_mobile : '', ['class' => 'form-control', 'placeholder' => 'Guardian Phone Number']) }}
                                                     @error('guardian_one_mobile')
                                                         <p style="color: red">{{ $message }}</p>
                                                     @enderror
@@ -232,7 +232,7 @@
                                                 </div>
                                                 <div class="col-md-6 form-group">
                                                     {{ Form::label('title', 'Mother / Guardian II Phone Number') }} *
-                                                    {{ Form::number('guardian_two_mobile', isset($applicant->applicantGuardian->guardian_two_mobile) ? $applicant->applicantGuardian->guardian_two_mobile : '', ['class' => 'form-control', 'placeholder' => 'Guardian Phone Number']) }}
+                                                    {{ Form::text('guardian_two_mobile', isset($applicant->applicantGuardian->guardian_two_mobile) ? $applicant->applicantGuardian->guardian_two_mobile : '', ['class' => 'form-control', 'placeholder' => 'Guardian Phone Number']) }}
                                                     @error('guardian_two_mobile')
                                                         <p style="color: red">{{ $message }}</p>
                                                     @enderror
@@ -368,6 +368,8 @@
     var existingcgpa = {!! $existingcgpa !!};
     var myfiles = {!! json_encode($groupedfiles) !!};
     var publicpath = "{{url('/')}}";
+    var spmdefault = true;
+    var mandatorySub = ["1103","1119","1449"];
 
     window.history.forward();
         function noBack() {
@@ -427,19 +429,21 @@
     $(function () {
         $("#applicant_race").change(function () {
             if ($(this).val() == '0000') {
-                $("#user_race").removeAttr("disabled");
-                $("#user_race").focus();
+                $("#other_race").removeAttr("readonly");
+                $("#other_race").focus();
             } else {
-                $("#user_race").attr("disabled", "disabled");
+                $('#other_race').val('');
+                $("#other_race").attr("readonly", "true");
             }
         });
 
         $("#applicant_religion").change(function () {
-            if ($(this).val() == '0') {
-                $("#user_religion").removeAttr("disabled");
-                $("#user_religion").focus();
+            if ($(this).val() == 'O') {
+                $("#other_religion").removeAttr("readonly");
+                $("#other_religion").focus();
             } else {
-                $("#user_religion").attr("disabled", "disabled");
+                $('#other_religion').val('');
+                $("#other_religion").attr("readonly", "true");
             }
         });
     });

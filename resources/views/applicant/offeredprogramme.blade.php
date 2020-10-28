@@ -57,8 +57,11 @@
                                                 @if($intakes['intake_quota'] == '0')
                                                 <div class="badge border border-danger text-danger">Insufficient Quota</div>
                                                 @endif
-                                                @if ($intakes['intake_quota'] == '1' && ($intakes->applicant->where('email_sent','1')->count() == $intakes->applicant->count()))
+                                                @if ($intakes['intake_quota'] == '1' && ($intakes->applicant->where('email_sent','1')->count() == $intakes->applicant->count()) && ($intakes->applicant->count() != '0'))
                                                 <div class="badge border border-primary text-primary">All Sent</div>
+                                                @endif
+                                                @if ($intakes['intake_quota'] == '1' && ($intakes->applicant->count() == '0'))
+                                                <div class="badge border border-warning text-warning">No Offer</div>
                                                 @endif
                                             </td>
                                         </tr>

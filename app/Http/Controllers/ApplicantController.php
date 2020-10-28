@@ -553,7 +553,7 @@ class ApplicantController extends Controller
 
     public function sponsorapplicant()
     {
-        $intake = Intakes::where('intake_app_open','<=',Carbon::Now())->where('intake_app_close','>=',Carbon::now())->get();
+        $intake = Intakes::where('intake_app_open','<=',Carbon::Now())->where('intake_app_close','>=',Carbon::now())->first();
         return view('applicant.sponsorapplicant', compact('intake'));
     }
 

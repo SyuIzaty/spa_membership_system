@@ -27,4 +27,9 @@ class Intakes extends Model
         return $query('status','1');
     }
 
+    public function applicants()
+    {
+        return $this->hasMany('App\Applicant','intake_id','id');
+    }
+
 }

@@ -32,6 +32,7 @@ use App\Http\Requests\StoreApplicantDetailRequest;
 use File;
 use Storage;
 use Response;
+use Illuminate\Database\Eloquent\Builder;
 
 class RegistrationController extends Controller
 {
@@ -106,7 +107,7 @@ class RegistrationController extends Controller
         return view('applicantRegister.index', compact('intake'));
     }
 
-    public function check($id)
+    public function check($id,$intake)
     {
         $applicant = Applicant::where('id',$id)->with(['offeredProgramme','offeredMajor','attachmentFile'])->first();
 
@@ -115,28 +116,12 @@ class RegistrationController extends Controller
 
     public function search(Request $request)
     {
-        $intake = Intakes::where('intake_app_open','<=',Carbon::Now())->where('intake_app_close','>=',Carbon::now())->get();
-
-        $check = Intakes::where('intake_check_open','<=',Carbon::Now())->where('intake_check_close','>=',Carbon::now())->get();
-
-        foreach($intake as $intakes){
-            if($intakes == 'NULL'){
-                $applicant = 'NULL';
-            }else{
-                $applicant = Applicant::where('applicant_ic',$request->applicant_ic)->where('intake_id',$intakes->id)->with('applicantIntake')->get();
-            }
-        }
-        if($check->count()!=0){
-            foreach($check as $checks){
-                $check_applicant = Applicant::where('applicant_ic',$request->applicant_ic)->where('intake_id',$checks->id)->get();
-            }
-        }
-        else{
-            $check_applicant = 'NULL';
-        }
-
-
-        return view('applicantRegister.display', compact('applicant','intakes','check_applicant','checks'));
+        $check_applicant = Intakes::where('intake_check_open','<=',Carbon::Now())->where('intake_check_close','>=',Carbon::now())
+            ->with(['applicants'=>function($query) use ($request){
+                $query->where('applicant_ic',$request->applicant_ic);
+            }])->get();
+        $applicant = Applicant::where('applicant_ic',$request->applicant_ic)->get();
+        return view('applicantRegister.display', compact('applicant','check_applicant'));
     }
 
     /**
@@ -182,8 +167,8 @@ class RegistrationController extends Controller
 
             Applicant::firstRegistration($applicant_detail['id']);
 
-            return $this->edit($applicant_detail->id);
             // return redirect()->route('printRef', ['id' => $request->applicant_ic]);
+            return redirect()->to('registration/'.$applicant_detail->id.'/edit');
         }
     }
 
@@ -368,8 +353,10 @@ class RegistrationController extends Controller
             'applicant_nationality' => $request->applicant_nationality,
             'applicant_gender' => $request->applicant_gender,
             'applicant_marital' => $request->applicant_marital,
-            'applicant_race' => $applicant_race,
+            'applicant_race' => $request->applicant_race,
+            'other_race' => $request->other_race,
             'applicant_religion' => $applicant_religion,
+            'other_religion' => $request->other_religion,
             'applicant_dob' => $request->applicant_dob,
             'applicant_qualification' => $request->highest_qualification,
         ]);
@@ -650,7 +637,7 @@ class RegistrationController extends Controller
                 return 1;
             }
 
-            Applicant::completeApplication($id);
+            // Applicant::completeApplication($id);
         }
         return redirect()->route('printReg', ['id' => $id]);
     }

@@ -31,14 +31,14 @@
                     </div>
                     <div class="col-md-4 form-group">
                         {{ Form::label('title', 'IC Number / Passport') }}
-                        {{ Form::number('applicant_ic', '', ['class' => 'form-control', 'placeholder' => 'Applicant IC Number', 'placeholder' => 'Eg: 991023106960']) }}
+                        {{ Form::text('applicant_ic', '', ['class' => 'form-control', 'placeholder' => 'Applicant IC Number', 'placeholder' => 'Eg: 991023106960']) }}
                         @error('applicant_ic')
                             <p style="color: red">{{ $message }}</p>
                         @enderror
                     </div>
                     <div class="col-md-4 form-group">
                         {{ Form::label('title', 'Phone Number') }}
-                        {{ Form::number('applicant_phone', '', ['class' => 'form-control', 'placeholder' => 'Applicant Phone']) }}
+                        {{ Form::text('applicant_phone', '', ['class' => 'form-control', 'placeholder' => 'Applicant Phone']) }}
                         @error('applicant_phone')
                             <p style="color: red">{{ $message }}</p>
                         @enderror

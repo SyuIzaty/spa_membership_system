@@ -6,11 +6,16 @@ $(document).ready(function () {
     if(existing)
     {
         existing.forEach(function(ele){
-          if(appended.indexOf(ele.qualifications.id) == -1)
-          {
-              addQualification(ele.qualifications.qualification_code,ele.qualifications.id);
-              appended.push(ele.qualifications.id);
-          }
+        if(appended.indexOf(ele.qualifications.id) == -1)
+        {
+            if(ele.qualifications.qualification_code == "SPM")
+              {
+                spmdefault = false;
+              }
+
+            addQualification(ele.qualifications.qualification_code,ele.qualifications.id);
+            appended.push(ele.qualifications.id);
+        }
 
           var letter = "addRow" + firstLetterUpper(ele.qualifications.qualification_code);
 
@@ -117,7 +122,7 @@ function addQualification(x,xval,data=null){
                         </div>\
                         <input type="hidden" name="filetype[]" value="'+xval+'"/>\
                         <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
-                        <button class="btn btn-primary float-right btn-sm" id="addspmrow" onclick="addRowSpm();return false;"><i class="fal fa-plus"></i> Add Subject</button>\
+                        <button type="button" class="btn btn-primary btn-sm float-right" id="addspmrow" onclick="addRowSpm();return false;"><i class="fal fa-plus"></i> Add Subject</button>\
                         <button type="button" class="btn btn-danger float-right btn-sm mr-2" data-type="qualification" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
                     </div>\
                 </div>\
@@ -154,6 +159,13 @@ function addQualification(x,xval,data=null){
                 );
                 fieldWrapper.append(fName);
                 $(".content").append(fieldWrapper);
+
+                if(spmdefault)
+                {
+                    mandatorySub.forEach(function(e){
+                        addRowSpm(0,e,1);
+                    });
+                }
             }
         }
 
@@ -634,7 +646,7 @@ function addQualification(x,xval,data=null){
                             </tr>\
                             <tr>\
                             <td>Graduation Year</td>\
-                            <td><input type="number" class="form-control" name="diploma_year" value="'+myyear+'" placeholder="Graduation Year" required></td>\
+                            <td><input type="text" class="form-control" name="diploma_year" value="'+myyear+'" placeholder="Graduation Year" required></td>\
                             <td>CGPA</td>\
                             <td><input type="text" class="form-control" placeholder="CGPA" name="diploma_cgpa" value="'+mycgpa+'" id="" required></td>\
                             </tr>\
@@ -677,7 +689,7 @@ function addQualification(x,xval,data=null){
                             </tr>\
                             <tr>\
                                 <td>Graduation Year</td>\
-                                <td><input type="number" class="form-control" value="'+myyear+'" name="matriculation_year"></td>\
+                                <td><input type="text" class="form-control" value="'+myyear+'" name="matriculation_year"></td>\
                                 <td>CGPA</td>\
                                 <td><input type="hidden" name="matriculation_type" value="' +
                         xval +
@@ -941,7 +953,7 @@ function addQualification(x,xval,data=null){
                             </tr>\
                             <tr>\
                             <td>Graduation Year</td>\
-                            <td><input type="number" class="form-control" name="foundation_year" value="'+myyear+'" placeholder="Graduation Year" required></td>\
+                            <td><input type="text" class="form-control" name="foundation_year" value="'+myyear+'" placeholder="Graduation Year" required></td>\
                             <td>CGPA</td>\
                             <td><input type="text" class="form-control" placeholder="CGPA" name="foundation_cgpa" value="'+mycgpa+'" id="" required></td>\
                             </tr>\
@@ -1050,14 +1062,16 @@ function addQualification(x,xval,data=null){
 var spmsub = [];
 function addRowSpm(id = null, sub = null,grade = null) {
     var myid = id ? id : 0;
-    if(id)
+    if(id !== null)
     {
         $('#spm-table tbody').empty()
     }
 
     var rowCount = $('#spm-table tr').length;
+    var subCode = "";
 
     let spmlistarr = [];
+    var Showbuttons = `<button value="-" data-type="result" onclick="Delete(this,${myid})" class="btn btn-danger btn-sm float-right remove">Delete</button>`;
 
     for (let i = 0; i < listSPM.length; i++) {
 
@@ -1069,6 +1083,11 @@ function addRowSpm(id = null, sub = null,grade = null) {
                 listSPM[i][1] +
                 "</option>"
         );
+        if(sub && listSPM[i][0] == sub)
+        {
+            var subCode = listSPM[i][1];
+        }
+
     }
     let spmgredlistarr = [];
     for (let i = 0; i < listGradeSPM.length; i++) {
@@ -1079,6 +1098,12 @@ function addRowSpm(id = null, sub = null,grade = null) {
                 listGradeSPM[i][1] +
                 "</option>"
         );
+    }
+
+    if( mandatorySub.indexOf(sub) !== -1 )
+    {
+      Showbuttons = "";
+      spmlistarr = [`<option value="${sub}">${subCode}</option`];
     }
 
     var markup =
@@ -1094,11 +1119,7 @@ function addRowSpm(id = null, sub = null,grade = null) {
         spmgredlistarr.toString() +
         '</select>\
             </td>\
-            <td>\
-                <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-md float-right remove">\
-                   Delete\
-                </button>\
-            </td>\
+            <td>'+ Showbuttons +'</td>\
         </tr>';
     $("#spm-table tr:last").after(markup);
 
@@ -1160,7 +1181,7 @@ function addRowStam(id = null, sub = null,grade = null) {
         '</select>\
             </td>\
             <td>\
-                <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-md float-right remove">\
+                <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-sm float-right remove">\
                     Delete\
                 </button>\
             </td>\
@@ -1223,7 +1244,7 @@ function addRowUec(id = null, sub = null,grade = null) {
         '</select>\
             </td>\
             <td>\
-                <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-md float-right remove">\
+                <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-sm float-right remove">\
                     Delete\
                 </button>\
             </td>\
@@ -1287,7 +1308,7 @@ function addRowStpm(id = null, sub = null,grade = null) {
         '</select>\
             </td>\
             <td>\
-               <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-md float-right remove">\
+               <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-sm float-right remove">\
                     Delete\
                 </button>\
             </td>\
@@ -1349,7 +1370,7 @@ function addRowAlevel(id = null, sub = null,grade = null) {
         '</select>\
             </td>\
             <td>\
-                <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-md float-right remove">\
+                <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-sm float-right remove">\
                     Delete\
                 </button>\
             </td>\
@@ -1411,7 +1432,7 @@ function addRowOlevel(id = null, sub = null,grade = null) {
         '</select>\
             </td>\
             <td>\
-               <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-md float-right remove">\
+               <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-sm float-right remove">\
                     Delete\
                 </button>\
             </td>\

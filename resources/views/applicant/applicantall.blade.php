@@ -109,6 +109,9 @@
 
     $(document).ready(function()
     {
+
+        $('#intake, #batch_code, #program, #status').select2();
+
         $('#offer thead tr .hasinput').each(function(i)
         {
             $('input', this).on('keyup change', function()

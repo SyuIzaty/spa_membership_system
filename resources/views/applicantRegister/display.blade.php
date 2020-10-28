@@ -15,22 +15,27 @@
                 <div class="card-body">
                     <hr class="mt-2 mb-3">
                     <div class="d-flex justify-content-lg-center">
-                        @if(!($check_applicant->isEmpty()))
+                        {{-- @if(!($check_applicant->isEmpty())) --}}
+                        @if($check_applicant->isnotEmpty())
                             <div class="row">
-                                <div class="d-flex justify-content-lg-center col-md-12">
-                                    <h2>CHECK APPLICATION</h2>
-                                </div>
-                                <div class="d-flex justify-content-lg-center col-md-12">
-                                    If you have made application for any INTEC programme before and <br>wish to check your application, Click the button below
-                                </div>
-                                <div class="d-flex justify-content-lg-center col-md-12">
-                                    <div class="p-2"><a href="/applicantRegister/check/{{ $check_applicant->first()->id }}" class="btn btn-primary mt-3">CHECK APPLICATION</a></div>
-                                </div>
+                                @foreach ($applicant as $applicants)
+                                    @if ($applicants->intake_offer == $check_applicant->first()->id)
+                                        <div class="d-flex justify-content-lg-center col-md-12">
+                                            <h2>CHECK APPLICATION</h2>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-center col-md-12">
+                                            If you have made application for any INTEC programme before and <br>wish to check your application, Click the button below
+                                        </div>
+                                        <div class="d-flex justify-content-lg-center col-md-12">
+                                            <div class="p-2"><a href="/applicantRegister/check/{{ $applicants->id }}/{{ $applicants->intake_offer }}" class="btn btn-primary mt-3">CHECK APPLICATION</a></div>
+                                        </div>
+                                    @endif
+                                @endforeach
                             </div>
                         @endif
                     </div>
                     <hr class="mt-2 mb-3" style="border: 1px solid #ececec">
-                    @if($applicant != 'NULL')
+                    {{-- @if($intake->isNotEmpty()) --}}
                         @foreach($applicant as $applicants)
                         <div class="d-flex justify-content-lg-center">
                             <h2>EDIT APPLICATION</h2>
@@ -55,7 +60,7 @@
                                 </div>
                             @endif
                         @endforeach
-                    @endif
+                    {{-- @endif --}}
                 </div>
             </div>
         </div>

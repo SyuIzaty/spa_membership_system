@@ -39,18 +39,18 @@
                         </div>
                         <div class="form-group col-md-4">
                             {{ Form::label('title','Religion') }}
-                            @if(isset($applicant_detail->religion))
+                            @if($applicant_detail->applicant_religion != 'O')
                             {{ Form::text('', $applicant_detail->religion->religion_name, ['class' => 'form-control', 'readonly' => 'true']) }}
                             @else
-                            {{ Form::text('', $applicant_detail->applicant_religion, ['class' => 'form-control', 'readonly' => 'true']) }}
+                            {{ Form::text('', $applicant_detail->other_religion, ['class' => 'form-control', 'readonly' => 'true']) }}
                             @endif
                         </div>
                         <div class="col-md-4 form-group">
                             {{ Form::label('title', 'Race') }}
-                            @if(isset($applicant_detail->race))
+                            @if($applicant_detail->applicant_race != '0000')
                             {{ Form::text('', $applicant_detail->race->race_name, ['class' => 'form-control', 'readonly' => 'true']) }}
                             @else
-                            {{ Form::text('', $applicant_detail->applicant_race, ['class' => 'form-control', 'readonly' => 'true']) }}
+                            {{ Form::text('', $applicant_detail->other_race, ['class' => 'form-control', 'readonly' => 'true']) }}
                             @endif
                         </div>
                         <div class="form-group col-md-6">

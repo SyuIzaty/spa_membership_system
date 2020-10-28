@@ -101,7 +101,7 @@ Route::patch('update/{id}/{type}','RegistrationController@update');
 // Route::get('/check/{id}','RegistrationController@getUsers');
 Route::get('/applicantRegister', 'RegistrationController@register')->name('applicantRegister.index');
 Route::get('search', 'RegistrationController@search');
-Route::get('applicantRegister/check/{id}', 'RegistrationController@check');
+Route::get('applicantRegister/check/{id}/{intake_id}', 'RegistrationController@check');
 Route::get('registration/printRef/{id}','RegistrationController@printRef')->name('printRef');
 Route::get('registration/printReg/{id}','RegistrationController@printReg')->name('printReg');
 Route::get('registration-data/{id}','RegistrationController@data');

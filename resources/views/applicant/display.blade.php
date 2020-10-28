@@ -118,7 +118,7 @@
                                                                     </td>
                                                                     <td>
                                                                         @if ($applicant->programme_status == '4A' && $applicant->applicant_status != '5A')
-                                                                        <div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div>
+                                                                        <div class="col-md-2"><button class="btn btn-primary btn-xs">Offer</button></div>
                                                                         @endif
                                                                     </td>
                                                                 </tr>
@@ -152,7 +152,7 @@
                                                                     </td>
                                                                     <td>
                                                                         @if ($applicant->programme_status_2 == '4A' && $applicant->applicant_status != '5A')
-                                                                        <div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div>
+                                                                        <div class="col-md-2"><button class="btn btn-primary btn-xs">Offer</button></div>
                                                                         @endif
                                                                     </td>
                                                                 </tr>
@@ -187,27 +187,45 @@
                                                                     </td>
                                                                     <td>
                                                                         @if ($applicant->programme_status_3 == '4A' && $applicant->applicant_status != '5A')
-                                                                        <div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div>
+                                                                        <div class="col-md-2"><button class="btn btn-primary btn-xs">Offer</button></div>
                                                                         @endif
                                                                     </td>
                                                                 </tr>
                                                                 {!! Form::close() !!}
                                                                 @endisset
                                                             </table>
-                                                        @isset($applicant->offered_programme)
+                                                        {{-- @isset($applicant->offered_programme) --}}
                                                             <table class="table table-bordered table-sm">
                                                                 <th colspan="2" style="text-align:center">Offered Programme</th>
                                                                 <tr>
                                                                     <td>Offer Programme</td>
-                                                                    <td>{{ $applicant->offered_programme }}</td>
+                                                                    <td>
+                                                                        @if ($applicant->offered_programme == '')
+                                                                        No Information Found
+                                                                        @else
+                                                                        {{ $applicant->offered_programme }}
+                                                                        @endif
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Offered Major</td>
-                                                                    <td>{{ $applicant->offered_major }}</td>
+                                                                    <td>
+                                                                        @if ($applicant->offered_major == '')
+                                                                        No Information Found
+                                                                        @else
+                                                                        {{ $applicant->offered_major }}
+                                                                        @endif
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Batch Code</td>
-                                                                    <td>{{ $applicant->batch_code }}</td>
+                                                                    <td>
+                                                                        @if ($applicant->batch_code == '')
+                                                                        No Information Found
+                                                                        @else
+                                                                        {{ $applicant->batch_code }}
+                                                                        @endif
+                                                                    </td>
                                                                 </tr>
                                                                 {!! Form::open(['action' => ['ApplicantController@intakestatus'], 'method' => 'POST'])!!}
                                                                 <tr>
@@ -236,7 +254,7 @@
                                                             </table>
                                                             <button class="btn btn-primary btn-sm mt-2 float-right">Update</button>
                                                             {!! Form::close() !!}
-                                                        @endisset
+                                                        {{-- @endisset --}}
                                                     </div>
                                                     @else
                                                     <div class="card-header">Program Selection</div>
@@ -466,7 +484,7 @@
                                                                 </td>
                                                                 <td>
                                                                     @if ($applicant->applicant_status != '5A' || $applicant->applicant_status != '5C')
-                                                                    <div class="col-md-2"><button class="btn btn-primary btn-xs"><i class="fal fa-check"></i></button></div>
+                                                                    <div class="col-md-2"><button class="btn btn-primary btn-xs">Offer</button></div>
                                                                     @endif
                                                                 </td>
                                                             </tr>
@@ -495,7 +513,7 @@
 
                                             {{-- {!! isset($spm->first()->file->web_path) ? '<a href="' .  url($spm->first()->file->web_path) . '">Supporting Document</a>' : 'No Supporting Document' !!} --}}
                                                 <table class="table table-bordered table-sm">
-                                                <thead class="bg-highlight">
+                                                <thead class="bg-primary-50 text-center">
                                                     <th>Subject Code</th>
                                                     <th>Subject Name</th>
                                                     <th>Grade</th>
@@ -517,7 +535,7 @@
                                                 <p>No Supporting Document</p>
                                             @endif
                                                 <table class="table table-bordered table-sm">
-                                                <thead class="bg-highlight">
+                                                <thead class="bg-primary-50 text-center">
                                                     <th>Subject Code</th>
                                                     <th>Subject Name</th>
                                                     <th>Grade</th>
@@ -539,7 +557,7 @@
                                                 <p>No Supporting Document</p>
                                             @endif
                                                 <table class="table table-bordered table-sm">
-                                                <thead class="bg-highlight">
+                                                <thead class="bg-primary-50 text-center">
                                                     <th>Subject Code</th>
                                                     <th>Subject Name</th>
                                                     <th>Grade</th>
@@ -561,7 +579,7 @@
                                                 <p>No Supporting Document</p>
                                             @endif
                                                 <table class="table table-bordered table-sm">
-                                                <thead class="bg-highlight">
+                                                <thead class="bg-primary-50 text-center">
                                                     <th>Subject Code</th>
                                                     <th>Subject Name</th>
                                                     <th>Grade</th>
@@ -583,7 +601,7 @@
                                                 <p>No Supporting Document</p>
                                             @endif
                                                 <table class="table table-bordered table-sm">
-                                                <thead class="bg-highlight">
+                                                <thead class="bg-primary-50 text-center">
                                                     <th>Subject Code</th>
                                                     <th>Subject Name</th>
                                                     <th>Grade</th>
@@ -605,7 +623,7 @@
                                                 <p>No Supporting Document</p>
                                             @endif
                                                 <table class="table table-bordered table-sm">
-                                                <thead class="bg-highlight">
+                                                <thead class="bg-primary-50 text-center">
                                                     <th>Subject Code</th>
                                                     <th>Subject Name</th>
                                                     <th>Grade</th>
@@ -865,6 +883,10 @@
                                                                         <option value="{{ $races->race_code }}" {{ $applicant->applicant_race == $races->race_code ? 'selected="Selected"' : ''}}>{{ $races->race_name }}</option>
                                                                     @endforeach
                                                                 </select>
+                                                                @if ($applicant->applicant_race == '0000')
+                                                                    {{ Form::label('title', 'Other Race') }}
+                                                                    <input type="text" class="form-control" name="other_race" value="{{ $applicant->other_race }}">
+                                                                @endif
                                                             </div>
                                                             <div class="col-md-4 form-group">
                                                                 {{ Form::label('title', 'Religion') }}
@@ -873,6 +895,10 @@
                                                                         <option value="{{ $religions->religion_code }}" {{ $applicant->applicant_religion == $religions->religion_code ? 'selected="selected"' : ''}}>{{ $religions->religion_name }}</option>
                                                                     @endforeach
                                                                 </select>
+                                                                @if ($applicant->applicant_religion == 'O')
+                                                                    {{ Form::label('title', 'Other Religion') }}
+                                                                    <input type="text" class="form-control" name="other_religion" value="{{ $applicant->other_religion }}">
+                                                                @endif
                                                             </div>
                                                             <div class="col-md-4 form-group">
                                                                 {{ Form::label('title', 'Nationality') }}
