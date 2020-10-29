@@ -11,7 +11,7 @@ class Lead extends Model
     protected $table = 'leads';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'leads_name', 'leads_email', 'leads_phone', 'leads_ic', 'leads_source', 'leads_prog1', 'leads_prog2', 'leads_prog3', 'leads_status', 'created_by'
+        'leads_name', 'leads_email', 'leads_phone', 'leads_ic', 'leads_source', 'leads_event', 'leads_prog1', 'leads_prog2', 'leads_prog3', 'leads_status', 'created_by'
     ];
 
     public function lead_status()

@@ -30,11 +30,12 @@ class StoreLeadRequest extends FormRequest
     public function rules()
     {
          return [
-            'leads_name'    => 'nullable|min:10|max:255',
+            'leads_name'    => 'required|min:10|max:255',
             'leads_email'   => 'nullable|email|unique:leads,leads_email,' .$this->id,
-            'leads_phone'   => 'nullable|min:9|max:11|regex:/(\+?0)[0-46-9]-*[0-9]{7,8}/|unique:leads,leads_phone,' .$this->id,
+            'leads_phone'   => 'required|min:9|max:11|regex:/(\+?0)[0-46-9]-*[0-9]{7,8}/|unique:leads,leads_phone,' .$this->id,
             'leads_ic'      => 'nullable|digits:12|regex:/^\d{6}\d{2}\d{4}$/|unique:leads,leads_ic,' .$this->id,
-            'leads_source'  => 'max:255',
+            'leads_source'  => '',
+            'leads_event'  => 'max:255',
             'leads_prog1'   => '',
             'leads_prog2'   => '',
             'leads_prog3'   => '',

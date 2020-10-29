@@ -32,14 +32,14 @@
                                     <tr>
                                     <div class="form-group">
                                         <td width="15%"><label class="form-label" for="leads_name">Name</label></td>
-                                        <td colspan="2"><input value="{{ old('leads_name') }}" class="form-control" id="leads_name" name="leads_name">
+                                        <td colspan="1"><input value="{{ old('leads_name') }}" class="form-control" id="leads_name" name="leads_name">
                                             @error('leads_name')
                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                                             @enderror
                                         </td>
                                             
                                         <td width="15%"><label class="form-label" for="leads_email">Email</label></td>
-                                        <td colspan="2"><input value="{{ old('leads_email') }}" class="form-control" id="leads_email" name="leads_email">
+                                        <td colspan="3"><input value="{{ old('leads_email') }}" class="form-control" id="leads_email" name="leads_email">
                                             @error('leads_email')
                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                                             @enderror
@@ -50,14 +50,14 @@
                                     <tr>
                                         <div class="form-group">
                                             <td width="15%"><label class="form-label" for="leads_ic">IC Number</label></td>
-                                            <td colspan="2"><input value="{{ old('leads_ic') }}" class="form-control" id="leads_ic" name="leads_ic">
+                                            <td colspan="1"><input value="{{ old('leads_ic') }}" class="form-control" id="leads_ic" name="leads_ic">
                                                 @error('leads_ic')
                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                 @enderror
                                             </td>
 
                                                 <td width="15%"><label class="form-label" for="leads_phone">Phone Number</label></td>
-                                                <td colspan="2"><input value="{{ old('leads_phone') }}" class="form-control" id="leads_phone" name="leads_phone">
+                                                <td colspan="3"><input value="{{ old('leads_phone') }}" class="form-control" id="leads_phone" name="leads_phone">
                                                     @error('leads_phone')
                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                     @enderror
@@ -68,8 +68,27 @@
                                     <tr>
                                         <div class="form-group">
                                             <td width="15%"><label class="form-label" for="leads_source">Source</label></td>
-                                            <td colspan="4"><input value="{{ old('leads_source') }}" class="form-control" id="leads_source" name="leads_source">
-                                                @error('leads_source')
+                                            <td width="35%">
+
+                                                <select class="form-control" name="leads_source" id="leads_source" >
+                                                    <option value="">-- Select Source --</option>
+                                                        <option name="leads_source" id="leads_source" value="Education Carnival" {{ old('leads_source') == "Education Carnival" ? 'selected' : '' }}>Education Carnival</option>
+                                                        <option name="leads_source" id="leads_source" value="Social Media" {{ old('leads_source') == "Social Media" ? 'selected' : '' }}> Social Media</option><br>
+                                                        <option name="leads_source" id="leads_source" value="Print Media" {{ old('leads_source') == "Print Media" ? 'selected' : '' }}> Print Media</option><br>
+                                                        <option name="leads_source" id="leads_source" value="Broadcast Media" {{ old('leads_source') == "Broadcast Media" ? 'selected' : '' }}> Broadcast Media</option><br>
+                                                        <option name="leads_source" id="leads_source" value="Family, Friends" {{ old('leads_source') == "Family, Friends" ? 'selected' : '' }}> Family, Friends</option><br>
+                                                        <option name="leads_source" id="leads_source" value="Others" {{ old('leads_source') == "Others" ? 'selected' : '' }}> Others</option><br>
+                                                    
+                                                        @error('leads_source')
+                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                        @enderror
+                                                </select><br>
+                                                
+                                            </td>
+                                            <td width="15%"><label class="form-label" for="leads_event">Events</label></td>
+                                            <td colspan="2">
+                                                <input value="{{ old('leads_event') }}" class="form-control" id="leads_event" name="leads_event">
+                                                @error('leads_event')
                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                 @enderror
                                             </td>
@@ -149,5 +168,7 @@
 @endsection
 
 @section('script')
-
+<script>
+  
+</script>
 @endsection

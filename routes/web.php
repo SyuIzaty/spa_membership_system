@@ -152,9 +152,9 @@ Route::post('updateAssign', 'LeadController@updateAssign');
 
 //PARAM
 Route::resource('/intakeType', 'IntakeTypeController');
-Route::resource('param/programme', 'ProgrammeController')->middleware('can: view parameter');
-Route::resource('param/course', 'CourseController')->middleware('can: view parameter');
-Route::resource('param/major', 'MajorController')->middleware('can: view parameter');
+Route::resource('param/programme', 'ProgrammeController')->middleware('can:view parameter');
+Route::resource('param/course', 'CourseController')->middleware('can:view parameter');
+Route::resource('param/major', 'MajorController')->middleware('can:view parameter');
 Route::post('data-intakeType', 'IntakeTypeController@data_intakeType');
 Route::post('data-allProgramme', 'ProgrammeController@data_allProgramme');
 Route::post('data-allMajor', 'MajorController@data_allMajor');

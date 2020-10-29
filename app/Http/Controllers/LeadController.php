@@ -107,7 +107,8 @@ class LeadController extends Controller
             'leads_email'   => $request->leads_email,
             'leads_phone'   => $request->leads_phone,
             'leads_ic'      => $request->leads_ic,
-            'leads_source'  => strtoupper($request->leads_source), 
+            'leads_source'  => $request->leads_source, 
+            'leads_event'   => strtoupper($request->leads_event), 
             'leads_prog1'   => $request->leads_prog1, 
             'leads_prog2'   => $request->leads_prog2, 
             'leads_prog3'   => $request->leads_prog3, 
@@ -133,7 +134,7 @@ class LeadController extends Controller
         $applicant = ''; 
 
         if(isset($lead->leads_ic) && !empty($lead->leads_ic))
-            $applicant = Applicant::where('applicant_ic', $lead->leads_ic)->first();
+            $applicant = Applicant::where('applicant_ic', $lead->leads_ic)->get();
 
         $programme = Programme::all();
         $intakes = Intakes::all();
@@ -152,7 +153,8 @@ class LeadController extends Controller
             'leads_email'   => $request->leads_email,
             'leads_phone'   => $request->leads_phone,
             'leads_ic'      => $request->leads_ic,
-            'leads_source'  => strtoupper($request->leads_source),
+            'leads_source'  => $request->leads_source, 
+            'leads_event'   => strtoupper($request->leads_event),
             'leads_prog1'   => $request->leads_prog1,
             'leads_prog2'   => $request->leads_prog2,
             'leads_prog3'   => $request->leads_prog3,
