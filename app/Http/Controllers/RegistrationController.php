@@ -633,11 +633,10 @@ class RegistrationController extends Controller
                 }
             }
 
-            if($type){
-                return 1;
-            }
-
             // Applicant::completeApplication($id);
+        }
+        if($type){
+            return 1;
         }
         return redirect()->route('printReg', ['id' => $id]);
     }

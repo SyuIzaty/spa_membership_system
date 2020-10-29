@@ -135,7 +135,10 @@
                                                 </div>
                                                 <div class="col-md-6 form-group">
                                                     {{ Form::label('title', 'Postcode') }} *
-                                                    {{ Form::number('applicant_poscode', isset($applicant->applicantContactInfo->applicant_poscode) ? $applicant->applicantContactInfo->applicant_poscode : '', ['class' => 'form-control', 'placeholder' => 'Postcode']) }}
+                                                    {{ Form::text('applicant_poscode', isset($applicant->applicantContactInfo->applicant_poscode) ? $applicant->applicantContactInfo->applicant_poscode : '', ['class' => 'form-control', 'placeholder' => 'Postcode']) }}
+                                                    @error('applicant_poscode')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
                                                 </div>
                                                 <div class="col-md-6 form-group">
                                                     {{ Form::label('title', 'City') }} *
@@ -475,7 +478,7 @@
             $('#app a[href="#details"]').tab('show');
         }
 
-        setInterval(function(){autoSave()},30000);
+        setInterval(function(){autoSave()},20000);
 
     });
 
@@ -523,14 +526,29 @@
 
     function autoSave()
     {
+        var formdata = new FormData($("#upload_form")[0]);
+        formdata.append('autoSave','1');
       $.ajax({
           url: '{{url("update")."/".$applicant->id}}/auto',
           method: "POST",
           contentType: false,
           processData: false,
-          data:new FormData($("#upload_form")[0]),
+          data:formdata,
           success: function(response){
 
+          },
+          error : function(err)
+          {
+            var errors = err.responseJSON;
+             console.log(errors);
+            for(var error in errors.errors)
+            {
+                $.each(errors[error], function( index,value )
+                {
+                    console.log(value,index);
+                })
+
+            }
           }
         });
     }

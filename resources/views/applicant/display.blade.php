@@ -108,7 +108,7 @@
                                                                     </td>
                                                                     <td>
                                                                         @if($applicant->programme_status == '4A')
-                                                                        <select class="form-control" name="applicant_qualification">
+                                                                        <select class="form-control" name="applicant_qualification" id="qua1">
                                                                             <option disabled selected>Please select</option>
                                                                             @foreach ($qualification as $app_qualification)
                                                                             <option value="{{ $app_qualification->id }}" {{ $applicant->applicant_qualification == $app_qualification->id ? 'selected="selected"' : ''}}>{{ $app_qualification->qualification_code }}</option>
@@ -142,7 +142,7 @@
                                                                     </td>
                                                                     <td>
                                                                         @if ($applicant->programme_status_2 == '4A')
-                                                                        <select class="form-control" name="applicant_qualification">
+                                                                        <select class="form-control" name="applicant_qualification" id="qua2">
                                                                             <option disabled selected>Please select</option>
                                                                             @foreach ($qualification as $app_qualification)
                                                                             <option value="{{ $app_qualification->id }}" {{ $applicant->applicant_qualification == $app_qualification->id ? 'selected="selected"' : ''}}>{{ $app_qualification->qualification_code }}</option>
@@ -177,7 +177,7 @@
                                                                     </td>
                                                                     <td>
                                                                         @if ($applicant->programme_status_3 == '4A')
-                                                                        <select class="form-control" name="applicant_qualification">
+                                                                        <select class="form-control" name="applicant_qualification" id="qua3">
                                                                             <option disabled selected>Please select</option>
                                                                             @foreach ($qualification as $app_qualification)
                                                                             <option value="{{ $app_qualification->id }}" {{ $applicant->applicant_qualification == $app_qualification->id ? 'selected="selected"' : ''}}>{{ $app_qualification->qualification_code }}</option>
@@ -1077,7 +1077,7 @@
 @section('script')
 <script>
     $(document).ready(function() {
-        $('.country, .gender, .marital, .race, .religion, .relation, .qualification, .qua, #intake_id ,#intake_offer').select2();
+        $('.country, .gender, .marital, .race, .religion, .relation, .qualification, .qua, #intake_id ,#intake_offer, #qua1, #qua2, #qua3').select2();
     });
 </script>
 @endsection

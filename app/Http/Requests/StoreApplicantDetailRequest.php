@@ -29,6 +29,7 @@ class StoreApplicantDetailRequest extends FormRequest
      */
     public function rules()
     {
+        $input = $this->input();
         $rules = [
             'applicant_id' => 'required',
             'other_race' => 'max:20',
@@ -39,7 +40,6 @@ class StoreApplicantDetailRequest extends FormRequest
             'applicant_city' => 'required|min:1|max:100',
             'applicant_state' => 'required|min:1|max:100',
             'applicant_country' => 'required|min:1|max:100',
-            'applicant_poscode' => 'required|numeric',
             'guardian_one_name' => 'required|min:1|max:100',
             'guardian_one_relationship' => 'required|min:1|max:100',
             'guardian_one_mobile' => 'required|numeric|min:1',
@@ -49,7 +49,6 @@ class StoreApplicantDetailRequest extends FormRequest
             'guardian_two_mobile' => 'required|numeric|min:1',
             'guardian_two_address' => 'max:100',
         ];
-        $input = $this->input();
         if( isset($input['chkEmergency']) )
         {
             $rules['emergency_name'] =  'required|min:1|max:100';
@@ -57,6 +56,20 @@ class StoreApplicantDetailRequest extends FormRequest
             $rules['emergency_phone'] = 'required|min:1|max:100';
             $rules['emergency_address'] = 'max:100';
         }
-        return $rules;
+
+        $newrules = $rules;
+        //if auto save escape the empty input validation
+        if( isset($input['autoSave']) )
+        {
+            foreach($input as $key => $value)
+            {
+                if(!$value)
+                {
+                   $newrules[$key] = "";
+                }
+            }
+        }
+
+        return $newrules ? $newrules : $rules;
     }
 }
