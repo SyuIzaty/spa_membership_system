@@ -290,7 +290,7 @@ class ApplicantController extends Controller
 
     public function data_allapplicant() // Datatable: display complete application
     {
-        $applicant = Applicant::where('applicant_status',NULL)->orWhere('applicant_status','0')->get();
+        $applicant = Applicant::where('applicant_status','0')->get();
         $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','statusResultThree','programmeThree','applicantstatus','applicantIntake','status');
 
 

@@ -125,13 +125,16 @@
                                                 <div class="col-md-12 form-group">
                                                     {{ Form::label('title', 'Address Line 1') }} *
                                                     {{ Form::text('applicant_address_1', isset($applicant->applicantContactInfo->applicant_address_1) ? $applicant->applicantContactInfo->applicant_address_1 : '', ['id' => 'applicant_address_1', 'class' => 'form-control', 'id' => 'applicant_address_1', 'placeholder' => 'Address Line 1','onkeyup' => 'this.value = this.value.toUpperCase()']) }}
-                                                    @error('applicant_phone')
+                                                    @error('applicant_address_1')
                                                         <p style="color: red">{{ $message }}</p>
                                                     @enderror
                                                 </div>
                                                 <div class="col-md-12 form-group">
-                                                    {{ Form::label('title', 'Address Line 2') }}
+                                                    {{ Form::label('title', 'Address Line 2') }} *
                                                     {{ Form::text('applicant_address_2', isset($applicant->applicantContactInfo->applicant_address_2) ? $applicant->applicantContactInfo->applicant_address_2 : '', ['id' => 'applicant_address_2', 'class' => 'form-control', 'placeholder' => 'Address Line 2', 'onkeyup' => 'this.value = this.value.toUpperCase()']) }}
+                                                    @error('applicant_address_2')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
                                                 </div>
                                                 <div class="col-md-6 form-group">
                                                     {{ Form::label('title', 'Postcode') }} *
@@ -157,8 +160,11 @@
                                                 <div class="col-md-6 form-group">
                                                     {{ Form::label('title', 'Country') }}
                                                     <select class="form-control country" name="applicant_country">
+                                                        @if (isset($applicant->applicantContactInfo->applicant_country))
+                                                            <option value="{{ $applicant->applicantContactInfo->applicant_country }}">{{ $applicant->applicantContactInfoapplicant_country }}</option>
+                                                        @endif
                                                         @foreach($country as $countries)
-                                                        <option value="{{ $countries->country_code }}">{{ $countries->country_name }}</option>
+                                                            <option value="{{ $countries->country_code }}">{{ $countries->country_name }}</option>
                                                         @endforeach
                                                     </select>
                                                     @error('applicant_country')
@@ -184,10 +190,10 @@
                                                     {{ Form::label('title', 'Father / Guardian I Relation') }} *
                                                     <select class="form-control relation" name="guardian_one_relationship">
                                                         @if (isset($applicant->applicantGuardian->guardian_one_relationship))
-                                                        <option value="{{ $applicant->applicantGuardian->guardian_one_relationship }}">{{ $applicant->applicantGuardian->familyOne->family_name }}</option>
+                                                            <option value="{{ $applicant->applicantGuardian->guardian_one_relationship }}">{{ $applicant->applicantGuardian->familyOne->family_name }}</option>
                                                         @endif
                                                         @foreach($family as $families)
-                                                        <option value="{{ $families->family_code }}">{{ $families->family_name }}</option>
+                                                            <option value="{{ $families->family_code }}">{{ $families->family_name }}</option>
                                                         @endforeach
                                                     </select>
                                                     @error('guardian_one_relationship')
@@ -299,13 +305,16 @@
                                         <div class="card-header">Highest Qualification</div>
                                         <div class="card-body">
                                             <div class="col-md-12 form-group">
-                                                {{ Form::label('title', 'Highest Qualification') }}
+                                                {{ Form::label('title', 'Highest Qualification') }} *
                                                 <select class="form-control qua" name="highest_qualification" required>
                                                     <option disabled selected value="">Please select</option>
                                                     @foreach($qualification as $qualifications)
                                                     <option value="{{ $qualifications->id }}" {{ $applicant->applicant_qualification == $qualifications->id ? 'selected="selected"' : ''}}>{{ $qualifications->qualification_name }}</option>
                                                     @endforeach
                                                 </select>
+                                                @error('highest_qualification')
+                                                    <p style="color: red">{{ $message }}</p>
+                                                @enderror
                                             </div>
                                         </div>
                                         <div class="card-footer">
@@ -334,6 +343,21 @@
                                                 <hr>
                                                 <div class="col-12">
                                                     <div class="content"></div>
+                                                    @error('bachelor_cgpa')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
+                                                    @error('diploma_cgpa')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
+                                                    @error('matriculation_cgpa')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
+                                                    @error('foundation_cgpa')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
+                                                    @error('muet_cgpa')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
                                                 </div>
                                             </div>
                                         </div>

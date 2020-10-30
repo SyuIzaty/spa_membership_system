@@ -584,13 +584,13 @@ function addQualification(x,xval,data=null){
                             <tr>\
                                 <td>University / College *</td>\
                                 <td colspan="3">\
-                                <input type="text" class="form-control" name="bachelor_study" value="'+mystudy+'" placeholder="University / College" required>\
+                                <input type="text" class="form-control" name="bachelor_study" value="'+mystudy+'" placeholder="University / College" required onkeyup="this.value = this.value.toUpperCase();">\
                                 <input type="hidden" name="exist_bachelor" value="'+myid+'">\
                                 </td>\
                             </tr>\
                             <tr>\
                                 <td>Programme / Major</td>\
-                                <td colspan="3"><input type="text" class="form-control" value="'+mymajor+'" name="bachelor_major" placeholder="Programme / Major"></td>\
+                                <td colspan="3"><input type="text" class="form-control" value="'+mymajor+'" name="bachelor_major" placeholder="Programme / Major" onkeyup="this.value = this.value.toUpperCase();"></td>\
                             </tr>\
                             <tr>\
                                 <td>Graduation Year</td>\
@@ -636,13 +636,13 @@ function addQualification(x,xval,data=null){
                         '">\
                                 </td>\
                                 <td colspan="3">\
-                                <input type="text" class="form-control" name="diploma_study" value="'+mystudy+'" required placeholder="University / College">\
+                                <input type="text" class="form-control" name="diploma_study" value="'+mystudy+'" required placeholder="University / College" onkeyup="this.value = this.value.toUpperCase();">\
                                 <input type="hidden" name="exist_diploma" value="'+myid+'">\
                                 </td>\
                             </tr>\
                             <tr>\
                                 <td>Programme / Major</td>\
-                                <td colspan="3"><input type="text" class="form-control" name="diploma_major" value="'+mymajor+'" placeholder="Programme / Major" required></td>\
+                                <td colspan="3"><input type="text" class="form-control" name="diploma_major" value="'+mymajor+'" placeholder="Programme / Major" onkeyup="this.value = this.value.toUpperCase();" required ></td>\
                             </tr>\
                             <tr>\
                             <td>Graduation Year</td>\
@@ -683,7 +683,7 @@ function addQualification(x,xval,data=null){
                             <tr>\
                                 <td>Kolej Matrikulasi *</td>\
                                 <td colspan="3">\
-                                <input type="text" class="form-control" name="matriculation_study" value="'+mystudy+'" required placeholder="Kolej Matrikulasi">\
+                                <input type="text" class="form-control" name="matriculation_study" value="'+mystudy+'" required placeholder="Kolej Matrikulasi" onkeyup="this.value = this.value.toUpperCase();">\
                                 <input type="hidden" name="exist_matriculation" value="'+myid+'">\
                                 </td>\
                             </tr>\
@@ -943,13 +943,13 @@ function addQualification(x,xval,data=null){
                         '">\
                                 </td>\
                                 <td colspan="3">\
-                                <input type="text" class="form-control" name="foundation_study" value="'+mystudy+'" required placeholder="University / College">\
+                                <input type="text" class="form-control" name="foundation_study" value="'+mystudy+'" required placeholder="University / College" onkeyup="this.value = this.value.toUpperCase();">\
                                 <input type="hidden" name="exist_foundation" value="'+myid+'">\
                                 </td>\
                             </tr>\
                             <tr>\
                                 <td>Programme / Major</td>\
-                                <td colspan="3"><input type="text" class="form-control" name="foundation_major" value="'+mymajor+'" placeholder="Major" required></td>\
+                                <td colspan="3"><input type="text" class="form-control" name="foundation_major" value="'+mymajor+'" placeholder="Major" required onkeyup="this.value = this.value.toUpperCase();"></td>\
                             </tr>\
                             <tr>\
                             <td>Graduation Year</td>\

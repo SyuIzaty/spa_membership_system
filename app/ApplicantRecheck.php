@@ -19,4 +19,9 @@ class ApplicantRecheck extends Model
     {
         return $this->hasOne('App\Applicant','id','applicant_id');
     }
+
+    public function intakeDetails()
+    {
+        return $this->hasMany('App\IntakeDetail','intake_programme','programme_code');
+    }
 }
