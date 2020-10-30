@@ -42,9 +42,7 @@
                                             </td>
                                             <td width="15%"><label class="form-label" for="follow_remark"> Content / Remarks :</label></td>
                                             <td colspan="6">
-                                            <textarea class="form-control @error('follow_remark') is-invalid @enderror" id="follow_remark" name="follow_remark" value="{{ old('follow_remark')}}" rows="10">
-                                                    {{ $leadNote->follow_remark }}
-                                            </textarea>
+                                            <textarea class="form-control @error('follow_remark') is-invalid @enderror" id="follow_remark" name="follow_remark" value="{{ old('follow_remark')}}" rows="10">{{ $leadNote->follow_remark }}</textarea>
                                                 @error('follow_remark')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong> *{{ $message }} </strong>

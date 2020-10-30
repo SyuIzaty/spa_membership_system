@@ -140,6 +140,30 @@
                                 </a>
                             </li>
                             <li class="nav-title">Operation</li>
+
+                            @role('sales manager|sales executive')
+                            <li class="open">
+                                <a href="#" title="Sales Intel" data-filter-tags="sales intel">
+                                    <i class="fal fa-bullhorn"></i>
+                                    <span class="nav-link-text" data-i18n="nav.sales_intel">Sales</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/lead/active_lead" title="Active Leads" data-filter-tags="active_leads">
+                                            <i class="fal fa-check"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_leads">Active Leads</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/lead/inactive_lead" title="Inactive Leads" data-filter-tags="inactive_leads">
+                                            <i class="fal fa-minus"></i>
+                                            <span class="nav-link-text" data-i18n="nav.inactive_leads">Inactive Leads</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            @endrole
+                            
                             @can('check requirement')
                             <li class="open"> <!-- change active kalau nak activate dropdown-->
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
@@ -613,29 +637,6 @@
                                 </ul>
                             </li>
                             @endcan
-
-                            @role('sales manager|sales executive')
-                            <li class="open">
-                                <a href="#" title="Sales Intel" data-filter-tags="sales intel">
-                                    <i class="fal fa-bullhorn"></i>
-                                    <span class="nav-link-text" data-i18n="nav.sales_intel">Sales</span>
-                                </a>
-                                <ul>
-                                    <li>
-                                        <a href="/lead/active_lead" title="Active Leads" data-filter-tags="active_leads">
-                                            <i class="fal fa-check"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_leads">Active Leads</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/lead/inactive_lead" title="Inactive Leads" data-filter-tags="inactive_leads">
-                                            <i class="fal fa-minus"></i>
-                                            <span class="nav-link-text" data-i18n="nav.inactive_leads">Inactive Leads</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            @endrole
 
                             @role('student')
                             <li class="nav-title">MAIN NAVIGATION [STUDENT]</li>

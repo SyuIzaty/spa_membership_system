@@ -20,11 +20,11 @@ class CreateLeadsTable extends Migration
             $table->string('leads_phone');
             $table->string('leads_ic');
             $table->string('leads_source');
-            $table->string('leads_prog1'); 
-            $table->string('leads_prog2'); 
-            $table->string('leads_prog3'); 
-            $table->id('leads_status');
-            $table->id('created_by'); 
+            $table->string('leads_event');
+            $table->string('leads_prog1');
+            $table->string('leads_prog2');
+            $table->string('leads_prog3');
+            $table->string('leads_status');
             $table->timestamps();
             $table->softDeletes();
         });
