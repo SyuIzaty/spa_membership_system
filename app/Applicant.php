@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Carbon\Carbon;
 
 class Applicant extends Model
 {
@@ -54,6 +55,11 @@ class Applicant extends Model
 
 
     // Relation
+    public function applicantRechecks()
+    {
+        return $this->hasMany('App\ApplicantRecheck','applicant_id','id');
+    }
+
     public function applicantresult()
     {
         return $this->hasMany('App\ApplicantResult', 'applicant_id', 'id');
@@ -223,5 +229,4 @@ class Applicant extends Model
     {
         return $query->where('id',$applicantt);
     }
-
 }

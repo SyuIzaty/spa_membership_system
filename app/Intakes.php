@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Carbon\Carbon;
 
 class Intakes extends Model
 {
@@ -22,14 +23,19 @@ class Intakes extends Model
         return $this->hasMany('App\IntakeDetail','intake_code','id');
     }
 
-    public function scopeActive($query)
-    {
-        return $query('status','1');
-    }
-
     public function applicants()
     {
         return $this->hasMany('App\Applicant','intake_id','id');
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status','1');
+    }
+
+    public function scopeIntakeNow($query)
+    {
+        return $query->where('intake_app_open','<=',Carbon::Now())->where('intake_app_close','>=',Carbon::now());
     }
 
 }

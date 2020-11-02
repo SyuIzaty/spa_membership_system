@@ -4,14 +4,20 @@
     <main id="js-page-content" role="main" class="page-content">
         <div class="subheader">
             <h1 class="subheader-title">
-                <i class='subheader-icon fal fa-table'></i> Applicant
+                <i class='subheader-icon fal fa-table'></i> @isset($applicant->status)
+                    {{ $applicant->status->status_description }}
+                @endisset
             </h1>
         </div>
         <div class="row">
             <div class="col-xl-12">
                 <div id="panel-1" class="panel">
                     <div class="panel-hdr">
-                        <h2>Applicant</h2>
+                        <h2>
+                            @isset($applicant->status)
+                                {{ $applicant->status->status_description }}
+                            @endisset
+                        </h2>
                         <div class="panel-toolbar">
                             <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
                             <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
@@ -76,14 +82,14 @@
                                                         </div>
                                                         @endif
                                                             <table class="table table-bordered table-sm">
-                                                                <thead class="bg-primary-50 text-center">
-                                                                    <th>Applicant Programme</th>
-                                                                    <th>Applicant Major</th>
-                                                                    <th>Batch Code</th>
-                                                                    <th>Result</th>
-                                                                    <th>Highest Qualification</th>
-                                                                    <th>Action</th>
-                                                                </thead>
+                                                                <tr class="bg-primary-50 text-center">
+                                                                    <td>Applicant Programme</td>
+                                                                    <td>Applicant Major</td>
+                                                                    <td>Batch Code</td>
+                                                                    <td>Result</td>
+                                                                    <td>Highest Qualification</td>
+                                                                    <td>Action</td>
+                                                                </tr>
                                                                 {!! Form::open(['action' => ['ApplicantController@applicantstatus'], 'method' => 'POST'])!!}
                                                                 <tr>
                                                                     <input type="hidden" name="id" value="{{ $applicant->id }}">
@@ -107,14 +113,12 @@
                                                                         @endif --}}
                                                                     </td>
                                                                     <td>
-                                                                        @if($applicant->programme_status == '4A')
                                                                         <select class="form-control" name="applicant_qualification" id="qua1">
                                                                             <option disabled selected>Please select</option>
                                                                             @foreach ($qualification as $app_qualification)
                                                                             <option value="{{ $app_qualification->id }}" {{ $applicant->applicant_qualification == $app_qualification->id ? 'selected="selected"' : ''}}>{{ $app_qualification->qualification_code }}</option>
                                                                             @endforeach
                                                                         </select>
-                                                                        @endif
                                                                     </td>
                                                                     <td>
                                                                         @if ($applicant->programme_status == '4A' && $applicant->applicant_status != '5A')
@@ -141,14 +145,12 @@
                                                                         @endisset
                                                                     </td>
                                                                     <td>
-                                                                        @if ($applicant->programme_status_2 == '4A')
                                                                         <select class="form-control" name="applicant_qualification" id="qua2">
                                                                             <option disabled selected>Please select</option>
                                                                             @foreach ($qualification as $app_qualification)
                                                                             <option value="{{ $app_qualification->id }}" {{ $applicant->applicant_qualification == $app_qualification->id ? 'selected="selected"' : ''}}>{{ $app_qualification->qualification_code }}</option>
                                                                             @endforeach
                                                                         </select>
-                                                                        @endif
                                                                     </td>
                                                                     <td>
                                                                         @if ($applicant->programme_status_2 == '4A' && $applicant->applicant_status != '5A')
@@ -176,14 +178,12 @@
                                                                         @endisset
                                                                     </td>
                                                                     <td>
-                                                                        @if ($applicant->programme_status_3 == '4A')
                                                                         <select class="form-control" name="applicant_qualification" id="qua3">
                                                                             <option disabled selected>Please select</option>
                                                                             @foreach ($qualification as $app_qualification)
                                                                             <option value="{{ $app_qualification->id }}" {{ $applicant->applicant_qualification == $app_qualification->id ? 'selected="selected"' : ''}}>{{ $app_qualification->qualification_code }}</option>
                                                                             @endforeach
                                                                         </select>
-                                                                        @endif
                                                                     </td>
                                                                     <td>
                                                                         @if ($applicant->programme_status_3 == '4A' && $applicant->applicant_status != '5A')
@@ -459,8 +459,9 @@
                                                 @endif
                                                     <table class="table table-bordered">
                                                         <tr class="bg-primary-50 text-center">
-                                                            <td>Programme Code</td>
+                                                            <td>Programme <br>Code</td>
                                                             <td>Major Code</td>
+                                                            <td>Highest <br>Qualification</td>
                                                             <td>Action</td>
                                                         </tr>
                                                         @foreach ($applicant_recheck as $app_recheck)
@@ -469,7 +470,10 @@
                                                             <input type="hidden" name="intake_id" value="{{ $applicant->intake_id }}">
                                                             @csrf
                                                             <tr>
-                                                                <td>{{ Form::text('programme_code', $app_recheck->programme_code, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
+                                                                <td>
+                                                                    {{ $app_recheck->programme_code }}
+                                                                    <input type="hidden" name="programme_code" value="{{ $app_recheck->programme_code }}">
+                                                                </td>
                                                                 <td>
                                                                     <select class="form-control" name="major">
                                                                         <?php
@@ -483,8 +487,16 @@
                                                                     </select>
                                                                 </td>
                                                                 <td>
-                                                                    @if ($applicant->applicant_status != '5A' || $applicant->applicant_status != '5C')
-                                                                    <div class="col-md-2"><button class="btn btn-primary btn-xs">Offer</button></div>
+                                                                    <select class="form-control" name="app_qualification" id="high_qua">
+                                                                        <option disabled selected>Please select</option>
+                                                                        @foreach ($qualification as $app_qualification)
+                                                                        <option value="{{ $app_qualification->id }}" {{ $applicant->applicant_qualification == $app_qualification->id ? 'selected="selected"' : ''}}>{{ $app_qualification->qualification_code }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                    @if ($app_recheck->applicant->applicant_status != '5A' || $app_recheck->applicant->applicant_status != '5C')
+                                                                        <div class="col-md-2"><button class="btn btn-primary btn-xs">Offer</button></div>
                                                                     @endif
                                                                 </td>
                                                             </tr>
@@ -639,8 +651,8 @@
                                             @endif
                                             @if(isset($muet))
                                             <h5>MUET</h5>
-                                            @if(isset($muet->first()->file->web_path))
-                                                <a target="_blank" href="{{ url('qualificationfile')."/".$muet->first()->file->file_name }}/Download"">Supporting Document</a>
+                                            @if(isset($muet->file->web_path))
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$muet->file->file_name }}/Download"">Supporting Document</a>
                                             @else
                                                 <p>No Supporting Document</p>
                                             @endif
@@ -653,8 +665,8 @@
                                             @endif
                                             @if(isset($matriculation))
                                             <h5>Matriculation</h5>
-                                            @if(isset($matriculation->first()->file->web_path))
-                                                <a target="_blank" href="{{ url('qualificationfile')."/".$matriculation->first()->file->file_name }}/Download"">Supporting Document</a>
+                                            @if(isset($matriculation->file->web_path))
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$matriculation->file->file_name }}/Download"">Supporting Document</a>
                                             @else
                                                 <p>No Supporting Document</p>
                                             @endif
@@ -673,8 +685,8 @@
                                             @endif
                                             @if (isset($foundation))
                                             <h5>Foundation</h5>
-                                            @if(isset($foundation->first()->file->web_path))
-                                                <a target="_blank" href="{{ url('qualificationfile')."/".$foundation->first()->file->file_name }}/Download"">Supporting Document</a>
+                                            @if(isset($foundation->file->web_path))
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$foundation->file->file_name }}/Download"">Supporting Document</a>
                                             @else
                                                 <p>No Supporting Document</p>
                                             @endif
@@ -697,8 +709,8 @@
                                             @endif
                                             @if(isset($diploma))
                                             <h5>Diploma</h5>
-                                            @if(isset($diploma->first()->file->web_path))
-                                                <a target="_blank" href="{{ url('qualificationfile')."/".$diploma->first()->file->file_name }}/Download"">Supporting Document</a>
+                                            @if(isset($diploma->file->web_path))
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$diploma->file->file_name }}/Download"">Supporting Document</a>
                                             @else
                                                 <p>No Supporting Document</p>
                                             @endif
@@ -721,8 +733,8 @@
                                             @endif
                                             @if(isset($degree))
                                             <h5>Degree</h5>
-                                            @if(isset($degree->first()->file->web_path))
-                                                <a target="_blank" href="{{ url('qualificationfile')."/".$degree->first()->file->file_name }}/Download"">Supporting Document</a>
+                                            @if(isset($degree->file->web_path))
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$degree->file->file_name }}/Download"">Supporting Document</a>
                                             @else
                                                 <p>No Supporting Document</p>
                                             @endif
@@ -745,8 +757,8 @@
                                             @endif
                                             @if (isset($skm))
                                             <h5>Sijil Kemahiran Malaysia</h5>
-                                            @if(isset($skm->first()->file->web_path))
-                                                <a target="_blank" href="{{ url('qualificationfile')."/".$skm->first()->file->file_name }}/Download"">Supporting Document</a>
+                                            @if(isset($skm->file->web_path))
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$skm->file->file_name }}/Download"">Supporting Document</a>
                                             @else
                                                 <p>No Supporting Document</p>
                                             @endif
@@ -759,8 +771,8 @@
                                             @endif
                                             @if (isset($sace))
                                             <h5>South Australian Certificate of Education</h5>
-                                            @if(isset($sace->first()->file->web_path))
-                                                <a target="_blank" href="{{ url('qualificationfile')."/".$sace->first()->file->file_name }}/Download"">Supporting Document</a>
+                                            @if(isset($sace->file->web_path))
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$sace->file->file_name }}/Download"">Supporting Document</a>
                                             @else
                                                 <p>No Supporting Document</p>
                                             @endif
@@ -773,8 +785,8 @@
                                             @endif
                                             @if (isset($mqf))
                                             <h5>MQF</h5>
-                                            @if(isset($mqf->first()->file->web_path))
-                                                <a target="_blank" href="{{ url('qualificationfile')."/".$mqf->first()->file->file_name }}/Download"">Supporting Document</a>
+                                            @if(isset($mqf->file->web_path))
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$mqf->file->file_name }}/Download"">Supporting Document</a>
                                             @else
                                                 <p>No Supporting Document</p>
                                             @endif
@@ -787,8 +799,8 @@
                                             @endif
                                             @if (isset($kkm))
                                             <h5>Kolej Komuniti Malaysia</h5>
-                                            @if(isset($kkm->first()->file->web_path))
-                                                <a target="_blank" href="{{ url('qualificationfile')."/".$kkm->first()->file->file_name }}/Download"">Supporting Document</a>
+                                            @if(isset($kkm->file->web_path))
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$kkm->file->file_name }}/Download"">Supporting Document</a>
                                             @else
                                                 <p>No Supporting Document</p>
                                             @endif
@@ -801,8 +813,8 @@
                                             @endif
                                             @if (isset($cat))
                                             <h5>Certified Accounting Technician</h5>
-                                            @if(isset($cat->first()->file->web_path))
-                                                <a target="_blank" href="{{ url('qualificationfile')."/".$cat->first()->file->file_name }}/Download"">Supporting Document</a>
+                                            @if(isset($cat->file->web_path))
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$cat->file->file_name }}/Download"">Supporting Document</a>
                                             @else
                                                 <p>No Supporting Document</p>
                                             @endif
@@ -815,8 +827,8 @@
                                             @endif
                                             @if (isset($icaew))
                                             <h5>ICAEW</h5>
-                                            @if(isset($icaew->first()->file->web_path))
-                                                <a target="_blank" href="{{ url('qualificationfile')."/".$icaew->first()->file->file_name }}/Download"">Supporting Document</a>
+                                            @if(isset($icaew->file->web_path))
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$icaew->file->file_name }}/Download"">Supporting Document</a>
                                             @else
                                                 <p>No Supporting Document</p>
                                             @endif

@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 
 class IntakeDetail extends Model
 {
@@ -61,5 +63,12 @@ class IntakeDetail extends Model
     public function scopeIntake($query,$intake_code)
     {
         return $query->where('intake_code',$intake_code);
+    }
+
+    public function scopeBatchIntake($query, $programme)
+    {
+        return $query->where('status','1')->where('intake_programme',$programme)->whereHas('intakes', function (Builder $query_all) {
+            $query_all->where('intake_app_open','<=',Carbon::Now())->where('intake_app_close','>=',Carbon::now());
+        });
     }
 }

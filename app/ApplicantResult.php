@@ -85,4 +85,11 @@ class ApplicantResult extends Model
         return $query->where('type','6');
     }
 
+    public function scopeAcademicDetail($query, $qualification)
+    {
+        return $query->with(['grades','subjects','applicantAcademic','file'=>function($query) use ($qualification){
+            $query->where('fkey2',$qualification);
+        }]);
+    }
+
 }

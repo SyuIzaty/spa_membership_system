@@ -14,6 +14,8 @@ use App\Gender;
 use App\Marital;
 use App\Country;
 use App\ApplicantContact;
+use App\StudentGuardian;
+use App\ApplicantGuardian;
 use DB;
 
 class PhysicalRegistrationController extends Controller
@@ -132,6 +134,20 @@ class PhysicalRegistrationController extends Controller
             'intake_id' => $request->intake_id,
             'students_id' => $request->student_id,
         ]);
+
+        $guardian = ApplicantGuardian::where('applicant_id',$id)->first();
+        StudentGuardian::create([
+            'id' => $request->student_id,
+            'guardian_one_name' => $guardian->guardian_one_name,
+            'guardian_one_relationship' => $guardian->guardian_one_relationship,
+            'guardian_one_mobile' => $guardian->guardian_one_mobile,
+            'guardian_one_address' => $guardian->guardian_one_address,
+            'guardian_two_name' => $guardian->guardian_two_name,
+            'guardian_two_relationship' => $guardian->guardian_two_relationship,
+            'guardian_two_mobile' => $guardian->guardian_two_mobile,
+            'guardian_two_address' => $guardian->guardian_two_address,
+        ]);
+
         $password = Hash::make($request->applicant_ic);
         User::create([
             'id' => $request->student_id,

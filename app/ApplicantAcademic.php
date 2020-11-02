@@ -86,4 +86,11 @@ class ApplicantAcademic extends Model
     {
         return $this->hasOne('App\Files','fkey','applicant_id');
     }
+
+    public function scopeAcademicAttachment($query, $qualification)
+    {
+        return $query->with(['file'=>function($query) use ($qualification){
+            $query->where('fkey2',$qualification);
+        }]);
+    }
 }

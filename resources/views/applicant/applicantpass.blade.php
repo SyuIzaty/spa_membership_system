@@ -36,6 +36,7 @@
                                         <th>PROG 1</th>
                                         <th>PROG 2</th>
                                         <th>PROG 3</th>
+                                        <th>RECHECK</th>
                                         <th>ACTION</th>
                                         <th></th>
                                         <th></th>
@@ -49,6 +50,7 @@
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme Name"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Recheck"></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -108,7 +110,7 @@
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
-            columnDefs: [{ "visible": false,"targets":[8]}, { "visible": false,"targets":[9]}],
+            columnDefs: [{ "visible": false,"targets":[9]}, { "visible": false,"targets":[10]}],
             columns: [
                     { data: 'id', name: 'id' },
                     { data: 'applicant_name', name: 'applicant_name' },
@@ -118,6 +120,7 @@
                     { data: 'prog_name', name: 'prog_name' },
                     { data: 'prog_name_2', name: 'prog_name_2' },
                     { data: 'prog_name_3', name: 'prog_name_3' },
+                    { data: 'applicant_recheck', name: 'applicant_recheck'},
                     { data: 'applicant_intake.intake_app_close' },
                     { data: 'applicant_intake.intake_app_open' },
                     { data: 'action', name: 'action', orderable: false, searchable: false}
@@ -161,7 +164,7 @@
             @endforeach
 
             table
-            .column(8)
+            .column(9)
             .search("1",true,false)
             .column(3)
             .search(value ? value.join('|') : '', true, false)

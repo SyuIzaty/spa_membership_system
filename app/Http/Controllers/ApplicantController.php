@@ -55,21 +55,14 @@ class ApplicantController extends Controller
     {
         $applicant = Applicant::where('id',$id)->with(['applicantresult','applicantContactInfo','applicantEmergency.emergencyOne','applicantGuardian.familyOne','applicantGuardian.familyTwo','applicantIntake','status','intakeDetail','applicantstatus','programmeStatus','programmeStatusTwo','programmeStatusThree','applicantIntakeOffer'])->first();
 
-        // $batch_1 = IntakeDetail::where('intake_code',$applicant->intake_id)->where('status','1')->where('intake_programme',$applicant->applicant_programme)->first();
+        $batch_1 = IntakeDetail::BatchIntake($applicant->applicant_programme)->get();
 
-        $batch_1 = IntakeDetail::where('status','1')->where('intake_programme',$applicant->applicant_programme)->whereHas('intakes', function (Builder $query) {
-            $query->where('intake_app_open','<=',Carbon::Now())->where('intake_app_close','>=',Carbon::now());
-        })->get();
+        $batch_2 = IntakeDetail::BatchIntake($applicant->applicant_programme_2)->get();
 
-        $batch_2 = IntakeDetail::where('status','1')->where('intake_programme',$applicant->applicant_programme_2)->whereHas('intakes', function (Builder $query) {
-            $query->where('intake_app_open','<=',Carbon::Now())->where('intake_app_close','>=',Carbon::now());
-        })->get();
+        $batch_3 = IntakeDetail::BatchIntake($applicant->applicant_programme_3)->get();
 
-        $batch_3 = IntakeDetail::where('status','1')->where('intake_programme',$applicant->applicant_programme_3)->whereHas('intakes', function (Builder $query) {
-            $query->where('intake_app_open','<=',Carbon::Now())->where('intake_app_close','>=',Carbon::now());
-        })->get();
+        $applicant_recheck = ApplicantRecheck::where('applicant_id', $id)->with(['programme','applicant'])->get();
 
-        $applicant_recheck = ApplicantRecheck::where('applicant_id', $id)->with(['programme'])->get();
         $qualification = Qualification::all();
         $country = Country::all();
         $marital = Marital::all();
@@ -80,87 +73,46 @@ class ApplicantController extends Controller
         $family = Family::all()->sortBy('family_name');
         $intake = Intakes::all();
 
-        $spm = ApplicantResult::ApplicantId($id)->Spm()->with(['grades','subjects','applicantAcademic','file'=>function($query){
-            $query->where('fkey2','1');
-        }])->get();
+        $spm = ApplicantResult::ApplicantId($id)->Spm()->AcademicDetail('1')->get();
 
-        $stpm = ApplicantResult::ApplicantId($id)->Stpm()->with(['grades','subjects','applicantAcademic','file'=>function($query){
-            $query->where('fkey2','2');
-        }])->get();
+        // $stpm = ApplicantResult::ApplicantId($id)->Stpm()->with(['grades','subjects','applicantAcademic','file'=>function($query){
+        //     $query->where('fkey2','2');
+        // }])->get();
 
-        $stam = ApplicantResult::ApplicantId($id)->Stam()->with(['grades','subjects','applicantAcademic','file'=>function($query){
-            $query->where('fkey2','3');
-        }])->get();
+        $stpm = ApplicantResult::ApplicantId($id)->Stpm()->AcademicDetail('2')->get();
 
-        $uec = ApplicantResult::ApplicantId($id)->Uec()->with(['grades','subjects','applicantAcademic','file'=>function($query){
-            $query->where('fkey2','4');
-        }])->get();
+        $stam = ApplicantResult::ApplicantId($id)->Stam()->AcademicDetail('3')->get();
 
-        $alevel = ApplicantResult::ApplicantId($id)->Alevel()->with(['grades','subjects','applicantAcademic','file'=>function($query){
-            $query->where('fkey2','5');
-        }])->get();
+        $uec = ApplicantResult::ApplicantId($id)->Uec()->AcademicDetail('4')->get();
 
-        $olevel = ApplicantResult::ApplicantId($id)->Olevel()->with(['grades','subjects','applicantAcademic','file'=>function($query){
-            $query->where('fkey2','6');
-        }])->Result()->get();
+        $alevel = ApplicantResult::ApplicantId($id)->Alevel()->AcademicDetail('5')->get();
 
-        $skm = ApplicantAcademic::ApplicantId($id)->Skm()->with(['file'=>function($query){
-            $query->where('fkey2','7');
-        }])->first();
+        $olevel = ApplicantResult::ApplicantId($id)->Olevel()->AcademicDetail('6')->get();
 
-        $diploma = ApplicantAcademic::ApplicantId($id)->Diploma()->with(['file'=>function($query){
-            $query->where('fkey2','8');
-        }])->first();
+        $skm = ApplicantAcademic::ApplicantId($id)->Skm()->AcademicAttachment('7')->first();
 
-        $degree = ApplicantAcademic::ApplicantId($id)->where('type','9')->with(['file'=>function($query){
-            $query->where('fkey2','9');
-        }])->first();
+        $diploma = ApplicantAcademic::ApplicantId($id)->Diploma()->AcademicAttachment('8')->first();
 
-        $sace = ApplicantAcademic::ApplicantId($id)->Sace()->with(['file'=>function($query){
-            $query->where('fkey2','10');
-        }])->first();
+        $degree = ApplicantAcademic::ApplicantId($id)->Degree()->AcademicAttachment('9')->first();
 
-        $muet = ApplicantAcademic::ApplicantId($id)->Muet()->with(['file'=>function($query){
-            $query->where('fkey2','11');
-        }])->first();
+        $sace = ApplicantAcademic::ApplicantId($id)->Sace()->AcademicAttachment('10')->first();
 
-        $matriculation = ApplicantAcademic::ApplicantId($id)->Matriculation()->with(['file'=>function($query){
-            $query->where('fkey2','12');
-        }])->first();
+        $muet = ApplicantAcademic::ApplicantId($id)->Muet()->AcademicAttachment('11')->first();
 
-        $foundation = ApplicantAcademic::ApplicantId($id)->Foundation()->with(['file'=>function($query){
-            $query->where('fkey2','13');
-        }])->first();
+        $matriculation = ApplicantAcademic::ApplicantId($id)->Matriculation()->AcademicAttachment('12')->first();
 
-        $mqf = ApplicantAcademic::ApplicantId($id)->Mqf()->with(['file'=>function($query){
-            $query->where('fkey2','14');
-        }])->first();
+        $foundation = ApplicantAcademic::ApplicantId($id)->Foundation()->AcademicAttachment('13')->first();
 
-        $kkm = ApplicantAcademic::ApplicantId($id)->Kkm()->with(['file'=>function($query){
-            $query->where('fkey2','15');
-        }])->first();
+        $mqf = ApplicantAcademic::ApplicantId($id)->Mqf()->AcademicAttachment('14')->first();
 
-        $cat = ApplicantAcademic::ApplicantId($id)->Cat()->with(['file'=>function($query){
-            $query->where('fkey2','16');
-        }])->first();
+        $kkm = ApplicantAcademic::ApplicantId($id)->Kkm()->AcademicAttachment('15')->first();
 
-        $icaew = ApplicantAcademic::ApplicantId($id)->Icaew()->with(['file'=>function($query){
-            $query->where('fkey2','17');
-        }])->first();
+        $cat = ApplicantAcademic::ApplicantId($id)->Cat()->AcademicAttachment('16')->first();
+
+        $icaew = ApplicantAcademic::ApplicantId($id)->Icaew()->AcademicAttachment('17')->first();
 
         $batch = Applicant::ApplicantId($id)->with(['applicantIntake.intakeDetails'])->first();
 
-        $applicant2 = Applicant::where('id',$id)->get()->toArray();
-        foreach($applicant2 as $applicantstat)
-        {
-            $programme_1['programme_1'] = Programme::where('id',$applicantstat['applicant_programme'])->get();
-            $programme_2['programme_2'] = Programme::where('id',$applicantstat['applicant_programme_2'])->get();
-            $programme_3['programme_3'] = Programme::where('id',$applicantstat['applicant_programme_3'])->get();
-
-            $dataappl[] = array_merge($applicantstat, $programme_1, $programme_2, $programme_3);
-        }
-
-        $aapplicant = $dataappl;
         $activity = [];
         $applicant_status = Applicant::where('id',$id)->get();
         foreach($applicant_status as $app_stat)
@@ -176,7 +128,7 @@ class ApplicantController extends Controller
         }
 
         $applicant_status = Status::where('status_code','>=','3')->get();
-        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace', 'aapplicant','country','marital','religion','race','gender','state','skm','mqf','kkm','cat','icaew','activity','intake','family','foundation','applicant_status', 'batch_1','batch_2','batch_3','applicant_recheck','qualification'));
+        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace','country','marital','religion','race','gender','state','skm','mqf','kkm','cat','icaew','activity','intake','family','foundation','applicant_status', 'batch_1','batch_2','batch_3','applicant_recheck','qualification'));
     }
 
     public function updateApplicant(Request $request) // Update applicant detail
@@ -340,7 +292,7 @@ class ApplicantController extends Controller
     {
         $applicant = Applicant::where('applicant_status','4A')->get();
         // $applicant = Applicant::where('programme_status','4A')->orWhere('programme_status_2','4A')->orWhere('programme_status_3','4A')->get();
-        $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','statusResultThree','programmeThree','applicantstatus','applicantIntake');
+        $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','statusResultThree','programmeThree','applicantstatus','applicantIntake','applicantRechecks');
 
 
         return datatables()::of($applicants)
@@ -364,17 +316,24 @@ class ApplicantController extends Controller
                 return isset($applicants->programmeThree->programme_code) ? '<div style="color:'.$applicants->statusResultThree->colour.'">'.$applicants->programmeThree->programme_code.'</div>' : '';
 
             })
+            ->addColumn('applicant_recheck',function($applicants)
+            {
+                $all = '';
+                foreach($applicants->applicantRechecks as $apps){
+                    $all .= isset($apps->programme_code) ? '<div style="color:green">'.$apps->programme_code.'</div>' : '<div class="text-danger">NO</div>';
+                }
+                return $all;
+            })
 
            ->addColumn('action', function ($applicants) {
                return '<a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"><i class="fal fa-user"></i></a>';
            })
-           ->rawColumns(['prog_name','prog_name_2','prog_name_3','action'])
+           ->rawColumns(['prog_name','prog_name_2','prog_name_3','applicant_recheck','action'])
            ->make(true);
     }
 
     public function data_rejectedapplicant() // Datatable: Applicant who does not meet minimum requirement
     {
-        // $applicant = Applicant::where('applicant_status',NULL)->get();
         $applicant = Applicant::where('applicant_status','3G')->orWhere('applicant_status','3R')->get();
         $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','applicantstatus','applicantIntake');
 
@@ -545,15 +504,15 @@ class ApplicantController extends Controller
 
     public function offeredprogramme()
     {
-        // $intake = Intakes::where('status','1')->with(['intakeDetails'])->get();
-        $intake = Intakes::where('intake_app_open','<=',Carbon::Now())->where('intake_app_close','>=',Carbon::now())->with(['intakeDetails.applicant'])->get();
+        $intake = Intakes::IntakeNow()->with(['intakeDetails.applicant'])->get();
 
         return view('applicant.offeredprogramme', compact('intake'));
     }
 
     public function sponsorapplicant()
     {
-        $intake = Intakes::where('intake_app_open','<=',Carbon::Now())->where('intake_app_close','>=',Carbon::now())->first();
+        $intake = Intakes::IntakeNow()->first();
+
         return view('applicant.sponsorapplicant', compact('intake'));
     }
 
@@ -1497,12 +1456,10 @@ class ApplicantController extends Controller
 
     public function checkIndividual(Request $request)
     {
-        $intake = Intakes::where('intake_app_open','<=',Carbon::Now())->where('intake_app_close','>=',Carbon::now())
-        ->with([
-        'intakeDetails.programme',
-        'intakeDetails'=>function($query){
+        $intake = Intakes::IntakeNow()->with(['intakeDetails.programme', 'intakeDetails'=>function($query){
             $query->where('status','1');
         }])->get();
+
         $all_programme = [];
         $exist = [];
         foreach($intake as $intakes) {
@@ -1541,11 +1498,11 @@ class ApplicantController extends Controller
 
         $student_id = $this->studentId($applicant);
 
-        // $batch = IntakeDetail::where('status','1')->where('intake_programme',$request->programme_code)->where('intake_code',$request->intake_id)->first();
+        // $batch = IntakeDetail::where('status','1')->where('intake_programme',$request->programme_code)->whereHas('intakes', function (Builder $query) {
+        //     $query->where('intake_app_open','<=',Carbon::Now())->where('intake_app_close','>=',Carbon::now());
+        // })->get();
 
-        $batch = IntakeDetail::where('status','1')->where('intake_programme',$request->programme_code)->whereHas('intakes', function (Builder $query) {
-            $query->where('intake_app_open','<=',Carbon::Now())->where('intake_app_close','>=',Carbon::now());
-        })->get();
+        $batch = IntakeDetail::BatchIntake($request->programme_code)->get();
 
         Applicant::where('id',$request->applicant_id)->update(['offered_programme' => $request->programme_code, 'offered_major' => $request->major, 'applicant_status' => '5A', 'student_id' => $student_id, 'batch_code'=>$batch->first()->batch_code, 'intake_id'=>$batch->first()->intake_code]);
 
@@ -1553,13 +1510,15 @@ class ApplicantController extends Controller
             $query->where('status','1')->where('intake_programme',$request->programme_code);
         }])->first();
 
-        if(isset($intake->intakeDetail->batch_code)){
-            $offer = Applicant::where('id',$request->applicant_id)->update(['batch_code' => $intake->intakeDetail->batch_code, 'intake_offer' => $intake->intake_id]);
-        }else{
-            Applicant::where('id',$request->applicant_id)->update(['offered_programme' => '', 'offered_major' => '', 'applicant_status' => '4A', 'student_id' => '']);
-            return '<script type="text/javascript">alert("Programme not offered for this intake");history.go(-1);;
-            </script>';
-        }
+        Applicant::where('id',$request->applicant_id)->update(['offered_programme' => $request->programme_code,'offered_major' => $request->major,'applicant_status' => '5A','student_id' => $student_id,'batch_code'=>$batch->first()->batch_code,'intake_offer' => $batch->first()->intake_code]);
+
+        // if(isset($intake->intakeDetail->batch_code)){
+        //     $offer = Applicant::where('id',$request->applicant_id)->update(['batch_code' => $intake->intakeDetail->batch_code, 'intake_offer' => $intake->intake_id]);
+        // }else{
+        //     Applicant::where('id',$request->applicant_id)->update(['offered_programme' => '', 'offered_major' => '', 'applicant_status' => '4A', 'student_id' => '']);
+        //     return '<script type="text/javascript">alert("Programme not offered for this intake");history.go(-1);;
+        //     </script>';
+        // }
 
         Applicant::updateStatus($request->applicant_id, $request->programme_code, $request->major);
 
@@ -1593,9 +1552,7 @@ class ApplicantController extends Controller
 
         $student_id = $this->studentId($applicant);
 
-        $intake = IntakeDetail::where('status','1')->where('intake_programme',$request->applicant_programme)->whereHas('intakes', function (Builder $query) {
-            $query->where('intake_app_open','<=',Carbon::Now())->where('intake_app_close','>=',Carbon::now());
-        })->first();
+        $intake = IntakeDetail::BatchIntake($request->applicant_programme)->first();
 
         Applicant::where('id',$request->id)->update([
             'offered_programme' => $request->applicant_programme,
@@ -1603,7 +1560,6 @@ class ApplicantController extends Controller
             'applicant_status' => '5A',
             'batch_code' => $request->batch_code,
             'student_id' => $student_id,
-            'intake_id' => $intake->intake_code,
             'intake_offer' => $intake->intake_code,
             'applicant_qualification' => $request->applicant_qualification
         ]);
