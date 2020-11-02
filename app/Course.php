@@ -12,11 +12,11 @@ class Course extends Model
     protected $table = 'courses';
 
     protected $primaryKey = 'id';
-    public $incrementing = false;
+    // public $incrementing = false;
     protected $keyType = 'string';
 
     protected $fillable = [
-        'id', 'course_code', 'course_name', 'credit_hours', 'course_status'
+        'id', 'course_code', 'course_name_bm', 'course_name', 'credit_hours', 'lecturer_hours', 'lab_hours', 'tutorial_hours', 'exam_duration', 'final_exam', 'project_course', 'course_status'
     ];
 
     protected $attributes = [
@@ -41,8 +41,4 @@ class Course extends Model
     	return $query->where('course_status', 0);
     }
 
-    // protected $connection = 'oracle';
-    // protected $table = 'COURSE_MAIN';
-    // protected $primaryKey = 'CM_COURSE_CODE';
-    // public $incrementing = false;
 }

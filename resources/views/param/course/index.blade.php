@@ -23,16 +23,16 @@
                 <div class="panel-container show">
                     <div class="panel-content">
                         <div class="pull-right mb-4">
-                           
+                            
                         </div>
                         <table id="course" class="table table-bordered table-hover table-striped w-100">
                             <thead>
-                                <tr class="bg-primary-50 text-center">
+                                <tr class="bg-primary-50">
                                     <th>Course Code</th>
                                     <th>Course Name</th>
                                     <th>Credit Hours</th>
                                     <th>Course Created</th>
-                                    {{-- <th>Course Status</th> --}}
+                                    <th>Course Status</th>
                                     <th>Action</th>
                                 </tr>
                                 <tr>
@@ -40,13 +40,13 @@
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search Course Name"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search Credit Hours"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search Course Created"></td>
-                                    {{-- <td class="hasinput">
+                                    <td class="hasinput">
                                         <select id="course_status" name="course_status" class="form-control">
                                             <option value="">All</option>
-                                            <option value="1">Active</option>
-                                            <option value="0">Inactive</option>
+                                            <option value="Active">Active</option>
+                                            <option value="Inactive">Inactive</option>
                                         </select>
-                                    </td> --}}
+                                    </td>
                                     <td class="hasinput"></td>
                                 </tr>
                             </thead>
@@ -112,7 +112,7 @@
                     { data: 'course_name', name: 'course_name' },
                     { data: 'credit_hours', name: 'credit_hours' },
                     { data: 'created_at', name: 'created_at' },
-                    // { data: 'course_status', name: 'course_status' },
+                    { data: 'course_status', name: 'course_status' },
                     { data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,

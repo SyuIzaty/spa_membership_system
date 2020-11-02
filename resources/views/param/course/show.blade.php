@@ -13,7 +13,7 @@
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
                     <h2>
-                        View Course :<span class="fw-300"><i> {{ $course->id }} [ {{ $course->course_status ? 'Active' : 'Inactive' }} ]</i></span>
+                        View Course :<span class="fw-300"><i> {{ $course->course_name }}</i></span>
                     </h2>
                     <div class="panel-toolbar">
                         <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
@@ -31,31 +31,132 @@
                             </tr>
                             <tr>
                                 <div class="form-group">   
-                                    <td width="15%"><label class="form-label">COURSE ID :</label></td>
-                                    <td width=""><strong style="cursor:context-menu" class="form-control" readonly>{{ strtoupper($course->id) }}<strong></td>
-                                    <td width="15%"><label class="form-label">COURSE CODE :</label></td>
-                                    <td width=""><strong style="cursor:context-menu" class="form-control" readonly>{{ strtoupper($course->course_code) }}<strong></td>
+                                    <td width="15%"><label class="form-label">Course ID :</label></td>
+                                    <td colspan="3"><strong style="cursor:context-menu" class="form-control" readonly>{{ strtoupper($course->id) }}<strong></td>
+                                    <td width="15%"><label class="form-label">Course Code :</label></td>
+                                    <td colspan="3"><strong style="cursor:context-menu" class="form-control" readonly>{{ strtoupper($course->course_code) }}<strong></td>
                                 </div>
                             </tr>        
 
                             <tr>
                                 <div class="form-group">
-                                    <td width="15%"><label class="form-label">COURSE NAME :</label></td>
-                                    <td width="15%"><strong style="cursor:context-menu" class="form-control h-100" readonly>{{ strtoupper($course->course_name) }}<strong></td>
-                                    <td width="15%"><label class="form-label">CREDIT HOURS :</label></td>
-                                    <td width="15%"><strong style="cursor:context-menu" class="form-control" readonly>{{ strtoupper($course->credit_hours) }}<strong></td>
+                                    <td width="15%"><label class="form-label">Course Name :</label></td>
+                                    <td colspan="3"><strong style="cursor:context-menu" class="form-control h-100" readonly>{{ strtoupper($course->course_name) }}<strong></td>
+                                    <td width="15%"><label class="form-label">Course Name [Malay] :</label></td>
+                                    <td colspan="3"><strong style="cursor:context-menu" class="form-control" readonly>{{ strtoupper($course->course_name_bm) }}<strong></td>
                                 </div>
                             </tr>
 
                             <tr>
                                 <div class="form-group">
-                                    <td width="15%"><label class="form-label">COURSE STATUS :</label></td>
-                                    <td colspan="10"><strong style="cursor:context-menu" class="form-control" readonly>{{ strtoupper($course->course_status ? 'Active' : 'Inactive') }}<strong></td>
+                                    <td width="15%"><label class="form-label">Credit Hours :</label></td>
+                                    <td colspan="2"><strong style="cursor:context-menu" class="form-control h-100" readonly>{{ strtoupper($course->credit_hours) }}<strong></td>
+                                    <td width="15%"><label class="form-label">Lecturer Hours :</label></td>
+                                    <td colspan="2"><strong style="cursor:context-menu" class="form-control" readonly>{{ strtoupper($course->lecturer_hours) }}<strong></td>
+                                    <td width="15%"><label class="form-label">Lab Hours :</label></td>
+                                    <td colspan="2"><strong style="cursor:context-menu" class="form-control" readonly>{{ strtoupper($course->lab_hours) }}<strong></td>
+                                </div>
+                            </tr>
+
+                            <tr>
+                                <div class="form-group">
+                                    <td width="15%"><label class="form-label">Tutorial Hours :</label></td>
+                                    <td colspan="2"><strong style="cursor:context-menu" class="form-control" readonly>{{ strtoupper($course->tutorial_hours) }}<strong></td>
+                                    <td width="15%"><label class="form-label">Exam Duration :</label></td>
+                                    <td colspan="2"><strong style="cursor:context-menu" class="form-control" readonly>{{ strtoupper($course->exam_duration) }}<strong></td>
+                                    <td width="15%"><label class="form-label">Course Status :</label></td>
+                                    <td colspan="2"><strong style="cursor:context-menu" class="form-control" readonly>{{ strtoupper($course->course_status ? 'Active' : 'Inactive') }}<strong></td>
+                                </div>
+                            </tr>
+
+                            <tr>
+                                <div class="form-group">
+                                    <td width="15%"><label class="form-label">This Course Have Project :</label></td>
+                                    <td colspan="3"><strong style="cursor:context-menu" class="form-control" readonly>{{ strtoupper($course->project_course) }}<strong></td>
+                                    <td width="15%"><label class="form-label">This Course Have Final Exam :</label></td>
+                                    <td colspan="3"><strong style="cursor:context-menu" class="form-control" readonly>{{ strtoupper($course->final_exam) }}<strong></td>
                                 </div>
                             </tr>
 
                         </thead>
                     </table>
+
+                    <br>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+
+                            <div class="card card-primary card-outline">
+                                <div class="card-header bg-primary-50">
+                                    <th colspan="10"><i class="fal fa-list"></i> PRE-REQUISITES</th>
+                                </div>
+
+                                <div class="card-body">
+
+                                    <table class="table table-bordered table-hover table-striped w-100" style="table-layout:fixed">
+                                        <thead>
+                                            <tr align="center" class="card-header">
+                                                <th style="width: 50px;">No.</th>
+                                                <th>Pre-Requisite Course</th>
+                                            </tr>
+                                            @if(!empty($pre) && $pre->count() > 0)
+                                                @foreach($pre as $pre)
+                                                <tr align="center" class="data-row">
+                                                    <td>{{ $no++ }}</td>
+                                                    <td><input type="text" class="form-control text-center" value="{{ $pre->pre_requisite_course ?? '-- NO DATA --' }}" disabled></td>
+                                                </tr>
+                                                @endforeach
+                                            @else
+                                                <tr align="center" class="data-row">
+                                                    <td></td>
+                                                    <td><input type="text" class="form-control text-center" value="-- NO DATA --" disabled></div></td>
+                                                </tr>
+                                            @endif
+                                        </thead>
+                                    </table>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-sm-6">
+
+                            <div class="card card-primary card-outline">
+                                <div class="card-header bg-primary-50">
+                                    <th colspan="10"><i class="fal fa-list"></i> CO-REQUISITES</th>
+                                </div>
+
+                                <div class="card-body">
+
+                                    <table class="table table-bordered table-hover table-striped w-100" style="table-layout:fixed">
+                                        <thead>
+                                            <tr align="center" class="card-header">
+                                                <th style="width: 50px;">No.</th>
+                                                <th>Co-Requisite Course</th>
+                                            </tr>
+                                            @if(!empty($co) && $co->count() > 0)
+                                                @foreach($co as $co)
+                                                <tr align="center" class="data-row">
+                                                    <td>{{ $nos++ }}</td>
+                                                    <td><input type="text" class="form-control text-center" value="{{ $co->co_requisite_course ?? '-- NO DATA --' }}" disabled></td>
+                                                </tr>
+                                                @endforeach
+                                            @else
+                                                <tr align="center" class="data-row">
+                                                    <td></td>
+                                                    <td><input type="text" class="form-control text-center" value="-- NO DATA --" disabled></div></td>
+                                                </tr>
+                                            @endif
+                                        </thead>
+                                    </table>
+
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                    </div>
                      
                 </div>
 

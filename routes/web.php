@@ -159,6 +159,8 @@ Route::post('data-intakeType', 'IntakeTypeController@data_intakeType');
 Route::post('data-allProgramme', 'ProgrammeController@data_allProgramme');
 Route::post('data-allMajor', 'MajorController@data_allMajor');
 Route::post('data-allCourse', 'CourseController@data_allCourse');
+Route::post('preInfo','CourseController@preInfo');
+Route::post('coInfo','CourseController@coInfo');
 
 //OFFER LETTER
 // Route::get('/offer-letter', 'EntryRequirementController@offer');
