@@ -11,7 +11,7 @@ class Lead extends Model
     protected $table = 'leads';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'leads_name', 'leads_email', 'leads_phone', 'leads_ic', 'leads_source', 'leads_event', 'leads_prog1', 'leads_prog2', 'leads_prog3', 'leads_status', 'created_by'
+        'leads_name', 'leads_email', 'leads_phone', 'leads_ic', 'leads_source', 'leads_event', 'edu_level', 'leads_prog1', 'leads_prog2', 'leads_prog3', 'leads_status', 'created_by', 'assigned_to'
     ];
 
     public function lead_status()
@@ -26,7 +26,12 @@ class Lead extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User','created_by');  
+        return $this->belongsTo('App\User','assigned_to');  
+    }
+
+    public function qualify()
+    {
+        return $this->hasMany('App\Qualification','edu_level');
     }
 
 }

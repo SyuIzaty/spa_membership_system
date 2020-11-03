@@ -24,4 +24,9 @@ class Qualification extends Model
     {
     	return $this->belongsTo('App\ApplicantAcademic','type','id');
     }
+
+    public function lead()
+    {
+        return $this->belongsTo('App\Lead', 'edu_level');
+    }
 }

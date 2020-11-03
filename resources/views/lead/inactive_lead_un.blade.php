@@ -4,7 +4,7 @@
 <main id="js-page-content" role="main" class="page-content">
     <div class="subheader">
         <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-university'></i>Successful Lead
+        <i class='subheader-icon fal fa-university'></i>Unsuccessful Lead
         </h1>
     </div>
     <div class="row">
@@ -22,7 +22,7 @@
                 </div>
                 <div class="panel-container show">
                     <div class="panel-content">
-                        <table id="in_lead" class="table table-bordered table-hover table-striped w-100">
+                        <table id="in_lead_un" class="table table-bordered table-hover table-striped w-100">
                             <thead>
                                 <tr class="bg-primary-50 text-center">
                                     <th>Name</th>
@@ -47,7 +47,8 @@
                                     <td class="hasinput">
                                         <select id="leads_status" name="leads_status" class="form-control">
                                             <option value="">All</option>
-                                            <option value="Registered">REGISTERED</option>
+                                            <option value="Not Show">NOT SHOW</option>
+                                            <option value="DUMB">DUMB</option>
                                         </select>
                                     </td>
                                     @role('sales manager|admin assistant')
@@ -124,7 +125,7 @@
             $( "input:radio").val([create]);
         });
 
-        $('#in_lead thead tr .hasinput').each(function(i)
+        $('#in_lead_un thead tr .hasinput').each(function(i)
         {
             $('input', this).on('keyup change', function()
             {
@@ -150,11 +151,11 @@
         });
 
 
-        var table = $('#in_lead').DataTable({
+        var table = $('#in_lead_un').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
-                url: "/api/inactiveLead/list",
+                url: "/api/inactiveUnLead/list",
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
@@ -178,7 +179,7 @@
                 } 
         });
 
-        $('#in_lead').on('click', '.btn-delete[data-remote]', function (e) {
+        $('#in_lead_un').on('click', '.btn-delete[data-remote]', function (e) {
             e.preventDefault();
             $.ajaxSetup({
                 headers: {
@@ -204,7 +205,7 @@
                     dataType: 'json',
                     data: {method: '_DELETE', submit: true}
                     }).always(function (data) {
-                        $('#in_lead').DataTable().draw(false);
+                        $('#in_lead_un').DataTable().draw(false);
                     });
                 }
             })

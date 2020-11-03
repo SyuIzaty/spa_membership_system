@@ -33,7 +33,9 @@
                                     <th>Source</th>
                                     <th>Date</th>
                                     <th>Status</th>
+                                    @role('sales manager|admin assistant')
                                     <th>Owner</th>
+                                    @endrole
                                     <th>Action</th>
                                 </tr>
                                 <tr>
@@ -46,11 +48,17 @@
                                     <td class="hasinput">
                                         <select id="leads_status" name="leads_status" class="form-control">
                                             <option value="">All</option>
-                                            <option value="0">New Lead</option>
-                                            <option value="1">Ongoing</option>
+                                            <option value="New Lead">NEW LEAD</option>
+                                            <option value="Ongoing">ONGOING</option>
+                                            <option value="Agreed COL">AGREED COL</option>
+                                            <option value="Decline COL">DECLINE COL</option>
+                                            <option value="COL Out">COL OUT</option>
+                                            <option value="OL Out">OL OUT</option>
                                         </select>
                                     </td>
+                                    @role('sales manager|admin assistant')
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search Owner"></td>
+                                    @endrole
                                     <td class="hasinput"></td>
                                 </tr>
                             </thead>
@@ -87,7 +95,7 @@
                                     <td align="center">{{ $no++ }}</td>
                                     <td>{{$non->name}}</td>
                                     <td align="center">
-                                        <input type="radio" name="created_by" value="{{ $non->id }}">
+                                        <input type="radio" name="assigned_to" value="{{ $non->id }}">
                                     </td>
                                 </tr>
                                 @endforeach
@@ -165,7 +173,9 @@
                     { data: 'leads_source', name: 'leads_source'},
                     { data: 'created_at', name: 'created_at'},
                     { data: 'leads_status', name: 'leads_status'},
-                    { data: 'created_by', name: 'created_by'},
+                    @role('sales manager|admin assistant')
+                    { data: 'assigned_to', name: 'assigned_to'},
+                    @endrole
                     { data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,

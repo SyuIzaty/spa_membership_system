@@ -32,14 +32,14 @@
                                     <tr>
                                     <div class="form-group">
                                         <td width="15%"><label class="form-label" for="leads_name">Name</label></td>
-                                        <td colspan="1"><input value="{{ old('leads_name') }}" class="form-control" id="leads_name" name="leads_name">
+                                        <td colspan="4"><input value="{{ old('leads_name') }}" class="form-control" id="leads_name" name="leads_name">
                                             @error('leads_name')
                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                                             @enderror
                                         </td>
                                             
                                         <td width="15%"><label class="form-label" for="leads_email">Email</label></td>
-                                        <td colspan="3"><input value="{{ old('leads_email') }}" class="form-control" id="leads_email" name="leads_email">
+                                        <td colspan="2"><input value="{{ old('leads_email') }}" class="form-control" id="leads_email" name="leads_email">
                                             @error('leads_email')
                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                                             @enderror
@@ -50,25 +50,42 @@
                                     <tr>
                                         <div class="form-group">
                                             <td width="15%"><label class="form-label" for="leads_ic">IC Number</label></td>
-                                            <td colspan="1"><input value="{{ old('leads_ic') }}" class="form-control" id="leads_ic" name="leads_ic">
+                                            <td colspan="2"><input value="{{ old('leads_ic') }}" class="form-control" id="leads_ic" name="leads_ic">
                                                 @error('leads_ic')
                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                 @enderror
                                             </td>
 
-                                                <td width="15%"><label class="form-label" for="leads_phone">Phone Number</label></td>
-                                                <td colspan="3"><input value="{{ old('leads_phone') }}" class="form-control" id="leads_phone" name="leads_phone">
-                                                    @error('leads_phone')
-                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                    @enderror
-                                                </td>
+                                            <td width="15%"><label class="form-label" for="leads_phone">Phone Number</label></td>
+                                            <td colspan="1"><input value="{{ old('leads_phone') }}" class="form-control" id="leads_phone" name="leads_phone">
+                                                @error('leads_phone')
+                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                @enderror
+                                            </td>
+
+                                            <td width="15%"><label class="form-label" for="edu_level">Education Level</label></td>
+                                            <td colspan="2">
+
+                                                <select class="form-control" name="edu_level" id="edu_level" >
+                                                    <option value="">-- Select Education Level --</option>
+                                                    @foreach ($qualification as $qualify) 
+                                                    <option value="{{ $qualify->id }}" {{ old('edu_level') ? 'selected' : '' }}>
+                                                            {{ $qualify->qualification_name }}</option>
+                                                    @endforeach
+                                                        @error('edu_level')
+                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                        @enderror
+                                                </select><br>
+                                                
+                                            </td>
                                         </div>
                                     </tr>
 
                                     <tr>
                                         <div class="form-group">
+
                                             <td width="15%"><label class="form-label" for="leads_source">Source</label></td>
-                                            <td width="35%">
+                                            <td colspan="3">
 
                                                 <select class="form-control" name="leads_source" id="leads_source" >
                                                     <option value="">-- Select Source --</option>
@@ -86,7 +103,7 @@
                                                 
                                             </td>
                                             <td width="15%"><label class="form-label" for="leads_event">Events</label></td>
-                                            <td colspan="2">
+                                            <td colspan="3">
                                                 <input value="{{ old('leads_event') }}" class="form-control" id="leads_event" name="leads_event">
                                                 @error('leads_event')
                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>

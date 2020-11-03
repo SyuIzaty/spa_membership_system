@@ -118,6 +118,23 @@
 
                                                         <tr>
                                                             <div class="form-group">
+                                                                <td width="16%"><label class="form-label" for="edu_level"> Education Level:</label></td>
+                                                                <td colspan="7">
+                                                                    <select class="form-control" name="edu_level" id="edu_level" >
+                                                                        <option value="">-- Select Education Level --</option>
+                                                                        @foreach($qualification as $qualify)
+                                                                            <option value="{{$qualify->id}}"  {{ $lead->edu_level == $qualify->id ? 'selected="selected"' : '' }} placeholder="Education Level">{{$qualify->qualification_name}}</option><br>
+                                                                        @endforeach
+                                                                        @error('edu_level')
+                                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                        @enderror
+                                                                    </select><br>
+                                                                </td>
+                                                            </div>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <div class="form-group">
                                                                 <td width="16%"><label class="form-label" for="progs">Lead Programmes:</label></td>
                                                                     <td colspan="7">
                                                                         <select class="form-control" name="leads_prog1" id="leads_prog1" >
@@ -262,7 +279,9 @@
                                                         <th>Remarks</th>
                                                         <th>Date</th>
                                                         <th>Status</th>
+                                                        @role('sales manager|sales executive')
                                                         <th>Action</th>
+                                                        @endrole
                                                     </tr>
                                                     @foreach($lead->lead_notes as $leadNotes)
                                                     <tr align="center"  class="data-row">
@@ -273,23 +292,29 @@
                                                         <td >
                                                             @if ($leadNotes->status_id == '0') New Lead @endif
                                                             @if ($leadNotes->status_id == '1') Ongoing @endif
-                                                            @if ($leadNotes->status_id == '2') Close Registered @endif
-                                                            @if ($leadNotes->status_id == '3') Close Rejected @endif
-                                                            @if ($leadNotes->status_id == '4') Close @endif
+                                                            @if ($leadNotes->status_id == '2') Registered @endif
+                                                            @if ($leadNotes->status_id == '3') Not Show @endif
+                                                            @if ($leadNotes->status_id == '4') Agreed COL @endif
+                                                            @if ($leadNotes->status_id == '5') Decline COL @endif
+                                                            @if ($leadNotes->status_id == '6') DUMB @endif
+                                                            @if ($leadNotes->status_id == '7') COL Out @endif
+                                                            @if ($leadNotes->status_id == '8') OL Out @endif
                                                         </td>
+                                                        @role('sales manager|sales executive')
                                                         <td>
                                                             <a href="/lead/edit_followLead/{{ $leadNotes->id }}" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i> Edit</a>
                                                             <button class="btn btn-danger btn-sm deleteFollow" data-id="{{$leadNotes->id}}" data-action="{{route('deleteFollowInfo', $leadNotes->id)}}"><i class="fal fa-trash"></i> Delete</button>
                                                             <meta name="csrf-token" content="{{ csrf_token() }}">
                                                         </td>
+                                                        @endrole
                                                     </tr>
                                                     @endforeach
                                                     
                                                 </thead>
                                             </table>
-
+                                        @role('sales manager|sales executive')
                                         <a href="javascript:;" data-toggle="modal" id="new" class="btn btn-primary ml-auto float-right"><i class="fal fa-plus-square"></i> Add Follow Up</a>
-                                    
+                                        @endrole
                                         </div>
 
                                     </div>
