@@ -20,6 +20,10 @@
                     <div class="d-flex justify-content-center">
                         <div class="p-2"><a href="{{ route('registration.index') }}" class="btn btn-success"><i class="fal fa-pencil-alt"></i> NEW APPLICATION</a></div>
                     </div>
+                    @else
+                    <div class="d-flex justify-content-center">
+                        <div class="p-2"><h3>Sorry application have been closed</p></div>
+                    </div>
                     @endif
                     <hr class="mt-2 mb-3" style="border: 1px solid #ececec">
                     <div class="d-flex justify-content-center">

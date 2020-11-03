@@ -141,7 +141,7 @@
                             </li>
                             <li class="nav-title">Operation</li>
 
-                            @role('sales manager|sales executive|admin assistant')
+                            @role('sales manager|sales executive')
                             <li class="open">
                                 <a href="#" title="Sales Intel" data-filter-tags="sales intel">
                                     <i class="fal fa-bullhorn"></i>
@@ -155,27 +155,15 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" title="Inactive Leads" data-filter-tags="inactive_leads">
+                                        <a href="/lead/inactive_lead" title="Inactive Leads" data-filter-tags="inactive_leads">
                                             <i class="fal fa-minus"></i>
                                             <span class="nav-link-text" data-i18n="nav.inactive_leads">Inactive Leads</span>
                                         </a>
-                                        <ul>
-                                            <li>
-                                                <a href="/lead/inactive_lead" title="success_lead" data-filter-tags="success_lead">
-                                                    <span class="nav-link-text" data-i18n="nav.success_lead">Successful Lead</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="/lead/inactive_lead_un" title="unsuccess_lead" data-filter-tags="unsuccess_lead">
-                                                    <span class="nav-link-text" data-i18n="nav.unsuccess_lead">Unsuccessful Lead</span>
-                                                </a>
-                                            </li>
-                                        </ul>
                                     </li>
                                 </ul>
                             </li>
                             @endrole
-                            
+
                             @can('check requirement')
                             <li class="open"> <!-- change active kalau nak activate dropdown-->
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
@@ -219,12 +207,16 @@
                                             <span class="nav-link-text" data-i18n="nav.active_student">Offered Application</span>
                                         </a>
                                     </li>
+                                    @endcan
+                                    @can('email offer letter')
                                     <li>
                                         <a href="/offeredprogramme" title="Batch" data-filter-tags="batch">
                                             <i class="fal fa-file-excel"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">Offered Programme</span>
                                         </a>
                                     </li>
+                                    @endcan
+                                    @can('check requirement')
                                     <li>
                                         <a href="/publishedoffer" title="Batch" data-filter-tags="batch">
                                             <i class="fal fa-envelope"></i>
@@ -565,9 +557,19 @@
                                     <span class="nav-link-text" data-i18n="nav.laporan">Roles & Permission</span>
                                 </a>
                                 <ul>
-                                    <li>
+                                    {{-- <li>
                                         <a href="/report-active-student" title="How it works" data-filter-tags="theme settings how it works">
                                             <span class="nav-link-text" data-i18n="nav.theme_settings_how_it_works">Active Student List</span>
+                                        </a>
+                                    </li> --}}
+                                    <li>
+                                        <a href="/role" title="How it works" data-filter-tags="theme settings how it works">
+                                            <span class="nav-link-text" data-i18n="nav.theme_settings_how_it_works">Role</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/permission" title="How it works" data-filter-tags="theme settings how it works">
+                                            <span class="nav-link-text" data-i18n="nav.theme_settings_how_it_works">Permission</span>
                                         </a>
                                     </li>
                                 </ul>

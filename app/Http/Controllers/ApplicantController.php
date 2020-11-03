@@ -401,7 +401,7 @@ class ApplicantController extends Controller
 
     public function data_publishedapplicant() //Datatable: offer letter published
     {
-        $applicant = Applicant::where('applicant_status','5C')->get();
+        $applicant = Applicant::where('applicant_status','5C')->orWhere('applicant_status','7A')->get();
         $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','applicantstatus','applicantIntake','batch');
         return datatables()::of($applicants)
             ->addColumn('applicant_name',function($applicants)
@@ -1498,29 +1498,11 @@ class ApplicantController extends Controller
 
         $student_id = $this->studentId($applicant);
 
-        // $batch = IntakeDetail::where('status','1')->where('intake_programme',$request->programme_code)->whereHas('intakes', function (Builder $query) {
-        //     $query->where('intake_app_open','<=',Carbon::Now())->where('intake_app_close','>=',Carbon::now());
-        // })->get();
-
         $batch = IntakeDetail::BatchIntake($request->programme_code)->get();
-
-        Applicant::where('id',$request->applicant_id)->update(['offered_programme' => $request->programme_code, 'offered_major' => $request->major, 'applicant_status' => '5A', 'student_id' => $student_id, 'batch_code'=>$batch->first()->batch_code, 'intake_id'=>$batch->first()->intake_code]);
-
-        $intake = Applicant::where('id',$request->applicant_id)->where('offered_programme',$request->programme_code)->where('offered_major',$request->major)->with(['intakeDetail'=>function($query) use ($request){
-            $query->where('status','1')->where('intake_programme',$request->programme_code);
-        }])->first();
 
         Applicant::where('id',$request->applicant_id)->update(['offered_programme' => $request->programme_code,'offered_major' => $request->major,'applicant_status' => '5A','student_id' => $student_id,'batch_code'=>$batch->first()->batch_code,'intake_offer' => $batch->first()->intake_code]);
 
-        // if(isset($intake->intakeDetail->batch_code)){
-        //     $offer = Applicant::where('id',$request->applicant_id)->update(['batch_code' => $intake->intakeDetail->batch_code, 'intake_offer' => $intake->intake_id]);
-        // }else{
-        //     Applicant::where('id',$request->applicant_id)->update(['offered_programme' => '', 'offered_major' => '', 'applicant_status' => '4A', 'student_id' => '']);
-        //     return '<script type="text/javascript">alert("Programme not offered for this intake");history.go(-1);;
-        //     </script>';
-        // }
-
-        Applicant::updateStatus($request->applicant_id, $request->programme_code, $request->major);
+        // Applicant::updateStatus($request->applicant_id, $request->programme_code, $request->major);
 
         return redirect()->back()->with('message', 'Programme Offered');
     }
@@ -1605,16 +1587,6 @@ class ApplicantController extends Controller
             $message->subject('Congratulations, ' . $detail->applicant_name);
             $message->to(!empty($detail->applicant_email) ? $detail->applicant_email : 'jane-doe@email.com');
             $message->attachData($report->output(), 'Offer_Letter_' . $detail->applicant_name . '.pdf');
-            // $file = AttachmentFile::where('batch_code',$detail['batch_code'])->get();
-            // foreach($file as $files){
-            //     $path = storage_path().'/app/batch/'.$files->file_name;
-            //     if(file_exists($path)){
-            //         $message->attach($path, [
-            //             'as' => $files->file_name,
-            //             'mime' => 'application/pdf',
-            //         ]);
-            //     }
-            // }
         });
 
         Applicant::where('id',$applicants_id)->update(['email_sent'=>'1', 'applicant_status'=>'5C']);

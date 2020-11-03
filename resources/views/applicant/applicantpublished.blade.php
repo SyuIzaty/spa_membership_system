@@ -43,6 +43,7 @@
                                         <th>BATCH</th>
                                         <th>PROG</th>
                                         <th>MAJOR</th>
+                                        <th>STATUS</th>
                                         <th></th>
                                         <th></th>
                                         <th>ACTION</th>
@@ -57,6 +58,7 @@
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Batch"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Programme"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Major"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Status"></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -101,7 +103,7 @@
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
-            columnDefs: [{ "visible": false,"targets":[9]}, { "visible": false,"targets":[10]}],
+            columnDefs: [{ "visible": false,"targets":[10]}, { "visible": false,"targets":[11]}],
             columns: [
                     { data: 'id', name: 'id' },
                     { data: 'student_id', name: 'student_id' },
@@ -112,6 +114,7 @@
                     { data: 'batch_code', name: 'batch_code' },
                     { data: 'offered_programme', name: 'offered_programme' },
                     { data: 'offered_major', name: 'offered_major' },
+                    { data: 'applicant_status', name: 'applicant_status'},
                     { data: 'applicant_intake.intake_app_close' },
                     { data: 'applicant_intake.intake_app_open' },
                     { data: 'action', name: 'action', orderable: false, searchable: false}
@@ -169,7 +172,7 @@
             @endforeach
 
             table
-            .column(9)
+            .column(10)
             .search("1",true,false)
             .column(4)
             .search(value ? value.join('|') : '', true, false)

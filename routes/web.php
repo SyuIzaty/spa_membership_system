@@ -59,7 +59,7 @@ Route::get('/applicantupdatestat', 'ApplicantController@applicant_updatestat');
 Route::get('checkrequirements', 'ApplicantController@checkrequirements')->name('check-requirements');
 Route::get('checkindividual', 'ApplicantController@checkindividual')->name('check-individual');
 Route::post('changestatus', 'ApplicantController@changestatus');
-Route::get('offeredprogramme', 'ApplicantController@offeredprogramme');
+Route::get('offeredprogramme', 'ApplicantController@offeredprogramme')->middleware('can:email offer letter');
 Route::post('applicantstatus', 'ApplicantController@applicantstatus');
 Route::post('intakestatus', 'ApplicantController@intakestatus');
 Route::post('cancelOffer', 'ApplicantController@cancelOffer');
@@ -88,6 +88,14 @@ Route::get('exportapplicant/{intake?}/{programme?}/{batch?}/{status?}','Applican
 // Route::post('/import_excel/import', 'ApplicantController@import')
 Route::post('import-excel','ApplicantController@import');
 Route::get('attachmentFile/{filename}/{type}','ApplicantController@sponsorAttachment');
+
+//ROLE
+Route::resource('/role','RoleController');
+Route::post('/data_allrole', 'RoleController@data_allrole');
+
+//PERMISSION
+Route::resource('permission', 'PermissionController');
+Route::post('/data_allpermission', 'PermissionController@data_allpermission');
 
 //PHYSICAL REGISTRATION
 Route::resource('/physical-registration', 'PhysicalRegistrationController');
@@ -147,9 +155,7 @@ Route::post('updateEditFollow', 'LeadController@updateEditFollow');
 Route::delete('deleteFollowInfo/{id}', 'LeadController@deleteFollowInfo')->name('deleteFollowInfo');
 Route::post('createfollowinfo','LeadController@createFollowInfo');
 Route::get('/lead/inactive_lead', 'LeadController@inactiveLead');
-Route::get('/lead/inactive_lead_un', 'LeadController@inactiveUnLead');
 Route::post('api/inactiveLead/list', 'LeadController@data_inactiveLead_list');  //datatable
-Route::post('api/inactiveUnLead/list', 'LeadController@data_inactiveUnLead_list');  //datatable
 Route::post('updateAssign', 'LeadController@updateAssign');
 
 //PARAM
@@ -161,8 +167,6 @@ Route::post('data-intakeType', 'IntakeTypeController@data_intakeType');
 Route::post('data-allProgramme', 'ProgrammeController@data_allProgramme');
 Route::post('data-allMajor', 'MajorController@data_allMajor');
 Route::post('data-allCourse', 'CourseController@data_allCourse');
-Route::post('preInfo','CourseController@preInfo');
-Route::post('coInfo','CourseController@coInfo');
 
 //OFFER LETTER
 // Route::get('/offer-letter', 'EntryRequirementController@offer');

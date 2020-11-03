@@ -105,12 +105,6 @@
                                                                         @isset($applicant->programme_status)
                                                                             <p>{{ $applicant->programmeStatus->status_description }}</p>
                                                                         @endisset
-                                                                        {{-- @if($applicant->programme_status == '4A')
-                                                                            <p style="color: green">Qualified</p>
-                                                                        @endif
-                                                                        @if($applicant->programme_status == '3G')
-                                                                            <p style="color: red">Not Qualified</p>
-                                                                        @endif --}}
                                                                     </td>
                                                                     <td>
                                                                         <select class="form-control" name="applicant_qualification" id="qua1">

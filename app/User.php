@@ -7,10 +7,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Traits\HasPermissions;
-// use Spatie\Permission\Models\Role;
-// use Spatie\Permission\Models\Permission;
-use App\Role;
-use App\Permission;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class User extends Authenticatable
 {
@@ -23,6 +21,11 @@ class User extends Authenticatable
      *
      * @var array
      */
+
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+    protected $keyType = 'string';
+
     protected $fillable = [
         'id' , 'name', 'email', 'password', 'username',
     ];
@@ -47,6 +50,6 @@ class User extends Authenticatable
 
     public function lead()
     {
-        return $this->hasMany('App\Lead','assigned_to');  
+        return $this->hasMany('App\Lead','created_by');
     }
 }

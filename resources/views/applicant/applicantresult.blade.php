@@ -43,15 +43,12 @@
                                                 <th>PROG 1</th>
                                                 <th>PROG 2</th>
                                                 <th>PROG 3</th>
-                                                {{-- <th>BM</th>
-                                                <th>ENG</th>
-                                                <th>MATH</th> --}}
                                                 <th></th>
                                                 <th></th>
                                                 <th>ACTION</th>
                                             </tr>
                                             <tr>
-                                                <td></td>
+                                                <td class="hasinput"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Applicant Name"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Applicant IC"></td>
@@ -60,9 +57,6 @@
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme"></td>
                                                 <td class="hasinput"><input type="text" class="form-control" placeholder="Search Programme"></td>
-                                                {{-- <td class="hasinput"><input type="text" class="form-control" placeholder="Search Bahasa Melayu"></td>
-                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search English"></td>
-                                                <td class="hasinput"><input type="text" class="form-control" placeholder="Search Mathematics"></td> --}}
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
