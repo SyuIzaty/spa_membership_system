@@ -56,7 +56,7 @@
                                             <td>
                                                 <select class="form-control permission" name="permission_id[]" multiple>
                                                     @foreach ($permission as $permissions)
-                                                        <option value="{{ $permissions->id }}">{{ $permissions->id }}</option>
+                                                        <option value="{{ $permissions->name }}">{{ $permissions->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </td>

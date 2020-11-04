@@ -77,8 +77,9 @@ class RoleController extends Controller
     public function edit($id)
     {
         $role = Role::find($id);
+        $permission = Permission::all();
         $role_permission = $role->getAllPermissions();
-        return view('role.edit',compact('role','role_permission'));
+        return view('role.edit',compact('role','role_permission','permission'));
     }
 
     /**
@@ -90,7 +91,11 @@ class RoleController extends Controller
      */
     public function update(RoleRequest $request, $id)
     {
-        $role = Role::find($id)->update($request->all());
+        $role = Role::find($id);
+        foreach($request->permission_id as $perm){
+            $role->givePermissionTo($perm);
+        }
+        Role::find($id)->update($request->all());
 
         return redirect()->back()->with('message', 'Role updated successfully');
     }

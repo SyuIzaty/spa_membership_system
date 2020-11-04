@@ -51,6 +51,16 @@
                                             <td>Role Module</td>
                                             <td>{{ Form::text('module', $role['module'], ['class' => 'form-control', 'placeholder' => 'Role Module']) }}</td>
                                         </tr>
+                                        <tr>
+                                            <td>Permission ID</td>
+                                            <td>
+                                                <select class="form-control permission" name="permission_id[]" multiple>
+                                                    @foreach ($permission as $permissions)
+                                                        <option value="{{ $permissions->name }}">{{ $permissions->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </td>
+                                        </tr>
                                     </table>
                                     <button class="btn btn-primary ml-auto float-right mb-5">Submit</button>
                                 {!! Form::close() !!}
@@ -75,4 +85,11 @@
             </div>
         </div>
     </main>
+@endsection
+@section('script')
+    <script>
+        $(document).ready(function() {
+            $('.permission').select2();
+        });
+    </script>
 @endsection
