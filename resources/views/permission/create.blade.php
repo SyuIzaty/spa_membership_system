@@ -38,6 +38,7 @@
                             <div class="card-body">
                                 {!! Form::open(['action' => 'PermissionController@store', 'method' => 'POST']) !!}
                                     <table class="table table-bordered">
+                                        <input type="hidden" name="guard_name" value="web">
                                         <tr>
                                             <td>Permission ID</td>
                                             <td>{{ Form::text('id', '', ['class' => 'form-control', 'placeholder' => 'Role']) }}</td>
@@ -51,7 +52,7 @@
                                             <td>{{ Form::text('permission', '', ['class' => 'form-control', 'placeholder' => 'Role Module']) }}</td>
                                         </tr>
                                     </table>
-                                    <button class="btn btn-primary ml-auto float-right mb-5">Submit</button>
+                                    <button class="btn btn-success btn-sm ml-auto float-right mb-5">Submit</button>
                                 {!! Form::close() !!}
                             </div>
                         </div>

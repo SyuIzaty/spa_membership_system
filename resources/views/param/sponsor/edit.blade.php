@@ -78,7 +78,7 @@
                                         </tr>
                                     </table>
                                     {{Form::hidden('_method', 'PUT')}}
-                                    <button class="btn btn-primary btn-sm float-right mb-3">Submit</button>
+                                    <button class="btn btn-success btn-sm float-right mb-3">Submit</button>
                                 {!! Form::close() !!}
                         </div>
                     </div>

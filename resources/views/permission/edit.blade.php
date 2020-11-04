@@ -36,11 +36,12 @@
                                 </div>
                             @endif
                             <div class="card-body">
-                                {!! Form::open(['action' => ['PermissionController@update', $permission['id']], 'method' => 'POST'])!!}
+                                {!! Form::open(['action' => ['PermissionController@update', $permission['id']], 'method' => 'PATCH'])!!}
                                     <table class="table table-bordered">
+                                        <input type="hidden" name="guard_name" value="web">
                                         <tr>
                                             <td>Permission ID</td>
-                                            <td>{{ Form::text('id', $permission['id'], ['class' => 'form-control', 'placeholder' => 'Permission ID']) }}</td>
+                                            <td>{{ Form::text('id', $permission['id'], ['class' => 'form-control', 'placeholder' => 'Permission ID', 'readonly' => 'true']) }}</td>
                                         </tr>
                                         <tr>
                                             <td>Permission Name</td>

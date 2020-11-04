@@ -38,6 +38,7 @@
                             <div class="card-body">
                                 {!! Form::open(['action' => 'RoleController@store', 'method' => 'POST']) !!}
                                     <table class="table table-bordered">
+                                        <input type="hidden" name="guard_name" value="web">
                                         <tr>
                                             <td>Role ID</td>
                                             <td>{{ Form::text('id', '', ['class' => 'form-control', 'placeholder' => 'Role']) }}</td>
@@ -50,8 +51,18 @@
                                             <td>Role Module</td>
                                             <td>{{ Form::text('module', '', ['class' => 'form-control', 'placeholder' => 'Role Module']) }}</td>
                                         </tr>
+                                        <tr>
+                                            <td>Permission ID</td>
+                                            <td>
+                                                <select class="form-control permission" name="permission_id[]" multiple>
+                                                    @foreach ($permission as $permissions)
+                                                        <option value="{{ $permissions->id }}">{{ $permissions->id }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </td>
+                                        </tr>
                                     </table>
-                                    <button class="btn btn-primary ml-auto float-right mb-5">Submit</button>
+                                    <button class="btn btn-success btn-sm ml-auto float-right mb-5">Submit</button>
                                 {!! Form::close() !!}
                             </div>
                         </div>
@@ -60,4 +71,11 @@
             </div>
         </div>
     </main>
+@endsection
+@section('script')
+    <script>
+        $(document).ready(function() {
+            $('.permission').select2();
+        });
+    </script>
 @endsection

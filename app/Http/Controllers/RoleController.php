@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Role;
+use App\Permission;
 use App\Http\Requests\RoleRequest;
 
 class RoleController extends Controller
@@ -38,7 +39,8 @@ class RoleController extends Controller
      */
     public function create()
     {
-        return view('role.create');
+        $permission = Permission::all();
+        return view('role.create', compact('permission'));
     }
 
     /**
@@ -49,7 +51,9 @@ class RoleController extends Controller
      */
     public function store(RoleRequest $request)
     {
-        Role::create($request->except(['_token']));
+        $role = Role::create($request->except(['_token']));
+        $role->syncPermissions($request->permission_id);
+
         return redirect()->back()->with('message', 'Role have been added');
     }
 
@@ -73,7 +77,8 @@ class RoleController extends Controller
     public function edit($id)
     {
         $role = Role::find($id);
-        return view('role.edit',compact('role'));
+        $role_permission = $role->getAllPermissions();
+        return view('role.edit',compact('role','role_permission'));
     }
 
     /**
@@ -85,7 +90,7 @@ class RoleController extends Controller
      */
     public function update(RoleRequest $request, $id)
     {
-        Role::find($id)->update($request->all());
+        $role = Role::find($id)->update($request->all());
 
         return redirect()->back()->with('message', 'Role updated successfully');
     }

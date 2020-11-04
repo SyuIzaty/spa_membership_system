@@ -36,11 +36,12 @@
                                 </div>
                             @endif
                             <div class="card-body">
-                                {!! Form::open(['action' => ['RoleController@update', $role['id']], 'method' => 'POST'])!!}
+                                {!! Form::open(['action' => ['RoleController@update', $role['id']], 'method' => 'PATCH'])!!}
                                     <table class="table table-bordered">
+                                        <input type="hidden" name="guard_name" value="web">
                                         <tr>
                                             <td>Role</td>
-                                            <td>{{ Form::text('id', $role['id'], ['class' => 'form-control', 'placeholder' => 'Role']) }}</td>
+                                            <td>{{ Form::text('id', $role['id'], ['class' => 'form-control', 'placeholder' => 'Role', 'readonly' => 'true']) }}</td>
                                         </tr>
                                         <tr>
                                             <td>Role Name</td>
@@ -53,6 +54,21 @@
                                     </table>
                                     <button class="btn btn-primary ml-auto float-right mb-5">Submit</button>
                                 {!! Form::close() !!}
+                                <h3>Permission</h3>
+                                <table class="table table-bordered">
+                                    <tr class="bg-primary-50 text-center">
+                                        <td>PERMISSION ID</td>
+                                        <td>PERMISSION NAME</td>
+                                        <td>MODULE</td>
+                                    </tr>
+                                    @foreach ($role_permission as $role_permissions)
+                                    <tr>
+                                        <td>{{ $role_permissions->id }}</td>
+                                        <td>{{ $role_permissions->name }}</td>
+                                        <td>{{ $role_permissions->module }}</td>
+                                    </tr>
+                                    @endforeach
+                                </table>
                             </div>
                         </div>
                     </div>
