@@ -54,7 +54,6 @@
                                     </table>
                                     <button class="btn btn-primary ml-auto float-right mb-5">Submit</button>
                                 {!! Form::close() !!}
-                                <h3>Permission</h3>
                                 <table class="table table-bordered">
                                     <tr class="bg-primary-50 text-center">
                                         <td>PERMISSION ID</td>

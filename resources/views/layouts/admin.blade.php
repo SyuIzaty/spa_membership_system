@@ -224,7 +224,7 @@
                                     <li>
                                         <a href="/offeredprogramme" title="Batch" data-filter-tags="batch">
                                             <i class="fal fa-file-excel"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Offered Programme</span>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Email Offer Letter</span>
                                         </a>
                                     </li>
                                     @endcan

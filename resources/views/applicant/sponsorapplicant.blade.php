@@ -47,6 +47,50 @@
                             <div class="row">
                                 <div class="col-md-12 text-danger">** Reminder: The uploaded data will be saved in {{ $intake['intake_code'] }} session</div>
                             </div>
+                            <div class="row mt-5">
+                                <div class="col-md-4">
+                                    <table class="table table-bordered table-sm">
+                                        <tr class="bg-primary-50 text-center">
+                                            <td>GENDER CODE</td>
+                                            <td>GENDER NAME</td>
+                                        </tr>
+                                        @foreach ($gender as $genders)
+                                            <tr>
+                                                <td>{{ $genders->gender_code }}</td>
+                                                <td>{{ $genders->gender_name }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </table>
+                                </div>
+                                <div class="col-md-4">
+                                    <table class="table table-bordered table-sm">
+                                        <tr class="bg-primary-50 text-center">
+                                            <td>RELIGION CODE</td>
+                                            <td>RELIGION NAME</td>
+                                        </tr>
+                                        @foreach ($religion as $religions)
+                                            <tr>
+                                                <td>{{ $religions->religion_code }}</td>
+                                                <td>{{ $religions->religion_name }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </table>
+                                </div>
+                                <div class="col-md-4">
+                                    <table class="table table-bordered table-sm">
+                                        <tr class="bg-primary-50 text-center">
+                                            <td>RACE CODE</td>
+                                            <td>RACE NAME</td>
+                                        </tr>
+                                        @foreach ($race as $races)
+                                            <tr>
+                                                <td>{{ $races->race_code }}</td>
+                                                <td>{{ $races->race_name }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

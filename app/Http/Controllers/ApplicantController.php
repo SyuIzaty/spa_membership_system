@@ -512,15 +512,18 @@ class ApplicantController extends Controller
     public function sponsorapplicant()
     {
         $intake = Intakes::IntakeNow()->first();
+        $gender = Gender::all();
+        $race = Race::all();
+        $religion = Religion::all();
 
-        return view('applicant.sponsorapplicant', compact('intake'));
+        return view('applicant.sponsorapplicant', compact('intake','gender','race','religion'));
     }
 
     public function sponsorTemplate(){
 
-        $file = storage_path()."/downloads/SPONSOR_APPLICANT.xlsx";
+        $file = storage_path()."/template/SPONSOR_APPLICANTS.xlsx";
         $headers = array('Content-Type: application/xlsx',);
-        return Response::download($file, 'SPONSOR_APPLICANT.xlsx',$headers);
+        return Response::download($file, 'SPONSOR_APPLICANTS.xlsx',$headers);
     }
 
     public function import(Request $request) // Upload data from sponsor
@@ -1546,7 +1549,7 @@ class ApplicantController extends Controller
             'applicant_qualification' => $request->applicant_qualification
         ]);
 
-        Applicant::updateStatus($applicant['id'], $request->applicant_programme, $request->applicant_major);
+        // Applicant::updateStatus($applicant['id'], $request->applicant_programme, $request->applicant_major);
         return redirect()->back()->with('message', 'Programme Offered');
     }
 
