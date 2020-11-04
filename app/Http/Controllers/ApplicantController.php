@@ -1505,7 +1505,7 @@ class ApplicantController extends Controller
 
         Applicant::where('id',$request->applicant_id)->update(['offered_programme' => $request->programme_code,'offered_major' => $request->major,'applicant_status' => '5A','student_id' => $student_id,'batch_code'=>$batch->first()->batch_code,'intake_offer' => $batch->first()->intake_code]);
 
-        // Applicant::updateStatus($request->applicant_id, $request->programme_code, $request->major);
+        Applicant::updateStatus($request->applicant_id, $request->programme_code, $request->major);
 
         return redirect()->back()->with('message', 'Programme Offered');
     }
@@ -1549,7 +1549,7 @@ class ApplicantController extends Controller
             'applicant_qualification' => $request->applicant_qualification
         ]);
 
-        // Applicant::updateStatus($applicant['id'], $request->applicant_programme, $request->applicant_major);
+        Applicant::updateStatus($applicant['id'], $request->applicant_programme, $request->applicant_major);
         return redirect()->back()->with('message', 'Programme Offered');
     }
 
