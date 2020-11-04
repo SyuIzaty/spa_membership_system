@@ -155,7 +155,9 @@ Route::post('updateEditFollow', 'LeadController@updateEditFollow');
 Route::delete('deleteFollowInfo/{id}', 'LeadController@deleteFollowInfo')->name('deleteFollowInfo');
 Route::post('createfollowinfo','LeadController@createFollowInfo');
 Route::get('/lead/inactive_lead', 'LeadController@inactiveLead');
+Route::get('/lead/inactive_lead_un', 'LeadController@inactiveUnLead');
 Route::post('api/inactiveLead/list', 'LeadController@data_inactiveLead_list');  //datatable
+Route::post('api/inactiveUnLead/list', 'LeadController@data_inactiveUnLead_list');  //datatable
 Route::post('updateAssign', 'LeadController@updateAssign');
 
 //PARAM
@@ -167,6 +169,8 @@ Route::post('data-intakeType', 'IntakeTypeController@data_intakeType');
 Route::post('data-allProgramme', 'ProgrammeController@data_allProgramme');
 Route::post('data-allMajor', 'MajorController@data_allMajor');
 Route::post('data-allCourse', 'CourseController@data_allCourse');
+Route::post('preInfo','CourseController@preInfo');
+Route::post('coInfo','CourseController@coInfo');
 
 //OFFER LETTER
 // Route::get('/offer-letter', 'EntryRequirementController@offer');

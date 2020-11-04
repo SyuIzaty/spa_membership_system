@@ -50,6 +50,6 @@ class User extends Authenticatable
 
     public function lead()
     {
-        return $this->hasMany('App\Lead','created_by');
+        return $this->hasMany('App\Lead','assigned_to');
     }
 }

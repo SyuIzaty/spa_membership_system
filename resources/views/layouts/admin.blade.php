@@ -141,7 +141,7 @@
                             </li>
                             <li class="nav-title">Operation</li>
 
-                            @role('sales manager|sales executive')
+                            @role('sales manager|sales executive|admin assistant')
                             <li class="open">
                                 <a href="#" title="Sales Intel" data-filter-tags="sales intel">
                                     <i class="fal fa-bullhorn"></i>
@@ -155,10 +155,22 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="/lead/inactive_lead" title="Inactive Leads" data-filter-tags="inactive_leads">
+                                        <a href="#" title="Inactive Leads" data-filter-tags="inactive_leads">
                                             <i class="fal fa-minus"></i>
                                             <span class="nav-link-text" data-i18n="nav.inactive_leads">Inactive Leads</span>
                                         </a>
+                                        <ul>
+                                            <li>
+                                                <a href="/lead/inactive_lead" title="success_lead" data-filter-tags="success_lead">
+                                                    <span class="nav-link-text" data-i18n="nav.success_lead">Successful Lead</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/lead/inactive_lead_un" title="unsuccess_lead" data-filter-tags="unsuccess_lead">
+                                                    <span class="nav-link-text" data-i18n="nav.unsuccess_lead">Unsuccessful Lead</span>
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </li>
                                 </ul>
                             </li>
