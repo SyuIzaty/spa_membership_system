@@ -521,9 +521,9 @@ class ApplicantController extends Controller
 
     public function sponsorTemplate(){
 
-        $file = storage_path()."/template/SPONSOR_APPLICANTS.xlsx";
+        $file = storage_path()."/template/SPONSOR_APPLICANT.xlsx";
         $headers = array('Content-Type: application/xlsx',);
-        return Response::download($file, 'SPONSOR_APPLICANTS.xlsx',$headers);
+        return Response::download($file, 'SPONSOR_APPLICANT.xlsx',$headers);
     }
 
     public function import(Request $request) // Upload data from sponsor
