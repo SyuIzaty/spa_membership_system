@@ -92,10 +92,16 @@ Route::get('attachmentFile/{filename}/{type}','ApplicantController@sponsorAttach
 //ROLE
 Route::resource('/role','RoleController');
 Route::post('/data_allrole', 'RoleController@data_allrole');
+Route::get('delete/{id}/{role_id}', 'RoleController@delete')->name('role.delete');
 
 //PERMISSION
 Route::resource('permission', 'PermissionController');
 Route::post('/data_allpermission', 'PermissionController@data_allpermission');
+
+//MODULE PERMISSION
+Route::resource('/module-auth', 'ModuleAuthController');
+Route::post('/data_moduleauth', 'ModuleAuthController@data_moduleauth');
+Route::get('/test','ModuleAuthController@test');
 
 //PHYSICAL REGISTRATION
 Route::resource('/physical-registration', 'PhysicalRegistrationController');
@@ -120,7 +126,6 @@ Route::get('attachmentFile/{filename}/{type}','RegistrationController@attachment
 
 //SPONSOR
 Route::resource('param/sponsor','SponsorController');
-Route::get('/test','ApplicantController@test');
 Route::post('/data_sponsor', 'SponsorController@data_sponsor');
 
 //INTAKE

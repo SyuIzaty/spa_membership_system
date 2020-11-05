@@ -49,10 +49,16 @@
                                         </tr>
                                         <tr>
                                             <td>Permission Module</td>
-                                            <td>{{ Form::text('permission', $permission['permission'], ['class' => 'form-control', 'placeholder' => 'Permission Module']) }}</td>
+                                            <td>
+                                                <select class="form-control module" name="module">
+                                                    @foreach ($module as $modules)
+                                                        <option value="{{ $modules->id }}" {{ $permission->module == $modules->id ? 'selected="selected"' : ''}}>{{ $modules->module_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </td>
                                         </tr>
                                     </table>
-                                    <button class="btn btn-primary ml-auto float-right mb-5">Submit</button>
+                                    <button class="btn btn-success btn-sm ml-auto float-right mb-5">Update</button>
                                 {!! Form::close() !!}
                             </div>
                         </div>
@@ -61,4 +67,11 @@
             </div>
         </div>
     </main>
+@endsection
+@section('script')
+    <script>
+        $(document).ready(function() {
+            $('.module').select2();
+        });
+    </script>
 @endsection

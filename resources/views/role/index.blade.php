@@ -46,7 +46,7 @@
                             </table>
                         </div>
                         <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">
-                            <a class="btn btn-success float-right ml-auto" href="{{ route('role.create') }}"> Create Role</a>
+                            <a class="btn btn-success float-right ml-auto btn-sm" href="{{ route('role.create') }}"> Create Role</a>
 
                         </div>
                     </div>

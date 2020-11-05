@@ -575,6 +575,11 @@
                                         </a>
                                     </li> --}}
                                     <li>
+                                        <a href="/module-auth" title="How it works" data-filter-tags="theme settings how it works">
+                                            <span class="nav-link-text" data-i18n="nav.theme_settings_how_it_works">Module</span>
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a href="/role" title="How it works" data-filter-tags="theme settings how it works">
                                             <span class="nav-link-text" data-i18n="nav.theme_settings_how_it_works">Role</span>
                                         </a>
