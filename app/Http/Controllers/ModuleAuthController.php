@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Permission;
 use App\ModuleAuth;
-use App\Http\Requests\PermissionRequest;
+use App\Http\Requests\ModuleAuthRequest;
 
-class PermissionController extends Controller
+class ModuleAuthController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,17 +15,17 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        return view('permission.index');
+        return view('module-auth.index');
     }
 
-    public function data_allpermission()
+    public function data_moduleauth()
     {
-        $permission = Permission::all();
+        $module_auth = ModuleAuth::all();
 
-        return datatables()::of($permission)
-           ->addColumn('action', function ($permission) {
-               return '<a href="/permission/'.$permission->id.'/edit" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>
-               <button class="btn btn-sm btn-danger btn-delete delete" data-remote="/permission/' . $permission->id . '"> <i class="fal fa-trash"></i></button>';
+        return datatables()::of($module_auth)
+           ->addColumn('action', function ($module_auth) {
+               return '<a href="/module-auth/'.$module_auth->id.'/edit" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>
+               <button class="btn btn-sm btn-danger btn-delete delete" data-remote="/module-auth/' . $module_auth->id . '"> <i class="fal fa-trash"></i></button>';
            })
            ->rawColumns(['action'])
            ->make(true);
@@ -39,8 +38,7 @@ class PermissionController extends Controller
      */
     public function create()
     {
-        $module = ModuleAuth::all();
-        return view('permission.create', compact('module'));
+        return view('module-auth.create');
     }
 
     /**
@@ -49,10 +47,10 @@ class PermissionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PermissionRequest $request)
+    public function store(ModuleAuthRequest $request)
     {
-        Permission::create($request->except(['_token']));
-        return redirect()->back()->with('message', 'Permission have been added');
+        ModuleAuth::create($request->except(['_token']));
+        return redirect()->back()->with('message', 'Module have been added');
     }
 
     /**
@@ -74,9 +72,8 @@ class PermissionController extends Controller
      */
     public function edit($id)
     {
-        $module = ModuleAuth::all();
-        $permission = Permission::find($id);
-        return view('permission.edit',compact('permission','module'));
+        $module = ModuleAuth::find($id);
+        return view('module-auth.edit',compact('module'));
     }
 
     /**
@@ -86,11 +83,11 @@ class PermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(PermissionRequest $request, $id)
+    public function update(ModuleAuthRequest $request, $id)
     {
-        Permission::find($id)->update($request->all());
+        ModuleAuth::find($id)->update($request->all());
 
-        return redirect()->back()->with('message', 'Permission updated successfully');
+        return redirect()->back()->with('message', 'Module updated successfully');
     }
 
     /**
@@ -101,8 +98,7 @@ class PermissionController extends Controller
      */
     public function destroy($id)
     {
-        $exist = Permission::find($id);
+        $exist = ModuleAuth::find($id);
         $exist->delete();
-        return response()->json(['success'=>'Permission deleted successfully.']);
     }
 }

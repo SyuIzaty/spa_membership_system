@@ -4,14 +4,14 @@
     <main id="js-page-content" role="main" class="page-content">
         <div class="subheader">
             <h1 class="subheader-title">
-                <i class='subheader-icon fal fa-table'></i> Role
+                <i class='subheader-icon fal fa-table'></i> Module
             </h1>
         </div>
         <div class="row">
             <div class="col-xl-12">
                 <div id="panel-1" class="panel">
                     <div class="panel-hdr">
-                        <h2>Create Role</h2>
+                        <h2>Create Module</h2>
                         <div class="panel-toolbar">
                             <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
                             <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
@@ -36,36 +36,15 @@
                                 </div>
                             @endif
                             <div class="card-body">
-                                {!! Form::open(['action' => 'RoleController@store', 'method' => 'POST']) !!}
+                                {!! Form::open(['action' => 'ModuleAuthController@store', 'method' => 'POST']) !!}
                                     <table class="table table-bordered">
-                                        <input type="hidden" name="guard_name" value="web">
                                         <tr>
-                                            <td>Role ID</td>
-                                            <td>{{ Form::text('id', '', ['class' => 'form-control', 'placeholder' => 'Role']) }}</td>
+                                            <td>Module ID</td>
+                                            <td>{{ Form::text('id', '', ['class' => 'form-control', 'placeholder' => 'Module']) }}</td>
                                         </tr>
                                         <tr>
-                                            <td>Role Name</td>
-                                            <td>{{ Form::text('name', '', ['class' => 'form-control', 'placeholder' => 'Role Name']) }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Role Module</td>
-                                            <td>
-                                                <select class="form-control module" name="module">
-                                                    @foreach ($module as $modules)
-                                                        <option value="{{ $modules->id }}">{{ $modules->module_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Permission ID</td>
-                                            <td>
-                                                <select class="form-control permission" name="permission_id[]" multiple>
-                                                    @foreach ($permission as $permissions)
-                                                        <option value="{{ $permissions->name }}">{{ $permissions->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </td>
+                                            <td>Module Name</td>
+                                            <td>{{ Form::text('module_name', '', ['class' => 'form-control', 'placeholder' => 'Module Name']) }}</td>
                                         </tr>
                                     </table>
                                     <button class="btn btn-success btn-sm ml-auto float-right mb-5">Submit</button>
@@ -77,11 +56,4 @@
             </div>
         </div>
     </main>
-@endsection
-@section('script')
-    <script>
-        $(document).ready(function() {
-            $('.permission, .module').select2();
-        });
-    </script>
 @endsection

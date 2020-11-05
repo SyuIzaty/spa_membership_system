@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Role;
 use App\Permission;
+use App\ModuleAuth;
 use App\Http\Requests\RoleRequest;
 
 class RoleController extends Controller
@@ -39,8 +40,9 @@ class RoleController extends Controller
      */
     public function create()
     {
+        $module = ModuleAuth::all();
         $permission = Permission::all();
-        return view('role.create', compact('permission'));
+        return view('role.create', compact('permission','module'));
     }
 
     /**
@@ -77,9 +79,10 @@ class RoleController extends Controller
     public function edit($id)
     {
         $role = Role::find($id);
+        $module = ModuleAuth::all();
         $permission = Permission::all();
         $role_permission = $role->getAllPermissions();
-        return view('role.edit',compact('role','role_permission','permission'));
+        return view('role.edit',compact('role','role_permission','permission','module'));
     }
 
     /**
@@ -92,8 +95,10 @@ class RoleController extends Controller
     public function update(RoleRequest $request, $id)
     {
         $role = Role::find($id);
-        foreach($request->permission_id as $perm){
-            $role->givePermissionTo($perm);
+        if(isset($request->permission_id)){
+            foreach($request->permission_id as $perm){
+                $role->givePermissionTo($perm);
+            }
         }
         Role::find($id)->update($request->all());
 
@@ -111,5 +116,13 @@ class RoleController extends Controller
         $exist = Role::find($id);
         $exist->delete();
         return response()->json(['success'=>'Role deleted successfully.']);
+    }
+
+    public function delete($id, $role_id)
+    {
+        $role = Role::where('id',$role_id)->first();
+        $permission = Permission::find($id);
+        $permission->removeRole($role);
+        return redirect()->back()->with('message', 'Permission Deleted');
     }
 }

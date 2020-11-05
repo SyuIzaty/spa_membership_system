@@ -41,15 +41,21 @@
                                         <input type="hidden" name="guard_name" value="web">
                                         <tr>
                                             <td>Permission ID</td>
-                                            <td>{{ Form::text('id', '', ['class' => 'form-control', 'placeholder' => 'Role']) }}</td>
+                                            <td>{{ Form::text('id', '', ['class' => 'form-control', 'placeholder' => 'Permission']) }}</td>
                                         </tr>
                                         <tr>
                                             <td>Permission Name</td>
-                                            <td>{{ Form::text('name', '', ['class' => 'form-control', 'placeholder' => 'Role Name']) }}</td>
+                                            <td>{{ Form::text('name', '', ['class' => 'form-control', 'placeholder' => 'Permission Name']) }}</td>
                                         </tr>
                                         <tr>
                                             <td>Permission Module</td>
-                                            <td>{{ Form::text('permission', '', ['class' => 'form-control', 'placeholder' => 'Role Module']) }}</td>
+                                            <td>
+                                                <select class="form-control module" name="module">
+                                                    @foreach ($module as $modules)
+                                                        <option value="{{ $modules->id }}">{{ $modules->module_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </td>
                                         </tr>
                                     </table>
                                     <button class="btn btn-success btn-sm ml-auto float-right mb-5">Submit</button>
@@ -61,4 +67,11 @@
             </div>
         </div>
     </main>
+@endsection
+@section('script')
+    <script>
+        $(document).ready(function() {
+            $('.module').select2();
+        });
+    </script>
 @endsection

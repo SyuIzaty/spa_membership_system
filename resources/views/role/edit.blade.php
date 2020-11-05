@@ -49,7 +49,13 @@
                                         </tr>
                                         <tr>
                                             <td>Role Module</td>
-                                            <td>{{ Form::text('module', $role['module'], ['class' => 'form-control', 'placeholder' => 'Role Module']) }}</td>
+                                            <td>
+                                                <select class="form-control module" name="module">
+                                                    @foreach ($module as $modules)
+                                                        <option value="{{ $modules->id }}" {{ $role->module == $modules->id ? 'selected="selected"' : ''}}>{{ $modules->module_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>Permission ID</td>
@@ -62,19 +68,23 @@
                                             </td>
                                         </tr>
                                     </table>
-                                    <button class="btn btn-primary ml-auto float-right mb-5">Submit</button>
+                                    <button class="btn btn-success btn-sm ml-auto float-right mb-5">Update</button>
                                 {!! Form::close() !!}
                                 <table class="table table-bordered">
                                     <tr class="bg-primary-50 text-center">
                                         <td>PERMISSION ID</td>
                                         <td>PERMISSION NAME</td>
                                         <td>MODULE</td>
+                                        <td>ACTION</td>
                                     </tr>
                                     @foreach ($role_permission as $role_permissions)
                                     <tr>
                                         <td>{{ $role_permissions->id }}</td>
                                         <td>{{ $role_permissions->name }}</td>
                                         <td>{{ $role_permissions->module }}</td>
+                                        <td>
+                                            <a href="{{ action('RoleController@delete', ['id' => $role_permissions->id, 'role_id' => $role->id]) }}" class="btn btn-danger btn-sm permissiondel"><i class="fal fa-trash"></i></a>
+                                        </td>
                                     </tr>
                                     @endforeach
                                 </table>
@@ -89,7 +99,7 @@
 @section('script')
     <script>
         $(document).ready(function() {
-            $('.permission').select2();
+            $('.permission, .module').select2();
         });
     </script>
 @endsection
