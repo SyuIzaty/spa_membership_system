@@ -26,6 +26,7 @@ use App\Status;
 use App\MajorProgramme;
 use App\Files;
 use App\AttachmentFile;
+use App\Mode;
 use Carbon\Carbon;
 use App\Http\Requests\StoreApplicantRequest;
 use App\Http\Requests\StoreApplicantDetailRequest;
@@ -90,6 +91,13 @@ class RegistrationController extends Controller
         $all = Programme::find($id);
         $applicant_major = $all->major;
         return response()->json($applicant_major);
+    }
+
+    public function study_mode($id)
+    {
+        $all = Programme::find($id);
+        $applicant_mode = $all->mode;
+        return response()->json($applicant_mode);
     }
 
     public function getUsers($id)
@@ -167,7 +175,6 @@ class RegistrationController extends Controller
 
             Applicant::firstRegistration($applicant_detail['id']);
 
-            // return redirect()->route('printRef', ['id' => $request->applicant_ic]);
             return redirect()->to('registration/'.$applicant_detail->id.'/edit');
         }
     }
@@ -359,6 +366,7 @@ class RegistrationController extends Controller
             'other_religion' => $request->other_religion,
             'applicant_dob' => $request->applicant_dob,
             'applicant_qualification' => $request->highest_qualification,
+            'declaration' => $request->declaration,
         ]);
         if($request->hasFile('image') && $request->file('image')->isValid()){
             $applicant->addMediaFromRequest('image')->toMediaCollection('images');

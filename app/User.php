@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Traits\HasPermissions;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Role;
 use App\Permission;
 
@@ -14,7 +15,7 @@ class User extends Authenticatable
 {
     protected $connection = 'auth';
 
-    use Notifiable, HasRoles;
+    use Notifiable, HasRoles, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.

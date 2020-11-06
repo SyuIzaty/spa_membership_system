@@ -360,6 +360,11 @@
                                                     @enderror
                                                 </div>
                                             </div>
+                                            <h5>Declaration</h5>
+                                            <input type="checkbox" name="declaration"> I agree to the term and conditions
+                                            @error('declaration')
+                                                <p style="color: red">{{ $message }}</p>
+                                            @enderror
                                         </div>
                                         <div class="card-footer">
                                             <a href="#details" class="btn btn-primary btn-sm mr-2" onclick="navigate('Previous')"><i class="fal fa-arrow-alt-from-right"></i> Previous</a>

@@ -61,7 +61,7 @@
                     <div class="col-md-12">
                         <h4>Preferred Programme</h4>
                     </div>
-                    <div class="col-md-8 form-group">
+                    <div class="col-md-6 form-group">
                         {{ Form::label('title', '1st Preferred Programme (Required)') }}
                         <select class="form-control programme1" name="applicant_programme" id="applicant_programme">
                             <option value="">Select Programme</option>
@@ -81,7 +81,7 @@
                             <p style="color: red">{{ $message }}</p>
                         @enderror
                     </div>
-                    <div class="col-md-4 form-group">
+                    <div class="col-md-3 form-group">
                         {{ Form::label('Major', 'Major') }}
                         <select class="form-control major1" name="applicant_major" id="applicant_major">
                         </select>
@@ -89,43 +89,57 @@
                             <p style="color: red">{{ $message }}</p>
                         @enderror
                     </div>
-                    <div class="col-md-8 form-group">
+                    <div class="col-md-3 form-group">
+                        {{ Form::label('Study Mode', 'Study Mode') }}
+                        <select class="form-control mode1" name="applicant_mode" id="applicant_mode">
+                        </select>
+                        @error('applicant_mode')
+                            <p style="color: red">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="col-md-6 form-group">
                         {{ Form::label('title', '2nd Preferred Programme (Optional)') }}
                         <select class="form-control programme2" name="applicant_programme_2" id="applicant_programme_2">
                             <option value="">Select Programme</option>
-                            {{-- @foreach ($all_programme as $programmes)
-                                @foreach ($programmes->intakeDetails as $prog_list)
-                                    <option value="{{ $prog_list->programme->programme_code }}">{{ $prog_list->programme->programme_name }}</option>
-                                @endforeach
-                            @endforeach --}}
                             @foreach ($all_programme as $key => $programmes)
                                 <option value="{{ $programmes['Code'] }}">{{ $programmes['Name'] }}</option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-4 form-group">
+                    <div class="col-md-3 form-group">
                         {{ Form::label('Major', 'Major') }}
                         <select class="form-control major2" name="applicant_major_2" id="applicant_major_2">
                         </select>
                     </div>
-                    <div class="col-md-8 form-group">
+                    <div class="col-md-3 form-group">
+                        {{ Form::label('Study Mode', 'Study Mode') }}
+                        <select class="form-control mode2" name="applicant_mode_2" id="applicant_mode_2">
+                        </select>
+                        @error('applicant_mode_2')
+                            <p style="color: red">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="col-md-6 form-group">
                         {{ Form::label('title', '3rd Preferred Programme (Optional)') }}
                         <select class="form-control programme3" name="applicant_programme_3" id="applicant_programme_3">
                             <option value="">Select Programme</option>
-                            {{-- @foreach ($all_programme as $programmes)
-                                @foreach ($programmes->intakeDetails as $prog_list)
-                                    <option value="{{ $prog_list->programme->programme_code }}">{{ $prog_list->programme->programme_name }}</option>
-                                @endforeach
-                            @endforeach --}}
                             @foreach ($all_programme as $key => $programmes)
                                 <option value="{{ $programmes['Code'] }}">{{ $programmes['Name'] }}</option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-4 form-group">
+                    <div class="col-md-3 form-group">
                         {{ Form::label('Major', 'Major') }}
                         <select class="form-control major3" name="applicant_major_3" id="applicant_major_3">
                         </select>
+                    </div>
+                    <div class="col-md-3 form-group">
+                        {{ Form::label('Study Mode', 'Study Mode') }}
+                        <select class="form-control mode3" name="applicant_mode_3" id="applicant_mode_3">
+                        </select>
+                        @error('applicant_mode_3')
+                            <p style="color: red">{{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
                 <button class="btn btn-primary float-right"><i class="fal fa-check"></i> Submit</button>
@@ -138,7 +152,7 @@
 @section('script')
     <script>
         $(document).ready(function() {
-            $('.nationality, .programme1, .major1, .programme2, .major2, .major3, .programme3').select2();
+            $('.nationality, .programme1, .major1, .programme2, .major2, .major3, .programme3, .mode1, .mode2, .mode3').select2();
         });
 
         $(document).ready(function() {
@@ -165,6 +179,32 @@
                     });
                 }else{
                 $('#applicant_major').empty();
+                }
+            });
+
+            $('#applicant_programme').on('change', function() {
+                var programme_1 = $(this).val();
+                if(programme_1) {
+                    $.ajax({
+                        url: '/registration-mode/'+programme_1,
+                        type: "GET",
+                        data : {"_token":"{{ csrf_token() }}"},
+                        dataType: "json",
+                        success:function(data) {
+                            console.log(data);
+                            if(data){
+                                $('#applicant_mode').empty();
+                                $('#applicant_mode').focus;
+                                $.each(data, function(key, value){
+                                    $('select[name="applicant_mode"]').append('<option value="'+ value.id +'">' + value.mode_name + '</option>');
+                                });
+                            }else{
+                                $('#applicant_mode').empty();
+                            }
+                        }
+                    });
+                }else{
+                $('#applicant_mode').empty();
                 }
             });
 
@@ -195,6 +235,32 @@
                 }
             });
 
+            $('#applicant_programme_2').on('change', function() {
+                var programme_1 = $(this).val();
+                if(programme_1) {
+                    $.ajax({
+                        url: '/registration-mode/'+programme_1,
+                        type: "GET",
+                        data : {"_token":"{{ csrf_token() }}"},
+                        dataType: "json",
+                        success:function(data) {
+                            console.log(data);
+                            if(data){
+                                $('#applicant_mode_2').empty();
+                                $('#applicant_mode_2').focus;
+                                $.each(data, function(key, value){
+                                    $('select[name="applicant_mode_2"]').append('<option value="'+ value.id +'">' + value.mode_name + '</option>');
+                                });
+                            }else{
+                                $('#applicant_mode_2').empty();
+                            }
+                        }
+                    });
+                }else{
+                $('#applicant_mode_2').empty();
+                }
+            });
+
             $('#applicant_programme_3').on('change', function() {
                 var programme_3 = $(this).val();
                 if(programme_3) {
@@ -218,6 +284,32 @@
                     });
                 }else{
                 $('#applicant_major_3').empty();
+                }
+            });
+
+            $('#applicant_programme_3').on('change', function() {
+                var programme_1 = $(this).val();
+                if(programme_1) {
+                    $.ajax({
+                        url: '/registration-mode/'+programme_1,
+                        type: "GET",
+                        data : {"_token":"{{ csrf_token() }}"},
+                        dataType: "json",
+                        success:function(data) {
+                            console.log(data);
+                            if(data){
+                                $('#applicant_mode_3').empty();
+                                $('#applicant_mode_3').focus;
+                                $.each(data, function(key, value){
+                                    $('select[name="applicant_mode_3"]').append('<option value="'+ value.id +'">' + value.mode_name + '</option>');
+                                });
+                            }else{
+                                $('#applicant_mode_3').empty();
+                            }
+                        }
+                    });
+                }else{
+                $('#applicant_mode_3').empty();
                 }
             });
         });

@@ -28,6 +28,7 @@ use App\Batch;
 use App\Status;
 use App\ApplicantRecheck;
 use App\User;
+use App\Mode;
 use DB;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Activitylog\Models\Activity;
@@ -63,6 +64,7 @@ class ApplicantController extends Controller
 
         $applicant_recheck = ApplicantRecheck::where('applicant_id', $id)->with(['programme','applicant'])->get();
 
+        $mode = Mode::all();
         $qualification = Qualification::all();
         $country = Country::all();
         $marital = Marital::all();
@@ -124,11 +126,12 @@ class ApplicantController extends Controller
             ->select('auth.users.name', 'activity_log.description', 'activity_log.created_at')
             ->where('activity_log.subject_id',$app_stat['id'])
             ->where('description','!=','created')->where('description','!=','updated')
+            ->orderBy('activity_log.created_at')
             ->get();
         }
 
         $applicant_status = Status::where('status_code','>=','3')->get();
-        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace','country','marital','religion','race','gender','state','skm','mqf','kkm','cat','icaew','activity','intake','family','foundation','applicant_status', 'batch_1','batch_2','batch_3','applicant_recheck','qualification'));
+        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace','country','marital','religion','race','gender','state','skm','mqf','kkm','cat','icaew','activity','intake','family','foundation','applicant_status', 'batch_1','batch_2','batch_3','applicant_recheck','qualification','mode'));
     }
 
     public function updateApplicant(Request $request) // Update applicant detail
@@ -1503,7 +1506,7 @@ class ApplicantController extends Controller
 
         $batch = IntakeDetail::BatchIntake($request->programme_code)->get();
 
-        Applicant::where('id',$request->applicant_id)->update(['offered_programme' => $request->programme_code,'offered_major' => $request->major,'applicant_status' => '5A','student_id' => $student_id,'batch_code'=>$batch->first()->batch_code,'intake_offer' => $batch->first()->intake_code]);
+        Applicant::where('id',$request->applicant_id)->update(['offered_programme' => $request->programme_code,'offered_major' => $request->major,'applicant_status' => '5A','student_id' => $student_id,'batch_code'=>$batch->first()->batch_code,'intake_offer' => $batch->first()->intake_code, 'offered_mode' => $request->offered_mode]);
 
         Applicant::updateStatus($request->applicant_id, $request->programme_code, $request->major);
 
@@ -1546,6 +1549,7 @@ class ApplicantController extends Controller
             'batch_code' => $request->batch_code,
             'student_id' => $student_id,
             'intake_offer' => $intake->intake_code,
+            'offered_mode' => $request->applicant_mode,
             'applicant_qualification' => $request->applicant_qualification
         ]);
 
@@ -1595,6 +1599,37 @@ class ApplicantController extends Controller
         Applicant::where('id',$applicants_id)->update(['email_sent'=>'1', 'applicant_status'=>'5C']);
 
         IntakeDetail::where('intake_code',$detail->intake_id)->where('batch_code',$detail['batch_code'])->update(['intake_status'=>'Offered']);
+    }
+
+    public function firstReminder()
+    {
+        $applicant = Applicant::where('applicant_status','00')->get();
+        foreach($applicant as $applicants){
+            $this->emailReminder($applicants);
+        }
+        return redirect()->back()->with('message', 'Email Sent');
+    }
+
+    public function jpaReminder()
+    {
+        $applicant = Applicant::where('sponsor_code','!=','Private')->where('email_jpa',NULL)->where('applicant_status','0')->get();
+        foreach($applicant as $applicants){
+            $this->emailReminder($applicants);
+        }
+        return redirect()->back()->with('message', 'Email Sent');
+    }
+
+    public function emailReminder($applicants)
+    {
+        $data = [
+            'receiver_name' => $applicants->applicant_name,
+            'details' => 'Please complete your Application Form',
+        ];
+
+        Mail::send('applicant.first-reminder', $data, function ($message) use ($applicants) {
+            $message->subject('Dear, ' . $applicants->applicant_name);
+            $message->to(!empty($applicants->applicant_email) ? $applicants->applicant_email : 'jane-doe@email.com');
+        });
     }
 
 }

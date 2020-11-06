@@ -20,12 +20,19 @@
                     </div>
                     <div class="panel-container show">
                         <div class="panel-content">
+                            @if(session()->has('message'))
+                                <div class="alert alert-success alert-block">
+                                    <button type="button" class="close" data-dismiss="alert">x</button>
+                                    <strong>{{ session()->get('message') }}</strong>
+                                </div>
+                            @endif
                             @can('check requirement')
                             <form action="{{ route('applicant-check') }}" method="post" name="form">
                                 @csrf
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div id="intake_fail" class="mb-3 col-md-12 float-left"></div>
+                                            <span id="sponsor" class="mb-3 col-md-12 float-left"></span>
                                         </div>
                                     </div>
                                             {{-- <button type="button" class="btn btn-success float-right" onclick="window.location='{{ route("check-requirements") }}'">Check All</button>
@@ -68,11 +75,13 @@
                                     </table>
                                     <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">
                                         <button type="button" class="btn btn-success ml-auto mr-2" onclick="window.location='{{ route("check-requirements") }}'"><i class="fal fa-check-circle"></i> Run All</button>
-                                        <button type="submit" class="btn btn-primary float-right"><i class="fal fa-check"></i> Run Selected</button>
+                                        <button type="submit" class="btn btn-primary float-right mr-2"><i class="fal fa-check"></i> Run Selected</button>
+                                        <button type="button" class="btn btn-success float-right" onclick="window.location='{{ route("jpa-reminder") }}'"><i class="fal fa-check-circle"></i> Email Reminder</button>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12 text-danger">** Run All: All applicants</div>
                                         <div class="col-md-12 text-danger">** Run Selected: Selected applicants</div>
+                                        <div class="col-md-12 text-danger">** Email Sponsor Applicant: Email JPA applicants</div>
                                     </div>
                             </form>
                         </div>
@@ -146,6 +155,7 @@
                 orderCellsTop: true,
                 "order": [[ 1, "asc" ]],
                 "initComplete": function(settings, json) {
+
                     var column = this.api().column(4);
                     var select = $('<select id="filterselect" class="select2 form-control" multiple></select>')
                     .appendTo( $('#intake_fail').empty().text('Intake: ') )
@@ -168,6 +178,20 @@
                     select.append('<option value="{{ $ic["intake_code"] }}" <?php if($ic["intake_app_close"] >= now() && $ic["intake_app_open"] <= now()) echo "selected" ?> >{{ $ic["intake_code"] }}</option>' );
                     @endforeach
                     $('#filterselect').select2();
+
+                    var column = this.api().column(5);
+                    var select = $('<select class="form-control"><option value=""></option></select>')
+                    .appendTo( $('#sponsor').empty().text('Sponsor: ') )
+                    .on('change',function(){
+                        var val = $.fn.DataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+                        column
+                        .search(val ? '^'+val+'$' : '', true, false).draw();
+                    });
+                    column.data().unique().sort().each(function (d, j){
+                        select.append( '<option value="'+d+'">'+d+'</option>' );
+                    });
                 }
         });
         function showdefault()

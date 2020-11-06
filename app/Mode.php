@@ -5,13 +5,19 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class StudyMode extends Model
+class Mode extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'study_mode';
     protected $primaryKey = 'id';
+    public $incrementing = false;
+    protected $keyType = 'string';
     protected $fillable = [
         'mode_code', 'mode_name'
     ];
+
+    public function major()
+    {
+        return $this->belongsToMany('App\Programme');
+    }
 }

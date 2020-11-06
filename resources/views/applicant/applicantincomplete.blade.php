@@ -20,6 +20,12 @@
                     </div>
                     <div class="panel-container show">
                         <div class="panel-content">
+                            @if(session()->has('message'))
+                                <div class="alert alert-success alert-block">
+                                    <button type="button" class="close" data-dismiss="alert">x</button>
+                                    <strong>{{ session()->get('message') }}</strong>
+                                </div>
+                            @endif
                             <div class="row">
                                 <div class="col-md-12">
                                     <div id="intake_fail" class="mb-3 col-md-12 float-left"></div>
@@ -58,6 +64,9 @@
 
                                 </tbody>
                             </table>
+                            <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">
+                                <button type="button" class="btn btn-success ml-auto mr-2" onclick="window.location='{{ route("first-reminder") }}'"><i class="fal fa-check-circle"></i> Email Reminder</button>
+                            </div>
                         </div>
                     </div>
                 </div>

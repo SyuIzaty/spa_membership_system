@@ -55,6 +55,7 @@ class StoreApplicantDetailRequest extends FormRequest
             'matriculation_cgpa' => 'numeric|min:1|max:4',
             'foundation_cgpa' => 'numeric|min:1|max:4',
             'muet_cgpa' => 'integer|min:1|max:6',
+            'declaration' => 'accepted',
         ];
         if( isset($input['chkEmergency']) )
         {

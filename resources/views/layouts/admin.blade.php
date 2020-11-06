@@ -564,6 +564,19 @@
                                 </ul>
                             </li>
                             <li>
+                                <a href="#" title="Application Intel" data-filter-tags="application intel">
+                                    <i class="fal fa-user"></i>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">User</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/user" title="Active Student" data-filter-tags="active_student">
+                                            <span class="nav-link-text" data-i18n="nav.active_student">List of Users</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
                                 <a href="#" title="Laporan" data-filter-tags="laporan">
                                     <i class="fal fa-table"></i>
                                     <span class="nav-link-text" data-i18n="nav.laporan">Roles & Permission</span>

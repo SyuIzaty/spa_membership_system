@@ -17,7 +17,7 @@ class Applicant extends Model
                             'applicant_nationality', 'applicant_programme', 'applicant_programme_2', 'applicant_programme_3','applicant_major',
                             'applicant_major_2','applicant_major_3','programme_name', 'applicant_gender', 'applicant_religion',
                             'applicant_marital','applicant_race','applicant_dob','intake_id','sponsor_code','applicant_qualification',
-                            'email_sent','intake_offer','other_race','other_religion'];
+                            'email_sent','intake_offer','other_race','other_religion','applicant_mode','applicant_mode_2','applicant_mode_3'];
 
     protected $primaryKey = 'id';
     protected $foreignKey = 'applicant_id';
@@ -78,6 +78,11 @@ class Applicant extends Model
     public function programmeThree()
     {
         return $this->hasOne('App\Programme','id','applicant_programme_3');
+    }
+
+    public function offeredMode()
+    {
+        return $this->hasOne('App\Mode', 'id', 'offered_mode');
     }
 
     public function offeredMajor()

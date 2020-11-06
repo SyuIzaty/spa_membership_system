@@ -71,6 +71,8 @@ Route::post('/applicant-check', 'ApplicantController@applicantcheck')->name('app
 Route::get('/sponsorapplicant', 'ApplicantController@sponsorapplicant');
 Route::post('sendupdateApplicant', 'ApplicantController@sendupdateApplicant');
 Route::get('/sponsorTemplate','ApplicantController@sponsorTemplate');
+Route::get('firstreminder', 'ApplicantController@firstReminder')->name('first-reminder');
+Route::get('jpareminder', 'ApplicantController@jpaReminder')->name('jpa-reminder');
 
 Route::post('/data_allexport', 'ApplicantController@data_allexport');
 Route::post('/data_incompleteapplicant', 'ApplicantController@data_incompleteapplicant');
@@ -119,6 +121,7 @@ Route::get('applicantRegister/check/{id}/{intake_id}', 'RegistrationController@c
 Route::get('registration/printRef/{id}','RegistrationController@printRef')->name('printRef');
 Route::get('registration/printReg/{id}','RegistrationController@printReg')->name('printReg');
 Route::get('registration-data/{id}','RegistrationController@data');
+Route::get('registration-mode/{id}','RegistrationController@study_mode');
 Route::get('testmajor','RegistrationController@testmajor');
 Route::post('applicant/delete/{id}/{type}/{userid}','RegistrationController@deleteitem');
 Route::get('qualificationfile/{filename}/{type}','RegistrationController@qualificationfile');
@@ -164,6 +167,10 @@ Route::get('/lead/inactive_lead_un', 'LeadController@inactiveUnLead');
 Route::post('api/inactiveLead/list', 'LeadController@data_inactiveLead_list');  //datatable
 Route::post('api/inactiveUnLead/list', 'LeadController@data_inactiveUnLead_list');  //datatable
 Route::post('updateAssign', 'LeadController@updateAssign');
+
+//REGISTER USER
+Route::resource('/user','UserController');
+Route::post('/data_alluser', 'UserController@data_alluser');
 
 //PARAM
 Route::resource('/intakeType', 'IntakeTypeController');

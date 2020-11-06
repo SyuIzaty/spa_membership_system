@@ -83,29 +83,21 @@
                                                         @endif
                                                             <table class="table table-bordered table-sm">
                                                                 <tr class="bg-primary-50 text-center">
-                                                                    <td>Applicant Programme</td>
-                                                                    <td>Applicant Major</td>
-                                                                    <td>Batch Code</td>
+                                                                    <td>Programme</td>
+                                                                    <td>Major</td>
+                                                                    <td>Study Mode</td>
                                                                     <td>Result</td>
-                                                                    <td>Highest Qualification</td>
+                                                                    <td>Highest <br> Qualification</td>
                                                                     <td>Action</td>
                                                                 </tr>
                                                                 {!! Form::open(['action' => ['ApplicantController@applicantstatus'], 'method' => 'POST'])!!}
                                                                 <tr>
                                                                     <input type="hidden" name="id" value="{{ $applicant->id }}">
-                                                                    <input type="hidden" name="batch_code" value="{{ isset($batch_1->batch_code) ? $batch_1->batch_code : '' }}">
+                                                                    <input type="hidden" name="batch_code" value="{{ isset($batch_1->first()->batch_code) ? $batch_1->first()->batch_code : '' }}">
                                                                     <td>{{ Form::text('applicant_programme', $applicant->applicant_programme, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
                                                                     <td>{{ Form::text('applicant_major', $applicant->applicant_major, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
-                                                                    <td>
-                                                                        @isset($batch_1->first()->batch_code)
-                                                                        {{ Form::text('batch_code', $batch_1->first()->batch_code, ['class' => 'form-control', 'readonly' => 'true']) }}
-                                                                        @endisset
-                                                                    </td>
-                                                                    <td>
-                                                                        @isset($applicant->programme_status)
-                                                                            <p>{{ $applicant->programmeStatus->status_description }}</p>
-                                                                        @endisset
-                                                                    </td>
+                                                                    <td>{{ Form::text('applicant_mode', $applicant->applicant_mode, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
+                                                                    <td>{{ isset($applicant->programme_status) ? $applicant->programmeStatus->status_description : '' }}</td>
                                                                     <td>
                                                                         <select class="form-control" name="applicant_qualification" id="qua1">
                                                                             <option disabled selected>Please select</option>
@@ -125,19 +117,11 @@
                                                                 {!! Form::open(['action' => ['ApplicantController@applicantstatus'], 'method' => 'POST'])!!}
                                                                 <tr>
                                                                     <input type="hidden" name="id" value="{{ $applicant->id }}">
-                                                                    <input type="hidden" name="batch_code" value="{{ isset($batch_2->batch_code) ? $batch_2->batch_code : '' }}">
+                                                                    <input type="hidden" name="batch_code" value="{{ isset($batch_2->first()->batch_code) ? $batch_2->first()->batch_code : '' }}">
                                                                     <td>{{ Form::text('applicant_programme', $applicant->applicant_programme_2, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
                                                                     <td>{{ Form::text('applicant_major', $applicant->applicant_major_2, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
-                                                                    <td>
-                                                                        @isset($batch_2->first()->batch_code)
-                                                                        {{ Form::text('batch_code', $batch_2->first()->batch_code, ['class' => 'form-control', 'readonly' => 'true']) }}
-                                                                        @endisset
-                                                                    </td>
-                                                                    <td>
-                                                                        @isset($applicant->programme_status_2)
-                                                                            <p>{{ $applicant->programmeStatusTwo->status_description }}</p>
-                                                                        @endisset
-                                                                    </td>
+                                                                    <td>{{ Form::text('applicant_mode', $applicant->applicant_mode_2, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
+                                                                    <td>{{ isset($applicant->programme_status_2) ? $applicant->programmeStatusTwo->status_description : '' }}</td>
                                                                     <td>
                                                                         <select class="form-control" name="applicant_qualification" id="qua2">
                                                                             <option disabled selected>Please select</option>
@@ -158,19 +142,11 @@
                                                                 {!! Form::open(['action' => ['ApplicantController@applicantstatus'], 'method' => 'POST'])!!}
                                                                 <tr>
                                                                     <input type="hidden" name="id" value="{{ $applicant->id }}">
-                                                                    <input type="hidden" name="batch_code" value="{{ isset($batch_3->batch_code) ? $batch_3->batch_code : '' }}">
+                                                                    <input type="hidden" name="batch_code" value="{{ isset($batch_3->first()->batch_code) ? $batch_3->first()->batch_code : '' }}">
                                                                     <td>{{ Form::text('applicant_programme', $applicant->applicant_programme_3, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
                                                                     <td>{{ Form::text('applicant_major', $applicant->applicant_major_3, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
-                                                                    <td>
-                                                                        @isset($batch_3->first()->batch_code)
-                                                                        {{ Form::text('batch_code', $batch_3->first()->batch_code, ['class' => 'form-control', 'readonly' => 'true']) }}
-                                                                        @endisset
-                                                                    </td>
-                                                                    <td>
-                                                                        @isset($applicant->programme_status_3)
-                                                                            <p>{{ $applicant->programmeStatusThree->status_description }}</p>
-                                                                        @endisset
-                                                                    </td>
+                                                                    <td>{{ Form::text('applicant_mode', $applicant->applicant_mode_3, ['class' => 'form-control', 'readonly' => 'true']) }}</td>
+                                                                    <td>{{ isset($applicant->programme_status_3) ? $applicant->programmeStatusThree->status_description : '' }}</td>
                                                                     <td>
                                                                         <select class="form-control" name="applicant_qualification" id="qua3">
                                                                             <option disabled selected>Please select</option>
@@ -193,33 +169,19 @@
                                                                 <th colspan="2" style="text-align:center">Offered Programme</th>
                                                                 <tr>
                                                                     <td>Offer Programme</td>
-                                                                    <td>
-                                                                        @if ($applicant->offered_programme == '')
-                                                                        No Information Found
-                                                                        @else
-                                                                        {{ $applicant->offered_programme }}
-                                                                        @endif
-                                                                    </td>
+                                                                    <td>{{ isset($applicant->offered_programme) ? $applicant->offeredProgramme->programme_name : 'No Information Found' }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Offered Major</td>
-                                                                    <td>
-                                                                        @if ($applicant->offered_major == '')
-                                                                        No Information Found
-                                                                        @else
-                                                                        {{ $applicant->offered_major }}
-                                                                        @endif
-                                                                    </td>
+                                                                    <td>{{ isset($applicant->offered_major) ? $applicant->offeredMajor->major_name : 'No Information Found' }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Offered Mode</td>
+                                                                    <td>{{ isset($applicant->offered_mode) ? $applicant->OfferedMode->mode_name : 'No Information Found' }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Batch Code</td>
-                                                                    <td>
-                                                                        @if ($applicant->batch_code == '')
-                                                                        No Information Found
-                                                                        @else
-                                                                        {{ $applicant->batch_code }}
-                                                                        @endif
-                                                                    </td>
+                                                                    <td>{{ isset($applicant->batch_code) ? $applicant->batch_code : 'No Information Found' }}</td>
                                                                 </tr>
                                                                 {!! Form::open(['action' => ['ApplicantController@intakestatus'], 'method' => 'POST'])!!}
                                                                 <tr>
@@ -234,7 +196,7 @@
                                                                         </select>
                                                                     </td>
                                                                 </tr>
-                                                                <tr>
+                                                                {{-- <tr>
                                                                     <td>Intake Session Offer</td>
                                                                     <td>
                                                                         <select class="form-control" name="intake_offer" id="intake_offer">
@@ -244,7 +206,7 @@
                                                                             @endforeach
                                                                         </select>
                                                                     </td>
-                                                                </tr>
+                                                                </tr> --}}
                                                             </table>
                                                             <button class="btn btn-primary btn-sm mt-2 float-right">Update</button>
                                                             {!! Form::close() !!}
@@ -282,7 +244,7 @@
                                                         <li>Pass SPM / O-Level with minimum five (5) credits including English and Mathematics or other equivalent qualifications recognised by Malaysian Government.</li>
                                                     </ul>
                                                 @endif
-                                                @if(($applicant->applicant_programme == 'IAM11') || ( $applicant->applicant_programme_2 == 'IAM11') || ($applicant->applicant_programme_3 == 'IAM11'))
+                                                @if(($applicant->applicant_programme == 'IAM10') || ( $applicant->applicant_programme_2 == 'IAM10') || ($applicant->applicant_programme_3 == 'IAM10'))
                                                     <p>SACE International</p>
                                                     <ul>
                                                         <li>Pass SPM / O-Level with minimum five (5) credits including English and Mathematics or other equivalent qualifications recognised by Malaysian Government.</li>
@@ -455,6 +417,7 @@
                                                         <tr class="bg-primary-50 text-center">
                                                             <td>Programme <br>Code</td>
                                                             <td>Major Code</td>
+                                                            <td>Study Mode</td>
                                                             <td>Highest <br>Qualification</td>
                                                             <td>Action</td>
                                                         </tr>
@@ -478,6 +441,13 @@
                                                                         <?php
                                                                             });
                                                                         ?>
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                    <select class="form-control" name="offered_mode" id="offered_mode">
+                                                                        @foreach ($mode as $modes)
+                                                                        <option value="{{ $modes->id }}">{{ $modes->mode_name }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </td>
                                                                 <td>

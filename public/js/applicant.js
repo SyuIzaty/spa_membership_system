@@ -118,10 +118,11 @@ function addQualification(x,xval,data=null){
                 <div class="row">\
                     <div class="col-12">\
                         <h5 class="mb-4">Sijil Pelajaran Malaysia</h5>\
-                        <div id="existfile'+xval+'">\
+                        <div id="existfile'+xval+'" class="mb-2">\
                         </div>\
                         <input type="hidden" name="filetype[]" value="'+xval+'"/>\
                         <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                        <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
                         <button type="button" class="btn btn-primary btn-sm float-right" id="addspmrow" onclick="addRowSpm();return false;"><i class="fal fa-plus"></i> Add Subject</button>\
                         <button type="button" class="btn btn-danger float-right btn-sm mr-2" data-type="qualification" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
                     </div>\
@@ -203,10 +204,11 @@ function addQualification(x,xval,data=null){
                 <div class="row">\
                     <div class="col-12">\
                         <h5 class="mb-4">UEC</h5>\
-                        <div id="existfile'+xval+'">\
+                        <div id="existfile'+xval+'" class="mb-2">\
                         </div>\
                         <input type="hidden" name="filetype[]" value="'+xval+'"/>\
                         <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                        <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
                         <button class="btn btn-primary float-right btn-sm" id="adduecrow" onclick="addRowUec();return false;"><i class="fal fa-plus"></i> Add Subject</button>\
                         <button type="button" class="btn btn-danger float-right btn-sm mr-2" data-type="qualification" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
                     </div>\
@@ -281,10 +283,11 @@ function addQualification(x,xval,data=null){
                 <div class="row">\
                     <div class="col-12">\
                         <h5 class="mb-4">Sijil Tinggi Pelajaran Malaysia</h5>\
-                        <div id="existfile'+xval+'">\
+                        <div id="existfile'+xval+'" class="mb-2">\
                         </div>\
                         <input type="hidden" name="filetype[]" value="'+xval+'"/>\
                         <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                        <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
                          <button class="btn btn-primary btn-sm float-right" id="addstpmrow" onclick="addRowStpm();return false;"><i class="fal fa-plus"></i> Add Subject</button>\
                          <button type="button" class="btn btn-danger btn-sm float-right mr-2" data-type="qualification" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
                     </div>\
@@ -359,10 +362,11 @@ function addQualification(x,xval,data=null){
                 <div class="row">\
                     <div class="col-12">\
                         <h5 class="mb-4">O Level </h5>\
-                        <div id="existfile'+xval+'">\
+                        <div id="existfile'+xval+'" class="mb-2">\
                         </div>\
                         <input type="hidden" name="filetype[]" value="'+xval+'"/>\
                         <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                        <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
                         <button class="btn btn-primary float-right btn-sm" id="addolevelrow" onclick="addRowOlevel();return false;"><i class="fal fa-plus"></i> Add Subject</button>\
                         <button type="button" class="btn btn-danger float-right btn-sm mr-2" data-type="qualification" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
                     </div>\
@@ -437,10 +441,11 @@ function addQualification(x,xval,data=null){
                 <div class="row">\
                     <div class="col-12">\
                         <h5 class="mb-4">A Level</h5>\
-                        <div id="existfile'+xval+'">\
+                        <div id="existfile'+xval+'" class="mb-2">\
                         </div>\
                         <input type="hidden" name="filetype[]" value="'+xval+'"/>\
                         <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                        <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
                         <button class="btn btn-primary float-right btn-sm" id="addalevelrow" onclick="addRowAlevel();return false;"><i class="fal fa-plus"></i> Add Subject</button>\
                         <button type="button" class="btn btn-danger float-right btn-sm mr-2" data-type="qualification" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
                     </div>\
@@ -515,10 +520,11 @@ function addQualification(x,xval,data=null){
                 <div class="row">\
                     <div class="col-12">\
                         <h5 class="mb-4">Sijil Tinggi Agama Malaysia </h5>\
-                        <div id="existfile'+xval+'">\
+                        <div id="existfile'+xval+'" class="mb-2">\
                         </div>\
                         <input type="hidden" name="filetype[]" value="'+xval+'"/>\
                         <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                        <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
                         <button class="btn btn-primary float-right btn-sm" id="addstamrow" onclick="addRowStam();return false;"><i class="fal fa-plus"></i> Add Subject</button>\
                         <button type="button" class="btn btn-danger float-right btn-sm mr-2" data-type="qualification" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
                     </div>\
@@ -558,10 +564,10 @@ function addQualification(x,xval,data=null){
                 $(".content").append(fieldWrapper);
             }
         }
-        else if (x == "Bachelor") {
+        else if (x == "Bachelor Degree") {
             var el = document.getElementById("bachelor-field");
             if (el != null) {
-                alert("Bachelor qualifications already added!");
+                alert("Bachelor Degree qualifications already added!");
             } else {
                 var fieldWrapper = $(
                     '<div class="fieldwrapper bachelor-field" id="bachelor-field"/>'
@@ -569,11 +575,12 @@ function addQualification(x,xval,data=null){
                 var fName = $(
                     '<hr class="mt-2 mb-3"><div class="row">\
                     <div class="col-12">\
-                    <h5 class="mb-4">Bachelor </h5>\
-                    <div id="existfile'+xval+'">\
+                    <h5 class="mb-4">Bachelor Degree </h5>\
+                    <div id="existfile'+xval+'" class="mb-2">\
                     </div>\
                     <input type="hidden" name="filetype[]" value="'+xval+'"/>\
                     <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
                     <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
                     </div>\
                 </div>\
@@ -620,10 +627,11 @@ function addQualification(x,xval,data=null){
                     '<hr class="mt-2 mb-3"><div class="row">\
                     <div class="col-12">\
                     <h5 class="mb-4">Diploma </h5>\
-                    <div id="existfile'+xval+'">\
+                    <div id="existfile'+xval+'"class="mb-2">\
                     </div>\
                     <input type="hidden" name="filetype[]" value="'+xval+'"/>\
                     <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
                     <button type="button" class="btn btn-danger float-right btn-sm" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
                     </div>\
                 </div>\
@@ -670,10 +678,11 @@ function addQualification(x,xval,data=null){
                     '<hr class="mt-2 mb-3"><div class="row">\
                     <div class="col-12">\
                     <h5 class="mb-4">Matriculation </h5>\
-                    <div id="existfile'+xval+'">\
+                    <div id="existfile'+xval+'" class="mb-2">\
                     </div>\
                     <input type="hidden" name="filetype[]" value="'+xval+'"/>\
                     <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
                     <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
                     </div>\
                 </div>\
@@ -717,10 +726,11 @@ function addQualification(x,xval,data=null){
                     '<hr class="mt-2 mb-3"><div class="row">\
                     <div class="col-12">\
                     <h5 class="mb-4">MUET </h5>\
-                    <div id="existfile'+xval+'">\
+                    <div id="existfile'+xval+'" class="mb-2">\
                     </div>\
                     <input type="hidden" name="filetype[]" value="'+xval+'"/>\
                     <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
                     <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
                     </div>\
                 </div>\
@@ -759,10 +769,11 @@ function addQualification(x,xval,data=null){
                     '<hr class="mt-2 mb-3"><div class="row">\
                     <div class="col-12">\
                     <h5 class="mb-4">Sijil Kemahiran Malaysia </h5>\
-                    <div id="existfile'+xval+'">\
+                    <div id="existfile'+xval+'" class="mb-2">\
                     </div>\
                     <input type="hidden" name="filetype[]" value="'+xval+'"/>\
                     <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
                     <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
                     </div>\
                 </div>\
@@ -801,10 +812,11 @@ function addQualification(x,xval,data=null){
                     '<hr class="mt-2 mb-3"><div class="row">\
                     <div class="col-12">\
                     <h5 class="mb-4">MQF </h5>\
-                    <div id="existfile'+xval+'">\
+                    <div id="existfile'+xval+'" class="mb-2">\
                     </div>\
                     <input type="hidden" name="filetype[]" value="'+xval+'"/>\
                     <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
                     <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
                     </div>\
                 </div>\
@@ -843,10 +855,11 @@ function addQualification(x,xval,data=null){
                     '<hr class="mt-2 mb-3"><div class="row">\
                     <div class="col-12">\
                     <h5 class="mb-4">Kolej Komuniti Malaysia </h5>\
-                    <div id="existfile'+xval+'">\
+                    <div id="existfile'+xval+'" class="mb-2">\
                     </div>\
                     <input type="hidden" name="filetype[]" value="'+xval+'"/>\
                     <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
                     <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i>Delete Qualification</button>\
                     </div>\
                 </div>\
@@ -885,10 +898,11 @@ function addQualification(x,xval,data=null){
                     '<hr class="mt-2 mb-3"><div class="row">\
                     <div class="col-12">\
                     <h5 class="mb-4">ICAEW </h5>\
-                    <div id="existfile'+xval+'">\
+                    <div id="existfile'+xval+'" class="mb-2">\
                     </div>\
                     <input type="hidden" name="filetype[]" value="'+xval+'"/>\
                     <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
                     <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
                     </div>\
                 </div>\
@@ -927,10 +941,11 @@ function addQualification(x,xval,data=null){
                     '<hr class="mt-2 mb-3"><div class="row">\
                     <div class="col-12">\
                     <h5 class="mb-4">Foundation </h5>\
-                    <div id="existfile'+xval+'">\
+                    <div id="existfile'+xval+'" class="mb-2">\
                     </div>\
                     <input type="hidden" name="filetype[]" value="'+xval+'"/>\
                     <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
                     <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
                     </div>\
                 </div>\
@@ -977,10 +992,11 @@ function addQualification(x,xval,data=null){
                     '<hr class="mt-2 mb-3"><div class="row">\
                     <div class="col-12">\
                     <h5 class="mb-4">SACE </h5>\
-                    <div id="existfile'+xval+'">\
+                    <div id="existfile'+xval+'" class="mb-2">\
                     </div>\
                     <input type="hidden" name="filetype[]" value="'+xval+'"/>\
                     <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
                     <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
                     </div>\
                 </div>\
@@ -1019,10 +1035,11 @@ function addQualification(x,xval,data=null){
                     '<hr class="mt-2 mb-3"><div class="row">\
                     <div class="col-12">\
                     <h5 class="mb-4">Certified Accounting Technician </h5>\
-                    <div id="existfile'+xval+'">\
+                    <div id="existfile'+xval+'" class="mb-2">\
                     </div>\
                     <input type="hidden" name="filetype[]" value="'+xval+'"/>\
                     <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
                     <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
                     </div>\
                 </div>\
@@ -1054,7 +1071,7 @@ function addQualification(x,xval,data=null){
         if(myfiles[xval])
         {
             console.log('In')
-            $('#existfile'+xval).append(`<a href="${publicpath}/qualificationfile/${myfiles[xval][0].file_name}/Download">View</a> `);
+            $('#existfile'+xval).append(`<a href="${publicpath}/qualificationfile/${myfiles[xval][0].file_name}/Download">View Uploaded File</a> `);
             // $('#existfile'+xval).append(`<a href="${publicpath}/qualificationfile/${myfiles[xval][0].file_name}/View" target="_blank">View</a> | <a href="${publicpath}/qualificationfile/${myfiles[xval][0].file_name}/Download">Download</a> `);
         }
 }
