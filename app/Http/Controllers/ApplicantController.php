@@ -19,6 +19,8 @@ use App\State;
 use App\Qualification;
 use App\Subject;
 use App\Family;
+use App\Mode;
+use App\Major;
 use App\ApplicantEmergency;
 use App\ApplicantGuardian;
 use App\IntakeDetail;
@@ -28,7 +30,7 @@ use App\Batch;
 use App\Status;
 use App\ApplicantRecheck;
 use App\User;
-use App\Mode;
+use App\Sponsor;
 use DB;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Activitylog\Models\Activity;
@@ -518,8 +520,12 @@ class ApplicantController extends Controller
         $gender = Gender::all();
         $race = Race::all();
         $religion = Religion::all();
+        $sponsor = Sponsor::all();
+        $programme = Programme::all();
+        $major = Major::all();
+        $mode = Mode::all();
 
-        return view('applicant.sponsorapplicant', compact('intake','gender','race','religion'));
+        return view('applicant.sponsorapplicant', compact('intake','gender','race','religion','sponsor','programme','major','mode'));
     }
 
     public function sponsorTemplate(){
@@ -535,7 +541,7 @@ class ApplicantController extends Controller
             'import_file' => 'required',
         ]);
 
-        Excel::import(new ApplicantImport, request()->file('import_file'));
+        Excel::import(new ApplicantImport($request->sponsor_id), request()->file('import_file'));
         return back()->with('success','Applicant Imported');
     }
 
@@ -602,7 +608,7 @@ class ApplicantController extends Controller
 
         $intake = Intakes::select('id','intake_code')->get();
 
-        $program = Programme::select('id','programme_code')->get();
+        $program = Programme::select('id','programme_code','programme_name')->get();
 
         $batch = IntakeDetail::select('id','batch_code')->get();
 
@@ -1502,11 +1508,11 @@ class ApplicantController extends Controller
     {
         $applicant = Applicant::where('id',$request->applicant_id)->first();
 
-        $student_id = $this->studentId($applicant);
+        $student_id = $this->studentId($applicant, $request->programme_code);
 
         $batch = IntakeDetail::BatchIntake($request->programme_code)->get();
 
-        Applicant::where('id',$request->applicant_id)->update(['offered_programme' => $request->programme_code,'offered_major' => $request->major,'applicant_status' => '5A','student_id' => $student_id,'batch_code'=>$batch->first()->batch_code,'intake_offer' => $batch->first()->intake_code, 'offered_mode' => $request->offered_mode]);
+        Applicant::where('id',$request->applicant_id)->update(['offered_programme' => $request->programme_code,'offered_major' => $request->major,'applicant_status' => '5A','student_id' => $student_id,'batch_code'=>$batch->first()->batch_code,'intake_offer' => $batch->first()->intake_code, 'offered_mode' => $request->offered_mode, 'applicant_qualification' => $request->app_qualification]);
 
         Applicant::updateStatus($request->applicant_id, $request->programme_code, $request->major);
 
@@ -1538,7 +1544,7 @@ class ApplicantController extends Controller
     {
         $applicant = Applicant::where('id',$request->id)->first();
 
-        $student_id = $this->studentId($applicant);
+        $student_id = $this->studentId($applicant, $request->applicant_programme);
 
         $intake = IntakeDetail::BatchIntake($request->applicant_programme)->first();
 
@@ -1568,12 +1574,13 @@ class ApplicantController extends Controller
         return redirect()->back()->with('message', 'Email send and status updated');
     }
 
-    public function studentId($applicant)
+    public function studentId($applicant, $programme)
     {
         do {
-            $year = substr((date("Y",strtotime($applicant->created_at))),-2);
+            $year = substr((date("Y",strtotime($applicant->created_at))),-4);
             $random = mt_rand(1000,9999);
-            $student_id = $year . '1117' . $random;
+            $series = Programme::where('id',$programme)->first();
+            $student_id = $year . $series->programme_series . $random;
         } while ( Applicant::where('student_id', $student_id )->exists() );
         return $student_id;
     }
@@ -1615,6 +1622,7 @@ class ApplicantController extends Controller
         $applicant = Applicant::where('sponsor_code','!=','Private')->where('email_jpa',NULL)->where('applicant_status','0')->get();
         foreach($applicant as $applicants){
             $this->emailReminder($applicants);
+            Applicant::where('id',$applicants->id)->update(['email_jpa'=>'1']);
         }
         return redirect()->back()->with('message', 'Email Sent');
     }

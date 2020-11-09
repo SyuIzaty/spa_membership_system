@@ -196,23 +196,11 @@ class IntakeController extends Controller
         return response()->json(['success', 'Successfully deleted!']);
     }
 
-    // public function offer()
-    // {
-    //     $applicants = Applicantstatus::where('applicant_status', 'Selected')->with(['applicant', 'programme'])->get();
-    //     foreach ($applicants as $apps) {
-    //         $app = IntakeDetail::where('intake_code', $apps->applicant->intake_id)->where('intake_programme', $apps->applicant_programme)
-    //             ->where('status', '1')->with(['intakes'])->get();
-    //     }
-
-    //     return view('intake.offer', compact('applicants'));
-    // }
-
     public function letter(Request $request)
     {
         $details = Applicant::where('id',$request->applicant_id)->with(['offeredMajor','offeredProgramme'])->get();
         foreach($details as $detail){
-            $intakes = IntakeDetail::where('intake_code', $detail->intake_id)->where('intake_programme',$detail->offered_programme)
-                ->where('status','1')->with(['intakes'])->first();
+            $intakes = IntakeDetail::where('intake_code', $detail->intake_offer)->where('intake_programme',$detail->offered_programme)->where('batch_code',$detail->batch_code)->first();
         }
 
         $pdf = PDF::loadView('intake.pdf', compact('detail','intakes'));

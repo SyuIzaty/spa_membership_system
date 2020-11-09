@@ -29,8 +29,17 @@ class StoreSponsorRequest extends FormRequest
     public function rules()
     {
         return [
-            'sponsor_code' => 'required',
-            'sponsor_name' => 'required',
+            'sponsor_code' => 'required|min:3|max:10',
+            'sponsor_name' => 'required|min:3|max:50',
+            'sponsor_number' => 'required|numeric',
+            'sponsor_poscode' => 'numeric',
+            'sponsor_email' => 'required|email',
+            'sponsor_person' => 'required|min:5|max:20',
+            'person_phone_1' => 'required|numeric',
+            'person_email_1' => 'required|email',
+            'sponsor_person_2' => 'sometimes|max:20',
+            'person_phone_2' => 'sometimes|numeric',
+            'person_email_2' => 'sometimes|required|email',
         ];
     }
 }

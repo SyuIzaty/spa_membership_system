@@ -21,11 +21,15 @@
             <td>:</td>
             <td>{{$detail->offeredProgramme->programme_code}} - {{$detail->offeredProgramme->programme_name}}</td>
         </tr>
+        @if ($detail->offered_major != 'M0000')
         <tr>
             <td>Major</td>
             <td>:</td>
-            <td>{{$detail->offeredMajor->id}} - {{$detail->offeredMajor->major_name}}</td>
+            <td>
+                {{$detail->offeredMajor->id}} - {{$detail->offeredMajor->major_name}}
+            </td>
         </tr>
+        @endif
         <tr>
             <td>Duration</td>
             <td>:</td>

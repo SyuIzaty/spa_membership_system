@@ -16,6 +16,7 @@ use App\Country;
 use App\ApplicantContact;
 use App\StudentGuardian;
 use App\ApplicantGuardian;
+use App\Sponsor;
 use DB;
 
 class PhysicalRegistrationController extends Controller
@@ -94,7 +95,8 @@ class PhysicalRegistrationController extends Controller
         $religion = Religion::all();
         $race = Race::all();
         $gender = Gender::all();
-        return view('physical-registration.edit', compact('applicant','gender','marital','race','religion','country'));
+        $sponsor = Sponsor::all();
+        return view('physical-registration.edit', compact('applicant','gender','marital','race','religion','country','sponsor'));
     }
 
     /**

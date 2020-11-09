@@ -51,7 +51,8 @@
                                             <option value="">Select Option</option>
                                             <option>All</option>
                                             @foreach($program as $pro)
-                                            <option <?php if($request->program == $pro->id) echo "selected"; ?> >{{$pro->programme_code}}</option>
+                                            {{-- <option <?php if($request->program == $pro->id) echo "selected"; ?> >{{$pro->programme_code}}</option> --}}
+                                            <option value="{{ $pro->id }}" {{ $request->program == $pro->id ? 'selected="selected"' : ''}}>{{ $pro->programme_name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -61,7 +62,8 @@
                                             <option value="">Select Option</option>
                                             <option>All</option>
                                             @foreach($status as $statuses)
-                                            <option <?php if($request->status == $statuses->status_code) echo "selected"; ?> >{{$statuses->status_code}}</option>
+                                            {{-- <option <?php if($request->status == $statuses->status_code) echo "selected"; ?> >{{$statuses->status_code}}</option> --}}
+                                            <option value="{{ $statuses->status_code }}" {{ $request->status == $statuses->status_code ? 'selected="selected"' : ''}}>{{ $statuses->status_description }}</option>
                                             @endforeach
                                         </select>
                                     </div>

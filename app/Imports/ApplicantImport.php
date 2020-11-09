@@ -14,6 +14,10 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 
 class ApplicantImport implements ToModel, WithHeadingRow, WithValidation
 {
+    public function __construct($sponsor_id)
+    {
+        $this->sponsor_id = $sponsor_id;
+    }
     /**
     * @param array $row
     *
@@ -32,6 +36,7 @@ class ApplicantImport implements ToModel, WithHeadingRow, WithValidation
             'applicant_religion' => $row['religion'],
             'intake_id' => $intakes['id'],
             'applicant_status' => '0',
+            'sponsor_code' => $this->sponsor_id,
         ]);
 
         ApplicantContact::create([

@@ -184,64 +184,6 @@
                                 </a>
                                 <ul class="collapsable-list">
                                     <li>
-                                        <a href="/sponsorapplicant" title="Pending Applicant" data-filter-tags="active_student">
-                                            <i class="fal fa-upload"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Upload Sponsor Applicant</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/incomplete" title="Pending Applicant" data-filter-tags="active_student">
-                                            <i class="fal fa-clipboard-list"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Incomplete Application</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/applicantresult" title="Pending Applicant" data-filter-tags="active_student">
-                                            <i class="fal fa-user"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Pending Application</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/passapplicant" title="Pending Applicant" data-filter-tags="active_student">
-                                            <i class="fal fa-check"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Passed Application</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/failapplicant" title="Pending Applicant" data-filter-tags="active_student">
-                                            <i class="fal fa-minus"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Unqualified Application</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/offerapplicant" title="Pending Applicant" data-filter-tags="active_student">
-                                            <i class="fal fa-envelope"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Offered Application</span>
-                                        </a>
-                                    </li>
-                                    @endcan
-                                    @can('email offer letter')
-                                    <li>
-                                        <a href="/offeredprogramme" title="Batch" data-filter-tags="batch">
-                                            <i class="fal fa-file-excel"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Email Offer Letter</span>
-                                        </a>
-                                    </li>
-                                    @endcan
-                                    @can('check requirement')
-                                    <li>
-                                        <a href="/publishedoffer" title="Batch" data-filter-tags="batch">
-                                            <i class="fal fa-envelope"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Published Offer Letter</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/applicantupdatestat" title="Pending Applicant" data-filter-tags="active_student">
-                                            <i class="fal fa-plus"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Update Applicant Status</span>
-                                        </a>
-                                    </li>
-                                    <li>
                                         <a href="/intake" title="Intake Information" data-filter-tags="active_student">
                                             <i class="fal fa-list"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">Intake Information</span>
@@ -257,6 +199,64 @@
                                         <a href="/batch" title="Batch" data-filter-tags="batch">
                                             <i class="fal fa-address-card"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">Batch</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/applicantupdatestat" title="Pending Applicant" data-filter-tags="active_student">
+                                            <i class="fal fa-plus"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Update Applicant Status</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/sponsorapplicant" title="Pending Applicant" data-filter-tags="active_student">
+                                            <i class="fal fa-upload"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Upload Sponsor Applicant</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/incomplete" title="Pending Applicant" data-filter-tags="active_student">
+                                            <i class="fal fa-clipboard-list"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Incomplete Application</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/applicantresult" title="Pending Applicant" data-filter-tags="active_student">
+                                            <i class="fal fa-user"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Application Received (0)</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/passapplicant" title="Pending Applicant" data-filter-tags="active_student">
+                                            <i class="fal fa-check"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Passed Application (4A)</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/failapplicant" title="Pending Applicant" data-filter-tags="active_student">
+                                            <i class="fal fa-minus"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Unqualified Application (3G)</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/offerapplicant" title="Pending Applicant" data-filter-tags="active_student">
+                                            <i class="fal fa-envelope"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Offered Application (5A)</span>
+                                        </a>
+                                    </li>
+                                    @endcan
+                                    @can('email offer letter')
+                                    <li>
+                                        <a href="/offeredprogramme" title="Batch" data-filter-tags="batch">
+                                            <i class="fal fa-file-excel"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Email Offer Letter</span>
+                                        </a>
+                                    </li>
+                                    @endcan
+                                    @can('check requirement')
+                                    <li>
+                                        <a href="/publishedoffer" title="Batch" data-filter-tags="batch">
+                                            <i class="fal fa-envelope"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Published Offer Letter (5C)</span>
                                         </a>
                                     </li>
                                     <li>

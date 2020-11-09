@@ -44,7 +44,7 @@
                                 </tbody>
                             </table>
                             <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">
-                                <a class="btn btn-primary btn-sm float-right ml-auto" href="{{ route('sponsor.create') }}"> Create Sponsor Detail</a>
+                                <a class="btn btn-success btn-sm float-right ml-auto" href="{{ route('sponsor.create') }}"> Create Sponsor</a>
                             </div>
                         </div>
                     </div>

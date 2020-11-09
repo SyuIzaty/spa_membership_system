@@ -54,7 +54,7 @@
                         {{ Form::label('title', 'Nationality') }}
                         <select class="form-control nationality" name="applicant_nationality" id="applicant_nationality" >
                             @foreach($country as $countries)
-                                <option value="{{$countries->country_code}}">{{$countries->country_name}}</option>
+                            <option value="{{ $countries->country_code }}" {{ $countries->isDefault == 1 ? 'selected="Selected"' : ''}}>{{ $countries->country_name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -74,7 +74,7 @@
                                 @endforeach
                             @endforeach --}}
                             @foreach ($all_programme as $key => $programmes)
-                                <option value="{{ $programmes['Code'] }}">{{ $programmes['Name'] }}</option>
+                                <option value="{{ $programmes['Code'] }}">{{ $programmes['Name'] }} ({{ $programmes['Code'] }})</option>
                             @endforeach
                         </select>
                         @error('applicant_programme')
@@ -102,7 +102,7 @@
                         <select class="form-control programme2" name="applicant_programme_2" id="applicant_programme_2">
                             <option value="">Select Programme</option>
                             @foreach ($all_programme as $key => $programmes)
-                                <option value="{{ $programmes['Code'] }}">{{ $programmes['Name'] }}</option>
+                                <option value="{{ $programmes['Code'] }}">{{ $programmes['Name'] }} ({{ $programmes['Code'] }})</option>
                             @endforeach
                         </select>
                     </div>
@@ -124,7 +124,7 @@
                         <select class="form-control programme3" name="applicant_programme_3" id="applicant_programme_3">
                             <option value="">Select Programme</option>
                             @foreach ($all_programme as $key => $programmes)
-                                <option value="{{ $programmes['Code'] }}">{{ $programmes['Name'] }}</option>
+                                <option value="{{ $programmes['Code'] }}">{{ $programmes['Name'] }} ({{ $programmes['Code'] }})</option>
                             @endforeach
                         </select>
                     </div>

@@ -29,8 +29,8 @@ class ModuleAuthRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required|min:3|max:15',
-            'module_name' => 'required|min:3|max:20',
+            'id' => 'required|max:3',
+            'module_name' => 'required|min:3|max:50',
         ];
     }
 }

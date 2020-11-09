@@ -39,48 +39,63 @@
                             </div>
                         @endif
                         <div class="card-body">
+                            <a href=""></a>
+                            <div class="text-danger mb-3">* Required Field</div>
                             {!! Form::open(['action' => 'SponsorController@store', 'method' => 'POST']) !!}
                                 <table class="table table-bordered">
                                     <tr>
-                                        <td>Sponsor Code</td>
+                                        <td>Sponsor Code *</td>
                                         <td colspan="3">{{Form::text('sponsor_code', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Code', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Sponsor Name</td>
+                                        <td>Sponsor Name *</td>
                                         <td>{{Form::text('sponsor_name', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Name', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}</td>
-                                        <td>Sponsor Detail</td>
-                                        <td>{{Form::text('sponsor_detail', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Detail', 'onkeyup' => 'this.value = this.value.toUpperCase()' ])}}</td>
-                                    </tr>
-                                    <tr>
                                         <td>Department</td>
                                         <td>{{Form::text('sponsor_dept', '', ['class' => 'form-control', 'placeholder' => 'Department', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}</td>
-                                        <td>Contact Person</td>
-                                        <td>{{Form::text('sponsor_person', '', ['class' => 'form-control', 'placeholder' => 'Contact Person', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Phone Number</td>
-                                        <td>{{Form::number('sponsor_number', '', ['class' => 'form-control', 'placeholder' => 'Phone Number'])}}</td>
-                                        <td>Email</td>
+                                        <td>Sponsor Phone Number *</td>
+                                        <td>{{Form::text('sponsor_number', '', ['class' => 'form-control', 'placeholder' => 'Phone Number'])}}</td>
+                                        <td>Sponsor Email *</td>
                                         <td>{{Form::email('sponsor_email', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Email'])}}</td>
                                     </tr>
                                     <tr>
                                         <td>Address I</td>
-                                        <td>{{Form::text('sponsor_address_1', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Address 1', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}</td>
+                                        <td colspan="3">{{Form::text('sponsor_address_1', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Address 1', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}</td>
                                     </tr>
                                     <tr>
                                         <td>Address II</td>
-                                        <td>{{Form::text('sponsor_address_2', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Address II', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}</td>
-                                        <td>Postcode</td>
-                                        <td>{{Form::number('sponsor_poscode', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Postcode', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}</td>
+                                        <td colspan="3">{{Form::text('sponsor_address_2', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Address II', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}</td>
                                     </tr>
                                     <tr>
+                                        <td>Postcode</td>
+                                        <td>{{Form::text('sponsor_poscode', '', ['class' => 'form-control', 'placeholder' => 'Sponsor Postcode', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}</td>
                                         <td>City</td>
                                         <td>{{Form::text('sponsor_city', '', ['class' => 'form-control', 'placeholder' => 'Sponsor City', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}</td>
+                                    </tr>
+                                    <tr>
                                         <td>State</td>
-                                        <td>{{Form::text('sponsor_state', '', ['class' => 'form-control', 'placeholder' => 'Sponsor State', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}</td>
+                                        <td colspan="3">{{Form::text('sponsor_state', '', ['class' => 'form-control', 'placeholder' => 'Sponsor State', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}</td>
                                     </tr>
                                 </table>
-                                <button class="btn btn-primary float-right mb-3 btn-sm">Submit</button>
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td>Contact Person</td>
+                                        <td>Phone Number</td>
+                                        <td>Email</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{Form::text('sponsor_person', '', ['class' => 'form-control', 'placeholder' => 'Contact Person', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}</td>
+                                        <td>{{Form::text('person_phone_1', '', ['class' => 'form-control', 'placeholder' => 'Phone Number'])}}</td>
+                                        <td>{{Form::email('person_email_1', '', ['class' => 'form-control', 'placeholder' => 'Email'])}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{Form::text('sponsor_person_2', '', ['class' => 'form-control', 'placeholder' => 'Contact Person', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}</td>
+                                        <td>{{Form::text('person_phone_2', '', ['class' => 'form-control', 'placeholder' => 'Phone Number'])}}</td>
+                                        <td>{{Form::email('person_email_2', '', ['class' => 'form-control', 'placeholder' => 'Email'])}}</td>
+                                    </tr>
+                                </table>
+                                <button class="btn btn-success float-right mb-3 btn-sm">Submit</button>
                             {!! Form::close() !!}
                         </div>
                     </div>

@@ -87,8 +87,9 @@
                                                 <div class="form-group col-md-4">
                                                     {{ Form::label('title', 'Gender') }}
                                                     <select class="form-control gender" name="applicant_gender">
-                                                        @foreach($gender as $genders)
-                                                            <option value="{{ $genders->gender_code }}" {{ $applicant->applicant_gender == $genders->gender_code ? 'selected="selected"' : ''}}>{{ $genders->gender_name }}</option>
+                                                        <option disabled selected>Please select</option>
+                                                        @foreach ($gender as $genders)
+                                                            <option value="{{ $genders->gender_code }}" {{ $applicant->applicant_gender == $genders->gender_code ? 'selected="Selected"' : ''}}>{{ $genders->gender_name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -99,6 +100,7 @@
                                                 <div class="col-md-4 form-group">
                                                     {{ Form::label('title', 'Marital Status') }}
                                                     <select class="form-control marital" name="applicant_marital">
+                                                        <option disabled selected>Please select</option>
                                                         @foreach ($marital as $maritals)
                                                             <option value="{{ $maritals->marital_code }}" {{ $applicant->applicant_marital == $maritals->marital_code ? 'selected="Selected"' : ''}}>{{ $maritals->marital_name }}</option>
                                                         @endforeach
@@ -107,6 +109,7 @@
                                                 <div class="col-md-4 form-group">
                                                     {{ Form::label('title', 'Race') }}
                                                     <select class="form-control race" name="applicant_race" id="applicant_race">
+                                                        <option disabled selected>Please select</option>
                                                         @foreach ($race as $races)
                                                             <option value="{{ $races->race_code }}" {{ $applicant->applicant_race == $races->race_code ? 'selected="Selected"' : ''}}>{{ $races->race_name }}</option>
                                                         @endforeach
@@ -116,6 +119,7 @@
                                                 <div class="col-md-4 form-group">
                                                     {{ Form::label('title', 'Religion') }}
                                                     <select class="form-control religion" name="applicant_religion" id="applicant_religion">
+                                                        <option disabled selected>Please select</option>
                                                         @foreach ($religion as $religions)
                                                             <option value="{{ $religions->religion_code }}" {{ $applicant->applicant_religion == $religions->religion_code ? 'selected="Selected"' : ''}}>{{ $religions->religion_name }}</option>
                                                         @endforeach

@@ -44,13 +44,19 @@
                                         </tr>
                                         <tr>
                                             <td>Applicant IC</td>
-                                            <td>{{Form::number('applicant_ic', $applicant->applicant_ic, ['class' => 'form-control', 'placeholder' => 'Applicant IC'])}}</td>
-                                            <td>Birth Date</td>
-                                            <td>{{Form::date('applicant_dob', $applicant->applicant_dob, ['class' => 'form-control', 'placeholder' => 'Student ID'])}}</td>
+                                            <td>{{Form::text('applicant_ic', $applicant->applicant_ic, ['class' => 'form-control', 'placeholder' => 'Applicant IC'])}}</td>
+                                            <td>Sponsor</td>
+                                            <td>
+                                                <select class="form-control" name="sponsor_code" id="sponsor">
+                                                    @foreach ($sponsor as $sponsors)
+                                                        <option value="{{ $sponsors->sponsor_code }}" {{ $applicant->sponsor_code == $sponsors->sponsor_code ? 'selected="selected"' : ''}}>{{ $sponsors->sponsor_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>Phone Number</td>
-                                            <td>{{Form::number('applicant_phone', $applicant->applicant_phone, ['class' => 'form-control', 'placeholder' => 'Phone Number'])}}</td>
+                                            <td>{{Form::text('applicant_phone', $applicant->applicant_phone, ['class' => 'form-control', 'placeholder' => 'Phone Number'])}}</td>
                                             <td>Email</td>
                                             <td>{{Form::email('applicant_email', $applicant->applicant_email, ['class' => 'form-control', 'placeholder' => 'Email'])}}</td>
                                         </tr>
@@ -128,4 +134,11 @@
             </div>
         </div>
     </main>
+@endsection
+@section('script')
+<script>
+    $(document).ready(function() {
+        $('#sponsor, #applicant_race, #applicant_religion, #applicant_marital, #applicant_gender, #applicant_country').select2();
+    });
+</script>
 @endsection
