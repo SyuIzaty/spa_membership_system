@@ -261,28 +261,20 @@ class ApplicantController extends Controller
             })
             ->addColumn('prog_name',function($applicants)
             {
-                return isset($applicants->programme->programme_code) ? '<div style="color:'.$applicants->statusResult->colour.'">'.$applicants->programme->programme_code.'</div>' : '';
+                return isset($applicants->programme->id) ? '<div style="color:'.$applicants->statusResult->colour.'">'.$applicants->programme->id.'</div>' : '';
             })
             ->addColumn('prog_name_2',function($applicants)
             {
-                // return '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->programmeTwo->programme_code.'</div>';
-                return isset($applicants->programmeTwo->programme_code) ? '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->programmeTwo->programme_code.'</div>' : '';
+                return isset($applicants->programmeTwo->id) ? '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->programmeTwo->id.'</div>' : '';
 
             })
             ->addColumn('prog_name_3',function($applicants)
             {
-                // return isset($applicants->programmeThree->programme_code) ? $applicants->programmeThree->programme_code.$applicants->programme_status_3 : '';
-                return isset($applicants->programmeThree->programme_code) ? '<div style="color:'.$applicants->statusResultThree->colour.'">'.$applicants->programmeThree->programme_code.'</div>' : '';
+                return isset($applicants->programmeThree->id) ? '<div style="color:'.$applicants->statusResultThree->colour.'">'.$applicants->programmeThree->id.'</div>' : '';
 
             })
             // ->addColumn('bm',function($applicants){
             //     return $applicants->applicantresult->where('subject',1103)->isEmpty() ? '': $applicants->applicantresult->where('subject',1103)->first()->grades->grade_code;
-            // })
-            // ->addColumn('english',function($applicants){
-            //     return $applicants->applicantresult->where('subject',1119)->isEmpty() ? '': $applicants->applicantresult->where('subject',1119)->first()->grades->grade_code;
-            // })
-            // ->addColumn('math',function($applicants){
-            //     return $applicants->applicantresult->where('subject',1449)->isEmpty() ? '': $applicants->applicantresult->where('subject',1449)->first()->grades->grade_code;
             // })
            ->addColumn('action', function ($applicants) {
                return '
@@ -296,7 +288,6 @@ class ApplicantController extends Controller
     public function data_passapplicant() // Datatable: applicant pass minimum requirement
     {
         $applicant = Applicant::where('applicant_status','4A')->get();
-        // $applicant = Applicant::where('programme_status','4A')->orWhere('programme_status_2','4A')->orWhere('programme_status_3','4A')->get();
         $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','statusResultThree','programmeThree','applicantstatus','applicantIntake','applicantRechecks');
 
 
@@ -307,25 +298,23 @@ class ApplicantController extends Controller
             })
             ->addColumn('prog_name',function($applicants)
             {
-                return '<div style="color:'.$applicants->statusResult->colour.'">'.$applicants->programme->programme_code.'</div>';
+                return '<div style="color:'.$applicants->statusResult->colour.'">'.$applicants->applicant_programme.'</div>';
             })
             ->addColumn('prog_name_2',function($applicants)
             {
-                // return '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->programmeTwo->programme_code.'</div>';
-                return isset($applicants->programmeTwo->programme_code) ? '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->programmeTwo->programme_code.'</div>' : '';
+                return isset($applicants->applicant_programme_2) ? '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->applicant_programme_2.'</div>' : '';
 
             })
             ->addColumn('prog_name_3',function($applicants)
             {
-                // return isset($applicants->programmeThree->programme_code) ? $applicants->programmeThree->programme_code.$applicants->programme_status_3 : '';
-                return isset($applicants->programmeThree->programme_code) ? '<div style="color:'.$applicants->statusResultThree->colour.'">'.$applicants->programmeThree->programme_code.'</div>' : '';
+                return isset($applicants->applicant_programme_3) ? '<div style="color:'.$applicants->statusResultThree->colour.'">'.$applicants->applicant_programme_3.'</div>' : '';
 
             })
             ->addColumn('applicant_recheck',function($applicants)
             {
                 $all = '';
                 foreach($applicants->applicantRechecks as $apps){
-                    $all .= isset($apps->programme_code) ? '<div style="color:green">'.$apps->programme_code.'</div>' : '<div class="text-danger">NO</div>';
+                    $all .= isset($apps->id) ? '<div style="color:green">'.$apps->programme_code.'</div>' : '<div class="text-danger">NO</div>';
                 }
                 return $all;
             })
@@ -350,18 +339,16 @@ class ApplicantController extends Controller
             })
             ->addColumn('prog_name',function($applicants)
             {
-                return '<div style="color:'.$applicants->statusResult->colour.'">'.$applicants->programme->programme_code.'</div>';
+                return '<div style="color:'.$applicants->statusResult->colour.'">'.$applicants->applicant_programme.'</div>';
             })
             ->addColumn('prog_name_2',function($applicants)
             {
-                // return '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->programmeTwo->programme_code.'</div>';
-                return isset($applicants->programmeTwo->programme_code) ? '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->programmeTwo->programme_code.'</div>' : '';
+                return isset($applicants->applicant_programme_2) ? '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->applicant_programme_2.'</div>' : '';
 
             })
             ->addColumn('prog_name_3',function($applicants)
             {
-                // return isset($applicants->programmeThree->programme_code) ? $applicants->programmeThree->programme_code.$applicants->programme_status_3 : '';
-                return isset($applicants->programmeThree->programme_code) ? '<div style="color:'.$applicants->statusResultThree->colour.'">'.$applicants->programmeThree->programme_code.'</div>' : '';
+                return isset($applicants->applicant_programme_3) ? '<div style="color:'.$applicants->statusResultThree->colour.'">'.$applicants->applicant_programme_3.'</div>' : '';
 
             })
 
@@ -485,18 +472,16 @@ class ApplicantController extends Controller
             })
             ->addColumn('prog_name',function($applicants)
             {
-                return isset($applicants->programme->programme_code) ? '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->programme->programme_code.'</div>' : '';
+                return isset($applicants->applicant_programme) ? '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->applicant_programme.'</div>' : '';
             })
             ->addColumn('prog_name_2',function($applicants)
             {
-                // return '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->programmeTwo->programme_code.'</div>';
-                return isset($applicants->programmeTwo->programme_code) ? '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->programmeTwo->programme_code.'</div>' : '';
+                return isset($applicants->applicant_programme_2) ? '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->applicant_programme_2.'</div>' : '';
 
             })
             ->addColumn('prog_name_3',function($applicants)
             {
-                // return isset($applicants->programmeThree->programme_code) ? $applicants->programmeThree->programme_code.$applicants->programme_status_3 : '';
-                return isset($applicants->programmeThree->programme_code) ? '<div style="color:'.$applicants->statusResultThree->colour.'">'.$applicants->programmeThree->programme_code.'</div>' : '';
+                return isset($applicants->applicant_programme_3) ? '<div style="color:'.$applicants->statusResultThree->colour.'">'.$applicants->applicant_programme_3.'</div>' : '';
 
             })
 
@@ -578,16 +563,16 @@ class ApplicantController extends Controller
             })
             ->addColumn('prog_name',function($applicants)
             {
-                return isset($applicants->programme->programme_code) ? '<div style="color:'.$applicants->statusResult->colour.'">'.$applicants->programme->programme_code.'</div>' : '';
+                return isset($applicants->applicant_programme) ? '<div style="color:'.$applicants->statusResult->colour.'">'.$applicants->applicant_programme.'</div>' : '';
             })
             ->addColumn('prog_name_2',function($applicants)
             {
-                return isset($applicants->programmeTwo->programme_code) ? '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->programmeTwo->programme_code.'</div>' : '';
+                return isset($applicants->applicant_programme_2) ? '<div style="color:'.$applicants->statusResultTwo->colour.'">'.$applicants->applicant_programme_2.'</div>' : '';
 
             })
             ->addColumn('prog_name_3',function($applicants)
             {
-                return isset($applicants->programmeThree->programme_code) ? '<div style="color:'.$applicants->statusResultThree->colour.'">'.$applicants->programmeThree->programme_code.'</div>' : '';
+                return isset($applicants->applicant_programme_3) ? '<div style="color:'.$applicants->statusResultThree->colour.'">'.$applicants->applicant_programme_3.'</div>' : '';
 
             })
             ->addColumn('bm',function($applicants){
@@ -608,7 +593,7 @@ class ApplicantController extends Controller
 
         $intake = Intakes::select('id','intake_code')->get();
 
-        $program = Programme::select('id','programme_code','programme_name')->get();
+        $program = Programme::select('id','programme_name')->get();
 
         $batch = IntakeDetail::select('id','batch_code')->get();
 
@@ -761,27 +746,33 @@ class ApplicantController extends Controller
     public function spm($applicantt)
     {
         $app_spm = ApplicantResult::where('applicant_id',$applicantt['id'])->Spm()->where('grade_id','<=',8)->get();
+        $pass_spm = ApplicantResult::where('applicant_id',$applicantt['id'])->Spm()->where('grade_id','<=',9)->count();
         $spm = $app_spm->count();
         $count_eng = $app_spm->where('subject',1119)->count();
         $count_math = $app_spm->where('subject',1449)->count();
+        $count_addmath = $app_spm->where('subject','3472')->count();
+        $all_spm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type','1')->count();
 
-        return compact('applicantt', 'app_spm', 'spm', 'count_eng', 'count_math');
+        return compact('applicantt', 'app_spm', 'spm', 'count_eng', 'count_math', 'app_spm', 'count_addmath', 'pass_spm', 'all_spm');
     }
 
     public function stpm($applicantt)
     {
         $app_stpm = ApplicantResult::where('applicant_id',$applicantt['id'])->Stpm()->where('grade_id','<=',17)->get();
         $stpm = $app_stpm->count();
+        $pass_stpm = ApplicantResult::where('applicant_id',$applicantt['id'])->Stpm()->where('grade_id','<=',18)->count();
 
         $count_math_m = $app_stpm->where('subject',950)->count();
         $count_math_t = $app_stpm->where('subject',954)->count();
         $count_eng = $app_stpm->where('subject',920)->count();
-        return compact('app_stpm', 'stpm', 'count_math_m', 'count_math_t', 'count_eng');
+        $all_stpm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type','2')->count();
+
+        return compact('app_stpm', 'stpm', 'count_math_m', 'count_math_t', 'count_eng', 'all_stpm', 'pass_stpm');
     }
 
     public function stam($applicantt)
     {
-        $app_stam = ApplicantResult::where('applicant_id',$applicantt['id'])->Stam()->where('grade_id','<=',15)->get();
+        $app_stam = ApplicantResult::where('applicant_id',$applicantt['id'])->Stam()->where('grade_id','<=',25)->get();
         $stam = $app_stam->count();
 
         return compact('app_stam', 'stam');
@@ -789,20 +780,39 @@ class ApplicantController extends Controller
 
     public function uec($applicantt)
     {
-        $app_uec = ApplicantResult::where('applicant_id',$applicantt['id'])->Uec()->where('grade_id','<=',25)->get();
+        $app_uec = ApplicantResult::where('applicant_id',$applicantt['id'])->Uec()->where('grade_id','<=',32)->get();
         $uec = $app_uec->count();
+        $pass_uec = ApplicantResult::where('applicant_id',$applicantt['id'])->Uec()->where('grade_id','<=',34)->count();
         $count_math = $app_uec->where('subject','UEC104')->count();
-        return compact('app_uec', 'uec', 'count_math');
+        $count_math_a = $app_uec->where('subject','UEC105')->count();
+        $count_math_b = $app_uec->where('subject','UEC106')->count();
+        $count_eng = $app_uec->where('subject','UEC103')->count();
+        $all_uec = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type','4')->count();
+
+        return compact('app_uec', 'uec', 'count_math','count_math_a','count_math_b','count_eng','all_uec','pass_uec');
     }
 
     public function olevel($applicantt)
     {
         $app_olevel = ApplicantResult::where('applicant_id',$applicantt['id'])->Olevel()->where('grade_id','<=',45)->get();
         $olevel = $app_olevel->count();
+        $pass_olevel = ApplicantResult::where('applicant_id',$applicantt['id'])->Olevel()->where('grade_id','<=',46)->get();
         $count_eng = $app_olevel->where('subject','CIE1119')->count();
         $count_math_a = $app_olevel->where('subject','CIE4937')->count();
         $count_math_d = $app_olevel->where('subject','CIE4024')->count();
-        return compact('applicantt', 'app_olevel', 'olevel', 'count_eng', 'count_math_a', 'count_math_d');
+        $all_olevel = ApplicantResult::where('applicant_id',$applicantt['id'])->Olevel()->count();
+
+        return compact('applicantt', 'app_olevel', 'olevel', 'count_eng', 'count_math_a', 'count_math_d', 'all_olevel', 'pass_olevel');
+    }
+
+    public function alevel($applicantt)
+    {
+        $app_alevel = ApplicantResult::where('applicant_id',$applicantt['id'])->Alevel()->where('grade_id','<=',38)->get();
+        $alevel = $app_alevel->count();
+        $pass_alevel = ApplicantResult::where('applicant_id',$applicantt['id'])->Alevel()->where('grade_id','<=',39)->count();
+        $all_alevel = ApplicantResult::where('applicant_id',$applicantt['id'])->Alevel()->count();
+
+        return compact('applicantt', 'app_alevel', 'alevel', 'all_alevel', 'pass_alevel');
     }
 
     public function mqf($applicantt)
@@ -823,42 +833,48 @@ class ApplicantController extends Controller
         return compact ('kkm');
     }
 
-    public function iat12($applicantt) //American Degree Transfer Programme
+    public function svm($applicantt)
     {
-        $status = [];
-        $spm = $this->spm($applicantt);
-        if($spm['count_eng'] == 1 && $spm['count_math'] == 1 && $spm['spm'] >= 5)
-        {
-            $status_spm = true;
-        }else{
-            $status_spm = false;
-        }
+        $svm = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Svm()->where('applicant_cgpa','>=',2.00)->count();
+        return compact ('svm');
+    }
 
-        $olevel = $this->olevel($applicantt);
-        if($olevel['count_eng'] == 1  && ($olevel['count_math_a'] == 1 || $olevel['count_math_d'] == 1) && $olevel['olevel'] >= 5)
-        {
-            $status_olevel = true;
-        }else{
-            $status_olevel = false;
-        }
+    public function foundation($applicantt)
+    {
+        $foundation = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Foundation()->where('applicant_cgpa','>=',2.00)->count();
+        return compact ('foundation');
+    }
 
-        $status = array($status_spm, $status_olevel);
+    public function matriculation($applicantt)
+    {
+        $matriculation = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Matriculation()->where('applicant_cgpa','>=',2.00)->count();
+        return compact ('matriculation');
+    }
 
-        if(in_array(true, $status))
-        {
-            $programme_code = 'IAT12';
-            $this->accepted($applicantt, $programme_code);
-        } else {
-            $programme_code = 'IAT12';
-            $this->rejected($applicantt, $programme_code);
-        }
+    public function apel($applicantt)
+    {
+        $apel = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Kkm()->where('applicant_cgpa','>=',14)->count();
+        return compact ('apel');
+    }
+
+
+    public function ielts($applicantt)
+    {
+        $ielts = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Ielts()->where('applicant_cgpa','>=',6)->count();
+        return compact('ielts');
+    }
+
+    public function toefl($applicantt)
+    {
+        $toefl = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Toefl()->where('applicant_cgpa','>=',70)->count();
+        return compact('toefl');
     }
 
     public function ial10($applicantt) //A Level Programme
     {
         $status = [];
         $spm = $this->spm($applicantt);
-        if($spm['count_eng'] == 1 && $spm['count_math'] == 1 && $spm['spm'] >= 5)
+        if($spm['all_spm'] != 0 && ($spm['count_math'] == 1 || $spm['count_addmath'] == 1) && $spm['count_eng'] == 1 && $spm['spm'] >= 5)
         {
             $status_spm = true;
         }else{
@@ -866,14 +882,38 @@ class ApplicantController extends Controller
         }
 
         $olevel = $this->olevel($applicantt);
-        if($olevel['count_eng'] == 1  && ($olevel['count_math_a'] == 1 || $olevel['count_math_d'] == 1) && $olevel['olevel'] >= 5)
+        if($olevel['all_olevel'] != 0 && ($olevel['count_math_a'] == 1 || $olevel['count_math_d'] == 1) && $olevel['olevel'] >= 5)
         {
             $status_olevel = true;
         }else{
             $status_olevel = false;
         }
 
-        $status = array($status_spm, $status_olevel);
+        $uec = $this->uec($applicantt);
+        if($uec['all_uec'] != 0 && $uec['uec'] >= 5 && $uec['count_eng'] == 1 && ($uec['count_math'] == 1 || $uec['count_math_a'] == 1 || $uec['count_math_b'] == 1))
+        {
+            $status_uec = true;
+        }else{
+            $status_uec = false;
+        }
+
+        $ielts = $this->ielts($applicantt);
+        if($ielts['ielts'] == 1)
+        {
+            $status_ielts = true;
+        }else{
+            $status_ielts = false;
+        }
+
+        $toefl = $this->toefl($applicantt);
+        if($toefl['toefl'] == 1)
+        {
+            $status_toefl = true;
+        }else{
+            $status_toefl = false;
+        }
+
+        $status = array($status_spm, $status_olevel, $status_uec, $status_ielts, $status_toefl);
 
         if(in_array(true, $status))
         {
@@ -881,6 +921,61 @@ class ApplicantController extends Controller
             $this->accepted($applicantt, $programme_code);
         } else {
             $programme_code = 'IAL10';
+            $this->rejected($applicantt, $programme_code);
+        }
+    }
+
+    public function iat12($applicantt) //American Degree Transfer Programme
+    {
+        $status = [];
+        $spm = $this->spm($applicantt);
+        if($spm['all_spm'] != 0 && ($spm['count_math'] == 1 || $spm['count_addmath'] == 1) && $spm['count_eng'] == 1 && $spm['spm'] >= 5)
+        {
+            $status_spm = true;
+        }else{
+            $status_spm = false;
+        }
+
+        $olevel = $this->olevel($applicantt);
+        if($olevel['all_olevel'] != 0 && ($olevel['count_math_a'] == 1 || $olevel['count_math_d'] == 1) && $olevel['olevel'] >= 5)
+        {
+            $status_olevel = true;
+        }else{
+            $status_olevel = false;
+        }
+
+        $uec = $this->uec($applicantt);
+        if($uec['all_uec'] != 0 && $uec['uec'] >= 5 && $uec['count_eng'] == 1 && ($uec['count_math'] == 1 || $uec['count_math_a'] == 1 || $uec['count_math_b'] == 1))
+        {
+            $status_uec = true;
+        }else{
+            $status_uec = false;
+        }
+
+        $ielts = $this->ielts($applicantt);
+        if($ielts['ielts'] == 1)
+        {
+            $status_ielts = true;
+        }else{
+            $status_ielts = false;
+        }
+
+        $toefl = $this->toefl($applicantt);
+        if($toefl['toefl'] == 1)
+        {
+            $status_toefl = true;
+        }else{
+            $status_toefl = false;
+        }
+
+        $status = array($status_spm, $status_olevel, $status_uec, $status_ielts, $status_toefl);
+
+        if(in_array(true, $status))
+        {
+            $programme_code = 'IAT12';
+            $this->accepted($applicantt, $programme_code);
+        } else {
+            $programme_code = 'IAT12';
             $this->rejected($applicantt, $programme_code);
         }
     }
@@ -889,7 +984,7 @@ class ApplicantController extends Controller
     {
         $status = [];
         $spm = $this->spm($applicantt);
-        if($spm['count_eng'] == 1 && $spm['count_math'] == 1 && $spm['spm'] >= 5)
+        if($spm['all_spm'] != 0 && $spm['count_eng'] == 1 && $spm['count_math'] == 1 && ($spm['spm'] >= 5))
         {
             $status_spm = true;
         }else{
@@ -897,14 +992,38 @@ class ApplicantController extends Controller
         }
 
         $olevel = $this->olevel($applicantt);
-        if($olevel['count_eng'] == 1  && ($olevel['count_math_a'] == 1 || $olevel['count_math_d'] == 1) && $olevel['olevel'] >= 5)
+        if($olevel['all_olevel'] != 0 && $olevel['count_eng'] == 1  && ($olevel['count_math_a'] == 1 || $olevel['count_math_d'] == 1) && ($olevel['olevel'] >= 5))
         {
             $status_olevel = true;
         }else{
             $status_olevel = false;
         }
 
-        $status = array($status_spm, $status_olevel);
+        $uec = $this->uec($applicantt);
+        if($uec['all_uec'] != 0 && ($uec['count_math_a'] == 1 || $uec['count_math'] == 1 || $uec['count_math_b'] == 1) && $uec['count_eng'] == 1 && ($uec['uec'] >= 5))
+        {
+            $status_uec = true;
+        }else{
+            $status_uec = false;
+        }
+
+        $ielts = $this->ielts($applicantt);
+        if($ielts['ielts'] == 1)
+        {
+            $status_ielts = true;
+        }else{
+            $status_ielts = false;
+        }
+
+        $toefl = $this->toefl($applicantt);
+        if($toefl['toefl'] == 1)
+        {
+            $status_toefl = true;
+        }else{
+            $status_toefl = false;
+        }
+
+        $status = array($status_spm, $status_olevel, $status_uec, $status_ielts, $status_toefl);
 
         if(in_array(true, $status))
         {
@@ -912,37 +1031,6 @@ class ApplicantController extends Controller
             $this->accepted($applicantt, $programme_code);
         } else {
             $programme_code = 'IGR22';
-            $this->rejected($applicantt, $programme_code);
-        }
-    }
-
-    public function iam10($applicantt) //SACE International
-    {
-        $status = [];
-        $spm = $this->spm($applicantt);
-        if($spm['count_eng'] == 1 && $spm['count_math'] == 1 && $spm['spm'] >= 5)
-        {
-            $status_spm = true;
-        }else{
-            $status_spm = false;
-        }
-
-        $olevel = $this->olevel($applicantt);
-        if($olevel['count_eng'] == 1  && ($olevel['count_math_a'] == 1 || $olevel['count_math_d'] == 1) && $olevel['olevel'] >= 5)
-        {
-            $status_olevel = true;
-        }else{
-            $status_olevel = false;
-        }
-
-        $status = array($status_spm, $status_olevel);
-
-        if(in_array(true, $status))
-        {
-            $programme_code = 'IAM10';
-            $this->accepted($applicantt, $programme_code);
-        } else {
-            $programme_code = 'IAM10';
             $this->rejected($applicantt, $programme_code);
         }
     }
@@ -951,18 +1039,28 @@ class ApplicantController extends Controller
     {
         $status = [];
         $app_spm = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->where('grade_id','<=',8)->get();
-        $spm = $app_spm->count();
 
-        $count_math = $app_spm->where('subject',1449)->count();
+        $spm = $this->spm($applicantt);
         $count_bio = $app_spm->where('subject',4551)->count();
         $count_chem = $app_spm->where('subject',4541)->count();
         $count_phy = $app_spm->where('subject',4531)->count();
         $count_sci = $app_spm->where('subject',1511)->count();
-        if(($count_math == 1 && ($count_bio == 1 || $count_chem == 1 || $count_phy == 1 || $count_sci == 1)) || ($count_math == 1) && $spm >= 5)
+        $count_math = $app_spm->where('subject',1449)->count();
+        if($applicantt['applicant_major'] == 'M0690' || $applicantt['applicant_major_2'] == 'M0690' || $applicantt['applicant_major_3'] == 'M0690')
         {
-            $status_spm = true;
+            if($spm['all_spm'] != 0 && $spm['spm'] >= 5 && ($spm['count_math'] == 1 || $spm['count_addmath'] == 1))
+            {
+                $status_spm = true;
+            }else{
+                $status_spm = false;
+            }
         }else{
-            $status_spm = false;
+            if((($count_bio == 1 || $count_chem == 1 || $count_phy == 1 || $count_sci == 1)) && ($count_math == 1 || $spm['count_addmath'] == 1) && $spm >= 5)
+            {
+                $status_spm = true;
+            }else{
+                $status_spm = false;
+            }
         }
 
         $olevel = $this->olevel($applicantt);
@@ -971,14 +1069,64 @@ class ApplicantController extends Controller
         $count_chemistry = $olevel['app_olevel']->where('subject','CIE5070')->count();
         $count_phy = $olevel['app_olevel']->where('subject','CIE5054')->count();
         $count_science = $olevel['app_olevel']->where('subject','CIE5129')->count();
-        if(($count_bio == 1 || $count_chemistry == 1 || $count_science == 1 || $count_phy) && ($olevel['count_math_d'] == 1 || $olevel['count_math_a'] == 1) && $olevel['olevel'] >= 5)
+        if($applicantt['applicant_major'] == 'M0690' || $applicantt['applicant_major_2'] == 'M0690' || $applicantt['applicant_major_3'] == 'M0690')
         {
-            $status_olevel = true;
+            if($olevel['all_olevel'] != 0 && ($olevel['count_math_a'] == 1 || $olevel['count_math_d'] == 1) && $olevel['olevel'] >= 5)
+            {
+                $status_olevel = true;
+            }else{
+                $status_olevel = false;
+            }
         }else{
-            $status_olevel = false;
+            if(($count_bio == 1 || $count_chemistry == 1 || $count_science == 1 || $count_phy) && ($olevel['count_math_d'] == 1 || $olevel['count_math_a'] == 1) && $olevel['olevel'] >= 5)
+            {
+                $status_olevel = true;
+            }else{
+                $status_olevel = false;
+            }
         }
 
-        $status = array($status_spm, $status_olevel);
+        $uec = $this->uec($applicantt);
+
+        $uec_bio = $olevel['app_olevel']->where('subject','UEC109')->count();
+        $uec_chemistry = $olevel['app_olevel']->where('subject','UEC110')->count();
+        $uec_phy = $olevel['app_olevel']->where('subject','UEC111')->count();
+        $uec_science = $olevel['app_olevel']->where('subject','UEC112')->count();
+
+        if($applicantt['applicant_major'] == 'M0690' || $applicantt['applicant_major_2'] == 'M0690' || $applicantt['applicant_major_3'] == 'M0690')
+        {
+            if($uec['all_uec'] != 0 && ($uec['count_math_a'] == 1 || $uec['count_math'] == 1 || $uec['count_math_b'] == 1) && $uec['count_eng'] == 1 && ($uec['uec'] >= 5))
+            {
+                $status_uec = true;
+            }else{
+                $status_uec = false;
+            }
+        }else{
+            if(($uec_bio == 1 || $uec_chemistry == 1 || $uec_science == 1 || $uec_phy) && ($uec['count_math_b'] == 1 || $uec['count_math_a'] == 1 || $uec['count_math'] == 1) && $uec['uec'] >= 5)
+            {
+                $status_uec = true;
+            }else{
+                $status_uec = false;
+            }
+        }
+
+        $ielts = $this->ielts($applicantt);
+        if($ielts['ielts'] == 1)
+        {
+            $status_ielts = true;
+        }else{
+            $status_ielts = false;
+        }
+
+        $toefl = $this->toefl($applicantt);
+        if($toefl['toefl'] == 1)
+        {
+            $status_toefl = true;
+        }else{
+            $status_toefl = false;
+        }
+
+        $status = array($status_spm, $status_olevel, $status_uec, $status_ielts, $status_toefl);
 
         if(in_array(true, $status))
         {
@@ -994,7 +1142,78 @@ class ApplicantController extends Controller
     {
         $status = [];
         $spm = $this->spm($applicantt);
-        if($spm['count_eng'] == 1)
+        if($applicantt['applicant_major'] == 'M0700' || $applicantt['applicant_major_2'] == 'M0700' || $applicantt['applicant_major_3'] == 'M0700')
+        {
+            if($spm['all_spm'] != 0 && $spm['count_eng'] == 1)
+            {
+                $status_spm = true;
+            }else{
+                $status_spm = false;
+            }
+        }else{
+            $count_addmath = $spm['app_spm']->where('subject','3472')->count();
+            if($spm['all_spm'] != 0 && $spm['count_eng'] == 1 && ($spm['count_math'] == 1 || $count_addmath == 1) && ($spm['spm'] >= 5))
+            {
+                $status_spm = true;
+            }else{
+                $status_spm = false;
+            }
+        }
+
+        $olevel = $this->olevel($applicantt);
+        if($applicantt['applicant_major'] == 'M0700' || $applicantt['applicant_major_2'] == 'M0700' || $applicantt['applicant_major_3'] == 'M0700')
+        {
+            if($olevel['all_olevel'] != 0 && $olevel['count_eng'] == 1)
+            {
+                $status_olevel = true;
+            }else{
+                $status_olevel = false;
+            }
+        }else{
+            if($olevel['all_olevel'] != 0 && ($olevel['count_math_a'] == 1 || $olevel['count_math_d'] == 1) && $olevel['count_eng'] == 1)
+            {
+                $status_olevel = true;
+            }else{
+                $status_olevel = false;
+            }
+        }
+
+        $uec = $this->uec($applicantt);
+        if($applicantt['applicant_major'] == 'M0700' || $applicantt['applicant_major_2'] == 'M0700' || $applicantt['applicant_major_3'] == 'M0700')
+        {
+            if($uec['all_uec'] != 0 && $uec['count_eng'] == 1)
+            {
+                $status_uec = true;
+            }else{
+                $status_uec = false;
+            }
+        }else{
+            if(($uec['count_math_a'] == 1 || $uec['count_math'] == 1 || $uec['count_math_b'] == 1) && $uec['count_eng'] == 1)
+            {
+                $status_uec = true;
+            }else{
+                $status_uec = false;
+            }
+        }
+
+        $ielts = $this->ielts($applicantt);
+        if($ielts['ielts'] == 1)
+        {
+            $status_ielts = true;
+        }else{
+            $status_ielts = false;
+        }
+
+        $toefl = $this->toefl($applicantt);
+        if($toefl['toefl'] == 1)
+        {
+            $status_toefl = true;
+        }else{
+            $status_toefl = false;
+        }
+
+        $status = array($status_spm, $status_olevel, $status_uec, $status_ielts, $status_toefl);
+        if(in_array(true, $status))
         {
             $programme_code = 'IKR09';
             $this->accepted($applicantt, $programme_code);
@@ -1004,11 +1223,65 @@ class ApplicantController extends Controller
         }
     }
 
+    public function iam10($applicantt) //SACE International
+    {
+        $status = [];
+        $spm = $this->spm($applicantt);
+        if($spm['all_spm'] != 0 && $spm['count_eng'] == 1 && ($spm['count_math'] == 1 || $spm['count_addmath'] == 1) && $spm['spm'] >= 5)
+        {
+            $status_spm = true;
+        }else{
+            $status_spm = false;
+        }
+
+        $olevel = $this->olevel($applicantt);
+        if($olevel['all_olevel'] != 0 && $olevel['count_eng'] == 1  && ($olevel['count_math_a'] == 1 || $olevel['count_math_d'] == 1) && ($olevel['olevel'] >= 5))
+        {
+            $status_olevel = true;
+        }else{
+            $status_olevel = false;
+        }
+
+        $uec = $this->uec($applicantt);
+        if($uec['all_uec'] != 0 && ($uec['count_math_a'] == 1 || $uec['count_math'] == 1 || $uec['count_math_b'] == 1) && $uec['count_eng'] == 1 )
+        {
+            $status_uec = true;
+        }else{
+            $status_uec = false;
+        }
+
+        $ielts = $this->ielts($applicantt);
+        if($ielts['ielts'] == 1)
+        {
+            $status_ielts = true;
+        }else{
+            $status_ielts = false;
+        }
+
+        $toefl = $this->toefl($applicantt);
+        if($toefl['toefl'] == 1)
+        {
+            $status_toefl = true;
+        }else{
+            $status_toefl = false;
+        }
+
+        $status = array($status_spm, $status_olevel, $status_uec, $status_ielts, $status_toefl);
+        if(in_array(true, $status))
+        {
+            $programme_code = 'IAM10';
+            $this->accepted($applicantt, $programme_code);
+        } else {
+            $programme_code = 'IAM10';
+            $this->rejected($applicantt, $programme_code);
+        }
+    }
+
     public function ibm20($applicantt) //Diploma in Business Management
     {
         $status = [];
         $spm = $this->spm($applicantt);
-        if($spm['spm'] >= 3)
+        if($spm['all_spm'] != 0 && $spm['spm'] >= 3 && $spm['count_eng'] == 1)
         {
             $status_spm = true;
         }else{
@@ -1016,7 +1289,7 @@ class ApplicantController extends Controller
         }
 
         $stpm = $this->stpm($applicantt);
-        if($stpm['stpm'] >= 1)
+        if($stpm['all_stpm'] != 0 && $stpm['stpm'] >= 4)
         {
             $status_stpm = true;
         }else{
@@ -1032,15 +1305,39 @@ class ApplicantController extends Controller
         }
 
         $olevel = $this->olevel($applicantt);
-        if($olevel['olevel'] >= 3)
+        if($olevel['all_olevel'] != 0 && $olevel['olevel'] >= 3)
         {
             $status_olevel = true;
         }else{
             $status_olevel = false;
         }
 
+        $alevel = $this->alevel($applicantt);
+        if($alevel['all_alevel'] != 0 && $alevel['pass_alevel'] >= 5)
+        {
+            $status_alevel = true;
+        }else{
+            $status_alevel = false;
+        }
+
+        $foundation = $this->foundation($applicantt);
+        if($foundation['foundation'] >= 1)
+        {
+            $status_foundation = true;
+        }else{
+            $status_foundation = false;
+        }
+
+        $matriculation = $this->foundation($applicantt);
+        if($matriculation['foundation'] >= 1)
+        {
+            $status_matriculation = true;
+        }else{
+            $status_matriculation = false;
+        }
+
         $uec = $this->uec($applicantt);
-        if($uec['uec'] >= 3)
+        if($uec['all_uec'] != 0 && $uec['uec'] >= 3 && $uec['count_eng'] == 1 )
         {
             $status_uec = true;
         }else{
@@ -1048,7 +1345,7 @@ class ApplicantController extends Controller
         }
 
         $skm = $this->skm($applicantt);
-        if($skm['skm'] >= 1 && $spm['spm'])
+        if($skm['skm'] >= 1)
         {
             $status_skm = true;
         }else{
@@ -1056,14 +1353,46 @@ class ApplicantController extends Controller
         }
 
         $mqf = $this->mqf($applicantt);
-        if($mqf['mqf'] && $spm['spm'])
+        if($mqf['mqf'])
         {
             $status_mqf = true;
         }else{
             $status_mqf = false;
         }
 
-        $status = array($status_spm, $status_stpm, $status_stam, $status_olevel, $status_uec, $status_skm, $status_mqf);
+        $svm = $this->mqf($applicantt);
+        if($svm['mqf'])
+        {
+            $status_svm = true;
+        }else{
+            $status_svm = false;
+        }
+
+        $apel = $this->apel($applicantt);
+        if($apel['apel'])
+        {
+            $status_apel = true;
+        }else{
+            $status_apel = false;
+        }
+
+        $ielts = $this->ielts($applicantt);
+        if($ielts['ielts'] == 1)
+        {
+            $status_ielts = true;
+        }else{
+            $status_ielts = false;
+        }
+
+        $toefl = $this->toefl($applicantt);
+        if($toefl['toefl'] == 1)
+        {
+            $status_toefl = true;
+        }else{
+            $status_toefl = false;
+        }
+
+        $status = array($status_spm, $status_stpm, $status_stam, $status_olevel, $status_alevel, $status_foundation, $status_matriculation, $status_uec, $status_skm, $status_mqf, $status_svm, $status_apel, $status_ielts, $status_toefl);
 
         if(in_array(true, $status))
         {
@@ -1075,11 +1404,11 @@ class ApplicantController extends Controller
         }
     }
 
-    public function ipg20($applicantt) //Diploma in Public Mangement and Governance
+    public function ipg20($applicantt) //Diploma in Public Management and Governance
     {
         $status = [];
         $spm = $this->spm($applicantt);
-        if($spm['spm'] >= 3)
+        if($spm['all_spm'] != 0 && $spm['spm'] >= 3 && $spm['count_eng'] == 1 && ($spm['pass_spm'] >= $spm['all_spm']))
         {
             $status_spm = true;
         }else{
@@ -1087,7 +1416,7 @@ class ApplicantController extends Controller
         }
 
         $stpm = $this->stpm($applicantt);
-        if($stpm['stpm'] >= 1)
+        if($stpm['all_stpm'] != 0 && $stpm['stpm'] >= 4)
         {
             $status_stpm = true;
         }else{
@@ -1103,38 +1432,94 @@ class ApplicantController extends Controller
         }
 
         $olevel = $this->olevel($applicantt);
-        if($olevel['olevel'] >= 3)
+        if($olevel['all_olevel'] != 0 && $olevel['olevel'] >= 3 )
         {
             $status_olevel = true;
         }else{
             $status_olevel = false;
         }
 
+        $alevel = $this->alevel($applicantt);
+        if($alevel['all_alevel'] != 0 && $alevel['pass_alevel'] >= 5)
+        {
+            $status_alevel = true;
+        }else{
+            $status_alevel = false;
+        }
+
+        $foundation = $this->foundation($applicantt);
+        if($foundation['foundation'] >= 1)
+        {
+            $status_foundation = true;
+        }else{
+            $status_foundation = false;
+        }
+
+        $matriculation = $this->foundation($applicantt);
+        if($matriculation['foundation'] >= 1)
+        {
+            $status_matriculation = true;
+        }else{
+            $status_matriculation = false;
+        }
+
         $uec = $this->uec($applicantt);
-        if($uec['uec'] >= 3)
+        if($uec['all_uec'] != 0 && $uec['uec'] >= 3 && $uec['count_eng'] == 1 )
         {
             $status_uec = true;
         }else{
             $status_uec = false;
         }
 
-        $mqf = $this->mqf($applicantt);
-        if($mqf ==  1)
-        {
-            $status_mqf = true;
-        }else{
-            $status_mqf = false;
-        }
-
         $skm = $this->skm($applicantt);
-        if($spm['spm'] >= 1 && $skm == 1)
+        if($skm['skm'] >= 1)
         {
             $status_skm = true;
         }else{
             $status_skm = false;
         }
 
-        $status = array($status_spm, $status_stpm, $status_stam, $status_olevel, $status_uec, $status_skm, $status_mqf);
+        $mqf = $this->mqf($applicantt);
+        if($mqf['mqf'])
+        {
+            $status_mqf = true;
+        }else{
+            $status_mqf = false;
+        }
+
+        $svm = $this->mqf($applicantt);
+        if($svm['mqf'])
+        {
+            $status_svm = true;
+        }else{
+            $status_svm = false;
+        }
+
+        $apel = $this->apel($applicantt);
+        if($apel['apel'])
+        {
+            $status_apel = true;
+        }else{
+            $status_apel = false;
+        }
+
+        $ielts = $this->ielts($applicantt);
+        if($ielts['ielts'] == 1)
+        {
+            $status_ielts = true;
+        }else{
+            $status_ielts = false;
+        }
+
+        $toefl = $this->toefl($applicantt);
+        if($toefl['toefl'] == 1)
+        {
+            $status_toefl = true;
+        }else{
+            $status_toefl = false;
+        }
+
+        $status = array($status_spm, $status_stpm, $status_stam, $status_olevel, $status_alevel, $status_foundation, $status_matriculation, $status_uec, $status_skm, $status_mqf, $status_svm, $status_apel, $status_ielts, $status_toefl);
 
         if(in_array(true, $status))
         {
@@ -1157,6 +1542,8 @@ class ApplicantController extends Controller
         $count_melayu = $spm['app_spm']->where('subject',1103)->count();
         $count_sejarah = $spm['app_spm']->where('subject',1249)->count();
         $count_syariah = $spm['app_spm']->where('subject',5228)->count();
+        $count_arab = $spm['app_spm']->where('subject',2361)->count();
+        $count_tasawwur = $spm['app_spm']->where('subject',5226)->count();
         $count_science = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',1)->where('subject',1511)->where('grade_id','<=',4)->count();
 
         if($spm['count_math'] == 1 && $spm['count_eng'] == 1 && $count_melayu == 1 && $count_sejarah == 1 && ($count_agama == 1 || $count_syariah == 1)
@@ -1196,7 +1583,7 @@ class ApplicantController extends Controller
         $count_chemistry = $olevel['app_olevel']->where('subject','CIE5070')->count();
         $count_science = $olevel['app_olevel']->where('subject','CIE5129')->count();
 
-        if(($count_bio == 1 || $count_chemistry == 1 || $count_science == 1) && $olevel['count_eng'] == 1 && ($olevel['count_math_d'] == 1 || $olevel['count_math_a'] == 1) && $olevel['olevel'] >= 3)
+        if($olevel['all_olevel'] != 0 && ($count_bio == 1 || $count_chemistry == 1 || $count_science == 1) && $olevel['count_eng'] == 1 && ($olevel['count_math_d'] == 1 || $olevel['count_math_a'] == 1) && $olevel['olevel'] >= 3)
         {
             $status_olevel = true;
         }else{
@@ -1211,7 +1598,47 @@ class ApplicantController extends Controller
             $status_sace = false;
         }
 
-        $status = array($status_spm, $status_stpm, $status_alevel, $status_olevel, $status_sace);
+        $skm = $this->skm($applicantt);
+        if($skm['skm'] >= 1 && ($count_agama == 1 || $count_syariah == 1 || $count_arab == 1 || $count_tasawwur == 1))
+        {
+            $status_skm = true;
+        }else{
+            $status_skm = false;
+        }
+
+        $svm = $this->mqf($applicantt);
+        if($svm['mqf'])
+        {
+            $status_svm = true;
+        }else{
+            $status_svm = false;
+        }
+
+        $apel = $this->apel($applicantt);
+        if($apel['apel'])
+        {
+            $status_apel = true;
+        }else{
+            $status_apel = false;
+        }
+
+        $ielts = $this->ielts($applicantt);
+        if($ielts['ielts'] == 1)
+        {
+            $status_ielts = true;
+        }else{
+            $status_ielts = false;
+        }
+
+        $toefl = $this->toefl($applicantt);
+        if($toefl['toefl'] == 1)
+        {
+            $status_toefl = true;
+        }else{
+            $status_toefl = false;
+        }
+
+        $status = array($status_spm, $status_stpm, $status_alevel, $status_olevel, $status_sace, $status_skm, $status_svm, $status_apel, $status_ielts, $status_toefl);
 
         if(in_array(true, $status))
         {
@@ -1223,58 +1650,11 @@ class ApplicantController extends Controller
         }
     }
 
-    public function iac20($applicantt) //Diploma in Accounting
-    {
-        $status = [];
-        $spm = $this->spm($applicantt);
-        if($spm['count_math'] == 1 && $spm['count_eng'] == 1 && $spm['spm'] >= 3)
-        {
-            $status_spm = true;
-        }else{
-            $status_spm = false;
-        }
-
-        $stpm = $this->stpm($applicantt);
-        if($spm['count_eng'] == 1 && ($stpm['count_math_m'] == 1 || $stpm['count_math_t'] == 1 ) && $stpm['stpm'] >= 2)
-        {
-            $status_stpm = true;
-        }else{
-            $status_stpm = false;
-        }
-
-        $stam = $this->stam($applicantt);
-        if($spm['count_math'] == 1 && $spm['count_eng'] == 1 && $stam['stam'] >= 10)
-        {
-            $status_stam = true;
-        }else{
-            $status_stam = false;
-        }
-
-        $skm = $this->skm($applicantt);
-        if($spm['count_math'] == 1 && $spm['count_eng'] == 1 && $skm['skm'] == 3)
-        {
-            $status_skm = true;
-        }else{
-            $status_skm = false;
-        }
-
-        $status = array($status_spm, $status_stpm, $status_stam, $status_skm);
-
-        if(in_array(true, $status))
-        {
-            $programme_code = 'IAC20';
-            $this->accepted($applicantt, $programme_code);
-        }else{
-            $programme_code = 'IAC20';
-            $this->rejected($applicantt, $programme_code);
-        }
-    }
-
     public function iif20($applicantt) //Diploma in Islamic Finance
     {
         $status = [];
         $spm = $this->spm($applicantt);
-        if($spm['count_math'] == 1 && $spm['spm'] >= 3)
+        if($spm['all_spm'] != 0 && $spm['count_eng'] == 1 && ($spm['count_math'] == 1 || $spm['count_addmath'] == 1) && $spm['spm'] >= 3)
         {
             $status_spm = true;
         }else{
@@ -1282,7 +1662,7 @@ class ApplicantController extends Controller
         }
 
         $stpm = $this->stpm($applicantt);
-        if(($spm['count_math'] == 1 || $stpm['count_math_m'] == 1 || $stpm['count_math_t'] == 1) && $stpm['stpm'] >= 2)
+        if($stpm['all_stpm'] != 0 && $stpm['stpm'] >= $stpm['all_stpm'])
         {
             $status_stpm = true;
         }else{
@@ -1298,15 +1678,39 @@ class ApplicantController extends Controller
         }
 
         $olevel = $this->olevel($applicantt);
-        if(($olevel['count_math_a'] == 1 || $olevel['count_math_d'] == 1) && $olevel['olevel'] >= 4)
+        if(($olevel['count_math_a'] == 1 || $olevel['count_math_d'] == 1) && $olevel['olevel'] >= 3)
         {
             $status_olevel = true;
         }else{
             $status_olevel = false;
         }
 
+        $alevel = $this->alevel($applicantt);
+        if($alevel['all_alevel'] != 0 && $alevel['pass_alevel'] >= $alevel['all_alevel'])
+        {
+            $status_alevel = true;
+        }else{
+            $status_alevel = false;
+        }
+
+        $foundation = $this->foundation($applicantt);
+        if($foundation['foundation'] >= 1)
+        {
+            $status_foundation = true;
+        }else{
+            $status_foundation = false;
+        }
+
+        $matriculation = $this->foundation($applicantt);
+        if($matriculation['foundation'] >= 1)
+        {
+            $status_matriculation = true;
+        }else{
+            $status_matriculation = false;
+        }
+
         $uec = $this->uec($applicantt);
-        if($uec['count_math'] == 1 && $uec['uec'] >= 4)
+        if($uec['all_uec'] != 0 && ($uec['count_math_a'] == 1 || $uec['count_math'] == 1 || $uec['count_math_b'] == 1) && $uec['count_eng'] == 1 && ($uec['uec'] >= 3) && ($uec['pass_uec'] >= $uec['all_uec']))
         {
             $status_uec = true;
         }else{
@@ -1321,15 +1725,39 @@ class ApplicantController extends Controller
             $status_skm = false;
         }
 
-        $kkm = $this->kkm($applicantt);
-        if($kkm['kkm'] == 1)
+        $svm = $this->mqf($applicantt);
+        if($svm['mqf'])
         {
-            $status_kkm = true;
+            $status_svm = true;
         }else{
-            $status_kkm = false;
+            $status_svm = false;
         }
 
-        $status = array($status_spm, $status_stpm, $status_stam, $status_olevel, $status_uec, $status_skm, $status_kkm);
+        $apel = $this->apel($applicantt);
+        if($apel['apel'])
+        {
+            $status_apel = true;
+        }else{
+            $status_apel = false;
+        }
+
+        $ielts = $this->ielts($applicantt);
+        if($ielts['ielts'] == 1)
+        {
+            $status_ielts = true;
+        }else{
+            $status_ielts = false;
+        }
+
+        $toefl = $this->toefl($applicantt);
+        if($toefl['toefl'] == 1)
+        {
+            $status_toefl = true;
+        }else{
+            $status_toefl = false;
+        }
+
+        $status = array($status_spm, $status_stpm, $status_stam, $status_olevel, $status_alevel, $status_foundation, $status_matriculation, $status_uec, $status_skm, $status_svm, $status_apel, $status_ielts, $status_toefl);
 
         if(in_array(true, $status))
         {
@@ -1341,34 +1769,129 @@ class ApplicantController extends Controller
         }
     }
 
-    public function pac150($applicantt) //Certified Accounting Technician
+    public function iac20($applicantt) //Diploma in Accounting
     {
         $status = [];
         $spm = $this->spm($applicantt);
-        $count_malay = $spm['app_spm']->where('subject',1103)->count();
-
-        if($spm['count_eng'] == 1 && $spm['count_math'] == 1 && $count_malay == 1 && $spm['spm'] >= 5)
+        if($spm['all_spm'] != 0 && ($spm['count_math'] == 1 || $spm['count_addmath'] == 1) && $spm['count_eng'] == 1 && $spm['spm'] >= 3 )
         {
-            $programme_code = 'PAC150';
+            $status_spm = true;
+        }else{
+            $status_spm = false;
+        }
+
+        $stpm = $this->stpm($applicantt);
+        if($stpm['all_stpm'] != 0 && $stpm['all_stpm'] != 0 && ($stpm['pass_stpm'] >= 4))
+        {
+            $status_stpm = true;
+        }else{
+            $status_stpm = false;
+        }
+
+        $stam = $this->stam($applicantt);
+        if($spm['count_math'] == 1 && $spm['count_eng'] == 1 && $stam['stam'] >= 10)
+        {
+            $status_stam = true;
+        }else{
+            $status_stam = false;
+        }
+
+        $uec = $this->uec($applicantt);
+        if($uec['all_uec'] != 0 && $uec['uec'] >= 3 && $uec['count_eng'] == 1 )
+        {
+            $status_uec = true;
+        }else{
+            $status_uec = false;
+        }
+
+        $olevel = $this->olevel($applicantt);
+        if($olevel['all_olevel'] != 0 && ($olevel['count_math_a'] == 1 || $olevel['count_math_d'] == 1) && $olevel['olevel'] >= 3)
+        {
+            $status_olevel = true;
+        }else{
+            $status_olevel = false;
+        }
+
+        $alevel = $this->alevel($applicantt);
+        if($alevel['all_alevel'] != 0 && $alevel['pass_alevel'] >= 4)
+        {
+            $status_alevel = true;
+        }else{
+            $status_alevel = false;
+        }
+
+        $foundation = $this->foundation($applicantt);
+        if($foundation['foundation'] >= 1)
+        {
+            $status_foundation = true;
+        }else{
+            $status_foundation = false;
+        }
+
+        $matriculation = $this->foundation($applicantt);
+        if($matriculation['foundation'] >= 1)
+        {
+            $status_matriculation = true;
+        }else{
+            $status_matriculation = false;
+        }
+
+        $apel = $this->apel($applicantt);
+        if($apel['apel'])
+        {
+            $status_apel = true;
+        }else{
+            $status_apel = false;
+        }
+
+        $skm = $this->skm($applicantt);
+        if($skm['skm'] >= 1)
+        {
+            $status_skm = true;
+        }else{
+            $status_skm = false;
+        }
+
+        $mqf = $this->mqf($applicantt);
+        if($mqf['mqf'])
+        {
+            $status_mqf = true;
+        }else{
+            $status_mqf = false;
+        }
+
+        $svm = $this->mqf($applicantt);
+        if($svm['mqf'])
+        {
+            $status_svm = true;
+        }else{
+            $status_svm = false;
+        }
+
+        $ielts = $this->ielts($applicantt);
+        if($ielts['ielts'] == 1)
+        {
+            $status_ielts = true;
+        }else{
+            $status_ielts = false;
+        }
+
+        $toefl = $this->toefl($applicantt);
+        if($toefl['toefl'] == 1)
+        {
+            $status_toefl = true;
+        }else{
+            $status_toefl = false;
+        }
+
+        $status = array($status_spm, $status_stpm, $status_stam, $status_olevel, $status_alevel, $status_foundation, $status_matriculation, $status_skm, $status_svm, $status_mqf, $status_apel, $status_ielts, $status_toefl);
+
+        if(in_array(true, $status))
+        {
+            $programme_code = 'IAC20';
             $this->accepted($applicantt, $programme_code);
         }else{
-            $programme_code = 'PAC150';
-            $this->rejected($applicantt, $programme_code);
-        }
-    }
-
-    public function pac170($applicantt) //Certified in Accounting, Finance & Business
-    {
-        $status = [];
-        $spm = $this->spm($applicantt);
-        $count_malay = $spm['app_spm']->where('subject',1103)->count();
-
-        if($spm['count_eng'] == 1 && $spm['count_math'] == 1 && $count_malay == 1 && $spm['spm'] >= 5)
-        {
-            $programme_code = 'PAC170';
-            $this->accepted($applicantt, $programme_code);
-        }else {
-            $programme_code = 'PAC170';
+            $programme_code = 'IAC20';
             $this->rejected($applicantt, $programme_code);
         }
     }
@@ -1377,14 +1900,95 @@ class ApplicantController extends Controller
     {
         $status = [];
 
-        $muet = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Muet()->where('applicant_cgpa','>=',2)->count();
-        $diploma = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Diploma()->where('applicant_cgpa','>=',3.00)->count();
-        if($muet >= 1 && $diploma >= 1)
+        if($applicantt['applicant_mode'] == 'FT' || $applicantt['applicant_mode_2'] == 'FT' || $applicantt['applicant_mode_3'] == 'FT'){
+            $muet = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Muet()->where('applicant_cgpa','>=',2)->count();
+            $diploma = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Diploma()->where('applicant_cgpa','>=',3.00)->count();
+            if($muet >= 1 && $diploma >= 1)
+            {
+                $status_diploma = true;
+            }else{
+                $status_diploma = false;
+            }
+
+            $pre = ApplicantAcademic::where('applicant_id',$applicantt['id'])->orWhere('type','12')->orWhere('type','13')->where('applicant_cgpa','>=',2.50)->count();
+            if($pre >= 1)
+            {
+                $status_pre = true;
+            }else{
+                $status_pre = false;
+            }
+
+            $degree = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Degree()->where('applicant_cgpa','>=',2.50)->count();
+            if($degree >= 1)
+            {
+                $status_degree = true;
+            }else{
+                $status_degree = false;
+            }
+            $ielts = $this->ielts($applicantt);
+            if($ielts['ielts'] == 1)
+            {
+                $status_ielts = true;
+            }else{
+                $status_ielts = false;
+            }
+
+            $toefl = $this->toefl($applicantt);
+            if($toefl['toefl'] == 1)
+            {
+                $status_toefl = true;
+            }else{
+                $status_toefl = false;
+            }
+
+        }else{
+            $muet = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Muet()->where('applicant_cgpa','>=',2)->count();
+            $diploma = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Diploma()->where('applicant_cgpa','>=',2.50)->count();
+            if($muet >= 1 && $diploma >= 1)
+            {
+                $status_diploma = true;
+            }else{
+                $status_diploma = false;
+            }
+
+            $pre = ApplicantAcademic::where('applicant_id',$applicantt['id'])->orWhere('type','12')->orWhere('type','13')->where('applicant_cgpa','>=',2.50)->count();
+            if($pre >= 1)
+            {
+                $status_pre = true;
+            }else{
+                $status_pre = false;
+            }
+
+            $degree = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Degree()->where('applicant_cgpa','>=',2.50)->count();
+            if($degree >= 1)
+            {
+                $status_degree = true;
+            }else{
+                $status_degree = false;
+            }
+            $ielts = $this->ielts($applicantt);
+            if($ielts['ielts'] == 1)
+            {
+                $status_ielts = true;
+            }else{
+                $status_ielts = false;
+            }
+
+            $toefl = $this->toefl($applicantt);
+            if($toefl['toefl'] == 1)
+            {
+                $status_toefl = true;
+            }else{
+                $status_toefl = false;
+            }
+        }
+
+        $status = array($status_pre, $status_degree, $status_diploma, $status_ielts, $status_toefl);
+        if(in_array(true, $status))
         {
             $programme_code = 'PAC551';
             $this->accepted($applicantt, $programme_code);
-        }else
-        {
+        } else {
             $programme_code = 'PAC551';
             $this->rejected($applicantt, $programme_code);
         }
@@ -1409,7 +2013,23 @@ class ApplicantController extends Controller
             $status_icaew = false;
         }
 
-        $status = array($status_bach, $status_icaew);
+        $ielts = $this->ielts($applicantt);
+        if($ielts['ielts'] == 1)
+        {
+            $status_ielts = true;
+        }else{
+            $status_ielts = false;
+        }
+
+        $toefl = $this->toefl($applicantt);
+        if($toefl['toefl'] == 1)
+        {
+            $status_toefl = true;
+        }else{
+            $status_toefl = false;
+        }
+
+        $status = array($status_bach, $status_icaew, $status_ielts, $status_toefl);
 
         if(in_array(true, $status))
         {
@@ -1417,6 +2037,117 @@ class ApplicantController extends Controller
             $this->accepted($applicantt, $programme_code);
         }else{
             $programme_code = 'PAC570';
+            $this->rejected($applicantt, $programme_code);
+        }
+    }
+
+    public function pac170($applicantt) //Certified in Accounting, Finance & Business
+    {
+        $status = [];
+
+        $spm = $this->spm($applicantt);
+        if($spm['all_spm'] != 0 && ($spm['count_math'] == 1 || $spm['count_addmath'] == 1) && $spm['count_eng'] == 1 && $spm['spm'] >= 5)
+        {
+            $status_spm = true;
+        }else{
+            $status_spm = false;
+        }
+
+        $olevel = $this->olevel($applicantt);
+        if($olevel['all_olevel'] != 0 && ($olevel['count_math_a'] == 1 || $olevel['count_math_d'] == 1) && $olevel['olevel'] >= 5)
+        {
+            $status_olevel = true;
+        }else{
+            $status_olevel = false;
+        }
+
+        $uec = $this->uec($applicantt);
+        if($uec['all_uec'] != 0 && $uec['uec'] >= 5 && $uec['count_eng'] == 1 && ($uec['count_math'] == 1 || $uec['count_math_a'] == 1 || $uec['count_math_b'] == 1))
+        {
+            $status_uec = true;
+        }else{
+            $status_uec = false;
+        }
+
+        $ielts = $this->ielts($applicantt);
+        if($ielts['ielts'] == 1)
+        {
+            $status_ielts = true;
+        }else{
+            $status_ielts = false;
+        }
+
+        $toefl = $this->toefl($applicantt);
+        if($toefl['toefl'] == 1)
+        {
+            $status_toefl = true;
+        }else{
+            $status_toefl = false;
+        }
+
+        $status = array($status_spm, $status_olevel, $status_uec, $status_ielts ,$status_toefl);
+
+        if(in_array(true, $status))
+        {
+            $programme_code = 'PAC170';
+            $this->accepted($applicantt, $programme_code);
+        }else{
+            $programme_code = 'PAC170';
+            $this->rejected($applicantt, $programme_code);
+        }
+    }
+
+    public function pac150($applicantt) //Certified Accounting Technician
+    {
+        $status = [];
+        $spm = $this->spm($applicantt);
+        if($spm['all_spm'] != 0 && ($spm['count_math'] == 1 || $spm['count_addmath'] == 1) && $spm['count_eng'] == 1 && $spm['spm'] >= 5 )
+        {
+            $status_spm = true;
+        }else{
+            $status_spm = false;
+        }
+
+        $olevel = $this->olevel($applicantt);
+        if($olevel['all_olevel'] != 0 && ($olevel['count_math_a'] == 1 || $olevel['count_math_d'] == 1) && $olevel['olevel'] >= 5)
+        {
+            $status_olevel = true;
+        }else{
+            $status_olevel = false;
+        }
+
+        $uec = $this->uec($applicantt);
+        if($uec['all_uec'] != 0 && $uec['uec'] >= 5 && $uec['count_eng'] == 1 && ($uec['count_math'] == 1 || $uec['count_math_a'] == 1 || $uec['count_math_b'] == 1) )
+        {
+            $status_uec = true;
+        }else{
+            $status_uec = false;
+        }
+
+        $ielts = $this->ielts($applicantt);
+        if($ielts['ielts'] == 1)
+        {
+            $status_ielts = true;
+        }else{
+            $status_ielts = false;
+        }
+
+        $toefl = $this->toefl($applicantt);
+        if($toefl['toefl'] == 1)
+        {
+            $status_toefl = true;
+        }else{
+            $status_toefl = false;
+        }
+
+        $status = array($status_spm, $status_olevel, $status_uec, $status_ielts ,$status_toefl);
+
+        if(in_array(true, $status))
+        {
+            $programme_code = 'PAC150';
+            $this->accepted($applicantt, $programme_code);
+        }else{
+            $programme_code = 'PAC150';
             $this->rejected($applicantt, $programme_code);
         }
     }
@@ -1476,12 +2207,12 @@ class ApplicantController extends Controller
         $exist = [];
         foreach($intake as $intakes) {
             foreach($intakes->intakeDetails as $test) {
-                if( !in_array($test->programme->programme_code,$exist) )
+                if( !in_array($test->programme->id,$exist) )
                 {
                     $all_programme[]  = [
-                        "Code" => $test->programme->programme_code
+                        "Code" => $test->programme->id
                     ];
-                    array_push($exist,$test->programme->programme_code);
+                    array_push($exist,$test->programme->id);
                 }
             }
         }
@@ -1508,9 +2239,9 @@ class ApplicantController extends Controller
     {
         $applicant = Applicant::where('id',$request->applicant_id)->first();
 
-        $student_id = $this->studentId($applicant, $request->programme_code);
-
         $batch = IntakeDetail::BatchIntake($request->programme_code)->get();
+
+        $student_id = $this->studentId($applicant, $request->programme_code ,$batch->first()->intake_code);
 
         Applicant::where('id',$request->applicant_id)->update(['offered_programme' => $request->programme_code,'offered_major' => $request->major,'applicant_status' => '5A','student_id' => $student_id,'batch_code'=>$batch->first()->batch_code,'intake_offer' => $batch->first()->intake_code, 'offered_mode' => $request->offered_mode, 'applicant_qualification' => $request->app_qualification]);
 
@@ -1544,9 +2275,9 @@ class ApplicantController extends Controller
     {
         $applicant = Applicant::where('id',$request->id)->first();
 
-        $student_id = $this->studentId($applicant, $request->applicant_programme);
-
         $intake = IntakeDetail::BatchIntake($request->applicant_programme)->first();
+
+        $student_id = $this->studentId($applicant, $request->applicant_programme, $intake->intake_code);
 
         Applicant::where('id',$request->id)->update([
             'offered_programme' => $request->applicant_programme,
@@ -1574,15 +2305,24 @@ class ApplicantController extends Controller
         return redirect()->back()->with('message', 'Email send and status updated');
     }
 
-    public function studentId($applicant, $programme)
+    public function studentId($applicant, $programme, $intake)
     {
         do {
-            $year = substr((date("Y",strtotime($applicant->created_at))),-4);
+            $intake_id = Intakes::find($intake);
+            $year = substr($intake_id['intake_code'], 2, 6);
             $random = mt_rand(1000,9999);
             $series = Programme::where('id',$programme)->first();
             $student_id = $year . $series->programme_series . $random;
         } while ( Applicant::where('student_id', $student_id )->exists() );
         return $student_id;
+    }
+
+    public function test()
+    {
+        $test = Applicant::find('916');
+        $intake_id = Intakes::where('id',$test['intake_id'])->first();
+        $series = substr($intake_id['intake_code'], 2, 6);
+        dd($series);
     }
 
     public function sendEmail($applicants_id)
@@ -1638,6 +2378,19 @@ class ApplicantController extends Controller
             $message->subject('Dear, ' . $applicants->applicant_name);
             $message->to(!empty($applicants->applicant_email) ? $applicants->applicant_email : 'jane-doe@email.com');
         });
+    }
+
+    public function sendBulkMail(Request $request)
+    {
+    	$details = [
+    		'subject' => 'Complete Registration Form'
+    	];
+
+        $job = (new \App\Jobs\SendBulkQueueEmail($details))->delay(now()->addSeconds(2));
+
+        dispatch($job);
+
+        echo "Bulk mail send successfully";
     }
 
 }

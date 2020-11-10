@@ -27,6 +27,11 @@ class ApplicantAcademic extends Model
         return $query->where('applicant_id',$id);
     }
 
+    public function scopeAlevel($query)
+    {
+        return $query->where('type','5');
+    }
+
     public function scopeSkm($query)
     {
         return $query->where('type','7');
@@ -80,6 +85,26 @@ class ApplicantAcademic extends Model
     public function scopeIcaew($query)
     {
         return $query->where('type','17');
+    }
+
+    public function scopeIelts($query)
+    {
+        return $query->where('type','18');
+    }
+
+    public function scopeToefl($query)
+    {
+        return $query->where('type','19');
+    }
+
+    public function scopeSvm($query)
+    {
+        return $query->where('type','20');
+    }
+
+    public function scopeApel($query)
+    {
+        return $query->where('type','21');
     }
 
     public function file()

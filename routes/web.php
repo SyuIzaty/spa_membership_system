@@ -90,6 +90,7 @@ Route::get('exportapplicant/{intake?}/{programme?}/{batch?}/{status?}','Applican
 // Route::post('/import_excel/import', 'ApplicantController@import')
 Route::post('import-excel','ApplicantController@import');
 Route::get('attachmentFile/{filename}/{type}','ApplicantController@sponsorAttachment');
+Route::get('send-bulk-mail', 'ApplicantController@sendBulkMail')->name('send-bulk-mail');
 
 //ROLE
 Route::resource('/role','RoleController');
@@ -103,7 +104,7 @@ Route::post('/data_allpermission', 'PermissionController@data_allpermission');
 //MODULE PERMISSION
 Route::resource('/module-auth', 'ModuleAuthController');
 Route::post('/data_moduleauth', 'ModuleAuthController@data_moduleauth');
-Route::get('/test','ModuleAuthController@test');
+Route::get('/test','ApplicantController@test');
 
 //PHYSICAL REGISTRATION
 Route::resource('/physical-registration', 'PhysicalRegistrationController');
