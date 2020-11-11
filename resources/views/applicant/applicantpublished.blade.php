@@ -31,7 +31,7 @@
                                     <div id="intake" class="col-md-12 float-left mb-3"></div>
                                 </div>
                             </div>
-                            <table class="table table-bordered" id="offer">
+                            <table class="table table-bordered" id="publish_offer">
                                 <thead>
                                     <tr class="bg-primary-50 text-center">
                                         <th>NO</th>
@@ -80,7 +80,12 @@
 
     $(document).ready(function()
     {
-        $('#offer thead tr .hasinput').each(function(i)
+        $(function(){
+            $('.select2').select2();
+            showdefault();
+        });
+
+        $('#publish_offer thead tr .hasinput').each(function(i)
         {
             $('input', this).on('keyup change', function()
             {
@@ -92,12 +97,22 @@
                         .draw();
                 }
             });
+
+            $('select', this).on('keyup change', function()
+            {
+                if (table.column(i).search() !== this.value)
+                {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
         });
 
-        var table = $('#offer').DataTable({
+        var table = $('#publish_offer').DataTable({
             processing: true,
             serverSide: true,
-            autowidth: false,
             ajax: {
                 url: "/data_publishedapplicant",
                 type: 'POST',
@@ -105,19 +120,19 @@
             },
             columnDefs: [{ "visible": false,"targets":[10]}, { "visible": false,"targets":[11]}],
             columns: [
-                    { data: 'id', name: 'id' },
-                    { data: 'student_id', name: 'student_id' },
-                    { data: 'applicant_name', name: 'applicant_name' },
-                    { data: 'applicant_ic', name: 'applicant_ic' },
-                    { data: 'intake_id', name: 'intake_id' },
-                    { data: 'sponsor_code', name: 'sponsor_code' },
-                    { data: 'batch_code', name: 'batch_code' },
-                    { data: 'offered_programme', name: 'offered_programme' },
-                    { data: 'offered_major', name: 'offered_major' },
-                    { data: 'applicant_status', name: 'applicant_status'},
-                    { data: 'applicant_intake.intake_app_close' },
-                    { data: 'applicant_intake.intake_app_open' },
-                    { data: 'action', name: 'action', orderable: false, searchable: false}
+                { data: 'id', name: 'id' },
+                { data: 'student_id', name: 'student_id' },
+                { data: 'applicant_name', name: 'applicant_name' },
+                { data: 'applicant_ic', name: 'applicant_ic' },
+                { data: 'intake_id', name: 'intake_id' },
+                { data: 'sponsor_code', name: 'sponsor_code' },
+                { data: 'batch_code', name: 'batch_code' },
+                { data: 'offered_programme', name: 'offered_programme' },
+                { data: 'offered_major', name: 'offered_major' },
+                { data: 'applicant_status', name: 'applicant_status'},
+                { data: 'applicant_intake.intake_app_close' },
+                { data: 'applicant_intake.intake_app_open' },
+                { data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
                 "order": [[ 1, "asc" ]],
@@ -135,14 +150,10 @@
                     // column.data().unique().sort().each(function (d, j){
                     //     select.append( '<option value="'+d+'">'+d+'</option>' );
                     // });
-
                     var column = this.api().column(4);
                     var select = $('<select id="filterselect" class="select2 form-control" multiple></select>')
                     .appendTo( $('#intake').empty().text('Intake: ') )
                     .on('change',function(){
-                        // var val = $.fn.DataTable.util.escapeRegex(
-                        //     $(this).val()
-                        // );
                         var selected = $(this).val().join('|');
                         if(selected)
                         {
@@ -155,7 +166,7 @@
                     });
 
                     @foreach($intakecode as $key => $ic)
-                    select.append('<option value="{{ $ic["intake_code"] }}" <?php if($ic["intake_app_close"] >= now() && $ic["intake_app_open"] <= now()) echo "selected" ?> >{{ $ic["intake_code"] }}</option>' );
+                    select.append('<option value="{{ $ic["intake_code"] }}"<?php if($ic["intake_app_close"] >= now() && $ic["intake_app_open"] <= now()) echo "selected" ?> >{{ $ic["intake_code"] }}</option>' );
                     @endforeach
                     $('#filterselect').select2();
                 }
@@ -178,7 +189,6 @@
             .search(value ? value.join('|') : '', true, false)
             .draw();
         }
-
     });
 
 </script>

@@ -53,6 +53,10 @@ class Applicant extends Model
         activity()->log('Offer Programe')->update(['subject_id'=>$applicant, 'subject_type'=>'App\Applicant', 'properties'=>['programme'=>$programme]]);
     }
 
+    public static function offerletter($applicant, $programme, $major) // Offer Programme
+    {
+        activity()->log('Send Offer Letter')->update(['subject_id'=>$applicant, 'subject_type'=>'App\Applicant', 'properties'=>['programme'=>$programme]]);
+    }
 
     // Relation
     public function entryOne()

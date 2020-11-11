@@ -2307,9 +2307,10 @@ class ApplicantController extends Controller
             $applicant = Applicant::where('batch_code',$batch_code)->where('applicant_status','5A')->get();
             foreach($applicant as $apps){
                 $this->sendEmail($apps['id']);
+                Applicant::offerletter($apps['id'], $apps['offered_programme'], $apps['offered_major']);
             }
         }
-        return redirect()->back()->with('message', 'Email send and status updated');
+        return redirect('/offeredprogramme')->with('message', 'Email send and status updated');
     }
 
     public function studentId($applicant, $programme, $intake)
@@ -2324,80 +2325,36 @@ class ApplicantController extends Controller
         return $student_id;
     }
 
-    public function test()
-    {
-        $test = Applicant::find('916');
-        $intake_id = Intakes::where('id',$test['intake_id'])->first();
-        $series = substr($intake_id['intake_code'], 2, 6);
-        dd($series);
-    }
-
     public function sendEmail($applicants_id)
     {
-        $detail = Applicant::where('id',$applicants_id)->where('applicant_status','5A')->with(['offeredMajor','offeredProgramme'])->first();
-
-        $intakes = IntakeDetail::where('status', '1')->where('intake_code', $detail->intake_id)->where('intake_programme', $detail->offered_programme)->where('batch_code',$detail->batch_code)->first();
-
-        $report = PDF::loadView('intake.pdf', compact('detail', 'intakes'));
-        $data = [
-            'receiver_name' => $detail->applicant_name,
-            'details' => 'This offer letter is appended with this email. Please refer to the attachment for your registration instructions.',
-        ];
-
-        Mail::send('intake.offer-letter', $data, function ($message) use ($detail, $report) {
-            $message->subject('Congratulations, ' . $detail->applicant_name);
-            $message->to(!empty($detail->applicant_email) ? $detail->applicant_email : 'jane-doe@email.com');
-            $message->attachData($report->output(), 'Offer_Letter_' . $detail->applicant_name . '.pdf');
-        });
-
-        Applicant::where('id',$applicants_id)->update(['email_sent'=>'1', 'applicant_status'=>'5C']);
-
-        IntakeDetail::where('intake_code',$detail->intake_id)->where('batch_code',$detail['batch_code'])->update(['intake_status'=>'Offered']);
+        $details = [
+    		'subject' => 'Congratulation'
+    	];
+        $job = (new \App\Jobs\SendOfferLetter($details,$applicants_id))->delay(now()->addSeconds(2));
+        dispatch($job);
+        return redirect()->back()->with('message', 'Email Sent and status updated');
     }
 
     public function firstReminder()
     {
-        $applicant = Applicant::where('applicant_status','00')->get();
-        foreach($applicant as $applicants){
-            $this->emailReminder($applicants);
-        }
+        $details = [
+    		'subject' => 'Complete Registration Form'
+    	];
+        $job = (new \App\Jobs\SendIncompleteApplication($details))->delay(now()->addSeconds(2));
+        dispatch($job);
+
         return redirect()->back()->with('message', 'Email Sent');
     }
 
     public function jpaReminder()
     {
-        $applicant = Applicant::where('sponsor_code','!=','Private')->where('email_jpa',NULL)->where('applicant_status','0')->get();
-        foreach($applicant as $applicants){
-            $this->emailReminder($applicants);
-            Applicant::where('id',$applicants->id)->update(['email_jpa'=>'1']);
-        }
-        return redirect()->back()->with('message', 'Email Sent');
-    }
-
-    public function emailReminder($applicants)
-    {
-        $data = [
-            'receiver_name' => $applicants->applicant_name,
-            'details' => 'Please complete your Application Form',
-        ];
-
-        Mail::send('applicant.first-reminder', $data, function ($message) use ($applicants) {
-            $message->subject('Dear, ' . $applicants->applicant_name);
-            $message->to(!empty($applicants->applicant_email) ? $applicants->applicant_email : 'jane-doe@email.com');
-        });
-    }
-
-    public function sendBulkMail(Request $request)
-    {
-    	$details = [
+        $details = [
     		'subject' => 'Complete Registration Form'
     	];
-
         $job = (new \App\Jobs\SendBulkQueueEmail($details))->delay(now()->addSeconds(2));
-
         dispatch($job);
 
-        echo "Bulk mail send successfully";
+        return redirect()->back()->with('message', 'Email Sent');
     }
 
 }
