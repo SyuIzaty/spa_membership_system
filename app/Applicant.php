@@ -55,6 +55,21 @@ class Applicant extends Model
 
 
     // Relation
+    public function entryOne()
+    {
+        return $this->hasMany('App\EntryRequirement','program_code','applicant_programme');
+    }
+
+    public function entryTwo()
+    {
+        return $this->hasMany('App\EntryRequirement','program_code','applicant_programme_2');
+    }
+
+    public function entryThree()
+    {
+        return $this->hasMany('App\EntryRequirement','program_code','applicant_programme_3');
+    }
+
     public function applicantRechecks()
     {
         return $this->hasMany('App\ApplicantRecheck','applicant_id','id');

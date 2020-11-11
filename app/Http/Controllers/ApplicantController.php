@@ -30,6 +30,7 @@ use App\Batch;
 use App\Status;
 use App\ApplicantRecheck;
 use App\User;
+use App\EntryRequirement;
 use App\Sponsor;
 use DB;
 use Illuminate\Support\Facades\Mail;
@@ -56,7 +57,13 @@ class ApplicantController extends Controller
 
     public function show($id) // Display applicant detail, academic result
     {
-        $applicant = Applicant::where('id',$id)->with(['applicantresult','applicantContactInfo','applicantEmergency.emergencyOne','applicantGuardian.familyOne','applicantGuardian.familyTwo','applicantIntake','status','intakeDetail','applicantstatus','programmeStatus','programmeStatusTwo','programmeStatusThree','applicantIntakeOffer'])->first();
+        $applicant = Applicant::where('id',$id)->with([
+            'applicantresult','applicantContactInfo','applicantEmergency.emergencyOne','applicantGuardian.familyOne',
+            'applicantGuardian.familyTwo','applicantIntake','status','intakeDetail','applicantstatus',
+            'programmeStatus','programmeStatusTwo','programmeStatusThree','applicantIntakeOffer'
+        ])->first();
+
+        $entry = Applicant::where('id',$id)->with('entryOne','entryTwo','entryThree')->get();
 
         $batch_1 = IntakeDetail::BatchIntake($applicant->applicant_programme)->get();
 
@@ -133,7 +140,7 @@ class ApplicantController extends Controller
         }
 
         $applicant_status = Status::where('status_code','>=','3')->get();
-        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace','country','marital','religion','race','gender','state','skm','mqf','kkm','cat','icaew','activity','intake','family','foundation','applicant_status', 'batch_1','batch_2','batch_3','applicant_recheck','qualification','mode'));
+        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace','country','marital','religion','race','gender','state','skm','mqf','kkm','cat','icaew','activity','intake','family','foundation','applicant_status', 'batch_1','batch_2','batch_3','applicant_recheck','qualification','mode','entry'));
     }
 
     public function updateApplicant(Request $request) // Update applicant detail
@@ -823,7 +830,7 @@ class ApplicantController extends Controller
 
     public function skm($applicantt)
     {
-        $skm = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Skm()->count();
+        $skm = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Skm()->where('applicant_cgpa','>=','2.00')->count();
         return compact('skm');
     }
 
@@ -853,7 +860,7 @@ class ApplicantController extends Controller
 
     public function apel($applicantt)
     {
-        $apel = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Apel()->where('applicant_cgpa','>=',14)->count();
+        $apel = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Apel()->where('applicant_cgpa','>=',4)->count();
         return compact ('apel');
     }
 
@@ -1556,9 +1563,9 @@ class ApplicantController extends Controller
 
         $stpm = $this->stpm($applicantt);
 
-        $count_bio = $stpm['app_stpm']->where('subject',964)->count();
-        $count_chemistry = $stpm['app_stpm']->where('subject',952)->count();
-        if(($stpm['count_math_m'] == 1 || $stpm['count_math_t'] == 1 ) && $count_bio == 1 && $stpm['count_eng'] == 1 && $count_chemistry == 1 && $stpm['stpm'] >= 4)
+        $stpm_bio = $stpm['app_stpm']->where('subject',964)->count();
+        $stpm_chemistry = $stpm['app_stpm']->where('subject',952)->count();
+        if(($stpm['count_math_m'] == 1 || $stpm['count_math_t'] == 1 ) && $stpm_bio == 1 && $stpm['count_eng'] == 1 && $stpm_chemistry == 1 && $stpm['stpm'] >= 4 && ($count_agama == 1 || $count_syariah == 1 || $count_arab == 1 || $count_tasawwur == 1))
         {
             $status_stpm = true;
         }else{
@@ -1568,9 +1575,9 @@ class ApplicantController extends Controller
         $app_alevel = ApplicantResult::where('applicant_id',$applicantt['id'])->where('type',5)->where('grade_id','<=',38)->get();
         $alevel = $app_alevel->count();
 
-        $count_bio = $app_alevel->where('subject','A101')->count();
-        $count_chemistry = $app_alevel->where('subject','A102')->count();
-        if($count_bio == 1 && $count_chemistry == 1 && $alevel >= 3)
+        $alevel_bio = $app_alevel->where('subject','A101')->count();
+        $alevel_chemistry = $app_alevel->where('subject','A102')->count();
+        if($alevel_bio == 1 && $alevel_chemistry == 1 && $alevel >= 4  && ($count_agama == 1 || $count_syariah == 1 || $count_arab == 1 || $count_tasawwur == 1))
         {
             $status_alevel = true;
         }else{
@@ -1579,11 +1586,11 @@ class ApplicantController extends Controller
 
         $olevel = $this->olevel($applicantt);
 
-        $count_bio = $olevel['app_olevel']->where('subject','CIE5090')->count();
-        $count_chemistry = $olevel['app_olevel']->where('subject','CIE5070')->count();
-        $count_science = $olevel['app_olevel']->where('subject','CIE5129')->count();
+        $olevel_bio = $olevel['app_olevel']->where('subject','CIE5090')->count();
+        $olevel_chemistry = $olevel['app_olevel']->where('subject','CIE5070')->count();
+        $olevel_science = $olevel['app_olevel']->where('subject','CIE5129')->count();
 
-        if($olevel['all_olevel'] != 0 && ($count_bio == 1 || $count_chemistry == 1 || $count_science == 1) && $olevel['count_eng'] == 1 && ($olevel['count_math_d'] == 1 || $olevel['count_math_a'] == 1) && $olevel['olevel'] >= 3)
+        if($olevel['all_olevel'] != 0 && ($olevel_bio == 1 || $olevel_chemistry == 1 || $olevel_science == 1) && $olevel['count_eng'] == 1 && ($olevel['count_math_d'] == 1 || $olevel['count_math_a'] == 1) && $olevel['olevel'] >= 3)
         {
             $status_olevel = true;
         }else{
@@ -1607,7 +1614,7 @@ class ApplicantController extends Controller
         }
 
         $svm = $this->svm($applicantt);
-        if($svm['svm'])
+        if($svm['svm']  && ($count_agama == 1 || $count_syariah == 1 || $count_arab == 1 || $count_tasawwur == 1))
         {
             $status_svm = true;
         }else{
@@ -1860,8 +1867,8 @@ class ApplicantController extends Controller
             $status_mqf = false;
         }
 
-        $svm = $this->mqf($applicantt);
-        if($svm['mqf'])
+        $svm = $this->svm($applicantt);
+        if($svm['svm'])
         {
             $status_svm = true;
         }else{
@@ -2168,7 +2175,7 @@ class ApplicantController extends Controller
             }if(isset($applicantt['applicant_programme_3'])){
                 $this->$programme_3($applicantt);
             }
-            // Applicant::requirementCheck($applicantt['id']);
+            Applicant::requirementCheck($applicantt['id']);
         }
         return $this->indexs();
     }
@@ -2192,7 +2199,7 @@ class ApplicantController extends Controller
                 }
 
             }
-            // Applicant::requirementCheck($applicantt['id']);
+            Applicant::requirementCheck($applicantt['id']);
         }
         return redirect()->back();
     }

@@ -226,156 +226,119 @@
                                                 @if(($applicant->applicant_programme == ''))
                                                     <p>No Information Found</p>
                                                 @endif
-                                                @if(($applicant->applicant_programme == 'IAT12') || ( $applicant->applicant_programme_2 == 'IAT12') || ($applicant->applicant_programme_3 == 'IAT12'))
-                                                    <p>American Degree Transfer Programme</p>
-                                                    <ul>
-                                                        <li>Pass SPM / O-Level with minimum five (5) credits including English and Mathematics or other equivalent qualifications recognised by Malaysian Government.</li>
-                                                    </ul>
-                                                @endif
-                                                @if(($applicant->applicant_programme == 'IAL10') || ( $applicant->applicant_programme_2 == 'IAL10') || ($applicant->applicant_programme_3 == 'IAL10'))
-                                                    <p>A Level Programme</p>
-                                                    <ul>
-                                                        <li>Pass SPM / O-Level with minimum five (5) credits including English and Mathematics or other equivalent qualifications recognised by Malaysian Government.</li>
-                                                    </ul>
-                                                @endif
-                                                @if(($applicant->applicant_programme == 'IGR22') || ( $applicant->applicant_programme_2 == 'IGR22') || ($applicant->applicant_programme_3 == 'IGR22'))
-                                                    <p>A Level German Programme</p>
-                                                    <ul>
-                                                        <li>Pass SPM / O-Level with minimum five (5) credits including English and Mathematics or other equivalent qualifications recognised by Malaysian Government.</li>
-                                                    </ul>
-                                                @endif
-                                                @if(($applicant->applicant_programme == 'IAM10') || ( $applicant->applicant_programme_2 == 'IAM10') || ($applicant->applicant_programme_3 == 'IAM10'))
-                                                    <p>SACE International</p>
-                                                    <ul>
-                                                        <li>Pass SPM / O-Level with minimum five (5) credits including English and Mathematics or other equivalent qualifications recognised by Malaysian Government.</li>
-                                                    </ul>
-                                                @endif
-                                                @if(($applicant->applicant_programme == 'ILE12') || ($applicant->applicant_programme_2 == 'ILE12') || ($applicant->applicant_programme_3 == 'ILE12'))
-                                                    <p>Japanese Preparatory Course</p>
-                                                    <ol>
-                                                        <li>Science: Minimum credit in 5 subjects including Mathematics <b>OR</b> any science subject in SPM / GCE O-Level or equivalent <b>OR</b></li>
-                                                        <li>Non-Science: Minimum credit in 5 subjects including Mathematics in SPM / GCE O-Level or equivalent</li>
-                                                    </ol>
-                                                @endif
-                                                @if(($applicant->applicant_programme == 'IKR09') || ($applicant->applicant_programme_2 == 'IKR09') || ($applicant->applicant_programme_3 == 'IKR09'))
-                                                    <p>Korean Preparatory Course</p>
-                                                    <ul>
-                                                        <li>Open (Minimum ability and knowledge in English)</li>
-                                                    </ul>
-                                                @endif
-                                                @if(($applicant->applicant_programme == 'IBM20') || ($applicant->applicant_programme_2 == 'IBM20') || ($applicant->applicant_programme_3 == 'IBM20'))
-                                                    <p>Diploma in Business Management</p>
-                                                    <ol>
-                                                        <li>Obtain a minimum of 3 credits in Sijil Pelajaran Malaysia (SPM) <b>OR</b></li>
-                                                        <li>Pass STPM or equivalent with a minimum of Grade C (CGPA 2.0) in ONE subject <b>OR</b></li>
-                                                        <li>Pass STAM with a minimum of Maqbul Grade <b>OR</b></li>
-                                                        <li>Pass UEC with a minimum of Grade B in 3 subjects <b>OR</b></li>
-                                                        <li>Pass O-level with a minimum of Grade C in 3 subjects <b>OR</b></li>
-                                                        <li>Pass SKM Level 3 in related field with a minimum credit of 1 subject in SPM <b>OR</b></li>
-                                                        <li>Pass Community College Certificate which is equivalent with MQF level 3 in related field with minimum ONE credit in SPM <b>OR</b></li>
-                                                        <li>Pass certificate (MQF Level 3) in a related field with at least CGPA 2.00</li>
-                                                    </ol>
-                                                @endif
-                                                @if(($applicant->applicant_programme == 'IPG20') || ($applicant->applicant_programme_2 == 'IPG20') || ($applicant->applicant_programme_3 == 'IPG20'))
-                                                    <p>Diploma in Public Management and Governance</p>
-                                                    <ol>
-                                                        <li>Obtain a minimum of 3 credits in Sijil Pelajaran Malaysia (SPM) <b>OR</b></li>
-                                                        <li>Pass STPM or equivalent with at least a Grade C (CGPA 2.0) in any subjects <b>OR</b></li>
-                                                        <li>Pass STAM with a minimum of Maqbul Grade <b>OR</b></li>
-                                                        <li>Pass UEC with minimum of Grade B in 3 subjects <b>OR</b></li>
-                                                        <li>Pass O-level with a minimum of Grade C in 3 subjects <b>OR</b></li>
-                                                        <li>Pass SKM Level 3 in related field with a minimum credit of 1 subject in SPM <b>AND</b> through reinforcement programme (if required)<b>OR</b></li>
-                                                        <li>Pass Community College Certificate which is equivalent with MQF level 3 in related field with minimum ONE credit in SPM <b>OR</b></li>
-                                                    </ol>
-                                                @endif
-                                                @if(($applicant->applicant_programme == 'IHP20') || ($applicant->applicant_programme_2 == 'IHP20') || ($applicant->applicant_programme_3 == 'IHP20'))
-                                                    <p>Diploma in Scientific Halal and Practice</p>
-                                                    <ol>
-                                                        <li>Sijil Pelajaran Malaysia (SPM)</li>
-                                                        <ul>
-                                                            <li>Science stream: obtain three (3) credits in Chemistry, Biology and Islamic Studies or Syariah <b>OR</b></li>
-                                                            <li>Non-science stream: obtain minimum B+ in science, AND three (3) credits in Islamic Studies or Syariah and one other subjects</li>
-                                                            <li><b>AND</b>must pass Bahasa Melayu. Sejarah, Bahasa Inggeris and Mathematics <b>OR</b></li>                                                            </li>
-                                                        </ul>
-                                                        <li>Sijil Tinggi Pelajaran Malaysia (STPM): Pass with minimum C (NGMP 2.0) in Biology and Chemistry; AND pass Bahasa Inggeris and Mathematics <b>OR</b></li>
-                                                        <li>Pass O-level/IGCSE with a minimum of Grade C in 3 subjects including Biology, Chemistry or science, AND pass English and Mathematics <b>OR</b></li>
-                                                        <li>South Australian Certificate of Education (SACE) with minimum ATAR 50 <b>OR</b></li>
-                                                        <li>A-Level: Pass with minimum C in three (3) subjects including Biology and Chemistry</li>
-                                                    </ol>
-                                                @endif
-                                                @if(($applicant->applicant_programme == 'IAC20') || ($applicant->applicant_programme_2 == 'IAC20') || ($applicant->applicant_programme_3 == 'IAC20'))
-                                                    <p>Diploma in Accounting</p>
-                                                    <ol>
-                                                        <li>Pass Sijil Pelajaran Malaysia (SPM) or equivalent, with at least three credits, including Mathematics and pass English <b>OR</b></li>
-                                                        <li>Pass Sijil Tinggi Pelajaran Malaysia (STPM) or equivalent, with at least Grade C (CGPA 2.0) in any subjects, and credit in Mathematics and pass English in SPM level <b>OR</b></li>
-                                                        <li>Pass Sijil Tinggi Agama Malaysia (STAM) with minimum of Maqbul Grade and credit in Mathematics and pass English in SPM level <b>OR</b></li>
-                                                        <li>Pass Sijil Kemahiran Malaysia (SKM) Level 3 in related field and pass SPM with minimum one credit in any subject, credit in Mathematics and pass English in SPM level <b>OR</b></li>
-                                                    </ol>
-                                                @endif
-                                                @if(($applicant->applicant_programme == 'IIF20') || ($applicant->applicant_programme_2 == 'IIF20') || ($applicant->applicant_programme_3 == 'IIF20'))
-                                                    <p>Diploma in Islamic Finance</p>
-                                                    <ol>
-                                                        <li>Pass Sijil Pelajaran Malaysia (SPM) with at least credit in three subjects and pass Mathematics <b>OR</b></li>
-                                                        <li>Pass Sijil Tinggi Pelajaran Malaysia (STPM) or equivalent with at least Grade C (CGPA 2.00) in one subject AND pass Mathematics at SPM level (or equivalent) or at STPM <b>OR</b></li>
-                                                        <li>Pass Sijil Tinggi Agama Malaysia (STAM)(Maqbul Grade) <b>AND</b> pass Mathematics at SPM level (or equivalent) <b>OR</b></li>
-                                                        <li>Pass UEC (Unified Examination Certificate) with a minimum of Grade B in three subjects ans pass Mathematics <b>OR</b></li>
-                                                        <li>Pass O-Level with a minimum of Grade C in three subjects and pass Mathematics <b>OR</b></li>
-                                                        <li>Pass Sijil Kemahiran Malaysia (SKM) Level 3 in related field AND pass SPM with a minimum credit for one subject and pass Mathematics at SPM level <b>OR</b></li>
-                                                        <li>Pass Comunity College Certificate which is equivalent to KKM Level 3 in related field <b>AND</b> pass SPM with a minimum credit for one subject and <b>PASS</b> Mathematics at SPM level</li>
-                                                    </ol>
-                                                @endif
-                                                @if(($applicant->applicant_programme == 'PAC150') || ($applicant->applicant_programme_2 == 'PAC150') || ($applicant->applicant_programme_3 == 'PAC150'))
-                                                    <p>Certified Accounting Technician</p>
-                                                    <ol>
-                                                        <li>Pass Sijil Pelajaran Malaysia (SPM) with at least five credits including Bahasa Malaysia, Mathematics and English <b>OR</b></li>
-                                                        <li>Other qualifications with equivalent recognition by the Malaysian Government.</li>
-                                                    </ol>
-                                                @endif
-                                                @if(($applicant->applicant_programme == 'PAC170') || ($applicant->applicant_programme_2 == 'PAC170') || ($applicant->applicant_programme_3 == 'PAC170'))
-                                                    <p>Certified in Finance, Accounting & Business (CFAB)</p>
-                                                    <ol>
-                                                        <li>Pass Sijil Pelajaran Malaysia (SPM) with at least creditfive credits including Bahasa Malaysia, Mathematics and English <b>OR</b></li>
-                                                        <li>Other qualifications with equivalent recognition by the Malaysian Government.</li>
-                                                    </ol>
-                                                @endif
-                                                @if(($applicant->applicant_programme == 'PAC580') || ($applicant->applicant_programme_2 == 'PAC580') || ($applicant->applicant_programme_3 == 'PAC580'))
-                                                    <p>The Malaysian Institute of Certified Public Accountants (MICPA)</p>
-                                                    <ol>
-                                                        <li>Degree holder with CGPA of at least 3.00; 5.0 (New Zealand); 4.0 (Australia)</li>
-                                                        <li>Degree must be from universities which are accredited by MICPA in order to obtain full exemption</li>
-                                                    </ol>
-                                                @endif
-                                                @if(($applicant->applicant_programme == 'PAC551') || ($applicant->applicant_programme_2 == 'PAC551') || ($applicant->applicant_programme_3 == 'PAC551'))
-                                                    <p>The Association of Chartered Certified Accountants (ACCA)(UK) from Diploma</p>
-                                                    <ul>
-                                                        <li>Diploma in Accountancy (Level 4, KKM) with minimum CGPA of 3.00</li>
-                                                    </ul>
-                                                @endif
-                                                @if(($applicant->applicant_programme == 'PAC552') || ($applicant->applicant_programme_2 == 'PAC552') || ($applicant->applicant_programme_3 == 'PAC552'))
-                                                    <p>The Association of Chartered Certified Accountants (ACCA)(UK) from CAT</p>
-                                                    <ul>
-                                                        <li>Pass Certified Accounting Technician (CAT)</li>
-                                                    </ul>
-                                                @endif
-                                                @if(($applicant->applicant_programme == 'PAC553') || ($applicant->applicant_programme_2 == 'PAC553') || ($applicant->applicant_programme_3 == 'PAC553'))
-                                                    <p>The Association of Chartered Certified Accountants (ACCA)(UK) from CAT</p>
-                                                    <ul>
-                                                        <li>Bachelor of Accountancy or with related fields with CGPA of at least 2.50</li>
-                                                    </ul>
-                                                @endif
-                                                @if(($applicant->applicant_programme == 'PAC554') || ($applicant->applicant_programme_2 == 'PAC554') || ($applicant->applicant_programme_3 == 'PAC554'))
-                                                    <p>The Association of Chartered Certified Accountants (ACCA)(UK) from CAT</p>
-                                                    <ul>
-                                                        <li>Bachelor of Accountancy or with related fields with CGPA of at least 2.50</li>
-                                                    </ul>
-                                                @endif
-                                                @if(($applicant->applicant_programme == 'PAC570') || ($applicant->applicant_programme_2 == 'PAC570') || ($applicant->applicant_programme_3 == 'PAC570'))
-                                                    <p>The Association of Chartered Certified Accountants (ACA) for Institute of Chartered Accountants in England and Wales (ICAEW)</p>
-                                                    <ol>
-                                                        <li>Pass ICAEW Certificate in Finance, Accounting, and Business (ICAEW CFAB) <b>OR</b></li>
-                                                        <li>Pass Bachelor of Accountancy (Level 6, KKM) with CGPA of at least 2.75</li>
-                                                    </ol>
-                                                @endif
+                                                <div class="accordion accordion-hover" id="js_demo_accordion-5">
+                                                    @isset($entry->first()->entryOne->first()->program)
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <a href="javascript:void(0);" class="card-title" data-toggle="collapse" data-target="#js_demo_accordion-5a" aria-expanded="false">
+                                                                {{ isset($entry->first()->entryOne->first()->program) ? $entry->first()->entryOne->first()->program->programme_name : '' }}
+                                                                <span class="ml-auto">
+                                                                    <span class="collapsed-reveal">
+                                                                        <i class="fal fa-chevron-up fs-xl"></i>
+                                                                    </span>
+                                                                    <span class="collapsed-hidden">
+                                                                        <i class="fal fa-chevron-down fs-xl"></i>
+                                                                    </span>
+                                                                </span>
+                                                            </a>
+                                                        </div>
+                                                        <div id="js_demo_accordion-5a" class="collapse" data-parent="#js_demo_accordion-5">
+                                                            <div class="card-body">
+                                                                @isset($entry->first()->entryOne->first()->program)
+                                                                <table class="table table-bordered table-sm">
+                                                                    <tr class="bg-primary-50">
+                                                                        <td>Qualification</td>
+                                                                        <td>Description</td>
+                                                                    </tr>
+                                                                        @foreach ($entry as $entries)
+                                                                        @foreach ($entries->entryOne as $requirement)
+                                                                            <tr>
+                                                                                <td>{{ $requirement->qualification->qualification_name }}</td>
+                                                                                <td>{{ $requirement->description }}</td>
+                                                                            </tr>
+                                                                        @endforeach
+                                                                    @endforeach
+                                                                </table>
+                                                                @endisset
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @endisset
+                                                    @isset($entry->first()->entryTwo->first()->program)
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <a href="javascript:void(0);" class="card-title collapsed" data-toggle="collapse" data-target="#js_demo_accordion-5b" aria-expanded="false">
+                                                                {{ isset($entry->first()->entryTwo->first()->program) ? $entry->first()->entryTwo->first()->program->programme_name : ''  }}
+                                                                <span class="ml-auto">
+                                                                    <span class="collapsed-reveal">
+                                                                        <i class="fal fa-chevron-up fs-xl"></i>
+                                                                    </span>
+                                                                    <span class="collapsed-hidden">
+                                                                        <i class="fal fa-chevron-down fs-xl"></i>
+                                                                    </span>
+                                                                </span>
+                                                            </a>
+                                                        </div>
+                                                        <div id="js_demo_accordion-5b" class="collapse" data-parent="#js_demo_accordion-5">
+                                                            <div class="card-body">
+                                                                @isset($entry->first()->entryTwo->first()->program)
+                                                                <table class="table table-bordered table-sm">
+                                                                    <tr class="bg-primary-50">
+                                                                        <td>Qualification</td>
+                                                                        <td>Description</td>
+                                                                    </tr>
+                                                                        @foreach ($entry as $entries)
+                                                                        @foreach ($entries->entryTwo as $requirement)
+                                                                            <tr>
+                                                                                <td>{{ $requirement->qualification->qualification_name }}</td>
+                                                                                <td>{{ $requirement->description }}</td>
+                                                                            </tr>
+                                                                        @endforeach
+                                                                    @endforeach
+                                                                </table>
+                                                                @endisset
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @endisset
+                                                    @isset($entry->first()->entryThree->first()->program)
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <a href="javascript:void(0);" class="card-title collapsed" data-toggle="collapse" data-target="#js_demo_accordion-5c" aria-expanded="false">
+                                                                {{ isset($entry->first()->entryThree->first()->program) ? $entry->first()->entryThree->first()->program->programme_name : '' }}
+                                                                <span class="ml-auto">
+                                                                    <span class="collapsed-reveal">
+                                                                        <i class="fal fa-chevron-up fs-xl"></i>
+                                                                    </span>
+                                                                    <span class="collapsed-hidden">
+                                                                        <i class="fal fa-chevron-down fs-xl"></i>
+                                                                    </span>
+                                                                </span>
+                                                            </a>
+                                                        </div>
+                                                        <div id="js_demo_accordion-5c" class="collapse" data-parent="#js_demo_accordion-5">
+                                                            <div class="card-body">
+                                                                @isset($entry->first()->entryThree->first()->program)
+                                                                <table class="table table-bordered table-sm">
+                                                                    <tr class="bg-primary-50">
+                                                                        <td>Qualification</td>
+                                                                        <td>Description</td>
+                                                                    </tr>
+                                                                        @foreach ($entry as $entries)
+                                                                        @foreach ($entries->entryThree as $requirement)
+                                                                            <tr>
+                                                                                <td>{{ $requirement->qualification->qualification_name }}</td>
+                                                                                <td>{{ $requirement->description }}</td>
+                                                                            </tr>
+                                                                        @endforeach
+                                                                    @endforeach
+                                                                </table>
+                                                                @endisset
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @endisset
+                                                </div>
                                             </div>
                                         </div>
                                         {{-- <hr class="mt-2 mb-3">
