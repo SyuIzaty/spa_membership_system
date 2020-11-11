@@ -35,8 +35,8 @@
                                             
                                             <div class="card-body">
                                                 @if (Session::has('message'))
-                                                <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}</div>
-                                            @endif
+                                                    <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}</div>
+                                                @endif
                                                 <table id="new_lead" class="table table-bordered table-hover table-striped w-100">
                                                     <thead>
                                                         <tr>
@@ -91,15 +91,15 @@
                                                             <div class="form-group">
                                                                 <td width="16%"><label class="form-label" for="leads_source"> Source:</label></td>
                                                                 <td colspan="7">
-                                                                        <select class="form-control" name="leads_source" id="leads_source" >
-                                                                            <option value="">-- Select Source --</option>
-                                                                                <option name="leads_source" id="leads_source" value="Education Carnival" {{ $lead->leads_source == "Education Carnival" ? 'selected="selected"' : '' }}>Education Carnival</option>
-                                                                                <option name="leads_source" id="leads_source" value="Social Media" {{ $lead->leads_source == "Social Media" ? 'selected="selected"' : '' }}> Social Media</option>
-                                                                                <option name="leads_source" id="leads_source" value="Print Media" {{ $lead->leads_source == "Print Media" ? 'selected="selected"' : '' }}> Print Media</option>
-                                                                                <option name="leads_source" id="leads_source" value="Broadcast Media" {{ $lead->leads_source == "Broadcast Media" ? 'selected="selected"' : '' }}> Broadcast Media</option>
-                                                                                <option name="leads_source" id="leads_source" value="Family, Friends" {{ $lead->leads_source == "Family, Friends" ? 'selected="selected"' : '' }}> Family, Friends</option>
-                                                                                <option name="leads_source" id="leads_source" value="Others" {{ $lead->leads_source == "Others" ? 'selected="selected"' : '' }}> Others</option>
-                                                                        </select>
+                                                                    <select class="form-control" name="leads_source" id="leads_source" >
+                                                                        <option value="">-- Select Source --</option>
+                                                                        @foreach($source as $sources)
+                                                                            <option value="{{$sources->id}}"  {{ $lead->leads_source == $sources->id ? 'selected="selected"' : '' }} placeholder="Source">{{$sources->source_name}}</option><br>
+                                                                        @endforeach
+                                                                        @error('leads_source')
+                                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                        @enderror
+                                                                    </select><br>
                                                                 </td>
                                                             </div>
                                                         </tr>
@@ -112,6 +112,23 @@
                                                                         @error('leads_event')
                                                                             <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                         @enderror
+                                                                </td>
+                                                            </div>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <div class="form-group">
+                                                                <td width="16%"><label class="form-label" for="leads_group"> Active Group:</label></td>
+                                                                <td colspan="7">
+                                                                    <select class="form-control" name="leads_group" id="leads_group" >
+                                                                        <option value="">-- Select Active Group --</option>
+                                                                        @foreach($group as $grp)
+                                                                            <option value="{{$grp->id}}"  {{ $lead->leads_group == $grp->id ? 'selected="selected"' : '' }} placeholder="Group">{{$grp->group_name}}</option><br>
+                                                                        @endforeach
+                                                                        @error('leads_group')
+                                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                        @enderror
+                                                                    </select><br>
                                                                 </td>
                                                             </div>
                                                         </tr>
@@ -132,7 +149,7 @@
                                                                 </td>
                                                             </div>
                                                         </tr>
-
+                                            
                                                         <tr>
                                                             <div class="form-group">
                                                                 <td width="16%"><label class="form-label" for="progs">Lead Programmes:</label></td>
@@ -269,8 +286,10 @@
                                         <div class="card-header">
                                             <h5 class="card-title w-100">FOLLOW UP LISTS</h5>
                                         </div>
-                                        
                                         <div class="card-body">
+                                            @if($lead->leads_status == 'NC') 
+                                            <a href="{{ action('LeadController@sendEmail', ['id' => $lead->id]) }}" class="btn btn-primary ml-auto float-left"><i class="fal fa-envelope"></i> Generate COL</a><br><br><br>
+                                            @endif
                                             <table class="table table-bordered table-hover table-striped w-100" style="table-layout:fixed">
                                                 <thead>
                                                     <tr align="center" class="card-header">
@@ -290,18 +309,22 @@
                                                         <td class="follow_remark">{{$leadNotes->follow_remark}}</td>
                                                         <td class="follow_date">{{ date('Y-m-d | h:i A', strtotime($leadNotes->follow_date)) }}</td>
                                                         <td >
-                                                            @if ($leadNotes->status_id == '0') New Lead @endif
-                                                            @if ($leadNotes->status_id == '1') Ongoing @endif
-                                                            @if ($leadNotes->status_id == '2') Registered @endif
-                                                            @if ($leadNotes->status_id == '3') Not Show @endif
-                                                            @if ($leadNotes->status_id == '4') Agreed COL @endif
-                                                            @if ($leadNotes->status_id == '5') Decline COL @endif
-                                                            @if ($leadNotes->status_id == '6') DUMB @endif
-                                                            @if ($leadNotes->status_id == '7') COL Out @endif
-                                                            @if ($leadNotes->status_id == '8') OL Out @endif
+                                                            @if ($leadNotes->status_id == 'NI') New Incomplete @endif
+                                                            @if ($leadNotes->status_id == 'NC') New Complete @endif
+                                                            @if ($leadNotes->status_id == 'OG') Ongoing @endif
+                                                            @if ($leadNotes->status_id == 'LR') Registered @endif
+                                                            @if ($leadNotes->status_id == 'NS') Not Show @endif
+                                                            @if ($leadNotes->status_id == 'AC') Agreed COL @endif
+                                                            @if ($leadNotes->status_id == 'DC') Decline COL @endif
+                                                            @if ($leadNotes->status_id == 'DB') DUMB @endif
+                                                            @if ($leadNotes->status_id == 'CO') COL Out @endif
+                                                            @if ($leadNotes->status_id == 'OO') OL Out @endif
                                                         </td>
                                                         @role('sales manager|sales executive')
                                                         <td>
+                                                            @if($leadNotes->status_id == 'CO') 
+                                                            <a href="{{ action('LeadController@letter', ['id' => $lead->id]) }}" class="btn btn-sm btn-primary"><i class="fal fa-print"></i> PDF</a>
+                                                            @endif
                                                             <a href="/lead/edit_followLead/{{ $leadNotes->id }}" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i> Edit</a>
                                                             <button class="btn btn-danger btn-sm deleteFollow" data-id="{{$leadNotes->id}}" data-action="{{route('deleteFollowInfo', $leadNotes->id)}}"><i class="fal fa-trash"></i> Delete</button>
                                                             <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -369,7 +392,7 @@
                                                 <select class="form-control" name="status_id" id="status_id" >
                                                     <option value="">-- Select Status --</option>
                                                         @foreach($status as $stat)
-                                                            <option value="{{$stat->id}}"  {{  $lead->leads_status == $stat->id ? 'selected="selected"' : '' }} >{{$stat->status_name}}</option>
+                                                            <option value="{{$stat->status_code}}"  {{  $lead->leads_status == $stat->status_code ? 'selected="selected"' : '' }} >{{$stat->status_name}}</option>
                                                         @endforeach
                                                         @error('status_id')
                                                             <p style="color: red"><strong> * {{ $message }} </strong></p>

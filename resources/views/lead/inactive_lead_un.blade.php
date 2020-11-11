@@ -29,7 +29,7 @@
                                     <th>IC No.</th>
                                     <th>Email</th>
                                     <th>Phone No.</th>
-                                    <th>Source</th>
+                                    <th>Group</th>
                                     <th>Date</th>
                                     <th>Status</th>
                                     @role('sales manager|admin assistant')
@@ -42,12 +42,12 @@
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search IC"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search Email"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search Phone"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Source"></td>
+                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Group"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search Date"></td>
                                     <td class="hasinput">
                                         <select id="leads_status" name="leads_status" class="form-control">
                                             <option value="">All</option>
-                                            <option value="Not Show">NOT SHOW</option>
+                                            <option value="Not Show">Not Show</option>
                                             <option value="DUMB">DUMB</option>
                                         </select>
                                     </td>
@@ -164,7 +164,7 @@
                     { data: 'leads_ic', name: 'leads_ic' },
                     { data: 'leads_email', name: 'leads_email' },
                     { data: 'leads_phone', name: 'leads_phone'},
-                    { data: 'leads_source', name: 'leads_source'},
+                    { data: 'leads_group', name: 'leads_group'},
                     { data: 'created_at', name: 'created_at'},
                     { data: 'leads_status', name: 'leads_status'},
                     @role('sales manager|admin assistant')

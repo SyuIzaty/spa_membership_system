@@ -1,0 +1,61 @@
+<head>
+    <meta charset="UTF-8">
+
+    <title>Conditional Offer Letter</title>
+
+    <link rel="stylesheet" href="css/pdf.css">
+</head>
+<body>
+    <img src="{{ public_path('img/intec_offer.png') }}" style="height: 170px; width: 650px">
+    <div class="app_detail">
+        {{$lead->leads_name}}<br>{{$lead->leads_ic}}
+    </div>
+    <div class="intake_detail">
+        <p>Congratulations. INTEC Education College is pleased to inform you of your admission to our Institute.
+            We are offering a placement for the following programme:
+        </p>
+    </div>
+    <table class="prog_detail">
+        <tr>
+            <td>Programme 1</td>
+            <td>:</td>
+            <td>{{$lead->leads_prog1}} - {{$lead->programme->programme_name}}</td>
+        </tr>
+        <tr>
+            <td>Programme 2</td>
+            <td>:</td>
+            <td>{{$lead->leads_prog2}} - {{$lead->programmeTwo->programme_name}}</td>
+        </tr>
+        <tr>
+            <td>Programme 3</td>
+            <td>:</td>
+            <td>{{$lead->leads_prog3}} - {{$lead->programmeThree->programme_name}}</td>
+        </tr>
+    </table>
+    <div class="intake_detail">
+        <p>We take great pride in our outstanding students and look forward to have you as part of our learning community.</p>
+    </div>
+    <div class="important">
+        <p>IMPORTANT:</p>
+        <ol>
+            <li>This official letter is for a STUDY PLACEMENT only.</li>
+            <li>Kindly refer to <i>'Senarai Semak Dokumen Keperluan Pendaftaran'</i> for required documents during registration.</li>
+            <li>Please bring original copies of sponsor's offer letter (if applicable) during the registration.</li>
+            <li>Education loan is available subject to ELIGIBILITY.</li>
+            <li>INTEC reserves the right to withdrawthis offer should and of your information deemed to be incorrect.</li>
+            <li>This offer is invalid should the above-named candidate does not attend for registration within 2 weeks after the official registration date.</li>
+            <li>INTEC Fees & Refund policy can be access at the link below https://intec.edu.my/students/information/academic-regulations</li>
+        </ol>
+    </div>
+    <div class="note">
+        <p>**Applicants will only be accepted as INTEC students after their documents that satisfy the conditions for admission as required
+            by INTEC have been checked and verified on the day of registration.
+        </p>
+    </div>
+    <div class="intake_detail">
+        <p>ADMISSION UNIT<br>INTEC Education College</p>
+    </div>
+    <div class="footer">
+        <p>This letter is computer generated, no signature required</p>
+    </div>
+</body>

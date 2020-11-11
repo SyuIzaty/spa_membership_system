@@ -59,7 +59,7 @@
                                                 <select class="form-control" name="status_id" id="status_id" style="pointer-events: none;" readonly>
                                                     <option value="">-- Select Status --</option>
                                                         @foreach($status as $stat)
-                                                            <option value="{{$stat->id}}"  {{ $leadNote->status_id == $stat->id ? 'selected="selected"' : '' }}>
+                                                            <option value="{{$stat->status_code}}"  {{ $leadNote->status_id == $stat->status_code ? 'selected="selected"' : '' }}>
                                                                 {{$stat->status_name}}</option>
                                                         @endforeach
                                                             @error('status_id')

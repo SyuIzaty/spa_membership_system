@@ -28,17 +28,17 @@
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                               <table id="new_lead" class="table table-bordered table-hover table-striped w-100">
                                 <thead>
-
+                                    <p><span class="text-danger">*</span> Required fields</p>
                                     <tr>
                                     <div class="form-group">
-                                        <td width="15%"><label class="form-label" for="leads_name">Name</label></td>
+                                        <td width="10%"><label class="form-label" for="leads_name"><span class="text-danger">*</span> Name :</label></td>
                                         <td colspan="4"><input value="{{ old('leads_name') }}" class="form-control" id="leads_name" name="leads_name">
                                             @error('leads_name')
                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                                             @enderror
                                         </td>
                                             
-                                        <td width="15%"><label class="form-label" for="leads_email">Email</label></td>
+                                        <td width="10%"><label class="form-label" for="leads_email">Email :</label></td>
                                         <td colspan="2"><input value="{{ old('leads_email') }}" class="form-control" id="leads_email" name="leads_email">
                                             @error('leads_email')
                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
@@ -49,21 +49,21 @@
 
                                     <tr>
                                         <div class="form-group">
-                                            <td width="15%"><label class="form-label" for="leads_ic">IC Number</label></td>
+                                            <td width="10%"><label class="form-label" for="leads_ic">IC Number :</label></td>
                                             <td colspan="2"><input value="{{ old('leads_ic') }}" class="form-control" id="leads_ic" name="leads_ic">
                                                 @error('leads_ic')
                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                 @enderror
                                             </td>
 
-                                            <td width="15%"><label class="form-label" for="leads_phone">Phone Number</label></td>
+                                            <td width="10%"><label class="form-label" for="leads_phone"><span class="text-danger">*</span> Phone Number :</label></td>
                                             <td colspan="1"><input value="{{ old('leads_phone') }}" class="form-control" id="leads_phone" name="leads_phone">
                                                 @error('leads_phone')
                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                 @enderror
                                             </td>
 
-                                            <td width="15%"><label class="form-label" for="edu_level">Education Level</label></td>
+                                            <td width="10%"><label class="form-label" for="edu_level">Higher Education Level :</label></td>
                                             <td colspan="2">
 
                                                 <select class="form-control" name="edu_level" id="edu_level" >
@@ -72,46 +72,70 @@
                                                     <option value="{{ $qualify->id }}" {{ old('edu_level') ? 'selected' : '' }}>
                                                             {{ $qualify->qualification_name }}</option>
                                                     @endforeach
-                                                        @error('edu_level')
-                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                        @enderror
-                                                </select><br>
-                                                
+                                                </select>
+                                                @error('edu_level')
+                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                @enderror
                                             </td>
                                         </div>
                                     </tr>
 
                                     <tr>
                                         <div class="form-group">
-
-                                            <td width="15%"><label class="form-label" for="leads_source">Source</label></td>
-                                            <td colspan="3">
-
+                                            <td width="10%"><label class="form-label" for="leads_source">Source :</label></td>
+                                            <td colspan="2">
                                                 <select class="form-control" name="leads_source" id="leads_source" >
                                                     <option value="">-- Select Source --</option>
-                                                        <option name="leads_source" id="leads_source" value="Education Carnival" {{ old('leads_source') == "Education Carnival" ? 'selected' : '' }}>Education Carnival</option>
-                                                        <option name="leads_source" id="leads_source" value="Social Media" {{ old('leads_source') == "Social Media" ? 'selected' : '' }}> Social Media</option><br>
-                                                        <option name="leads_source" id="leads_source" value="Print Media" {{ old('leads_source') == "Print Media" ? 'selected' : '' }}> Print Media</option><br>
-                                                        <option name="leads_source" id="leads_source" value="Broadcast Media" {{ old('leads_source') == "Broadcast Media" ? 'selected' : '' }}> Broadcast Media</option><br>
-                                                        <option name="leads_source" id="leads_source" value="Family, Friends" {{ old('leads_source') == "Family, Friends" ? 'selected' : '' }}> Family, Friends</option><br>
-                                                        <option name="leads_source" id="leads_source" value="Others" {{ old('leads_source') == "Others" ? 'selected' : '' }}> Others</option><br>
-                                                    
-                                                        @error('leads_source')
-                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                        @enderror
-                                                </select><br>
-                                                
+                                                    @foreach ($source as $sources) 
+                                                    <option value="{{ $sources->id }}" {{ old('leads_source') ? 'selected' : '' }}>
+                                                            {{ $sources->source_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('leads_source')
+                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                @enderror
                                             </td>
-                                            <td width="15%"><label class="form-label" for="leads_event">Events</label></td>
-                                            <td colspan="3">
-                                                <input value="{{ old('leads_event') }}" class="form-control" id="leads_event" name="leads_event">
+                                            <td width="10%"><label class="form-label" for="leads_event">Events :</label></td>
+                                            <td colspan="1">
+                                                <textarea rows="6" class="form-control" id="leads_event" name="leads_event">{{ old('leads_event') }}</textarea>
                                                 @error('leads_event')
+                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                @enderror
+                                            </td>
+                                            <td width="10%"><label class="form-label" for="leads_group"><span class="text-danger">*</span> Active Group :</label></td>
+                                            <td colspan="3">
+                                                <select class="form-control" name="leads_group" id="leads_group" >
+                                                    <option value="">-- Select Group --</option>
+                                                    @foreach ($group as $grp) 
+                                                    <option value="{{ $grp->id }}" {{ old('leads_group') ? 'selected' : '' }}>
+                                                            {{ $grp->group_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('leads_group')
                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                 @enderror
                                             </td>
                                         </div>
                                     </tr>
-                                     
+                                    @role('admin assistant')
+                                    <tr>
+                                        <div class="form-group">
+                                            <td width="10%"><label class="form-label" for="assigned_to"><span class="text-danger">*</span> Assign To :</label></td>
+                                            <td colspan="6">
+                                                <select class="form-control" name="assigned_to" id="assigned_to" >
+                                                    <option value="">-- Select Person In Charge --</option>
+                                                    @foreach ($members as $mem) 
+                                                    <option value="{{ $mem->id }}" {{ old('assigned_to') ? 'selected' : '' }}>
+                                                            {{ $mem->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('assigned_to')
+                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                @enderror
+                                            </td>
+                                        </div>
+                                    </tr>
+                                    @endrole
                                 </thead>
                             </table>
 
@@ -171,9 +195,9 @@
                                 </tbody>
                             </table>
 
-                                <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i></button>	
-                                <button style="margin-right:5px" type="reset" class="btn btn-danger ml-auto float-right"><i class="fal fa-redo"></i></button>
-                                <a style="margin-right:5px" href="/lead/active_lead" onclick="return confirm('Are you sure to discard data?')" class="btn btn-success ml-auto float-right"><i class="fal fa-trash-alt"></i></a><br><br>
+                                <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"> Save</i></button>	
+                                <button style="margin-right:5px" type="reset" class="btn btn-danger ml-auto float-right"><i class="fal fa-redo"> Reset</i></button>
+                                <a style="margin-right:5px" href="/lead/active_lead" onclick="return confirm('Are you sure to discard data?')" class="btn btn-success ml-auto float-right"><i class="fal fa-trash-alt"> Discard</i></a><br><br>
                         </form>
                     </div>
                 </div>
