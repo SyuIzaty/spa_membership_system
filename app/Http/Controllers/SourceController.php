@@ -74,7 +74,7 @@ class SourceController extends Controller
      */
     public function create()
     {
-        return view('param.source.create');
+        //
     }
 
     /**
@@ -85,16 +85,7 @@ class SourceController extends Controller
      */
     public function store(Request $request)
     {
-        Source::create($this->validateRequestStore());
-        return redirect('param/source');
-    }
-
-    public function validateRequestStore()
-    {
-        return request()->validate([              
-            // 'source_code'       => 'required|min:1|max:255|unique:sources,source_code',  
-            'source_name'      => 'required|min:1|max:255',    
-        ]);
+        //
     }
 
     /**
@@ -114,9 +105,9 @@ class SourceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Source $source)
+    public function edit()
     {
-        return view('param.source.edit',compact('source'));
+       //
     }
 
     /**
@@ -126,18 +117,9 @@ class SourceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Source $source)
+    public function update(Request $request, $id)
     {
-        $source->update($this->validateRequestUpdate($source));
-        return redirect('param/source');
-    }
-
-    public function validateRequestUpdate(Source $source)
-    {
-        return request()->validate([
-            // 'source_code'       => 'required|min:1|max:255|unique:sources,source_code',  
-            'source_name'      => 'required|min:1|max:255', 
-        ]);
+        //
     }
 
     /**
