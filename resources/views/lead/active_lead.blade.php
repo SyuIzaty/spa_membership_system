@@ -30,7 +30,7 @@
                                     <th>IC No.</th>
                                     <th>Email</th>
                                     <th>Phone No.</th>
-                                    <th>Source</th>
+                                    <th>Group</th>
                                     <th>Date</th>
                                     <th>Status</th>
                                     @role('sales manager|admin assistant')
@@ -43,17 +43,18 @@
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search IC"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search Email"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search Phone"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Source"></td>
+                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Group"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Search Date"></td>
                                     <td class="hasinput">
                                         <select id="leads_status" name="leads_status" class="form-control">
                                             <option value="">All</option>
-                                            <option value="New Lead">NEW LEAD</option>
-                                            <option value="Ongoing">ONGOING</option>
-                                            <option value="Agreed COL">AGREED COL</option>
-                                            <option value="Decline COL">DECLINE COL</option>
-                                            <option value="COL Out">COL OUT</option>
-                                            <option value="OL Out">OL OUT</option>
+                                            <option value="New Incomplete">New Incomplete</option>
+                                            <option value="New Complete">New Complete</option>
+                                            <option value="Ongoing">Ongoing</option>
+                                            <option value="Agreed COL">Agreed COL</option>
+                                            <option value="Decline COL">Decline COL</option>
+                                            <option value="COL OUT">COL OUT</option>
+                                            <option value="OL OUT">OL OUT</option>
                                         </select>
                                     </td>
                                     @role('sales manager|admin assistant')
@@ -170,7 +171,7 @@
                     { data: 'leads_ic', name: 'leads_ic' },
                     { data: 'leads_email', name: 'leads_email' },
                     { data: 'leads_phone', name: 'leads_phone'},
-                    { data: 'leads_source', name: 'leads_source'},
+                    { data: 'leads_group', name: 'leads_group'},
                     { data: 'created_at', name: 'created_at'},
                     { data: 'leads_status', name: 'leads_status'},
                     @role('sales manager|admin assistant')

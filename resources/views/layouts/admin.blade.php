@@ -28,6 +28,7 @@
         {{-- <link rel="stylesheet" media="screen, print" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"> --}}
 
         {{-- <link rel="stylesheet" media="screen, print" href="{{asset('css/select2.min.css')}}"> --}}
+        <link rel="stylesheet" href="{{ asset('css/formplugins/summernote/summernote.css') }}" >
 
         @yield('css')
     </head>
@@ -149,6 +150,12 @@
                                 </a>
                                 <ul>
                                     <li>
+                                        <a href="/lead/group_list" title="group_list" data-filter-tags="group_list">
+                                            <i class="fal fa-users"></i>
+                                            <span class="nav-link-text" data-i18n="nav.group_list">Group List</span>
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a href="/lead/active_lead" title="Active Leads" data-filter-tags="active_leads">
                                             <i class="fal fa-check"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_leads">Active Leads</span>
@@ -172,6 +179,20 @@
                                             </li>
                                         </ul>
                                     </li>
+                                    <li>
+                                        <a href="/lead/email_blast" title="email" data-filter-tags="email">
+                                            <i class="fal fa-envelope"></i>
+                                            <span class="nav-link-text" data-i18n="nav.email">Email Blast</span>
+                                        </a>
+                                    </li>
+                                    @role('sales manager|sales executive')
+                                    <li>
+                                        <a href="/export_lead" title="lead_report" data-filter-tags="lead_report">
+                                            <i class="fal fa-book"></i>
+                                            <span class="nav-link-text" data-i18n="nav.lead_report">Report</span>
+                                        </a>
+                                    </li>
+                                    @endrole
                                 </ul>
                             </li>
                             @endrole
@@ -526,6 +547,21 @@
                                         <a href="/param/major/" title="Active Major" data-filter-tags="active_major">
                                             <i class="fal fa-list"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_major">Major List</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="#" title="Application Intel" data-filter-tags="application intel">
+                                    <i class="fal fa-portrait"></i>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Sources</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/param/source/" title="Active Source" data-filter-tags="active_source">
+                                            <i class="fal fa-list"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_source">Source List</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -984,6 +1020,8 @@
         {{-- <script src="{{asset('js/select2.min.js')}}"></script> --}}
         <link rel="stylesheet" media="screen, print" href="{{asset('css/formplugins/select2/select2.bundle.css')}}">
         <script src="{{asset('js/formplugins/select2/select2.bundle.js')}}"></script>
+
+        <script src="{{ asset('js/formplugins/summernote/summernote.js') }}"></script>
 
         @yield('script')
         <script>

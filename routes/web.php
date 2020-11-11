@@ -168,6 +168,22 @@ Route::get('/lead/inactive_lead_un', 'LeadController@inactiveUnLead');
 Route::post('api/inactiveLead/list', 'LeadController@data_inactiveLead_list');  //datatable
 Route::post('api/inactiveUnLead/list', 'LeadController@data_inactiveUnLead_list');  //datatable
 Route::post('updateAssign', 'LeadController@updateAssign');
+Route::get('/lead/group_list', 'LeadController@groupList');
+Route::get('/lead/group_new', 'LeadController@groupNew');
+Route::post('groupNewStore', 'LeadController@groupNewStore')->name('newGroup');
+Route::get('/lead/group_edit/{id}', 'LeadController@editGroup')->name('editGroup');
+Route::post('updateGroup', 'LeadController@updateGroup');
+Route::delete('lead/group_list/{id}', 'LeadController@deleteGroupInfo');
+Route::post('api/group/list', 'LeadController@data_group_list');  //datatable
+Route::get('/letter', 'LeadController@letter')->name('letter'); 
+Route::get('/emails', 'LeadController@sendEmail')->name('email'); 
+Route::get('/export_lead', 'LeadController@lead_all');
+Route::post('/data_leadexport', 'LeadController@data_leadexport');
+Route::get('/export', 'LeadController@exports');
+Route::post('/export', 'LeadController@exports');
+Route::get('exportlead/{group?}/{status?}','LeadController@exports');
+Route::get('/lead/email_blast', 'LeadController@emailBlast');
+Route::post('/email_blast', 'LeadController@sendEmailBlast')->name('email');
 
 //REGISTER USER
 Route::resource('/user','UserController');
@@ -178,10 +194,14 @@ Route::resource('/intakeType', 'IntakeTypeController');
 Route::resource('param/programme', 'ProgrammeController')->middleware('can:view parameter');
 Route::resource('param/course', 'CourseController')->middleware('can:view parameter');
 Route::resource('param/major', 'MajorController')->middleware('can:view parameter');
+Route::resource('param/source', 'SourceController')->middleware('can:view parameter');
 Route::post('data-intakeType', 'IntakeTypeController@data_intakeType');
 Route::post('data-allProgramme', 'ProgrammeController@data_allProgramme');
 Route::post('data-allMajor', 'MajorController@data_allMajor');
 Route::post('data-allCourse', 'CourseController@data_allCourse');
+Route::post('createSources','SourceController@createSources');
+Route::post('updateSources','SourceController@updateSources');
+Route::post('data-allSource', 'SourceController@data_allSource');
 Route::post('preInfo','CourseController@preInfo');
 Route::post('coInfo','CourseController@coInfo');
 

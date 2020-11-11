@@ -5,18 +5,18 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class LeadStatus extends Model
+class LeadGroup extends Model
 {
     use SoftDeletes;
-    protected $table = 'leads_status';
+    protected $table = 'leads_group';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'status_code', 'status_name'
+        'group_code', 'group_name', 'group_desc', 'group_status'
     ];
 
     public function lead()
     {
-        return $this->hasMany('App\Lead', 'status_code'); 
+        return $this->hasMany('App\Lead'); 
     }
 
 }
