@@ -175,12 +175,12 @@ Route::get('/lead/group_edit/{id}', 'LeadController@editGroup')->name('editGroup
 Route::post('updateGroup', 'LeadController@updateGroup');
 Route::delete('lead/group_list/{id}', 'LeadController@deleteGroupInfo');
 Route::post('api/group/list', 'LeadController@data_group_list');  //datatable
-Route::get('/letter', 'LeadController@letter')->name('letter'); 
-Route::get('/emails', 'LeadController@sendEmail')->name('email'); 
+Route::get('/leadLetter', 'LeadController@letter')->name('leadLetter'); 
+Route::get('/leadEmail', 'LeadController@sendEmail')->name('leadEmail'); 
 Route::get('/export_lead', 'LeadController@lead_all');
 Route::post('/data_leadexport', 'LeadController@data_leadexport');
-Route::get('/export', 'LeadController@exports');
-Route::post('/export', 'LeadController@exports');
+Route::get('/leadExport', 'LeadController@exports');
+Route::post('/leadExport', 'LeadController@exports');
 Route::get('exportlead/{group?}/{status?}','LeadController@exports');
 Route::get('/lead/email_blast', 'LeadController@emailBlast');
 Route::post('/email_blast', 'LeadController@sendEmailBlast')->name('email');
