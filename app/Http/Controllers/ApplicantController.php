@@ -853,7 +853,7 @@ class ApplicantController extends Controller
 
     public function apel($applicantt)
     {
-        $apel = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Kkm()->where('applicant_cgpa','>=',14)->count();
+        $apel = ApplicantAcademic::where('applicant_id',$applicantt['id'])->Apel()->where('applicant_cgpa','>=',14)->count();
         return compact ('apel');
     }
 
@@ -1328,8 +1328,8 @@ class ApplicantController extends Controller
             $status_foundation = false;
         }
 
-        $matriculation = $this->foundation($applicantt);
-        if($matriculation['foundation'] >= 1)
+        $matriculation = $this->matriculation($applicantt);
+        if($matriculation['matriculation'] >= 1)
         {
             $status_matriculation = true;
         }else{
@@ -1360,8 +1360,8 @@ class ApplicantController extends Controller
             $status_mqf = false;
         }
 
-        $svm = $this->mqf($applicantt);
-        if($svm['mqf'])
+        $svm = $this->svm($applicantt);
+        if($svm['svm'])
         {
             $status_svm = true;
         }else{
@@ -1455,8 +1455,8 @@ class ApplicantController extends Controller
             $status_foundation = false;
         }
 
-        $matriculation = $this->foundation($applicantt);
-        if($matriculation['foundation'] >= 1)
+        $matriculation = $this->matriculation($applicantt);
+        if($matriculation['matriculation'] >= 1)
         {
             $status_matriculation = true;
         }else{
@@ -1487,8 +1487,8 @@ class ApplicantController extends Controller
             $status_mqf = false;
         }
 
-        $svm = $this->mqf($applicantt);
-        if($svm['mqf'])
+        $svm = $this->svm($applicantt);
+        if($svm['svm'])
         {
             $status_svm = true;
         }else{
@@ -1606,8 +1606,8 @@ class ApplicantController extends Controller
             $status_skm = false;
         }
 
-        $svm = $this->mqf($applicantt);
-        if($svm['mqf'])
+        $svm = $this->svm($applicantt);
+        if($svm['svm'])
         {
             $status_svm = true;
         }else{
@@ -1701,8 +1701,8 @@ class ApplicantController extends Controller
             $status_foundation = false;
         }
 
-        $matriculation = $this->foundation($applicantt);
-        if($matriculation['foundation'] >= 1)
+        $matriculation = $this->matriculation($applicantt);
+        if($matriculation['matriculation'] >= 1)
         {
             $status_matriculation = true;
         }else{
@@ -1725,8 +1725,8 @@ class ApplicantController extends Controller
             $status_skm = false;
         }
 
-        $svm = $this->mqf($applicantt);
-        if($svm['mqf'])
+        $svm = $this->svm($applicantt);
+        if($svm['svm'])
         {
             $status_svm = true;
         }else{
@@ -1828,8 +1828,8 @@ class ApplicantController extends Controller
             $status_foundation = false;
         }
 
-        $matriculation = $this->foundation($applicantt);
-        if($matriculation['foundation'] >= 1)
+        $matriculation = $this->matriculation($applicantt);
+        if($matriculation['matriculation'] >= 1)
         {
             $status_matriculation = true;
         }else{
@@ -2168,7 +2168,7 @@ class ApplicantController extends Controller
             }if(isset($applicantt['applicant_programme_3'])){
                 $this->$programme_3($applicantt);
             }
-            Applicant::requirementCheck($applicantt['id']);
+            // Applicant::requirementCheck($applicantt['id']);
         }
         return $this->indexs();
     }
@@ -2192,7 +2192,7 @@ class ApplicantController extends Controller
                 }
 
             }
-            Applicant::requirementCheck($applicantt['id']);
+            // Applicant::requirementCheck($applicantt['id']);
         }
         return redirect()->back();
     }

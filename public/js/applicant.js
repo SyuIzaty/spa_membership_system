@@ -666,6 +666,106 @@ function addQualification(x,xval,data=null){
                 $(".content").append(fieldWrapper);
             }
         }
+        else if (x == "SVM") {
+            var el = document.getElementById("svm-field");
+            if (el != null) {
+                alert("Sijil Vokasional Malaysia qualifications already added!");
+            } else {
+                var fieldWrapper = $(
+                    '<div class="fieldwrapper svm-field" id="svm-field"/>'
+                );
+                var fName = $(
+                    '<hr class="mt-2 mb-3"><div class="row">\
+                    <div class="col-12">\
+                    <h5 class="mb-4">Sijil Vokasional Malaysia </h5>\
+                    <div id="existfile'+xval+'"class="mb-2">\
+                    </div>\
+                    <input type="hidden" name="filetype[]" value="'+xval+'"/>\
+                    <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
+                    <button type="button" class="btn btn-danger float-right btn-sm" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
+                    </div>\
+                </div>\
+                <div class="row mt-4">\
+                    <div class="col-md-12">\
+                        <table class="table table-bordered" id="svm-table">\
+                            <tr>\
+                                <td>University / College<input type="hidden" name="svm_type" value="' +
+                        xval +
+                        '">\
+                                </td>\
+                                <td colspan="3">\
+                                <input type="text" class="form-control" name="svm_study" value="'+mystudy+'" required placeholder="University / College" onkeyup="this.value = this.value.toUpperCase();">\
+                                <input type="hidden" name="exist_svm" value="'+myid+'">\
+                                </td>\
+                            </tr>\
+                            <tr>\
+                                <td>Course</td>\
+                                <td colspan="3"><input type="text" class="form-control" name="svm_major" value="'+mymajor+'" placeholder="Course" onkeyup="this.value = this.value.toUpperCase();" required ></td>\
+                            </tr>\
+                            <tr>\
+                            <td>Graduation Year</td>\
+                            <td><input type="text" class="form-control" name="svm_year" value="'+myyear+'" placeholder="Graduation Year" required></td>\
+                            <td>CGPA</td>\
+                            <td><input type="text" class="form-control" placeholder="CGPA" name="svm_cgpa" value="'+mycgpa+'" id="" required></td>\
+                            </tr>\
+                        </table>\
+                    </div>\
+                </div>'
+                );
+                fieldWrapper.append(fName);
+                $(".content").append(fieldWrapper);
+            }
+        }
+        else if (x == "APEL") {
+            var el = document.getElementById("apel-field");
+            if (el != null) {
+                alert("Accreditation of Prior Experiental Learning qualifications already added!");
+            } else {
+                var fieldWrapper = $(
+                    '<div class="fieldwrapper apel-field" id="apel-field"/>'
+                );
+                var fName = $(
+                    '<hr class="mt-2 mb-3"><div class="row">\
+                    <div class="col-12">\
+                    <h5 class="mb-4">Accreditation of Prior Experiental Learning </h5>\
+                    <div id="existfile'+xval+'"class="mb-2">\
+                    </div>\
+                    <input type="hidden" name="filetype[]" value="'+xval+'"/>\
+                    <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
+                    <button type="button" class="btn btn-danger float-right btn-sm" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
+                    </div>\
+                </div>\
+                <div class="row mt-4">\
+                    <div class="col-md-12">\
+                        <table class="table table-bordered" id="svm-table">\
+                            <tr>\
+                                <td>University / College<input type="hidden" name="apel_type" value="' +
+                        xval +
+                        '">\
+                                </td>\
+                                <td colspan="3">\
+                                <input type="text" class="form-control" name="apel_study" value="'+mystudy+'" required placeholder="University / College" onkeyup="this.value = this.value.toUpperCase();">\
+                                <input type="hidden" name="exist_apel" value="'+myid+'">\
+                                </td>\
+                            </tr>\
+                            <tr>\
+                                <td>Course</td>\
+                                <td colspan="3"><input type="text" class="form-control" name="apel_major" value="'+mymajor+'" placeholder="Course" onkeyup="this.value = this.value.toUpperCase();" required ></td>\
+                            </tr>\
+                            <tr>\
+                            <td>APEL T</td>\
+                            <td><input type="number" class="form-control" placeholder="Example: 4" name="apel_cgpa" value="'+mycgpa+'" id="" required></td>\
+                            </tr>\
+                        </table>\
+                    </div>\
+                </div>'
+                );
+                fieldWrapper.append(fName);
+                $(".content").append(fieldWrapper);
+            }
+        }
         else if (x == "Matriculation") {
             var el = document.getElementById("matriculation-field");
             if (el != null) {
@@ -919,6 +1019,92 @@ function addQualification(x,xval,data=null){
                         xval +
                         '">\
                                     <input type="text" class="form-control" placeholder="ICAEW" value="'+mycgpa+'" name="icaew_cgpa" id="" required>\
+                                </td>\
+                            </tr>\
+                        </table>\
+                    </div>\
+                </div>'
+                );
+                fieldWrapper.append(fName);
+                $(".content").append(fieldWrapper);
+            }
+        }
+        else if (x == "IELTS") {
+            var el = document.getElementById("ielts-field");
+            if (el != null) {
+                alert("IELTS qualifications already added!");
+            } else {
+                var fieldWrapper = $(
+                    '<div class="fieldwrapper ielts-field" id="ielts-field"/>'
+                );
+                var fName = $(
+                    '<hr class="mt-2 mb-3"><div class="row">\
+                    <div class="col-12">\
+                    <h5 class="mb-4">IELTS </h5>\
+                    <div id="existfile'+xval+'" class="mb-2">\
+                    </div>\
+                    <input type="hidden" name="filetype[]" value="'+xval+'"/>\
+                    <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
+                    <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
+                    </div>\
+                </div>\
+                <div class="row mt-4">\
+                    <div class="col-md-12">\
+                        <table class="table table-bordered" id="ielts-table">\
+                            <thead>\
+                                <th>IELTS</th>\
+                            </thead>\
+                            <tr>\
+                                <td>\
+                                <input type="hidden" name="exist_ielts" value="'+myid+'">\
+                                <input type="hidden" name="ielts_type" value="' +
+                        xval +
+                        '">\
+                                    <input type="text" class="form-control" placeholder="IELTS BAND" value="'+mycgpa+'" name="ielts_cgpa" id="" required>\
+                                </td>\
+                            </tr>\
+                        </table>\
+                    </div>\
+                </div>'
+                );
+                fieldWrapper.append(fName);
+                $(".content").append(fieldWrapper);
+            }
+        }
+        else if (x == "TOEFL") {
+            var el = document.getElementById("toefl-field");
+            if (el != null) {
+                alert("TOEFL qualifications already added!");
+            } else {
+                var fieldWrapper = $(
+                    '<div class="fieldwrapper toefl-field" id="toefl-field"/>'
+                );
+                var fName = $(
+                    '<hr class="mt-2 mb-3"><div class="row">\
+                    <div class="col-12">\
+                    <h5 class="mb-4">TOEFL </h5>\
+                    <div id="existfile'+xval+'" class="mb-2">\
+                    </div>\
+                    <input type="hidden" name="filetype[]" value="'+xval+'"/>\
+                    <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
+                    <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
+                    </div>\
+                </div>\
+                <div class="row mt-4">\
+                    <div class="col-md-12">\
+                        <table class="table table-bordered" id="toefl-table">\
+                            <thead>\
+                                <th>TOEFL</th>\
+                            </thead>\
+                            <tr>\
+                                <td>\
+                                <input type="hidden" name="exist_toefl" value="'+myid+'">\
+                                <input type="hidden" name="toefl_type" value="' +
+                        xval +
+                        '">\
+                                    <input type="text" class="form-control" placeholder="TOEFL BAND" value="'+mycgpa+'" name="toefl_cgpa" id="" required>\
                                 </td>\
                             </tr>\
                         </table>\

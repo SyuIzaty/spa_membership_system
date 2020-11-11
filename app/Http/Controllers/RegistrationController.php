@@ -442,6 +442,49 @@ class RegistrationController extends Controller
                 ];
             }
 
+            if (isset($request->ielts_cgpa)) {
+                $academic[] = [
+                    'id' => $request->exist_ielts,
+                    'applicant_id' => $id,
+                    'type' => $request->ielts_type,
+                    'applicant_cgpa' => $request->ielts_cgpa,
+                ];
+            }
+
+            if (isset($request->toefl_cgpa)) {
+                $academic[] = [
+                    'id' => $request->exist_toefl,
+                    'applicant_id' => $id,
+                    'type' => $request->toefl_type,
+                    'applicant_cgpa' => $request->toefl_cgpa,
+                ];
+            }
+
+            if (isset($request->svm_cgpa)) {
+
+                $academic[] = [
+                    'id' => $request->exist_svm,
+                    'applicant_id' => $id,
+                    'type' => $request->svm_type,
+                    'applicant_study' => $request->svm_study,
+                    'applicant_year' => $request->svm_year,
+                    'applicant_major' => $request->svm_major,
+                    'applicant_cgpa' => $request->svm_cgpa,
+                ];
+            }
+
+            if (isset($request->apel_cgpa)) {
+
+                $academic[] = [
+                    'id' => $request->exist_apel,
+                    'applicant_id' => $id,
+                    'type' => $request->apel_type,
+                    'applicant_study' => $request->apel_study,
+                    'applicant_major' => $request->apel_major,
+                    'applicant_cgpa' => $request->apel_cgpa,
+                ];
+            }
+
             if (isset($request->skm_cgpa)) {
                 $academic[] = [
                     'id' => $request->exist_skm,
