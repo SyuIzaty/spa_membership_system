@@ -49,11 +49,10 @@ class SendOfferLetter implements ShouldQueue
         $report = PDF::loadView('intake.pdf', compact('detail', 'intakes'));
         $data = [
             'receiver_name' => $detail->applicant_name,
-            'details' => 'This offer letter is appended with this email. Please refer to the attachment for your registration instructions.',
         ];
 
         Mail::send('intake.offer-letter', $data, function ($message) use ($detail,$report){
-            $message->subject('Congratulations, ' . $detail->applicant_name);
+            $message->subject('IMPORTANT :: Result Announcement To Further Study At INTEC Education College');
             $message->to(!empty($detail->applicant_email) ? $detail->applicant_email : 'jane-doe@email.com');
             $message->attachData($report->output(), 'Offer_Letter_' . $detail->applicant_name . '.pdf');
             $file = AttachmentFile::where('batch_code',$detail['batch_code'])->get();

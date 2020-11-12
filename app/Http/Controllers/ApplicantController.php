@@ -254,7 +254,7 @@ class ApplicantController extends Controller
 
     public function data_allapplicant() // Datatable: display complete application
     {
-        $applicant = Applicant::where('applicant_status','0')->get();
+        $applicant = Applicant::where('applicant_status','2')->get();
         $applicants = $applicant->load('programme','applicantresult.grades','statusResult','statusResultTwo','programmeTwo','statusResultThree','programmeThree','applicantstatus','applicantIntake','status');
 
 
@@ -415,8 +415,8 @@ class ApplicantController extends Controller
                return '<div class="btn-block float-right">
                <a href="/applicant/'.$applicants->id.'" class="btn btn-sm btn-primary"> <i class="fal fa-user"></i></a>
                <a href="'.action('IntakeController@letter', ['applicant_id' => $applicants->id]).'" class="btn btn-sm btn-info "><i class="fal fa-file-alt"></i></a>
-               <a href="'.action('IntakeController@sendEmail', ['applicant_id' => $applicants->id, 'intake_id' => $applicants->intake_id]).'" class="btn btn-sm btn-primary "><i class="fal fa-envelope"></i></a>
                </div>';
+            //    <a href="'.action('IntakeController@sendEmail', ['applicant_id' => $applicants->id, 'intake_id' => $applicants->intake_id]).'" class="btn btn-sm btn-primary "><i class="fal fa-envelope"></i></a>
             })
             ->rawColumns(['prog_name','prog_name_2','prog_name_3','action'])
             ->make(true);
@@ -506,6 +506,11 @@ class ApplicantController extends Controller
         return view('applicant.offeredprogramme', compact('intake'));
     }
 
+    public function testemail()
+    {
+        return view('mails.email');
+    }
+
     public function sponsorapplicant()
     {
         $intake = Intakes::IntakeNow()->first();
@@ -522,7 +527,8 @@ class ApplicantController extends Controller
 
     public function sponsorTemplate(){
 
-        $file = storage_path()."/template/SPONSOR_APPLICANT.xlsx";
+        // $file = storage_path()."/template/SPONSOR_APPLICANT.xlsx";
+        $file = storage_path()."/template/SPONSOR_APPLICANTS.xlsx";
         $headers = array('Content-Type: application/xlsx',);
         return Response::download($file, 'SPONSOR_APPLICANT.xlsx',$headers);
     }
@@ -877,7 +883,7 @@ class ApplicantController extends Controller
         return compact('toefl');
     }
 
-    public function ial10($applicantt) //A Level Programme
+    public function ial11($applicantt) //A Level Programme
     {
         $status = [];
         $spm = $this->spm($applicantt);
@@ -924,10 +930,10 @@ class ApplicantController extends Controller
 
         if(in_array(true, $status))
         {
-            $programme_code = 'IAL10';
+            $programme_code = 'IAL11';
             $this->accepted($applicantt, $programme_code);
         } else {
-            $programme_code = 'IAL10';
+            $programme_code = 'IAL11';
             $this->rejected($applicantt, $programme_code);
         }
     }
@@ -2161,7 +2167,7 @@ class ApplicantController extends Controller
 
     public function checkrequirements()
     {
-        $applicants = Applicant::where('applicant_status', NULL)->orWhere('applicant_status','0')->orWhere('applicant_status','A1')->get()->toArray();
+        $applicants = Applicant::where('applicant_status', NULL)->orWhere('applicant_status','2')->where('declaration','on')->get()->toArray();
         $programme = Programme::all();
         foreach ($applicants as $applicantt)
         {
@@ -2328,7 +2334,7 @@ class ApplicantController extends Controller
     public function sendEmail($applicants_id)
     {
         $details = [
-    		'subject' => 'Congratulation'
+    		'subject' => 'IMPORTANT :: Result Announcement To Further Study At INTEC Education College'
     	];
         $job = (new \App\Jobs\SendOfferLetter($details,$applicants_id))->delay(now()->addSeconds(2));
         dispatch($job);
@@ -2338,7 +2344,7 @@ class ApplicantController extends Controller
     public function firstReminder()
     {
         $details = [
-    		'subject' => 'Complete Registration Form'
+    		'subject' => 'IMPORTANT :: Notification To Complete Your Study Application At INTEC Education College'
     	];
         $job = (new \App\Jobs\SendIncompleteApplication($details))->delay(now()->addSeconds(2));
         dispatch($job);

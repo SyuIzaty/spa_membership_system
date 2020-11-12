@@ -496,6 +496,7 @@
     var listGradeALEVEL = {!! $gradeAlevelStr !!};
     var listOLEVEL = {!! $subjectOlevelStr !!};
     var listGradeOLEVEL = {!! $gradeOlevelStr !!};
+    var apelGrades = {!!  $gradeApel !!};
 
     $(document).ready(function(){
 

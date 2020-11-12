@@ -1,3 +1,5 @@
+// const { forEach } = require("lodash");
+
 $(document).ready(function () {
     var increment = 0;
     // Existing
@@ -725,6 +727,11 @@ function addQualification(x,xval,data=null){
                 var fieldWrapper = $(
                     '<div class="fieldwrapper apel-field" id="apel-field"/>'
                 );
+                var apelGrade = "";
+                apelGrades.forEach(function(val){
+                    apelGrade += `<option value="${val.grade_code}">${val.grade_point}</option>`;
+                });
+
                 var fName = $(
                     '<hr class="mt-2 mb-3"><div class="row">\
                     <div class="col-12">\
@@ -756,7 +763,11 @@ function addQualification(x,xval,data=null){
                             </tr>\
                             <tr>\
                             <td>APEL T</td>\
-                            <td><input type="number" class="form-control" placeholder="Example: 4" name="apel_cgpa" value="'+mycgpa+'" id="" required></td>\
+                            <td>\
+                            <select class="form-control" name="apel_cgpa" id="apel_cgpa">\
+                            '+apelGrade+'\
+                            </select>\
+                            </td>\
                             </tr>\
                         </table>\
                     </div>\
@@ -764,6 +775,7 @@ function addQualification(x,xval,data=null){
                 );
                 fieldWrapper.append(fName);
                 $(".content").append(fieldWrapper);
+                $('#apel_cgpa').val(mycgpa);
             }
         }
         else if (x == "Matriculation") {

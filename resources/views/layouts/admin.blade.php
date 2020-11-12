@@ -237,13 +237,13 @@
                                     <li>
                                         <a href="/incomplete" title="Pending Applicant" data-filter-tags="active_student">
                                             <i class="fal fa-clipboard-list"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Incomplete Application</span>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Incomplete Application (0)</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="/applicantresult" title="Pending Applicant" data-filter-tags="active_student">
                                             <i class="fal fa-user"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Application Received (0)</span>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Application Received (2)</span>
                                         </a>
                                     </li>
                                     <li>

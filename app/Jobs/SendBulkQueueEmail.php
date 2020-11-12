@@ -34,13 +34,13 @@ class SendBulkQueueEmail implements ShouldQueue
      */
     public function handle()
     {
-        $applicant = Applicant::where('sponsor_code','!=','Private')->where('email_jpa',NULL)->where('applicant_status','0')->get();
+        $applicant = Applicant::where('sponsor_code','!=','Private')->where('email_jpa',NULL)->where('applicant_status','2')->get();
         $input['subject'] = $this->details['subject'];
 
         foreach ($applicant as $key => $value) {
             $input['email'] = $value->applicant_email;
             $input['name'] = $value->applicant_name;
-            $input['applicant_id'] = '1';
+            $input['applicant_id'] = $value->id;
 
             // Mail::send('mails.email', [], function($message) use($input){
             //     $message->to($input['email'], $input['name'])

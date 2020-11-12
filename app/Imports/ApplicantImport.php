@@ -35,7 +35,10 @@ class ApplicantImport implements ToModel, WithHeadingRow, WithValidation
             'applicant_race' => $row['race'],
             'applicant_religion' => $row['religion'],
             'intake_id' => $intakes['id'],
-            'applicant_status' => '0',
+            'applicant_status' => '2',
+            'applicant_programme' => $row['program'],
+            'applicant_major' => $row['major'],
+            'applicant_mode' => $row['mode'],
             'sponsor_code' => $this->sponsor_id,
         ]);
 
@@ -62,11 +65,16 @@ class ApplicantImport implements ToModel, WithHeadingRow, WithValidation
     public function rules(): array
     {
         return [
+            'name' => 'required|min:5',
+            'ic' => 'required|numeric',
             'gender' => 'string|required|max:1',
             'race' => 'required|digits:4|numeric',
             'religion' => 'string|required|max:1',
             'phone' => 'numeric',
             'postcode' => 'numeric',
+            'program' => 'required',
+            'major' => 'required',
+            'mode' => 'required',
         ];
     }
 }

@@ -40,7 +40,7 @@
                         <div class="d-flex justify-content-lg-center">
                             <h2>EDIT APPLICATION</h2>
                         </div>
-                            @if($applicants->applicant_status == '00' || $applicants->applicant_status == '0')
+                            @if($applicants->applicant_status == '00' || $applicants->applicant_status == '2')
                                 <div class="d-flex justify-content-lg-center">
                                     <div class="p-2"><p>If you wish to continue with your application, click on the button below</p></div>
                                 </div>

@@ -8,6 +8,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Applicant;
+use Carbon\Carbon;
 use Mail;
 
 class SendIncompleteApplication implements ShouldQueue
@@ -39,15 +40,14 @@ class SendIncompleteApplication implements ShouldQueue
         foreach ($applicant as $key => $value) {
             $input['email'] = $value->applicant_email;
             $input['name'] = $value->applicant_name;
-            $input['applicant_id'] = '1';
+            $input['applicant_id'] = $value->id;
 
             $data = [
                 'receiver_name' => $input['name'],
-                'details' => 'Please complete your Application Form',
             ];
 
             Mail::send('applicant.first-reminder', $data, function ($message) use ($input) {
-                $message->subject('Dear, ' . $input['name']);
+                $message->subject('IMPORTANT :: Notification to Complete your Study Application at INTEC Education College');
                 $message->to(!empty($input['email']) ? $input['email'] : 'jane-doe@email.com');
             });
         }

@@ -15,7 +15,7 @@
                 <div class="card-body">
                     <hr class="mt-2 mb-3">
                     @if (isset($applicant) )
-                        @if ($applicant->applicant_status == '5C')
+                        @if ($applicant->applicant_status == '7A')
                         <div class="d-flex justify-content-lg-center">
                             {{-- @foreach ($applicant as $applicants) --}}
                             <div class="p-2">
@@ -71,7 +71,7 @@
                             {{-- @endforeach --}}
                         </div>
                         @endif
-                        @if ($applicant->applicant_status == '0' || $applicant->applicant_status == '3G' || $applicant->applicant_status == '4A' || $applicant->applicant_status == '5A')
+                        @if ($applicant->applicant_status == '2' || $applicant->applicant_status == '3G' || $applicant->applicant_status == '4A' || $applicant->applicant_status == '5A')
                         <div class="d-flex justify-content-lg-center">
                             {{-- @foreach ($applicant as $applicants) --}}
                             <div class="p-2">

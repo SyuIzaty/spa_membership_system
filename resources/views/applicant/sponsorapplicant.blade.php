@@ -55,7 +55,8 @@
                                     <div class="panel-content">
                                         <br>
                                         <button class="btn btn-success btn-sm float-right mb-3">Upload File</button>
-                                        <a href="/sponsorTemplate" class="btn btn-primary btn-sm float-right mr-2 mb-3">Download Template</a>
+                                        <a href="/sponsorTemplate" class="btn btn-primary btn-sm float-right mr-2">Download</a>
+                                        {{-- <a href="/sponsorTemplate" class="btn btn-primary btn-sm float-right mr-2 mb-3">Download Template</a> --}}
                                     </div>
                                 </div>
                             </form>
@@ -124,6 +125,38 @@
                                                             <tr>
                                                                 <td>{{ $majors->id }}</td>
                                                                 <td>{{ $majors->major_name }}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <a href="javascript:void(0);" class="card-title collapsed" data-toggle="collapse" data-target="#mode" aria-expanded="false">
+                                                    <i class="fal fa-list-ul width-2 fs-xl"></i>
+                                                    Study Mode
+                                                    <span class="ml-auto">
+                                                        <span class="collapsed-reveal">
+                                                            <i class="fal fa-minus fs-xl"></i>
+                                                        </span>
+                                                        <span class="collapsed-hidden">
+                                                            <i class="fal fa-plus fs-xl"></i>
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                            <div id="mode" class="collapse" data-parent="#mode">
+                                                <div class="card-body">
+                                                    <table class="table table-bordered table-sm">
+                                                        <tr class="bg-primary-50 text-center">
+                                                            <td>MODE CODE</td>
+                                                            <td>MODE NAME</td>
+                                                        </tr>
+                                                        @foreach ($mode as $modes)
+                                                            <tr>
+                                                                <td>{{ $modes->id }}</td>
+                                                                <td>{{ $modes->mode_name }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </table>

@@ -105,8 +105,6 @@ class RegistrationController extends Controller
         $applicant = Applicant::where('applicant_ic', $id)->with(['offeredProgramme','offeredMajor'])->get();
         $userData['data'] = $applicant;
         echo json_encode($userData);
-        // $userData[] = $applicant;
-        // return response()->json($userData);
     }
 
     public function register()
@@ -158,14 +156,7 @@ class RegistrationController extends Controller
         if($exist)
         {
             $applicant_id = Applicant::where('applicant_ic',$request->applicant_ic)->where('intake_id',$request->intake_id)->first();
-            Applicant::where('id',$applicant_id->id)->update([
-                'applicant_programme'=>$request->applicant_programme,
-                'applicant_major'=>$request->applicant_major,
-                'applicant_programme_2'=>$request->applicant_programme_2,
-                'applicant_major_2'=>$request->applicant_major_2,
-                'applicant_programme_3'=>$request->applicant_programme_3,
-                'applicant_major_3'=>$request->applicant_major_3,
-                ]);
+
             return $this->edit($applicant_id->id);
 
         }else{
@@ -216,6 +207,7 @@ class RegistrationController extends Controller
         $subjectUecArr = $subjectUecAGradeArr = [];
         $subjectStpmArr = $subjectStpmAGradeArr = [];
         $subjectOlevelArr = $subjectOlevelAGradeArr = [];
+        $subjectApelAGradeArr = [];
 
         $qualification = Qualification::all();
         $subjectspm = Subject::where('qualification_type', '1')->get();
@@ -329,7 +321,10 @@ class RegistrationController extends Controller
         $files = files::where('fkey',$id)->get();
         $groupedfiles = collect($files)->sortByDesc('id')->groupBy('fkey2')->toArray();
 
-        return view('registration.edit', compact('applicant','country','gender','state','marital','race','religion','qualification', 'family', 'subjectspm', 'gradeSpm', 'subjectSpmStr', 'gradeSpmStr', 'subjectstam', 'gradeStam', 'subjectStamStr', 'gradeStamStr', 'subjectuec', 'gradeUec', 'subjectUecStr', 'gradeUecStr', 'subjectstpm', 'gradeStpm', 'subjectStpmStr', 'gradeStpmStr', 'subjectalevel', 'gradeAlevel', 'subjectAlevelStr', 'gradeAlevelStr', 'subjectolevel', 'gradeOlevel', 'subjectOlevelStr', 'gradeOlevelStr','existing','existingcgpa','id','groupedfiles'));
+        //NEW
+        $gradeApel = Grades::where('grade_type','21')->select('grade_code','grade_point')->get();
+
+        return view('registration.edit', compact('applicant','country','gender','state','marital','race','religion','qualification', 'family', 'subjectspm', 'gradeSpm', 'subjectSpmStr', 'gradeSpmStr', 'subjectstam', 'gradeStam', 'subjectStamStr', 'gradeStamStr', 'subjectuec', 'gradeUec', 'subjectUecStr', 'gradeUecStr', 'subjectstpm', 'gradeStpm', 'subjectStpmStr', 'gradeStpmStr', 'subjectalevel', 'gradeAlevel', 'subjectAlevelStr', 'gradeAlevelStr', 'subjectolevel', 'gradeOlevel', 'subjectOlevelStr', 'gradeOlevelStr','existing','existingcgpa','id','groupedfiles','gradeApel'));
     }
 
     /**
@@ -658,7 +653,7 @@ class RegistrationController extends Controller
                         $app = ApplicantResult::create($row);
                         $appid = $app->id;
                     }
-                    Applicant::where('id',$row['applicant_id'])->update(['applicant_status' => '0']);
+                    Applicant::where('id',$row['applicant_id'])->update(['applicant_status' => '2']);
                 }
             }
 
@@ -672,7 +667,7 @@ class RegistrationController extends Controller
                     {
                         ApplicantAcademic::create($arow);
                     }
-                    Applicant::where('id',$arow['applicant_id'])->update(['applicant_status' => '0']);
+                    Applicant::where('id',$arow['applicant_id'])->update(['applicant_status' => '2']);
                 }
             }
 

@@ -1,56 +1,75 @@
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-</head>
-<body style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -webkit-text-size-adjust: none; background-color: #ffffff; color: #718096; height: 100%; line-height: 1.4; margin: 0; padding: 0; width: 100% !important;">
-    <style>
-        @media  only screen and (max-width: 600px) {
-            .inner-body {
-            width: 100% !important;
-            }
-
-            .footer {
-            width: 100% !important;
-            }
-        }
-
-        @media  only screen and (max-width: 500px) {
-            .button {
-            width: 100% !important;
-            }
-        }
-    </style>
-    <h2 style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; color: #3d4852; font-size: 19px; font-weight: bold; text-decoration: none; display: inline-block;">
-        Applicants
-    </h2>
-
-    <table class="wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 100%; background-color: #edf2f7; margin: 0; padding: 0; width: 100%;">
-        <tr>
-            <td align="center" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative;">
-                <table class="content" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 100%; margin: 0; padding: 0; width: 100%;">
-                    <tr>
-                        <td class="header" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; padding: 25px 0; text-align: center;">
-
-                        </td>
-                    </tr>
-
-                <!-- Email Body -->
-                <tr>
-                    <td class="body" width="100%" cellpadding="0" cellspacing="0" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 100%; background-color: #edf2f7; border-bottom: 1px solid #edf2f7; border-top: 1px solid #edf2f7; margin: 0; padding: 0; width: 100%;">
-                        <table class="inner-body" align="center" width="570" cellpadding="0" cellspacing="0" role="presentation" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 570px; background-color: #ffffff; border-color: #e8e5ef; border-radius: 2px; border-width: 1px; box-shadow: 0 2px 0 rgba(0, 0, 150, 0.025), 2px 4px 0 rgba(0, 0, 150, 0.015); margin: 0 auto; padding: 0; width: 570px;">
-                        <!-- Body content -->
+<div id="mailsub" class="notification" align="center">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="min-width: 320px;"><tr><td align="center" bgcolor="#eff3f8">
+        <table border="0" cellspacing="0" cellpadding="0" class="table_width_100" width="100%" style="max-width: 680px; min-width: 300px;">
+            <tr>
+                <td>
+                    <div style="height: 80px; line-height: 80px;"> </div>
+                </td>
+            </tr>
+            <tr>
+                <td align="center" bgcolor="#ffffff" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #eff2f4;">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tr>
-                            <td class="content-cell" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; max-width: 100vw; padding: 32px;">
-                                <h1 style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; color: #3d4852; font-size: 18px; font-weight: bold; margin-top: 0; text-align: left;">Congratulations {{ $receiver_name }} !</h1>
-                                <p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">{{ $details }}</p>
-                                <table class="action" align="center" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 100%; margin: 30px auto; padding: 0; text-align: center; width: 100%;">
+                            <td align="center">
+                            <div style="height: 32px; line-height: 32px; font-size: 13px;"> </div>
+                                <table width="80%" align="center" cellpadding="0" cellspacing="0">
                                     <tr>
-                                        <td align="center" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative;">
-                                            <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative;">
+                                        <td valign="middle" style="font-size: 13px; line-height: 22px;">
+                                            <span style="font-family: Arial, Helvetica, sans-serif; font-size: 13px;">
+                                                <div style="line-height: 80px">Dear Future Student,</div>
+                                                <p><b>CONGRATULATIONS !!</b></p>
+                                                <p>We are glad to inform that your application is <b>SUCCESSFUL</b> and have been selected to further study at INTEC Education College.</p>
+                                                <p>Attached herewith is your offer letter</p>
+                                                <p>If you have any other inquiry, please do not hesitate to contact us.</p>
+                                                <p>We are looking forward to meeting you on <b>Registration Day!!</b></p>
+                                                <p>If you have any other inquiry, please do not hesitate to contact us.</p>
+                                                <p>Thank you</p>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr><td><div style="height: 32px; line-height: 32px; font-size: 10px;"> </div></td></tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td align="center" bgcolor="#ffffff">
+                    <table width="100%" class="table table-sm table-bordered">
+                        <tr>
+                            <td align="center">
+                            <div style="height: 32px; line-height: 32px; font-size: 13px;"> </div>
+                                <table width="80%" class="table table-sm table-bordered">
+                                    <tr>
+                                        <td valign="middle">
+                                            <table class = "table table-bordered table-sm" style="font-size: 13px; line-height: 22px; font-family: Arial, Helvetica, sans-serif;">
+                                                <tr style="height: 10px"><td><p><b>MARKETING & STUDENT ADMISSION DEPARTMENT</b></p></td></tr>
+                                                <tr style="height: 10px"><td>INTEC Education College</td></tr>
+                                                <tr style="height: 10px"><td>Level 2, Block F</td></tr>
+                                                <tr style="height: 10px"><td>Jalan Senangin Satu 17/2A</td></tr>
+                                                <tr style="height: 10px"><td>Section 17, 40200 Shah Alam</td></tr>
+                                                <tr style="height: 10px"><td>Selangor, MALAYSIA</td></tr>
+                                            </table>
+                                            <table class="table table-sm table-bordered" style="font-size: 13px; line-height: 22px; font-family: Arial, Helvetica, sans-serif;">
                                                 <tr>
-                                                    <td align="center" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative;">
-                                                        <a target="_blank" rel="noopener noreferrer" href="http://127.0.0.1:8000/applicantRegister" class="button button-primary" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -webkit-text-size-adjust: none; border-radius: 4px; color: #fff; display: inline-block; overflow: hidden; text-decoration: none; background-color: #2d3748; border-bottom: 8px solid #2d3748; border-left: 18px solid #2d3748; border-right: 18px solid #2d3748; border-top: 8px solid #2d3748;">Detail</a>
-                                                    </td>
+                                                    <td>Tel:</td>
+                                                    <td>+603-5522 7267</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Whatsapp:</td>
+                                                    <td>+6012-264 7657 (Mr. Shurabil)</td>
+                                                </tr>
+                                                <tr><td></td><td>+60 10-566 9143 (Mr. Norshahril)</td></tr>
+                                                <tr><td></td><td>+60 11-1024 0305 (Mr. Norazmin)</td></tr>
+                                                <tr><td></td><td>+60 11-2621 7508 (Ms. Dewi)</td></tr>
+                                                <tr>
+                                                    <td>Email:</td>
+                                                    <td>marketing.admission@intec.edu.my</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Website:</td>
+                                                    <td>www.intec.edu.my</td>
                                                 </tr>
                                             </table>
                                         </td>
@@ -58,24 +77,37 @@
                                 </table>
                             </td>
                         </tr>
-                        </table>
-                    </td>
-                </tr>
+                        <tr><td><div style="height: 32px; line-height: 32px; font-size: 10px;"> </div></td></tr>
+                    </table>
+                </td>
+            </tr>
 
-                <tr>
-                    <td style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative;">
-                        <table class="footer" align="center" width="570" cellpadding="0" cellspacing="0" role="presentation" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 570px; margin: 0 auto; padding: 0; text-align: center; width: 570px;">
-                            <tr>
-                                <td class="content-cell" align="center" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; max-width: 100vw; padding: 32px;">
-                                    <p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; line-height: 1.5em; margin-top: 0; color: #b0adc5; font-size: 12px; text-align: center;">© 2020 INTEC Education College. All rights reserved.</p>
+            <tr>
+                <td class="iage_footer" align="center" bgcolor="#ffffff">
+                <div style="height: 80px; line-height: 80px; font-size: 10px;"> </div>
 
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td align="center">
+                            <font face="Arial, Helvetica, sans-serif" size="3" color="#96a5b5" style="font-size: 13px;">
+                                <span style="font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #96a5b5;">
+                                    2020 © {{ config('app.name') }}. ALL Rights Reserved.
+                                </span>
+                            </font>
+                        </td>
+                    </tr>
                 </table>
-            </td>
-        </tr>
+
+                <div style="height: 30px; line-height: 30px; font-size: 10px;"> </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div style="height: 80px; line-height: 80px; font-size: 10px;"> </div>
+                </td>
+            </tr>
+        </table>
+
+    </td></tr>
     </table>
-</body>
+</div>
