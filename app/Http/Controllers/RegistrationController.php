@@ -684,7 +684,15 @@ class RegistrationController extends Controller
         if($type){
             return 1;
         }
+        $this->potentialStudentEmail($id);
         return redirect()->route('printReg', ['id' => $id]);
+    }
+
+    public function potentialStudentEmail($applicant_id)
+    {
+        $job = (new \App\Jobs\SendPotentialLetter($applicant_id))->delay(now()->addSeconds(2));
+        dispatch($job);
+        return redirect()->route('printReg', ['id' => $applicant_id]);
     }
 
     public function qualificationfile($filename,$type)

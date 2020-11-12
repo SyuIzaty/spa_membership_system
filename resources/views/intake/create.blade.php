@@ -35,11 +35,11 @@
                                     {!! Form::open(['action' => 'IntakeController@store', 'method' => 'POST']) !!}
                                         <div class="form-group">
                                             {{Form::label('title', 'Intake Code')}}
-                                            {{Form::text('intake_type_code', '', ['class' => 'form-control', 'placeholder' => 'Intake Code'])}}
+                                            {{Form::text('intake_type_code', '', ['class' => 'form-control', 'placeholder' => 'Intake Code', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                                         </div>
                                         <div class="form-group">
                                             {{Form::label('title', 'Intake Description')}}
-                                            {{Form::text('intake_type_description', '', ['class' => 'form-control', 'placeholder' => 'Intake Description'])}}
+                                            {{Form::text('intake_type_description', '', ['class' => 'form-control', 'placeholder' => 'Intake Description', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                                         </div>
                                         <div class="row form-group">
                                             <div class="col-md-6">

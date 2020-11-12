@@ -115,6 +115,7 @@ Route::post('/new-student', 'PhysicalRegistrationController@newstudent')->name('
 Route::resource('/registration','RegistrationController');
 Route::patch('update/{id}/{type}','RegistrationController@update');
 
+Route::get('potentialStudent', 'ApplicantController@potentialStudentEmail');
 // Route::get('/check/{id}','RegistrationController@getUsers');
 Route::get('/applicantRegister', 'RegistrationController@register')->name('applicantRegister.index');
 Route::get('search', 'RegistrationController@search');

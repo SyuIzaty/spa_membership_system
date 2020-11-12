@@ -194,7 +194,7 @@
                             </div>
                             <div class="form-group">
                                 {{Form::label('title', 'Intake Description')}}
-                                {{Form::text('intake_programme_description', '', ['id' => 'programme_desc','class' => 'form-control','placeholder' => 'Intake Description'])}}
+                                {{Form::text('intake_programme_description', '', ['id' => 'programme_desc','class' => 'form-control','placeholder' => 'Intake Description', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                             </div>
                                 {{Form::hidden('batch_code', '', ['class' => 'form-control', 'id' => 'batch_code' ,'placeholder' => 'Batch Code', 'required'])}}
                             <div class="form-group">
@@ -217,7 +217,7 @@
                             </div>
                             <div class="form-group">
                                 {{Form::label('title', 'Intake Venue')}}
-                                {{Form::text('intake_venue', '', ['class' => 'form-control', 'id' => 'intake_venue' ,'placeholder' => 'Intake Venue', 'required'])}}
+                                {{Form::text('intake_venue', '', ['class' => 'form-control', 'id' => 'intake_venue' ,'placeholder' => 'Intake Venue', 'required', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                             </div>
                             <div class="form-group">
                                 {{Form::label('title', 'Sufficient Quota')}}

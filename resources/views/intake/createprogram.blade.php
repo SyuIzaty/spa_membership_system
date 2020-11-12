@@ -100,7 +100,7 @@
                                             </div>
                                             <div class="form-group">
                                                 {{Form::label('title', 'Intake Venue')}}
-                                                {{Form::text('intake_venue', '', ['class' => 'form-control', 'placeholder' => 'Intake Venue', 'required'])}}
+                                                {{Form::text('intake_venue', '', ['class' => 'form-control', 'placeholder' => 'Intake Venue', 'required', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                                             </div>
                                             <div class="pull-right">
                                                 {{Form::submit('Save', ['class' => 'btn btn-primary'])}}
