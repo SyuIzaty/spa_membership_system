@@ -9,7 +9,7 @@
         <div class="panel-hdr">
             <h2>Registration</h2>
         </div>
-        @if($applicant->applicant_status == '0' || $applicant->applicant_status == '0')
+        @if($applicant->applicant_status == '0' || $applicant->applicant_status == '2')
 
             {!! Form::model($applicant, ['method' => 'PATCH',  'enctype' => "multipart/form-data", 'route' => ['registration.update', $applicant->id], 'id' => "upload_form"]) !!}
                 @csrf
