@@ -125,7 +125,7 @@ Route::get('registration/printReg/{id}','RegistrationController@printReg')->name
 Route::get('registration-data/{id}','RegistrationController@data');
 Route::get('registration-mode/{id}','RegistrationController@study_mode');
 Route::get('testmajor','RegistrationController@testmajor');
-Route::post('applicant/delete/{id}/{type}/{userid}','RegistrationController@deleteitem');
+Route::post('applicant/delete','RegistrationController@deleteitem');
 Route::get('qualificationfile/{filename}/{type}','RegistrationController@qualificationfile');
 Route::get('attachmentFile/{filename}/{type}','RegistrationController@attachmentFile');
 

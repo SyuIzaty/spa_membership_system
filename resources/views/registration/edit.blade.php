@@ -519,22 +519,29 @@
     function Delete(button,id=null)
     {
         var type = $(button).data('type');
-        if(id)
-        {
 
-            $.ajaxSetup({
-                headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
-            });
+        var quaId = type == "qualification" ? id : $(button).closest('.col-md-12').find('.qualificationtype').val();
+        var subId = type == "qualification" ? 0 : $(button).parent().parent().find('select').first().val();
 
-            $.ajax({
-                url: "{{url('/applicant/delete')}}/" + id + "/" + type + "/" + "{{$id}}",
-                type: 'post',
-                data:{"_token": $('meta[name="csrf-token"]').attr('content')},
-                success: function(response){
+        $.ajaxSetup({
+            headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
+        });
 
-                }
-            })
-        }
+        $.ajax({
+            url: "{{url('/applicant/delete')}}",
+            type: 'post',
+            data: {
+                "_token": $('meta[name="csrf-token"]').attr('content'),
+                id : id,
+                typeid : quaId,
+                subject : subId,
+                type : type,
+                userid : "{{ $id }}",
+            },
+            success: function(response){
+
+            }
+        })
 
         if(type == "result")
         {

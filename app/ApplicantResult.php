@@ -3,11 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ApplicantResult extends Model
 {
+    use SoftDeletes;
 
-    protected $table = 'applicantresult';
+    protected $table = 'applicant_results';
     protected $fillable = ['id','applicant_id','type','subject','grade_id','cgpa','created_at','updated_at'];
 
     public function applicant()

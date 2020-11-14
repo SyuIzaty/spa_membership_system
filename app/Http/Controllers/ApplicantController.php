@@ -122,6 +122,14 @@ class ApplicantController extends Controller
 
         $icaew = ApplicantAcademic::ApplicantId($id)->Icaew()->AcademicAttachment('17')->first();
 
+        $ielts = ApplicantAcademic::ApplicantId($id)->Ielts()->AcademicAttachment('18')->first();
+
+        $toefl = ApplicantAcademic::ApplicantId($id)->Toefl()->AcademicAttachment('19')->first();
+
+        $svm = ApplicantAcademic::ApplicantId($id)->Svm()->AcademicAttachment('20')->first();
+
+        $apel = ApplicantAcademic::ApplicantId($id)->Apel()->AcademicAttachment('21')->first();
+
         $batch = Applicant::ApplicantId($id)->with(['applicantIntake.intakeDetails'])->first();
 
         $activity = [];
@@ -140,7 +148,7 @@ class ApplicantController extends Controller
         }
 
         $applicant_status = Status::where('status_code','>=','3')->get();
-        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace','country','marital','religion','race','gender','state','skm','mqf','kkm','cat','icaew','activity','intake','family','foundation','applicant_status', 'batch_1','batch_2','batch_3','applicant_recheck','qualification','mode','entry'));
+        return view('applicant.display',compact('applicant','spm','stpm','stam','uec','alevel','olevel','diploma','degree','matriculation','muet','sace','country','marital','religion','race','gender','state','skm','mqf','kkm','cat','icaew','activity','intake','family','foundation','applicant_status', 'batch_1','batch_2','batch_3','applicant_recheck','qualification','mode','entry','ielts','toefl','svm','apel'));
     }
 
     public function updateApplicant(Request $request) // Update applicant detail

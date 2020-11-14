@@ -766,6 +766,78 @@
                                                 </tr>
                                             </table>
                                             @endif
+                                            @if (isset($ielts))
+                                            <h5>IELTS</h5>
+                                            @if(isset($ielts->file->web_path))
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$ielts->file->file_name }}/Download"">Supporting Document</a>
+                                            @else
+                                                <p>No Supporting Document</p>
+                                            @endif
+                                            <table class="table table-bordered table-sm">
+                                                <tr>
+                                                    <td>IELTS Band</td>
+                                                    <td>{{ $ielts->applicant_cgpa }}</td>
+                                                </tr>
+                                            </table>
+                                            @endif
+                                            @if (isset($toefl))
+                                            <h5>TOEFL</h5>
+                                            @if(isset($toefl->file->web_path))
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$toefl->file->file_name }}/Download"">Supporting Document</a>
+                                            @else
+                                                <p>No Supporting Document</p>
+                                            @endif
+                                            <table class="table table-bordered table-sm">
+                                                <tr>
+                                                    <td>TOEFL Total Scores</td>
+                                                    <td>{{ $toefl->applicant_cgpa }}</td>
+                                                </tr>
+                                            </table>
+                                            @endif
+                                            @if(isset($svm))
+                                            <h5>Sijil Vokasional Malaysia</h5>
+                                            @if(isset($svm->file->web_path))
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$svm->file->file_name }}/Download"">Supporting Document</a>
+                                            @else
+                                                <p>No Supporting Document</p>
+                                            @endif
+                                                <table class="table table-bordered table-sm">
+                                                <tr>
+                                                    <td>University / College</td>
+                                                    <td colspan="3">{{ $svm->applicant_study }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Major</td>
+                                                    <td colspan="3">{{ $svm->applicant_major }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Graduation Year</td>
+                                                    <td>{{ $svm->applicant_year }}</td>
+                                                    <td>CGPA</td>
+                                                    <td>{{ $svm->applicant_cgpa }}</td>
+                                                </tr>
+                                                </table>
+                                            @endif
+                                            @if(isset($apel))
+                                            <h5>APEL</h5>
+                                            @if(isset($apel->file->web_path))
+                                                <a target="_blank" href="{{ url('qualificationfile')."/".$apel->file->file_name }}/Download"">Supporting Document</a>
+                                            @else
+                                                <p>No Supporting Document</p>
+                                            @endif
+                                                <table class="table table-bordered table-sm">
+                                                <tr>
+                                                    <td>University</td>
+                                                    <td colspan="3">{{ $apel->applicant_study }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Major</td>
+                                                    <td>{{ $apel->applicant_major }}</td>
+                                                    <td>CGPA</td>
+                                                    <td>{{ $apel->applicant_cgpa }}</td>
+                                                </tr>
+                                                </table>
+                                            @endif
                                         </div>
                                     </div>
                                     </div>

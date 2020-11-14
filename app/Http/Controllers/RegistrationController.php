@@ -641,31 +641,51 @@ class RegistrationController extends Controller
                     }
                 }
             }
+
             if (count($result) > 0) {
                 foreach ($result as $row) {
-                    if( isset($row['id']) && $row['id'] )
-                    {
-                        $appid = $row['id'];
-                        ApplicantResult::where('id',$row['id'])->update($row);
+                    //check if type and subject exist
+                    $exist = ApplicantResult::select('id')
+                    ->whereRaw(
+                        'applicant_id = '.$row['applicant_id'].' AND type ='.$row['type'].' AND subject = "'.$row['subject'].'" '
+                    )->first();
+
+                    $row['id'] = $exist ? $exist->id : 0;
+                    $applicant_result = ApplicantResult::where('applicant_id',$row['applicant_id'])->where('subject',$row['subject'])->count();
+                    if($applicant_result != 0){
+                        if(isset($row['applicant_id']) && $row['applicant_id'] && isset($row['subject']) && $row['subject'] && $row['id']){
+                            ApplicantResult::where('applicant_id',$row['applicant_id'])->where('subject',$row['subject'])->update($row);
+                        }
+                    }else{
+                        if(!$exist)
+                        {
+                            ApplicantResult::create($row);
+                        }
                     }
-                    else
-                    {
-                        $app = ApplicantResult::create($row);
-                        $appid = $app->id;
-                    }
-                    Applicant::where('id',$row['applicant_id'])->update(['applicant_status' => '2']);
                 }
             }
 
             if (isset($academic)) {
                 foreach ($academic as $arow) {
-                    if( isset($arow['id']) && $arow['id'] )
-                    {
-                        ApplicantAcademic::where('id',$arow['id'])->update($arow);
-                    }
-                    else
-                    {
-                        ApplicantAcademic::create($arow);
+                    //check if type and subject exist
+                    $exist = ApplicantAcademic::select('id')
+                    ->whereRaw(
+                        'applicant_id = '.$arow['applicant_id'].' AND type ='.$arow['type']
+                    )->first();
+
+                    $arow['id'] = $exist ? $exist->id : 0;
+
+                    $applicant_academic = ApplicantAcademic::where('applicant_id',$arow['applicant_id'])->where('type',$arow['type'])->count();
+                    if($applicant_academic != 0){
+                        if( isset($arow['applicant_id']) && $arow['applicant_id'] && isset($arow['type']) && $arow['type'] && $arow['id']){
+                            // ApplicantAcademic::where('id',$arow['id'])->update($arow);
+                            ApplicantAcademic::where('applicant_id',$arow['applicant_id'])->where('type',$arow['type'])->update($arow);
+                        }
+                    }else{
+                        if(!$exist)
+                        {
+                            ApplicantAcademic::create($arow);
+                        }
                     }
                     Applicant::where('id',$arow['applicant_id'])->update(['applicant_status' => '2']);
                 }
@@ -766,27 +786,36 @@ class RegistrationController extends Controller
         }
     }
 
-    public function deleteitem($id,$type,$userid)
+    public function deleteitem(Request $request)
     {
-        $destinationPath =  files::where('fkey',$userid)->where('fkey2',$id)->select('web_path')->get();
+        $destinationPath =  files::where('fkey',$request->userid)->where('fkey2',$request->id)->select('web_path')->get();
         foreach($destinationPath as $dp)
         {
             File::delete(storage_path()."/".$dp->web_path);
         }
-        files::where('fkey',$userid)->where('fkey2',$id)->delete();
+        files::where('fkey',$request->userid)->where('fkey2',$request->id)->delete();
 
-        if($type == "result"){
-            ApplicantResult::where('id',$id)->delete();
+        if($request->type == "result"){
+            if(!$request->id)
+            {
+                $exist = ApplicantResult::select('id')
+                ->where('applicant_id',$request->userid)
+                ->where('type',$request->typeid)
+                ->where('subject',$request->subject)
+                ->first();
+                $request->id = $exist ? $exist->id : 0;
+            }
+            ApplicantResult::where('id',$request->id)->delete();
         }
 
-        if($type == "qualification")
+        if($request->type == "qualification")
         {
-            ApplicantResult::where('type',$id)->where('applicant_id',$userid)->delete();
+            ApplicantResult::where('type',$request->id)->where('applicant_id',$request->userid)->delete();
         }
 
-        if($type == "academic")
+        if($request->type == "academic")
         {
-            ApplicantAcademic::where('type',$id)->where('applicant_id',$userid)->delete();
+            ApplicantAcademic::where('type',$request->id)->where('applicant_id',$request->userid)->delete();
         }
 
 

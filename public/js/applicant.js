@@ -131,7 +131,7 @@ function addQualification(x,xval,data=null){
                 </div>\
                 <div class="row mt-4">\
                     <div class="col-md-12">\
-                        <input type="hidden" name="spm_type" value="'+xval+'">\
+                        <input type="hidden" name="spm_type" class="qualificationtype" value="'+xval+'">\
                         <table class="table table-bordered" id="spm-table">\
                             <thead>\
                                 <th>Subject Name</th>\
@@ -217,7 +217,7 @@ function addQualification(x,xval,data=null){
                 </div>\
                 <div class="row mt-4">\
                     <div class="col-md-12">\
-                        <input type="hidden" name="uec_type" value="'+xval +'">\
+                        <input type="hidden" name="uec_type" class="qualificationtype" value="'+xval +'">\
                         <table class="table table-bordered" id="uec-table">\
                             <thead>\
                                 <th>Subject Name</th>\
@@ -296,7 +296,7 @@ function addQualification(x,xval,data=null){
                 </div>\
                 <div class="row mt-4">\
                     <div class="col-md-12">\
-                        <input type="hidden" name="stpm_type" value="'+xval +'">\
+                        <input type="hidden" name="stpm_type" class="qualificationtype" value="'+xval +'">\
                         <table class="table table-bordered" id="stpm-table">\
                             <thead>\
                                 <th>Subject Name</th>\
@@ -375,7 +375,7 @@ function addQualification(x,xval,data=null){
                 </div>\
                 <div class="row mt-4">\
                     <div class="col-md-12">\
-                        <input type="hidden" name="olevel_type" value="'+xval+'">\
+                        <input type="hidden" name="olevel_type" class="qualificationtype" value="'+xval+'">\
                         <table class="table table-bordered" id="olevel-table">\
                             <thead>\
                                 <th>Subject Name</th>\
@@ -454,7 +454,7 @@ function addQualification(x,xval,data=null){
                 </div>\
                 <div class="row mt-4">\
                     <div class="col-md-12">\
-                        <input type="hidden" name="alevel_type" value="'+xval+'">\
+                        <input type="hidden" name="alevel_type" class="qualificationtype" value="'+xval+'">\
                         <table class="table table-bordered" id="alevel-table">\
                             <thead>\
                                 <th>Subject Name</th>\
@@ -533,7 +533,7 @@ function addQualification(x,xval,data=null){
                 </div>\
                 <div class="row mt-4">\
                     <div class="col-md-12">\
-                        <input type="hidden" name="stam_type" value="' +xval +'">\
+                        <input type="hidden" name="stam_type" class="qualificationtype" value="' +xval +'">\
                         <table class="table table-bordered" id="stam-table">\
                             <thead>\
                                 <th>Subject Name</th>\
@@ -588,7 +588,7 @@ function addQualification(x,xval,data=null){
                 </div>\
                 <div class="row mt-4">\
                     <div class="col-md-12">\
-                    <input type="hidden" name="bachelor_type" value="' +xval +'">\
+                    <input type="hidden" name="bachelor_type" class="qualificationtype" value="' +xval +'">\
                         <table class="table table-bordered" id="bachelor-table">\
                             <tr>\
                                 <td>University / College *</td>\
@@ -598,8 +598,8 @@ function addQualification(x,xval,data=null){
                                 </td>\
                             </tr>\
                             <tr>\
-                                <td>Programme / Major</td>\
-                                <td colspan="3"><input type="text" class="form-control" value="'+mymajor+'" name="bachelor_major" placeholder="Programme / Major" onkeyup="this.value = this.value.toUpperCase();"></td>\
+                                <td>Program</td>\
+                                <td colspan="3"><input type="text" class="form-control" value="'+mymajor+'" name="bachelor_major" placeholder="Ex: Bachelor in Accounting" onkeyup="this.value = this.value.toUpperCase();"></td>\
                             </tr>\
                             <tr>\
                                 <td>Graduation Year</td>\
@@ -639,20 +639,18 @@ function addQualification(x,xval,data=null){
                 </div>\
                 <div class="row mt-4">\
                     <div class="col-md-12">\
+                    <input type="hidden" name="diploma_type" class="qualificationtype" value="' + xval + '">\
                         <table class="table table-bordered" id="diploma-table">\
                             <tr>\
-                                <td>University / College<input type="hidden" name="diploma_type" value="' +
-                        xval +
-                        '">\
-                                </td>\
+                                <td>University / College</td>\
                                 <td colspan="3">\
                                 <input type="text" class="form-control" name="diploma_study" value="'+mystudy+'" required placeholder="University / College" onkeyup="this.value = this.value.toUpperCase();">\
                                 <input type="hidden" name="exist_diploma" value="'+myid+'">\
                                 </td>\
                             </tr>\
                             <tr>\
-                                <td>Programme / Major</td>\
-                                <td colspan="3"><input type="text" class="form-control" name="diploma_major" value="'+mymajor+'" placeholder="Programme / Major" onkeyup="this.value = this.value.toUpperCase();" required ></td>\
+                                <td>Program</td>\
+                                <td colspan="3"><input type="text" class="form-control" name="diploma_major" value="'+mymajor+'" placeholder="Ex: Diploma in Accounting" onkeyup="this.value = this.value.toUpperCase();" required ></td>\
                             </tr>\
                             <tr>\
                             <td>Graduation Year</td>\
@@ -690,12 +688,10 @@ function addQualification(x,xval,data=null){
                 </div>\
                 <div class="row mt-4">\
                     <div class="col-md-12">\
+                    <input type="hidden" name="svm_type" class="qualificationtype" value="' + xval + '">\
                         <table class="table table-bordered" id="svm-table">\
                             <tr>\
-                                <td>University / College<input type="hidden" name="svm_type" value="' +
-                        xval +
-                        '">\
-                                </td>\
+                                <td>University / College</td>\
                                 <td colspan="3">\
                                 <input type="text" class="form-control" name="svm_study" value="'+mystudy+'" required placeholder="University / College" onkeyup="this.value = this.value.toUpperCase();">\
                                 <input type="hidden" name="exist_svm" value="'+myid+'">\
@@ -746,12 +742,10 @@ function addQualification(x,xval,data=null){
                 </div>\
                 <div class="row mt-4">\
                     <div class="col-md-12">\
+                    <input type="hidden" name="apel_type" class="qualificationtype" value="' + xval + '">\
                         <table class="table table-bordered" id="svm-table">\
                             <tr>\
-                                <td>University / College<input type="hidden" name="apel_type" value="' +
-                        xval +
-                        '">\
-                                </td>\
+                                <td>University / College</td>\
                                 <td colspan="3">\
                                 <input type="text" class="form-control" name="apel_study" value="'+mystudy+'" required placeholder="University / College" onkeyup="this.value = this.value.toUpperCase();">\
                                 <input type="hidden" name="exist_apel" value="'+myid+'">\
@@ -799,7 +793,8 @@ function addQualification(x,xval,data=null){
                     </div>\
                 </div>\
                 <div class="row mt-4">\
-                    <div class="col-md-12">\
+                <div class="col-md-12">\
+                <input type="hidden" name="matriculation_type" class="qualificationtype" value="' + xval + '">\
                         <table class="table table-bordered" id="matriculation-table">\
                             <tr>\
                                 <td>Kolej Matrikulasi *</td>\
@@ -812,10 +807,8 @@ function addQualification(x,xval,data=null){
                                 <td>Graduation Year</td>\
                                 <td><input type="text" class="form-control" value="'+myyear+'" name="matriculation_year"></td>\
                                 <td>CGPA</td>\
-                                <td><input type="hidden" name="matriculation_type" value="' +
-                        xval +
-                        '">\
-                                    <input type="text" class="form-control" placeholder="CGPA" value="'+mycgpa+'" name="matriculation_cgpa" id="" required>\
+                                <td>\
+                                <input type="text" class="form-control" placeholder="CGPA" value="'+mycgpa+'" name="matriculation_cgpa" id="" required>\
                                 </td>\
                             </tr>\
                         </table>\
@@ -847,7 +840,8 @@ function addQualification(x,xval,data=null){
                     </div>\
                 </div>\
                 <div class="row mt-4">\
-                    <div class="col-md-12">\
+                <div class="col-md-12">\
+                <input type="hidden" name="muet_type" class="qualificationtype" value="' + xval +'">\
                         <table class="table table-bordered" id="muet-table">\
                             <thead>\
                                 <th>MUET</th>\
@@ -855,9 +849,6 @@ function addQualification(x,xval,data=null){
                             <tr>\
                                 <td>\
                                 <input type="hidden" name="exist_muet" value="'+myid+'">\
-                                <input type="hidden" name="muet_type" value="' +
-                        xval +
-                        '">\
                                     <input type="text" class="form-control" placeholder="MUET BAND" value="'+mycgpa+'" name="muet_cgpa" id="" required>\
                                 </td>\
                             </tr>\
@@ -891,6 +882,7 @@ function addQualification(x,xval,data=null){
                 </div>\
                 <div class="row mt-4">\
                     <div class="col-md-12">\
+                    <input type="hidden" name="skm_type" class="qualificationtype" value="' + xval + '">\
                         <table class="table table-bordered" id="skm-table">\
                             <thead>\
                                 <th>SKM Level</th>\
@@ -898,9 +890,6 @@ function addQualification(x,xval,data=null){
                             <tr>\
                                 <td>\
                                 <input type="hidden" name="exist_skm" value="'+myid+'">\
-                                <input type="hidden" name="skm_type" value="' +
-                        xval +
-                        '">\
                                     <input type="text" class="form-control" placeholder="SkM Level" value="'+mycgpa+'" name="skm_cgpa" id="" required>\
                                 </td>\
                             </tr>\
@@ -934,6 +923,7 @@ function addQualification(x,xval,data=null){
                 </div>\
                 <div class="row mt-4">\
                     <div class="col-md-12">\
+                    <input type="hidden" name="mqf_type" class="qualificationtype" value="' + xval + '">\
                         <table class="table table-bordered" id="mqf-table">\
                             <thead>\
                                 <th>MQF Level</th>\
@@ -941,9 +931,6 @@ function addQualification(x,xval,data=null){
                             <tr>\
                                 <td>\
                                 <input type="hidden" name="exist_mqf" value="'+myid+'">\
-                                <input type="hidden" name="mqf_type" value="' +
-                        xval +
-                        '">\
                                     <input type="text" class="form-control" placeholder="MQF Level" value="'+mycgpa+'" name="mqf_cgpa" id="" required>\
                                 </td>\
                             </tr>\
@@ -977,6 +964,7 @@ function addQualification(x,xval,data=null){
                 </div>\
                 <div class="row mt-4">\
                     <div class="col-md-12">\
+                    <input type="hidden" name="kkm_type" class="qualificationtype" value="' + xval + '">\
                         <table class="table table-bordered" id="kkm-table">\
                             <thead>\
                                 <th>KKM Level</th>\
@@ -984,9 +972,6 @@ function addQualification(x,xval,data=null){
                             <tr>\
                                 <td>\
                                 <input type="hidden" name="exist_kkm" value="'+myid+'">\
-                                <input type="hidden" name="kkm_type" value="' +
-                        xval +
-                        '">\
                                     <input type="text" class="form-control" placeholder="KKM Level" value="'+mycgpa+'" name="kkm_cgpa" id="" required>\
                                 </td>\
                             </tr>\
@@ -1020,6 +1005,7 @@ function addQualification(x,xval,data=null){
                 </div>\
                 <div class="row mt-4">\
                     <div class="col-md-12">\
+                    <input type="hidden" name="icaew_type" class="qualificationtype" value="' + xval +'">\
                         <table class="table table-bordered" id="icaew-table">\
                             <thead>\
                                 <th>ICAEW</th>\
@@ -1027,9 +1013,6 @@ function addQualification(x,xval,data=null){
                             <tr>\
                                 <td>\
                                 <input type="hidden" name="exist_icaew" value="'+myid+'">\
-                                <input type="hidden" name="icaew_type" value="' +
-                        xval +
-                        '">\
                                     <input type="text" class="form-control" placeholder="ICAEW" value="'+mycgpa+'" name="icaew_cgpa" id="" required>\
                                 </td>\
                             </tr>\
@@ -1063,6 +1046,7 @@ function addQualification(x,xval,data=null){
                 </div>\
                 <div class="row mt-4">\
                     <div class="col-md-12">\
+                    <input type="hidden" name="ielts_type" class="qualificationtype" value="' + xval + '">\
                         <table class="table table-bordered" id="ielts-table">\
                             <thead>\
                                 <th>IELTS</th>\
@@ -1070,9 +1054,6 @@ function addQualification(x,xval,data=null){
                             <tr>\
                                 <td>\
                                 <input type="hidden" name="exist_ielts" value="'+myid+'">\
-                                <input type="hidden" name="ielts_type" value="' +
-                        xval +
-                        '">\
                                     <input type="text" class="form-control" placeholder="IELTS BAND" value="'+mycgpa+'" name="ielts_cgpa" id="" required>\
                                 </td>\
                             </tr>\
@@ -1106,6 +1087,7 @@ function addQualification(x,xval,data=null){
                 </div>\
                 <div class="row mt-4">\
                     <div class="col-md-12">\
+                    <input type="hidden" name="toefl_type" class="qualificationtype" value="' + xval +'">\
                         <table class="table table-bordered" id="toefl-table">\
                             <thead>\
                                 <th>TOEFL</th>\
@@ -1113,10 +1095,7 @@ function addQualification(x,xval,data=null){
                             <tr>\
                                 <td>\
                                 <input type="hidden" name="exist_toefl" value="'+myid+'">\
-                                <input type="hidden" name="toefl_type" value="' +
-                        xval +
-                        '">\
-                                    <input type="text" class="form-control" placeholder="TOEFL BAND" value="'+mycgpa+'" name="toefl_cgpa" id="" required>\
+                                    <input type="text" class="form-control" placeholder="TOEFL TOTAL SCORES" value="'+mycgpa+'" name="toefl_cgpa" id="" required>\
                                 </td>\
                             </tr>\
                         </table>\
@@ -1149,20 +1128,18 @@ function addQualification(x,xval,data=null){
                 </div>\
                 <div class="row mt-4">\
                     <div class="col-md-12">\
+                    <input type="hidden" name="foundation_type" class="qualificationtype" value="' + xval +'">\
                         <table class="table table-bordered" id="foundation-table">\
                             <tr>\
-                            <td>University / College<input type="hidden" name="foundation_type" value="' +
-                        xval +
-                        '">\
-                                </td>\
+                            <td>University / College</td>\
                                 <td colspan="3">\
                                 <input type="text" class="form-control" name="foundation_study" value="'+mystudy+'" required placeholder="University / College" onkeyup="this.value = this.value.toUpperCase();">\
                                 <input type="hidden" name="exist_foundation" value="'+myid+'">\
                                 </td>\
                             </tr>\
                             <tr>\
-                                <td>Programme / Major</td>\
-                                <td colspan="3"><input type="text" class="form-control" name="foundation_major" value="'+mymajor+'" placeholder="Major" required onkeyup="this.value = this.value.toUpperCase();"></td>\
+                                <td>Program</td>\
+                                <td colspan="3"><input type="text" class="form-control" name="foundation_major" value="'+mymajor+'" placeholder="Foundation in Accounting" required onkeyup="this.value = this.value.toUpperCase();"></td>\
                             </tr>\
                             <tr>\
                             <td>Graduation Year</td>\
@@ -1200,6 +1177,7 @@ function addQualification(x,xval,data=null){
                 </div>\
                 <div class="row mt-4">\
                     <div class="col-md-12">\
+                    <input type="hidden" name="sace_type" class="qualificationtype" value="' + xval + '">\
                         <table class="table table-bordered" id="sace-table">\
                             <thead>\
                                 <th>ATAR</th>\
@@ -1207,9 +1185,6 @@ function addQualification(x,xval,data=null){
                             <tr>\
                                 <td>\
                                 <input type="hidden" name="exist_sace" value="'+myid+'">\
-                                <input type="hidden" name="sace_type" value="' +
-                        xval +
-                        '">\
                                     <input type="text" class="form-control" placeholder="ATAR" name="sace_cgpa" value="'+mycgpa+'" id="" required>\
                                 </td>\
                             </tr>\
@@ -1243,6 +1218,7 @@ function addQualification(x,xval,data=null){
                 </div>\
                 <div class="row mt-4">\
                     <div class="col-md-12">\
+                    <input type="hidden" name="cat_type" class="qualificationtype" value="' +xval +'">\
                         <table class="table table-bordered" id="cat-table">\
                             <thead>\
                                 <th>CAT</th>\
@@ -1250,9 +1226,6 @@ function addQualification(x,xval,data=null){
                             <tr>\
                                 <td>\
                                 <input type="hidden" name="exist_cat" value="'+myid+'">\
-                                <input type="hidden" name="cat_type" value="' +
-                        xval +
-                        '">\
                                     <input type="text" class="form-control" placeholder="CAT" name="cat_cgpa" value="'+mycat+'" id="" required>\
                                 </td>\
                             </tr>\
