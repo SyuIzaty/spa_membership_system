@@ -17,6 +17,7 @@ use App\ApplicantEmergency;
 use App\ApplicantGuardian;
 use App\Qualification;
 use App\ApplicantAcademic;
+use App\InternationalDocument;
 use App\Subject;
 use App\Intakes;
 use App\Family;
@@ -196,6 +197,7 @@ class RegistrationController extends Controller
     public function edit($id)
     {
         $applicant = Applicant::where('id', $id)->with(['applicantContactInfo','applicantEmergency.emergencyOne','applicantGuardian.familyOne','applicantGuardian.familyTwo'])->first();
+        $international = InternationalDocument::where('applicant_id',$id)->with('applicant')->get();
         $country = Country::all()->sortBy('country_name');
         $gender = Gender::all()->sortBy('gender_name');
         $state = State::all();
@@ -324,7 +326,7 @@ class RegistrationController extends Controller
         //NEW
         $gradeApel = Grades::where('grade_type','21')->select('grade_code','grade_point')->get();
 
-        return view('registration.edit', compact('applicant','country','gender','state','marital','race','religion','qualification', 'family', 'subjectspm', 'gradeSpm', 'subjectSpmStr', 'gradeSpmStr', 'subjectstam', 'gradeStam', 'subjectStamStr', 'gradeStamStr', 'subjectuec', 'gradeUec', 'subjectUecStr', 'gradeUecStr', 'subjectstpm', 'gradeStpm', 'subjectStpmStr', 'gradeStpmStr', 'subjectalevel', 'gradeAlevel', 'subjectAlevelStr', 'gradeAlevelStr', 'subjectolevel', 'gradeOlevel', 'subjectOlevelStr', 'gradeOlevelStr','existing','existingcgpa','id','groupedfiles','gradeApel'));
+        return view('registration.edit', compact('applicant','country','gender','state','marital','race','religion','qualification', 'family', 'subjectspm', 'gradeSpm', 'subjectSpmStr', 'gradeSpmStr', 'subjectstam', 'gradeStam', 'subjectStamStr', 'gradeStamStr', 'subjectuec', 'gradeUec', 'subjectUecStr', 'gradeUecStr', 'subjectstpm', 'gradeStpm', 'subjectStpmStr', 'gradeStpmStr', 'subjectalevel', 'gradeAlevel', 'subjectAlevelStr', 'gradeAlevelStr', 'subjectolevel', 'gradeOlevel', 'subjectOlevelStr', 'gradeOlevelStr','existing','existingcgpa','id','groupedfiles','gradeApel','international'));
     }
 
     /**
@@ -662,6 +664,7 @@ class RegistrationController extends Controller
                             ApplicantResult::create($row);
                         }
                     }
+                    Applicant::where('id',$row['applicant_id'])->update(['applicant_status' => '2']);
                 }
             }
 
@@ -699,6 +702,9 @@ class RegistrationController extends Controller
                 }
             }
 
+            if($request->passport_image || $request->passport || $request->academic_transcript || $request->cert_completion || $request->financial_statement || $request->acca_exemption){
+                $this->uploadInternational($request->passport_image, $request->passport, $request->academic_transcript, $request->cert_completion, $request->financial_statement, $request->acca_exemption, $id);
+            }
             // Applicant::completeApplication($id);
         }
         if($type){
@@ -706,6 +712,95 @@ class RegistrationController extends Controller
         }
         $this->potentialStudentEmail($id);
         return redirect()->route('printReg', ['id' => $id]);
+    }
+
+    public function uploadInternational($passport_image, $passport, $academic_transcript, $cert_completion, $financial_statement, $acca_exemption, $applicant_id)
+    {
+        if(isset($passport_image)){
+            $passport_image->storeAs('/international_applicant', $passport_image->getClientOriginalName());
+            InternationalDocument::updateOrCreate([
+                'applicant_id' => $applicant_id,
+                'file_type' => '1',
+            ],[
+                'file_name' => $passport_image->getClientOriginalName(),
+                'file_size' => $passport_image->getSize(),
+                'web_path' => "app/international_applicant/".$passport_image->getClientOriginalName(),
+            ]);
+        }
+        if(isset($passport)){
+            $passport->storeAs('/international_applicant', $passport->getClientOriginalName());
+            InternationalDocument::updateOrCreate([
+                'applicant_id' => $applicant_id,
+                'file_type' => '2',
+            ],[
+                'file_name' => $passport->getClientOriginalName(),
+                'file_size' => $passport->getSize(),
+                'web_path' => "app/international_applicant/".$passport->getClientOriginalName(),
+            ]);
+        }
+        if(isset($academic_transcript)){
+            $academic_transcript->storeAs('/international_applicant', $academic_transcript->getClientOriginalName());
+            InternationalDocument::create([
+                'applicant_id' => $applicant_id,
+                'file_name' => $academic_transcript->getClientOriginalName(),
+                'file_type' => '3',
+                'file_size' => $academic_transcript->getSize(),
+                'web_path' => "app/international_applicant/".$academic_transcript->getClientOriginalExtension(),
+            ]);
+        }
+        if(isset($cert_completion)){
+            $cert_completion->storeAs('/international_applicant', $cert_completion->getClientOriginalName());
+            InternationalDocument::create([
+                'applicant_id' => $applicant_id,
+                'file_name' => $cert_completion->getClientOriginalName(),
+                'file_type' => '4',
+                'file_size' => $cert_completion->getSize(),
+                'web_path' => "app/international_applicant/".$cert_completion->getClientOriginalExtension(),
+            ]);
+        }
+        if(isset($financial_statement)){
+            $financial_statement->storeAs('/international_applicant', $financial_statement->getClientOriginalName());
+            InternationalDocument::create([
+                'applicant_id' => $applicant_id,
+                'file_name' => $financial_statement->getClientOriginalName(),
+                'file_type' => '5',
+                'file_size' => $financial_statement->getSize(),
+                'web_path' => "app/international_applicant/".$financial_statement->getClientOriginalExtension(),
+            ]);
+        }
+        if(isset($acca_exemption)){
+            $acca_exemption->storeAs('/international_applicant', $acca_exemption->getClientOriginalName());
+            InternationalDocument::create([
+                'applicant_id' => $applicant_id,
+                'file_name' => $acca_exemption->getClientOriginalName(),
+                'file_type' => '6',
+                'file_size' => $acca_exemption->getSize(),
+                'web_path' => "app/international_applicant/".$acca_exemption->getClientOriginalExtension(),
+            ]);
+        }
+    }
+
+    public function internationalFile($filename,$type)
+    {
+        $path = storage_path().'/'.'app'.'/international_applicant/'.$filename;
+
+        if($type == "Download")
+        {
+            if (file_exists($path)) {
+                return Response::download($path);
+            }
+        }
+        else
+        {
+            $file = File::get($path);
+            $filetype = File::mimeType($path);
+
+            $response = Response::make($file, 200);
+            $response->header("Content-Type", $type);
+
+            return $response;
+        }
+
     }
 
     public function potentialStudentEmail($applicant_id)

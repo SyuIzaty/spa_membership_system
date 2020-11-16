@@ -13,6 +13,7 @@
 
             {!! Form::model($applicant, ['method' => 'PATCH',  'enctype' => "multipart/form-data", 'route' => ['registration.update', $applicant->id], 'id' => "upload_form"]) !!}
                 @csrf
+                <input type="hidden" name="id" value="{{ $id }}">
                 <div class="card">
                     <div class="panel-container show">
                         <div class="panel-content mt-3">
@@ -85,45 +86,57 @@
                                                     @enderror
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    {{ Form::label('title', 'Gender') }}
+                                                    {{ Form::label('title', 'Gender') }} *
                                                     <select class="form-control gender" name="applicant_gender">
                                                         <option disabled selected>Please select</option>
                                                         @foreach ($gender as $genders)
                                                             <option value="{{ $genders->gender_code }}" {{ $applicant->applicant_gender == $genders->gender_code ? 'selected="Selected"' : ''}}>{{ $genders->gender_name }}</option>
                                                         @endforeach
                                                     </select>
+                                                    @error('applicant_gender')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
                                                 </div>
                                                 <div class="col-md-4 form-group">
                                                     {{ Form::label('title', 'Date of Birth') }}
                                                     {{ Form::date('applicant_dob', isset($applicant->applicant_dob) ? $applicant->applicant_dob : '', ['id' => 'applicant_dob', 'class' => 'form-control']) }}
                                                 </div>
                                                 <div class="col-md-4 form-group">
-                                                    {{ Form::label('title', 'Marital Status') }}
+                                                    {{ Form::label('title', 'Marital Status') }} *
                                                     <select class="form-control marital" name="applicant_marital">
                                                         <option disabled selected>Please select</option>
                                                         @foreach ($marital as $maritals)
                                                             <option value="{{ $maritals->marital_code }}" {{ $applicant->applicant_marital == $maritals->marital_code ? 'selected="Selected"' : ''}}>{{ $maritals->marital_name }}</option>
                                                         @endforeach
                                                     </select>
+                                                    @error('applicant_marital')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
                                                 </div>
                                                 <div class="col-md-4 form-group">
-                                                    {{ Form::label('title', 'Race') }}
+                                                    {{ Form::label('title', 'Race') }} *
                                                     <select class="form-control race" name="applicant_race" id="applicant_race">
                                                         <option disabled selected>Please select</option>
                                                         @foreach ($race as $races)
                                                             <option value="{{ $races->race_code }}" {{ $applicant->applicant_race == $races->race_code ? 'selected="Selected"' : ''}}>{{ $races->race_name }}</option>
                                                         @endforeach
                                                     </select>
+                                                    @error('applicant_race')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
                                                     {{ Form::text('other_race', isset($applicant->other_race) ? $applicant->other_race : '', ['id' => 'other_race', 'class' => 'form-control', 'placeholder' => 'Race', 'readonly' => 'true' ,'onkeyup' => 'this.value = this.value.toUpperCase()']) }}
                                                 </div>
                                                 <div class="col-md-4 form-group">
-                                                    {{ Form::label('title', 'Religion') }}
+                                                    {{ Form::label('title', 'Religion') }} *
                                                     <select class="form-control religion" name="applicant_religion" id="applicant_religion">
                                                         <option disabled selected>Please select</option>
                                                         @foreach ($religion as $religions)
                                                             <option value="{{ $religions->religion_code }}" {{ $applicant->applicant_religion == $religions->religion_code ? 'selected="Selected"' : ''}}>{{ $religions->religion_name }}</option>
                                                         @endforeach
                                                     </select>
+                                                    @error('applicant_religion')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                    @enderror
                                                     {{ Form::text('other_religion', isset($applicant->other_religion) ? $applicant->other_religion : '', ['id' => 'other_religion', 'class' => 'form-control', 'placeholder' => 'Religion', 'readonly' => 'readonly' ,'onkeyup' => 'this.value = this.value.toUpperCase()']) }}
                                                 </div>
                                                 <div class="col-md-12 form-group">
@@ -162,13 +175,11 @@
                                                     @enderror
                                                 </div>
                                                 <div class="col-md-6 form-group">
-                                                    {{ Form::label('title', 'Country') }}
+                                                    {{ Form::label('title', 'Country') }} *
                                                     <select class="form-control country" name="applicant_country">
-                                                        @if (isset($applicant->applicantContactInfo->applicant_country))
-                                                            <option value="{{ $applicant->applicantContactInfo->applicant_country }}">{{ $applicant->applicantContactInfoapplicant_country }}</option>
-                                                        @endif
+                                                        <option disabled selected>Please select</option>
                                                         @foreach($country as $countries)
-                                                            <option value="{{ $countries->country_code }}">{{ $countries->country_name }}</option>
+                                                            <option value="{{ $countries->country_code }}" {{ $applicant->applicantContactInfoapplicant_country == $countries->country_code ? 'selected' : "" }}>{{ $countries->country_name }}</option>
                                                         @endforeach
                                                     </select>
                                                     @error('applicant_country')
@@ -193,12 +204,12 @@
                                                 <div class="col-md-6 form-group">
                                                     {{ Form::label('title', 'Father / Guardian I Relation') }} *
                                                     <select class="form-control relation" name="guardian_one_relationship">
-                                                        @if (isset($applicant->applicantGuardian->guardian_one_relationship))
-                                                            <option value="{{ $applicant->applicantGuardian->guardian_one_relationship }}">{{ $applicant->applicantGuardian->familyOne->family_name }}</option>
+                                                        <option disabled selected {{ !isset($$applicant->applicantGuardian->guardian_one_relationship) ? 'selected' : '' }}>Please Select</option>
+                                                        @if ($family->count())
+                                                            @foreach($family as $families)
+                                                            <option value="{{ $families->family_code }}" {{ (isset($applicant->applicantGuardian->guardian_one_relationship) && $applicant->applicantGuardian->guardian_one_relationship == $families->family_code) ? 'selected' : '' }}>{{ $families->family_name }}</option>
+                                                            @endforeach
                                                         @endif
-                                                        @foreach($family as $families)
-                                                            <option value="{{ $families->family_code }}">{{ $families->family_name }}</option>
-                                                        @endforeach
                                                     </select>
                                                     @error('guardian_one_relationship')
                                                         <p style="color: red">{{ $message }}</p>
@@ -232,12 +243,12 @@
                                                 <div class="col-md-6 form-group">
                                                     {{ Form::label('title', 'Mother / Guardian II Relation') }} *
                                                     <select class="form-control relation" name="guardian_two_relationship">
-                                                        @if (isset($applicant->applicantGuardian->guardian_two_relationship))
-                                                        <option value="{{ $applicant->applicantGuardian->guardian_two_relationship }}">{{ $applicant->applicantGuardian->familyTwo->family_name }}</option>
+                                                        <option disabled selected {{ !isset($$applicant->applicantGuardian->guardian_two_relationship) ? 'selected' : '' }}>Please Select</option>
+                                                        @if ($family->count())
+                                                            @foreach($family as $families)
+                                                            <option value="{{ $families->family_code }}" {{ (isset($applicant->applicantGuardian->guardian_two_relationship) && $applicant->applicantGuardian->guardian_two_relationship == $families->family_code) ? 'selected' : '' }}>{{ $families->family_name }}</option>
+                                                            @endforeach
                                                         @endif
-                                                        @foreach($family as $families)
-                                                        <option value="{{ $families->family_code }}">{{ $families->family_name }}</option>
-                                                        @endforeach
                                                     </select>
                                                     @error('guardian_two_relationship')
                                                         <p style="color: red">{{ $message }}</p>
@@ -321,10 +332,82 @@
                                                 @enderror
                                             </div>
                                         </div>
+                                        @if ($applicant->applicant_nationality == 'MYS')
+                                        <div class="card-footer">
+                                            <a href="#qualification" class="btn btn-primary btn-sm float-right" onclick="navigate('Next')"><i class="fal fa-arrow-alt-from-left"></i> Next</a>
+                                        </div>
+                                        @endif
+                                    </div>
+                                    @if ($applicant->applicant_nationality != 'MYS')
+                                    <div class="card">
+                                        <div class="card-header">Required Document</div>
+                                        <div class="card-body">
+                                            <div class="col-md-12 form-group">
+                                                {{Form::label('title', 'Passport Sized Photograph')}} *
+                                                @isset($international[0])
+                                                <a target="_blank" href="{{ url('international_doc')."/".$international[0]->file_name }}/Download">{{ $international[0]->file_name }}</a>
+                                                @endisset
+                                                {{Form::file('passport_image', ['class' => 'form-control', 'accept' => 'application/pdf,image/png,image/jpg'])}}
+                                                @error('passport_image')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                            <div class="col-md-12 form-group">
+                                                {{Form::label('title', 'Passport')}} *
+                                                @isset($international[1])
+                                                <a target="_blank" href="{{ url('international_doc')."/".$international[1]->file_name }}/Download">{{ $international[1]->file_name }}</a>
+                                                @endisset
+                                                {{Form::file('passport', ['class' => 'form-control', 'accept' => 'application/pdf, image/png, image/jpg'])}}
+                                                @error('passport')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                            <div class="col-md-12 form-group">
+                                                {{Form::label('title', 'Academic Transcript')}} *
+                                                @isset($international[2])
+                                                <a target="_blank" href="{{ url('international_doc')."/".$international[2]->file_name }}/Download"">{{ $international[2]->file_name }}</a>
+                                                @endisset
+                                                {{Form::file('academic_transcript', ['class' => 'form-control', 'accept' => 'application/pdf, image/png, image/jpg'])}}
+                                                @error('academic_transcript')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                            <div class="col-md-12 form-group">
+                                                {{Form::label('title', 'Certificate of Completion')}} *
+                                                @isset($international[3])
+                                                <a target="_blank" href="{{ url('international_doc')."/".$international[3]->file_name }}/Download"">{{ $international[3]->file_name }}</a>
+                                                @endisset
+                                                {{Form::file('cert_completion', ['class' => 'form-control', 'accept' => 'application/pdf, image/png, image/jpg'])}}
+                                                @error('cert_completion')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                            <div class="col-md-12 form-group">
+                                                {{Form::label('title', 'Financial Bank Statement')}} *
+                                                @isset($international[4])
+                                                <a target="_blank" href="{{ url('international_doc')."/".$international[4]->file_name }}/Download"">{{ $international[4]->file_name }}</a>
+                                                @endisset
+                                                {{Form::file('financial_statement', ['class' => 'form-control', 'accept' => 'application/pdf, image/png, image/jpg'])}}
+                                                @error('financial_statement')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                            <div class="col-md-12 form-group">
+                                                {{Form::label('title', 'ACCA Exemption (for ACCA programme)')}}
+                                                @isset($international[5])
+                                                <a target="_blank" href="{{ url('international_doc')."/".$international[5]->file_name }}/Download"">{{ $international[5]->file_name }}</a>
+                                                @endisset
+                                                {{Form::file('acca_exemption', ['class' => 'form-control', 'accept' => 'application/pdf, image/png, image/jpg'])}}
+                                                @error('acca_exemption')
+                                                        <p style="color: red">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                        </div>
                                         <div class="card-footer">
                                             <a href="#qualification" class="btn btn-primary btn-sm float-right" onclick="navigate('Next')"><i class="fal fa-arrow-alt-from-left"></i> Next</a>
                                         </div>
                                     </div>
+                                    @endif
                                 </div>
                                 <div class="tab-pane" id="qualification" role="tabpanel">
                                     <div class="card">
@@ -337,7 +420,7 @@
                                                     <select class="form-control qualification" id="qualificationselect">
                                                         <option disabled selected value="">Please select</option>
                                                         @foreach($qualification as $qualifications)
-                                                        <option value="{{ $qualifications->id }}">{{ $qualifications->qualification_code }}</option>
+                                                            <option value="{{$qualifications->id}}"  {{ $applicant->applicant_qualification == $qualifications->id ? 'selected="selected"' : '' }}>{{$qualifications->qualification_code}}</option>
                                                         @endforeach
                                                     </select>
                                                     <button type="button" class="btn btn-primary btn-sm mt-3 tambah-qualification"><i class="fal fa-plus"></i> Add Qualification</button>
@@ -365,6 +448,7 @@
                                                 </div>
                                             </div>
                                             <h5>Declaration</h5>
+                                            {{-- <input type="checkbox" name="declaration" value="{{ $applicant->declaration == 'on' ? 'checked' : '' }}"> I agree to the term and conditions --}}
                                             <input type="checkbox" name="declaration"> I agree to the term and conditions
                                             @error('declaration')
                                                 <p style="color: red">{{ $message }}</p>
@@ -503,16 +587,14 @@
         var currenturl = window.location.href;
         if(currenturl.indexOf('#') !== -1)
         {
-            console.log('im #')
             $('#app a[href="#' + currenturl.split('#')[1] + '"]').tab('show');
         }
         else
         {
-            console.log('nth')
             $('#app a[href="#details"]').tab('show');
         }
 
-        setInterval(function(){autoSave()},20000);
+        setInterval(function(){autoSave()},2000);
 
     });
 

@@ -114,6 +114,7 @@ Route::post('/new-student', 'PhysicalRegistrationController@newstudent')->name('
 //APPLICANT REGISTRATION
 Route::resource('/registration','RegistrationController');
 Route::patch('update/{id}/{type}','RegistrationController@update');
+Route::get('international_doc/{filename}/{type}','RegistrationController@internationalFile');
 
 Route::get('potentialStudent', 'ApplicantController@potentialStudentEmail');
 // Route::get('/check/{id}','RegistrationController@getUsers');

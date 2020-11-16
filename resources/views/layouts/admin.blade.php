@@ -31,6 +31,11 @@
         <link rel="stylesheet" href="{{ asset('css/formplugins/summernote/summernote.css') }}" >
 
         @yield('css')
+        <style>
+            .highlight{
+                font-weight: bolder;
+            }
+        </style>
     </head>
     <body class="mod-bg-1 ">
         <!-- DOC: script to save and load page settings -->
@@ -140,6 +145,7 @@
                                     <span class="nav-link-text" data-i18n="nav.application_intel">Home</span>
                                 </a>
                             </li>
+
                             <li class="nav-title">Operation</li>
 
                             @role('sales manager|sales executive|admin assistant')
@@ -1028,6 +1034,38 @@
             $('.collapsable-list li a').on('click', function(){
                 $('.collapsable-list').find('a').next().collapse('hide');
                 $(this).next().collapse('toggle');
+            });
+
+            $(function(){
+                $('li a').each(function(x,val)
+                {
+                    var link = $(this).attr('href');
+                    var url = "{{ url()->current() }}";
+                    if( link && url.indexOf(link) !== -1)
+                    {
+                        $(this).addClass('highlight');
+                        $(this).parent().parent().attr('style','display:block');
+                        $(this).parent()
+                        .addClass('open')
+                        .find("a:first")
+                        .attr('aria-expanded', true)
+                        .find("b:first")
+                        .delay(500)
+                        .html(`<em class="fal fa-angle-up"></em>`);
+                    }
+                    else
+                    {
+                        $(this).removeClass('highlight');
+                        // $(this).parent().parent().attr('style','display:none');
+                        $(this).parent()
+                        .removeClass('open')
+                        .find("a:first")
+                        .attr('aria-expanded', false)
+                        .find("b:first")
+                        .delay(500)
+                        .html(`<em class="fal fa-angle-down"></em>`);
+                    }
+                })
             });
         </script>
 
