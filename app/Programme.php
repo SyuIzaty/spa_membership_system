@@ -65,4 +65,9 @@ class Programme extends Model
     {
         $this->belongsTo('App\Lead','leads_prog1', 'leads_prog2', 'leads_prog3');
     }
+
+    public function studPlan()
+    {
+        $this->belongsTo('App\StudyPlan','plan_progs');
+    }
 }

@@ -20,4 +20,9 @@ class Mode extends Model
     {
         return $this->belongsToMany('App\Programme');
     }
+
+    public function studPlan()
+    {
+        return $this->hasMany('App\StudyPlan'); 
+    }
 }

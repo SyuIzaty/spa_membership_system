@@ -207,6 +207,18 @@ Route::post('data-allSource', 'SourceController@data_allSource');
 Route::post('preInfo','CourseController@preInfo');
 Route::post('coInfo','CourseController@coInfo');
 
+//STUDY PLAN
+Route::get('/studyPlan', 'StudyPlanController@studyList');
+Route::post('/st_plan/list', 'StudyPlanController@data_studyPlan_list');  //datatable
+Route::post('createPlan','StudyPlanController@createPlan');
+Route::get('/detailPlan/{id}', 'StudyPlanController@detailPlan')->name('detailPlan');
+Route::post('updateDetail', 'StudyPlanController@updateDetail');
+Route::post('createPlanHeader','StudyPlanController@createPlanHeader');
+Route::delete('deletePlanHeader/{id}', 'StudyPlanController@deletePlanHeader')->name('deletePlanHeader');
+Route::get('/findCourseCr', 'StudyPlanController@findCourseCr');
+Route::post('electiveInfo','StudyPlanController@electiveInfo');
+Route::get('/showPlan/{id}', 'StudyPlanController@showPlan')->name('showPlan');
+
 //OFFER LETTER
 // Route::get('/offer-letter', 'EntryRequirementController@offer');
 

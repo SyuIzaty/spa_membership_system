@@ -504,6 +504,23 @@
                             <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-portrait"></i>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Study Plan</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <li>
+                                            <a href="/studyPlan" title="Study Plan" data-filter-tags="study_plan">
+                                                {{-- <i class="fal fa-book"></i> --}}
+                                                <span class="nav-link-text" data-i18n="nav.study_plan">Plan Management</span>
+                                            </a>
+                                        </li>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="#" title="Application Intel" data-filter-tags="application intel">
+                                    <i class="fal fa-portrait"></i>
                                     <span class="nav-link-text" data-i18n="nav.application_intel">Programme</span>
                                 </a>
                                 <ul>

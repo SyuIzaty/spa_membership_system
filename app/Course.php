@@ -41,4 +41,14 @@ class Course extends Model
     	return $query->where('course_status', 0);
     }
 
+    public function studHd()
+    {
+        $this->belongsTo('App\StudyPlanHeader','std_hd_course');
+    }
+
+    public function studEl()
+    {
+        $this->belongsTo('App\StudyPlanElective','std_elec_course');
+    }
+
 }
