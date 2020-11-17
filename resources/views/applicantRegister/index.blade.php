@@ -53,7 +53,8 @@
                             <div class="col-md-12 p-2 text-center">
                                 Contact our helpdesk:<br>
                                 <span class="font-weight-bold">MARKETING & STUDENT ADMISSION DEPARTMENT</span>
-                                <br>Email: marketing.admission@intec.edu.my<br>Website: <a href="www.intec.edu.my">www.intec.edu.my</a></br>
+                                <br>Email: marketing.admission@intec.edu.my<br>Website: <a href="www.intec.edu.my">www.intec.edu.my</a>
+                                <br>Phone: +603-5522 7267 / 7056 / 7080<br>
                             </div>
                             <div class="col-md-6 p-2 text-right">
                                 <span class="font-weight-bold">Address</span>
@@ -65,7 +66,7 @@
                                 {{-- <p class="font-weight-bold">MARKETING & STUDENT ADMISSION DEPARTMENT</p>
                                 <p class="text-break">INTEC Education College<br>Level 2, Block F<br> Jalan Senangin Satu 17/2A<br> Section 17, 40200 Shah Alam<br> Selangor, MALAYSIA</p> --}}
                                 {{-- <p>Email: marketing.admission@intec.edu.my<br>Website: <a href="www.intec.edu.my">www.intec.edu.my</a></p> --}}
-                                <span class="font-weight-bold">Phone:</span> <br>+603-5522 7267 / 7056 / 7080<br>
+                                
                                 <span class="font-weight-bold">Whatsapp:</span> <br>+6012-264 7657 (Mr. Shurabil) <br> +60 10-566 9143 (Mr. Norshahril) <br>+60 11-1024 0305 (Mr. Norazmin)<br>+60 11-2621 7508 (Ms. Dewi)</p>
                             </div>
                         </div>
