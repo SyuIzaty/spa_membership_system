@@ -4,7 +4,7 @@
     <div class="col-md-12">
         <div class="row">
             <div class="col-md-1"></div>
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="card d-flex align-items-stretch">
                     <div class="card-header">
                         <div class="d-flex justify-content-center">
@@ -31,7 +31,7 @@
                             <div class="p-2">
                                 <h3 class="text-center">UPDATE EXISTING APPLICATION <br> OR <br>CHECK APPLICATION STATUS</h3>
                                 <br>
-                                <p>If you have made application for any INTEC programme before and wish <br>to continue with your application or you wish to check your status for any <br>application , kindly login below.</p>
+                                <p class="text-center">If you have made application for any INTEC programme before and wish to continue with your application or you wish to check your status for any application , kindly login below.</p>
                             </div>
                         </div>
                         {!! Form::open(['action' => 'RegistrationController@search', 'method' => 'GET']) !!}
@@ -48,16 +48,40 @@
                         </div>
                         {!! Form::close() !!}
                     </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-md-12 p-2 text-center">
+                                Contact our helpdesk:<br>
+                                <span class="font-weight-bold">MARKETING & STUDENT ADMISSION DEPARTMENT</span>
+                                <br>Email: marketing.admission@intec.edu.my<br>Website: <a href="www.intec.edu.my">www.intec.edu.my</a></br>
+                            </div>
+                            <div class="col-md-6 p-2 text-right">
+                                <span class="font-weight-bold">Address</span>
+                                <p class="text-break">INTEC Education College<br>Level 2, Block F<br> Jalan Senangin Satu 17/2A<br> Section 17, 40200 Shah Alam<br> Selangor, MALAYSIA</p>
+                                
+                                {{-- <p>Tel: +603-5522 7267 / 7056 / 7080<br> Whatsapp: +6012-264 7657 (Mr. Shurabil) <br> +60 10-566 9143 (Mr. Norshahril) <br>+60 11-1024 0305 (Mr. Norazmin)<br>+60 11-2621 7508 (Ms. Dewi)</p> --}}
+                            </div>
+                            <div class="col-md-6 p-2">
+                                {{-- <p class="font-weight-bold">MARKETING & STUDENT ADMISSION DEPARTMENT</p>
+                                <p class="text-break">INTEC Education College<br>Level 2, Block F<br> Jalan Senangin Satu 17/2A<br> Section 17, 40200 Shah Alam<br> Selangor, MALAYSIA</p> --}}
+                                {{-- <p>Email: marketing.admission@intec.edu.my<br>Website: <a href="www.intec.edu.my">www.intec.edu.my</a></p> --}}
+                                <span class="font-weight-bold">Phone:</span> <br>+603-5522 7267 / 7056 / 7080<br>
+                                <span class="font-weight-bold">Whatsapp:</span> <br>+6012-264 7657 (Mr. Shurabil) <br> +60 10-566 9143 (Mr. Norshahril) <br>+60 11-1024 0305 (Mr. Norazmin)<br>+60 11-2621 7508 (Ms. Dewi)</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <div class="card d-flex align-items-stretch">
-                    <div class="card-header"><div class="p-2"><p class="text-center">APPLICATION PROCEDURE</p></div></div>
+                    <div class="card-header text-center">
+                                <span class="font-weight-bold">APPLICATION PROCEDURE</span>
+                    </div>
                     <div class="card-body">
                         <div class="accordion accordion-outline accordion-hover" id="js_demo_accordion-5">
                             <div class="card">
                                 <div class="card-header">
-                                    <a href="javascript:void(0);" class="card-title collapsed" data-toggle="collapse" data-target="#js_demo_accordion-5a" aria-expanded="false">
+                                    <a href="javascript:void(0);" class="card-title" data-toggle="collapse" data-target="#js_demo_accordion-5a" aria-expanded="true">
                                         APPLICATION PROCEDURES & GUIDELINE FOR LOCAL APPLICANT (MALAYSIAN)
                                         <span class="ml-auto">
                                             <span class="collapsed-reveal">
@@ -69,9 +93,9 @@
                                         </span>
                                     </a>
                                 </div>
-                                <div id="js_demo_accordion-5a" class="collapse" data-parent="#js_demo_accordion-5" style="">
+                                <div id="js_demo_accordion-5a" class="collapse show" data-parent="#js_demo_accordion-5" style="">
                                     <div class="card-body">
-                                        <table class="table table-bordered">
+                                        <table class="table table-bordered table-sm">
                                             <tr>
                                                 <td class="text-nowrap">Step 1:</td>
                                                 <td>Fill the online application form (with accurate information).</td>
@@ -115,7 +139,7 @@
                                 </div>
                                 <div id="js_demo_accordion-5b" class="collapse" data-parent="#js_demo_accordion-5" style="">
                                     <div class="card-body">
-                                        <table class="table table-bordered">
+                                        <table class="table table-bordered table-sm">
                                             <tr>
                                                 <td class="text-nowrap">Step 1:</td>
                                                 <td><p class="text-justify">Fill the online application form (with accurate information)</p><p class="text-justify">Application must be done within <b>8 weeks</b> from the registration date (to ensure ample time for EMGS processing and student pass endorsement).</p></td>
@@ -123,69 +147,69 @@
                                             <tr>
                                                 <td class="text-nowrap">Step 2:</td>
                                                 <td>
-                                                    <p>The processing fee must be made and <br>payable INTEC Education College</p>
+                                                    <p>The processing fee must be made and payable INTEC Education College</p>
                                                     <p class="text-justify">A) For International applicant <b>RESIDING in MALAYSIA</b>, payment can be done as follows:</p>
                                                     <div class="p-2">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <table class="table table-sm table-borderless">
+                                                        {{-- <div class="card"> --}}
+                                                            {{-- <div class="card-body"> --}}
+                                                                <table class="table table-sm table-bordered">
                                                                     <tr>
                                                                         <td>BANK</td>
-                                                                        <td><p class="font-weight-bold">BANK ISLAM MALAYSIA BERHAD</p></td>
+                                                                        <td><span class="font-weight-bold">BANK ISLAM MALAYSIA BERHAD</span></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>ACCOUNT NO</td>
-                                                                        <td><p class="font-weight-bold">12177010005614</p></td>
+                                                                        <td><span class="font-weight-bold">12177010005614</span></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>AMOUNT IN RM</td>
-                                                                        <td><p class="font-weight-bold">RM200.00</p></td>
+                                                                        <td><span class="font-weight-bold">RM200.00</span></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>RECEIVING BANK CONTACT NAME</td>
-                                                                        <td><p class="font-weight-bold">BANK ISLAM MALAYSIA BERHAD</p></td>
+                                                                        <td><span class="font-weight-bold">BANK ISLAM MALAYSIA BERHAD</span></td>
                                                                     </tr>
                                                                 </table>
-                                                            </div>
-                                                        </div>
+                                                            {{-- </div> --}}
+                                                        {{-- </div> --}}
                                                     </div>
                                                     <p style="padding-top: 20px">B) For International applicant <b>NOT RESIDING in MALAYSIA</b>, payment can be done as follows:</p>
                                                     <p class="text-justify">i) To obtain swift code number from the home country bank:</p>
                                                     <div class="p-2">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <table class="table table-sm table-borderless">
+                                                        {{-- <div class="card"> --}}
+                                                            {{-- <div class="card-body"> --}}
+                                                                <table class="table table-sm table-bordered">
                                                                     <tr>
                                                                         <td>Bank</td>
-                                                                        <td><p class="font-weight-bold">BANK ISLAM MALAYSIA BERHAD</p></td>
+                                                                        <td><span class="font-weight-bold">BANK ISLAM MALAYSIA BERHAD</span></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>CITY / STATE OF BANK</td>
-                                                                        <td><p class="font-weight-bold">SHAH ALAM, SELANGOR DARUL EHSAN</p></td>
+                                                                        <td><span class="font-weight-bold">SHAH ALAM, SELANGOR DARUL EHSAN</span></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>SWIFT CODE</td>
-                                                                        <td><p class="font-weight-bold">BIMBMYKL</p></td>
+                                                                        <td><span class="font-weight-bold">BIMBMYKL</span></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>BRANCH CODE</td>
-                                                                        <td><p class="font-weight-bold">118</p></td>
+                                                                        <td><span class="font-weight-bold">118</span></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>ACCOUNT NO</td>
-                                                                        <td><p class="font-weight-bold">12177010005614</p></td>
+                                                                        <td><span class="font-weight-bold">12177010005614</span></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>AMOUNT IN USD</td>
-                                                                        <td><p class="font-weight-bold">USD70.00</p></td>
+                                                                        <td><span class="font-weight-bold">USD70.00</span></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>RECEIVING CONTACT NAME</td>
-                                                                        <td><p class="font-weight-bold">BANK ISLAM MALAYSIA BERHAD</p></td>
+                                                                        <td><span class="font-weight-bold">BANK ISLAM MALAYSIA BERHAD</span></td>
                                                                     </tr>
                                                                 </table>
-                                                            </div>
-                                                        </div>
+                                                            {{-- </div> --}}
+                                                        {{-- </div> --}}
                                                     </div>
                                                     <p class="text-justify"><b>The application only be process after the completed documents and the processing fee is received</b></p>
                                                 </td>
@@ -268,17 +292,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer">
-                        <div class="row">
-                            <div class="col-md-12 p-2 text-center">Contact our helpdesk:</div>
-                            <div class="col-md-12 p-2 text-center">
-                                <p class="font-weight-bold">MARKETING & STUDENT ADMISSION DEPARTMENT</p>
-                                <p class="text-break">INTEC Education College<br>Level 2, Block F<br> Jalan Senangin Satu 17/2A<br> Section 17, 40200 Shah Alam<br> Selangor, MALAYSIA</p>
-                                <p>Email: marketing.admission@intec.edu.my<br>Website: <a href="www.intec.edu.my">www.intec.edu.my</a></p>
-                                <p>Tel: +603-5522 7267 / 7056 / 7080<br> Whatsapp: +6012-264 7657 (Mr. Shurabil) <br> +60 10-566 9143 (Mr. Norshahril) <br>+60 11-1024 0305 (Mr. Norazmin)<br>+60 11-2621 7508 (Ms. Dewi)</p>
-                            </div>
-                        </div>
-                    </div>
+                  
                 </div>
             </div>
         </div>
