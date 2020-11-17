@@ -549,7 +549,7 @@
                                                     <tr>
                                                         <td>{{$alevels->subjects->first()->subject_code}}</td>
                                                         <td>{{$alevels->subjects->first()->subject_name}}</td>
-                                                        <td>{{$alevels->grades->first()->grade_code}}</td>
+                                                        <td>{{$alevels->grades->grade_code}}</td>
                                                     </tr>
                                                 @endforeach
                                                 </table>
@@ -833,8 +833,8 @@
                                                 <tr>
                                                     <td>Major</td>
                                                     <td>{{ $apel->applicant_major }}</td>
-                                                    <td>CGPA</td>
-                                                    <td>{{ $apel->applicant_cgpa }}</td>
+                                                    <td>APEL</td>
+                                                    <td>{{ $apel->grades->grade_point }} </td>
                                                 </tr>
                                                 </table>
                                             @endif

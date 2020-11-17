@@ -51,11 +51,11 @@
                                         </div>
                                         <div class="form-group col-md-6">
                                             {{Form::label('title', 'Application Status Start Date')}}
-                                            {{Form::date('intake_check_open', $intake->intake_app_open, ['class' => 'form-control', 'placeholder' => 'Start Application Date'])}}
+                                            {{Form::date('intake_check_open', $intake->intake_check_open, ['class' => 'form-control', 'placeholder' => 'Start Application Date'])}}
                                         </div>
                                         <div class="form-group col-md-6">
                                             {{Form::label('title', 'Application Status End Date')}}
-                                            {{Form::date('intake_check_close', $intake->intake_app_close, ['class' => 'form-control', 'placeholder' => 'Close Application Date'])}}
+                                            {{Form::date('intake_check_close', $intake->intake_check_close, ['class' => 'form-control', 'placeholder' => 'Close Application Date'])}}
                                         </div>
                                     </div>
                                     {{Form::hidden('_method', 'PUT')}}

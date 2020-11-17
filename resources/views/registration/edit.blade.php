@@ -178,9 +178,11 @@
                                                     {{ Form::label('title', 'Country') }} *
                                                     <select class="form-control country" name="applicant_country">
                                                         <option disabled selected>Please select</option>
-                                                        @foreach($country as $countries)
-                                                            <option value="{{ $countries->country_code }}" {{ $applicant->applicantContactInfoapplicant_country == $countries->country_code ? 'selected' : "" }}>{{ $countries->country_name }}</option>
-                                                        @endforeach
+                                                        @if ($country->count())
+                                                            @foreach($country as $countries)
+                                                                <option value="{{ $countries->country_code }}" {{ (isset($applicant->applicantContactInfo->applicant_country) && $applicant->applicantContactInfo->applicant_country == $countries->country_code) ? 'selected' : '' }}>{{ $countries->country_name }}</option>
+                                                            @endforeach
+                                                        @endif
                                                     </select>
                                                     @error('applicant_country')
                                                         <p style="color: red">{{ $message }}</p>
@@ -594,7 +596,7 @@
             $('#app a[href="#details"]').tab('show');
         }
 
-        setInterval(function(){autoSave()},2000);
+        setInterval(function(){autoSave()},10000);
 
     });
 

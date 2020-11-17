@@ -509,7 +509,7 @@ class RegistrationController extends Controller
                 ];
             }
 
-            if (isset($request->icaew)) {
+            if (isset($request->icaew_cgpa)) {
                 $academic[] = [
                     'id' => $request->exist_icaew,
                     'applicant_id' => $id,

@@ -116,49 +116,47 @@ function addQualification(x,xval,data=null){
                 );
 
                 var fName = $(
-                    '<hr class="mt-2 mb-3">\
-                <div class="row">\
-                    <div class="col-12">\
-                        <h5 class="mb-4">Sijil Pelajaran Malaysia</h5>\
+                    '<div class="card mt-4">\
+                        <div class="card-header">Sijil Pelajaran Malaysia<button type="button" class="btn btn-danger float-right btn-sm mr-2" data-type="qualification" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\</div>\
+                        <div class="card-body">\
+                            <div class="col-md-12">\
+                            <input type="hidden" name="spm_type" class="qualificationtype" value="'+xval+'">\
+                            <table class="table table-bordered" id="spm-table">\
+                                <thead>\
+                                    <th>Subject Name</th>\
+                                    <th>Result</th>\
+                                    <th></th>\
+                                </thead>\
+                                <tr>\
+                                    <td>\
+                                    <input type="hidden" name="exist_spm[]" value="0">\
+                                        <select class="form-control" name="spm_subject[]" required>' +
+                            spmlistarr.toString() +
+                            '</select>\
+                                    </td>\
+                                    <td>\
+                                        <select class="form-control" name="spm_grade_id[]" required>' +
+                            spmgredlistarr.toString() +
+                            '</select>\
+                                    </td>\
+                                    <td>\
+                                        <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-sm float-right remove">\
+                                            Delete\
+                                        </button>\
+                                    </td>\
+                                </tr>\
+                            </table>\
+                            <button type="button" class="btn btn-primary btn-sm float-right" id="addspmrow" onclick="addRowSpm();return false;"><i class="fal fa-plus"></i> Add Subject</button>\
+                        </div>\
+                        </div>\
+                        <div class="card-footer">\
                         <div id="existfile'+xval+'" class="mb-2">\
                         </div>\
                         <input type="hidden" name="filetype[]" value="'+xval+'"/>\
                         <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
                         <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
-                        <button type="button" class="btn btn-primary btn-sm float-right" id="addspmrow" onclick="addRowSpm();return false;"><i class="fal fa-plus"></i> Add Subject</button>\
-                        <button type="button" class="btn btn-danger float-right btn-sm mr-2" data-type="qualification" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
-                    </div>\
-                </div>\
-                <div class="row mt-4">\
-                    <div class="col-md-12">\
-                        <input type="hidden" name="spm_type" class="qualificationtype" value="'+xval+'">\
-                        <table class="table table-bordered" id="spm-table">\
-                            <thead>\
-                                <th>Subject Name</th>\
-                                <th>Result</th>\
-                                <th></th>\
-                            </thead>\
-                            <tr>\
-                                <td>\
-                                <input type="hidden" name="exist_spm[]" value="0">\
-                                    <select class="form-control" name="spm_subject[]" required>' +
-                        spmlistarr.toString() +
-                        '</select>\
-                                </td>\
-                                <td>\
-                                    <select class="form-control" name="spm_grade_id[]" required>' +
-                        spmgredlistarr.toString() +
-                        '</select>\
-                                </td>\
-                                <td>\
-                                    <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-sm float-right remove">\
-                                        Delete\
-                                    </button>\
-                                </td>\
-                            </tr>\
-                        </table>\
-                    </div>\
-                </div>'
+                        </div>\
+                    </div>'
                 );
                 fieldWrapper.append(fName);
                 $(".content").append(fieldWrapper);
@@ -202,49 +200,47 @@ function addQualification(x,xval,data=null){
                 );
 
                 var fName = $(
-                    '<hr class="mt-2 mb-3">\
-                <div class="row">\
-                    <div class="col-12">\
-                        <h5 class="mb-4">UEC</h5>\
-                        <div id="existfile'+xval+'" class="mb-2">\
+                    '<div class="card mt-4">\
+                        <div class="card-header">Unified Examination Certificate <button type="button" class="btn btn-danger float-right btn-sm mr-2" data-type="qualification" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\</div>\
+                        <div class="card-body">\
+                            <div class="col-md-12">\
+                                <input type="hidden" name="uec_type" class="qualificationtype" value="'+xval +'">\
+                                <table class="table table-bordered mt-4" id="uec-table">\
+                                    <thead>\
+                                        <th>Subject Name</th>\
+                                        <th>Result</th>\
+                                        <th></th>\
+                                </thead>\
+                                    <tr>\
+                                        <td>\
+                                        <input type="hidden" name="exist_uec[]" value="0">\
+                                            <select class="form-control" name="uec_subject[]" required>' +
+                                ueclistarr.toString() +
+                                '</select>\
+                                        </td>\
+                                        <td>\
+                                            <select class="form-control" name="uec_grade_id[]" required>' +
+                                uecgredlistarr.toString() +
+                                '</select>\
+                                        </td>\
+                                        <td>\
+                                            <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-sm float-right remove">\
+                                            Delete\
+                                            </button>\
+                                        </td>\
+                                    </tr>\
+                                </table>\
+                                <button class="btn btn-primary float-right btn-sm" id="adduecrow" onclick="addRowUec();return false;"><i class="fal fa-plus"></i> Add Subject</button>\
+                            </div>\
                         </div>\
-                        <input type="hidden" name="filetype[]" value="'+xval+'"/>\
-                        <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
-                        <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
-                        <button class="btn btn-primary float-right btn-sm" id="adduecrow" onclick="addRowUec();return false;"><i class="fal fa-plus"></i> Add Subject</button>\
-                        <button type="button" class="btn btn-danger float-right btn-sm mr-2" data-type="qualification" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
-                    </div>\
-                </div>\
-                <div class="row mt-4">\
-                    <div class="col-md-12">\
-                        <input type="hidden" name="uec_type" class="qualificationtype" value="'+xval +'">\
-                        <table class="table table-bordered" id="uec-table">\
-                            <thead>\
-                                <th>Subject Name</th>\
-                                <th>Result</th>\
-                                <th></th>\
-                        </thead>\
-                            <tr>\
-                                <td>\
-                                <input type="hidden" name="exist_uec[]" value="0">\
-                                    <select class="form-control" name="uec_subject[]" required>' +
-                        ueclistarr.toString() +
-                        '</select>\
-                                </td>\
-                                <td>\
-                                    <select class="form-control" name="uec_grade_id[]" required>' +
-                        uecgredlistarr.toString() +
-                        '</select>\
-                                </td>\
-                                <td>\
-                                    <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-sm float-right remove">\
-                                    Delete\
-                                    </button>\
-                                </td>\
-                            </tr>\
-                        </table>\
-                    </div>\
-                </div>'
+                        <div class="card-footer">\
+                            <div id="existfile'+xval+'" class="mb-2">\
+                            </div>\
+                            <input type="hidden" name="filetype[]" value="'+xval+'"/>\
+                            <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                            <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
+                        </div>\
+                    </div>'
                 );
                 fieldWrapper.append(fName);
                 $(".content").append(fieldWrapper);
@@ -281,49 +277,47 @@ function addQualification(x,xval,data=null){
                 );
 
                 var fName = $(
-                    '<hr class="mt-2 mb-3">\
-                <div class="row">\
-                    <div class="col-12">\
-                        <h5 class="mb-4">Sijil Tinggi Pelajaran Malaysia</h5>\
-                        <div id="existfile'+xval+'" class="mb-2">\
+                    '<div class="card mt-4">\
+                        <div class="card-header">Sijil Tinggi Pelajaran Malaysia <button type="button" class="btn btn-danger btn-sm float-right mr-2" data-type="qualification" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\</div>\
+                        <div class="card-body">\
+                            <div class="col-md-12">\
+                                <input type="hidden" name="stpm_type" class="qualificationtype" value="'+xval +'">\
+                                <table class="table table-bordered" id="stpm-table">\
+                                    <thead>\
+                                        <th>Subject Name</th>\
+                                        <th>Result</th>\
+                                        <th></th>\
+                                </thead>\
+                                    <tr>\
+                                        <td>\
+                                        <input type="hidden" name="exist_stpm[]" value="0">\
+                                            <select class="form-control" name="stpm_subject[]" required>' +
+                                stpmlistarr.toString() +
+                                '</select>\
+                                        </td>\
+                                        <td>\
+                                            <select class="form-control" name="stpm_grade_id[]" required>' +
+                                stpmgredlistarr.toString() +
+                                '</select>\
+                                        </td>\
+                                        <td>\
+                                            <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-sm float-right remove">\
+                                                Delete\
+                                            </button>\
+                                        </td>\
+                                    </tr>\
+                                </table>\
+                                <button class="btn btn-primary btn-sm float-right" id="addstpmrow" onclick="addRowStpm();return false;"><i class="fal fa-plus"></i> Add Subject</button>\
+                            </div>\
                         </div>\
-                        <input type="hidden" name="filetype[]" value="'+xval+'"/>\
-                        <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
-                        <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
-                         <button class="btn btn-primary btn-sm float-right" id="addstpmrow" onclick="addRowStpm();return false;"><i class="fal fa-plus"></i> Add Subject</button>\
-                         <button type="button" class="btn btn-danger btn-sm float-right mr-2" data-type="qualification" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
-                    </div>\
-                </div>\
-                <div class="row mt-4">\
-                    <div class="col-md-12">\
-                        <input type="hidden" name="stpm_type" class="qualificationtype" value="'+xval +'">\
-                        <table class="table table-bordered" id="stpm-table">\
-                            <thead>\
-                                <th>Subject Name</th>\
-                                <th>Result</th>\
-                                <th></th>\
-                        </thead>\
-                            <tr>\
-                                <td>\
-                                <input type="hidden" name="exist_stpm[]" value="0">\
-                                    <select class="form-control" name="stpm_subject[]" required>' +
-                        stpmlistarr.toString() +
-                        '</select>\
-                                </td>\
-                                <td>\
-                                    <select class="form-control" name="stpm_grade_id[]" required>' +
-                        stpmgredlistarr.toString() +
-                        '</select>\
-                                </td>\
-                                <td>\
-                                    <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-sm float-right remove">\
-                                       Delete\
-                                    </button>\
-                                </td>\
-                            </tr>\
-                        </table>\
-                    </div>\
-                </div>'
+                        <div class="card-footer">\
+                            <div id="existfile'+xval+'" class="mb-2">\
+                            </div>\
+                            <input type="hidden" name="filetype[]" value="'+xval+'"/>\
+                            <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                            <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
+                        </div>\
+                    </div>'
                 );
                 fieldWrapper.append(fName);
                 $(".content").append(fieldWrapper);
@@ -360,49 +354,47 @@ function addQualification(x,xval,data=null){
                 );
 
                 var fName = $(
-                    '<hr class="mt-2 mb-3">\
-                <div class="row">\
-                    <div class="col-12">\
-                        <h5 class="mb-4">O Level </h5>\
-                        <div id="existfile'+xval+'" class="mb-2">\
+                    '<div class="card mt-4">\
+                        <div class="card-header">O Level <button type="button" class="btn btn-danger float-right btn-sm mr-2" data-type="qualification" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button></div>\
+                        <div class="card-body">\
+                            <div class="col-md-12">\
+                                <input type="hidden" name="olevel_type" class="qualificationtype" value="'+xval+'">\
+                                <table class="table table-bordered" id="olevel-table">\
+                                    <thead>\
+                                        <th>Subject Name</th>\
+                                        <th>Result</th>\
+                                        <th></th>\
+                                </thead>\
+                                    <tr>\
+                                        <td>\
+                                        <input type="hidden" name="exist_olevel[]" value="0">\
+                                            <select class="form-control" name="olevel_subject[]" required>' +
+                                olevellistarr.toString() +
+                                '</select>\
+                                        </td>\
+                                        <td>\
+                                            <select class="form-control" name="olevel_grade_id[]" required>' +
+                                olevelgredlistarr.toString() +
+                                '</select>\
+                                        </td>\
+                                        <td>\
+                                            <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-sm float-right remove">\
+                                            Delete\
+                                            </button>\
+                                        </td>\
+                                    </tr>\
+                                </table>\
+                                <button class="btn btn-primary float-right btn-sm" id="addolevelrow" onclick="addRowOlevel();return false;"><i class="fal fa-plus"></i> Add Subject</button>\
+                            </div>\
                         </div>\
-                        <input type="hidden" name="filetype[]" value="'+xval+'"/>\
-                        <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
-                        <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
-                        <button class="btn btn-primary float-right btn-sm" id="addolevelrow" onclick="addRowOlevel();return false;"><i class="fal fa-plus"></i> Add Subject</button>\
-                        <button type="button" class="btn btn-danger float-right btn-sm mr-2" data-type="qualification" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
-                    </div>\
-                </div>\
-                <div class="row mt-4">\
-                    <div class="col-md-12">\
-                        <input type="hidden" name="olevel_type" class="qualificationtype" value="'+xval+'">\
-                        <table class="table table-bordered" id="olevel-table">\
-                            <thead>\
-                                <th>Subject Name</th>\
-                                <th>Result</th>\
-                                <th></th>\
-                        </thead>\
-                            <tr>\
-                                <td>\
-                                <input type="hidden" name="exist_olevel[]" value="0">\
-                                    <select class="form-control" name="olevel_subject[]" required>' +
-                        olevellistarr.toString() +
-                        '</select>\
-                                </td>\
-                                <td>\
-                                    <select class="form-control" name="olevel_grade_id[]" required>' +
-                        olevelgredlistarr.toString() +
-                        '</select>\
-                                </td>\
-                                <td>\
-                                    <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-sm float-right remove">\
-                                       Delete\
-                                    </button>\
-                                </td>\
-                            </tr>\
-                        </table>\
-                    </div>\
-                </div>'
+                        <div class="card-footer">\
+                            <div id="existfile'+xval+'" class="mb-2">\
+                            </div>\
+                            <input type="hidden" name="filetype[]" value="'+xval+'"/>\
+                            <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                            <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
+                        </div>\
+                    </div>'
                 );
                 fieldWrapper.append(fName);
                 $(".content").append(fieldWrapper);
@@ -439,49 +431,47 @@ function addQualification(x,xval,data=null){
                 );
 
                 var fName = $(
-                    '<hr class="mt-2 mb-3">\
-                <div class="row">\
-                    <div class="col-12">\
-                        <h5 class="mb-4">A Level</h5>\
-                        <div id="existfile'+xval+'" class="mb-2">\
+                    '<div class="card mt-4">\
+                        <div class="card-header">A Level <button type="button" class="btn btn-danger float-right btn-sm mr-2" data-type="qualification" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button></div>\
+                        <div class="card-body">\
+                            <div class="col-md-12">\
+                                <input type="hidden" name="alevel_type" class="qualificationtype" value="'+xval+'">\
+                                <table class="table table-bordered" id="alevel-table">\
+                                    <thead>\
+                                        <th>Subject Name</th>\
+                                        <th>Result</th>\
+                                        <th></th>\
+                                </thead>\
+                                    <tr>\
+                                        <td>\
+                                        <input type="hidden" name="exist_alevel[]" value="0">\
+                                            <select class="form-control" name="alevel_subject[]" required>' +
+                                alevellistarr.toString() +
+                                '</select>\
+                                        </td>\
+                                        <td>\
+                                            <select class="form-control" name="alevel_grade_id[]" required>' +
+                                alevelgredlistarr.toString() +
+                                '</select>\
+                                        </td>\
+                                        <td>\
+                                            <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-sm float-right remove">\
+                                                Delete\
+                                            </button>\
+                                        </td>\
+                                    </tr>\
+                                </table>\
+                                <button class="btn btn-primary float-right btn-sm" id="addalevelrow" onclick="addRowAlevel();return false;"><i class="fal fa-plus"></i> Add Subject</button>\
+                            </div>\
                         </div>\
-                        <input type="hidden" name="filetype[]" value="'+xval+'"/>\
-                        <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
-                        <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
-                        <button class="btn btn-primary float-right btn-sm" id="addalevelrow" onclick="addRowAlevel();return false;"><i class="fal fa-plus"></i> Add Subject</button>\
-                        <button type="button" class="btn btn-danger float-right btn-sm mr-2" data-type="qualification" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
-                    </div>\
-                </div>\
-                <div class="row mt-4">\
-                    <div class="col-md-12">\
-                        <input type="hidden" name="alevel_type" class="qualificationtype" value="'+xval+'">\
-                        <table class="table table-bordered" id="alevel-table">\
-                            <thead>\
-                                <th>Subject Name</th>\
-                                <th>Result</th>\
-                                <th></th>\
-                        </thead>\
-                            <tr>\
-                                <td>\
-                                <input type="hidden" name="exist_alevel[]" value="0">\
-                                    <select class="form-control" name="alevel_subject[]" required>' +
-                        alevellistarr.toString() +
-                        '</select>\
-                                </td>\
-                                <td>\
-                                    <select class="form-control" name="alevel_grade_id[]" required>' +
-                        alevelgredlistarr.toString() +
-                        '</select>\
-                                </td>\
-                                <td>\
-                                    <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-sm float-right remove">\
-                                       Delete\
-                                    </button>\
-                                </td>\
-                            </tr>\
-                        </table>\
-                    </div>\
-                </div>'
+                        <div class="card-footer">\
+                            <div id="existfile'+xval+'" class="mb-2">\
+                            </div>\
+                            <input type="hidden" name="filetype[]" value="'+xval+'"/>\
+                            <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                            <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
+                        </div>\
+                    </div>'
                 );
                 fieldWrapper.append(fName);
                 $(".content").append(fieldWrapper);
@@ -518,49 +508,47 @@ function addQualification(x,xval,data=null){
                 );
 
                 var fName = $(
-                    '<hr class="mt-2 mb-3">\
-                <div class="row">\
-                    <div class="col-12">\
-                        <h5 class="mb-4">Sijil Tinggi Agama Malaysia </h5>\
-                        <div id="existfile'+xval+'" class="mb-2">\
+                    '<div class="card mt-4">\
+                        <div class="card-header">Sijil Tinggi Agama Malaysia <button type="button" class="btn btn-danger float-right btn-sm mr-2" data-type="qualification" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button></div>\
+                        <div class="card-body">\
+                            <div class=""col-md-12>\
+                                <input type="hidden" name="stam_type" class="qualificationtype" value="' +xval +'">\
+                                <table class="table table-bordered" id="stam-table">\
+                                    <thead>\
+                                        <th>Subject Name</th>\
+                                        <th>Result</th>\
+                                        <th></th>\
+                                </thead>\
+                                    <tr>\
+                                        <td>\
+                                        <input type="hidden" name="exist_stam[]" value="0">\
+                                            <select class="form-control" name="stam_subject[]" required>' +
+                                stamlistarr.toString() +
+                                '</select>\
+                                        </td>\
+                                        <td>\
+                                            <select class="form-control" name="stam_grade_id[]" required>' +
+                                stamgredlistarr.toString() +
+                                '</select>\
+                                        </td>\
+                                        <td>\
+                                            <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-sm float-right remove">\
+                                                Delete\
+                                            </button>\
+                                        </td>\
+                                    </tr>\
+                                </table>\
+                            </div>\
                         </div>\
-                        <input type="hidden" name="filetype[]" value="'+xval+'"/>\
-                        <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
-                        <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
-                        <button class="btn btn-primary float-right btn-sm" id="addstamrow" onclick="addRowStam();return false;"><i class="fal fa-plus"></i> Add Subject</button>\
-                        <button type="button" class="btn btn-danger float-right btn-sm mr-2" data-type="qualification" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
-                    </div>\
-                </div>\
-                <div class="row mt-4">\
-                    <div class="col-md-12">\
-                        <input type="hidden" name="stam_type" class="qualificationtype" value="' +xval +'">\
-                        <table class="table table-bordered" id="stam-table">\
-                            <thead>\
-                                <th>Subject Name</th>\
-                                <th>Result</th>\
-                                <th></th>\
-                        </thead>\
-                            <tr>\
-                                <td>\
-                                <input type="hidden" name="exist_stam[]" value="0">\
-                                    <select class="form-control" name="stam_subject[]" required>' +
-                        stamlistarr.toString() +
-                        '</select>\
-                                </td>\
-                                <td>\
-                                    <select class="form-control" name="stam_grade_id[]" required>' +
-                        stamgredlistarr.toString() +
-                        '</select>\
-                                </td>\
-                                <td>\
-                                   <button value="-" data-type="result" onclick="Delete(this,'+myid+')" class="btn btn-danger btn-sm float-right remove">\
-                                       Delete\
-                                    </button>\
-                                </td>\
-                            </tr>\
-                        </table>\
-                    </div>\
-                </div>'
+                        <div class="card-footer">\
+                            <div id="existfile'+xval+'" class="mb-2">\
+                            </div>\
+                            <input type="hidden" name="filetype[]" value="'+xval+'"/>\
+                            <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                            <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
+                            <button class="btn btn-primary float-right btn-sm" id="addstamrow" onclick="addRowStam();return false;"><i class="fal fa-plus"></i> Add Subject</button>\
+                        </div>\
+                    </div>'
                 );
                 fieldWrapper.append(fName);
                 $(".content").append(fieldWrapper);
@@ -575,43 +563,42 @@ function addQualification(x,xval,data=null){
                     '<div class="fieldwrapper bachelor-field" id="bachelor-field"/>'
                 );
                 var fName = $(
-                    '<hr class="mt-2 mb-3"><div class="row">\
-                    <div class="col-12">\
-                    <h5 class="mb-4">Bachelor Degree </h5>\
-                    <div id="existfile'+xval+'" class="mb-2">\
-                    </div>\
-                    <input type="hidden" name="filetype[]" value="'+xval+'"/>\
-                    <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
-                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
-                    <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
-                    </div>\
-                </div>\
-                <div class="row mt-4">\
-                    <div class="col-md-12">\
-                    <input type="hidden" name="bachelor_type" class="qualificationtype" value="' +xval +'">\
-                        <table class="table table-bordered" id="bachelor-table">\
-                            <tr>\
-                                <td>University / College *</td>\
-                                <td colspan="3">\
-                                <input type="text" class="form-control" name="bachelor_study" value="'+mystudy+'" placeholder="University / College" required onkeyup="this.value = this.value.toUpperCase();">\
-                                <input type="hidden" name="exist_bachelor" value="'+myid+'">\
-                                </td>\
-                            </tr>\
-                            <tr>\
-                                <td>Program</td>\
-                                <td colspan="3"><input type="text" class="form-control" value="'+mymajor+'" name="bachelor_major" placeholder="Ex: Bachelor in Accounting" onkeyup="this.value = this.value.toUpperCase();"></td>\
-                            </tr>\
-                            <tr>\
-                                <td>Graduation Year</td>\
-                                <td><input type="text" class="form-control" value="'+myyear+'" name="bachelor_year"></td>\
-                                <td>CGPA</td>\
-                                <td>\
-                                    <input type="text" class="form-control" placeholder="CGPA" value="'+mycgpa+'" name="bachelor_cgpa" id="" required>\
-                                </td>\
-                            </tr>\
-                        </table>\
-                    </div>\
-                </div>'
+                    '<div class="card mt-4">\
+                        <div class="card-header">Bachelor Degree <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button></div>\
+                        <div class="card-body">\
+                            <div class="col-md-12">\
+                                <input type="hidden" name="bachelor_type" class="qualificationtype" value="' +xval +'">\
+                                <table class="table table-bordered" id="bachelor-table">\
+                                    <tr>\
+                                        <td>University / College *</td>\
+                                        <td colspan="3">\
+                                        <input type="text" class="form-control" name="bachelor_study" value="'+mystudy+'" placeholder="University / College" required onkeyup="this.value = this.value.toUpperCase();">\
+                                        <input type="hidden" name="exist_bachelor" value="'+myid+'">\
+                                        </td>\
+                                    </tr>\
+                                    <tr>\
+                                        <td>Program</td>\
+                                        <td colspan="3"><input type="text" class="form-control" value="'+mymajor+'" name="bachelor_major" placeholder="Ex: Bachelor in Accounting" onkeyup="this.value = this.value.toUpperCase();"></td>\
+                                    </tr>\
+                                    <tr>\
+                                        <td>Graduation Year</td>\
+                                        <td><input type="text" class="form-control" value="'+myyear+'" name="bachelor_year"></td>\
+                                        <td>CGPA</td>\
+                                        <td>\
+                                            <input type="text" class="form-control" placeholder="CGPA" value="'+mycgpa+'" name="bachelor_cgpa" id="" required>\
+                                        </td>\
+                                    </tr>\
+                                </table>\
+                            </div>\
+                        </div>\
+                        <div class="card-footer">\
+                            <div id="existfile'+xval+'" class="mb-2">\
+                            </div>\
+                            <input type="hidden" name="filetype[]" value="'+xval+'"/>\
+                            <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                            <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
+                        </div>\
+                    </div>'
                 );
                 fieldWrapper.append(fName);
                 $(".content").append(fieldWrapper);
@@ -626,41 +613,41 @@ function addQualification(x,xval,data=null){
                     '<div class="fieldwrapper diploma-field" id="diploma-field"/>'
                 );
                 var fName = $(
-                    '<hr class="mt-2 mb-3"><div class="row">\
-                    <div class="col-12">\
-                    <h5 class="mb-4">Diploma </h5>\
-                    <div id="existfile'+xval+'"class="mb-2">\
-                    </div>\
-                    <input type="hidden" name="filetype[]" value="'+xval+'"/>\
-                    <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
-                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
-                    <button type="button" class="btn btn-danger float-right btn-sm" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
-                    </div>\
-                </div>\
-                <div class="row mt-4">\
-                    <div class="col-md-12">\
-                    <input type="hidden" name="diploma_type" class="qualificationtype" value="' + xval + '">\
-                        <table class="table table-bordered" id="diploma-table">\
-                            <tr>\
-                                <td>University / College</td>\
-                                <td colspan="3">\
-                                <input type="text" class="form-control" name="diploma_study" value="'+mystudy+'" required placeholder="University / College" onkeyup="this.value = this.value.toUpperCase();">\
-                                <input type="hidden" name="exist_diploma" value="'+myid+'">\
-                                </td>\
-                            </tr>\
-                            <tr>\
-                                <td>Program</td>\
-                                <td colspan="3"><input type="text" class="form-control" name="diploma_major" value="'+mymajor+'" placeholder="Ex: Diploma in Accounting" onkeyup="this.value = this.value.toUpperCase();" required ></td>\
-                            </tr>\
-                            <tr>\
-                            <td>Graduation Year</td>\
-                            <td><input type="text" class="form-control" name="diploma_year" value="'+myyear+'" placeholder="Graduation Year" required></td>\
-                            <td>CGPA</td>\
-                            <td><input type="text" class="form-control" placeholder="CGPA" name="diploma_cgpa" value="'+mycgpa+'" id="" required></td>\
-                            </tr>\
-                        </table>\
-                    </div>\
-                </div>'
+                    '<div class="card mt-4">\
+                        <div class="card-header">Diploma <button type="button" class="btn btn-danger float-right btn-sm" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button></div>\
+                        <div class="card-body">\
+                            <div class="col-md-12">\
+                                <input type="hidden" name="diploma_type" class="qualificationtype" value="' + xval + '">\
+                                <table class="table table-bordered" id="diploma-table">\
+                                    <tr>\
+                                        <td>University / College</td>\
+                                        <td colspan="3">\
+                                        <input type="text" class="form-control" name="diploma_study" value="'+mystudy+'" required placeholder="University / College" onkeyup="this.value = this.value.toUpperCase();">\
+                                        <input type="hidden" name="exist_diploma" value="'+myid+'">\
+                                        </td>\
+                                    </tr>\
+                                    <tr>\
+                                        <td>Program</td>\
+                                        <td colspan="3"><input type="text" class="form-control" name="diploma_major" value="'+mymajor+'" placeholder="Ex: Diploma in Accounting" onkeyup="this.value = this.value.toUpperCase();" required ></td>\
+                                    </tr>\
+                                    <tr>\
+                                    <td>Graduation Year</td>\
+                                    <td><input type="text" class="form-control" name="diploma_year" value="'+myyear+'" placeholder="Graduation Year" required></td>\
+                                    <td>CGPA</td>\
+                                    <td><input type="text" class="form-control" placeholder="CGPA" name="diploma_cgpa" value="'+mycgpa+'" id="" required></td>\
+                                    </tr>\
+                                </table>\
+                                </div>\
+                            </div>\
+                        </div>\
+                        <div class="card-footer">\
+                            <div id="existfile'+xval+'"class="mb-2">\
+                            </div>\
+                            <input type="hidden" name="filetype[]" value="'+xval+'"/>\
+                            <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                            <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
+                        </div>\
+                    </div>'
                 );
                 fieldWrapper.append(fName);
                 $(".content").append(fieldWrapper);
@@ -675,41 +662,40 @@ function addQualification(x,xval,data=null){
                     '<div class="fieldwrapper svm-field" id="svm-field"/>'
                 );
                 var fName = $(
-                    '<hr class="mt-2 mb-3"><div class="row">\
-                    <div class="col-12">\
-                    <h5 class="mb-4">Sijil Vokasional Malaysia </h5>\
-                    <div id="existfile'+xval+'"class="mb-2">\
-                    </div>\
-                    <input type="hidden" name="filetype[]" value="'+xval+'"/>\
-                    <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
-                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
-                    <button type="button" class="btn btn-danger float-right btn-sm" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
-                    </div>\
-                </div>\
-                <div class="row mt-4">\
-                    <div class="col-md-12">\
-                    <input type="hidden" name="svm_type" class="qualificationtype" value="' + xval + '">\
-                        <table class="table table-bordered" id="svm-table">\
-                            <tr>\
-                                <td>University / College</td>\
-                                <td colspan="3">\
-                                <input type="text" class="form-control" name="svm_study" value="'+mystudy+'" required placeholder="University / College" onkeyup="this.value = this.value.toUpperCase();">\
-                                <input type="hidden" name="exist_svm" value="'+myid+'">\
-                                </td>\
-                            </tr>\
-                            <tr>\
-                                <td>Course</td>\
-                                <td colspan="3"><input type="text" class="form-control" name="svm_major" value="'+mymajor+'" placeholder="Course" onkeyup="this.value = this.value.toUpperCase();" required ></td>\
-                            </tr>\
-                            <tr>\
-                            <td>Graduation Year</td>\
-                            <td><input type="text" class="form-control" name="svm_year" value="'+myyear+'" placeholder="Graduation Year" required></td>\
-                            <td>CGPA</td>\
-                            <td><input type="text" class="form-control" placeholder="CGPA" name="svm_cgpa" value="'+mycgpa+'" id="" required></td>\
-                            </tr>\
-                        </table>\
-                    </div>\
-                </div>'
+                    '<div class="card mt-4">\
+                        <div class="card-header">Sijil Vokasional Malaysia <button type="button" class="btn btn-danger float-right btn-sm" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button></div>\
+                        <div class="card-body">\
+                            <div class="col-md-12">\
+                                <input type="hidden" name="svm_type" class="qualificationtype" value="' + xval + '">\
+                                <table class="table table-bordered" id="svm-table">\
+                                    <tr>\
+                                        <td>University / College</td>\
+                                        <td colspan="3">\
+                                        <input type="text" class="form-control" name="svm_study" value="'+mystudy+'" required placeholder="University / College" onkeyup="this.value = this.value.toUpperCase();">\
+                                        <input type="hidden" name="exist_svm" value="'+myid+'">\
+                                        </td>\
+                                    </tr>\
+                                    <tr>\
+                                        <td>Course</td>\
+                                        <td colspan="3"><input type="text" class="form-control" name="svm_major" value="'+mymajor+'" placeholder="Course" onkeyup="this.value = this.value.toUpperCase();" required ></td>\
+                                    </tr>\
+                                    <tr>\
+                                    <td>Graduation Year</td>\
+                                    <td><input type="text" class="form-control" name="svm_year" value="'+myyear+'" placeholder="Graduation Year" required></td>\
+                                    <td>CGPA</td>\
+                                    <td><input type="text" class="form-control" placeholder="CGPA" name="svm_cgpa" value="'+mycgpa+'" id="" required></td>\
+                                    </tr>\
+                                </table>\
+                            </div>\
+                        </div>\
+                        <div class="card-footer">\
+                            <div id="existfile'+xval+'"class="mb-2">\
+                            </div>\
+                            <input type="hidden" name="filetype[]" value="'+xval+'"/>\
+                            <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                            <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
+                        </div>\
+                    </div>'
                 );
                 fieldWrapper.append(fName);
                 $(".content").append(fieldWrapper);
@@ -729,43 +715,42 @@ function addQualification(x,xval,data=null){
                 });
 
                 var fName = $(
-                    '<hr class="mt-2 mb-3"><div class="row">\
-                    <div class="col-12">\
-                    <h5 class="mb-4">Accreditation of Prior Experiental Learning </h5>\
-                    <div id="existfile'+xval+'"class="mb-2">\
-                    </div>\
-                    <input type="hidden" name="filetype[]" value="'+xval+'"/>\
-                    <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
-                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
-                    <button type="button" class="btn btn-danger float-right btn-sm" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
-                    </div>\
-                </div>\
-                <div class="row mt-4">\
-                    <div class="col-md-12">\
-                    <input type="hidden" name="apel_type" class="qualificationtype" value="' + xval + '">\
-                        <table class="table table-bordered" id="svm-table">\
-                            <tr>\
-                                <td>University / College</td>\
-                                <td colspan="3">\
-                                <input type="text" class="form-control" name="apel_study" value="'+mystudy+'" required placeholder="University / College" onkeyup="this.value = this.value.toUpperCase();">\
-                                <input type="hidden" name="exist_apel" value="'+myid+'">\
-                                </td>\
-                            </tr>\
-                            <tr>\
-                                <td>Course</td>\
-                                <td colspan="3"><input type="text" class="form-control" name="apel_major" value="'+mymajor+'" placeholder="Course" onkeyup="this.value = this.value.toUpperCase();" required ></td>\
-                            </tr>\
-                            <tr>\
-                            <td>APEL T</td>\
-                            <td>\
-                            <select class="form-control" name="apel_cgpa" id="apel_cgpa">\
-                            '+apelGrade+'\
-                            </select>\
-                            </td>\
-                            </tr>\
-                        </table>\
-                    </div>\
-                </div>'
+                    '<div class="card mt-4">\
+                        <div class="card-header">Accreditation of Prior Experiental Learning <button type="button" class="btn btn-danger float-right btn-sm" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button></div>\
+                        <div class="card-body">\
+                            <div class="col-md-12">\
+                                <input type="hidden" name="apel_type" class="qualificationtype" value="' + xval + '">\
+                                <table class="table table-bordered" id="svm-table">\
+                                    <tr>\
+                                        <td>University / College</td>\
+                                        <td colspan="3">\
+                                        <input type="text" class="form-control" name="apel_study" value="'+mystudy+'" required placeholder="University / College" onkeyup="this.value = this.value.toUpperCase();">\
+                                        <input type="hidden" name="exist_apel" value="'+myid+'">\
+                                        </td>\
+                                    </tr>\
+                                    <tr>\
+                                        <td>Course</td>\
+                                        <td colspan="3"><input type="text" class="form-control" name="apel_major" value="'+mymajor+'" placeholder="Course" onkeyup="this.value = this.value.toUpperCase();" required ></td>\
+                                    </tr>\
+                                    <tr>\
+                                        <td>APEL T</td>\
+                                        <td>\
+                                        <select class="form-control" name="apel_cgpa" id="apel_cgpa">\
+                                        '+apelGrade+'\
+                                        </select>\
+                                        </td>\
+                                    </tr>\
+                                </table>\
+                            </div>\
+                        </div>\
+                        <div class="card-footer">\
+                            <div id="existfile'+xval+'"class="mb-2">\
+                            </div>\
+                            <input type="hidden" name="filetype[]" value="'+xval+'"/>\
+                            <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                            <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
+                        </div>\
+                    </div>'
                 );
                 fieldWrapper.append(fName);
                 $(".content").append(fieldWrapper);
@@ -781,39 +766,38 @@ function addQualification(x,xval,data=null){
                     '<div class="fieldwrapper matriculation-field" id="matriculation-field"/>'
                 );
                 var fName = $(
-                    '<hr class="mt-2 mb-3"><div class="row">\
-                    <div class="col-12">\
-                    <h5 class="mb-4">Matriculation </h5>\
-                    <div id="existfile'+xval+'" class="mb-2">\
-                    </div>\
-                    <input type="hidden" name="filetype[]" value="'+xval+'"/>\
-                    <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
-                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
-                    <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
-                    </div>\
-                </div>\
-                <div class="row mt-4">\
-                <div class="col-md-12">\
-                <input type="hidden" name="matriculation_type" class="qualificationtype" value="' + xval + '">\
-                        <table class="table table-bordered" id="matriculation-table">\
-                            <tr>\
-                                <td>Kolej Matrikulasi *</td>\
-                                <td colspan="3">\
-                                <input type="text" class="form-control" name="matriculation_study" value="'+mystudy+'" required placeholder="Kolej Matrikulasi" onkeyup="this.value = this.value.toUpperCase();">\
-                                <input type="hidden" name="exist_matriculation" value="'+myid+'">\
-                                </td>\
-                            </tr>\
-                            <tr>\
-                                <td>Graduation Year</td>\
-                                <td><input type="text" class="form-control" value="'+myyear+'" name="matriculation_year"></td>\
-                                <td>CGPA</td>\
-                                <td>\
-                                <input type="text" class="form-control" placeholder="CGPA" value="'+mycgpa+'" name="matriculation_cgpa" id="" required>\
-                                </td>\
-                            </tr>\
-                        </table>\
-                    </div>\
-                </div>'
+                    '<div class="card">\
+                        <div class="card-header">Matriculation</div>\
+                        <div class="card-body">\
+                            <div class="col-md-12">\
+                                <input type="hidden" name="matriculation_type" class="qualificationtype" value="' + xval + '">\
+                                <table class="table table-bordered" id="matriculation-table">\
+                                    <tr>\
+                                        <td>Kolej Matrikulasi *</td>\
+                                        <td colspan="3">\
+                                        <input type="text" class="form-control" name="matriculation_study" value="'+mystudy+'" required placeholder="Kolej Matrikulasi" onkeyup="this.value = this.value.toUpperCase();">\
+                                        <input type="hidden" name="exist_matriculation" value="'+myid+'">\
+                                        </td>\
+                                    </tr>\
+                                    <tr>\
+                                        <td>Graduation Year</td>\
+                                        <td><input type="text" class="form-control" value="'+myyear+'" name="matriculation_year"></td>\
+                                        <td>CGPA</td>\
+                                        <td>\
+                                        <input type="text" class="form-control" placeholder="CGPA" value="'+mycgpa+'" name="matriculation_cgpa" id="" required>\
+                                        </td>\
+                                    </tr>\
+                                </table>\
+                            </div>\
+                        </div>\
+                        <div class="card-footer">\
+                            <div id="existfile'+xval+'" class="mb-2">\
+                            </div>\
+                            <input type="hidden" name="filetype[]" value="'+xval+'"/>\
+                            <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                            <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
+                        </div>\
+                    </div>'
                 );
                 fieldWrapper.append(fName);
                 $(".content").append(fieldWrapper);
@@ -828,33 +812,32 @@ function addQualification(x,xval,data=null){
                     '<div class="fieldwrapper muet-field" id="muet-field"/>'
                 );
                 var fName = $(
-                    '<hr class="mt-2 mb-3"><div class="row">\
-                    <div class="col-12">\
-                    <h5 class="mb-4">MUET </h5>\
-                    <div id="existfile'+xval+'" class="mb-2">\
-                    </div>\
-                    <input type="hidden" name="filetype[]" value="'+xval+'"/>\
-                    <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
-                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
-                    <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
-                    </div>\
-                </div>\
-                <div class="row mt-4">\
-                <div class="col-md-12">\
-                <input type="hidden" name="muet_type" class="qualificationtype" value="' + xval +'">\
-                        <table class="table table-bordered" id="muet-table">\
-                            <thead>\
-                                <th>MUET</th>\
-                            </thead>\
-                            <tr>\
-                                <td>\
-                                <input type="hidden" name="exist_muet" value="'+myid+'">\
-                                    <input type="text" class="form-control" placeholder="MUET BAND" value="'+mycgpa+'" name="muet_cgpa" id="" required>\
-                                </td>\
-                            </tr>\
-                        </table>\
-                    </div>\
-                </div>'
+                    '<div class="card mt-4">\
+                        <div class="card-header">Malaysian University English Test (MUET) <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button></div>\
+                        <div class="card-body">\
+                            <div class="col-md-12">\
+                                <input type="hidden" name="muet_type" class="qualificationtype" value="' + xval +'">\
+                                <table class="table table-bordered" id="muet-table">\
+                                    <thead>\
+                                        <th>MUET</th>\
+                                    </thead>\
+                                    <tr>\
+                                        <td>\
+                                        <input type="hidden" name="exist_muet" value="'+myid+'">\
+                                            <input type="text" class="form-control" placeholder="MUET BAND" value="'+mycgpa+'" name="muet_cgpa" id="" required>\
+                                        </td>\
+                                    </tr>\
+                                </table>\
+                            </div>\
+                        </div>\
+                        <div class="card-footer">\
+                            <div id="existfile'+xval+'" class="mb-2">\
+                            </div>\
+                            <input type="hidden" name="filetype[]" value="'+xval+'"/>\
+                            <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                            <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
+                        </div>\
+                    </div>'
                 );
                 fieldWrapper.append(fName);
                 $(".content").append(fieldWrapper);
@@ -869,33 +852,32 @@ function addQualification(x,xval,data=null){
                     '<div class="fieldwrapper skm-field" id="skm-field"/>'
                 );
                 var fName = $(
-                    '<hr class="mt-2 mb-3"><div class="row">\
-                    <div class="col-12">\
-                    <h5 class="mb-4">Sijil Kemahiran Malaysia </h5>\
-                    <div id="existfile'+xval+'" class="mb-2">\
-                    </div>\
-                    <input type="hidden" name="filetype[]" value="'+xval+'"/>\
-                    <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
-                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
-                    <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
-                    </div>\
-                </div>\
-                <div class="row mt-4">\
-                    <div class="col-md-12">\
-                    <input type="hidden" name="skm_type" class="qualificationtype" value="' + xval + '">\
-                        <table class="table table-bordered" id="skm-table">\
-                            <thead>\
-                                <th>SKM Level</th>\
-                            </thead>\
-                            <tr>\
-                                <td>\
-                                <input type="hidden" name="exist_skm" value="'+myid+'">\
-                                    <input type="text" class="form-control" placeholder="SkM Level" value="'+mycgpa+'" name="skm_cgpa" id="" required>\
-                                </td>\
-                            </tr>\
-                        </table>\
-                    </div>\
-                </div>'
+                    '<div class="card mt-4">\
+                        <div class="card-header">\Sijil Kemahiran Malaysia <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button></div>\
+                        <div class="card-body">\
+                            <div class="col-md-12">\
+                                <input type="hidden" name="skm_type" class="qualificationtype" value="' + xval + '">\
+                                <table class="table table-bordered" id="skm-table">\
+                                    <thead>\
+                                        <th>SKM Level</th>\
+                                    </thead>\
+                                    <tr>\
+                                        <td>\
+                                        <input type="hidden" name="exist_skm" value="'+myid+'">\
+                                            <input type="text" class="form-control" placeholder="SkM Level" value="'+mycgpa+'" name="skm_cgpa" id="" required>\
+                                        </td>\
+                                    </tr>\
+                                </table>\
+                            </div>\
+                        </div>\
+                        <div class="card-footer">\
+                            <div id="existfile'+xval+'" class="mb-2">\
+                            </div>\
+                            <input type="hidden" name="filetype[]" value="'+xval+'"/>\
+                            <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                            <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
+                        </div>\
+                    </div>'
                 );
                 fieldWrapper.append(fName);
                 $(".content").append(fieldWrapper);
@@ -910,33 +892,32 @@ function addQualification(x,xval,data=null){
                     '<div class="fieldwrapper mqf-field" id="mqf-field"/>'
                 );
                 var fName = $(
-                    '<hr class="mt-2 mb-3"><div class="row">\
-                    <div class="col-12">\
-                    <h5 class="mb-4">MQF </h5>\
-                    <div id="existfile'+xval+'" class="mb-2">\
-                    </div>\
-                    <input type="hidden" name="filetype[]" value="'+xval+'"/>\
-                    <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
-                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
-                    <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
-                    </div>\
-                </div>\
-                <div class="row mt-4">\
-                    <div class="col-md-12">\
-                    <input type="hidden" name="mqf_type" class="qualificationtype" value="' + xval + '">\
-                        <table class="table table-bordered" id="mqf-table">\
-                            <thead>\
-                                <th>MQF Level</th>\
-                            </thead>\
-                            <tr>\
-                                <td>\
-                                <input type="hidden" name="exist_mqf" value="'+myid+'">\
-                                    <input type="text" class="form-control" placeholder="MQF Level" value="'+mycgpa+'" name="mqf_cgpa" id="" required>\
-                                </td>\
-                            </tr>\
-                        </table>\
-                    </div>\
-                </div>'
+                    '<div class="card mt-4">\
+                        <div class="card-header">MQF <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\</div>\
+                        <div class="card-body">\
+                            <div class="col-md-12">\
+                                <input type="hidden" name="mqf_type" class="qualificationtype" value="' + xval + '">\
+                                <table class="table table-bordered" id="mqf-table">\
+                                    <thead>\
+                                        <th>MQF Level</th>\
+                                    </thead>\
+                                    <tr>\
+                                        <td>\
+                                        <input type="hidden" name="exist_mqf" value="'+myid+'">\
+                                            <input type="text" class="form-control" placeholder="MQF Level" value="'+mycgpa+'" name="mqf_cgpa" id="" required>\
+                                        </td>\
+                                    </tr>\
+                                </table>\
+                            </div>\
+                        </div>\
+                        <div class="card-footer">\
+                            <div id="existfile'+xval+'" class="mb-2">\
+                            </div>\
+                            <input type="hidden" name="filetype[]" value="'+xval+'"/>\
+                            <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                            <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
+                        </div>\
+                    </div>'
                 );
                 fieldWrapper.append(fName);
                 $(".content").append(fieldWrapper);
@@ -992,33 +973,32 @@ function addQualification(x,xval,data=null){
                     '<div class="fieldwrapper icaew-field" id="icaew-field"/>'
                 );
                 var fName = $(
-                    '<hr class="mt-2 mb-3"><div class="row">\
-                    <div class="col-12">\
-                    <h5 class="mb-4">ICAEW </h5>\
-                    <div id="existfile'+xval+'" class="mb-2">\
-                    </div>\
-                    <input type="hidden" name="filetype[]" value="'+xval+'"/>\
-                    <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
-                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
-                    <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
-                    </div>\
-                </div>\
-                <div class="row mt-4">\
-                    <div class="col-md-12">\
-                    <input type="hidden" name="icaew_type" class="qualificationtype" value="' + xval +'">\
-                        <table class="table table-bordered" id="icaew-table">\
-                            <thead>\
-                                <th>ICAEW</th>\
-                            </thead>\
-                            <tr>\
-                                <td>\
-                                <input type="hidden" name="exist_icaew" value="'+myid+'">\
-                                    <input type="text" class="form-control" placeholder="ICAEW" value="'+mycgpa+'" name="icaew_cgpa" id="" required>\
-                                </td>\
-                            </tr>\
-                        </table>\
-                    </div>\
-                </div>'
+                    '<div class="card mt-4">\
+                        <div class="card-header">ICAEW <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button></div>\
+                        <div class="card-body">\
+                            <div class="col-md-12">\
+                                <input type="hidden" name="icaew_type" class="qualificationtype" value="' + xval +'">\
+                                <table class="table table-bordered" id="icaew-table">\
+                                    <thead>\
+                                        <th>ICAEW</th>\
+                                    </thead>\
+                                    <tr>\
+                                        <td>\
+                                        <input type="hidden" name="exist_icaew" value="'+myid+'">\
+                                            <input type="text" class="form-control" placeholder="ICAEW" value="'+mycgpa+'" name="icaew_cgpa" id="" required>\
+                                        </td>\
+                                    </tr>\
+                                </table>\
+                            </div>\
+                        </div>\
+                        <div class="card-footer">\
+                            <div id="existfile'+xval+'" class="mb-2">\
+                            </div>\
+                            <input type="hidden" name="filetype[]" value="'+xval+'"/>\
+                            <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                            <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
+                        </div>\
+                    </div>'
                 );
                 fieldWrapper.append(fName);
                 $(".content").append(fieldWrapper);
@@ -1033,33 +1013,32 @@ function addQualification(x,xval,data=null){
                     '<div class="fieldwrapper ielts-field" id="ielts-field"/>'
                 );
                 var fName = $(
-                    '<hr class="mt-2 mb-3"><div class="row">\
-                    <div class="col-12">\
-                    <h5 class="mb-4">IELTS </h5>\
-                    <div id="existfile'+xval+'" class="mb-2">\
-                    </div>\
-                    <input type="hidden" name="filetype[]" value="'+xval+'"/>\
-                    <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
-                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
-                    <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
-                    </div>\
-                </div>\
-                <div class="row mt-4">\
-                    <div class="col-md-12">\
-                    <input type="hidden" name="ielts_type" class="qualificationtype" value="' + xval + '">\
-                        <table class="table table-bordered" id="ielts-table">\
-                            <thead>\
-                                <th>IELTS</th>\
-                            </thead>\
-                            <tr>\
-                                <td>\
-                                <input type="hidden" name="exist_ielts" value="'+myid+'">\
-                                    <input type="text" class="form-control" placeholder="IELTS BAND" value="'+mycgpa+'" name="ielts_cgpa" id="" required>\
-                                </td>\
-                            </tr>\
-                        </table>\
-                    </div>\
-                </div>'
+                    '<div class="card mt-4">\
+                        <div class="card-header">International English Language Testing System (IELTS) <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button></div>\
+                        <div class="card-body">\
+                            <div class="col-md-12">\
+                            <input type="hidden" name="ielts_type" class="qualificationtype" value="' + xval + '">\
+                            <table class="table table-bordered" id="ielts-table">\
+                                <thead>\
+                                    <th>IELTS</th>\
+                                </thead>\
+                                <tr>\
+                                    <td>\
+                                    <input type="hidden" name="exist_ielts" value="'+myid+'">\
+                                        <input type="text" class="form-control" placeholder="IELTS BAND" value="'+mycgpa+'" name="ielts_cgpa" id="" required>\
+                                    </td>\
+                                </tr>\
+                            </table>\
+                            </div>\
+                        </div>\
+                        <div class="card-footer">\
+                            <div id="existfile'+xval+'" class="mb-2">\
+                            </div>\
+                            <input type="hidden" name="filetype[]" value="'+xval+'"/>\
+                            <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                            <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
+                        </div>\
+                    </div>'
                 );
                 fieldWrapper.append(fName);
                 $(".content").append(fieldWrapper);
@@ -1074,33 +1053,32 @@ function addQualification(x,xval,data=null){
                     '<div class="fieldwrapper toefl-field" id="toefl-field"/>'
                 );
                 var fName = $(
-                    '<hr class="mt-2 mb-3"><div class="row">\
-                    <div class="col-12">\
-                    <h5 class="mb-4">TOEFL </h5>\
-                    <div id="existfile'+xval+'" class="mb-2">\
-                    </div>\
-                    <input type="hidden" name="filetype[]" value="'+xval+'"/>\
-                    <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
-                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
-                    <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
-                    </div>\
-                </div>\
-                <div class="row mt-4">\
-                    <div class="col-md-12">\
-                    <input type="hidden" name="toefl_type" class="qualificationtype" value="' + xval +'">\
-                        <table class="table table-bordered" id="toefl-table">\
-                            <thead>\
-                                <th>TOEFL</th>\
-                            </thead>\
-                            <tr>\
-                                <td>\
-                                <input type="hidden" name="exist_toefl" value="'+myid+'">\
-                                    <input type="text" class="form-control" placeholder="TOEFL TOTAL SCORES" value="'+mycgpa+'" name="toefl_cgpa" id="" required>\
-                                </td>\
-                            </tr>\
-                        </table>\
-                    </div>\
-                </div>'
+                    '<div class="card mt-4">\
+                        <div class="card-header">Test of English as a Foreign Language (TOEFL) <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button></div>\
+                        <div class="card-body">\
+                            <div class="col-md-12">\
+                            <input type="hidden" name="toefl_type" class="qualificationtype" value="' + xval +'">\
+                            <table class="table table-bordered" id="toefl-table">\
+                                <thead>\
+                                    <th>TOEFL</th>\
+                                </thead>\
+                                <tr>\
+                                    <td>\
+                                    <input type="hidden" name="exist_toefl" value="'+myid+'">\
+                                        <input type="text" class="form-control" placeholder="TOEFL TOTAL SCORES" value="'+mycgpa+'" name="toefl_cgpa" id="" required>\
+                                    </td>\
+                                </tr>\
+                            </table>\
+                            </div>\
+                        </div>\
+                        <div class="card-footer">\
+                            <div id="existfile'+xval+'" class="mb-2">\
+                            </div>\
+                            <input type="hidden" name="filetype[]" value="'+xval+'"/>\
+                            <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                            <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
+                        </div>\
+                    </div>'
                 );
                 fieldWrapper.append(fName);
                 $(".content").append(fieldWrapper);
@@ -1115,41 +1093,40 @@ function addQualification(x,xval,data=null){
                     '<div class="fieldwrapper foundation-field" id="foundation-field"/>'
                 );
                 var fName = $(
-                    '<hr class="mt-2 mb-3"><div class="row">\
-                    <div class="col-12">\
-                    <h5 class="mb-4">Foundation </h5>\
-                    <div id="existfile'+xval+'" class="mb-2">\
-                    </div>\
-                    <input type="hidden" name="filetype[]" value="'+xval+'"/>\
-                    <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
-                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
-                    <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
-                    </div>\
-                </div>\
-                <div class="row mt-4">\
-                    <div class="col-md-12">\
-                    <input type="hidden" name="foundation_type" class="qualificationtype" value="' + xval +'">\
-                        <table class="table table-bordered" id="foundation-table">\
-                            <tr>\
-                            <td>University / College</td>\
-                                <td colspan="3">\
-                                <input type="text" class="form-control" name="foundation_study" value="'+mystudy+'" required placeholder="University / College" onkeyup="this.value = this.value.toUpperCase();">\
-                                <input type="hidden" name="exist_foundation" value="'+myid+'">\
-                                </td>\
-                            </tr>\
-                            <tr>\
-                                <td>Program</td>\
-                                <td colspan="3"><input type="text" class="form-control" name="foundation_major" value="'+mymajor+'" placeholder="Foundation in Accounting" required onkeyup="this.value = this.value.toUpperCase();"></td>\
-                            </tr>\
-                            <tr>\
-                            <td>Graduation Year</td>\
-                            <td><input type="text" class="form-control" name="foundation_year" value="'+myyear+'" placeholder="Graduation Year" required></td>\
-                            <td>CGPA</td>\
-                            <td><input type="text" class="form-control" placeholder="CGPA" name="foundation_cgpa" value="'+mycgpa+'" id="" required></td>\
-                            </tr>\
-                        </table>\
-                    </div>\
-                </div>'
+                    '<div class="card mt-4">\
+                        <div class="card-header">Foundation<button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button></div>\
+                        <div class="card-body">\
+                            <div class="col-md-12">\
+                                <input type="hidden" name="foundation_type" class="qualificationtype" value="' + xval +'">\
+                                <table class="table table-bordered" id="foundation-table">\
+                                    <tr>\
+                                    <td>University / College</td>\
+                                        <td colspan="3">\
+                                        <input type="text" class="form-control" name="foundation_study" value="'+mystudy+'" required placeholder="University / College" onkeyup="this.value = this.value.toUpperCase();">\
+                                        <input type="hidden" name="exist_foundation" value="'+myid+'">\
+                                        </td>\
+                                    </tr>\
+                                    <tr>\
+                                        <td>Program</td>\
+                                        <td colspan="3"><input type="text" class="form-control" name="foundation_major" value="'+mymajor+'" placeholder="Foundation in Accounting" required onkeyup="this.value = this.value.toUpperCase();"></td>\
+                                    </tr>\
+                                    <tr>\
+                                        <td>Graduation Year</td>\
+                                        <td><input type="text" class="form-control" name="foundation_year" value="'+myyear+'" placeholder="Graduation Year" required></td>\
+                                        <td>CGPA</td>\
+                                        <td><input type="text" class="form-control" placeholder="CGPA" name="foundation_cgpa" value="'+mycgpa+'" id="" required></td>\
+                                    </tr>\
+                                </table>\
+                            </div>\
+                        </div>\
+                        <div class="card-footer">\
+                            <div id="existfile'+xval+'" class="mb-2">\
+                            </div>\
+                            <input type="hidden" name="filetype[]" value="'+xval+'"/>\
+                            <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                            <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
+                        </div>\
+                    </div>'
                 );
                 fieldWrapper.append(fName);
                 $(".content").append(fieldWrapper);
@@ -1164,33 +1141,32 @@ function addQualification(x,xval,data=null){
                     '<div class="fieldwrapper sace-field" id="sace-field"/>'
                 );
                 var fName = $(
-                    '<hr class="mt-2 mb-3"><div class="row">\
-                    <div class="col-12">\
-                    <h5 class="mb-4">SACE </h5>\
-                    <div id="existfile'+xval+'" class="mb-2">\
-                    </div>\
-                    <input type="hidden" name="filetype[]" value="'+xval+'"/>\
-                    <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
-                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
-                    <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
-                    </div>\
-                </div>\
-                <div class="row mt-4">\
-                    <div class="col-md-12">\
-                    <input type="hidden" name="sace_type" class="qualificationtype" value="' + xval + '">\
-                        <table class="table table-bordered" id="sace-table">\
-                            <thead>\
-                                <th>ATAR</th>\
-                            </thead>\
-                            <tr>\
-                                <td>\
-                                <input type="hidden" name="exist_sace" value="'+myid+'">\
-                                    <input type="text" class="form-control" placeholder="ATAR" name="sace_cgpa" value="'+mycgpa+'" id="" required>\
-                                </td>\
-                            </tr>\
-                        </table>\
-                    </div>\
-                </div>'
+                    '<div class="card mt-4">\
+                        <div class="card-header">South Australian Certificate of Education (SACE) <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button></div>\
+                        <div class="card-body">\
+                            <div class="col-md-12">\
+                                <input type="hidden" name="sace_type" class="qualificationtype" value="' + xval + '">\
+                                <table class="table table-bordered" id="sace-table">\
+                                    <thead>\
+                                        <th>ATAR</th>\
+                                    </thead>\
+                                    <tr>\
+                                        <td>\
+                                        <input type="hidden" name="exist_sace" value="'+myid+'">\
+                                            <input type="text" class="form-control" placeholder="ATAR" name="sace_cgpa" value="'+mycgpa+'" id="" required>\
+                                        </td>\
+                                    </tr>\
+                                </table>\
+                            </div>\
+                        </div>\
+                        <div class="card-footer">\
+                            <div id="existfile'+xval+'" class="mb-2">\
+                            </div>\
+                            <input type="hidden" name="filetype[]" value="'+xval+'"/>\
+                            <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                            <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
+                        </div>\
+                    </div>'
                 );
                 fieldWrapper.append(fName);
                 $(".content").append(fieldWrapper);
@@ -1205,33 +1181,32 @@ function addQualification(x,xval,data=null){
                     '<div class="fieldwrapper cat-field" id="cat-field"/>'
                 );
                 var fName = $(
-                    '<hr class="mt-2 mb-3"><div class="row">\
-                    <div class="col-12">\
-                    <h5 class="mb-4">Certified Accounting Technician </h5>\
-                    <div id="existfile'+xval+'" class="mb-2">\
-                    </div>\
-                    <input type="hidden" name="filetype[]" value="'+xval+'"/>\
-                    <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
-                    <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
-                    <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button>\
-                    </div>\
-                </div>\
-                <div class="row mt-4">\
-                    <div class="col-md-12">\
-                    <input type="hidden" name="cat_type" class="qualificationtype" value="' +xval +'">\
-                        <table class="table table-bordered" id="cat-table">\
-                            <thead>\
-                                <th>CAT</th>\
-                            </thead>\
-                            <tr>\
-                                <td>\
-                                <input type="hidden" name="exist_cat" value="'+myid+'">\
-                                    <input type="text" class="form-control" placeholder="CAT" name="cat_cgpa" value="'+mycat+'" id="" required>\
-                                </td>\
-                            </tr>\
-                        </table>\
-                    </div>\
-                </div>'
+                    '<div class="card mt-4">\
+                        <div class="card-header">Certified Accounting Technician (CAT) <button type="button" class="btn btn-danger btn-sm float-right" data-type="academic" onclick="Delete(this,'+xval+')"><i class="fal fa-trash"></i> Delete Qualification</button></div>\
+                        <div class="card-body">\
+                            <div class="col-md-12">\
+                                <input type="hidden" name="cat_type" class="qualificationtype" value="' + xval + '">\
+                                <table class="table table-bordered" id="cat-table">\
+                                    <thead>\
+                                        <th>CAT</th>\
+                                    </thead>\
+                                    <tr>\
+                                        <td>\
+                                        <input type="hidden" name="exist_cat" value="'+myid+'">\
+                                            <input type="text" class="form-control" placeholder="CAT" name="cat_cgpa" value="'+mycgpa+'" id="" required>\
+                                        </td>\
+                                    </tr>\
+                                </table>\
+                            </div>\
+                        </div>\
+                        <div class="card-footer">\
+                            <div id="existfile'+xval+'" class="mb-2">\
+                            </div>\
+                            <input type="hidden" name="filetype[]" value="'+xval+'"/>\
+                            <input type="file" name="file[]" accept="application/pdf, image/png, image/jpg"/>\
+                            <p class="text-danger">** Upload PDF / Image (PNG, JPG, JPEG)</p>\
+                        </div>\
+                    </div>'
                 );
                 fieldWrapper.append(fName);
                 $(".content").append(fieldWrapper);

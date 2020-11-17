@@ -22,6 +22,11 @@ class ApplicantAcademic extends Model
         return $this->hasOne('App\Qualification','id','type');
     }
 
+    public function grades()
+    {
+        return $this->hasOne('App\Grades','grade_code','applicant_cgpa')->withDefault();
+    }
+
     public function scopeApplicantId($query, $id)
     {
         return $query->where('applicant_id',$id);
