@@ -211,6 +211,12 @@
                                 </a>
                                 <ul class="collapsable-list">
                                     <li>
+                                        <a href="/batch" title="Batch" data-filter-tags="batch">
+                                            <i class="fal fa-address-card"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Batch</span>
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a href="/intake" title="Intake Information" data-filter-tags="active_student">
                                             <i class="fal fa-list"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">Intake Information</span>
@@ -222,18 +228,6 @@
                                             <span class="nav-link-text" data-i18n="nav.active_student">Publish Offer Letter</span>
                                         </a>
                                     </li> --}}
-                                    <li>
-                                        <a href="/batch" title="Batch" data-filter-tags="batch">
-                                            <i class="fal fa-address-card"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Batch</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/applicantupdatestat" title="Pending Applicant" data-filter-tags="active_student">
-                                            <i class="fal fa-plus"></i>
-                                            <span class="nav-link-text" data-i18n="nav.active_student">Update Applicant Status</span>
-                                        </a>
-                                    </li>
                                     <li>
                                         <a href="/sponsorapplicant" title="Pending Applicant" data-filter-tags="active_student">
                                             <i class="fal fa-upload"></i>
@@ -284,6 +278,12 @@
                                         <a href="/publishedoffer" title="Batch" data-filter-tags="batch">
                                             <i class="fal fa-envelope"></i>
                                             <span class="nav-link-text" data-i18n="nav.active_student">Published Offer Letter (5C)</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/applicantupdatestat" title="Pending Applicant" data-filter-tags="active_student">
+                                            <i class="fal fa-plus"></i>
+                                            <span class="nav-link-text" data-i18n="nav.active_student">Update Applicant Status</span>
                                         </a>
                                     </li>
                                     <li>

@@ -67,7 +67,7 @@
                                         </div>
                                     </div>
                                     {{Form::hidden('_method', 'PUT')}}
-                                    <button class="btn btn-primary mt-3">Submit</button>
+                                    <button class="btn btn-primary btn-sm float-right my-3">Submit</button>
                                 {!! Form::close() !!}
                         </div>
                     </div>

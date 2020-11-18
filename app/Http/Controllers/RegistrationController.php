@@ -402,6 +402,7 @@ class RegistrationController extends Controller
                 'emergency_phone' => $request->emergency_phone,
                 'emergency_address' => $request->emergency_address
             ]);
+        }
 
 
             $result = [];
@@ -644,6 +645,18 @@ class RegistrationController extends Controller
                 }
             }
 
+            $replaceid = [];
+            $insertsub = collect($result)->pluck('subject')->toArray();
+            $dbsub = ApplicantResult::select('id','subject','type')->where('applicant_id',$id)->get();
+            foreach($dbsub as $dskey => $dsvalue)
+            {
+                if( ! in_array($dsvalue->subject,$insertsub) )
+                {
+                    array_push($replaceid,$dsvalue->id);
+                }
+            }
+            ApplicantResult::whereIn('id',$replaceid)->delete();
+
             if (count($result) > 0) {
                 foreach ($result as $row) {
                     //check if type and subject exist
@@ -681,7 +694,6 @@ class RegistrationController extends Controller
                     $applicant_academic = ApplicantAcademic::where('applicant_id',$arow['applicant_id'])->where('type',$arow['type'])->count();
                     if($applicant_academic != 0){
                         if( isset($arow['applicant_id']) && $arow['applicant_id'] && isset($arow['type']) && $arow['type'] && $arow['id']){
-                            // ApplicantAcademic::where('id',$arow['id'])->update($arow);
                             ApplicantAcademic::where('applicant_id',$arow['applicant_id'])->where('type',$arow['type'])->update($arow);
                         }
                     }else{
@@ -706,7 +718,6 @@ class RegistrationController extends Controller
                 $this->uploadInternational($request->passport_image, $request->passport, $request->academic_transcript, $request->cert_completion, $request->financial_statement, $request->acca_exemption, $id);
             }
             // Applicant::completeApplication($id);
-        }
         if($type){
             return 1;
         }

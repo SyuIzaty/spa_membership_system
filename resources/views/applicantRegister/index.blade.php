@@ -59,14 +59,9 @@
                             <div class="col-md-6 p-2 text-right">
                                 <span class="font-weight-bold">Address</span>
                                 <p class="text-break">INTEC Education College<br>Level 2, Block F<br> Jalan Senangin Satu 17/2A<br> Section 17, 40200 Shah Alam<br> Selangor, MALAYSIA</p>
-                                
-                                {{-- <p>Tel: +603-5522 7267 / 7056 / 7080<br> Whatsapp: +6012-264 7657 (Mr. Shurabil) <br> +60 10-566 9143 (Mr. Norshahril) <br>+60 11-1024 0305 (Mr. Norazmin)<br>+60 11-2621 7508 (Ms. Dewi)</p> --}}
                             </div>
                             <div class="col-md-6 p-2">
-                                {{-- <p class="font-weight-bold">MARKETING & STUDENT ADMISSION DEPARTMENT</p>
-                                <p class="text-break">INTEC Education College<br>Level 2, Block F<br> Jalan Senangin Satu 17/2A<br> Section 17, 40200 Shah Alam<br> Selangor, MALAYSIA</p> --}}
-                                {{-- <p>Email: marketing.admission@intec.edu.my<br>Website: <a href="www.intec.edu.my">www.intec.edu.my</a></p> --}}
-                                
+
                                 <span class="font-weight-bold">Whatsapp:</span> <br>+6012-264 7657 (Mr. Shurabil) <br> +60 10-566 9143 (Mr. Norshahril) <br>+60 11-1024 0305 (Mr. Norazmin)<br>+60 11-2621 7508 (Ms. Dewi)</p>
                             </div>
                         </div>
@@ -151,66 +146,58 @@
                                                     <p>The processing fee must be made and payable INTEC Education College</p>
                                                     <p class="text-justify">A) For International applicant <b>RESIDING in MALAYSIA</b>, payment can be done as follows:</p>
                                                     <div class="p-2">
-                                                        {{-- <div class="card"> --}}
-                                                            {{-- <div class="card-body"> --}}
-                                                                <table class="table table-sm table-bordered">
-                                                                    <tr>
-                                                                        <td>BANK</td>
-                                                                        <td><span class="font-weight-bold">BANK ISLAM MALAYSIA BERHAD</span></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>ACCOUNT NO</td>
-                                                                        <td><span class="font-weight-bold">12177010005614</span></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>AMOUNT IN RM</td>
-                                                                        <td><span class="font-weight-bold">RM200.00</span></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>RECEIVING BANK CONTACT NAME</td>
-                                                                        <td><span class="font-weight-bold">BANK ISLAM MALAYSIA BERHAD</span></td>
-                                                                    </tr>
-                                                                </table>
-                                                            {{-- </div> --}}
-                                                        {{-- </div> --}}
+                                                        <table class="table table-sm table-bordered">
+                                                            <tr>
+                                                                <td>BANK</td>
+                                                                <td><span class="font-weight-bold">BANK ISLAM MALAYSIA BERHAD</span></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>ACCOUNT NO</td>
+                                                                <td><span class="font-weight-bold">122-340-1000-3584</span></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>AMOUNT IN RM</td>
+                                                                <td><span class="font-weight-bold">RM200.00</span></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>RECEIVING BANK CONTACT NAME</td>
+                                                                <td><span class="font-weight-bold">UITM PRIVATE EDUCATION SDN BHD</span></td>
+                                                            </tr>
+                                                        </table>
                                                     </div>
                                                     <p style="padding-top: 20px">B) For International applicant <b>NOT RESIDING in MALAYSIA</b>, payment can be done as follows:</p>
                                                     <p class="text-justify">i) To obtain swift code number from the home country bank:</p>
                                                     <div class="p-2">
-                                                        {{-- <div class="card"> --}}
-                                                            {{-- <div class="card-body"> --}}
-                                                                <table class="table table-sm table-bordered">
-                                                                    <tr>
-                                                                        <td>Bank</td>
-                                                                        <td><span class="font-weight-bold">BANK ISLAM MALAYSIA BERHAD</span></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>CITY / STATE OF BANK</td>
-                                                                        <td><span class="font-weight-bold">SHAH ALAM, SELANGOR DARUL EHSAN</span></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>SWIFT CODE</td>
-                                                                        <td><span class="font-weight-bold">BIMBMYKL</span></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>BRANCH CODE</td>
-                                                                        <td><span class="font-weight-bold">118</span></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>ACCOUNT NO</td>
-                                                                        <td><span class="font-weight-bold">12177010005614</span></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>AMOUNT IN USD</td>
-                                                                        <td><span class="font-weight-bold">USD70.00</span></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>RECEIVING CONTACT NAME</td>
-                                                                        <td><span class="font-weight-bold">BANK ISLAM MALAYSIA BERHAD</span></td>
-                                                                    </tr>
-                                                                </table>
-                                                            {{-- </div> --}}
-                                                        {{-- </div> --}}
+                                                        <table class="table table-sm table-bordered">
+                                                            <tr>
+                                                                <td>Bank</td>
+                                                                <td><span class="font-weight-bold">BANK ISLAM MALAYSIA BERHAD</span></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>CITY / STATE OF BANK</td>
+                                                                <td><span class="font-weight-bold">SECTION 18, SHAH ALAM, SELANGOR DARUL EHSAN</span></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>SWIFT CODE</td>
+                                                                <td><span class="font-weight-bold">BIMBMYKL</span></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>BRANCH CODE</td>
+                                                                <td><span class="font-weight-bold">114, BANK ISLAM SECTION 18 SHAH ALAM</span></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>ACCOUNT NO</td>
+                                                                <td><span class="font-weight-bold">122-340-1000-3584</span></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>AMOUNT IN USD</td>
+                                                                <td><span class="font-weight-bold">USD70.00</span></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>RECEIVING CONTACT NAME</td>
+                                                                <td><span class="font-weight-bold">UITM PRIVATE EDUCATION SDN BHD</span></td>
+                                                            </tr>
+                                                        </table>
                                                     </div>
                                                     <p class="text-justify"><b>The application only be process after the completed documents and the processing fee is received</b></p>
                                                 </td>
@@ -244,9 +231,9 @@
                                                             <li>MUET (Malaysian University English Test)</li>
                                                         </ul>
                                                     </ul>
-                                                    <p class="text-justify">5) Certificate of Completion **</p>
+                                                    <p class="text-justify">5) Certificate of Completion or Clearance/Release Letter from previous institution **</p>
                                                     <p class="text-justify">6) Financial Bank Statement</p>
-                                                    <ul><li class="text-justify">The statement must show sufficient funding amount for 2 semester’s programme fees.</li></ul>
+                                                    <ul><li class="text-justify">The statement must show sufficient funding amount for 2 semesters’ programme fees.</li></ul>
                                                     <p class="text-justify">ACCA Exemption (for application of ACCA programme only)</p>
                                                     <p class="text-justify">Copy of swift code receipt / proof of payment with the applicant full name and passport number</p>
                                                     <p class="text-justify font-weight-bold">** Relevant academic transcript, certificate of completion, English requirement must have “certified true copy” by the authorize personnel/embassy/government.</p>
@@ -273,7 +260,8 @@
                                                 <td>
                                                     <p class="text-justify">Application for Visa</p>
                                                     <p class="text-justify">Section 10 of the Immigration Regulations 1963 requires all international students (including the mobility students) who wish to study at any higher education institutions in Malaysia to obtain Student Pass before entering Malaysia.</p>
-                                                    <p class="text-justify">Students are required to submit application for Student Pass at the Education Malaysia Global Service (EMGS*) through online system at <a href="https://educationmalaysia.gov.my/pass-application.html">https://educationmalaysia.gov.my/pass-application.html</a> * (students must be residing outside of Malaysia at the time of their application).</p>
+                                                    <p class="text-justify">Our International Unit will provide you with a guideline to apply for the student pass through Education Malaysia Global Services (EMGS) website.</p>
+                                                    <p class="text-justify">Students are required to submit application for Student Pass at the Education Malaysia Global Service (EMGS*) through online system at <a href="https://visa.educationmalaysia.gov.my/">https://visa.educationmalaysia.gov.my/</a></p>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -293,7 +281,7 @@
                             </div>
                         </div>
                     </div>
-                  
+
                 </div>
             </div>
         </div>

@@ -32,29 +32,6 @@ class StoreApplicantDetailRequest extends FormRequest
     {
         $input = $this->input();
         $rules = [
-            'applicant_id' => 'required',
-            'applicant_phone' => 'required|numeric|min:1',
-            'applicant_gender' => 'required',
-            'applicant_marital' => 'required',
-            'applicant_race' => 'required',
-            'applicant_religion' => 'required',
-            'other_race' => 'max:20',
-            'other_religion' => 'max:20',
-            'applicant_address_1' => 'required|min:5|max:50',
-            'applicant_address_2' => 'required|min:5|max:50',
-            'applicant_poscode' => 'required|numeric',
-            'applicant_city' => 'required|min:1|max:100',
-            'applicant_state' => 'required|min:1|max:100',
-            'applicant_country' => 'required|min:1|max:100',
-            'guardian_one_name' => 'required|min:1|max:100',
-            'guardian_one_relationship' => 'required|min:1|max:100',
-            'guardian_one_mobile' => 'required|numeric|min:5',
-            'guardian_one_address' => 'required|min:1|max:100',
-            'guardian_two_name' => 'required|min:1|max:100',
-            'guardian_two_relationship' => 'required|min:1|max:100',
-            'guardian_two_mobile' => 'required|numeric|min:5',
-            'guardian_two_address' => 'max:100',
-            'highest_qualification' => 'required',
             'bachelor_cgpa' => 'numeric|min:1|max:4',
             'diploma_cgpa' => 'numeric|min:1|max:4',
             'matriculation_cgpa' => 'numeric|min:1|max:4',
@@ -68,6 +45,36 @@ class StoreApplicantDetailRequest extends FormRequest
             'financial_statement' => 'mimes:jpeg,png,pdf',
             'acca_exemption' => 'mimes:jpeg,png,pdf'
         ];
+
+        if(isset($input['declaration'])){
+            $rules['applicant_id'] = 'required';
+            $rules['applicant_phone'] = 'required|numeric|min:1';
+            $rules['applicant_gender'] = 'required';
+            $rules['applicant_marital'] = 'required';
+            $rules['applicant_id'] = 'required';
+            $rules['applicant_phone'] = 'required|numeric|min:1';
+            $rules['applicant_gender'] = 'required';
+            $rules['applicant_marital'] = 'required';
+            $rules['applicant_race'] = 'required';
+            $rules['applicant_religion'] = 'required';
+            $rules['other_race'] = 'max:20';
+            $rules['other_religion'] = 'max:20';
+            $rules['applicant_address_1'] = 'required|min:5|max:50';
+            $rules['applicant_address_2'] = 'required|min:5|max:50';
+            $rules['applicant_poscode'] = 'required|numeric';
+            $rules['applicant_city'] = 'required|min:1|max:100';
+            $rules['applicant_state'] = 'required|min:1|max:100';
+            $rules['applicant_country'] = 'required|min:1|max:100';
+            $rules['guardian_one_name'] = 'required|min:1|max:100';
+            $rules['guardian_one_relationship'] = 'required|min:1|max:100';
+            $rules['guardian_one_mobile'] = 'required|numeric|min:5';
+            $rules['guardian_one_address'] = 'required|min:1|max:100';
+            $rules['guardian_two_name'] = 'required|min:1|max:100';
+            $rules['guardian_two_relationship'] = 'required|min:1|max:100';
+            $rules['guardian_two_mobile'] = 'required|numeric|min:5';
+            $rules['guardian_two_address'] = 'max:100';
+            $rules['highest_qualification'] = 'required';
+        }
 
         $except = ["declaration","acca_exemption","passport_image","passport","academic_transcript","cert_completion","financial_statement"];
         if( $input['applicant_nationality'] != "MYS")

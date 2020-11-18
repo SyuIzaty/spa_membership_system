@@ -126,10 +126,6 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            {{Form::label('title', 'Intake Description')}}
-                            {{Form::text('intake_programme_description', '', ['class' => 'form-control', 'placeholder' => 'Intake Description'])}}
-                        </div>
-                        <div class="form-group">
                             {{Form::label('title', 'Batch Code')}}
                             <select class="form-control" name="batch_code" id="batches_code">
                             </select>
@@ -154,15 +150,16 @@
                         </div>
                         <div class="form-group">
                             {{Form::label('title', 'Intake Venue')}}
-                            {{Form::text('intake_venue', '', ['class' => 'form-control', 'placeholder' => 'Intake Venue', 'required'])}}
+                            {{Form::text('intake_venue', '', ['class' => 'form-control', 'placeholder' => 'Intake Venue', 'required', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                         </div>
                         <div class="form-group">
                             {{Form::label('title', 'File')}}
                             {{Form::file('file[]', ['class' => 'form-control','multiple' => 'multiple', 'accept' => 'application/pdf'])}}
                         </div>
                         <input type="hidden" name="intake_quota" value="1">
-                        <div class="footer">
+                        <div class="modal-footer">
                             <button class="btn btn-primary pull-right">Save</button>
+                            <button type="button" class="btn btn-secondary text-white" data-dismiss="modal">Close</button>
                         </div>
                         {!! Form::close() !!}
                     </div>
@@ -191,10 +188,6 @@
                                     <option value="{{ $programmes->id }}">{{ $programmes->programme_code }}</option>
                                     @endforeach
                                 </select>
-                            </div>
-                            <div class="form-group">
-                                {{Form::label('title', 'Intake Description')}}
-                                {{Form::text('intake_programme_description', '', ['id' => 'programme_desc','class' => 'form-control','placeholder' => 'Intake Description', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                             </div>
                                 {{Form::hidden('batch_code', '', ['class' => 'form-control', 'id' => 'batch_code' ,'placeholder' => 'Batch Code', 'required'])}}
                             <div class="form-group">
@@ -296,7 +289,6 @@
                 var row = el.closest(".data-row");
                 var id = el.data('id');
                 var programme_code = row.children(".programme_code").text();
-                var programme_desc = row.children(".programme_desc").text();
                 var intake_date = row.children(".intake_date").text();
                 var intake_time = row.children(".intake_time").text();
                 var intake_venue = row.children(".intake_venue").text();
@@ -306,7 +298,6 @@
                 var intake_quota = row.children(".intake_quota").text() == "Yes" ? "1" : "0";
                 $("#program_id").val(id);
                 $("#programme_code").val(programme_code);
-                $("#programme_desc").val(programme_desc);
                 $("#intake_date").val(intake_date);
                 $("#intake_time").val(intake_time);
                 $("#intake_venue").val(intake_venue);

@@ -2,6 +2,14 @@
 @section('content')
 <head>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <style>
+        .activelink{
+            color: blueviolet !important;
+        }
+        .nav-tabs li {
+            pointer-events: none;
+        }
+    </style>
 </head>
 <div class="row">
     <div class="col-md-2"></div>
@@ -18,9 +26,14 @@
                     <div class="panel-container show">
                         <div class="panel-content mt-3">
                             <ul class="nav nav-tabs" role="tablist" id="app">
-                                <li class="nav-item">
+                                <li class="activelink nav-item">
                                     <a data-toggle="tab" class="nav-link" href="#details" role="tab">Applicant Details</a>
                                 </li>
+                                @if ($applicant->applicant_nationality != 'MYS')
+                                <li class="nav-item">
+                                    <a data-toggle="tab" class="nav-link" href="#document" role="tab">Required Documents</a>
+                                </li>
+                                @endif
                                 <li class="nav-item">
                                     <a data-toggle="tab" class="nav-link" href="#qualification" role="tab">Qualification</a>
                                 </li>
@@ -317,30 +330,13 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="card">
-                                        <div class="card-header">Highest Qualification</div>
-                                        <div class="card-body">
-                                            <div class="col-md-12 form-group">
-                                                {{ Form::label('title', 'Highest Qualification') }} *
-                                                <select class="form-control qua" name="highest_qualification" required>
-                                                    <option disabled selected value="">Please select</option>
-                                                    @foreach($qualification as $qualifications)
-                                                    <option value="{{ $qualifications->id }}" {{ $applicant->applicant_qualification == $qualifications->id ? 'selected="selected"' : ''}}>{{ $qualifications->qualification_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @error('highest_qualification')
-                                                    <p style="color: red">{{ $message }}</p>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        @if ($applicant->applicant_nationality == 'MYS')
                                         <div class="card-footer">
-                                            <a href="#qualification" class="btn btn-primary btn-sm float-right" onclick="navigate('Next')"><i class="fal fa-arrow-alt-from-left"></i> Next</a>
+                                            <a id="nextbtn" class="btn btn-primary btn-sm float-right" onclick="navigate('Next')" style="color:white"><i class="fal fa-arrow-alt-from-left"></i> Next</a>
                                         </div>
-                                        @endif
                                     </div>
-                                    @if ($applicant->applicant_nationality != 'MYS')
+                                </div>
+                                {{-- @if ($applicant->applicant_nationality != 'MYS') --}}
+                                <div class="tab-pane" id="document" role="tabpanel">
                                     <div class="card">
                                         <div class="card-header">Required Document</div>
                                         <div class="card-body">
@@ -406,12 +402,30 @@
                                             </div>
                                         </div>
                                         <div class="card-footer">
-                                            <a href="#qualification" class="btn btn-primary btn-sm float-right" onclick="navigate('Next')"><i class="fal fa-arrow-alt-from-left"></i> Next</a>
+                                            <a href="#" id="prevbtn" class="btn btn-primary btn-sm mr-2" onclick="navigate('Previous')"><i class="fal fa-arrow-alt-from-right"></i> Previous</a>
+                                            <a href="#" class="btn btn-primary btn-sm float-right" onclick="navigate('Next')"><i class="fal fa-arrow-alt-from-left"></i> Next</a>
                                         </div>
                                     </div>
-                                    @endif
                                 </div>
+                                {{-- @endif --}}
                                 <div class="tab-pane" id="qualification" role="tabpanel">
+                                    <div class="card">
+                                        <div class="card-header">Highest Qualification</div>
+                                        <div class="card-body">
+                                            <div class="col-md-12 form-group">
+                                                {{ Form::label('title', 'Highest Qualification') }} *
+                                                <select class="form-control qua" name="highest_qualification" required>
+                                                    <option disabled selected value="">Please select</option>
+                                                    @foreach($qualification as $qualifications)
+                                                    <option value="{{ $qualifications->id }}" {{ $applicant->applicant_qualification == $qualifications->id ? 'selected="selected"' : ''}}>{{ $qualifications->qualification_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('highest_qualification')
+                                                    <p style="color: red">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="card">
                                         <div class="card-header">Qualification</div>
                                         <div class="card-body m-3">
@@ -457,8 +471,8 @@
                                             @enderror
                                         </div>
                                         <div class="card-footer">
-                                            <a href="#details" class="btn btn-primary btn-sm mr-2" onclick="navigate('Previous')"><i class="fal fa-arrow-alt-from-right"></i> Previous</a>
-                                            <button class="btn btn-success btn-sm float-right" id="submit"><i class="fal fa-check"></i> Submit</button>
+                                            <a href="#" id="prevbtn" class="btn btn-primary btn-sm mr-2" onclick="navigate('Previous')"><i class="fal fa-arrow-alt-from-right"></i> Previous</a>
+                                            <button class="btn btn-success btn-sm float-right" id="submit" name="submit"><i class="fal fa-check"></i> Submit</button>
                                         </div>
                                     </div>
                                 </div>
@@ -595,8 +609,7 @@
         {
             $('#app a[href="#details"]').tab('show');
         }
-
-        setInterval(function(){autoSave()},10000);
+        setInterval(function(){autoSave()},2000);
 
     });
 
@@ -637,16 +650,45 @@
         }
     }
 
-    function navigate(type)
-    {
-        if(type == "Previous")
+    $('select[name="applicant_nationality"]').on('change',function(){
+        if($(this).val() !== "MYS")
         {
-            $('#app a[href="#details"]').tab('show');
+            if($('.nav-tabs li').length < 3)
+            {
+                $('.nav-tabs li:first').after(
+                    `<li class="nav-item">
+                    <a data-toggle="tab" class="nav-link" href="#document" role="tab">Required Documents</a>
+                    </li>`
+                )
+            }
+            // $('#document').show();
         }
         else
         {
-            $('#app a[href="#qualification"]').tab('show');
+            $('.nav-tabs li:first').next('li').remove();
+            // $('#document').hide();
         }
+
+    });
+
+    function navigate(type)
+    {
+        var country = $('select[name="applicant_nationality"]').val();
+        var pages = country == "MYS" ? ['details','qualification'] : ['details','document','qualification'];
+        var active = $('ul.nav-tabs').find('li.activelink');
+        var tabid = "details";
+        $(active).removeClass('activelink');
+        if(type == "Previous")
+        {
+            $(active).prev('li').addClass('activelink');
+            tabid = $($(active).prev('li').find('a')).attr('href');
+        }
+        else
+        {
+            $(active).next('li').addClass('activelink');
+            tabid = $($(active).next('li').find('a')).attr('href');
+        }
+        $('#app a[href="'+tabid+'"]').tab('show');
     }
 
     function autoSave()
