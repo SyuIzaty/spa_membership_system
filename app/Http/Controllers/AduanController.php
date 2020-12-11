@@ -486,6 +486,7 @@ class AduanController extends Controller
             'ak_upah'                 => $request->ak_upah,
             'ak_bahan_alat'           => $request->ak_bahan_alat, 
             'jumlah_kos'              => $request->jumlah_kos, 
+            'tarikh_selesai_aduan'    => $request->tarikh_selesai_aduan,
         ]);
 
         Session::flash('message', 'Pembaikan aduan telah berjaya dikemaskini dan dihantar.');
