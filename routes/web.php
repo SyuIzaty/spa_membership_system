@@ -36,3 +36,40 @@ Route::resource('/module-auth', 'ModuleAuthController');
 Route::post('/data_moduleauth', 'ModuleAuthController@data_moduleauth');
 Route::get('/test','ApplicantController@test');
 
+//ADUAN
+Route::get('/aduan-baru','AduanController@aduanBaru')->name('aduanBaru');
+Route::get('/borang-aduan','AduanController@borangAduan')->name('borangAduan');
+Route::post('simpanAduan','AduanController@simpanAduan');
+Route::get('/cariJenis', 'AduanController@cariJenis');
+Route::get('/cariSebab', 'AduanController@cariSebab');
+
+Route::get('/senarai-aduan','AduanController@senaraiAduan')->name('senarai');
+Route::post('senaraiAduan', 'AduanController@data_senarai');
+Route::post('updateJuruteknik', 'AduanController@updateJuruteknik');
+Route::delete('senarai-aduan/{id}', 'AduanController@padamAduan');
+Route::get('/info-aduan/{id}', 'AduanController@infoAduan')->name('info');
+Route::post('simpanPenambahbaikan','AduanController@simpanPenambahbaikan');
+Route::post('kemaskiniPenambahbaikan','AduanController@kemaskiniPenambahbaikan');
+Route::post('simpanStatus','AduanController@simpanStatus');
+Route::get('/senarai-selesai','AduanController@senaraiSelesai')->name('selesai');
+Route::post('senaraiSelesai', 'AduanController@data_selesai');
+Route::get('/senarai-kiv','AduanController@senaraiKiv')->name('kiv');
+Route::post('senaraiKiv', 'AduanController@data_kiv');
+
+//KATEGORI
+Route::resource('kategori-aduan', 'KategoriAduanController');
+Route::post('kategoriAduan', 'KategoriAduanController@data_kategori');  
+Route::post('tambahKategori','KategoriAduanController@tambahKategori');
+Route::post('kemaskiniKategori','KategoriAduanController@kemaskiniKategori');
+
+//JENIS
+Route::resource('jenis-kerosakan', 'JenisKerosakanController');
+Route::post('jenisKerosakan', 'JenisKerosakanController@data_jenis');  
+Route::post('tambahJenis','JenisKerosakanController@tambahJenis');
+Route::post('kemaskiniJenis','JenisKerosakanController@kemaskiniJenis');
+
+//SEBAB
+Route::resource('sebab-kerosakan', 'SebabKerosakanController');
+Route::post('sebabKerosakan', 'SebabKerosakanController@data_sebab');  
+Route::post('tambahSebab','SebabKerosakanController@tambahSebab');
+Route::post('kemaskiniSebab','SebabKerosakanController@kemaskiniSebab');

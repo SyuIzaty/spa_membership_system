@@ -49,8 +49,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function lead()
+    public function aduan()
     {
-        return $this->hasMany('App\Lead','assigned_to');
+        return $this->hasMany('App\Aduan','juruteknik_bertugas');
     }
 }

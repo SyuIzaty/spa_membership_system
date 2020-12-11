@@ -8,7 +8,7 @@
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
                     <h2>
-                        Dashboard <small>information</small> <span class="fw-300"><i> </i></span>
+                        Dashboard <small>Info </small><span class="fw-300"><i> </i></span>
                     </h2>
                     <div class="panel-toolbar">
                         <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
@@ -20,7 +20,7 @@
 
                 <div class="panel-container show">
                     <div class="panel-content">
-                        Welcome to INTEC Student Information Management System.
+                        Selamat Datang ke SISTEM E-ADUAN INTEC.
                     </div>
                 </div>
 
