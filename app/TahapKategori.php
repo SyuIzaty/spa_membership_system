@@ -11,6 +11,6 @@ class TahapKategori extends Model
     protected $table = 'tahap_kategori';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'jenis_tahap'
+        'kod_tahap', 'jenis_tahap'
     ];
 }

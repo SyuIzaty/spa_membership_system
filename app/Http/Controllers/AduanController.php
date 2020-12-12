@@ -226,15 +226,15 @@ class AduanController extends Controller
         
         ->editColumn('tahap_kategori', function ($aduan) {
 
-            if($aduan->tahap_kategori=='BIASA')
+            if($aduan->tahap_kategori=='B')
             {
                 return '<span class="low" data-toggle="tooltip" data-placement="top" title="BIASA">' . '</span>';
             }
-            elseif($aduan->tahap_kategori=='SEGERA')
+            elseif($aduan->tahap_kategori=='S')
             {
                 return '<span class="medium" data-toggle="tooltip" data-placement="top" title="SEGERA">' . '</span>';
             }
-            elseif($aduan->tahap_kategori=='CEMAS')
+            elseif($aduan->tahap_kategori=='C')
             {
                 return '<span class="high" data-toggle="tooltip" data-placement="top" title="CEMAS">' . '</span>';
             }
@@ -322,15 +322,15 @@ class AduanController extends Controller
 
         ->editColumn('tahap_kategori', function ($aduan) {
 
-            if($aduan->tahap_kategori=='BIASA')
+            if($aduan->tahap_kategori=='B')
             {
                 return '<span class="low" data-toggle="tooltip" data-placement="top" title="BIASA">' . '</span>';
             }
-            elseif($aduan->tahap_kategori=='SEGERA')
+            elseif($aduan->tahap_kategori=='S')
             {
                 return '<span class="medium" data-toggle="tooltip" data-placement="top" title="SEGERA">' . '</span>';
             }
-            elseif($aduan->tahap_kategori=='CEMAS')
+            elseif($aduan->tahap_kategori=='C')
             {
                 return '<span class="high" data-toggle="tooltip" data-placement="top" title="CEMAS">' . '</span>';
             }
@@ -420,15 +420,15 @@ class AduanController extends Controller
         
         ->editColumn('tahap_kategori', function ($aduan) {
 
-            if($aduan->tahap_kategori=='BIASA')
+            if($aduan->tahap_kategori=='B')
             {
                 return '<span class="low" data-toggle="tooltip" data-placement="top" title="BIASA">' . '</span>';
             }
-            elseif($aduan->tahap_kategori=='SEGERA')
+            elseif($aduan->tahap_kategori=='S')
             {
                 return '<span class="medium" data-toggle="tooltip" data-placement="top" title="SEGERA">' . '</span>';
             }
-            elseif($aduan->tahap_kategori=='CEMAS')
+            elseif($aduan->tahap_kategori=='C')
             {
                 return '<span class="high" data-toggle="tooltip" data-placement="top" title="CEMAS">' . '</span>';
             }

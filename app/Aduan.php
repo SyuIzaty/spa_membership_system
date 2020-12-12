@@ -42,6 +42,11 @@ class Aduan extends Model
         return $this->hasOne('App\StatusAduan','kod_status','status_aduan');
     }
 
+    public function tahap()
+    {
+        return $this->hasOne('App\TahapKategori','kod_tahap','tahap_kategori');
+    }
+
     public function juruteknik()
     {
         return $this->belongsTo('App\User','juruteknik_bertugas');  

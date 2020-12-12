@@ -15,6 +15,7 @@ class CreateTahapKategoriTable extends Migration
     {
         Schema::create('tahap_kategori', function (Blueprint $table) {
             $table->id();
+            $table->string('kod_tahap');
             $table->string('jenis_tahap');
             $table->timestamps();
             $table->softDeletes();

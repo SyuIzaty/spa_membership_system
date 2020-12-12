@@ -148,7 +148,7 @@
                                                                 <select class="form-control tahap_kategori" name="tahap_kategori" id="tahap_kategori" >
                                                                     <option value="">-- Pilih Tahap Aduan --</option>
                                                                     @foreach ($tahap as $thp) 
-                                                                    <option value="{{ $thp->jenis_tahap }}" {{ old('tahap_kategori') ? 'selected' : '' }}>
+                                                                    <option value="{{ $thp->kod_tahap }}" {{ old('tahap_kategori') ? 'selected' : '' }}>
                                                                             {{ $thp->jenis_tahap }}</option>
                                                                     @endforeach
                                                                 </select>
@@ -187,7 +187,7 @@
                                                             <select class="form-control tahap_kategori" name="tahap_kategori" id="tahap_kategori" >
                                                                 <option value="">-- Pilih Tahap Aduan --</option>
                                                                 @foreach ($tahap as $thp) 
-                                                                    <option value="{{ $thp->jenis_tahap }}" {{ $aduan->tahap_kategori == $thp->jenis_tahap ? 'selected="selected"' : '' }}>{{ $thp->jenis_tahap }}</option>
+                                                                    <option value="{{ $thp->kod_tahap }}" {{ $aduan->tahap_kategori == $thp->kod_tahap ? 'selected="selected"' : '' }}>{{ $thp->jenis_tahap }}</option>
                                                                 @endforeach
                                                             </select>
                                                             @error('tahap_kategori')
@@ -220,7 +220,7 @@
                                                 <tr>
                                                     <div class="form-group">
                                                         <td width="20%"><label class="form-label" for="tahap_kategori">Tahap Aduan :</label></td>
-                                                        <td colspan="2"><b>{{ $aduan->tahap_kategori ?? '-- TIADA DATA --'  }}</b></td>
+                                                        <td colspan="2"><b>{{ $aduan->tahap->jenis_tahap ?? '-- TIADA DATA --'  }}</b></td>
                                                         <td width="20%"><label class="form-label" for="juruteknik_bertugas">Juruteknik :</label></td>
                                                         <td colspan="2"><b>{{ $aduan->juruteknik->name ?? '-- TIADA DATA --'  }}</b></td>
                                                     </div>
