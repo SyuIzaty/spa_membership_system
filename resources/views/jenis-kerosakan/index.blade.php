@@ -155,6 +155,10 @@
             dropdownParent: $('#crud-modal') 
         }); 
 
+        // $("#aduan").select2({
+        //         dropdownParent: ('#crud-modals')
+        // });
+
         $('#new').click(function () {
             $('#crud-modal').modal('show');
         });

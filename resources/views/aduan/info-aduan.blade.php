@@ -290,8 +290,7 @@
                                                             <td class="card-header bg-primary-50" colspan="4"><b></b></td>
                                                             <td width="20%"><label class="form-label" for="tarikh_selesai_aduan"><span class="text-danger">*</span> Tarikh Selesai Pembaikan :</label></td>
                                                             <td colspan="4">
-                                                                {{-- <input type="datetime-local" class="form-control" id="tarikh_selesai_aduan" name="tarikh_selesai_aduan" value="{{ old('tarikh_selesai_aduan') }}"> --}}
-                                                                <input type="date" class="form-control" id="tarikh_selesai_aduan" name="tarikh_selesai_aduan" value="{{ old('tarikh_selesai_aduan') }}">
+                                                                <input type="datetime-local" class="form-control" id="tarikh_selesai_aduan" name="tarikh_selesai_aduan" value="{{ old('tarikh_selesai_aduan') }}">
                                                                     @error('tarikh_selesai_aduan')
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                     @enderror
@@ -412,7 +411,7 @@
                                                                 <td class="card-header bg-primary-50" colspan="4"><b></b></td>
                                                                 <td width="20%"><label class="form-label" for="tarikh_selesai_aduan"><span class="text-danger">*</span> Tarikh Selesai Pembaikan :</label></td>
                                                                 <td colspan="4">
-                                                                    <input type="date" class="form-control" id="tarikh_selesai_aduan" name="tarikh_selesai_aduan" value="{{ \Carbon\Carbon::createFromDate($aduan->tarikh_selesai_aduan)->format('Y-m-d')}}" />
+                                                                    <input type="datetime-local" class="form-control" id="tarikh_selesai_aduan" name="tarikh_selesai_aduan" value="{{ date('Y-m-d\TH:i', strtotime($aduan->tarikh_selesai_aduan)) }}" />
                                                             </div>
                                                         </tr>
 
