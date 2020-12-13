@@ -16,7 +16,7 @@
                     <h2 class="d-flex justify-content-center">SELAMAT DATANG KE LAMAN E-ADUAN</h2>
                     <p class="d-flex justify-content-center">Sekiranya anda ingin membuat sebarang aduan berkaitan INTEC Education College, sila klik butang dibawah.</p>
                     @if (Session::has('message'))
-                        <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}</div>
+                    <center><div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc; width: 351px; font-size: 15px;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}</div></center>
                     @endif
                     <div class="d-flex justify-content-center">
                         <div class="p-2"><a href="{{ route('borangAduan') }}" class="btn btn-primary"><i class="fal fa-plus-square"></i> ADUAN BARU</a></div>
