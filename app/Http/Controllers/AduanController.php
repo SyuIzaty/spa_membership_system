@@ -74,6 +74,7 @@ class AduanController extends Controller
             'jk_penerangan'             => $request->jk_penerangan,
             'sebab_kerosakan'           => $request->sebab_kerosakan,
             'sk_penerangan'             => $request->sk_penerangan,
+            'maklumat_tambahan'         => $request->maklumat_tambahan,
             'status_aduan'              => 'BS',
         ]);
             
@@ -448,7 +449,7 @@ class AduanController extends Controller
         $aduan = Aduan::where('id', $id)->first(); 
         $tahap = TahapKategori::all();
         $status = StatusAduan::select('*')->whereIn('kod_status', ['TD', 'AK'])->get();
-        $tukarStatus = StatusAduan::select('*')->whereIn('kod_status', ['AS', 'AK'])->get();
+        $tukarStatus = StatusAduan::select('*')->whereIn('kod_status', ['AS'])->get();
         $juruteknik = User::whereHas('roles', function($query){
             $query->where('id', 'OP_TECHNICIAN');
         })->get();
@@ -487,6 +488,7 @@ class AduanController extends Controller
             'ak_bahan_alat'           => $request->ak_bahan_alat, 
             'jumlah_kos'              => $request->jumlah_kos, 
             'tarikh_selesai_aduan'    => $request->tarikh_selesai_aduan,
+            'status_aduan'            => $request->status_aduan,
         ]);
 
         Session::flash('message', 'Pembaikan aduan telah berjaya dikemaskini dan dihantar.');

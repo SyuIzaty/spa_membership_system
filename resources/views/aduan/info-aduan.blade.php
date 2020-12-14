@@ -139,6 +139,13 @@
                                                 </div>
                                             </tr>
 
+                                            <tr>
+                                                <div class="form-group">
+                                                        <td width="20%"><label class="form-label" for="maklumat_tambahan">Maklumat Tambahan :</label></td>
+                                                        <td colspan="4"><b>{{ $aduan->maklumat_tambahan ?? '-- TIADA DATA --'  }}</b></td>
+                                                </div>
+                                            </tr>
+
                                         @if($aduan->status_aduan == 'BS') 
 
                                                     <tr>
@@ -301,8 +308,8 @@
                                                     <tr>
                                                         <div class="form-group">
                                                             <td width="20%">
-                                                                <label class="form-label" for="ak_upah"><span class="text-danger">*</span> Upah :</label><label class="form-label" style="padding-left: 205px;" for="ak_upah">RM</label><br><br><br><br>
-                                                                <label class="form-label" for="ak_bahan_alat"><span class="text-danger">*</span> Bahan/ Alat Ganti :</label><label class="form-label" style="padding-left: 130px;" for="ak_bahan_alat">RM</label>
+                                                                <label class="form-label" for="ak_upah">Upah :</label><label class="form-label" style="padding-left: 205px;" for="ak_upah">RM</label><br><br><br><br>
+                                                                <label class="form-label" for="ak_bahan_alat">Bahan/ Alat Ganti :</label><label class="form-label" style="padding-left: 130px;" for="ak_bahan_alat">RM</label>
                                                             </td>
                                                             <td colspan="4">
                                                                 <input type="number" step="any" class="form-control" id="ak_upah" name="ak_upah"  value="{{ old('ak_upah') }}">
@@ -418,8 +425,8 @@
                                                         <tr>
                                                             <div class="form-group">
                                                                 <td width="20%">
-                                                                    <label class="form-label" for="ak_upah"><span class="text-danger">*</span> Upah :</label><label class="form-label" style="padding-left: 205px;" for="ak_upah">RM</label><br><br><br><br>
-                                                                    <label class="form-label" for="ak_bahan_alat"><span class="text-danger">*</span> Bahan/ Alat Ganti :</label><label class="form-label" style="padding-left: 130px;" for="ak_bahan_alat">RM</label>
+                                                                    <label class="form-label" for="ak_upah">Upah :</label><label class="form-label" style="padding-left: 205px;" for="ak_upah">RM</label><br><br><br><br>
+                                                                    <label class="form-label" for="ak_bahan_alat">Bahan/ Alat Ganti :</label><label class="form-label" style="padding-left: 130px;" for="ak_bahan_alat">RM</label>
                                                                 </td>
                                                                 <td colspan="4">
                                                                     <input type="number" step="any" class="form-control" id="ak_upah" name="ak_upah"  value="{{ $aduan->ak_upah }}">
@@ -431,10 +438,23 @@
                                                                             <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                         @enderror<br>
                                                                 </td>
-                                                                <td width="20%">
-                                                                    <label class="form-label" for="status_aduan"><span class="text-danger">*</span> Status Aduan :</label>
+                                                                @if($aduan->status_aduan == 'AS') 
+                                                                    <td width="20%"><label class="form-label" for="status_aduan">Status Aduan :</label></td>
+                                                                    <td colspan="4"><b>{{ $aduan->status->nama_status }}</b></td>
+                                                                @else
+                                                                <td width="20%"><label class="form-label" for="status_aduan"><span class="text-danger">*</span> Status Aduan :</label></td>
+                                                                <td colspan="4"> 
+                                                                    <select class="form-control status_aduan" name="status_aduan" id="status_aduan" >
+                                                                    <option value="">-- Pilih Status Aduan --</option>
+                                                                        @foreach($status as $stt)
+                                                                            <option value="{{$stt->kod_status}}"  {{ $aduan->status_aduan == $stt->kod_status ? 'selected="selected"' : '' }}>{{$stt->nama_status}}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    @error('status_aduan')
+                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                    @enderror
                                                                 </td>
-                                                                <td colspan="4"><b>{{ $aduan->status->nama_status }}</b></td>
+                                                                @endif
                                                             </div>
                                                         </tr>
 
@@ -455,7 +475,7 @@
                                                             </div>
                                                         </tr>
 
-                                                        @if($aduan->status_aduan == 'AS' | $aduan->status_aduan == 'AK') 
+                                                        @if($aduan->status_aduan == 'AS') 
                                                             @can('papar catatan')
                                                             <tr>
                                                                 <div class="form-group">
@@ -565,14 +585,14 @@
                                                                                     <td width="20%"><label class="form-label" for="status_aduan">Tukar Status :</label></td>
                                                                                     <td colspan="4">
                                                                                         <select class="form-control tukar_status" name="status_aduan" id="status_aduan" >
-                                                                                        <option value="">-- Pilih Status Aduan --</option>
-                                                                                        @foreach($tukarStatus as $stats)
-                                                                                            <option value="{{$stats->kod_status}}"  {{ $aduan->status_aduan == $stats->kod_status ? 'selected="selected"' : '' }}>{{$stats->nama_status}}</option><br>
-                                                                                        @endforeach
+                                                                                            <option value="">-- Pilih Status Aduan --</option>
+                                                                                            @foreach($tukarStatus as $stats)
+                                                                                                <option value="{{$stats->kod_status}}"  {{ $aduan->status_aduan == $stats->kod_status ? 'selected="selected"' : '' }}>{{$stats->nama_status}}</option><br>
+                                                                                            @endforeach
+                                                                                        </select><br></td>
                                                                                         @error('status_aduan')
                                                                                             <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                         @enderror
-                                                                                    </select><br></td>
                                                                             </div>
                                                                         </tr>
 

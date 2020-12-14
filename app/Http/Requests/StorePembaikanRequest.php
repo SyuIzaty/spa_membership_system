@@ -33,7 +33,7 @@ class StorePembaikanRequest extends FormRequest
             'bahan_alat'               => 'required|min:10|max:255',
             'ak_upah'                  => '',
             'ak_bahan_alat'            => '',
-            'jumlah_kos'               => 'required',
+            'jumlah_kos'               => '',
             'tarikh_selesai_aduan'     => 'required',
             'status_aduan'             => 'required',
         ];

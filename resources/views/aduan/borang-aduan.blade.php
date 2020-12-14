@@ -145,6 +145,14 @@
                         @enderror
                     </div>
 
+                    <div class="form-group col-md-12">
+                        {{Form::label('title', 'Maklumat Tambahan')}}
+                        {{Form::textarea('maklumat_tambahan', '', ['class' => 'form-control', 'placeholder' => 'Sila isikan maklumat tambahan sekiranya ada', 'cols' => '10', 'rows' => '5'])}}
+                        @error('maklumat_tambahan')
+                            <p style="color: red">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                     <div class="col-md-12">
                         <div class="card-header">
                             <h4 class="card-title w-100"><b><span class="text-danger">*</span> PERAKUAN DAN PENGESAHAN PELAPOR :</b></h4>
@@ -156,7 +164,7 @@
                     <div class="card-body" style="font-size: 15px">
                         <label for="chk" class="form-group col-md-12">
                             <input type="checkbox" name="chk" id="chk"  onclick="btn()"/>
-                            Saya <input class="border-0" id="nama" name="nama" style="width: 500px; font-weight:bold; text-decoration: underline; text-align: center;" placeholder="____________________________________________________________________" readonly> dengan ini mengesahkan bahawa aduan ini telah diambil tindakan dan berpuas hati dengan kualiti serta perkhidmatan yang telah diberikan
+                            Saya <input class="border-0" id="nama" name="nama" style="width: 500px; font-weight:bold; text-decoration: underline; text-align: center;" placeholder="____________________________________________________________________" readonly> mengesahkan butiran peribadi dan aduan yang diberi adalah benar. Saya bersetuju untuk dihubungi bagi sebarang pertanyaan lanjut berkaitan aduan yang dibuat.
                         </label>
                       </div>
                     </div>

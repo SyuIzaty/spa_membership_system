@@ -14,7 +14,7 @@ class Aduan extends Model
         'nama_pelapor', 'jawatan_pelapor', 'no_tel_pelapor', 'no_tel_bimbit_pelapor', 'no_bilik_pelapor', 'tarikh_laporan', 'lokasi_aduan', 
         'blok_aduan', 'aras_aduan', 'nama_bilik', 'kategori_aduan', 'jenis_kerosakan', 'jk_penerangan', 'sebab_kerosakan', 'sk_penerangan', 
         'status_aduan', 'tahap_kategori', 'juruteknik_bertugas', 'tarikh_serahan_aduan', 'laporan_pembaikan', 'bahan_alat', 'ak_upah', 
-        'ak_bahan_alat', 'jumlah_kos', 'tarikh_selesai_aduan', 'catatan_pembaikan'
+        'ak_bahan_alat', 'jumlah_kos', 'tarikh_selesai_aduan', 'catatan_pembaikan', 'maklumat_tambahan'
     ];
 
     public function jawatan()

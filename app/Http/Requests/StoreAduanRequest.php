@@ -44,6 +44,7 @@ class StoreAduanRequest extends FormRequest
             'jk_penerangan'         => '',
             'sebab_kerosakan'       => 'required',
             'sk_penerangan'         => '',
+            'maklumat_tambahan'     => '',
             'status_aduan'          => '',
         ];
     }

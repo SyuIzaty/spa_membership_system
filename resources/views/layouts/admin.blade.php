@@ -108,7 +108,7 @@
                         <a href="#" class="page-logo-link press-scale-down d-flex align-items-center position-relative" data-toggle="modal" data-target="#modal-shortcut">
                             {{-- <img src="{{asset('img/logo.png')}}" alt="SmartAdmin WebApp" aria-roledescription="logo"> --}}
 
-                            <span class="page-logo-text mr-1"><b>INTEC</b> CMS</span>
+                            <span class="page-logo-text mr-1"><b>INTEC</b> IDS</span>
                             <i class="fal fa-angle-down d-inline-block ml-1 fs-lg color-primary-300"></i>
                         </a>
                     </div>
@@ -148,7 +148,7 @@
                             </li>
 
                             @can('papar aduan')
-                            <li class="nav-title">Operation</li>
+                            <li class="nav-title">Operasi</li>
 
                             <li class="open">
                                 <a href="#" title="Aduan" data-filter-tags="aduan">
@@ -179,7 +179,7 @@
                             @endcan
 
                             @can('papar parameter')
-                            <li class="nav-title">Parameter Setting</li>
+                            <li class="nav-title">Tetapan Parameter</li>
 
                             <li class="open">
                                 <a href="/kategori-aduan" title="Kategori" data-filter-tags="kategori">

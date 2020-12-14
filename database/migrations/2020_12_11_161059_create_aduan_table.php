@@ -29,6 +29,7 @@ class CreateAduanTable extends Migration
             $table->string('jenis_kerosakan');
             $table->string('sebab_kerosakan');
             $table->string('status_aduan');
+            $table->string('maklumat_tambahan');
             $table->string('tahap_kategori');
             $table->string('juruteknik_bertugas');
             $table->dateTime('tarikh_serahan_aduan');
