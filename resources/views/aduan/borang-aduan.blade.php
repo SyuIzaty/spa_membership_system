@@ -247,64 +247,64 @@
                 });
             }
 
+            $('#nama_pelapor').on('change', function() {
+                $('#nama').val($(this).val());
+            });
+
+            // sama dgn func btn()
+            // $("#chk").change(function() {
+            // if ($(this).is(':checked')) {
+            //     $('#hantar').show();
+            // } else {
+            //     $('#hantar').hide();
+            // }
+            // });
+            // $("#chk").trigger("change");
+
+            $(".no_bilik_pelapor").hide();
+
+            $( "#jawatan_pelapor" ).change(function() {
+            var val = $("#jawatan_pelapor").val();
+            if(val==1){
+                $(".no_bilik_pelapor").show();
+            } else {
+                $(".no_bilik_pelapor").hide();
+            }
+            });
+
+            $(".jk_penerangan").hide();
+
+            $( "#jenis_kerosakan" ).change(function() {
+            var val = $("#jenis_kerosakan").val();
+            if(val==5 || val==10 || val==18 || val==24 || val==28){
+                $(".jk_penerangan").show();
+            } else {
+                $(".jk_penerangan").hide();
+            }
+            });
+
+            $(".sk_penerangan").hide();
+
+            $( "#sebab_kerosakan" ).change(function() {
+            var val = $("#sebab_kerosakan").val();
+            if(val==8 || val==17 || val==32 || val==40 || val==47){
+                $(".sk_penerangan").show();
+            } else {
+                $(".sk_penerangan").hide();
+            }
+            });
+
         });
 
-        $('#nama_pelapor').on('change', function() {
-            $('#nama').val($(this).val());
-        });
-
-        // sama dgn func btn()
-        // $("#chk").change(function() {
-        // if ($(this).is(':checked')) {
-        //     $('#hantar').show();
-        // } else {
-        //     $('#hantar').hide();
-        // }
-        // });
-        // $("#chk").trigger("change");
-
-        function btn()
-    {
-        var chk = document.getElementById("chk")
-        var hantar = document.getElementById("hantar");
-        hantar.disabled = chk.checked ? false : true;
-        if(!hantar.disabled){
-            hantar.focus();
+    function btn()
+        {
+            var chk = document.getElementById("chk")
+            var hantar = document.getElementById("hantar");
+            hantar.disabled = chk.checked ? false : true;
+            if(!hantar.disabled){
+                hantar.focus();
+            }
         }
-    }
-
-    $(".no_bilik_pelapor").hide();
-
-    $( "#jawatan_pelapor" ).change(function() {
-    var val = $("#jawatan_pelapor").val();
-    if(val==1){
-        $(".no_bilik_pelapor").show();
-    } else {
-        $(".no_bilik_pelapor").hide();
-    }
-    });
-
-    $(".jk_penerangan").hide();
-
-    $( "#jenis_kerosakan" ).change(function() {
-    var val = $("#jenis_kerosakan").val();
-    if(val==5 || val==10 || val==18 || val==24 || val==28){
-        $(".jk_penerangan").show();
-    } else {
-        $(".jk_penerangan").hide();
-    }
-    });
-
-    $(".sk_penerangan").hide();
-
-    $( "#sebab_kerosakan" ).change(function() {
-    var val = $("#sebab_kerosakan").val();
-    if(val==8 || val==17 || val==32 || val==40 || val==47){
-        $(".sk_penerangan").show();
-    } else {
-        $(".sk_penerangan").hide();
-    }
-    });
     
     </script>
 @endsection
