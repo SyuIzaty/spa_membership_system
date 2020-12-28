@@ -37,8 +37,9 @@ Route::post('/data_moduleauth', 'ModuleAuthController@data_moduleauth');
 Route::get('/test','ApplicantController@test');
 
 //ADUAN
-Route::get('/aduan-baru','AduanController@aduanBaru')->name('aduanBaru');
+Route::get('/aduan','AduanController@aduanBaru')->name('aduanBaru');
 Route::get('/borang-aduan','AduanController@borangAduan')->name('borangAduan');
+Route::get('/semak-aduan','AduanController@semakAduan')->name('semakAduan');
 Route::post('simpanAduan','AduanController@simpanAduan');
 Route::get('/cariJenis', 'AduanController@cariJenis');
 Route::get('/cariSebab', 'AduanController@cariSebab');

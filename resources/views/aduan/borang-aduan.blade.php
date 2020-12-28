@@ -22,14 +22,21 @@
                             <h4 class="card-title w-100"><b>INFO PENGADU :</b></h4>
                         </div>
                     </div><br><br><br><br><br><br>
-                    <div class="form-group col-md-8">
+                    <div class="form-group col-md-6">
                         <span class="text-danger">*</span> {{Form::label('title', 'Nama Pelapor')}}
                         {{Form::text('nama_pelapor', '', ['class' => 'form-control', 'placeholder' => 'Nama Pelapor', 'id' => 'nama_pelapor', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
                         @error('nama_pelapor')
                             <p style="color: red">{{ $message }}</p>
                         @enderror
                     </div>
-                    <div class="col-md-4 form-group">
+                    <div class="form-group col-md-3">
+                        <span class="text-danger">*</span> {{Form::label('title', 'Emel')}}
+                        {{Form::email('emel_pelapor', '', ['class' => 'form-control', 'placeholder' => 'Emel Pelapor', 'id' => 'emel_pelapor'])}}
+                        @error('emel_pelapor')
+                            <p style="color: red">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="col-md-3 form-group">
                         <span class="text-danger">*</span> {{ Form::label('title', 'Jawatan') }}
                         <select class="form-control jawatan_pelapor" name="jawatan_pelapor" id="jawatan_pelapor">
                             <option value="">-- Pilih Jawatan --</option>

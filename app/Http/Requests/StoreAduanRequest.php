@@ -31,6 +31,7 @@ class StoreAduanRequest extends FormRequest
         return [
             'nama_pelapor'          => 'required|min:10|max:255',
             'jawatan_pelapor'       => 'required',
+            'emel_pelapor'          => 'required',
             'no_tel_pelapor'        => 'nullable|min:9|max:11|regex:/(\+?0)[0-46-9]-*[0-9]{7,8}/',
             'no_tel_bimbit_pelapor' => 'required|min:9|max:11|regex:/(\+?0)[0-46-9]-*[0-9]{7,8}/',
             'no_bilik_pelapor'      => '',

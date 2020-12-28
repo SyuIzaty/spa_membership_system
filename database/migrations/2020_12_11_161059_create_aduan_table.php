@@ -16,6 +16,7 @@ class CreateAduanTable extends Migration
         Schema::create('aduan', function (Blueprint $table) {
             $table->id();
             $table->string('nama_pelapor');
+            $table->string('emel_pelapor');
             $table->string('jawatan_pelapor');
             $table->string('no_tel_pelapor');
             $table->string('no_tel_bimbit_pelapor');

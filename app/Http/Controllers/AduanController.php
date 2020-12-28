@@ -58,8 +58,9 @@ class AduanController extends Controller
 
     public function simpanAduan(StoreAduanRequest $request)
     {
-        Aduan::create([
+        $aduan = Aduan::create([
             'nama_pelapor'              => strtoupper($request->nama_pelapor),
+            'emel_pelapor'              => $request->emel_pelapor,
             'jawatan_pelapor'           => $request->jawatan_pelapor,
             'no_tel_pelapor'            => $request->no_tel_pelapor,
             'no_tel_bimbit_pelapor'     => $request->no_tel_bimbit_pelapor, 
@@ -79,7 +80,7 @@ class AduanController extends Controller
         ]);
             
         $admin = User::whereHas('roles', function($query){
-            $query->where('id', 'OP_ADMIN');
+            $query->where('id', 'CMS001');
         })->get();
 
         foreach($admin as $value)
@@ -99,8 +100,27 @@ class AduanController extends Controller
 
         }
 
-        Session::flash('message', 'Aduan anda telah berjaya dihantar. Sebarang info akan dimaklumkan kemudian.');
-        return redirect('/aduan-baru');
+        $emel = $request->emel_pelapor;
+
+        $data2 = [
+            'nama_penerima' => 'Assalamualaikum wbt & Salam Sejahtera, ' . $request->nama_pelapor,
+            'penerangan' => 'Terima kasih kerana menggunakan platform E-Aduan INTEC Education College.',
+            'id_semakan' => 'ID untuk semakan aduan anda ialah : ' . $aduan->id,
+        ];
+
+        Mail::send('aduan.emel-semakan', $data2, function ($message) use ($emel) {
+            $message->subject('ID SEMAKAN ADUAN');
+            $message->to($emel);
+        });
+
+        Session::flash('message', 'Aduan anda telah berjaya dihantar. ID semakan aduan telah dihantar kepada emel anda. Sebarang info akan dimaklumkan kemudian.');
+        return redirect('/aduan');
+    }
+
+    public function semakAduan(Request $request)
+    {
+        $semak = Aduan::where('id', $request->id)->get();
+        return view('aduan.semak-aduan', compact('semak'));
     }
 
     //Senarai Aduan
@@ -110,7 +130,7 @@ class AduanController extends Controller
         $aduan = Aduan::all();
 
         $juruteknik = User::whereHas('roles', function($query){
-            $query->where('id', 'OP_TECHNICIAN');
+            $query->where('id', 'CMS002');
         })->get();
 
         return view('aduan.senarai-aduan', compact('aduan', 'juruteknik'))->with('no', 1);
@@ -255,7 +275,7 @@ class AduanController extends Controller
         $aduan = Aduan::all();
 
         $juruteknik = User::whereHas('roles', function($query){
-            $query->where('id', 'OP_TECHNICIAN');
+            $query->where('id', 'CMS002');
         })->get();
 
         return view('aduan.senarai-aduan-selesai', compact('aduan', 'juruteknik'))->with('no', 1);
@@ -351,7 +371,7 @@ class AduanController extends Controller
         $aduan = Aduan::all();
 
         $juruteknik = User::whereHas('roles', function($query){
-            $query->where('id', 'OP_TECHNICIAN');
+            $query->where('id', 'CMS002');
         })->get();
 
         return view('aduan.senarai-aduan-kiv', compact('aduan', 'juruteknik'))->with('no', 1);
@@ -451,7 +471,7 @@ class AduanController extends Controller
         $status = StatusAduan::select('*')->whereIn('kod_status', ['TD', 'AK'])->get();
         $tukarStatus = StatusAduan::select('*')->whereIn('kod_status', ['AS'])->get();
         $juruteknik = User::whereHas('roles', function($query){
-            $query->where('id', 'OP_TECHNICIAN');
+            $query->where('id', 'CMS002');
         })->get();
 
         // dd($aduan);

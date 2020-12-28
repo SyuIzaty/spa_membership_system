@@ -48,6 +48,13 @@
 
                                             <tr>
                                                 <div class="form-group">
+                                                    <td width="30%"><label class="form-label" for="emel_pelapor">Emel Pelapor :</label></td>
+                                                    <td colspan="4"><b>{{ $aduan->emel_pelapor ?? '-- TIADA DATA --'  }}</b></td>
+                                                </div>
+                                            </tr>
+
+                                            <tr>
+                                                <div class="form-group">
                                                     <td width="30%"><label class="form-label" for="jawatan_pelapor">Jawatan :</label></td>
                                                     <td colspan="4"><b>{{ $aduan->jawatan->nama_jawatan ?? '-- TIADA DATA --'  }}</b></td>
                                                 </div>
