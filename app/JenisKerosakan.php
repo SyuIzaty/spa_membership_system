@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class JenisKerosakan extends Model
 {
     use SoftDeletes;
-    protected $table = 'jenis_kerosakan';
+    protected $table = 'cms_jenis_kerosakan';
     protected $primaryKey = 'id';
     protected $fillable = [
         'kategori_aduan', 'jenis_kerosakan'

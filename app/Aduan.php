@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Aduan extends Model
 {
     use SoftDeletes;
-    protected $table = 'aduan';
+    protected $table = 'cms_aduan';
     protected $primaryKey = 'id';
     protected $fillable = [
         'nama_pelapor', 'emel_pelapor', 'jawatan_pelapor', 'no_tel_pelapor', 'no_tel_bimbit_pelapor', 'no_bilik_pelapor', 'tarikh_laporan', 'lokasi_aduan', 
