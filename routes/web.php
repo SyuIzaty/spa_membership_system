@@ -74,3 +74,7 @@ Route::resource('sebab-kerosakan', 'SebabKerosakanController');
 Route::post('sebabKerosakan', 'SebabKerosakanController@data_sebab');  
 Route::post('tambahSebab','SebabKerosakanController@tambahSebab');
 Route::post('kemaskiniSebab','SebabKerosakanController@kemaskiniSebab');
+
+// Change Password
+Route::get('change-password','ChangePasswordController@index');
+Route::post('update-password','ChangePasswordController@store')->name('change.password');

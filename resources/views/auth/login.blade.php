@@ -71,16 +71,16 @@
                         </div>
 
                          <!-- Divider Text -->
-                            <div class="form-group col-lg-12 mx-auto d-flex align-items-center my-4">
+                            {{-- <div class="form-group col-lg-12 mx-auto d-flex align-items-center my-4">
                                 <div class="border-bottom w-100 ml-5 border-dark"></div>
                                 <span class="px-2 small text-muted font-weight-bold text-muted">OR</span>
                                 <div class="border-bottom w-100 mr-5 border-dark"></div>
-                            </div>
+                            </div> --}}
                         
                         <!-- Already Registered -->
-                            <div class="text-center w-100">
+                            {{-- <div class="text-center w-100">
                                 <p class="text-muted font-weight-bold">Don't have an account? <a href="/register" class="text-primary ml-2">Register</a></p>  
-                            </div>
+                            </div> --}}
                         </div>
                     </form>
                                     

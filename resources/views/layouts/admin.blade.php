@@ -271,7 +271,10 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    <div class="dropdown-divider m-0"></div>
+                                    <a class="dropdown-item fw-500 pt-3 pb-3" href="/change-password">
+                                        <span data-i18n="drpdwn.page-logout">Tukar Katalaluan</span>
+                                    </a>
                                     <div class="dropdown-divider m-0"></div>
                                     <a class="dropdown-item fw-500 pt-3 pb-3" href="">
                                         <form action="{{ route('logout') }}" method="POST">
