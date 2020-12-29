@@ -89,12 +89,12 @@ class AduanController extends Controller
 
             $data = [
                 'nama_penerima' => 'Assalamualaikum wbt & Salam Sejahtera, ' . $value->name,
-                'penerangan' => 'Anda telah menerima aduan baru. Sila log masuk sistem CMS',
+                'penerangan' => 'Anda telah menerima aduan baru. Sila log masuk sistem IDS',
             ];
 
             Mail::send('aduan.emel-aduan-baru', $data, function ($message) use ($admin_email) {
                 $message->subject('ADUAN BARU');
-                // $message->from(Auth::user()->email);
+                $message->from('ITadmin@intec.edu.my');
                 $message->to($admin_email);
             });
 
@@ -110,6 +110,7 @@ class AduanController extends Controller
 
         Mail::send('aduan.emel-semakan', $data2, function ($message) use ($emel) {
             $message->subject('ID SEMAKAN ADUAN');
+            $message->from('ITadmin@intec.edu.my');
             $message->to($emel);
         });
 
