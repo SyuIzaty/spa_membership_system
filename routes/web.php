@@ -75,6 +75,17 @@ Route::post('sebabKerosakan', 'SebabKerosakanController@data_sebab');
 Route::post('tambahSebab','SebabKerosakanController@tambahSebab');
 Route::post('kemaskiniSebab','SebabKerosakanController@kemaskiniSebab');
 
+//COVID19
+Route::get('/declarationForm/{id}','CovidController@form')->name('form');
+Route::post('formStore','CovidController@formStore');
+Route::post('declareList', 'CovidController@data_declare');
+Route::get('/declare-info/{id}', 'CovidController@declareInfo')->name('declareInfo');
+Route::delete('declareList/{id}', 'CovidController@declareDelete');
+Route::get('/historyForm/{id}','CovidController@history')->name('history');
+Route::post('historyList', 'CovidController@data_history');
+Route::get('/history-info/{id}', 'CovidController@historyInfo')->name('historyInfo');
+Route::delete('historyList/{id}', 'CovidController@historyDelete');
+
 // Change Password
 Route::get('change-password','ChangePasswordController@index');
 Route::post('update-password','ChangePasswordController@store')->name('change.password');

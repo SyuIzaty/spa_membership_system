@@ -143,7 +143,7 @@
                             <li>
                                 <a href="/home" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-chart-pie"></i>
-                                    <span class="nav-link-text" data-i18n="nav.application_intel">Laman Utama</span>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Dashboard</span>
                                 </a>
                             </li>
 
@@ -193,6 +193,23 @@
                                 <a href="/sebab-kerosakan" title="Sebab" data-filter-tags="sebab">
                                     <i class="fal fa-filter"></i>
                                     <span class="nav-link-text" data-i18n="nav.sebab">Sebab Kerosakan</span>
+                                </a>
+                            </li>
+                            @endcan
+                            
+                            @can('view menu')
+                            <li class="nav-title">Covid19 Daily Declaration</li>
+
+                            <li class="open">
+                                <a href="/declarationForm/{{Auth::user()->id}}" title="Declaration" data-filter-tags="declaration">
+                                    <i class="fal fa-calendar-times"></i>
+                                    <span class="nav-link-text" data-i18n="nav.declaration">Today Declaration</span>
+                                </a>
+                            </li>
+                            <li class="open">
+                                <a href="/historyForm/{{Auth::user()->id}}" title="History" data-filter-tags="history">
+                                    <i class="fal fa-clock"></i>
+                                    <span class="nav-link-text" data-i18n="nav.history">History</span>
                                 </a>
                             </li>
                             @endcan
@@ -273,14 +290,14 @@
                                     </div>
                                     <div class="dropdown-divider m-0"></div>
                                     <a class="dropdown-item fw-500 pt-3 pb-3" href="/change-password">
-                                        <span data-i18n="drpdwn.page-logout">Tukar Katalaluan</span>
+                                        <span data-i18n="drpdwn.page-logout">Change Password</span>
                                     </a>
                                     <div class="dropdown-divider m-0"></div>
                                     <a class="dropdown-item fw-500 pt-3 pb-3" href="">
                                         <form action="{{ route('logout') }}" method="POST">
                                             @csrf
                                         <!--span data-i18n="drpdwn.page-logout">Logout</span-->
-                                        <button type="submit" class="btn btn-danger btn-sm">Log Keluar</button>
+                                        <button type="submit" class="btn btn-danger btn-sm">Log Out</button>
                                         <!--span class="float-right fw-n">&commat;codexlantern</span-->
                                         </form>
 

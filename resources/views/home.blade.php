@@ -20,7 +20,8 @@
 
                 <div class="panel-container show">
                     <div class="panel-content">
-                        Selamat Datang ke SISTEM E-ADUAN INTEC.
+                        {{-- Selamat Datang ke SISTEM E-ADUAN INTEC. --}}
+                        Welcome to INTEC DIGITAL SYSTEM (IDS)
                     </div>
                 </div>
 

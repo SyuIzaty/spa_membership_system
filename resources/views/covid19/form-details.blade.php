@@ -1,0 +1,188 @@
+@extends('layouts.admin')
+
+@section('content')
+
+<main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}})">
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div id="panel-1" class="panel">
+                <div class="panel-hdr" style="background-color:rgb(97 63 115)">
+                    <h2>
+                    </h2>
+                    <div class="panel-toolbar">
+                        <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
+                        <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
+                        <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10" data-original-title="Close"></button>
+                    </div>
+                </div>
+
+                <div class="panel-container show">
+                    <div class="panel-content">
+                        <center><img src="{{ asset('img/intec_logo.png') }}" style="height: 120px; width: 270px;"></center><br>
+                        <h4 style="text-align: center">
+                            <b>INTEC EDUCATION COLLEGE COVID19 RISK SCREENING DAILY DECLARATION RESULT</b>
+                        </h4>
+
+                        <div class="panel-container show">
+                            <div class="panel-content">
+                                
+                                <table id="info" class="table table-bordered table-hover table-striped w-100">
+                                    <thead>
+                                        @can('view field')
+                                        <tr>
+                                            <div class="form-group">
+                                                <th width="15%"><label class="form-label" for="qHeader">NAME :</label></th>
+                                                <th colspan="2"><label class="form-label" for="qHeader"><b>{{ strtoupper($declare->user->name)}}</b></label></th>
+                                                <th width="15%"><label class="form-label" for="qHeader">STAFF ID / STUDENT ID :</label></th>
+                                                <th colspan="2"><label class="form-label" for="qHeader"><b>{{$declare->user_id}}</b></label></th>
+                                            </div>
+                                        </tr>
+                                        <tr>
+                                            <div class="form-group">
+                                                <th width="15%"><label class="form-label" for="qHeader">EMAIL :</label></th>
+                                                <th colspan="2"><label class="form-label" for="qHeader"><b>{{$declare->user->email}}</b></label></th>
+                                                <th width="25%"><label class="form-label" for="qHeader">PHONE NO. :</label></th>
+                                                <th colspan="2"><label class="form-label" for="qHeader"><b>{{ isset($declare->user_phone) ? $declare->user_phone : '-'}}</b></label></th>
+                                            </div>
+                                        </tr>
+                                        @endcan
+                                        <tr>
+                                            <div class="form-group">
+                                                <th width="15%"><label class="form-label" for="qHeader">DECLARATION DATE :</label></th>
+                                                <th colspan="2"><label class="form-label" for="qHeader"><b>{{strtoupper(date(' j F Y', strtotime($declare->created_at) ))}}</b></label></th>
+                                                <th width="15%"><label class="form-label" for="qHeader">DECLARATION TIME :</label></th>
+                                                <th colspan="2"><label class="form-label" for="qHeader"><b>{{ date(' h:i:s A', strtotime($declare->created_at) )}}</b></label></th>
+                                            </div>
+                                        </tr>
+                                    </thead>
+                                </table>
+                                
+                                    <table id="info" class="table table-bordered table-hover table-striped w-100">
+                                        <thead>
+                                            <tr>
+                                                <div class="form-group">
+                                                    <th style="text-align: center" width="4%"><label class="form-label" for="qHeader">NO.</label></th>
+                                                    <th style="text-align: center"><label class="form-label" for="qHeader">SELF-DECLARATION CHECKLIST</label></th>
+                                                    <th style="text-align: center"><label class="form-label" for="qHeader">ANSWER</label></th>
+                                                </div>
+                                            </tr>
+                                            @if(!empty($declare->q1))
+                                            <tr class="q1">
+                                                <div class="form-group">
+                                                    <td style="text-align: center" width="4%"><label class="form-label" for="q1">1.</label></td>
+                                                    <td width="80%"><label class="form-label" for="q1">Have you been confirmed positive with COVID-19 within 14 days?</label></td>
+                                                    <td style="text-align: center"><b>
+                                                        @if ($declare->q1 == 'Y') YES @endif
+                                                        @if ($declare->q1 == 'N') NO @endif
+                                                    </b></td>
+                                                </div>
+                                            </tr>
+                                            @endif
+                                            @if(!empty($declare->q2))
+                                            <tr class="q2">
+                                                <div class="form-group">
+                                                    <td style="text-align: center" width="4%"><label class="form-label" for="q2">2.</label></td>
+                                                    <td><label class="form-label" for="q2">Have you had close contact with anyone who confirmed positive case of COVID-19 within 10 days?</label></td>
+                                                    <td style="text-align: center"><b>
+                                                        @if ($declare->q2 == 'Y') YES @endif
+                                                        @if ($declare->q2 == 'N') NO @endif
+                                                    </b></td>
+                                                </div>
+                                            </tr>
+                                            @endif
+                                            @if(!empty($declare->q3))
+                                            <tr class="q3">
+                                                <div class="form-group">
+                                                    <td style="text-align: center" width="4%"><label class="form-label" for="q3">3.</label></td>
+                                                    <td><label class="form-label" for="q3">
+                                                        Have you had close contact with any individual on question 2 within 10 days <b>OR</b><br>
+                                                        Have you ever attended an event or visited any place involving suspected or positive COVID-19 case within 10 days <b>OR</b><br>
+                                                        Are you from an area of Enhanced Movement Control Order (EMCO) in period of 10 days ?</label></td>
+                                                    <td style="text-align: center; vertical-align: middle"><b>
+                                                        @if ($declare->q3 == 'Y') YES @endif
+                                                        @if ($declare->q3 == 'N') NO @endif
+                                                    </b></td>
+                                                </div>
+                                            </tr>
+                                            @endif
+                                            @if(!empty($declare->q4a) | !empty($declare->q4b) | !empty($declare->q4c) | !empty($declare->q4d))
+                                                <tr>
+                                                    <div class="form-group">
+                                                        <td style="text-align: center" width="3%" rowspan="5"><label class="form-label" for="q4">4.</label></td>
+                                                        <td><label class="form-label" for="q4">Do you experience the following symptoms:</label></td>
+                                                        <td colspan="2"></td>
+                                                    </div>
+                                                </tr>
+                                                @if(!empty($declare->q4a))
+                                                    <tr>
+                                                        <div class="form-group">
+                                                            <td width="3%"><label class="form-label" for="q4a"><li>Fever</li></label></td>
+                                                            <td style="text-align: center"><b>
+                                                                @if ($declare->q4a == 'Y') YES @endif
+                                                                @if ($declare->q4a == 'N') NO @endif
+                                                            </b></td>
+                                                        </div>
+                                                    </tr>
+                                                @endif
+                                                @if(!empty($declare->q4b))
+                                                    <tr>
+                                                        <div class="form-group">
+                                                            <td width="3%"><label class="form-label" for="q4b"><li>Cough</li></label></td>
+                                                            <td style="text-align: center"><b>
+                                                                @if ($declare->q4b == 'Y') YES @endif
+                                                                @if ($declare->q4b == 'N') NO @endif
+                                                            </b></td>
+                                                        </div>
+                                                    </tr>
+                                                @endif
+                                                @if(!empty($declare->q4c))
+                                                    <tr>
+                                                        <div class="form-group">
+                                                            <td width="3%"><label class="form-label" for="q4c"><li>Flu</li></label></td>
+                                                            <td style="text-align: center"><b>
+                                                                @if ($declare->q4c == 'Y') YES @endif
+                                                                @if ($declare->q4c == 'N') NO @endif
+                                                            </b></td>
+                                                        </div>
+                                                    </tr>
+                                                @endif
+                                                @if(!empty($declare->q4d))
+                                                    <tr>
+                                                        <div class="form-group">
+                                                            <td width="3%"><label class="form-label" for="q4d"><li>Difficulty in Breathing</li></label></td>
+                                                            <td style="text-align: center"><b>
+                                                                @if ($declare->q4d == 'Y') YES @endif
+                                                                @if ($declare->q4d == 'N') NO @endif
+                                                            </b></td>
+                                                        </div>
+                                                    </tr>
+                                                @endif
+                                            @endif
+                                            <tr>
+                                                <div class="form-group">
+                                                    <td colspan="4">
+                                                        <label class="form-label" for="confirmation" style="margin-left: 55px;"><b> OVERALL RESULT : </b><b style="font-size: 20px">CATEGORY {{$declare->category}}</b> [ Description on category ]</label>
+                                                    </td>
+                                                </div>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                    <a style="margin-right:5px" href="{{ URL::previous() }}" class="btn btn-success ml-auto float-right"><i class="fal fa-angle-double-left"></i> Back</a><br>
+                            </div>
+                        </div>
+                    
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</main>
+
+@endsection
+@section('script')
+<script>
+</script>
+@endsection

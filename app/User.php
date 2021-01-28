@@ -53,4 +53,10 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Aduan','juruteknik_bertugas');
     }
+
+    public function covid()
+    {
+        return $this->hasMany('App\Covid','user_id');
+    }
+
 }
