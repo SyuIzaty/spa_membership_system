@@ -71,7 +71,7 @@ class CovidController extends Controller
 
     public function data_declare()
     {
-        $declare = Covid::whereDate('created_at', '=', now()->toDateString())->orderBy('created_at', 'desc')->get();
+        $declare = Covid::whereDate('created_at', '=', now()->toDateString())->get();
 
         return datatables()::of($declare)
         ->addColumn('action', function ($declare) {
@@ -118,13 +118,13 @@ class CovidController extends Controller
 
         if( Auth::user()->hasRole('covid admin') )
         { 
-            $declare = Covid::whereDate('created_at', '!=', now()->toDateString())->orderBy('created_at', 'desc')->get();
+            $declare = Covid::whereDate('created_at', '!=', now()->toDateString())->get();
         }
         else
         {
-            $declare = Covid::whereDate('created_at', '!=', now()->toDateString())->orderBy('created_at', 'desc')->where('user_id', Auth::user()->id)->get();
+            $declare = Covid::whereDate('created_at', '!=', now()->toDateString())->where('user_id', Auth::user()->id)->get();
         }
-
+        
         return datatables()::of($declare)
         ->addColumn('action', function ($declare) {
 
@@ -138,6 +138,41 @@ class CovidController extends Controller
             return '<a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info"><i class="fal fa-eye"></i> Declaration Form</a>';
         }
             
+        })
+
+        ->editColumn('q1', function ($declare) {
+
+            return isset($declare->q1) ? $declare->q1 : '<div style="color:red;" >--</div>';
+        })
+
+        ->editColumn('q2', function ($declare) {
+
+            return isset($declare->q2) ? $declare->q2 : '<div style="color:red;" >--</div>';
+        })
+
+        ->editColumn('q3', function ($declare) {
+
+            return isset($declare->q3) ? $declare->q3 : '<div style="color:red;" >--</div>';
+        })
+
+        ->editColumn('q4a', function ($declare) {
+
+            return isset($declare->q4a) ? $declare->q4a : '<div style="color:red;" >--</div>';
+        })
+
+        ->editColumn('q4b', function ($declare) {
+
+            return isset($declare->q4b) ? $declare->q4b : '<div style="color:red;" >--</div>';
+        })
+
+        ->editColumn('q4c', function ($declare) {
+
+            return isset($declare->q4c) ? $declare->q4c : '<div style="color:red;" >--</div>';
+        })
+
+        ->editColumn('q4d', function ($declare) {
+
+            return isset($declare->q4d) ? $declare->q4d : '<div style="color:red;" >--</div>';
         })
 
         ->editColumn('date', function ($declare) {
@@ -155,7 +190,7 @@ class CovidController extends Controller
             return strtoupper($declare->user->name);
         })
         
-        ->rawColumns(['action', 'date', 'time', 'user_name'])
+        ->rawColumns(['action', 'date', 'time', 'user_name', 'q1', 'q2', 'q3', 'q4a', 'q4b', 'q4c', 'q4d'])
         ->make(true);
     }
 
