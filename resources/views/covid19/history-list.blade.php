@@ -30,6 +30,7 @@
                                     <th>ID</th>
                                     <th>NAME</th>
                                     @endcan
+                                    @can('view data')
                                     <th>Q1</th>
                                     <th>Q2</th>
                                     <th>Q3</th>
@@ -37,6 +38,7 @@
                                     <th>Q4(ii)</th>
                                     <th>Q4(iii)</th>
                                     <th>Q4(iv)</th>
+                                    @endcan
                                     <th>CATEGORY</th>
                                     <th>DATE</th>
                                     <th>TIME</th>
@@ -48,6 +50,7 @@
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="ID"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Name"></td>
                                     @endcan
+                                    @can('view data')
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Q1"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Q2"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Q3"></td>
@@ -55,6 +58,7 @@
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Cough"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Flu"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Breathing Difficulty"></td>
+                                    @endcan
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Category"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Date Created"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Time Created"></td>
@@ -117,6 +121,7 @@
                     { className: 'text-center', data: 'user_id', name: 'user_id' },
                     { className: 'text-center', data: 'user_name', name: 'user_name' },
                     @endcan
+                    @can('view data')
                     { className: 'text-center', data: 'q1', name: 'q1' },
                     { className: 'text-center', data: 'q2', name: 'q2' },
                     { className: 'text-center', data: 'q3', name: 'q3' },
@@ -124,6 +129,7 @@
                     { className: 'text-center', data: 'q4b', name: 'q4b' },
                     { className: 'text-center', data: 'q4c', name: 'q4c' },
                     { className: 'text-center', data: 'q4d', name: 'q4d' },
+                    @endcan
                     { className: 'text-center', data: 'category', name: 'category' },
                     { className: 'text-center', data: 'date', name: 'date' },
                     { className: 'text-center', data: 'time', name: 'time' },

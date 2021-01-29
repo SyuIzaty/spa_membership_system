@@ -209,8 +209,8 @@
                                     <th>ID</th>
                                     <th>NAME</th>
                                     <th>CATEGORY</th>
-                                    <th>DATE CREATED</th>
-                                    <th>TIME CREATED</th>
+                                    <th>DATE</th>
+                                    <th>TIME</th>
                                     <th>ACTION</th>
                                 </tr>
                                 <tr>
