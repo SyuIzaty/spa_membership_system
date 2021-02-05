@@ -85,6 +85,23 @@ Route::get('/historyForm/{id}','CovidController@history')->name('history');
 Route::post('historyList', 'CovidController@data_history');
 Route::get('/history-info/{id}', 'CovidController@historyInfo')->name('historyInfo');
 Route::delete('historyList/{id}', 'CovidController@historyDelete');
+Route::get('/declarationList/{id}','CovidController@list')->name('list');
+Route::get('/declareNew/{id}','CovidController@new')->name('new');
+Route::post('newStore','CovidController@newStore');
+Route::get('/findUser', 'CovidController@findUser');
+Route::get('/selfHistory/{id}','CovidController@selfHistory')->name('selfHistory');
+Route::post('historySelf', 'CovidController@data_selfHistory');
+Route::get('/catA','CovidController@categoryA');
+Route::post('AList', 'CovidController@data_catA');
+Route::get('/catB','CovidController@categoryB');
+Route::post('BList', 'CovidController@data_catB');
+Route::get('/catC','CovidController@categoryC');
+Route::post('CList', 'CovidController@data_catC');
+Route::get('/catD','CovidController@categoryD');
+Route::post('DList', 'CovidController@data_catD');
+Route::get('/catE','CovidController@categoryE');
+Route::post('EList', 'CovidController@data_catE');
+Route::post('updateFollowup','CovidController@updateFollowup');
 
 // Change Password
 Route::get('change-password','ChangePasswordController@index');

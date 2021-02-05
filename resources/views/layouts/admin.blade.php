@@ -197,7 +197,63 @@
                             </li>
                             @endcan
                             
-                            @can('view menu')
+                            @can('view admin')
+                            <li class="nav-title">Covid19 Management</li>
+
+                            <li class="open">
+                                <a href="/declarationList/{{Auth::user()->id}}" title="Declaration" data-filter-tags="declaration">
+                                    <i class="fal fa-calendar-times"></i>
+                                    <span class="nav-link-text" data-i18n="nav.declaration">Today Declaration List</span>
+                                </a>
+                            </li>
+                            <li class="open">
+                                <a href="#" title="Category" data-filter-tags="category">
+                                    <i class="fal fa-list"></i>
+                                    <span class="nav-link-text" data-i18n="nav.category">Category</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/catA" title="catA" data-filter-tags="catA">
+                                            <span class="nav-link-text" data-i18n="nav.catA"><i class="fal fa-arrow-right"> Category A</i></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/catB" title="catB" data-filter-tags="catB">
+                                            <span class="nav-link-text" data-i18n="nav.catB"><i class="fal fa-arrow-right"> Category B</i></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/catC" title="catC" data-filter-tags="catC">
+                                            <span class="nav-link-text" data-i18n="nav.catC"><i class="fal fa-arrow-right"> Category C</i></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/catD" title="catD" data-filter-tags="catD">
+                                            <span class="nav-link-text" data-i18n="nav.catD"><i class="fal fa-arrow-right"> Category D</i></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/catE" title="catE" data-filter-tags="catE">
+                                            <span class="nav-link-text" data-i18n="nav.catE"><i class="fal fa-arrow-right"> Category E</i></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="open">
+                                <a href="/historyForm/{{Auth::user()->id}}" title="History" data-filter-tags="history">
+                                    <i class="fal fa-clock"></i>
+                                    <span class="nav-link-text" data-i18n="nav.history">History List</span>
+                                </a>
+                            </li>
+                            <li class="open">
+                                <a href="/declareNew/{{Auth::user()->id}}" title="Declaration" data-filter-tags="declaration">
+                                    <i class="fal fa-user"></i>
+                                    <span class="nav-link-text" data-i18n="nav.declaration">Declaration Form</span>
+                                </a>
+                            </li>
+                            @endcan
+
+                            @can('view user')
                             <li class="nav-title">Covid19 Daily Declaration</li>
 
                             <li class="open">
@@ -207,9 +263,9 @@
                                 </a>
                             </li>
                             <li class="open">
-                                <a href="/historyForm/{{Auth::user()->id}}" title="History" data-filter-tags="history">
+                                <a href="/selfHistory/{{Auth::user()->id}}" title="History" data-filter-tags="history">
                                     <i class="fal fa-clock"></i>
-                                    <span class="nav-link-text" data-i18n="nav.history">History</span>
+                                    <span class="nav-link-text" data-i18n="nav.history">Self History</span>
                                 </a>
                             </li>
                             @endcan

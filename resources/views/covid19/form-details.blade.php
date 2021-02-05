@@ -2,7 +2,7 @@
 
 @section('content')
 
-<main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}})">
+<main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
 
     <div class="row">
         <div class="col-xl-12">
@@ -50,9 +50,9 @@
                                         <tr>
                                             <div class="form-group">
                                                 <th width="15%"><label for="qHeader">DECLARATION DATE :</label></th>
-                                                <td colspan="2"><label for="qHeader">{{strtoupper(date(' j F Y', strtotime($declare->created_at) ))}}</label></td>
+                                                <td colspan="2"><label for="qHeader">{{strtoupper(date(' j F Y', strtotime($declare->declare_date) ))}}</label></td>
                                                 <th width="15%"><label for="qHeader">DECLARATION TIME :</label></th>
-                                                <td colspan="2"><label for="qHeader">{{ date(' h:i:s A', strtotime($declare->created_at) )}}</label></td>
+                                                <td colspan="2"><label for="qHeader">{{ date(' h:i:s A', strtotime($declare->declare_date) )}}</label></td>
                                             </div>
                                         </tr>
                                     </thead>

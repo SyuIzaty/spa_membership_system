@@ -1,11 +1,10 @@
 @extends('layouts.admin')
 
 @section('content')
-
 <main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
     <div class="subheader">
         <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-calendar-times'></i>Declaration Management
+        <i class='subheader-icon fal fa-paperclip'></i>Category A Management
         </h1>
     </div>
     <div class="row">
@@ -13,7 +12,7 @@
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
                     <h2>
-                        Today Declaration <span class="fw-300"><i>List</i></span>
+                        Category A <span class="fw-300"><i>List</i></span>
                     </h2>
                     <div class="panel-toolbar">
                         <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
@@ -23,16 +22,16 @@
                 </div>
                 <div class="panel-container show">
                     <div class="panel-content">
-                        <table id="declare" class="table table-bordered table-hover table-striped w-100">
+                        <table id="catA" class="table table-bordered table-hover table-striped w-100">
                             <thead>
                                 <tr class="bg-primary-50 text-center">
-                                    <th style="width:25px">No</th>
+                                    <th style="width:15px">No</th>
                                     <th>ID</th>
                                     <th>NAME</th>
                                     <th>POSITION</th>
-                                    <th>CATEGORY</th>
-                                    <th>DATE CREATED</th>
-                                    <th>TIME CREATED</th>
+                                    <th>QUARANTINE DAY</th>
+                                    <th>DATE DECLARE</th>
+                                    <th>TIME DECLARE</th>
                                     <th>FOLLOW UP</th>
                                     <th>ACTION</th>
                                 </tr>
@@ -41,7 +40,7 @@
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="ID"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Name"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Position"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Category"></td>
+                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Day"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Date"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Time"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Follow Up"></td>
@@ -85,8 +84,8 @@
     </div>
 
 </main>
-
 @endsection
+
 @section('script')
 <script>
 
@@ -101,7 +100,7 @@
             $('.modal-body #name').val(name); 
         });
 
-        $('#declare thead tr .hasinput').each(function(i)
+        $('#catA thead tr .hasinput').each(function(i)
         {
             $('input', this).on('keyup change', function()
             {
@@ -126,12 +125,11 @@
             });
         });
 
-
-        var table = $('#declare').DataTable({
+        var table = $('#catA').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
-                url: "/declareList",
+                url: "/AList",
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
@@ -140,20 +138,20 @@
                     { className: 'text-center', data: 'user_id', name: 'user_id' },
                     { className: 'text-center', data: 'user_name', name: 'user_name' },
                     { className: 'text-center', data: 'user_post', name: 'user_post' },
-                    { className: 'text-center', data: 'category', name: 'category' },
+                    { className: 'text-center', data: 'quarantine_day', name: 'quarantine_day' },
                     { className: 'text-center', data: 'date', name: 'date' },
                     { className: 'text-center', data: 'time', name: 'time' },
                     { className: 'text-center', data: 'follow_up', name: 'follow_up' },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
-                "order": [[ 2, "asc" ]],
+                "order": [[ 5, "desc" ], [ 2, "asc"]],
                 "initComplete": function(settings, json) {
 
                 } 
         });
 
-        $('#declare').on('click', '.btn-delete[data-remote]', function (e) {
+        $('#catA').on('click', '.btn-delete[data-remote]', function (e) {
             e.preventDefault();
             $.ajaxSetup({
                 headers: {
@@ -179,11 +177,11 @@
                     dataType: 'json',
                     data: {method: '_DELETE', submit: true}
                     }).always(function (data) {
-                        $('#declare').DataTable().draw(false);
+                        $('#catA').DataTable().draw(false);
                     });
                 }
             })
-        }); 
+        });
 
     });
 

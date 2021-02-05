@@ -1,11 +1,10 @@
 @extends('layouts.admin')
 
 @section('content')
-
 <main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
     <div class="subheader">
         <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-calendar-times'></i>Declaration Management
+        <i class='subheader-icon fal fa-clock'></i>Declaration History Management
         </h1>
     </div>
     <div class="row">
@@ -13,7 +12,7 @@
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
                     <h2>
-                        Today Declaration <span class="fw-300"><i>List</i></span>
+                        History Declaration <span class="fw-300"><i>List</i></span>
                     </h2>
                     <div class="panel-toolbar">
                         <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
@@ -23,28 +22,34 @@
                 </div>
                 <div class="panel-container show">
                     <div class="panel-content">
-                        <table id="declare" class="table table-bordered table-hover table-striped w-100">
+                        <table id="history" class="table table-bordered table-hover table-striped w-100">
                             <thead>
                                 <tr class="bg-primary-50 text-center">
                                     <th style="width:25px">No</th>
-                                    <th>ID</th>
-                                    <th>NAME</th>
-                                    <th>POSITION</th>
+                                    <th>Q1</th>
+                                    <th>Q2</th>
+                                    <th>Q3</th>
+                                    <th>Q4(i)</th>
+                                    <th>Q4(ii)</th>
+                                    <th>Q4(iii)</th>
+                                    <th>Q4(iv)</th>
                                     <th>CATEGORY</th>
                                     <th>DATE CREATED</th>
                                     <th>TIME CREATED</th>
-                                    <th>FOLLOW UP</th>
                                     <th>ACTION</th>
                                 </tr>
                                 <tr>
                                     <td class="hasinput"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="ID"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Name"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Position"></td>
+                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Q1"></td>
+                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Q2"></td>
+                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Q3"></td>
+                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Fever"></td>
+                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Cough"></td>
+                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Flu"></td>
+                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Breathing Difficulty"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Category"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Date"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Time"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Follow Up"></td>
+                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Date Created"></td>
+                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Time Created"></td>
                                     <td class="hasinput"></td>
                                 </tr>
                             </thead>
@@ -56,52 +61,15 @@
         </div>
     </div>
 
-    <div class="modal fade" id="crud-modals" aria-hidden="true" >
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="card-header">
-                    <h5 class="card-title w-100"><i class="fal fa-plus-square"></i>  ADD FOLLOW UP NOTE</h5>
-                </div>
-                <div class="modal-body">
-                    {!! Form::open(['action' => 'CovidController@updateFollowup', 'method' => 'POST']) !!}
-                    <input type="hidden" name="followup_id" id="followup">
-                    
-                    <td width="15%"><label class="form-label" for="follow_up">NOTES :</label></td>
-                    <td colspan="5"><textarea cols="5" rows="10" class="form-control" id="name" name="follow_up"></textarea>
-                        @error('follow_up')
-                            <p style="color: red"><strong> * {{ $message }} </strong></p>
-                        @enderror
-                    </td>
-                    <br>
-                    <div class="footer">
-                        <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
-                        <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
-                    </div>
-
-                    {!! Form::close() !!}
-                </div>
-            </div>
-        </div>
-    </div>
-
 </main>
-
 @endsection
+
 @section('script')
 <script>
 
     $(document).ready(function()
     {
-        $('#crud-modals').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget) 
-            var followup = button.data('followup') 
-            var name = button.data('name')
-
-            $('.modal-body #followup').val(followup); 
-            $('.modal-body #name').val(name); 
-        });
-
-        $('#declare thead tr .hasinput').each(function(i)
+        $('#history thead tr .hasinput').each(function(i)
         {
             $('input', this).on('keyup change', function()
             {
@@ -127,33 +95,36 @@
         });
 
 
-        var table = $('#declare').DataTable({
+        var table = $('#history').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
-                url: "/declareList",
+                url: "/historySelf",
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
             columns: [
                     { className: 'text-center', data: 'id', name: 'id' },
-                    { className: 'text-center', data: 'user_id', name: 'user_id' },
-                    { className: 'text-center', data: 'user_name', name: 'user_name' },
-                    { className: 'text-center', data: 'user_post', name: 'user_post' },
+                    { className: 'text-center', data: 'q1', name: 'q1' },
+                    { className: 'text-center', data: 'q2', name: 'q2' },
+                    { className: 'text-center', data: 'q3', name: 'q3' },
+                    { className: 'text-center', data: 'q4a', name: 'q4a' },
+                    { className: 'text-center', data: 'q4b', name: 'q4b' },
+                    { className: 'text-center', data: 'q4c', name: 'q4c' },
+                    { className: 'text-center', data: 'q4d', name: 'q4d' },
                     { className: 'text-center', data: 'category', name: 'category' },
                     { className: 'text-center', data: 'date', name: 'date' },
                     { className: 'text-center', data: 'time', name: 'time' },
-                    { className: 'text-center', data: 'follow_up', name: 'follow_up' },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
-                "order": [[ 2, "asc" ]],
+                "order": [[ 9, "desc" ]], 
                 "initComplete": function(settings, json) {
 
                 } 
         });
 
-        $('#declare').on('click', '.btn-delete[data-remote]', function (e) {
+        $('#history').on('click', '.btn-delete[data-remote]', function (e) {
             e.preventDefault();
             $.ajaxSetup({
                 headers: {
@@ -179,11 +150,11 @@
                     dataType: 'json',
                     data: {method: '_DELETE', submit: true}
                     }).always(function (data) {
-                        $('#declare').DataTable().draw(false);
+                        $('#history').DataTable().draw(false);
                     });
                 }
             })
-        }); 
+        });
 
     });
 
