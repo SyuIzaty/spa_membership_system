@@ -424,7 +424,7 @@ class CovidController extends Controller
                 $days = '<div style="color:red;" >ENDED</div>'; 
             }
             else{
-                $days = Carbon::parse($declare->declare_date)->diffInDays(Carbon::now())+2;
+                $days = Carbon::parse($declare->declare_date)->diffInDays(Carbon::now())+1;
                 if($days != 1){
                     return $days . ' days';
                 } else {
@@ -504,7 +504,7 @@ class CovidController extends Controller
                 $days = '<div style="color:red;" >ENDED</div>'; 
             }
             else{
-                $days = Carbon::parse($declare->declare_date)->diffInDays(Carbon::now())+2;
+                $days = Carbon::parse($declare->declare_date)->diffInDays(Carbon::now())+1;
                 if($days != 1){
                     return $days . ' days';
                 } else {
