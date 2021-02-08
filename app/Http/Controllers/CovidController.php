@@ -7,6 +7,7 @@ use App\User;
 use Session;
 use Carbon\Carbon;
 use App\Covid;
+use App\CovidNotes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -108,59 +109,68 @@ class CovidController extends Controller
 
         return response()->json($data);
     }
-    
+
     public function newStore(Request $request)
     {
         $id = Auth::user()->id;
 
         if($request->q1 == 'N')
-        {
-            if($request->q2 == 'N')
             {
-                if($request->q3 == 'N')
+                if($request->q2 == 'N')
                 {
-                    if($request->q4a == 'Y' || $request->q4b == 'Y' || $request->q4c == 'Y' || $request->q4d == 'Y')
+                    if($request->q3 == 'N')
                     {
-                        $category = 'D';
-                        $date = Carbon::now()->toDateTimeString();
+                        if($request->q4a == 'Y' || $request->q4b == 'Y' || $request->q4c == 'Y' || $request->q4d == 'Y')
+                        {
+                            $category = 'D';
+                            $date = Carbon::now()->toDateTimeString();
+                        }
+                        else {
+                            $category = 'E';
+                            $date = Carbon::now()->toDateTimeString();
+                        }
                     }
                     else {
-                        $category = 'E';
+                        $category = 'C';
                         $date = Carbon::now()->toDateTimeString();
                     }
                 }
-                else{
-                    $category = 'C';
-                    $date = Carbon::now()->toDateTimeString();
+                else {
+                    $category = 'B';
+                    $date = $request->declare_date2;
                 }
             }
-            else {
-                $category = 'B';
-                $date = $request->declare_date2;
+            else{
+                $category = 'A';
+                $date = $request->declare_date1;
             }
-        }
-        else{
-            $category = 'A';
-            $date = $request->declare_date1;
+
+        $data = Covid::where('user_id', $request->user_id)->whereDate('declare_date', Carbon::parse($date)->format('Y-m-d'))->first();
+        // dd($data);
+        if(isset($data)) {
+
+            Session::flash('notification', 'Declaration Have Been Made');
+        } else {
+
+            Covid::create([
+                'user_id'         => $request->user_id,
+                'user_phone'      => $request->user_phone,
+                'q1'              => $request->q1,
+                'q2'              => $request->q2,
+                'q3'              => $request->q3, 
+                'q4a'             => $request->q4a, 
+                'q4b'             => $request->q4b,
+                'q4c'             => $request->q4c,
+                'q4d'             => $request->q4d, 
+                'confirmation'    => 'Y',
+                'category'        => $category,
+                'created_by'      => $id,
+                'declare_date'    => $date,
+            ]);
+            
+           Session::flash('message', 'New Data Successfully Created');
         }
 
-        $declare = Covid::create([
-            'user_id'         => $request->user_id,
-            'user_phone'      => $request->user_phone,
-            'q1'              => $request->q1,
-            'q2'              => $request->q2,
-            'q3'              => $request->q3, 
-            'q4a'             => $request->q4a, 
-            'q4b'             => $request->q4b,
-            'q4c'             => $request->q4c,
-            'q4d'             => $request->q4d, 
-            'confirmation'    => 'Y',
-            'category'        => $category,
-            'created_by'      => $id,
-            'declare_date'    => $date,
-        ]);
-        
-       Session::flash('message', 'New Data Successfully Created');
        return redirect('declareNew/'. $id);
     }
 
@@ -190,8 +200,8 @@ class CovidController extends Controller
                     <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> Delete</button>';
             } else {
                 return '<a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info"><i class="fal fa-eye"></i> Declaration</a>
-                    <a href="" data-target="#crud-modals" data-toggle="modal" data-followup="'.$declare->id.'" data-name="'.$declare->follow_up.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i> FollowUp</a>
-                    <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> Delete</button>';
+                        <a href="/followup-list/' . $declare->id.'" class="btn btn-warning btn-sm"><i class="fal fa-plus-square"></i> FollowUp</a>
+                        <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> Delete</button>';
             }
         })
 
@@ -264,8 +274,8 @@ class CovidController extends Controller
                     <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> Delete</button>';
             } else {
                 return '<a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info"><i class="fal fa-eye"></i> Declaration</a>
-                    <a href="" data-target="#crud-modals" data-toggle="modal" data-followup="'.$declare->id.'" data-name="'.$declare->follow_up.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i> FollowUp</a>
-                    <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> Delete</button>';
+                        <a href="/followup-list/' . $declare->id.'" class="btn btn-warning btn-sm"><i class="fal fa-plus-square"></i> FollowUp</a>
+                        <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> Delete</button>';
             }
         })
 
@@ -398,7 +408,7 @@ class CovidController extends Controller
         ->addColumn('action', function ($declare) {
 
             return '<a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info"><i class="fal fa-eye"></i> Declaration</a>
-                    <a href="" data-target="#crud-modals" data-toggle="modal" data-followup="'.$declare->id.'" data-name="'.$declare->follow_up.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i> FollowUp</a>
+                    <a href="/followup-list/' . $declare->id.'" class="btn btn-warning btn-sm"><i class="fal fa-plus-square"></i> FollowUp</a>
                     <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i>  Delete</button>';
         })
 
@@ -478,7 +488,7 @@ class CovidController extends Controller
         ->addColumn('action', function ($declare) {
 
             return '<a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info"><i class="fal fa-eye"></i> Declaration</a>
-                    <a href="" data-target="#crud-modals" data-toggle="modal" data-followup="'.$declare->id.'" data-name="'.$declare->follow_up.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i> FollowUp</a>
+                    <a href="/followup-list/' . $declare->id.'" class="btn btn-warning btn-sm"><i class="fal fa-plus-square"></i> FollowUp</a>
                     <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i>  Delete</button>';
         })
 
@@ -534,14 +544,45 @@ class CovidController extends Controller
         ->make(true);
     }
 
+    public function followList($id)
+    {
+        $declare = Covid::where('id', $id)->first();
+        $notes = CovidNotes::where('covid_id', $id)->get();
+        return view('covid19.follow_note', compact('declare', 'notes'))->with('no', 1);
+    }
+
     public function updateFollowup(Request $request) 
     {
-        $declare = Covid::where('id', $request->followup_id)->first();
-        $declare->update([
+        $declare = Covid::where('id', $request->cov)->first(); 
+        $notes = CovidNotes::where('id', $request->followup_id)->first();
+        
+        $notes->update([
             'follow_up'    => $request->follow_up,
         ]);
         
-        return redirect()->back();
+        return redirect('followup-list/'.$declare->id)->with('notify', 'Follow Up Notes Edited');
+    }
+
+    public function delFollowup($id, $cov_id)
+    {
+        $hd = CovidNotes::where('id',$cov_id)->first();
+        $el = CovidNotes::find($id);
+        $el->delete($hd);
+        return redirect()->back()->with('message', 'Follow Up Notes Deleted');
+    }
+
+    public function addFollowup(Request $request)
+    {    
+        $declare = Covid::where('id', $request->cov)->first(); 
+        $id = Auth::user()->id;
+        
+        CovidNotes::create([
+            'covid_id'          => $declare->id,  
+            'follow_up'         => $request->follow_up,
+            'created_by'        => $id,
+        ]);
+        
+        return redirect('followup-list/'.$declare->id)->with('notification', 'New Follow Up Added');
     }
 
     public function categoryC()

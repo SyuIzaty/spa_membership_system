@@ -32,7 +32,6 @@
                                     <th>CATEGORY</th>
                                     <th>DATE CREATED</th>
                                     <th>TIME CREATED</th>
-                                    <th>FOLLOW UP</th>
                                     <th>ACTION</th>
                                 </tr>
                                 <tr>
@@ -43,7 +42,6 @@
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Category"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Date"></td>
                                     <td class="hasinput"><input type="text" class="form-control" placeholder="Time"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Follow Up"></td>
                                     <td class="hasinput"></td>
                                 </tr>
                             </thead>
@@ -51,34 +49,6 @@
                     </div>
                 </div>
 
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="crud-modals" aria-hidden="true" >
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="card-header">
-                    <h5 class="card-title w-100"><i class="fal fa-plus-square"></i>  ADD FOLLOW UP NOTE</h5>
-                </div>
-                <div class="modal-body">
-                    {!! Form::open(['action' => 'CovidController@updateFollowup', 'method' => 'POST']) !!}
-                    <input type="hidden" name="followup_id" id="followup">
-                    
-                    <td width="15%"><label class="form-label" for="follow_up">NOTES :</label></td>
-                    <td colspan="5"><textarea cols="5" rows="10" class="form-control" id="name" name="follow_up"></textarea>
-                        @error('follow_up')
-                            <p style="color: red"><strong> * {{ $message }} </strong></p>
-                        @enderror
-                    </td>
-                    <br>
-                    <div class="footer">
-                        <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
-                        <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
-                    </div>
-
-                    {!! Form::close() !!}
-                </div>
             </div>
         </div>
     </div>
@@ -91,15 +61,7 @@
 
     $(document).ready(function()
     {
-        $('#crud-modals').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget) 
-            var followup = button.data('followup') 
-            var name = button.data('name')
-
-            $('.modal-body #followup').val(followup); 
-            $('.modal-body #name').val(name); 
-        });
-
+    
         $('#history thead tr .hasinput').each(function(i)
         {
             $('input', this).on('keyup change', function()
@@ -142,7 +104,6 @@
                     { className: 'text-center', data: 'category', name: 'category' },
                     { className: 'text-center', data: 'date', name: 'date' },
                     { className: 'text-center', data: 'time', name: 'time' },
-                    { className: 'text-center', data: 'follow_up', name: 'follow_up' },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,

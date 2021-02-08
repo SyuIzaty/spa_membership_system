@@ -26,8 +26,7 @@
                         </h4>
                         <div>
                             <p style="padding-left: 40px; padding-right: 40px">
-                                *<i><b>IMPORTANT!</b></i> : All staff / students / contractors / visitors are required to make a daily declaration of COVID-19 risk screening on every working day 
-                                (whether working in the office or from home) as stated in item 5.1 (ii) regarding COVID-19 UiTM prevention measures. 
+                                *<i><b>IMPORTANT!</b></i> : All staff & students  are required to make a daily declaration of COVID-19 risk screening on every working day (whether working in the office or from home) as prevention measures. 
                                 However, you are encouraged to make a declaration on a daily basis including public holidays and other holidays.
                             </p>
                         </div>
@@ -38,6 +37,9 @@
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     @if (Session::has('message'))
                                         <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}</div>
+                                    @endif
+                                    @if (Session::has('notification'))
+                                        <div class="alert alert-success" style="color: #5b0303; background-color: #ff6c6cc9;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('notification') }}</div>
                                     @endif
                                     <div>
                                         <table class="table table-bordered table-hover table-striped w-100">

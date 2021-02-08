@@ -29,7 +29,7 @@
                                 
                                 <table id="info" class="table table-bordered table-hover table-striped w-100">
                                     <thead>
-                                        @can('view field')
+                                        @can('view admin')
                                         <tr>
                                             <div class="form-group">
                                                 <th width="15%"><label for="qHeader">NAME :</label></th>

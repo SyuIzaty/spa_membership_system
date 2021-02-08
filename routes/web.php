@@ -101,6 +101,9 @@ Route::get('/catD','CovidController@categoryD');
 Route::post('DList', 'CovidController@data_catD');
 Route::get('/catE','CovidController@categoryE');
 Route::post('EList', 'CovidController@data_catE');
+Route::get('/followup-list/{id}', 'CovidController@followList')->name('followList');
+Route::post('addFollowup','CovidController@addFollowup');
+Route::get('delFollowup/{id}/{cov_id}', 'CovidController@delFollowup')->name('delFollowup');
 Route::post('updateFollowup','CovidController@updateFollowup');
 
 // Change Password

@@ -28,8 +28,7 @@
                         </h4>
                         <div>
                             <p style="padding-left: 40px; padding-right: 40px">
-                                *<i><b>IMPORTANT!</b></i> : All staff / students / contractors / visitors are required to make a daily declaration of COVID-19 risk screening on every working day 
-                                (whether working in the office or from home) as stated in item 5.1 (ii) regarding COVID-19 UiTM prevention measures. 
+                                *<i><b>IMPORTANT!</b></i> : All staff & students  are required to make a daily declaration of COVID-19 risk screening on every working day (whether working in the office or from home) as prevention measures. 
                                 However, you are encouraged to make a declaration on a daily basis including public holidays and other holidays.
                             </p>
                         </div>
@@ -53,7 +52,7 @@
                                                         <p style="font-size: 20px; color: black">Please Quarantine Yourself For 14 Days</p>
                                                         <p style="font-size: 20px; color: black">Countdown : {{ $bakihari }}/14 Days</p>
                                                         <table>
-                                                            <tr><td style="background-color: rgb(97 63 115);color: white;">
+                                                            <tr><td style="background-color:red; color: white;">
                                                             <p class="mb-0 mt-0" style="font-size: 40px">{{ date(' j ', strtotime($declare->declare_date) )}}
                                                             <sup style="top: -16px; font-size: 20px;">{{ date(' M Y ', strtotime($declare->declare_date) )}}</sup>
                                                             <p style="margin-top: -32px;margin-left: 58px;margin-bottom: -15px;font-size: 21px;">{{ date(' l ', strtotime($declare->declare_date) )}}</p></p>
@@ -78,7 +77,7 @@
                                                         <p style="font-size: 20px; color: black">Please Quarantine Yourself For 10 Days</p>
                                                         <p style="font-size: 20px; color: black">Countdown : {{ $bakihari }}/10 Days</p>
                                                         <table>
-                                                            <tr><td style="background-color: rgb(97 63 115);color: white;">
+                                                            <tr><td style="background-color:orange; color: white;">
                                                             <p class="mb-0 mt-0" style="font-size: 40px">{{ date(' j ', strtotime($declare->declare_date) )}}
                                                             <sup style="top: -16px; font-size: 20px;">{{ date(' M Y ', strtotime($declare->declare_date) )}}</sup>
                                                             <p style="margin-top: -32px;margin-left: 58px;margin-bottom: -15px;font-size: 21px;">{{ date(' l ', strtotime($declare->declare_date) )}}</p></p>
@@ -101,7 +100,7 @@
                                                 <td valign="top" colspan="4" class="dataTables_empty">
                                                     <b style="font-family: 'Times New Roman', Times, serif; color: rgb(97 63 115)"> ' YOU HAVE MADE SELF DECLARATION FOR TODAY ' </b><br><br>
                                                     <table>
-                                                        <tr><td style="background-color: rgb(97 63 115);color: white;">
+                                                        <tr><td style="background-color:green; color: white;">
                                                         <p class="mb-0 mt-0" style="font-size: 40px">{{ date(' j ', strtotime($declare->declare_date) )}}
                                                         <sup style="top: -16px; font-size: 20px;">{{ date(' M Y ', strtotime($declare->declare_date) )}}</sup>
                                                         <p style="margin-top: -32px;margin-left: 58px;margin-bottom: -15px;font-size: 21px;">{{ date(' l ', strtotime($declare->declare_date) )}}</p></p>
