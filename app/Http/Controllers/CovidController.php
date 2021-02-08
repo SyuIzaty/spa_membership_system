@@ -84,9 +84,10 @@ class CovidController extends Controller
     {
         if( Auth::user()->hasRole('admin hr') )
         { 
-            $user = User::whereHas('roles', function($query){
-                $query->where('category', 'STF');
-            })->orderBy('name')->get();
+            // $user = User::whereHas('roles', function($query){
+            //     $query->where('category', 'STF');
+            // })->orderBy('name')->get();
+            $user = User::whereHas('roles')->orderBy('name')->get();
         }
         else
         {
