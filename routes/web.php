@@ -105,6 +105,7 @@ Route::get('/followup-list/{id}', 'CovidController@followList')->name('followLis
 Route::post('addFollowup','CovidController@addFollowup');
 Route::get('delFollowup/{id}/{cov_id}', 'CovidController@delFollowup')->name('delFollowup');
 Route::post('updateFollowup','CovidController@updateFollowup');
+Route::get('/followup-edit/{id}', 'CovidController@followEdit')->name('followEdit');
 
 // Change Password
 Route::get('change-password','ChangePasswordController@index');

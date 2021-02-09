@@ -545,6 +545,13 @@ class CovidController extends Controller
         ->make(true);
     }
 
+    public function followEdit($id)
+    {
+        $notes = CovidNotes::where('id', $id)->first();
+        $declare = Covid::where('id', $notes->covid_id)->first();
+        return view('covid19.follow_edit', compact('declare', 'notes'))->with('no', 1);
+    }
+
     public function followList($id)
     {
         $declare = Covid::where('id', $id)->first();
@@ -554,8 +561,11 @@ class CovidController extends Controller
 
     public function updateFollowup(Request $request) 
     {
-        $declare = Covid::where('id', $request->cov)->first(); 
-        $notes = CovidNotes::where('id', $request->followup_id)->first();
+        $declare = Covid::where('id', $request->covD)->first();
+        $notes = CovidNotes::where('id', $request->cov)->first(); 
+        $request->validate([
+            'follow_up'       => 'nullable|max:255',
+        ]);
         
         $notes->update([
             'follow_up'    => $request->follow_up,
@@ -576,8 +586,13 @@ class CovidController extends Controller
     {    
         $declare = Covid::where('id', $request->cov)->first(); 
         $id = Auth::user()->id;
+
+        $request->validate([
+            'follow_up'       => 'nullable|max:255',
+        ]);
         
-        CovidNotes::create([
+        $notes = CovidNotes::where('covid_id', $declare->id)->first();
+        $notes->create([
             'covid_id'          => $declare->id,  
             'follow_up'         => $request->follow_up,
             'created_by'        => $id,

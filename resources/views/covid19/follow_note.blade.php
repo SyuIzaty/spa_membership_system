@@ -28,12 +28,12 @@
 
                                 <table class="table table-bordered">
                                     <tr> 
-                                        <td width="15%"><label class="form-label" for="follow_up">NOTES :</label></td>
-                                        <td colspan="5"><textarea cols="5" rows="10" class="form-control" id="follow_up" name="follow_up"></textarea>
+                                        <td width="15%"><label class="form-label" for="follow_up">NOTES :</label>
                                             @error('follow_up')
-                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                <p style="color: red"><strong> * not more than 225 words </strong></p>
                                             @enderror
                                         </td>
+                                        <td colspan="5"><textarea class="form-control summernote" id="follow_up" name="follow_up">{{ old('follow_up') }}</textarea></td>
                                     </tr>
                                 </table>
 
@@ -71,11 +71,11 @@
                                         @foreach ($notes as $el)
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $el->follow_up }}</td>
+                                            <td>{!! $el->follow_up !!} </td>
                                             <td>{{ $el->user->name }}</td>
                                             <td>{{ date('d-m-Y | h:i A', strtotime($el->created_at)) }}</td>
                                             <td>
-                                                <a href="" data-target="#crud-modals" data-toggle="modal" data-followup="{{ $el->id }}" data-name="{{ $el->follow_up}}" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i> Edit</a>
+                                                <a href="/followup-edit/{{ $el->id}}" data-cov="{{$el->id}}" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i> Edit</a>
                                                 <a href="{{ action('CovidController@delFollowup', ['id' => $el->id, 'cov_id' => $declare->id]) }}" class="btn btn-danger btn-sm deleteEl"><i class="fal fa-trash"> Delete</i></a>
                                             </td>
                                         </tr>
@@ -94,7 +94,7 @@
             </div>
         </div>
 
-        <div class="modal fade" id="crud-modals" aria-hidden="true" >
+        {{-- <div class="modal fade" id="crud-modals" aria-hidden="true" >
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="card-header">
@@ -120,22 +120,27 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
 </main>
 @endsection
 @section('script')
     <script>
         $(document).ready(function() {
-            
-            $('#crud-modals').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget) 
-            var followup = button.data('followup') 
-            var name = button.data('name')
 
-            $('.modal-body #followup').val(followup); 
-            $('.modal-body #name').val(name); 
-        });
+            $('.summernote').summernote({
+                height: 400,
+                spellCheck: true
+            });
+            
+            // $('#crud-modals').on('show.bs.modal', function(event) {
+            //     var button = $(event.relatedTarget) 
+            //     var followup = button.data('followup') 
+            //     var name = button.data('name')
+
+            //     $('.modal-body #followup').val(followup); 
+            //     $('.modal-body #name').val(name); 
+            // });
 
         });
     </script>

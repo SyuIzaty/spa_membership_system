@@ -28,7 +28,7 @@
         {{-- <link rel="stylesheet" media="screen, print" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"> --}}
 
         {{-- <link rel="stylesheet" media="screen, print" href="{{asset('css/select2.min.css')}}"> --}}
-        <link rel="stylesheet" href="{{ asset('css/formplugins/summernote/summernote.css') }}" >
+        <link rel="stylesheet" href="{{ asset('css/formplugins/summernote/summernote-bs4.css') }}" >
         <link rel="stylesheet" href="{{ asset('css/indicator.css') }}"> 
 
         @yield('css')
@@ -412,7 +412,7 @@
         <link rel="stylesheet" media="screen, print" href="{{asset('css/formplugins/select2/select2.bundle.css')}}">
         <script src="{{asset('js/formplugins/select2/select2.bundle.js')}}"></script>
 
-        <script src="{{ asset('js/formplugins/summernote/summernote.js') }}"></script>
+        <script src="{{ asset('js/formplugins/summernote/summernote-bs4.js') }}"></script>
 
         @yield('script')
         <script>
