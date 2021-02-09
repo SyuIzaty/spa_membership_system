@@ -591,8 +591,7 @@ class CovidController extends Controller
             'follow_up'       => 'nullable|max:255',
         ]);
         
-        $notes = CovidNotes::where('covid_id', $declare->id)->first();
-        $notes->create([
+        CovidNotes::create([
             'covid_id'          => $declare->id,  
             'follow_up'         => $request->follow_up,
             'created_by'        => $id,
