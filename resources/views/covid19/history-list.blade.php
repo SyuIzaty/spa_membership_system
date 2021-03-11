@@ -22,30 +22,32 @@
                 </div>
                 <div class="panel-container show">
                     <div class="panel-content">
-                        <table id="history" class="table table-bordered table-hover table-striped w-100">
-                            <thead>
-                                <tr class="bg-primary-50 text-center">
-                                    <th style="width:25px">No</th>
-                                    <th>ID</th>
-                                    <th>NAME</th>
-                                    <th>POSITION</th>
-                                    <th>CATEGORY</th>
-                                    <th>DATE CREATED</th>
-                                    <th>TIME CREATED</th>
-                                    <th>ACTION</th>
-                                </tr>
-                                <tr>
-                                    <td class="hasinput"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="ID"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Name"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Position"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Category"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Date"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Time"></td>
-                                    <td class="hasinput"></td>
-                                </tr>
-                            </thead>
-                        </table>
+                        <div class="table-responsive">
+                            <table id="history" class="table table-bordered table-hover table-striped w-100">
+                                <thead>
+                                    <tr class="bg-primary-50 text-center">
+                                        <th style="width:25px">NO</th>
+                                        <th>ID</th>
+                                        <th>NAME</th>
+                                        <th>POSITION</th>
+                                        <th>CATEGORY</th>
+                                        <th>DATE CREATED</th>
+                                        <th>TIME CREATED</th>
+                                        <th>ACTION</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="hasinput"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="ID"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Name"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Position"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Category"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Date"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Time"></td>
+                                        <td class="hasinput"></td>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -97,10 +99,10 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
             columns: [
-                    { className: 'text-center', data: 'id', name: 'id' },
+                    { className: 'text-center', data: 'DT_RowIndex', name: 'DT_RowIndex' },
                     { className: 'text-center', data: 'user_id', name: 'user_id' },
                     { className: 'text-center', data: 'user_name', name: 'user_name' },
-                    { className: 'text-center', data: 'user_post', name: 'user_post' },
+                    { className: 'text-center', data: 'user_position', name: 'user_position' },
                     { className: 'text-center', data: 'category', name: 'category' },
                     { className: 'text-center', data: 'date', name: 'date' },
                     { className: 'text-center', data: 'time', name: 'time' },

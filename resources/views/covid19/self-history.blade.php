@@ -22,38 +22,40 @@
                 </div>
                 <div class="panel-container show">
                     <div class="panel-content">
-                        <table id="history" class="table table-bordered table-hover table-striped w-100">
-                            <thead>
-                                <tr class="bg-primary-50 text-center">
-                                    <th style="width:25px">No</th>
-                                    <th>Q1</th>
-                                    <th>Q2</th>
-                                    <th>Q3</th>
-                                    <th>Q4(i)</th>
-                                    <th>Q4(ii)</th>
-                                    <th>Q4(iii)</th>
-                                    <th>Q4(iv)</th>
-                                    <th>CATEGORY</th>
-                                    <th>DATE CREATED</th>
-                                    <th>TIME CREATED</th>
-                                    <th>ACTION</th>
-                                </tr>
-                                <tr>
-                                    <td class="hasinput"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Q1"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Q2"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Q3"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Fever"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Cough"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Flu"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Breathing Difficulty"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Category"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Date Created"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Time Created"></td>
-                                    <td class="hasinput"></td>
-                                </tr>
-                            </thead>
-                        </table>
+                        <div class="table-responsive">
+                            <table id="history" class="table table-bordered table-hover table-striped w-100">
+                                <thead>
+                                    <tr class="bg-primary-50 text-center">
+                                        <th style="width:25px">NO</th>
+                                        <th>Q1</th>
+                                        <th>Q2</th>
+                                        <th>Q3</th>
+                                        <th>Q4(i)</th>
+                                        <th>Q4(ii)</th>
+                                        <th>Q4(iii)</th>
+                                        <th>Q4(iv)</th>
+                                        <th>CATEGORY</th>
+                                        <th>DATE CREATED</th>
+                                        <th>TIME CREATED</th>
+                                        <th>ACTION</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="hasinput"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Q1"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Q2"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Q3"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Fever"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Cough"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Flu"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Breathing Difficulty"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Category"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Date Created"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Time Created"></td>
+                                        <td class="hasinput"></td>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -104,7 +106,7 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
             columns: [
-                    { className: 'text-center', data: 'id', name: 'id' },
+                    { className: 'text-center', data: 'DT_RowIndex', name: 'DT_RowIndex' },
                     { className: 'text-center', data: 'q1', name: 'q1' },
                     { className: 'text-center', data: 'q2', name: 'q2' },
                     { className: 'text-center', data: 'q3', name: 'q3' },

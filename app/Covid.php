@@ -12,12 +12,17 @@ class Covid extends Model
     protected $dates = ['declare_date'];
     protected $primaryKey = 'id';
     protected $fillable = [
-        'user_id', 'user_phone', 'q1', 'q2', 'q3', 'q4a', 'q4b', 'q4c', 'q4d', 'confirmation', 'category', 'created_by', 'follow_up', 'declare_date'
+        'user_id', 'user_phone','user_name','user_email','user_position','department_id','form_type', 'q1', 'q2', 'q3', 'q4a', 'q4b', 'q4c', 'q4d', 'confirmation', 'category', 'created_by', 'declare_date'
     ];
 
     public function user()
     {
         return $this->hasOne('App\User','id', 'user_id');
+    }
+
+    public function department()
+    {
+        return $this->hasOne('App\Department', 'id', 'department_id');
     }
     
 }

@@ -35,6 +35,9 @@
                             <div class="panel-content">
                                 {!! Form::open(['action' => 'CovidController@newStore', 'method' => 'POST']) !!}
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <input type="hidden" class="form-control user_position" id="user_position" name="user_position">
+                                <input type="hidden" class="form-control name" id="name" name="name">
+                               
                                     @if (Session::has('message'))
                                         <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}</div>
                                     @endif
@@ -48,7 +51,6 @@
                                                     <div class="form-group">
                                                         <th style="text-align: center; border-left-style: hidden; border-right-style: hidden"><label>Full Name : </label></th>
                                                         <td style=" border-right-style: hidden; width: 400px;">
-                                                            {{-- <input class="form-control" id="user_name" name="user_name"  value="{{ old('user_name') }}"> --}}
                                                             <select class="form-control user_name" name="user_name" id="user_name" >
                                                                 <option value=""> Select User Name </option>
                                                                 @foreach ($user as $usr) 
@@ -216,7 +218,9 @@
                 success:function(data)
                 {
                     $('#user_id').val(data.id);
+                    $('#name').val(data.name);
                     $('#user_email').val(data.email);
+                    $('#user_position').val(data.category);
                 }
             });
         }

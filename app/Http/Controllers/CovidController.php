@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Auth;
-use App\User;
 use Session;
-use Carbon\Carbon;
+use App\User;
 use App\Covid;
+use App\Department;
+use Carbon\Carbon;
 use App\CovidNotes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +24,7 @@ class CovidController extends Controller
 
     public function formStore(Request $request)
     {
-        $id = Auth::user()->id;
+        $id = Auth::user();
 
         if($request->q1 == 'N')
         {
@@ -57,8 +58,11 @@ class CovidController extends Controller
         }
 
         $declare = Covid::create([
-            'user_id'         => $id,
+            'user_id'         => $id->id,
+            'user_name'       => $id->name,
+            'user_email'      => $id->email,
             'user_phone'      => $request->user_phone,
+            'user_position'   => $id->category,
             'q1'              => $request->q1,
             'q2'              => $request->q2,
             'q3'              => $request->q3, 
@@ -68,11 +72,12 @@ class CovidController extends Controller
             'q4d'             => $request->q4d, 
             'confirmation'    => 'Y',
             'category'        => $category,
-            'created_by'      => $id,
+            'created_by'      => $id->id,
+            'form_type'       => 'PF',
             'declare_date'    => $date,
         ]);
             
-       return redirect('declarationForm/'. $id);
+       return redirect('declarationForm/'. $id->id);
     }
 
     public function list($id)
@@ -84,9 +89,6 @@ class CovidController extends Controller
     {
         if( Auth::user()->hasRole('admin hr') )
         { 
-            // $user = User::whereHas('roles', function($query){
-            //     $query->where('category', 'STF');
-            // })->orderBy('name')->get();
             $user = User::whereHas('roles')->orderBy('name')->get();
         }
         else
@@ -104,7 +106,7 @@ class CovidController extends Controller
 
     public function findUser(Request $request)
     {
-        $data = User::select('id', 'name', 'email')
+        $data = User::select('id', 'name', 'email','category')
             ->where('id',$request->id)
             ->first();
 
@@ -147,7 +149,7 @@ class CovidController extends Controller
             }
 
         $data = Covid::where('user_id', $request->user_id)->whereDate('declare_date', Carbon::parse($date)->format('Y-m-d'))->first();
-        // dd($data);
+        
         if(isset($data)) {
 
             Session::flash('notification', 'Declaration Have Been Made');
@@ -155,7 +157,10 @@ class CovidController extends Controller
 
             Covid::create([
                 'user_id'         => $request->user_id,
+                'user_name'       => $request->name,
+                'user_email'      => $request->user_email,
                 'user_phone'      => $request->user_phone,
+                'user_position'   => $request->user_position, 
                 'q1'              => $request->q1,
                 'q2'              => $request->q2,
                 'q3'              => $request->q3, 
@@ -166,6 +171,7 @@ class CovidController extends Controller
                 'confirmation'    => 'Y',
                 'category'        => $category,
                 'created_by'      => $id,
+                'form_type'       => 'PF',
                 'declare_date'    => $date,
             ]);
             
@@ -218,15 +224,17 @@ class CovidController extends Controller
 
         ->editColumn('user_name', function ($declare) {
 
-            return strtoupper($declare->user->name);
+            return strtoupper($declare->user_name);
         })
 
-        ->editColumn('user_post', function ($declare) {
+        ->editColumn('user_position', function ($declare) {
 
-            if($declare->user->category == 'STF') {
+            if($declare->user_position == 'STF') {
                 return 'STAFF';
-            } else {
+            } elseif($declare->user_position == 'STD') {
                 return 'STUDENT';
+            } else {
+                return 'GUEST';
             }
         })
 
@@ -236,6 +244,7 @@ class CovidController extends Controller
         })
         
         ->rawColumns(['action', 'date', 'time', 'user_name', 'follow_up'])
+        ->addIndexColumn()
         ->make(true);
     }
 
@@ -295,12 +304,14 @@ class CovidController extends Controller
             return strtoupper($declare->user->name);
         })
 
-        ->editColumn('user_post', function ($declare) {
+        ->editColumn('user_position', function ($declare) {
 
-            if($declare->user->category == 'STF') {
+            if($declare->user_position == 'STF') {
                 return 'STAFF';
-            } else {
+            } elseif($declare->user_position == 'STD') {
                 return 'STUDENT';
+            } else {
+                return 'GUEST';
             }
         })
 
@@ -310,6 +321,7 @@ class CovidController extends Controller
         })
         
         ->rawColumns(['action', 'date', 'time', 'user_name', 'follow_up'])
+        ->addIndexColumn()
         ->make(true);
     }
 
@@ -375,6 +387,7 @@ class CovidController extends Controller
         })
         
         ->rawColumns(['action', 'date', 'time', 'q1', 'q2', 'q3', 'q4a', 'q4b', 'q4c', 'q4d'])
+        ->addIndexColumn()
         ->make(true);
     }
 
@@ -418,12 +431,14 @@ class CovidController extends Controller
             return strtoupper($declare->user->name);
         })
 
-        ->editColumn('user_post', function ($declare) {
+        ->editColumn('user_position', function ($declare) {
 
-            if($declare->user->category == 'STF') {
+            if($declare->user_position == 'STF') {
                 return 'STAFF';
-            } else {
+            } elseif($declare->user_position == 'STD') {
                 return 'STUDENT';
+            } else {
+                return 'GUEST';
             }
         })
 
@@ -462,6 +477,7 @@ class CovidController extends Controller
         })
         
         ->rawColumns(['action', 'date', 'time', 'quarantine_day', 'follow_up'])
+        ->addIndexColumn()
         ->make(true);
     }
 
@@ -498,12 +514,14 @@ class CovidController extends Controller
             return strtoupper($declare->user->name);
         })
 
-        ->editColumn('user_post', function ($declare) {
+        ->editColumn('user_position', function ($declare) {
 
-            if($declare->user->category == 'STF') {
+            if($declare->user_position == 'STF') {
                 return 'STAFF';
-            } else {
+            } elseif($declare->user_position == 'STD') {
                 return 'STUDENT';
+            } else {
+                return 'GUEST';
             }
         })
 
@@ -542,6 +560,7 @@ class CovidController extends Controller
         })
         
         ->rawColumns(['action', 'date', 'time', 'quarantine_day', 'follow_up'])
+        ->addIndexColumn()
         ->make(true);
     }
 
@@ -631,12 +650,14 @@ class CovidController extends Controller
             return strtoupper($declare->user->name);
         })
 
-        ->editColumn('user_post', function ($declare) {
+        ->editColumn('user_position', function ($declare) {
 
-            if($declare->user->category == 'STF') {
+            if($declare->user_position == 'STF') {
                 return 'STAFF';
-            } else {
+            } elseif($declare->user_position == 'STD') {
                 return 'STUDENT';
+            } else {
+                return 'GUEST';
             }
         })
 
@@ -651,6 +672,7 @@ class CovidController extends Controller
         })
         
         ->rawColumns(['action', 'date', 'time'])
+        ->addIndexColumn()
         ->make(true);
     }
 
@@ -686,12 +708,14 @@ class CovidController extends Controller
             return strtoupper($declare->user->name);
         })
 
-        ->editColumn('user_post', function ($declare) {
+        ->editColumn('user_position', function ($declare) {
 
-            if($declare->user->category == 'STF') {
+            if($declare->user_position == 'STF') {
                 return 'STAFF';
-            } else {
+            } elseif($declare->user_position == 'STD') {
                 return 'STUDENT';
+            } else {
+                return 'GUEST';
             }
         })
 
@@ -706,6 +730,7 @@ class CovidController extends Controller
         })
         
         ->rawColumns(['action', 'date', 'time'])
+        ->addIndexColumn()
         ->make(true);
     }
 
@@ -741,12 +766,14 @@ class CovidController extends Controller
             return strtoupper($declare->user->name);
         })
 
-        ->editColumn('user_post', function ($declare) {
+        ->editColumn('user_position', function ($declare) {
 
-            if($declare->user->category == 'STF') {
+            if($declare->user_position == 'STF') {
                 return 'STAFF';
-            } else {
+            } elseif($declare->user_position == 'STD') {
                 return 'STUDENT';
+            } else {
+                return 'GUEST';
             }
         })
 
@@ -761,8 +788,87 @@ class CovidController extends Controller
         })
         
         ->rawColumns(['action', 'date', 'time'])
+        ->addIndexColumn()
         ->make(true);
     }
+
+    public function openForm()
+    {
+        $department = Department::orderBy('department_name')->get();
+        return view('covid19.open-form', compact('department'));
+    }
+
+    public function addForm()
+    {
+        return view('covid19.add-form');
+    }
+
+    public function storeOpenForm(Request $request)
+    {
+        if($request->q1 == 'N')
+        {
+            if($request->q2 == 'N')
+            {
+                if($request->q3 == 'N')
+                {
+                    if($request->q4a == 'Y' || $request->q4b == 'Y' || $request->q4c == 'Y' || $request->q4d == 'Y')
+                    {
+                        $category = 'D';
+                        $date = Carbon::now()->toDateTimeString();
+                    }
+                    else {
+                        $category = 'E';
+                        $date = Carbon::now()->toDateTimeString();
+                    }
+                }
+                else{
+                    $category = 'C';
+                    $date = Carbon::now()->toDateTimeString();
+                }
+            }
+            else {
+                $category = 'B';
+                $date = $request->declare_date2;
+            }
+        }
+        else{
+            $category = 'A';
+            $date = $request->declare_date1;
+        }
+
+        $request->validate([
+            'user_name'       => 'required',
+            'user_id'         => 'required',
+            'user_phone'      => 'nullable|numeric',
+            'user_email'      => 'nullable|email',
+            'department_id'   => 'required',
+        ]);
+
+        $declare = Covid::create([
+            'user_name'       => $request->user_name,
+            'user_id'         => $request->user_id,
+            'user_email'      => $request->user_email,
+            'user_phone'      => $request->user_phone,
+            'department_id'   => $request->department_id,
+            'user_position'   => 'GST',
+            'q1'              => $request->q1,
+            'q2'              => $request->q2,
+            'q3'              => $request->q3, 
+            'q4a'             => $request->q4a, 
+            'q4b'             => $request->q4b,
+            'q4c'             => $request->q4c,
+            'q4d'             => $request->q4d, 
+            'confirmation'    => 'Y',
+            'category'        => $category,
+            'declare_date'    => $date,
+            'form_type'       => 'OF',
+            'created_by'      => $request->user_id,
+        ]);
+            
+       Session::flash('message', 'Your Declaration on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).' Have Been Successfully Recorded.<br> Pleas Make Sure to Abide the SOP When You Are in INTEC Premise. <br> Thank You For Your Cooperation.');
+       return redirect('add-form');
+    }
+
 
     /**
      * Display a listing of the resource.
