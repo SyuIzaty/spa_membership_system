@@ -301,7 +301,7 @@ class CovidController extends Controller
 
         ->editColumn('user_name', function ($declare) {
 
-            return strtoupper($declare->user->name);
+            return strtoupper($declare->user_name);
         })
 
         ->editColumn('user_position', function ($declare) {
@@ -428,7 +428,7 @@ class CovidController extends Controller
 
         ->editColumn('user_name', function ($declare) {
 
-            return strtoupper($declare->user->name);
+            return strtoupper($declare->user_name);
         })
 
         ->editColumn('user_position', function ($declare) {
@@ -511,7 +511,7 @@ class CovidController extends Controller
 
         ->editColumn('user_name', function ($declare) {
 
-            return strtoupper($declare->user->name);
+            return strtoupper($declare->user_name);
         })
 
         ->editColumn('user_position', function ($declare) {
@@ -647,7 +647,7 @@ class CovidController extends Controller
 
         ->editColumn('user_name', function ($declare) {
 
-            return strtoupper($declare->user->name);
+            return strtoupper($declare->user_name);
         })
 
         ->editColumn('user_position', function ($declare) {
@@ -705,7 +705,7 @@ class CovidController extends Controller
 
         ->editColumn('user_name', function ($declare) {
 
-            return strtoupper($declare->user->name);
+            return strtoupper($declare->user_name);
         })
 
         ->editColumn('user_position', function ($declare) {
@@ -763,7 +763,7 @@ class CovidController extends Controller
 
         ->editColumn('user_name', function ($declare) {
 
-            return strtoupper($declare->user->name);
+            return strtoupper($declare->user_name);
         })
 
         ->editColumn('user_position', function ($declare) {
