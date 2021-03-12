@@ -58,14 +58,14 @@
                                             <td colspan="1">
                                                 <input class="form-control" id="user_email" name="user_email"  value="{{ old('user_email') }}">
                                                 @error('user_email')
-                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                    <p style="color: red"><strong> {{ $message }} </strong></p>
                                                 @enderror
                                             </td>
                                             <td width="10%"><label class="form-label" for="user_phone"> Phone No. : </label></td>
                                             <td colspan="1">
                                                 <input class="form-control" id="user_phone" name="user_phone"  value="{{ old('user_phone') }}">
                                                 @error('user_phone')
-                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                    <p style="color: red"><strong> {{ $message }} </strong></p>
                                                 @enderror
                                             </td>
                                             <td width="10%"><label class="form-label" for="department_id"><span class="text-danger">*</span> Department To Go : </label></td>
