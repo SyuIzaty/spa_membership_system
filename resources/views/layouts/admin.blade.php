@@ -147,7 +147,7 @@
                                 </a>
                             </li>
 
-                            @can('papar aduan')
+                            @can('view complaint')
                             <li class="nav-title">Operasi</li>
 
                             <li class="open">
@@ -178,7 +178,7 @@
                             </li>
                             @endcan
 
-                            @can('papar parameter')
+                            @can('view parameter')
                             <li class="nav-title">Tetapan Parameter</li>
 
                             <li class="open">

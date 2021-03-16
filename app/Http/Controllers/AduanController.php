@@ -193,7 +193,6 @@ class AduanController extends Controller
         { 
             return '<a href="/info-aduan/' . $aduan->id.'" class="btn btn-sm btn-info"><i class="fal fa-pencil"></i> Aduan</a>
                     <button class="btn btn-sm btn-danger btn-delete" data-remote="/senarai-aduan/' . $aduan->id . '"><i class="fal fa-trash"></i>  Padam</button>';
-                    //<a href="" data-target="#crud-modal" data-toggle="modal" data-aduan="'.$aduan->id.'" data-create="'.$aduan->juruteknik_bertugas.'"  class="btn btn-sm btn-warning"><i class="fal fa-user"></i> Juruteknik</a>
         }
 
         else
@@ -238,7 +237,6 @@ class AduanController extends Controller
                 return '<span class="badge badge-done">' . strtoupper($aduan->status->nama_status) . '</span>';
             }
 
-            // return strtoupper($aduan->status->nama_status);
         })
 
         ->editColumn('juruteknik_bertugas', function ($aduan) {
@@ -264,7 +262,6 @@ class AduanController extends Controller
             {
                 return '<span class="none" data-toggle="tooltip" data-placement="top" title="BELUM DITENTUKAN">' . '</span>';
             }
-            //return isset($aduan->tahap_kategori) ? $aduan->tahap_kategori : '<p style="color:red">TAHAP BELUM DITENTUKAN</p>';
         })
         
         ->rawColumns(['lokasi_aduan', 'action', 'juruteknik_bertugas', 'tahap_kategori', 'status_aduan'])
@@ -301,7 +298,6 @@ class AduanController extends Controller
         { 
             return '<a href="/info-aduan/' . $aduan->id.'" class="btn btn-sm btn-info"><i class="fal fa-pencil"></i> Aduan</a>
                     <button class="btn btn-sm btn-danger btn-delete" data-remote="/senarai-aduan/' . $aduan->id . '"><i class="fal fa-trash"></i>  Padam</button>';
-                    //<a href="" data-target="#crud-modal" data-toggle="modal" data-aduan="'.$aduan->id.'" data-create="'.$aduan->juruteknik_bertugas.'"  class="btn btn-sm btn-warning"><i class="fal fa-user"></i> Juruteknik</a>
         }
 
         else
@@ -334,7 +330,6 @@ class AduanController extends Controller
         ->editColumn('status_aduan', function ($aduan) {
 
             return '<span class="badge badge-success">' . strtoupper($aduan->status->nama_status) . '</span>';
-            // return strtoupper($aduan->status->nama_status);
         })
 
         ->editColumn('juruteknik_bertugas', function ($aduan) {
@@ -360,7 +355,6 @@ class AduanController extends Controller
             {
                 return '<span class="none" data-toggle="tooltip" data-placement="top" title="BELUM DITENTUKAN">' . '</span>';
             }
-            // return isset($aduan->tahap_kategori) ? $aduan->tahap_kategori : '<p style="color:red">TAHAP BELUM DITENTUKAN</p>';
         })
         
         ->rawColumns(['lokasi_aduan', 'action', 'juruteknik_bertugas', 'tahap_kategori', 'status_aduan'])
@@ -397,7 +391,6 @@ class AduanController extends Controller
         { 
             return '<a href="/info-aduan/' . $aduan->id.'" class="btn btn-sm btn-info"><i class="fal fa-pencil"></i> Aduan</a>
                     <button class="btn btn-sm btn-danger btn-delete" data-remote="/senarai-aduan/' . $aduan->id . '"><i class="fal fa-trash"></i>  Padam</button>';
-                    //<a href="" data-target="#crud-modal" data-toggle="modal" data-aduan="'.$aduan->id.'" data-create="'.$aduan->juruteknik_bertugas.'"  class="btn btn-sm btn-warning"><i class="fal fa-user"></i> Juruteknik</a>
         }
 
         else
@@ -431,7 +424,6 @@ class AduanController extends Controller
         ->editColumn('status_aduan', function ($aduan) {
 
             return '<span class="badge badge-kiv">' . strtoupper($aduan->status->nama_status) . '</span>';
-            // return strtoupper($aduan->status->nama_status);
              
         })
 
@@ -458,7 +450,6 @@ class AduanController extends Controller
             {
                 return '<span class="none" data-toggle="tooltip" data-placement="top" title="BELUM DITENTUKAN">' . '</span>';
             }
-            // return isset($aduan->tahap_kategori) ? $aduan->tahap_kategori : '<p style="color:red">TAHAP BELUM DITENTUKAN</p>';
         })
         
         ->rawColumns(['lokasi_aduan', 'action', 'juruteknik_bertugas', 'tahap_kategori', 'status_aduan'])
@@ -474,8 +465,6 @@ class AduanController extends Controller
         $juruteknik = User::whereHas('roles', function($query){
             $query->where('id', 'CMS002');
         })->get();
-
-        // dd($aduan);
 
         return view('aduan.info-aduan', compact('aduan', 'tahap', 'juruteknik', 'status', 'tukarStatus'))->with('no', 1);
     }

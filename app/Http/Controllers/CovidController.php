@@ -87,7 +87,7 @@ class CovidController extends Controller
 
     public function new($id)
     {
-        if( Auth::user()->hasRole('admin hr') )
+        if( Auth::user()->hasRole('HR Admin') )
         { 
             $user = User::whereHas('roles')->orderBy('name')->get();
         }
@@ -189,7 +189,7 @@ class CovidController extends Controller
 
     public function data_declare()
     {
-        if( Auth::user()->hasRole('admin hr') )
+        if( Auth::user()->hasRole('HR Admin') )
         { 
             $declare = Covid::whereDate('created_at', '=', Carbon::now()->toDateString())->get();
         }
@@ -264,7 +264,7 @@ class CovidController extends Controller
 
     public function data_history()
     {
-        if( Auth::user()->hasRole('admin hr') )
+        if( Auth::user()->hasRole('HR Admin') )
         { 
             $declare = Covid::whereDate('created_at', '!=', Carbon::now()->toDateString())->get();
         }
@@ -406,7 +406,7 @@ class CovidController extends Controller
     public function data_catA()
     {
 
-        if( Auth::user()->hasRole('admin hr') )
+        if( Auth::user()->hasRole('HR Admin') )
         { 
             $declare = Covid::where('category', 'A')->where( 'declare_date', '>', Carbon::now()->subDays(14))->get();
         }
@@ -489,7 +489,7 @@ class CovidController extends Controller
     public function data_catB()
     {
 
-        if( Auth::user()->hasRole('admin hr') )
+        if( Auth::user()->hasRole('HR Admin') )
         { 
             $declare = Covid::where('category', 'B')->where( 'declare_date', '>', Carbon::now()->subDays(10))->get();
         }
@@ -626,7 +626,7 @@ class CovidController extends Controller
 
     public function data_catC()
     {
-        if( Auth::user()->hasRole('admin hr') )
+        if( Auth::user()->hasRole('HR Admin') )
         { 
             $declare = Covid::where('category', 'C')->whereDate('declare_date', '=', Carbon::now()->toDateString())->get();
         }
@@ -684,7 +684,7 @@ class CovidController extends Controller
     public function data_catD()
     {
 
-        if( Auth::user()->hasRole('admin hr') )
+        if( Auth::user()->hasRole('HR Admin') )
         { 
             $declare = Covid::where('category', 'D')->whereDate('declare_date', '=', Carbon::now()->toDateString())->get();
         }
@@ -742,7 +742,7 @@ class CovidController extends Controller
     public function data_catE()
     {
 
-        if( Auth::user()->hasRole('admin hr') )
+        if( Auth::user()->hasRole('HR Admin') )
         { 
             $declare = Covid::where('category', 'E')->whereDate('declare_date', '=', Carbon::now()->toDateString())->get();
         }

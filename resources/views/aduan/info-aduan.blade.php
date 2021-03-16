@@ -28,7 +28,7 @@
                         <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}</div>
                     @endif
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-md-4 col-sm-12" style="margin-bottom: 20px">
 
                             <div class="card card-primary card-outline">
                                 <div class="card-header bg-primary-50">
@@ -36,7 +36,6 @@
                                 </div>
 
                                 <div class="card-body">
-
                                     <table id="info" class="table table-bordered table-hover table-striped w-100">
                                         <thead>
                                             <tr>
@@ -83,7 +82,6 @@
                                         
                                         </thead>
                                     </table>
-
                                 </div>
                             </div>
 
@@ -91,7 +89,7 @@
 
                         <br>
 
-                        <div class="col-sm-8">
+                        <div class="col-md-8 col-sm-12" style="margin-bottom: 20px">
                             <div class="card card-primary card-outline">
                                 <div class="card-header bg-primary-50">
                                     <span class="fw-300"></span><i class="fal fa-list"></i><b> BUTIRAN ADUAN </b>
@@ -193,7 +191,7 @@
                                     
                                         @else
 
-                                        @can('edit tahap')
+                                        @can('edit level')
                                                 <tr>
                                                     <div class="form-group">
                                                         <td width="20%"><label class="form-label" for="tahap_kategori"><span class="text-danger">*</span> Tahap Aduan :</label></td>
@@ -230,7 +228,7 @@
 
                                             @endcan
 
-                                            @can('papar tahap')
+                                            @can('view level')
                                                 <tr>
                                                     <div class="form-group">
                                                         <td width="20%"><label class="form-label" for="tahap_kategori">Tahap Aduan :</label></td>
@@ -256,9 +254,9 @@
                     <br><br>
 
                     @if($aduan->status_aduan == 'DJ') 
-                        @can('tambah pembaikan')
+                        @can('add repair')
                         <div class="row">
-                            <div class="col-sm-12">
+                            <div class="col-sm-12 col-md-12">
                                 <div class="card card-primary card-outline">
                                     <div class="card-header bg-primary-50">
                                         <span class="fw-300"></span><i class="fal fa-edit"></i><b> BUTIRAN TINDAKAN KEATAS ADUAN </b>
@@ -377,9 +375,9 @@
                     @endif
 
                     @if($aduan->status_aduan == 'TD' | $aduan->status_aduan == 'AS' | $aduan->status_aduan == 'AK') 
-                        @can('tambah pembaikan')
+                        @can('add repair')
                             <div class="row">
-                                <div class="col-sm-12">
+                                <div class="col-sm-12 col-md-12">
                                     <div class="card card-primary card-outline">
                                         <div class="card-header bg-primary-50">
                                             <span class="fw-300"></span><i class="fal fa-edit"></i><b> BUTIRAN TINDAKAN KEATAS ADUAN </b>
@@ -483,7 +481,7 @@
                                                         </tr>
 
                                                         @if($aduan->status_aduan == 'AS') 
-                                                            @can('papar catatan')
+                                                            @can('view remark')
                                                             <tr>
                                                                 <div class="form-group">
                                                                         <td width="20%"><label class="form-label" for="catatan_pembaikan">Catatan :</label></td>
@@ -505,9 +503,9 @@
                             </div>
                         @endcan
 
-                        @can('papar pembaikan')
+                        @can('view repair')
                             <div class="row">
-                                <div class="col-sm-12">
+                                <div class="col-sm-12 col-md-12">
                                     <div class="card card-primary card-outline">
                                         <div class="card-header bg-primary-50">
                                             <span class="fw-300"></span><i class="fal fa-edit"></i><b> BUTIRAN TINDAKAN KEATAS ADUAN </b>
@@ -584,7 +582,7 @@
 
                                                         @if($aduan->status_aduan == 'AS' | $aduan->status_aduan == 'AK') 
                                                         
-                                                            @can('edit pembaikan')
+                                                            @can('edit repair')
                                                                         <tr>
                                                                             <div class="form-group">
                                                                                     <td width="20%"><label class="form-label" for="catatan_pembaikan">Catatan :</label></td>
@@ -610,7 +608,7 @@
 
                                                             @else
 
-                                                            @can('edit pembaikan')
+                                                            @can('edit repair')
                                                                         <tr>
                                                                             <div class="form-group">
                                                                                     <td width="20%"><label class="form-label" for="catatan_pembaikan">Catatan :</label></td>

@@ -31,7 +31,7 @@
                                 @if($semakan->status_aduan == 'AS')
                                     <div class="d-flex justify-content-lg-center">
                                         <center>
-                                            <div class="card card-primary card-outline" style="width: 800px;">
+                                            <div class="card card-primary card-outline">
                                                 <div class="card-header bg-primary-50">
                                                     <span class="fw-300"></span><i class="fal fa-chart-pie"></i><b> ID ADUAN: {{ $semakan->id }} </b>
                                                 </div>
@@ -71,7 +71,7 @@
                                 @else
                                     <div class="d-flex justify-content-lg-center">
                                         <center>
-                                            <div class="card card-primary card-outline" style="width: 800px;">
+                                            <div class="card card-primary card-outline">
                                                 <div class="card-header bg-primary-50">
                                                     <span class="fw-300"></span><i class="fal fa-chart-pie"></i><b> ID ADUAN: {{ $semakan->id }} </b>
                                                 </div>

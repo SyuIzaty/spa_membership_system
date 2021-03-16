@@ -40,81 +40,81 @@
                             $datetime2 = new DateTime($duedate);
                             $bakihari  = $datetime1->diff($datetime2)->format('%a')+1;
                         @endphp
-
+    
                         @if($declare->category == 'A')
-                                    @if($bakihari<15)
-                                        @php $display = false; @endphp
-                                        <table id="info" class="table table-bordered table-hover table-striped w-100">
-                                            <thead>
-                                                <tr align="center" class="data-row">
-                                                    <td valign="top" colspan="4" class="dataTables_empty">
-                                                        <p style="font-family: 'Times New Roman', Times, serif; color: rgb(97 63 115)"><b> ' YOU MADE SELF DECLARATION ON {{ date(' d/m/Y ', strtotime($declare->declare_date) )}} ' </b></p>
-                                                        <p style="font-size: 20px; color: black">Please Quarantine Yourself For 14 Days</p>
-                                                        <p style="font-size: 20px; color: black">Countdown : {{ $bakihari }}/14 Days</p>
-                                                        <table>
-                                                            <tr><td style="background-color:red; color: white;">
-                                                            <p class="mb-0 mt-0" style="font-size: 40px">{{ date(' j ', strtotime($declare->declare_date) )}}
-                                                            <sup style="top: -16px; font-size: 20px;">{{ date(' M Y ', strtotime($declare->declare_date) )}}</sup>
-                                                            <p style="margin-top: -32px;margin-left: 58px;margin-bottom: -15px;font-size: 21px;">{{ date(' l ', strtotime($declare->declare_date) )}}</p></p>
-                                                            <hr class="mb-0 mt-0">
-                                                            <p align="center" class="mb-0 mt-0">{{$declare->category}}</p>
-                                                        </td></tr>
-                                                        </table>
-                                                        <a style="margin-top: 20px;" class="btn btn-primary" href="/declare-info/{{$declare->id}}"><i class="fal fa-eye"></i> Declaration Result</a>
-                                                    </td>
-                                                </tr>
-                                            </thead>
-                                        </table>
-                                    @endif
-                                @elseif($declare->category == 'B')
-                                    @if($bakihari<11)
-                                        @php $display = false; @endphp
-                                        <table id="info" class="table table-bordered table-hover table-striped w-100">
-                                            <thead>
-                                                <tr align="center" class="data-row">
-                                                    <td valign="top" colspan="4" class="dataTables_empty">
-                                                        <p style="font-family: 'Times New Roman', Times, serif; color: rgb(97 63 115)"><b> ' YOU MADE SELF DECLARATION ON {{ date(' d/m/Y ', strtotime($declare->declare_date) )}} ' </b></p>
-                                                        <p style="font-size: 20px; color: black">Please Quarantine Yourself For 10 Days</p>
-                                                        <p style="font-size: 20px; color: black">Countdown : {{ $bakihari }}/10 Days</p>
-                                                        <table>
-                                                            <tr><td style="background-color:orange; color: white;">
-                                                            <p class="mb-0 mt-0" style="font-size: 40px">{{ date(' j ', strtotime($declare->declare_date) )}}
-                                                            <sup style="top: -16px; font-size: 20px;">{{ date(' M Y ', strtotime($declare->declare_date) )}}</sup>
-                                                            <p style="margin-top: -32px;margin-left: 58px;margin-bottom: -15px;font-size: 21px;">{{ date(' l ', strtotime($declare->declare_date) )}}</p></p>
-                                                            <hr class="mb-0 mt-0">
-                                                            <p align="center" class="mb-0 mt-0">{{$declare->category}}</p>
-                                                        </td></tr>
-                                                        </table>
-                                                        <a style="margin-top: 20px;" class="btn btn-primary" href="/declare-info/{{$declare->id}}"><i class="fal fa-eye"></i> Declaration Result</a>
-                                                    </td>
-                                                </tr>
-                                            </thead>
-                                        </table>
-                                    @endif
-                                @else
-                                    @if($exist)
-                                        @php $display = false; @endphp
-                                        <table id="info" class="table table-bordered table-hover table-striped w-100">
-                                        <thead>
-                                            <tr align="center" class="data-row">
-                                                <td valign="top" colspan="4" class="dataTables_empty">
-                                                    <b style="font-family: 'Times New Roman', Times, serif; color: rgb(97 63 115)"> ' YOU HAVE MADE SELF DECLARATION FOR TODAY ' </b><br><br>
-                                                    <table>
-                                                        <tr><td style="background-color:green; color: white;">
-                                                        <p class="mb-0 mt-0" style="font-size: 40px">{{ date(' j ', strtotime($declare->declare_date) )}}
-                                                        <sup style="top: -16px; font-size: 20px;">{{ date(' M Y ', strtotime($declare->declare_date) )}}</sup>
-                                                        <p style="margin-top: -32px;margin-left: 58px;margin-bottom: -15px;font-size: 21px;">{{ date(' l ', strtotime($declare->declare_date) )}}</p></p>
-                                                        <hr class="mb-0 mt-0">
-                                                        <p align="center" class="mb-0 mt-0">{{$declare->category}}</p>
-                                                    </td></tr>
-                                                    </table>
-                                                    <a style="margin-top: 20px;" class="btn btn-primary" href="/declare-info/{{$declare->id}}"><i class="fal fa-eye"></i> Today's Declaration Result</a>
-                                                </td>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                    @endif
-                                @endif
+                            @if($bakihari<15)
+                                @php $display = false; @endphp
+                                <table id="info" class="table table-bordered table-hover table-striped w-100">
+                                    <thead>
+                                        <tr align="center" class="data-row">
+                                            <td valign="top" colspan="4" class="dataTables_empty">
+                                                <p style="font-family: 'Times New Roman', Times, serif; color: rgb(97 63 115)"><b> ' YOU MADE SELF DECLARATION ON {{ date(' d/m/Y ', strtotime($declare->declare_date) )}} ' </b></p>
+                                                <p style="font-size: 20px; color: black">Please Quarantine Yourself For 14 Days</p>
+                                                <p style="font-size: 20px; color: black">Countdown : {{ $bakihari }}/14 Days</p>
+                                                <table>
+                                                    <tr><td style="background-color:red; color: white;">
+                                                    <p class="mb-0 mt-0" style="font-size: 40px">{{ date(' j ', strtotime($declare->declare_date) )}}
+                                                    <sup style="top: -16px; font-size: 20px;">{{ date(' M Y ', strtotime($declare->declare_date) )}}</sup>
+                                                    <p style="margin-top: -32px;margin-left: 58px;margin-bottom: -15px;font-size: 21px;">{{ date(' l ', strtotime($declare->declare_date) )}}</p></p>
+                                                    <hr class="mb-0 mt-0">
+                                                    <p align="center" class="mb-0 mt-0">{{$declare->category}}</p>
+                                                </td></tr>
+                                                </table>
+                                                <a style="margin-top: 20px;" class="btn btn-primary" href="/declare-info/{{$declare->id}}"><i class="fal fa-eye"></i> Declaration Result</a>
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            @endif
+                        @elseif($declare->category == 'B')
+                            @if($bakihari<11)
+                                @php $display = false; @endphp
+                                <table id="info" class="table table-bordered table-hover table-striped w-100">
+                                    <thead>
+                                        <tr align="center" class="data-row">
+                                            <td valign="top" colspan="4" class="dataTables_empty">
+                                                <p style="font-family: 'Times New Roman', Times, serif; color: rgb(97 63 115)"><b> ' YOU MADE SELF DECLARATION ON {{ date(' d/m/Y ', strtotime($declare->declare_date) )}} ' </b></p>
+                                                <p style="font-size: 20px; color: black">Please Quarantine Yourself For 10 Days</p>
+                                                <p style="font-size: 20px; color: black">Countdown : {{ $bakihari }}/10 Days</p>
+                                                <table>
+                                                    <tr><td style="background-color:orange; color: white;">
+                                                    <p class="mb-0 mt-0" style="font-size: 40px">{{ date(' j ', strtotime($declare->declare_date) )}}
+                                                    <sup style="top: -16px; font-size: 20px;">{{ date(' M Y ', strtotime($declare->declare_date) )}}</sup>
+                                                    <p style="margin-top: -32px;margin-left: 58px;margin-bottom: -15px;font-size: 21px;">{{ date(' l ', strtotime($declare->declare_date) )}}</p></p>
+                                                    <hr class="mb-0 mt-0">
+                                                    <p align="center" class="mb-0 mt-0">{{$declare->category}}</p>
+                                                </td></tr>
+                                                </table>
+                                                <a style="margin-top: 20px;" class="btn btn-primary" href="/declare-info/{{$declare->id}}"><i class="fal fa-eye"></i> Declaration Result</a>
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            @endif
+                        @else
+                            @if($exist)
+                                @php $display = false; @endphp
+                                <table id="info" class="table table-bordered table-hover table-striped w-100">
+                                <thead>
+                                    <tr align="center" class="data-row">
+                                        <td valign="top" colspan="4" class="dataTables_empty">
+                                            <b style="font-family: 'Times New Roman', Times, serif; color: rgb(97 63 115)"> ' YOU HAVE MADE SELF DECLARATION FOR TODAY ' </b><br><br>
+                                            <table>
+                                                <tr><td style="background-color:green; color: white;">
+                                                <p class="mb-0 mt-0" style="font-size: 40px">{{ date(' j ', strtotime($declare->declare_date) )}}
+                                                <sup style="top: -16px; font-size: 20px;">{{ date(' M Y ', strtotime($declare->declare_date) )}}</sup>
+                                                <p style="margin-top: -32px;margin-left: 58px;margin-bottom: -15px;font-size: 21px;">{{ date(' l ', strtotime($declare->declare_date) )}}</p></p>
+                                                <hr class="mb-0 mt-0">
+                                                <p align="center" class="mb-0 mt-0">{{$declare->category}}</p>
+                                            </td></tr>
+                                            </table>
+                                            <a style="margin-top: 20px;" class="btn btn-primary" href="/declare-info/{{$declare->id}}"><i class="fal fa-eye"></i> Today's Declaration Result</a>
+                                        </td>
+                                    </tr>
+                                </thead>
+                            </table>
+                            @endif
+                        @endif
 
                         <div class="panel-container show {{ $display ? '' : 'd-none' }}">
                             <div class="panel-content">

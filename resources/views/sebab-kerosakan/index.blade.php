@@ -28,22 +28,24 @@
                         @if (Session::has('notification'))
                             <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('notification') }}</div>
                         @endif
-                        <table id="sebab" class="table table-bordered table-hover table-striped w-100">
-                            <thead>
-                                <tr class="bg-primary-50 text-center">
-                                    <th style="width:30px">No</th>
-                                    <th>Kategori Aduan</th>
-                                    <th>Sebab Kerosakan</th>
-                                    <th>Tindakan</th>
-                                </tr>
-                                <tr>
-                                    <td class="hasinput"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Carian kategori"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Carian sebab"></td>
-                                    <td class="hasinput"></td>
-                                </tr>
-                            </thead>
-                        </table>
+                        <div class="table-responsive">
+                            <table id="sebab" class="table table-bordered table-hover table-striped w-100">
+                                <thead>
+                                    <tr class="bg-primary-50 text-center">
+                                        <th style="width:30px">No</th>
+                                        <th>Kategori Aduan</th>
+                                        <th>Sebab Kerosakan</th>
+                                        <th>Tindakan</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="hasinput"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Carian kategori"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Carian sebab"></td>
+                                        <td class="hasinput"></td>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
                     </div>
                     <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">
                         <a href="javascript:;" data-toggle="modal" id="new" class="btn btn-primary ml-auto float-right"><i class="fal fa-plus-square"></i> Tambah Sebab Kerosakan</a>
@@ -61,7 +63,6 @@
                 </div>
                 <div class="modal-body">
                     {!! Form::open(['action' => 'SebabKerosakanController@tambahSebab', 'method' => 'POST']) !!}
-                    {{-- {{Form::hidden('id', $source->id)}} --}}
                     <p><span class="text-danger">*</span> Maklumat wajib diisi</p>
                         <div class="form-group">
                             <td width="10%"><label class="form-label" for="kategori_aduan"><span class="text-danger">*</span> Kategori Aduan :</label></td>
@@ -105,7 +106,6 @@
                 </div>
                 <div class="modal-body">
                     {!! Form::open(['action' => 'SebabKerosakanController@kemaskiniSebab', 'method' => 'POST']) !!}
-                    {{-- {{Form::hidden('id', $jenis->id)}} --}}
                     <input type="hidden" name="sebab_id" id="sebab">
                     <p><span class="text-danger">*</span> Maklumat wajib diisi</p>
                     <div class="form-group">

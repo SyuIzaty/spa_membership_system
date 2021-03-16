@@ -22,76 +22,74 @@
                 </div>
                 <div class="panel-container show">
                     <div class="panel-content">
-
-                        <table id="senarai" class="table table-bordered table-hover table-striped w-100">
-                            <thead>
-                                <tr class="bg-primary-50 text-center">
-                                    <th style="width:30px">ID</th>
-                                    <th>Nama Pelapor</th>
-                                    <th>Jawatan</th>
-                                    <th style="text-align: center">Lokasi Aduan</th>
-                                    <th>Kategori Aduan</th>
-                                    <th>Tarikh Aduan</th>
-                                    @can('papar juruteknik')
-                                    <th>Juruteknik</th>
-                                    @endcan
-                                    <th>Status</th>
-                                    <th>Tahap</th>
-                                    <th>Tindakan</th>
-                                </tr>
-                                <tr>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Carian id"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Carian nama"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Carian jawatan"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Carian lokasi"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Carian kategori"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Carian tarikh"></td>
-                                    @can('papar juruteknik')
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Carian juruteknik"></td>
-                                    @endcan
-                                    <td class="hasinput"><select id="status_aduan" name="status_aduan" class="form-control">
-                                        <option value="">Semua</option>
-                                        <option value="Belum Selesai">Belum Selesai</option>
-                                        <option value="Diserahkan kepada Juruteknik">Diserahkan kepada Juruteknik</option>
-                                        <option value="Tindakan telah Diambil">Tindakan telah Diambil</option>
-                                    </select></td>
-                                    <td class="hasinput"><select id="tahap_kategori" name="tahap_kategori" class="form-control">
-                                        <option value="">Semua</option>
-                                        <option value="BIASA">Biasa</option>
-                                        <option value="SEGERA">Segera</option>
-                                        <option value="CEMAS">Cemas</option>
-                                        <option value="BELUM DITENTUKAN">Belum Ditentukan</option>
-                                    </select></td>
-                                    <td class="hasinput"></td>
-                                </tr>
-                            </thead>
-                        </table>
+                        <div class="table-responsive">
+                            <table id="senarai" class="table table-bordered table-hover table-striped w-100">
+                                <thead>
+                                    <tr class="bg-primary-50 text-center">
+                                        <th style="width:30px">ID</th>
+                                        <th>Nama Pelapor</th>
+                                        <th>Jawatan</th>
+                                        <th style="text-align: center">Lokasi Aduan</th>
+                                        <th>Kategori Aduan</th>
+                                        <th>Tarikh Aduan</th>
+                                        @can('view technician')
+                                        <th>Juruteknik</th>
+                                        @endcan
+                                        <th>Status</th>
+                                        <th>Tahap</th>
+                                        <th>Tindakan</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Carian id"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Carian nama"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Carian jawatan"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Carian lokasi"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Carian kategori"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Carian tarikh"></td>
+                                        @can('view technician')
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Carian juruteknik"></td>
+                                        @endcan
+                                        <td class="hasinput"><select id="status_aduan" name="status_aduan" class="form-control">
+                                            <option value="">Semua</option>
+                                            <option value="Belum Selesai">Belum Selesai</option>
+                                            <option value="Diserahkan kepada Juruteknik">Diserahkan kepada Juruteknik</option>
+                                            <option value="Tindakan telah Diambil">Tindakan telah Diambil</option>
+                                        </select></td>
+                                        <td class="hasinput"><select id="tahap_kategori" name="tahap_kategori" class="form-control">
+                                            <option value="">Semua</option>
+                                            <option value="BIASA">Biasa</option>
+                                            <option value="SEGERA">Segera</option>
+                                            <option value="CEMAS">Cemas</option>
+                                            <option value="BELUM DITENTUKAN">Belum Ditentukan</option>
+                                        </select></td>
+                                        <td class="hasinput"></td>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
                     </div>
 
                     <div class="panel-content py-2 mt-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex pull-left">
                         <div class="row" style="margin-top: -0.75rem;">
-                            <div class="col-sm-4.5">
+                            <div class="col-lg-4.5 col-sm-12">
 
-                            <div class="card-body">
-                                <table id="info" class="table table-bordered table-hover table-striped" style=" width: 142%!important;">
-                                    
-                                    <thead>
-                                        <tr>
-                                            <div class="form-group">
-                                                
-                                                <td><i style="color: red"><b>Petunjuk:</b></i>
-                                                    <br><br>
-                                                    <label class="high"><label class="" style="margin-left: 30px;">CEMAS</label></label>
-                                                    <label class="medium" style="margin-left: 60px !important;"><label class="" style="margin-left: 30px;">SEGERA</label></label>
-                                                    <label class="low" style="margin-left: 60px !important;"><label class="" style="margin-left: 30px;">BIASA</label></label>
-                                                    <label class="none" style="margin-left: 60px !important;"><label class="" style="margin-left: 30px; width: 130px;">BELUM DITENTUKAN</label></label>
-                                                </td>
-                                                
-                                            </div>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
+                                <div class="card-body">
+                                    <table id="info" class="table table-bordered table-hover table-striped" style=" width: 142%!important;">
+                                        <thead>
+                                            <tr>
+                                                <div class="form-group">
+                                                    <td><i style="color: red"><b>Petunjuk:</b></i>
+                                                        <br><br>
+                                                        <label class="high"><label class="" style="margin-left: 30px;">CEMAS</label></label>
+                                                        <label class="medium" style="margin-left: 60px !important;"><label class="" style="margin-left: 30px;">SEGERA</label></label>
+                                                        <label class="low" style="margin-left: 60px !important;"><label class="" style="margin-left: 30px;">BIASA</label></label>
+                                                        <label class="none" style="margin-left: 60px !important;"><label class="" style="margin-left: 30px; width: 155px;">BELUM DITENTUKAN</label></label>
+                                                    </td>
+                                                </div>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
 
                             </div>
                         </div>
@@ -102,47 +100,6 @@
         </div>
     </div>
 
-    {{-- <div class="modal fade" id="crud-modal" aria-hidden="true" >
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="card-header">
-                    <h5 class="card-title w-100">PILIH JURUTEKNIK</h5>
-                </div>
-                <div class="modal-body">
-                    {!! Form::open(['action' => 'AduanController@updateJuruteknik', 'method' => 'POST']) !!}
-                    <input type="hidden" name="aduan_id" id="aduan">
-
-                    <div class="card-body">
-                        <table class="table table-bordered table-hover table-striped w-100" style="table-layout:fixed">
-                            <thead>
-                                <tr align="center" class="card-header">
-                                    <th style="width: 50px;">No.</th>
-                                    <th>Juruteknik</th>
-                                    <th style="width: 100px;">Pilih</th>
-                                </tr>
-                                @foreach($juruteknik as $juru)
-                                <tr>
-                                    <td align="center">{{ $no++ }}</td>
-                                    <td>{{$juru->name}}</td>
-                                    <td align="center">
-                                        <input type="radio" name="juruteknik_bertugas" value="{{ $juru->id }}">
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </thead>
-                        </table>
-                    </div>
-                     
-                    <div class="footer">
-                        <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Hantar Aduan</button>
-                        <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Tutup</button>
-                    </div>
-                    {!! Form::close() !!}
-                </div>
-            </div>
-        </div>
-    </div> --}}
-
 </main>
 @endsection
 
@@ -151,16 +108,6 @@
 <script>
     $(document).ready(function()
     {
-        // $('#crud-modal').on('show.bs.modal', function(event) {
-        //     var button = $(event.relatedTarget) 
-        //     var aduan = button.data('aduan') 
-        //     var create = button.data('create')
-
-        //     $('.modal-body #aduan').val(aduan); 
-        //     $('.modal-body #create').val(create); 
-        //     $( "input:radio").val([create]);
-        // });
-
         $('#status_aduan, #tahap_kategori').select2();
 
         $('#senarai thead tr .hasinput').each(function(i)
@@ -204,7 +151,7 @@
                     { data: 'lokasi_aduan', name: 'lokasi_aduan' },
                     { className: 'text-center', data: 'kategori_aduan', name: 'kategori_aduan' },
                     { className: 'text-center', data: 'tarikh_laporan', name: 'tarikh_laporan' },
-                    @can('papar juruteknik')
+                    @can('view technician')
                     { className: 'text-center', data: 'juruteknik_bertugas', name: 'juruteknik_bertugas' },
                     @endcan
                     { className: 'text-center', data: 'status_aduan', name: 'status_aduan' },
