@@ -19,7 +19,11 @@
                         <img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="280" alt="INTEC">
                     </div>
                     <div style="font-family: Verdana, sans-serif;" class="card-header"><center><b>{{ __('LOGIN ACCOUNT') }}</b></center></div><br><br>
-
+                    @if(session()->has('message'))
+                        <div class="alert alert-danger">
+                            <i class="icon fal fa-exclamation-circle"></i> {{ session()->get('message') }}
+                        </div>
+                    @endif
                     <form method="POST" action="{{ route('login') }}">
                         @csrf 
 
@@ -61,13 +65,13 @@
                             </div><br><br>
 
                         <div class="row px-3 mb-4">
-                            <div class="custom-control custom-checkbox custom-control-inline"> 
-                                <input id="remember" type="checkbox" name="remember" class="custom-control-input" {{ old('remember') ? 'checked' : '' }}> 
-                                <label for="remember" class="custom-control-label text-sm">Remember me</label> 
-                            </div> 
-                                @if (Route::has('password.request'))
-                                        <a href="{{ route('reset_password') }}" class="ml-auto mb-0 text-sm">Forgot Password?</a>
-                                @endif
+                            <div class="custom-control custom-checkbox custom-control-inline">
+                                <input id="remember" type="checkbox" name="remember" class="custom-control-input" {{ old('remember') ? 'checked' : '' }}>
+                                <label for="remember" class="custom-control-label text-sm">Remember me</label>
+                            </div>
+                            @if (Route::has('password.request'))
+                                    <a href="{{ route('reset_password') }}" class="ml-auto mb-0 text-sm">Forgot Password?</a>
+                            @endif
                         </div>
 
                          <!-- Divider Text -->
