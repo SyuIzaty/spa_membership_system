@@ -32,221 +32,221 @@
                                 However, you are encouraged to make a declaration on a daily basis including public holidays and other holidays.
                             </p>
                         </div>
-
-                        @php
-                            $datenow   = date('d-m-Y');
-                            $duedate   = $declare->declare_date->format('d-m-Y');
-                            $datetime1 = new DateTime($datenow);
-                            $datetime2 = new DateTime($duedate);
-                            $bakihari  = $datetime1->diff($datetime2)->format('%a')+1;
-                        @endphp
-    
-                        @if($declare->category == 'A')
-                            @if($bakihari<15)
-                                @php $display = false; @endphp
-                                <table id="info" class="table table-bordered table-hover table-striped w-100">
-                                    <thead>
-                                        <tr align="center" class="data-row">
-                                            <td valign="top" colspan="4" class="dataTables_empty">
-                                                <p style="font-family: 'Times New Roman', Times, serif; color: rgb(97 63 115)"><b> ' YOU MADE SELF DECLARATION ON {{ date(' d/m/Y ', strtotime($declare->declare_date) )}} ' </b></p>
-                                                <p style="font-size: 20px; color: black">Please Quarantine Yourself For 14 Days</p>
-                                                <p style="font-size: 20px; color: black">Countdown : {{ $bakihari }}/14 Days</p>
-                                                <table>
-                                                    <tr><td style="background-color:red; color: white;">
-                                                    <p class="mb-0 mt-0" style="font-size: 40px">{{ date(' j ', strtotime($declare->declare_date) )}}
-                                                    <sup style="top: -16px; font-size: 20px;">{{ date(' M Y ', strtotime($declare->declare_date) )}}</sup>
-                                                    <p style="margin-top: -32px;margin-left: 58px;margin-bottom: -15px;font-size: 21px;">{{ date(' l ', strtotime($declare->declare_date) )}}</p></p>
-                                                    <hr class="mb-0 mt-0">
-                                                    <p align="center" class="mb-0 mt-0">{{$declare->category}}</p>
-                                                </td></tr>
-                                                </table>
-                                                <a style="margin-top: 20px;" class="btn btn-primary" href="/declare-info/{{$declare->id}}"><i class="fal fa-eye"></i> Declaration Result</a>
-                                            </td>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            @endif
-                        @elseif($declare->category == 'B')
-                            @if($bakihari<11)
-                                @php $display = false; @endphp
-                                <table id="info" class="table table-bordered table-hover table-striped w-100">
-                                    <thead>
-                                        <tr align="center" class="data-row">
-                                            <td valign="top" colspan="4" class="dataTables_empty">
-                                                <p style="font-family: 'Times New Roman', Times, serif; color: rgb(97 63 115)"><b> ' YOU MADE SELF DECLARATION ON {{ date(' d/m/Y ', strtotime($declare->declare_date) )}} ' </b></p>
-                                                <p style="font-size: 20px; color: black">Please Quarantine Yourself For 10 Days</p>
-                                                <p style="font-size: 20px; color: black">Countdown : {{ $bakihari }}/10 Days</p>
-                                                <table>
-                                                    <tr><td style="background-color:orange; color: white;">
-                                                    <p class="mb-0 mt-0" style="font-size: 40px">{{ date(' j ', strtotime($declare->declare_date) )}}
-                                                    <sup style="top: -16px; font-size: 20px;">{{ date(' M Y ', strtotime($declare->declare_date) )}}</sup>
-                                                    <p style="margin-top: -32px;margin-left: 58px;margin-bottom: -15px;font-size: 21px;">{{ date(' l ', strtotime($declare->declare_date) )}}</p></p>
-                                                    <hr class="mb-0 mt-0">
-                                                    <p align="center" class="mb-0 mt-0">{{$declare->category}}</p>
-                                                </td></tr>
-                                                </table>
-                                                <a style="margin-top: 20px;" class="btn btn-primary" href="/declare-info/{{$declare->id}}"><i class="fal fa-eye"></i> Declaration Result</a>
-                                            </td>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            @endif
-                        @else
-                            @if($exist)
-                                @php $display = false; @endphp
-                                <table id="info" class="table table-bordered table-hover table-striped w-100">
-                                <thead>
-                                    <tr align="center" class="data-row">
-                                        <td valign="top" colspan="4" class="dataTables_empty">
-                                            <b style="font-family: 'Times New Roman', Times, serif; color: rgb(97 63 115)"> ' YOU HAVE MADE SELF DECLARATION FOR TODAY ' </b><br><br>
-                                            <table>
-                                                <tr><td style="background-color:green; color: white;">
-                                                <p class="mb-0 mt-0" style="font-size: 40px">{{ date(' j ', strtotime($declare->declare_date) )}}
-                                                <sup style="top: -16px; font-size: 20px;">{{ date(' M Y ', strtotime($declare->declare_date) )}}</sup>
-                                                <p style="margin-top: -32px;margin-left: 58px;margin-bottom: -15px;font-size: 21px;">{{ date(' l ', strtotime($declare->declare_date) )}}</p></p>
-                                                <hr class="mb-0 mt-0">
-                                                <p align="center" class="mb-0 mt-0">{{$declare->category}}</p>
-                                            </td></tr>
-                                            </table>
-                                            <a style="margin-top: 20px;" class="btn btn-primary" href="/declare-info/{{$declare->id}}"><i class="fal fa-eye"></i> Today's Declaration Result</a>
-                                        </td>
-                                    </tr>
-                                </thead>
-                            </table>
-                            @endif
-                        @endif
-
-                        <div class="panel-container show {{ $display ? '' : 'd-none' }}">
-                            <div class="panel-content">
-
-                                {!! Form::open(['action' => 'CovidController@formStore', 'method' => 'POST']) !!}
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                
-                                    <div>
-                                        <table class="table table-bordered table-hover table-striped w-100">
+                        @if(!empty($declare))
+                                @php
+                                    $datenow   = date('d-m-Y');
+                                    $duedate   = $declare->declare_date->format('d-m-Y');
+                                    $datetime1 = new DateTime($datenow);
+                                    $datetime2 = new DateTime($duedate);
+                                    $bakihari  = $datetime1->diff($datetime2)->format('%a')+1;
+                                @endphp
+            
+                                @if($declare->category == 'A')
+                                    @if($bakihari<15)
+                                        @php $display = false; @endphp
+                                        <table id="info" class="table table-bordered table-hover table-striped w-100">
                                             <thead>
-                                                <tr>
-                                                    <div class="form-group">
-                                                        <th style="text-align: center; border-left-style: hidden; border-right-style: hidden"><label>Full Name : </label><b style="font-size: 15px; letter-spacing: 1px; padding-left: 18px; color: rgb(27, 57, 3); font-weight: normal">{{ strtoupper($user->name)}}</b></th>
-                                                        <th style="text-align: center; border-right-style: hidden"><label>Staff ID / Student ID: </label><b style="font-size: 15px; letter-spacing: 1px; padding-left: 18px; color: rgb(27, 57, 3); font-weight: normal">{{ strtoupper($user->id)}}</b></th>
-                                                        <th style="text-align: center; border-right-style: hidden"><label>Email : </label><b style="font-size: 15px; letter-spacing: 1px; padding-left: 18px; color: rgb(27, 57, 3); font-weight: normal">{{ $user->email}}</b></th>
-                                                        <th style="text-align: center; border-right-style: hidden"><label>Phone No. : </label></th>
-                                                        <th style=" border-right-style: hidden">
-                                                            <input class="form-control" id="user_phone" name="user_phone"  value="{{ old('user_phone') }}">
-                                                        </th>
-                                                    </div>
+                                                <tr align="center" class="data-row">
+                                                    <td valign="top" colspan="4" class="dataTables_empty">
+                                                        <p style="font-family: 'Times New Roman', Times, serif; color: rgb(97 63 115)"><b> ' YOU MADE SELF DECLARATION ON {{ date(' d/m/Y ', strtotime($declare->declare_date) )}} ' </b></p>
+                                                        <p style="font-size: 20px; color: black">Please Quarantine Yourself For 14 Days</p>
+                                                        <p style="font-size: 20px; color: black">Countdown : {{ $bakihari }}/14 Days</p>
+                                                        <table>
+                                                            <tr><td style="background-color:red; color: white;">
+                                                            <p class="mb-0 mt-0" style="font-size: 40px">{{ date(' j ', strtotime($declare->declare_date) )}}
+                                                            <sup style="top: -16px; font-size: 20px;">{{ date(' M Y ', strtotime($declare->declare_date) )}}</sup>
+                                                            <p style="margin-top: -32px;margin-left: 58px;margin-bottom: -15px;font-size: 21px;">{{ date(' l ', strtotime($declare->declare_date) )}}</p></p>
+                                                            <hr class="mb-0 mt-0">
+                                                            <p align="center" class="mb-0 mt-0">{{$declare->category}}</p>
+                                                        </td></tr>
+                                                        </table>
+                                                        <a style="margin-top: 20px;" class="btn btn-primary" href="/declare-info/{{$declare->id}}"><i class="fal fa-eye"></i> Declaration Result</a>
+                                                    </td>
                                                 </tr>
                                             </thead>
                                         </table>
-                                    </div>
-
-                                    <table id="info" class="table table-bordered table-hover table-striped w-100">
+                                    @endif
+                                @elseif($declare->category == 'B')
+                                    @if($bakihari<11)
+                                        @php $display = false; @endphp
+                                        <table id="info" class="table table-bordered table-hover table-striped w-100">
+                                            <thead>
+                                                <tr align="center" class="data-row">
+                                                    <td valign="top" colspan="4" class="dataTables_empty">
+                                                        <p style="font-family: 'Times New Roman', Times, serif; color: rgb(97 63 115)"><b> ' YOU MADE SELF DECLARATION ON {{ date(' d/m/Y ', strtotime($declare->declare_date) )}} ' </b></p>
+                                                        <p style="font-size: 20px; color: black">Please Quarantine Yourself For 10 Days</p>
+                                                        <p style="font-size: 20px; color: black">Countdown : {{ $bakihari }}/10 Days</p>
+                                                        <table>
+                                                            <tr><td style="background-color:orange; color: white;">
+                                                            <p class="mb-0 mt-0" style="font-size: 40px">{{ date(' j ', strtotime($declare->declare_date) )}}
+                                                            <sup style="top: -16px; font-size: 20px;">{{ date(' M Y ', strtotime($declare->declare_date) )}}</sup>
+                                                            <p style="margin-top: -32px;margin-left: 58px;margin-bottom: -15px;font-size: 21px;">{{ date(' l ', strtotime($declare->declare_date) )}}</p></p>
+                                                            <hr class="mb-0 mt-0">
+                                                            <p align="center" class="mb-0 mt-0">{{$declare->category}}</p>
+                                                        </td></tr>
+                                                        </table>
+                                                        <a style="margin-top: 20px;" class="btn btn-primary" href="/declare-info/{{$declare->id}}"><i class="fal fa-eye"></i> Declaration Result</a>
+                                                    </td>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    @endif
+                                @else
+                                    @if($exist)
+                                        @php $display = false; @endphp
+                                        <table id="info" class="table table-bordered table-hover table-striped w-100">
                                         <thead>
-                                            <tr>
-                                                <div class="form-group">
-                                                    <th style="text-align: center" width="4%"><label class="form-label" for="qHeader">NO.</label></th>
-                                                    <th style="text-align: center"><label class="form-label" for="qHeader">DECLARATION CHECKLIST</label></th>
-                                                    <th style="text-align: center"><label class="form-label" for="qHeader">YES</label></th>
-                                                    <th style="text-align: center"><label class="form-label" for="qHeader">NO</label></th>
-                                                </div>
-                                            </tr>
-                                            <tr class="q1">
-                                                <div class="form-group">
-                                                    <td style="text-align: center" width="4%"><label for="q1">1.</label></td>
-                                                    <td width="80%"><label for="q1">Have you been confirmed positive with COVID-19 within 14 days?</label></td>
-                                                    <td style="text-align: center"><input type="radio" name="q1" id="q1" value="Y" {{ old('q1') == "Y" ? 'checked' : '' }}></td>
-                                                    <td style="text-align: center"><input type="radio" name="q1" id="q1" value="N" {{ old('q1') == "N" ? 'checked' : '' }}></td>
-                                                </div>
-                                            </tr>
-                                            <tr class="declare_date1" style="display: none">
-                                                <div class="form-group">
-                                                    <td style="text-align: center" width="4%"><label for="declare_date"></label></td>
-                                                    <td width="80%" style="vertical-align: middle;"><label for="declare_date1">Date Confirmed Positive : </label></td>
-                                                    <td colspan="2" style="text-align: center">
-                                                        <input class="form-control" type="datetime-local" name="declare_date1" id="declare_date1" value="{{ old('declare_date1') }}">
-                                                    </td>
-                                                </div>
-                                            </tr>
-                                            <tr class="q2" style="display: none">
-                                                <div class="form-group">
-                                                    <td style="text-align: center" width="4%"><label for="q2">2.</label></td>
-                                                    <td><label for="q2">Have you had close contact with anyone who confirmed positive case of COVID-19 within 10 days?</label></td>
-                                                    <td style="text-align: center"><input type="radio" name="q2" id="q2" value="Y" {{ old('q2') == "Y" ? 'checked' : '' }}></td>
-                                                    <td style="text-align: center"><input type="radio" name="q2" id="q2" value="N" {{ old('q2') == "N" ? 'checked' : '' }}></td>
-                                                </div>
-                                            </tr>
-                                            <tr class="declare_date2" style="display: none">
-                                                <div class="form-group">
-                                                    <td style="text-align: center" width="4%"><label for="declare_date"></label></td>
-                                                    <td width="80%" style="vertical-align: middle;"><label for="declare_date2">Date Confirmed Contact : </label></td>
-                                                    <td colspan="2" style="text-align: center">
-                                                        <input class="form-control" type="datetime-local" name="declare_date2" id="declare_date2" value="{{ old('declare_date2') }}">
-                                                    </td>
-                                                </div>
-                                            </tr>
-                                            <tr class="q3" style="display: none">
-                                                <div class="form-group">
-                                                    <td style="text-align: center" width="4%"><label for="q3">3.</label></td>
-                                                    <td><label for="q3">
-                                                        Have you had close contact with any individual on question 2 within 10 days <br><br> OR <br><br>
-                                                        Have you ever attended an event or visited any place involving suspected or positive COVID-19 case within 10 days <br><br> OR <br><br>
-                                                        Are you from an area of Enhanced Movement Control Order (EMCO) in period of 10 days ?</label></td>
-                                                    <td style="text-align: center; vertical-align: middle"><input type="radio" name="q3" id="q3" value="Y" {{ old('q3') == "Y" ? 'checked' : '' }}></td>
-                                                    <td style="text-align: center; vertical-align: middle"><input type="radio" name="q3" id="q3" value="N" {{ old('q3') == "N" ? 'checked' : '' }}></td>
-                                                </div>
-                                            </tr>
-                                           
-                                            <tr class="q4" style="display: none">
-                                                <div class="form-group">
-                                                    <td style="text-align: center" width="3%" rowspan="5"><label for="q4">4.</label></td>
-                                                    <td><label for="q4">Do you experience the following symptoms:</label></td>
-                                                    <td colspan="2"></td>
-                                                </div>
-                                            </tr>
-                                            <tr class="q4" style="display: none">
-                                                <div class="form-group">
-                                                    <td width="3%"><label for="q4a"><li>Fever</li></label></td>
-                                                    <td style="text-align: center"><input type="radio" name="q4a" id="q4a" value="Y" {{ old('q4a') == "Y" ? 'checked' : '' }}></td>
-                                                    <td style="text-align: center"><input type="radio" name="q4a" id="q4a" value="N" {{ old('q4a') == "N" ? 'checked' : '' }}></td>
-                                                </div>
-                                            </tr>
-                                            <tr class="q4" style="display: none">
-                                                <div class="form-group">
-                                                    <td width="3%"><label for="q4b"><li>Cough</li></label></td>
-                                                    <td style="text-align: center"><input type="radio" name="q4b" id="q4b" value="Y" {{ old('q4b') == "Y" ? 'checked' : '' }}></td>
-                                                    <td style="text-align: center"><input type="radio" name="q4b" id="q4b" value="N" {{ old('q4b') == "N" ? 'checked' : '' }}></td>
-                                                </div>
-                                            </tr>
-                                            <tr class="q4" style="display: none">
-                                                <div class="form-group">
-                                                    <td width="3%"><label for="q4c"><li>Flu</li></label></td>
-                                                    <td style="text-align: center"><input type="radio" name="q4c" id="q4c" value="Y" {{ old('q4c') == "Y" ? 'checked' : '' }}></td>
-                                                    <td style="text-align: center"><input type="radio" name="q4c" id="q4c" value="N" {{ old('q4c') == "N" ? 'checked' : '' }}></td>
-                                                </div>
-                                            </tr>
-                                            <tr class="q4" style="display: none">
-                                                <div class="form-group">
-                                                    <td width="3%"><label for="q4d"><li>Difficulty in Breathing</li></label></td>
-                                                    <td style="text-align: center"><input type="radio" name="q4d" id="q4d" value="Y" {{ old('q4d') == "Y" ? 'checked' : '' }}></td>
-                                                    <td style="text-align: center"><input type="radio" name="q4d" id="q4d" value="N" {{ old('q4d') == "N" ? 'checked' : '' }}></td>
-                                                </div>
-                                            </tr>
-                                           
-                                            <tr>
-                                                <div class="form-group">
-                                                    <td colspan="4"><label class="form-label" for="confirmation">
-                                                    <input style="margin-top: 15px; margin-right: 30px; margin-left: 15px; margin-bottom: 15px;" type="checkbox" name="chk" id="chk" onclick="btn()"/>
-                                                    <b> I CERTIFY THAT ALL INFORMATION PROVIDED IS CORRECT AND ACCURATE. ACTION MAY BE TAKEN IF THE INFORMATION PROVIDED IS FALSE.</b></label> 
-                                                    <button style="margin-top: 5px;" class="btn btn-primary float-right" id="submit" name="submit" disabled><i class="fal fa-check"></i> Submit Declaration</button></td>
-                                                </div>
+                                            <tr align="center" class="data-row">
+                                                <td valign="top" colspan="4" class="dataTables_empty">
+                                                    <b style="font-family: 'Times New Roman', Times, serif; color: rgb(97 63 115)"> ' YOU HAVE MADE SELF DECLARATION FOR TODAY ' </b><br><br>
+                                                    <table>
+                                                        <tr><td style="background-color:green; color: white;">
+                                                        <p class="mb-0 mt-0" style="font-size: 40px">{{ date(' j ', strtotime($declare->declare_date) )}}
+                                                        <sup style="top: -16px; font-size: 20px;">{{ date(' M Y ', strtotime($declare->declare_date) )}}</sup>
+                                                        <p style="margin-top: -32px;margin-left: 58px;margin-bottom: -15px;font-size: 21px;">{{ date(' l ', strtotime($declare->declare_date) )}}</p></p>
+                                                        <hr class="mb-0 mt-0">
+                                                        <p align="center" class="mb-0 mt-0">{{$declare->category}}</p>
+                                                    </td></tr>
+                                                    </table>
+                                                    <a style="margin-top: 20px;" class="btn btn-primary" href="/declare-info/{{$declare->id}}"><i class="fal fa-eye"></i> Today's Declaration Result</a>
+                                                </td>
                                             </tr>
                                         </thead>
                                     </table>
+                                    @endif
+                                @endif
+                        @else
+                                <div class="panel-container show {{ $display ? '' : 'd-none' }}">
+                                    <div class="panel-content">
 
-                                {!! Form::close() !!}
-                            </div>
-                        </div>
-                    
+                                        {!! Form::open(['action' => 'CovidController@formStore', 'method' => 'POST']) !!}
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        
+                                            <div>
+                                                <table class="table table-bordered table-hover table-striped w-100">
+                                                    <thead>
+                                                        <tr>
+                                                            <div class="form-group">
+                                                                <th style="text-align: center; border-left-style: hidden; border-right-style: hidden"><label>Full Name : </label><b style="font-size: 15px; letter-spacing: 1px; padding-left: 18px; color: rgb(27, 57, 3); font-weight: normal">{{ strtoupper($user->name)}}</b></th>
+                                                                <th style="text-align: center; border-right-style: hidden"><label>Staff ID / Student ID: </label><b style="font-size: 15px; letter-spacing: 1px; padding-left: 18px; color: rgb(27, 57, 3); font-weight: normal">{{ strtoupper($user->id)}}</b></th>
+                                                                <th style="text-align: center; border-right-style: hidden"><label>Email : </label><b style="font-size: 15px; letter-spacing: 1px; padding-left: 18px; color: rgb(27, 57, 3); font-weight: normal">{{ $user->email}}</b></th>
+                                                                <th style="text-align: center; border-right-style: hidden"><label>Phone No. : </label></th>
+                                                                <th style=" border-right-style: hidden">
+                                                                    <input class="form-control" id="user_phone" name="user_phone"  value="{{ old('user_phone') }}">
+                                                                </th>
+                                                            </div>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+
+                                            <table id="info" class="table table-bordered table-hover table-striped w-100">
+                                                <thead>
+                                                    <tr>
+                                                        <div class="form-group">
+                                                            <th style="text-align: center" width="4%"><label class="form-label" for="qHeader">NO.</label></th>
+                                                            <th style="text-align: center"><label class="form-label" for="qHeader">DECLARATION CHECKLIST</label></th>
+                                                            <th style="text-align: center"><label class="form-label" for="qHeader">YES</label></th>
+                                                            <th style="text-align: center"><label class="form-label" for="qHeader">NO</label></th>
+                                                        </div>
+                                                    </tr>
+                                                    <tr class="q1">
+                                                        <div class="form-group">
+                                                            <td style="text-align: center" width="4%"><label for="q1">1.</label></td>
+                                                            <td width="80%"><label for="q1">Have you been confirmed positive with COVID-19 within 14 days?</label></td>
+                                                            <td style="text-align: center"><input type="radio" name="q1" id="q1" value="Y" {{ old('q1') == "Y" ? 'checked' : '' }}></td>
+                                                            <td style="text-align: center"><input type="radio" name="q1" id="q1" value="N" {{ old('q1') == "N" ? 'checked' : '' }}></td>
+                                                        </div>
+                                                    </tr>
+                                                    <tr class="declare_date1" style="display: none">
+                                                        <div class="form-group">
+                                                            <td style="text-align: center" width="4%"><label for="declare_date"></label></td>
+                                                            <td width="80%" style="vertical-align: middle;"><label for="declare_date1">Date Confirmed Positive : </label></td>
+                                                            <td colspan="2" style="text-align: center">
+                                                                <input class="form-control" type="datetime-local" name="declare_date1" id="declare_date1" value="{{ old('declare_date1') }}">
+                                                            </td>
+                                                        </div>
+                                                    </tr>
+                                                    <tr class="q2" style="display: none">
+                                                        <div class="form-group">
+                                                            <td style="text-align: center" width="4%"><label for="q2">2.</label></td>
+                                                            <td><label for="q2">Have you had close contact with anyone who confirmed positive case of COVID-19 within 10 days?</label></td>
+                                                            <td style="text-align: center"><input type="radio" name="q2" id="q2" value="Y" {{ old('q2') == "Y" ? 'checked' : '' }}></td>
+                                                            <td style="text-align: center"><input type="radio" name="q2" id="q2" value="N" {{ old('q2') == "N" ? 'checked' : '' }}></td>
+                                                        </div>
+                                                    </tr>
+                                                    <tr class="declare_date2" style="display: none">
+                                                        <div class="form-group">
+                                                            <td style="text-align: center" width="4%"><label for="declare_date"></label></td>
+                                                            <td width="80%" style="vertical-align: middle;"><label for="declare_date2">Date Confirmed Contact : </label></td>
+                                                            <td colspan="2" style="text-align: center">
+                                                                <input class="form-control" type="datetime-local" name="declare_date2" id="declare_date2" value="{{ old('declare_date2') }}">
+                                                            </td>
+                                                        </div>
+                                                    </tr>
+                                                    <tr class="q3" style="display: none">
+                                                        <div class="form-group">
+                                                            <td style="text-align: center" width="4%"><label for="q3">3.</label></td>
+                                                            <td><label for="q3">
+                                                                Have you had close contact with any individual on question 2 within 10 days <br><br> OR <br><br>
+                                                                Have you ever attended an event or visited any place involving suspected or positive COVID-19 case within 10 days <br><br> OR <br><br>
+                                                                Are you from an area of Enhanced Movement Control Order (EMCO) in period of 10 days ?</label></td>
+                                                            <td style="text-align: center; vertical-align: middle"><input type="radio" name="q3" id="q3" value="Y" {{ old('q3') == "Y" ? 'checked' : '' }}></td>
+                                                            <td style="text-align: center; vertical-align: middle"><input type="radio" name="q3" id="q3" value="N" {{ old('q3') == "N" ? 'checked' : '' }}></td>
+                                                        </div>
+                                                    </tr>
+                                                
+                                                    <tr class="q4" style="display: none">
+                                                        <div class="form-group">
+                                                            <td style="text-align: center" width="3%" rowspan="5"><label for="q4">4.</label></td>
+                                                            <td><label for="q4">Do you experience the following symptoms:</label></td>
+                                                            <td colspan="2"></td>
+                                                        </div>
+                                                    </tr>
+                                                    <tr class="q4" style="display: none">
+                                                        <div class="form-group">
+                                                            <td width="3%"><label for="q4a"><li>Fever</li></label></td>
+                                                            <td style="text-align: center"><input type="radio" name="q4a" id="q4a" value="Y" {{ old('q4a') == "Y" ? 'checked' : '' }}></td>
+                                                            <td style="text-align: center"><input type="radio" name="q4a" id="q4a" value="N" {{ old('q4a') == "N" ? 'checked' : '' }}></td>
+                                                        </div>
+                                                    </tr>
+                                                    <tr class="q4" style="display: none">
+                                                        <div class="form-group">
+                                                            <td width="3%"><label for="q4b"><li>Cough</li></label></td>
+                                                            <td style="text-align: center"><input type="radio" name="q4b" id="q4b" value="Y" {{ old('q4b') == "Y" ? 'checked' : '' }}></td>
+                                                            <td style="text-align: center"><input type="radio" name="q4b" id="q4b" value="N" {{ old('q4b') == "N" ? 'checked' : '' }}></td>
+                                                        </div>
+                                                    </tr>
+                                                    <tr class="q4" style="display: none">
+                                                        <div class="form-group">
+                                                            <td width="3%"><label for="q4c"><li>Flu</li></label></td>
+                                                            <td style="text-align: center"><input type="radio" name="q4c" id="q4c" value="Y" {{ old('q4c') == "Y" ? 'checked' : '' }}></td>
+                                                            <td style="text-align: center"><input type="radio" name="q4c" id="q4c" value="N" {{ old('q4c') == "N" ? 'checked' : '' }}></td>
+                                                        </div>
+                                                    </tr>
+                                                    <tr class="q4" style="display: none">
+                                                        <div class="form-group">
+                                                            <td width="3%"><label for="q4d"><li>Difficulty in Breathing</li></label></td>
+                                                            <td style="text-align: center"><input type="radio" name="q4d" id="q4d" value="Y" {{ old('q4d') == "Y" ? 'checked' : '' }}></td>
+                                                            <td style="text-align: center"><input type="radio" name="q4d" id="q4d" value="N" {{ old('q4d') == "N" ? 'checked' : '' }}></td>
+                                                        </div>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <div class="form-group">
+                                                            <td colspan="4"><label class="form-label" for="confirmation">
+                                                            <input style="margin-top: 15px; margin-right: 30px; margin-left: 15px; margin-bottom: 15px;" type="checkbox" name="chk" id="chk" onclick="btn()"/>
+                                                            <b> I CERTIFY THAT ALL INFORMATION PROVIDED IS CORRECT AND ACCURATE. ACTION MAY BE TAKEN IF THE INFORMATION PROVIDED IS FALSE.</b></label> 
+                                                            <button style="margin-top: 5px;" class="btn btn-primary float-right" id="submit" name="submit" disabled><i class="fal fa-check"></i> Submit Declaration</button></td>
+                                                        </div>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+
+                                        {!! Form::close() !!}
+                                    </div>
+                                </div>
+                        @endif
                     </div>
                 </div>
 
