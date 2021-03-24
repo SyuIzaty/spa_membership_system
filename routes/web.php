@@ -107,7 +107,7 @@ Route::get('delFollowup/{id}/{cov_id}', 'CovidController@delFollowup')->name('de
 Route::post('updateFollowup','CovidController@updateFollowup');
 Route::get('/followup-edit/{id}', 'CovidController@followEdit')->name('followEdit');
 
-Route::get('/open-form-kpd/covid','CovidController@openForm')->name('openForm');
+Route::get('/covid','CovidController@openForm')->name('openForm');
 Route::post('openFormStore','CovidController@storeOpenForm');
 Route::get('/add-form','CovidController@addForm');
 
