@@ -76,7 +76,7 @@ Route::post('tambahSebab','SebabKerosakanController@tambahSebab');
 Route::post('kemaskiniSebab','SebabKerosakanController@kemaskiniSebab');
 
 //COVID19
-Route::get('/declarationForm/{id}','CovidController@form')->name('form');
+Route::get('/declarationForm','CovidController@form')->name('form');
 Route::post('formStore','CovidController@formStore');
 Route::post('declareList', 'CovidController@data_declare');
 Route::get('/declare-info/{id}', 'CovidController@declareInfo')->name('declareInfo');

@@ -13,8 +13,8 @@
                             <b>INTEC EDUCATION COLLEGE COVID19 RISK SCREENING DAILY DECLARATION FORM</b>
                         </h4>
                         <p style="padding-left: 40px; padding-right: 40px">
-                            *<i><b>IMPORTANT!</b></i> : All guest  are required to make a daily declaration of COVID-19 risk screening on every working day when entering campus area as prevention measures. 
-                            However, you are also encouraged to make a declaration on a daily basis including public holidays and other holidays.
+                            *<i><b>IMPORTANT!</b></i> : All staff, student and visitor are required to make a daily declaration of COVID-19 risk screening on every working day (whether working in the office or from home) as prevention measures. 
+                            However, you are encouraged to make a declaration on a daily basis including public holidays and other holidays.
                         </p>
                     </div>
                 </div>
@@ -35,41 +35,64 @@
                                 <table class="table table-bordered table-hover table-striped w-100">
                                     <thead>
                                         <p><span class="text-danger">*</span> Required fields</p>
+                                        <td width="20%"><label class="form-label" for="user_position"><span class="text-danger">*</span> User : </label></td>
+                                            <td colspan="1">
+                                                <select class="form-control user_position" name="user_position" id="user_position">
+                                                    <option value="">Please select</option>
+                                                    @foreach ($type as $user) 
+                                                        <option value="{{ $user->user_code }}" {{ old('user_position') }}>{{ $user->user_type }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('user_position')
+                                                    <p style="color: red"><strong> * Selection required </strong></p>
+                                                @enderror
+                                            </td>
+                                    </thead>
+                                </table>
+                                <table class="table table-bordered table-hover table-striped w-100 datas">
+                                    <thead>
                                         <tr>
                                             <div class="form-group">
-                                                <td width="10%"><label class="form-label" for="user_name"><span class="text-danger">*</span> Full Name : </label></td>
-                                                <td colspan="3">
+                                                <td width="15%"><label class="form-label" for="user_name"><span class="text-danger">*</span> Full Name : </label></td>
+                                                <td colspan="6">
                                                     <input class="form-control" id="user_name" name="user_name"  value="{{ old('user_name') }}">
                                                     @error('user_name')
                                                         <p style="color: red"><strong> * Full name required </strong></p>
                                                     @enderror
                                                 </td>
-                                                <td width="10%"><label class="form-label" for="user_id"><span class="text-danger">*</span> IC/Passport No.: </label></td>
+                                            </div>
+                                        </tr>
+                                        <tr>
+                                            <div class="form-group">
+                                                <td width="15%">
+                                                    <label class="form-label visitor" for="user_id"><span class="text-danger">*</span> IC/Passport No.: </label>
+                                                    <label class="form-label intec" for="user_id"><span class="text-danger">*</span> Staff / Student ID: </label>
+                                                </td>
                                                 <td colspan="3">
                                                     <input class="form-control" id="user_id" name="user_id"  value="{{ old('user_id') }}">
                                                     @error('user_id')
-                                                        <p style="color: red"><strong> * IC No. required </strong></p>
+                                                        <p style="color: red"><strong> * required </strong></p>
+                                                    @enderror
+                                                </td>
+                                                <td width="15%"><label class="form-label" for="user_email"> Email : </label></td>
+                                                <td colspan="1">
+                                                    <input class="form-control" id="user_email" name="user_email"  value="{{ old('user_email') }}">
+                                                    @error('user_email')
+                                                        <p style="color: red"><strong> {{ $message }} </strong></p>
                                                     @enderror
                                                 </td>
                                             </div>
                                         </tr>
                                         <tr>
-                                            <td width="10%"><label class="form-label" for="user_email"> Email : </label></td>
-                                            <td colspan="1">
-                                                <input class="form-control" id="user_email" name="user_email"  value="{{ old('user_email') }}">
-                                                @error('user_email')
-                                                    <p style="color: red"><strong> {{ $message }} </strong></p>
-                                                @enderror
-                                            </td>
-                                            <td width="10%"><label class="form-label" for="user_phone"> Phone No. : </label></td>
-                                            <td colspan="1">
+                                            <td width="15%"><label class="form-label" for="user_phone"> Phone No. : </label></td>
+                                            <td colspan="3">
                                                 <input class="form-control" id="user_phone" name="user_phone"  value="{{ old('user_phone') }}">
                                                 @error('user_phone')
                                                     <p style="color: red"><strong> {{ $message }} </strong></p>
                                                 @enderror
                                             </td>
-                                            <td width="10%"><label class="form-label" for="department_id"><span class="text-danger">*</span> Department To Go : </label></td>
-                                            <td colspan="1">
+                                            <td width="15%"><label class="form-label" for="department_id"><span class="text-danger">*</span> Department To Go : </label></td>
+                                            <td colspan="3">
                                                 <select class="form-control department_id" name="department_id" id="department_id">
                                                     <option value="">Select Department</option>
                                                     @foreach ($department as $depart) 
@@ -200,7 +223,7 @@
     <script>
        
     $(document).ready( function() {
-        $('.department_id').select2();
+        $('.department_id, .user_position').select2();
     });
 
     function btn()
@@ -249,6 +272,40 @@
           $(".q4").show();
         }
       });
+
+      $(".datas").hide();
+
+      $( "#user_position" ).change(function() {
+        var val = $("#user_position").val();
+        if(val=="STF" || val=="STD" || val=="VSR"){
+            $(".datas").show();
+        } else {
+            $(".datas").hide();
+        }
+      });
+
+      $(".visitor").hide();
+
+      $( "#user_position" ).change(function() {
+        var val = $("#user_position").val();
+        if(val=="VSR"){
+            $(".visitor").show();
+        } else {
+            $(".visitor").hide();
+        }
+      });
+
+      $(".intec").hide();
+
+      $( "#user_position" ).change(function() {
+        var val = $("#user_position").val();
+        if(val=="STF" || val=="STD"){
+            $(".intec").show();
+        } else {
+            $(".intec").hide();
+        }
+      });
+
 
     })
 

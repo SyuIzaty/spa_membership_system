@@ -32,7 +32,7 @@
                                 However, you are encouraged to make a declaration on a daily basis including public holidays and other holidays.
                             </p>
                         </div>
-                        @if(!empty($declare))
+                        @if(isset($declare))
                                 @php
                                     $datenow   = date('d-m-Y');
                                     $duedate   = $declare->declare_date->format('d-m-Y');
@@ -115,7 +115,7 @@
                                     </table>
                                     @endif
                                 @endif
-                        @else
+                        @endif
                                 <div class="panel-container show {{ $display ? '' : 'd-none' }}">
                                     <div class="panel-content">
 
@@ -246,7 +246,6 @@
                                         {!! Form::close() !!}
                                     </div>
                                 </div>
-                        @endif
                     </div>
                 </div>
 

@@ -6,6 +6,7 @@ use Auth;
 use Session;
 use App\User;
 use App\Covid;
+use App\UserType;
 use App\Department;
 use Carbon\Carbon;
 use App\CovidNotes;
@@ -14,8 +15,9 @@ use Illuminate\Support\Facades\DB;
 
 class CovidController extends Controller
 {
-    public function form($id)
+    public function form()
     {
+        $id = Auth::user()->id;
         $user = User::where('id',$id)->first();
         $declare = Covid::where('user_id', $id)->latest('declare_date')->first();
         $exist = Covid::with(['user'])->where('user_id', $id)->whereDate('created_at', '=', now()->toDateString())->first();
@@ -77,7 +79,7 @@ class CovidController extends Controller
             'declare_date'    => $date,
         ]);
             
-       return redirect('declarationForm/'. $id->id);
+       return redirect('/declarationForm');
     }
 
     public function list($id)
@@ -234,7 +236,7 @@ class CovidController extends Controller
             } elseif($declare->user_position == 'STD') {
                 return 'STUDENT';
             } else {
-                return 'GUEST';
+                return 'VISITOR';
             }
         })
 
@@ -311,7 +313,7 @@ class CovidController extends Controller
             } elseif($declare->user_position == 'STD') {
                 return 'STUDENT';
             } else {
-                return 'GUEST';
+                return 'VISITOR';
             }
         })
 
@@ -438,7 +440,7 @@ class CovidController extends Controller
             } elseif($declare->user_position == 'STD') {
                 return 'STUDENT';
             } else {
-                return 'GUEST';
+                return 'VISITOR';
             }
         })
 
@@ -521,7 +523,7 @@ class CovidController extends Controller
             } elseif($declare->user_position == 'STD') {
                 return 'STUDENT';
             } else {
-                return 'GUEST';
+                return 'VISITOR';
             }
         })
 
@@ -657,7 +659,7 @@ class CovidController extends Controller
             } elseif($declare->user_position == 'STD') {
                 return 'STUDENT';
             } else {
-                return 'GUEST';
+                return 'VISITOR';
             }
         })
 
@@ -715,7 +717,7 @@ class CovidController extends Controller
             } elseif($declare->user_position == 'STD') {
                 return 'STUDENT';
             } else {
-                return 'GUEST';
+                return 'VISITOR';
             }
         })
 
@@ -773,7 +775,7 @@ class CovidController extends Controller
             } elseif($declare->user_position == 'STD') {
                 return 'STUDENT';
             } else {
-                return 'GUEST';
+                return 'VISITOR';
             }
         })
 
@@ -794,8 +796,9 @@ class CovidController extends Controller
 
     public function openForm()
     {
+        $type = UserType::all();
         $department = Department::orderBy('department_name')->get();
-        return view('covid19.open-form', compact('department'));
+        return view('covid19.open-form', compact('department', 'type'));
     }
 
     public function addForm()
@@ -837,6 +840,7 @@ class CovidController extends Controller
         }
 
         $request->validate([
+            'user_position'   => 'required',
             'user_name'       => 'required',
             'user_id'         => 'required',
             'user_phone'      => 'nullable|numeric',
@@ -847,10 +851,11 @@ class CovidController extends Controller
         $declare = Covid::create([
             'user_name'       => $request->user_name,
             'user_id'         => $request->user_id,
+            'user_ic'         => $request->user_id,
             'user_email'      => $request->user_email,
             'user_phone'      => $request->user_phone,
             'department_id'   => $request->department_id,
-            'user_position'   => 'GST',
+            'user_position'   => $request->user_position,
             'q1'              => $request->q1,
             'q2'              => $request->q2,
             'q3'              => $request->q3, 

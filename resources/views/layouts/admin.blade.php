@@ -257,7 +257,7 @@
                             <li class="nav-title">Covid19 Daily Declaration</li>
 
                             <li class="open">
-                                <a href="/declarationForm/{{Auth::user()->id}}" title="Declaration" data-filter-tags="declaration">
+                                <a href="/declarationForm" title="Declaration" data-filter-tags="declaration">
                                     <i class="fal fa-calendar-times"></i>
                                     <span class="nav-link-text" data-i18n="nav.declaration">Today Declaration</span>
                                 </a>
