@@ -106,10 +106,15 @@ Route::post('addFollowup','CovidController@addFollowup');
 Route::get('delFollowup/{id}/{cov_id}', 'CovidController@delFollowup')->name('delFollowup');
 Route::post('updateFollowup','CovidController@updateFollowup');
 Route::get('/followup-edit/{id}', 'CovidController@followEdit')->name('followEdit');
-
 Route::get('/covid','CovidController@openForm')->name('openForm');
 Route::post('openFormStore','CovidController@storeOpenForm');
 Route::get('/add-form','CovidController@addForm');
+
+Route::get('/export_covid', 'CovidController@covid_all');
+Route::post('/data_covidexport', 'CovidController@data_covidexport');
+Route::get('/covidExport', 'CovidController@exports');
+Route::post('/covidExport', 'CovidController@exports');
+Route::get('exportcovid/{name?}/{category?}/{position?}/{department?}','CovidController@exports');
 
 // Change Password
 Route::get('change-password','ChangePasswordController@index');

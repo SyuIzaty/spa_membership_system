@@ -12,6 +12,8 @@ use Carbon\Carbon;
 use App\CovidNotes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\CovidExport;
 
 class CovidController extends Controller
 {
@@ -796,9 +798,10 @@ class CovidController extends Controller
 
     public function openForm()
     {
+        $user_list = User::all();
         $type = UserType::all();
         $department = Department::orderBy('department_name')->get();
-        return view('covid19.open-form', compact('department', 'type'));
+        return view('covid19.open-form', compact('department', 'type', 'user_list'));
     }
 
     public function addForm()
@@ -824,7 +827,7 @@ class CovidController extends Controller
                         $date = Carbon::now()->toDateTimeString();
                     }
                 }
-                else{
+                else {
                     $category = 'C';
                     $date = Carbon::now()->toDateTimeString();
                 }
@@ -834,45 +837,217 @@ class CovidController extends Controller
                 $date = $request->declare_date2;
             }
         }
-        else{
+        else {
             $category = 'A';
             $date = $request->declare_date1;
         }
 
-        $request->validate([
-            'user_position'   => 'required',
-            'user_name'       => 'required',
-            'user_id'         => 'required',
-            'user_phone'      => 'nullable|numeric',
-            'user_email'      => 'nullable|email',
-            'department_id'   => 'required',
-        ]);
+        if($request->user_position == 'STF' || $request->user_position == 'STD')
+        {
+            $request->validate([
+                'user_position'   => 'required',
+                'department_id'   => 'required',
+                'user_id'         => 'required',
+                'user_phone'      => 'nullable|numeric',
+                'user_email'      => 'nullable|email',
+            ]);
 
-        $declare = Covid::create([
-            'user_name'       => $request->user_name,
-            'user_id'         => $request->user_id,
-            'user_ic'         => $request->user_id,
-            'user_email'      => $request->user_email,
-            'user_phone'      => $request->user_phone,
-            'department_id'   => $request->department_id,
-            'user_position'   => $request->user_position,
-            'q1'              => $request->q1,
-            'q2'              => $request->q2,
-            'q3'              => $request->q3, 
-            'q4a'             => $request->q4a, 
-            'q4b'             => $request->q4b,
-            'q4c'             => $request->q4c,
-            'q4d'             => $request->q4d, 
-            'confirmation'    => 'Y',
-            'category'        => $category,
-            'declare_date'    => $date,
-            'form_type'       => 'OF',
-            'created_by'      => $request->user_id,
-        ]);
+            $declare = Covid::create([
+                'user_name'       => $request->name,
+                'user_id'         => $request->user_id,
+                'user_email'      => $request->email,
+                'user_phone'      => $request->user_phone,
+                'department_id'   => $request->department_id,
+                'user_position'   => $request->user_position,
+                'q1'              => $request->q1,
+                'q2'              => $request->q2,
+                'q3'              => $request->q3, 
+                'q4a'             => $request->q4a, 
+                'q4b'             => $request->q4b,
+                'q4c'             => $request->q4c,
+                'q4d'             => $request->q4d, 
+                'confirmation'    => 'Y',
+                'category'        => $category,
+                'declare_date'    => $date,
+                'form_type'       => 'OF',
+                'created_by'      => $request->user_id,
+            ]);
+
+        } else {
+
+            $request->validate([
+                'user_position'   => 'required',
+                'department_id'   => 'required',
+                'user_id'         => 'required',
+                'user_name'       => 'required',
+                'user_phone'      => 'nullable|numeric',
+                'user_email'      => 'nullable|email',
+            ]);
+
+            $declare = Covid::create([
+                'user_name'       => $request->user_name,
+                'user_id'         => $request->user_id,
+                'user_ic'         => $request->user_id,
+                'user_email'      => $request->user_email,
+                'user_phone'      => $request->user_phone,
+                'department_id'   => $request->department_id,
+                'user_position'   => $request->user_position,
+                'q1'              => $request->q1,
+                'q2'              => $request->q2,
+                'q3'              => $request->q3, 
+                'q4a'             => $request->q4a, 
+                'q4b'             => $request->q4b,
+                'q4c'             => $request->q4c,
+                'q4d'             => $request->q4d, 
+                'confirmation'    => 'Y',
+                'category'        => $category,
+                'declare_date'    => $date,
+                'form_type'       => 'OF',
+                'created_by'      => $request->user_id,
+            ]);
+        }
             
        Session::flash('message', 'Your Declaration on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).' Have Been Successfully Recorded.<br> Pleas Make Sure to Abide the SOP When You Are in INTEC Premise. <br> Thank You For Your Cooperation.');
        return redirect('add-form');
     }
+
+    public function covid_all(Request $request)
+    {
+        $name = Covid::select('user_name')->groupBy('user_name')->get();
+        $category = Covid::select('category')->groupBy('category')->get();
+        $position = UserType::select('user_code', 'user_type')->get();
+        $department = Department::select('id', 'department_name')->orderBy('department_name')->get();
+
+        $cond = "1"; // 1 = selected
+
+        $selectedname = $request->name; 
+        $selectedcategory = $request->category;
+        $selectedposition = $request->position; 
+        $selecteddepartment = $request->department;
+        $list = [];
+
+        return view('covid19.covid_report', compact('name', 'category', 'position', 'department', 'request', 'list', 'selectedname', 'selectedcategory', 'selectedposition', 'selecteddepartment'));
+    }
+
+    public function exports($name = null, $category = null, $position = null, $department = null)
+    {
+        return Excel::download(new CovidExport($name, $category, $position, $department), 'covid.xlsx');
+    }
+
+    public function data_covidexport(Request $request) // Datatable: all lead
+    {
+        $cond = "1";
+        if($request->name && $request->name != "All")
+        {
+            $cond .= " AND user_name = '".$request->name."' ";
+        }
+
+        if( $request->category != "" && $request->category != "All")
+        {
+            $cond .= " AND category = '".$request->category."' ";
+        }
+
+        if( $request->position != "" && $request->position != "All")
+        {
+            $cond .= " AND user_position = '".$request->position."' ";
+        }
+
+        if( $request->department != "" && $request->department != "All")
+        {
+            $cond .= " AND department_id = '".$request->department."' ";
+        }
+
+        $covid = Covid::whereRaw($cond)->get();
+        
+        return datatables()::of($covid)
+
+        ->editColumn('user_name', function ($covid) {
+
+            return strtoupper(isset($covid->user_name) ? $covid->user_name : '<div style="color:red;" > -- </div>');
+        })
+
+        ->editColumn('user_ic', function ($covid) {
+
+            return isset($covid->user_ic) ? $covid->user_ic : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('user_email', function ($covid) {
+
+            return isset($covid->user_email) ? $covid->user_email : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('user_phone', function ($covid) {
+
+            return isset($covid->user_phone) ? $covid->user_phone : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('q1', function ($covid) {
+
+            return isset($covid->q1) ? $covid->q1 : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('q2', function ($covid) {
+
+            return isset($covid->q2) ? $covid->q2 : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('q3', function ($covid) {
+
+            return isset($covid->q3) ? $covid->q3 : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('q4a', function ($covid) {
+
+            return isset($covid->q4a) ? $covid->q4a : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('q4b', function ($covid) {
+
+            return isset($covid->q4b) ? $covid->q4b : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('q4c', function ($covid) {
+
+            return isset($covid->q4c) ? $covid->q4c : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('q4d', function ($covid) {
+
+            return isset($covid->q4d) ? $covid->q4d : '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('user_position', function ($covid) {
+
+            return isset($covid->type->user_type) ? $covid->type->user_type : '<div style="color:red;" > -- </div>';
+        })
+
+       ->editColumn('department_id', function ($covid) {
+
+            return isset($covid->department->department_name) ? $covid->department->department_name : '<div style="color:red;" > -- </div>';
+        })
+
+       ->editColumn('form_type', function ($covid) {
+            if($covid->form_type == 'OF'){
+                return 'Open Form';
+            } else {
+                return 'Private Form';
+            }
+        })
+
+       ->editColumn('declare_date', function ($covid) {
+
+            return date(' Y-m-d | H:i A', strtotime($covid->declare_date) );
+        })
+
+       ->editColumn('created_at', function ($covid) {
+
+            return date(' Y-m-d | H:i A', strtotime($covid->created_at) );
+        })
+    
+       ->rawColumns(['user_position', 'department_id', 'declare_date', 'created_at', 'user_name', 'user_ic', 'user_phone', 'user_email', 'q1', 'q2', 'q3', 'q4a', 'q4b', 'q4c', 'q4d'])
+       ->make(true);
+    }
+
 
 
     /**

@@ -8,7 +8,7 @@
             <div class="card-header">
                 <div class="d-flex justify-content-center">
                     <div class="p-2">
-                        <center><img src="{{ asset('img/intec_logo.png') }}" class="responsive"/></center><br>
+                        <center><img src="{{ asset('img/intec_logo.png') }}" style="max-width: 100%" class="responsive"/></center><br>
                         <h4 style="text-align: center">
                             <b>INTEC EDUCATION COLLEGE COVID19 RISK SCREENING DAILY DECLARATION FORM</b>
                         </h4>
@@ -25,6 +25,8 @@
                     <div class="panel-content">
                         {!! Form::open(['action' => 'CovidController@storeOpenForm', 'method' => 'POST']) !!}
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <input type="hidden" class="form-control name" id="name" name="name">
+                        <input type="hidden" class="form-control email" id="email" name="email">
                             @if (Session::has('message'))
                                 <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}</div>
                             @endif
@@ -32,82 +34,91 @@
                                 <div class="alert alert-success" style="color: #5b0303; background-color: #ff6c6cc9;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('notification') }}</div>
                             @endif
                             <div>
-                                <table class="table table-bordered table-hover table-striped w-100">
-                                    <thead>
-                                        <p><span class="text-danger">*</span> Required fields</p>
-                                        <td width="20%"><label class="form-label" for="user_position"><span class="text-danger">*</span> User : </label></td>
-                                            <td colspan="1">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover table-striped w-100">
+                                        <thead>
+                                            <p><span class="text-danger">*</span> Required fields</p>
+                                            <td width="20%"><label class="form-label" for="user_position"><span class="text-danger">*</span> User : </label></td>
+                                            <td colspan="6">
                                                 <select class="form-control user_position" name="user_position" id="user_position">
                                                     <option value="">Please select</option>
                                                     @foreach ($type as $user) 
-                                                        <option value="{{ $user->user_code }}" {{ old('user_position') }}>{{ $user->user_type }}</option>
+                                                        {{-- <option value="{{ $user->user_code }}" {{ old('user_position') ==  $user->user_code  ? 'selected' : '' }}>{{ $user->user_type }}</option> --}}
+                                                        <option value="{{ $user->user_code }}" @if (old('user_position') == $user->user_code) selected="selected" @endif>{{ $user->user_type }}</option>
                                                     @endforeach
                                                 </select>
                                                 @error('user_position')
                                                     <p style="color: red"><strong> * Selection required </strong></p>
                                                 @enderror
                                             </td>
-                                    </thead>
-                                </table>
-                                <table class="table table-bordered table-hover table-striped w-100 datas">
-                                    <thead>
-                                        <tr>
-                                            <div class="form-group">
-                                                <td width="15%"><label class="form-label" for="user_name"><span class="text-danger">*</span> Full Name : </label></td>
-                                                <td colspan="6">
-                                                    <input class="form-control" id="user_name" name="user_name"  value="{{ old('user_name') }}">
-                                                    @error('user_name')
-                                                        <p style="color: red"><strong> * Full name required </strong></p>
-                                                    @enderror
+                                        </thead>
+                                    </table>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover table-striped w-100">
+                                        <thead>
+                                            <tr class="all">
+                                                <td width="20%">
+                                                    <label class="form-label intecStf" for="user_id"><span class="text-danger">*</span> Staff ID: </label>
+                                                    <label class="form-label intecStd" for="user_id"><span class="text-danger">*</span> Student ID: </label>
+                                                    <label class="form-label intecVsr" for="user_id"><span class="text-danger">*</span> IC/Passport No.: </label>
                                                 </td>
-                                            </div>
-                                        </tr>
-                                        <tr>
-                                            <div class="form-group">
-                                                <td width="15%">
-                                                    <label class="form-label visitor" for="user_id"><span class="text-danger">*</span> IC/Passport No.: </label>
-                                                    <label class="form-label intec" for="user_id"><span class="text-danger">*</span> Staff / Student ID: </label>
-                                                </td>
-                                                <td colspan="3">
-                                                    <input class="form-control" id="user_id" name="user_id"  value="{{ old('user_id') }}">
+                                                <td colspan="6"><input class="form-control user_id" id="user_id" name="user_id"  value="{{ old('user_id') }}">
                                                     @error('user_id')
                                                         <p style="color: red"><strong> * required </strong></p>
                                                     @enderror
                                                 </td>
-                                                <td width="15%"><label class="form-label" for="user_email"> Email : </label></td>
-                                                <td colspan="1">
-                                                    <input class="form-control" id="user_email" name="user_email"  value="{{ old('user_email') }}">
+                                            </tr>
+                                            <tr class="all">
+                                                <td width="20%"><label class="form-label" for="user_name"><span class="text-danger">*</span> Full Name : </label></td>
+                                                <td colspan="6">
+                                                    <input class="form-control intec" id="user_name" name="user_name"  value="{{ old('user_name') }}" readonly>
+                                                    <input class="form-control visitor" id="user_name" name="user_name"  value="{{ old('user_name') }}">
+                                                    @error('user_name')
+                                                        <p style="color: red"><strong> * required </strong></p>
+                                                    @enderror
+                                                </td>
+                                            </tr>
+                                            <tr class="all">
+                                                <td width="20%"><label class="form-label" for="user_email"> Email : </label></td>
+                                                <td colspan="6">
+                                                    <input class="form-control intec" id="user_email" name="user_email"  value="{{ old('user_email') }}" readonly>
+                                                    <input class="form-control visitor" id="user_email" name="user_email"  value="{{ old('user_email') }}">
                                                     @error('user_email')
                                                         <p style="color: red"><strong> {{ $message }} </strong></p>
                                                     @enderror
                                                 </td>
-                                            </div>
-                                        </tr>
-                                        <tr>
-                                            <td width="15%"><label class="form-label" for="user_phone"> Phone No. : </label></td>
-                                            <td colspan="3">
-                                                <input class="form-control" id="user_phone" name="user_phone"  value="{{ old('user_phone') }}">
-                                                @error('user_phone')
-                                                    <p style="color: red"><strong> {{ $message }} </strong></p>
-                                                @enderror
-                                            </td>
-                                            <td width="15%"><label class="form-label" for="department_id"><span class="text-danger">*</span> Department To Go : </label></td>
-                                            <td colspan="3">
-                                                <select class="form-control department_id" name="department_id" id="department_id">
-                                                    <option value="">Select Department</option>
-                                                    @foreach ($department as $depart) 
-                                                        <option value="{{ $depart->id }}" {{ old('department_id') ==  $depart->id  ? 'selected' : '' }}>{{ $depart->department_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @error('department_id')
-                                                    <p style="color: red"><strong> * Department required </strong></p>
-                                                @enderror
-                                            </td>
-                                        </tr>
-                                    </thead>
-                                </table>
+                                            </tr>
+                                            <tr class="all">
+                                                <td width="20%"><label class="form-label" for="user_phone"> Phone No. : </label></td>
+                                                <td colspan="6">
+                                                    <input class="form-control" id="user_phone" name="user_phone"  value="{{ old('user_phone') }}">
+                                                    @error('user_phone')
+                                                        <p style="color: red"><strong> {{ $message }} </strong></p>
+                                                    @enderror
+                                                </td>
+                                            </tr>
+                                            <tr class="all">
+                                                <td width="20%"><label class="form-label" for="department_id"><span class="text-danger">*</span> Department To Go : </label></td>
+                                                <td colspan="6">
+                                                    <select class="form-control department_id" name="department_id" id="department_id">
+                                                        <option value="">Select Department</option>
+                                                        @foreach ($department as $depart) 
+                                                            <option value="{{ $depart->id }}" {{ old('department_id') ==  $depart->id  ? 'selected' : '' }}>{{ $depart->department_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('department_id')
+                                                        <p style="color: red"><strong> * Department required </strong></p>
+                                                    @enderror
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
                             </div>
 
+                            <div class="table-responsive">
                             <table id="info" class="table table-bordered table-hover table-striped w-100">
                                 <thead>
                                     <tr>
@@ -210,6 +221,7 @@
                                     </tr>
                                 </thead>
                             </table>
+                            </div>
                                 
                         {!! Form::close() !!}
                     </div>
@@ -224,6 +236,32 @@
        
     $(document).ready( function() {
         $('.department_id, .user_position').select2();
+
+        if($('.user_id').val()!=''){
+            updateCr($('.user_id'));
+        }
+        $(document).on('change','.user_id',function(){
+            updateCr($(this));
+        });
+
+        function updateCr(elem){
+            var user_id=elem.val();   
+
+            $.ajax({
+                type:'get',
+                url:'{!!URL::to('findUser')!!}',
+                data:{'id':user_id},
+                success:function(data)
+                {
+                    $('#user_id').html(data.id);
+                    $('#user_name').val(data.name);
+                    $('#name').val(data.name);
+                    $('#user_email').val(data.email);
+                    $('#email').val(data.email);
+                }
+            });
+        }
+
     });
 
     function btn()
@@ -273,14 +311,14 @@
         }
       });
 
-      $(".datas").hide();
+      $(".intec").hide();
 
       $( "#user_position" ).change(function() {
         var val = $("#user_position").val();
-        if(val=="STF" || val=="STD" || val=="VSR"){
-            $(".datas").show();
+        if(val=="STF" || val=="STD"){
+            $(".intec").show();
         } else {
-            $(".datas").hide();
+            $(".intec").hide();
         }
       });
 
@@ -295,19 +333,60 @@
         }
       });
 
-      $(".intec").hide();
+      $(".intecStf").hide();
 
       $( "#user_position" ).change(function() {
         var val = $("#user_position").val();
-        if(val=="STF" || val=="STD"){
-            $(".intec").show();
+        if(val=="STF"){
+            $(".intecStf").show();
         } else {
-            $(".intec").hide();
+            $(".intecStf").hide();
         }
       });
 
+      $(".intecStd").hide();
+
+      $( "#user_position" ).change(function() {
+        var val = $("#user_position").val();
+        if(val=="STD"){
+            $(".intecStd").show();
+        } else {
+            $(".intecStd").hide();
+        }
+      });
+
+      $(".intecVsr").hide();
+
+      $( "#user_position" ).change(function() {
+        var val = $("#user_position").val();
+        if(val=="VSR"){
+            $(".intecVsr").show();
+        } else {
+            $(".intecVsr").hide();
+        }
+      });
+
+      $(".all").hide();
+
+      $( "#user_position" ).change(function() {
+        var val = $("#user_position").val();
+        if(val=="STD" || val=="STF" || val=="VSR"){
+            $(".all").show();
+        } else {
+            $(".all").hide();
+        }
+      });
 
     })
+
+    $(document).ready(function() {
+    var OldValue = '{{ old('user_position') }}';
+    if(OldValue !== '') {
+    $('#user_position').val(OldValue );
+
+    $("#user_position").change(); 
+    }
+    });
 
     </script>
 @endsection

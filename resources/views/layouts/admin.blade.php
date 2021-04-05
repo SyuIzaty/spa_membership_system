@@ -150,10 +150,29 @@
                             @can('view complaint')
                             <li class="nav-title">Operasi</li>
 
+                            <li>
+                                <a href="#" title="Aduan" data-filter-tags="aduan">
+                                    <i class="fal fa-users"></i>
+                                    <span class="nav-link-text" data-i18n="nav.aduan">Aduan</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/borang-aduan" title="Borang Aduan" data-filter-tags="borang">
+                                            <span class="nav-link-text" data-i18n="nav.borang"><i class="fal fa-arrow-right"> Borang Aduan</i></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" title="Senarai Aduan" data-filter-tags="senarai">
+                                            <span class="nav-link-text" data-i18n="nav.senarai"><i class="fal fa-arrow-right"> Senarai Aduan</i></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
                             <li class="open">
                                 <a href="#" title="Aduan" data-filter-tags="aduan">
                                     <i class="fal fa-list"></i>
-                                    <span class="nav-link-text" data-i18n="nav.aduan">Senarai Aduan</span>
+                                    <span class="nav-link-text" data-i18n="nav.aduan">Data Aduan</span>
                                 </a>
                                 <ul>
                                     <li>
@@ -249,6 +268,12 @@
                                 <a href="/declareNew/{{Auth::user()->id}}" title="Declaration" data-filter-tags="declaration">
                                     <i class="fal fa-user"></i>
                                     <span class="nav-link-text" data-i18n="nav.declaration">Declaration Form</span>
+                                </a>
+                            </li>
+                            <li class="open">
+                                <a href="/export_covid" title="Report" data-filter-tags="report">
+                                    <i class="fal fa-file"></i>
+                                    <span class="nav-link-text" data-i18n="nav.report">Reporting</span>
                                 </a>
                             </li>
                             @endcan

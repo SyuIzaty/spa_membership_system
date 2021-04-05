@@ -20,6 +20,11 @@ class Covid extends Model
         return $this->hasOne('App\User','id', 'user_id');
     }
 
+    public function type()
+    {
+        return $this->hasOne('App\UserType', 'user_code', 'user_position');
+    }
+
     public function department()
     {
         return $this->hasOne('App\Department', 'id', 'department_id');
