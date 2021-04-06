@@ -847,7 +847,8 @@ class CovidController extends Controller
             $request->validate([
                 'user_position'   => 'required',
                 'department_id'   => 'required',
-                'user_id'         => 'required',
+                'user_id'         => 'required|numeric', 
+                'user_name'       => 'required', 
                 'user_phone'      => 'nullable|numeric',
                 'user_email'      => 'nullable|email',
             ]);
@@ -878,17 +879,17 @@ class CovidController extends Controller
             $request->validate([
                 'user_position'   => 'required',
                 'department_id'   => 'required',
-                'user_id'         => 'required',
-                'user_name'       => 'required',
+                'user_id'         => 'required|min:8|max:12|regex:/^[\w-]*$/', 
+                'vsr_name'       => 'required',
                 'user_phone'      => 'nullable|numeric',
-                'user_email'      => 'nullable|email',
+                'vsr_email'      => 'nullable|email',
             ]);
 
             $declare = Covid::create([
-                'user_name'       => $request->user_name,
+                'user_name'       => $request->vsr_name,
                 'user_id'         => $request->user_id,
                 'user_ic'         => $request->user_id,
-                'user_email'      => $request->user_email,
+                'user_email'      => $request->vsr_email,
                 'user_phone'      => $request->user_phone,
                 'department_id'   => $request->department_id,
                 'user_position'   => $request->user_position,

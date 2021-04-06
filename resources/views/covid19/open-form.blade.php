@@ -64,28 +64,34 @@
                                                     <label class="form-label intecStd" for="user_id"><span class="text-danger">*</span> Student ID: </label>
                                                     <label class="form-label intecVsr" for="user_id"><span class="text-danger">*</span> IC/Passport No.: </label>
                                                 </td>
-                                                <td colspan="6"><input class="form-control user_id" id="user_id" name="user_id"  value="{{ old('user_id') }}">
+                                                <td colspan="6"><input class="form-control user_id" id="user_id" name="user_id" >
                                                     @error('user_id')
-                                                        <p style="color: red"><strong> * required </strong></p>
+                                                        <p style="color: red"><strong> {{ $message }} </strong></p>
                                                     @enderror
                                                 </td>
                                             </tr>
                                             <tr class="all">
                                                 <td width="20%"><label class="form-label" for="user_name"><span class="text-danger">*</span> Full Name : </label></td>
                                                 <td colspan="6">
-                                                    <input class="form-control intec" id="user_name" name="user_name"  value="{{ old('user_name') }}" readonly>
-                                                    <input class="form-control visitor" id="user_name" name="user_name"  value="{{ old('user_name') }}">
+                                                    <input class="form-control intec" id="user_name" name="user_name" readonly>
+                                                    <input class="form-control visitor" id="vsr_name" name="vsr_name" >
                                                     @error('user_name')
-                                                        <p style="color: red"><strong> * required </strong></p>
+                                                        <p style="color: red"><strong> {{ $message }} </strong></p>
+                                                    @enderror
+                                                    @error('vsr_name')
+                                                        <p style="color: red"><strong> {{ $message }} </strong></p>
                                                     @enderror
                                                 </td>
                                             </tr>
                                             <tr class="all">
                                                 <td width="20%"><label class="form-label" for="user_email"> Email : </label></td>
                                                 <td colspan="6">
-                                                    <input class="form-control intec" id="user_email" name="user_email"  value="{{ old('user_email') }}" readonly>
-                                                    <input class="form-control visitor" id="user_email" name="user_email"  value="{{ old('user_email') }}">
+                                                    <input class="form-control intec" id="user_email" name="user_email" readonly>
+                                                    <input class="form-control visitor" id="vsr_email" name="vsr_email" >
                                                     @error('user_email')
+                                                        <p style="color: red"><strong> {{ $message }} </strong></p>
+                                                    @enderror
+                                                    @error('vsr_email')
                                                         <p style="color: red"><strong> {{ $message }} </strong></p>
                                                     @enderror
                                                 </td>
@@ -93,7 +99,7 @@
                                             <tr class="all">
                                                 <td width="20%"><label class="form-label" for="user_phone"> Phone No. : </label></td>
                                                 <td colspan="6">
-                                                    <input class="form-control" id="user_phone" name="user_phone"  value="{{ old('user_phone') }}">
+                                                    <input class="form-control" id="user_phone" name="user_phone" >
                                                     @error('user_phone')
                                                         <p style="color: red"><strong> {{ $message }} </strong></p>
                                                     @enderror
@@ -109,7 +115,7 @@
                                                         @endforeach
                                                     </select>
                                                     @error('department_id')
-                                                        <p style="color: red"><strong> * Department required </strong></p>
+                                                        <p style="color: red"><strong> {{ $message }} </strong></p>
                                                     @enderror
                                                 </td>
                                             </tr>
@@ -377,15 +383,25 @@
         }
       });
 
+      $("#user_position").change(function() {
+            $("#user_name").val("");
+            $("#user_email").val("");
+            $("#vsr_name").val("");
+            $("#vsr_email").val("");
+            $("#user_id").val("");
+            $("#user_phone").val("");
+            $("#department_id").val("");
+      });
+
     })
 
     $(document).ready(function() {
-    var OldValue = '{{ old('user_position') }}';
-    if(OldValue !== '') {
-    $('#user_position').val(OldValue );
+        var OldValue = '{{ old('user_position') }}';
+        if(OldValue !== '') {
+            $('#user_position').val(OldValue );
 
-    $("#user_position").change(); 
-    }
+            $("#user_position").change(); 
+        }
     });
 
     </script>
