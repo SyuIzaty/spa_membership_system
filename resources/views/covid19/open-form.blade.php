@@ -111,7 +111,7 @@
                                                     <select class="form-control department_id" name="department_id" id="department_id">
                                                         <option value="">Select Department</option>
                                                         @foreach ($department as $depart) 
-                                                            <option value="{{ $depart->id }}" {{ old('department_id') ==  $depart->id  ? 'selected' : '' }}>{{ $depart->department_name }}</option>
+                                                            <option value="{{ $depart->id }}" {{ (is_array(old('department_id')) and in_array(old('department_id') ==  $depart->id)) ? ' selected' : '' }}>{{ $depart->department_name }}</option>
                                                         @endforeach
                                                     </select>
                                                     @error('department_id')
