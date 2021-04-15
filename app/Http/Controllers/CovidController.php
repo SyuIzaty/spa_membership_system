@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\CovidExport;
+use App\Exports\UnregisterCovidExport;
 
 class CovidController extends Controller
 {
@@ -39,26 +40,31 @@ class CovidController extends Controller
                     if($request->q4a == 'Y' || $request->q4b == 'Y' || $request->q4c == 'Y' || $request->q4d == 'Y')
                     {
                         $category = 'D';
-                        $date = Carbon::now()->toDateTimeString();
+                        $date = Carbon::now()->toDateString();
+                        $time = Carbon::now()->toTimeString();
                     }
                     else {
                         $category = 'E';
-                        $date = Carbon::now()->toDateTimeString();
+                        $date = Carbon::now()->toDateString();
+                        $time = Carbon::now()->toTimeString();
                     }
                 }
                 else{
                     $category = 'C';
-                    $date = Carbon::now()->toDateTimeString();
+                    $date = Carbon::now()->toDateString();
+                    $time = Carbon::now()->toTimeString();
                 }
             }
             else {
                 $category = 'B';
                 $date = $request->declare_date2;
+                $time = date("H:i:s", strtotime( $request->declare_date2 ));
             }
         }
         else{
             $category = 'A';
             $date = $request->declare_date1;
+            $time = date("H:i:s", strtotime( $request->declare_date1 ));
         }
 
         $declare = Covid::create([
@@ -79,6 +85,7 @@ class CovidController extends Controller
             'created_by'      => $id->id,
             'form_type'       => 'PF',
             'declare_date'    => $date,
+            'declare_time'    => $time,
         ]);
             
        return redirect('/declarationForm');
@@ -130,26 +137,31 @@ class CovidController extends Controller
                         if($request->q4a == 'Y' || $request->q4b == 'Y' || $request->q4c == 'Y' || $request->q4d == 'Y')
                         {
                             $category = 'D';
-                            $date = Carbon::now()->toDateTimeString();
+                            $date = Carbon::now()->toDateString();
+                            $time = Carbon::now()->toTimeString();
                         }
                         else {
                             $category = 'E';
-                            $date = Carbon::now()->toDateTimeString();
+                            $date = Carbon::now()->toDateString();
+                            $time = Carbon::now()->toTimeString();
                         }
                     }
                     else {
                         $category = 'C';
-                        $date = Carbon::now()->toDateTimeString();
+                        $date = Carbon::now()->toDateString();
+                        $time = Carbon::now()->toTimeString();
                     }
                 }
                 else {
                     $category = 'B';
                     $date = $request->declare_date2;
+                    $time = date("H:i:s", strtotime( $request->declare_date2 ));
                 }
             }
             else{
                 $category = 'A';
                 $date = $request->declare_date1;
+                $time = date("H:i:s", strtotime( $request->declare_date1 ));
             }
 
         $data = Covid::where('user_id', $request->user_id)->whereDate('declare_date', Carbon::parse($date)->format('Y-m-d'))->first();
@@ -177,6 +189,7 @@ class CovidController extends Controller
                 'created_by'      => $id,
                 'form_type'       => 'PF',
                 'declare_date'    => $date,
+                'declare_time'    => $time,
             ]);
             
            Session::flash('message', 'New Data Successfully Created');
@@ -472,7 +485,7 @@ class CovidController extends Controller
 
         ->editColumn('time', function ($declare) {
 
-            return date(' h:i:s A', strtotime($declare->declare_date) );
+            return date(' h:i:s A', strtotime($declare->declare_time) );
         })
 
         ->editColumn('follow_up', function ($declare) {
@@ -555,7 +568,7 @@ class CovidController extends Controller
 
         ->editColumn('time', function ($declare) {
 
-            return date(' h:i:s A', strtotime($declare->declare_date) );
+            return date(' h:i:s A', strtotime($declare->declare_time) );
         })
 
         ->editColumn('follow_up', function ($declare) {
@@ -672,7 +685,7 @@ class CovidController extends Controller
 
         ->editColumn('time', function ($declare) {
 
-            return date(' h:i:s A', strtotime($declare->declare_date) );
+            return date(' h:i:s A', strtotime($declare->declare_time) );
         })
         
         ->rawColumns(['action', 'date', 'time'])
@@ -730,7 +743,7 @@ class CovidController extends Controller
 
         ->editColumn('time', function ($declare) {
 
-            return date(' h:i:s A', strtotime($declare->declare_date) );
+            return date(' h:i:s A', strtotime($declare->declare_time) );
         })
         
         ->rawColumns(['action', 'date', 'time'])
@@ -788,7 +801,7 @@ class CovidController extends Controller
 
         ->editColumn('time', function ($declare) {
 
-            return date(' h:i:s A', strtotime($declare->declare_date) );
+            return date(' h:i:s A', strtotime($declare->declare_time) );
         })
         
         ->rawColumns(['action', 'date', 'time'])
@@ -820,127 +833,146 @@ class CovidController extends Controller
                     if($request->q4a == 'Y' || $request->q4b == 'Y' || $request->q4c == 'Y' || $request->q4d == 'Y')
                     {
                         $category = 'D';
-                        $date = Carbon::now()->toDateTimeString();
+                        $date = Carbon::now()->toDateString();
+                        $time = Carbon::now()->toTimeString();
                     }
                     else {
                         $category = 'E';
                         $date = Carbon::now()->toDateTimeString();
+                        $time = Carbon::now()->toTimeString();
                     }
                 }
                 else {
                     $category = 'C';
                     $date = Carbon::now()->toDateTimeString();
+                    $time = Carbon::now()->toTimeString();
                 }
             }
             else {
                 $category = 'B';
                 $date = $request->declare_date2;
+                $time = date("H:i:s", strtotime( $request->declare_date2 ));
             }
         }
         else {
             $category = 'A';
             $date = $request->declare_date1;
+            $time = date("H:i:s", strtotime( $request->declare_date1 ));
         }
 
-        if($request->user_position == 'STF' || $request->user_position == 'STD')
+        $data = Covid::where('user_id', $request->user_id)->whereDate('declare_date', Carbon::parse($date)->format('Y-m-d'))->first();
+        
+        if(isset($data)) 
         {
-            $request->validate([
-                'user_position'   => 'required',
-                'department_id'   => 'required',
-                'user_id'         => 'required|numeric', 
-                'user_name'       => 'required', 
-                'user_phone'      => 'nullable|numeric',
-                'user_email'      => 'nullable|email',
-            ]);
+            Session::flash('msg', 'Your declaration on '.date(' j F Y ', strtotime($date)).' has already been made.');
+        } 
+        else 
+        {
+            if($request->user_position == 'STF' || $request->user_position == 'STD')
+            {
+                $request->validate([
+                    'user_position'   => 'required',
+                    'department_id'   => 'required',
+                    'user_id'         => 'required|numeric', 
+                    'user_name'       => 'required', 
+                    'user_phone'      => 'required|numeric',
+                    'user_email'      => 'nullable|email',
+                ]);
 
-            $declare = Covid::create([
-                'user_name'       => $request->name,
-                'user_id'         => $request->user_id,
-                'user_email'      => $request->email,
-                'user_phone'      => $request->user_phone,
-                'department_id'   => $request->department_id,
-                'user_position'   => $request->user_position,
-                'q1'              => $request->q1,
-                'q2'              => $request->q2,
-                'q3'              => $request->q3, 
-                'q4a'             => $request->q4a, 
-                'q4b'             => $request->q4b,
-                'q4c'             => $request->q4c,
-                'q4d'             => $request->q4d, 
-                'confirmation'    => 'Y',
-                'category'        => $category,
-                'declare_date'    => $date,
-                'form_type'       => 'OF',
-                'created_by'      => $request->user_id,
-            ]);
+                $declare = Covid::create([
+                    'user_name'       => $request->name,
+                    'user_id'         => $request->user_id,
+                    'user_email'      => $request->email,
+                    'user_phone'      => $request->user_phone,
+                    'department_id'   => $request->department_id,
+                    'user_position'   => $request->user_position,
+                    'q1'              => $request->q1,
+                    'q2'              => $request->q2,
+                    'q3'              => $request->q3, 
+                    'q4a'             => $request->q4a, 
+                    'q4b'             => $request->q4b,
+                    'q4c'             => $request->q4c,
+                    'q4d'             => $request->q4d, 
+                    'confirmation'    => 'Y',
+                    'category'        => $category,
+                    'declare_date'    => $date,
+                    'declare_time'    => $time,
+                    'form_type'       => 'OF',
+                    'created_by'      => $request->user_id,
+                ]);
 
-        } else {
+            } else {
 
-            $request->validate([
-                'user_position'   => 'required',
-                'department_id'   => 'required',
-                'user_id'         => 'required|min:8|max:12|regex:/^[\w-]*$/', 
-                'vsr_name'       => 'required',
-                'user_phone'      => 'nullable|numeric',
-                'vsr_email'      => 'nullable|email',
-            ]);
+                $request->validate([
+                    'user_position'   => 'required',
+                    'department_id'   => 'required',
+                    'user_id'         => 'required|min:8|max:12|regex:/^[\w-]*$/', 
+                    'vsr_name'        => 'required',
+                    'user_phone'      => 'required|numeric',
+                    'vsr_email'       => 'nullable|email',
+                ]);
 
-            $declare = Covid::create([
-                'user_name'       => $request->vsr_name,
-                'user_id'         => $request->user_id,
-                'user_ic'         => $request->user_id,
-                'user_email'      => $request->vsr_email,
-                'user_phone'      => $request->user_phone,
-                'department_id'   => $request->department_id,
-                'user_position'   => $request->user_position,
-                'q1'              => $request->q1,
-                'q2'              => $request->q2,
-                'q3'              => $request->q3, 
-                'q4a'             => $request->q4a, 
-                'q4b'             => $request->q4b,
-                'q4c'             => $request->q4c,
-                'q4d'             => $request->q4d, 
-                'confirmation'    => 'Y',
-                'category'        => $category,
-                'declare_date'    => $date,
-                'form_type'       => 'OF',
-                'created_by'      => $request->user_id,
-            ]);
+                $declare = Covid::create([
+                    'user_name'       => $request->vsr_name,
+                    'user_id'         => $request->user_id,
+                    'user_ic'         => $request->user_id,
+                    'user_email'      => $request->vsr_email,
+                    'user_phone'      => $request->user_phone,
+                    'department_id'   => $request->department_id,
+                    'user_position'   => $request->user_position,
+                    'q1'              => $request->q1,
+                    'q2'              => $request->q2,
+                    'q3'              => $request->q3, 
+                    'q4a'             => $request->q4a, 
+                    'q4b'             => $request->q4b,
+                    'q4c'             => $request->q4c,
+                    'q4d'             => $request->q4d, 
+                    'confirmation'    => 'Y',
+                    'category'        => $category,
+                    'declare_date'    => $date,
+                    'declare_time'    => $time,
+                    'form_type'       => 'OF',
+                    'created_by'      => $request->user_id,
+                ]);
+            }
+                
+            Session::flash('message', 'Your declaration on '.date(' j F Y ', strtotime($date)).' has successfully been recorded.<br> Pleas make sure to abide the SOP when you are in INTEC premise. <br> Thank you for your cooperation.');
         }
-            
-       Session::flash('message', 'Your Declaration on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).' Have Been Successfully Recorded.<br> Pleas Make Sure to Abide the SOP When You Are in INTEC Premise. <br> Thank You For Your Cooperation.');
+
        return redirect('add-form');
     }
 
     public function covid_all(Request $request)
     {
-        $name = Covid::select('user_name')->groupBy('user_name')->get();
+        $name = Covid::select('user_id', 'user_name')->orderBy('user_name')->get();
         $category = Covid::select('category')->groupBy('category')->get();
         $position = UserType::select('user_code', 'user_type')->get();
         $department = Department::select('id', 'department_name')->orderBy('department_name')->get();
-
+        $date = Covid::select('declare_date')->groupBy('declare_date')->get();
+    
         $cond = "1"; // 1 = selected
 
         $selectedname = $request->name; 
         $selectedcategory = $request->category;
         $selectedposition = $request->position; 
         $selecteddepartment = $request->department;
+        $selecteddate = $request->date;
         $list = [];
 
-        return view('covid19.covid_report', compact('name', 'category', 'position', 'department', 'request', 'list', 'selectedname', 'selectedcategory', 'selectedposition', 'selecteddepartment'));
+        return view('covid19.register_report', compact('name', 'category', 'position', 'date', 'selecteddate', 'department', 'request', 'list', 'selectedname', 'selectedcategory', 'selectedposition', 'selecteddepartment'));
     }
 
-    public function exports($name = null, $category = null, $position = null, $department = null)
+    public function exports($name = null, $category = null, $position = null, $department = null, $date = null)
     {
-        return Excel::download(new CovidExport($name, $category, $position, $department), 'covid.xlsx');
+        return Excel::download(new CovidExport($name, $category, $position, $department, $date), 'Covid.xlsx');
     }
 
-    public function data_covidexport(Request $request) // Datatable: all lead
+    public function data_covidexport(Request $request) // Datatable: all covid
     {
         $cond = "1";
         if($request->name && $request->name != "All")
         {
-            $cond .= " AND user_name = '".$request->name."' ";
+            $cond .= " AND user_id = '".$request->name."' ";
         }
 
         if( $request->category != "" && $request->category != "All")
@@ -958,6 +990,11 @@ class CovidController extends Controller
             $cond .= " AND department_id = '".$request->department."' ";
         }
 
+        if( $request->date != "" && $request->date != "All")
+        {
+            $cond .= " AND declare_date = '".$request->date."' ";
+        }
+        
         $covid = Covid::whereRaw($cond)->get();
         
         return datatables()::of($covid)
@@ -1037,19 +1074,62 @@ class CovidController extends Controller
 
        ->editColumn('declare_date', function ($covid) {
 
-            return date(' Y-m-d | H:i A', strtotime($covid->declare_date) );
+            if(isset($covid->declare_date)) {
+
+                return date(' Y-m-d ', strtotime($covid->declare_date) ).' | '.date(' H:i A ', strtotime($covid->declare_time) );
+            } else {
+
+                return 'Not Declared';
+            }
+            
         })
 
        ->editColumn('created_at', function ($covid) {
 
-            return date(' Y-m-d | H:i A', strtotime($covid->created_at) );
+            if(isset($covid->created_at)) {
+
+                return date(' Y-m-d | H:i A', strtotime($covid->created_at) );
+            } else {
+
+                return 'Not Created';
+            }
+            
         })
     
        ->rawColumns(['user_position', 'department_id', 'declare_date', 'created_at', 'user_name', 'user_ic', 'user_phone', 'user_email', 'q1', 'q2', 'q3', 'q4a', 'q4b', 'q4c', 'q4d'])
        ->make(true);
     }
 
+    
+    public function covid_unregister(Request $request)
+    {
+        $req_date = $request->date;
+        $req_post = $request->category;
+        $dates = Covid::select('declare_date')->groupBy('declare_date')->get();
+        $posts = User::select('category')->groupBy('category')->get();
+        $data = $datas = $datass =  '';
+        
+        if($request->date != "")
+        {
+            $data = collect(Covid::where('declare_date', $request->date)->pluck('user_id'))->toArray();
+            $datas = User::whereNotIn('id', [$data])->get(); 
+        }
 
+        if($request->category != "" && $request->category != "All")
+        {
+            $data = collect(Covid::where('declare_date', $request->date)->pluck('user_id'))->toArray();
+            $datas = User::whereNotIn('id', $data)->where('category', $request->category)->get(); 
+        }
+
+        $this->exportUnregister($request->date,$request->category);
+
+        return view('covid19.unregister_report', compact('dates', 'req_date', 'posts', 'req_post', 'data', 'datas'))->with('no', 1);
+    }
+
+    public function exportUnregister($date,$category)
+    {
+        return Excel::download(new UnregisterCovidExport($date, $category),'Covid.xlsx');
+    }
 
     /**
      * Display a listing of the resource.

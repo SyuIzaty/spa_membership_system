@@ -58,7 +58,7 @@
                                                 <th width="15%"><label for="qHeader">DECLARATION DATE :</label></th>
                                                 <td colspan="2"><label for="qHeader">{{strtoupper(date(' j F Y', strtotime($declare->declare_date) ))}}</label></td>
                                                 <th width="15%"><label for="qHeader">DECLARATION TIME :</label></th>
-                                                <td colspan="2"><label for="qHeader">{{ date(' h:i:s A', strtotime($declare->declare_date) )}}</label></td>
+                                                <td colspan="2"><label for="qHeader">{{ date(' h:i:s A', strtotime($declare->declare_time) )}}</label></td>
                                             </div>
                                         </tr>
                                         @if($declare->user_position == 'GST')

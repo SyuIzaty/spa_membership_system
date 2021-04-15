@@ -38,7 +38,7 @@
                                     <table class="table table-bordered table-hover table-striped w-100">
                                         <thead>
                                             <p><span class="text-danger">*</span> Required fields</p>
-                                            <td width="20%"><label class="form-label" for="user_position"><span class="text-danger">*</span> User : </label></td>
+                                            <td width="20%"><label class="form-label" for="user_position"><span class="text-danger">*</span> Category</label></td>
                                             <td colspan="6">
                                                 <select class="form-control user_position" name="user_position" id="user_position">
                                                     <option value="">Please select</option>
@@ -60,9 +60,9 @@
                                         <thead>
                                             <tr class="all">
                                                 <td width="20%">
-                                                    <label class="form-label intecStf" for="user_id"><span class="text-danger">*</span> Staff ID: </label>
-                                                    <label class="form-label intecStd" for="user_id"><span class="text-danger">*</span> Student ID: </label>
-                                                    <label class="form-label intecVsr" for="user_id"><span class="text-danger">*</span> IC/Passport No.: </label>
+                                                    <label class="form-label intecStf" for="user_id"><span class="text-danger">*</span> Staff ID </label>
+                                                    <label class="form-label intecStd" for="user_id"><span class="text-danger">*</span> Student ID </label>
+                                                    <label class="form-label intecVsr" for="user_id"><span class="text-danger">*</span> IC/Passport No. </label>
                                                 </td>
                                                 <td colspan="6"><input class="form-control user_id" id="user_id" name="user_id" >
                                                     @error('user_id')
@@ -71,7 +71,7 @@
                                                 </td>
                                             </tr>
                                             <tr class="all">
-                                                <td width="20%"><label class="form-label" for="user_name"><span class="text-danger">*</span> Full Name : </label></td>
+                                                <td width="20%"><label class="form-label" for="user_name"><span class="text-danger">*</span> Full Name </label></td>
                                                 <td colspan="6">
                                                     <input class="form-control intec" id="user_name" name="user_name" readonly>
                                                     <input class="form-control visitor" id="vsr_name" name="vsr_name" >
@@ -84,7 +84,7 @@
                                                 </td>
                                             </tr>
                                             <tr class="all">
-                                                <td width="20%"><label class="form-label" for="user_email"> Email : </label></td>
+                                                <td width="20%"><label class="form-label" for="user_email"> Email </label></td>
                                                 <td colspan="6">
                                                     <input class="form-control intec" id="user_email" name="user_email" readonly>
                                                     <input class="form-control visitor" id="vsr_email" name="vsr_email" >
@@ -97,16 +97,16 @@
                                                 </td>
                                             </tr>
                                             <tr class="all">
-                                                <td width="20%"><label class="form-label" for="user_phone"> Phone No. : </label></td>
+                                                <td width="20%"><label class="form-label" for="user_phone"><span class="text-danger">*</span>  Phone No. </label></td>
                                                 <td colspan="6">
-                                                    <input class="form-control" id="user_phone" name="user_phone" >
+                                                    <input class="form-control user_phone" id="user_phone" name="user_phone" >
                                                     @error('user_phone')
                                                         <p style="color: red"><strong> {{ $message }} </strong></p>
                                                     @enderror
                                                 </td>
                                             </tr>
                                             <tr class="all">
-                                                <td width="20%"><label class="form-label" for="department_id"><span class="text-danger">*</span> Department To Go : </label></td>
+                                                <td width="20%"><label class="form-label" for="department_id"><span class="text-danger">*</span> Department To Go </label></td>
                                                 <td colspan="6">
                                                     <select class="form-control department_id" name="department_id" id="department_id">
                                                         <option value="">Select Department</option>
@@ -396,11 +396,37 @@
     })
 
     $(document).ready(function() {
-        var OldValue = '{{ old('user_position') }}';
-        if(OldValue !== '') {
-            $('#user_position').val(OldValue );
 
-            $("#user_position").change(); 
+        var post = '{{ old('user_position') }}';
+        var ids = '{{ old('user_id') }}';
+        var vsrName = '{{ old('vsr_name') }}';
+        var vsrMail = '{{ old('vsr_email') }}';
+        var phone = '{{ old('user_phone') }}';
+        var depart = '{{ old('department_id') }}';
+
+        if(post !== '') {
+            $('.user_position').val(post);
+            $(".user_position").change(); 
+        }
+        if(ids !== '') {
+            $('.user_id').val(ids);
+            $(".user_id").change(); 
+        }
+        if(phone !== '') {
+            $('.user_phone').val(phone);
+            $(".user_phone").change(); 
+        }
+        if(depart !== '') {
+            $('.department_id').val(depart);
+            $(".department_id").change(); 
+        }
+        if(vsrName !== '') {
+            $('#vsr_name').val(vsrName);
+            $("#vsr_name").change(); 
+        }
+        if(vsrMail !== '') {
+            $('#vsr_email').val(vsrMail);
+            $("#vsr_email").change(); 
         }
     });
 

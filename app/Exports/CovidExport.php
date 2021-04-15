@@ -11,16 +11,16 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use DB;
 
-
 class CovidExport implements FromCollection, WithHeadings
 {
     use Exportable;
-    public function __construct(String $name = null , String $category = null , String $position = null , String $department = null)
+    public function __construct(String $name = null , String $category = null , String $position = null , String $department = null, String $date = null)
     {
         $this->name = $name;
         $this->category = $category;
         $this->position = $position;
         $this->department = $department;
+        $this->date = $date;
     }
     /**
     * @return \Illuminate\Support\Collection
@@ -31,7 +31,7 @@ class CovidExport implements FromCollection, WithHeadings
 
         if($this->name && $this->name != "All")
         {
-            $cond .= " AND user_name = ".$this->name;
+            $cond .= " AND user_id = '".$this->name."' ";
         }
 
         if($this->category && $this->category != "All")
@@ -41,12 +41,17 @@ class CovidExport implements FromCollection, WithHeadings
 
         if($this->position && $this->position != "All")
         {
-            $cond .= " AND user_position = ".$this->position;
+            $cond .= " AND user_position = '".$this->position."' ";
         }
 
         if($this->department && $this->department != "All")
         {
             $cond .= " AND department_id = '".$this->department."' ";
+        }
+
+        if($this->date != "" && $this->date != "All")
+        {
+            $cond .= " AND declare_date = '".$this->date."' ";
         }
 
         $list =  Covid::whereRaw($cond)

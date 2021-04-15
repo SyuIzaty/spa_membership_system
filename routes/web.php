@@ -37,13 +37,20 @@ Route::post('/data_moduleauth', 'ModuleAuthController@data_moduleauth');
 Route::get('/test','ApplicantController@test');
 
 //ADUAN
-Route::get('/aduan','AduanController@aduanBaru')->name('aduanBaru');
 Route::get('/borang-aduan','AduanController@borangAduan')->name('borangAduan');
-Route::get('/semak-aduan','AduanController@semakAduan')->name('semakAduan');
 Route::post('simpanAduan','AduanController@simpanAduan');
 Route::get('/cariJenis', 'AduanController@cariJenis');
 Route::get('/cariSebab', 'AduanController@cariSebab');
-
+Route::get('/aduan','AduanController@aduan')->name('aduan');
+Route::post('data_aduan', 'AduanController@data_aduan');
+Route::get('/maklumat-aduan/{id}', 'AduanController@maklumatAduan')->name('maklumatAduan');
+Route::get('resit/{filename}/{type}','AduanController@failResit');
+Route::get('get-file-resit/{filename}','AduanController@getImej');
+Route::post('simpanPengesahan','AduanController@simpanPengesahan');
+Route::post('/aduan/editDeleteJuruteknik','AduanController@editDeleteJuruteknik')->name('aduan.editDeleteJuruteknik');
+Route::post('updateTahap', 'AduanController@updateTahap');
+Route::get('padamAlatan/{id}/{id_aduan}', 'AduanController@padamAlatan')->name('padamAlatan');
+Route::get('get-file-gambar/{filename}','AduanController@getGambar');
 Route::get('/senarai-aduan','AduanController@senaraiAduan')->name('senarai');
 Route::post('senaraiAduan', 'AduanController@data_senarai');
 Route::post('updateJuruteknik', 'AduanController@updateJuruteknik');
@@ -56,6 +63,15 @@ Route::get('/senarai-selesai','AduanController@senaraiSelesai')->name('selesai')
 Route::post('senaraiSelesai', 'AduanController@data_selesai');
 Route::get('/senarai-kiv','AduanController@senaraiKiv')->name('kiv');
 Route::post('senaraiKiv', 'AduanController@data_kiv');
+Route::get('/senarai-bertindih','AduanController@senaraiBertindih')->name('bertindih');
+Route::post('senaraiBertindih', 'AduanController@data_bertindih');
+Route::get('/pdfAduan/{id}', 'AduanController@pdfAduan')->name('pdfAduan');
+
+Route::get('/export_aduan', 'AduanController@aduan_all');
+Route::post('/data_aduanexport', 'AduanController@data_aduanexport');
+Route::get('/aduanExport', 'AduanController@aduans');
+Route::post('/aduanExport', 'AduanController@aduans');
+Route::get('exportaduan/{juruteknik?}/{kategori?}/{status?}/{bulan?}','AduanController@aduans');
 
 //KATEGORI
 Route::resource('kategori-aduan', 'KategoriAduanController');
@@ -109,12 +125,15 @@ Route::get('/followup-edit/{id}', 'CovidController@followEdit')->name('followEdi
 Route::get('/covid','CovidController@openForm')->name('openForm');
 Route::post('openFormStore','CovidController@storeOpenForm');
 Route::get('/add-form','CovidController@addForm');
-
 Route::get('/export_covid', 'CovidController@covid_all');
 Route::post('/data_covidexport', 'CovidController@data_covidexport');
 Route::get('/covidExport', 'CovidController@exports');
 Route::post('/covidExport', 'CovidController@exports');
-Route::get('exportcovid/{name?}/{category?}/{position?}/{department?}','CovidController@exports');
+Route::get('exportcovid/{name?}/{category?}/{position?}/{department?}/{date?}','CovidController@exports');
+Route::get('/all-unregister', 'CovidController@covid_unregister')->name('unregister');
+Route::get('/export-unregister/{date}/{category}', 'CovidController@exportUnregister');
+Route::post('/export-unregister/{date}/{category}', 'CovidController@exportUnregister');
+Route::get('exportunregister/{date}/{category}','CovidController@exportUnregister');
 
 // Change Password
 Route::get('change-password','ChangePasswordController@index');

@@ -11,7 +11,7 @@
             <div class="col-xl-12">
                 <div id="panel-1" class="panel">
                     <div class="panel-hdr">
-                        <h2>Export Report</h2>
+                        <h2>EXPORT DECLARED REPORT</h2>
                         <div class="panel-toolbar">
                             <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
                             <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
@@ -25,17 +25,17 @@
                                     <div class="col-md-6 mt-2">
                                         <label>Name</label>
                                         <select class="selectfilter form-control" name="name" id="name">
-                                            <option value="">Select Option</option>
+                                            <option value="">Select Name</option>
                                             <option>All</option>
                                             @foreach($name as $names)
-                                                <option value="{{$names->user_name}}" <?php if($request->name == $names->user_name) echo "selected"; ?> >{{$names->user_name}}</option>
+                                                <option value="{{$names->user_id}}" <?php if($request->name == $names->user_id) echo "selected"; ?> >{{$names->user_name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="col-md-6 mt-2">
                                         <label>Category</label>
                                         <select class="selectfilter form-control" name="category" id="category">
-                                            <option value="">Select Option</option>
+                                            <option value="">Select Category</option>
                                             <option>All</option>
                                             @foreach($category as $cat)
                                                 <option value="{{$cat->category}}" <?php if($request->category == $cat->category) echo "selected"; ?> >{{$cat->category}}</option>
@@ -45,7 +45,7 @@
                                     <div class="col-md-6 mt-2">
                                         <label>Position</label>
                                         <select class="selectfilter form-control" name="position" id="position">
-                                            <option value="">Select Option</option>
+                                            <option value="">Select Position</option>
                                             <option>All</option>
                                             @foreach($position as $post)
                                                 <option value="{{$post->user_code}}" {{ $request->position == $post->user_code ? 'selected="selected"' : ''}}>{{$post->user_type}}</option>
@@ -55,10 +55,20 @@
                                     <div class="col-md-6 mt-2">
                                         <label>Department</label>
                                         <select class="selectfilter form-control" name="department" id="department">
-                                            <option value="">Select Option</option>
+                                            <option value="">Select Department</option>
                                             <option>All</option>
                                             @foreach($department as $depart)
                                                 <option value="{{ $depart->id }}" {{ $request->department == $depart->id ? 'selected="selected"' : ''}}>{{ $depart->department_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <label>Date</label>
+                                        <select class="selectfilter form-control" name="date" id="date">
+                                            <option value="">Select Date</option>
+                                            <option>All</option>
+                                            @foreach($date as $dates)
+                                                <option value="{{ $dates->declare_date }}" {{ $request->date == $dates->declare_date  ? 'selected="selected"' : ''}}>{{ date(' Y-m-d ', strtotime($dates->declare_date)) }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -113,9 +123,9 @@
 
     $(document).ready(function()
     {
-        $('#name, #category, #position, #department').select2();
+        $('#name, #category, #position, #department, #date').select2();
 
-        function createDatatable(name = null, category = null, position = null, department = null)
+        function createDatatable(name = null, category = null, position = null, department = null, date = null)
         {
             $('#rep').DataTable().destroy();
             var table = $('#rep').DataTable({
@@ -124,7 +134,7 @@
             autowidth: false,
             ajax: {
                 url: "/data_covidexport",
-                data: {name:name, category:category, position:position, department:department},
+                data: {name:name, category:category, position:position, department:department, date:date},
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
@@ -179,7 +189,8 @@
             var category = $('#category').val();
             var position = $('#position').val();
             var department = $('#department').val();
-            createDatatable(name,category,position,department);
+            var date = $('#date').val();
+            createDatatable(name,category,position,department,date);
         });
 
     });

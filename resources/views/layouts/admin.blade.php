@@ -147,73 +147,85 @@
                                 </a>
                             </li>
 
-                            @can('view complaint')
-                            <li class="nav-title">Operasi</li>
-
-                            <li>
-                                <a href="#" title="Aduan" data-filter-tags="aduan">
-                                    <i class="fal fa-users"></i>
-                                    <span class="nav-link-text" data-i18n="nav.aduan">Aduan</span>
-                                </a>
-                                <ul>
-                                    <li>
-                                        <a href="/borang-aduan" title="Borang Aduan" data-filter-tags="borang">
-                                            <span class="nav-link-text" data-i18n="nav.borang"><i class="fal fa-arrow-right"> Borang Aduan</i></span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" title="Senarai Aduan" data-filter-tags="senarai">
-                                            <span class="nav-link-text" data-i18n="nav.senarai"><i class="fal fa-arrow-right"> Senarai Aduan</i></span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <li class="open">
-                                <a href="#" title="Aduan" data-filter-tags="aduan">
-                                    <i class="fal fa-list"></i>
-                                    <span class="nav-link-text" data-i18n="nav.aduan">Data Aduan</span>
-                                </a>
-                                <ul>
-                                    <li>
-                                        <a href="/senarai-aduan" title="Dalam Tindakan" data-filter-tags="dlm_tindakan">
-                                            <i class="fal fa-clipboard-list"></i>
-                                            <span class="nav-link-text" data-i18n="nav.dlm_tindakan">Dalam Tindakan</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/senarai-selesai" title="Aduan Selesai" data-filter-tags="selesai">
-                                            <i class="fal fa-clipboard-check"></i>
-                                            <span class="nav-link-text" data-i18n="nav.selesai">Selesai</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/senarai-kiv" title="Aduan KIV" data-filter-tags="kiv">
-                                            <i class="fal fa-eye"></i>
-                                            <span class="nav-link-text" data-i18n="nav.kiv">KIV</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+                            @can('view form')
+                                <li class="nav-title">Operasi</li>
+                                <li>
+                                    <a href="#" title="Aduan" data-filter-tags="aduan">
+                                        <i class="fal fa-users"></i>
+                                        <span class="nav-link-text" data-i18n="nav.aduan">Aduan</span>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="/borang-aduan" title="Borang Aduan" data-filter-tags="borang">
+                                                <span class="nav-link-text" data-i18n="nav.borang"><i class="fal fa-file"> Borang Aduan</i></span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/aduan" title="Senarai Aduan" data-filter-tags="senarai">
+                                                <span class="nav-link-text" data-i18n="nav.senarai"><i class="fal fa-bookmark"> Aduan</i></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            @endcan
+                            @can('view list')
+                                <li class="open">
+                                    <a href="#" title="Aduan" data-filter-tags="aduan">
+                                        <i class="fal fa-list"></i>
+                                        <span class="nav-link-text" data-i18n="nav.aduan">Senarai Aduan</span>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="/senarai-aduan" title="Dalam Tindakan" data-filter-tags="dlm_tindakan">
+                                                <span class="nav-link-text" data-i18n="nav.dlm_tindakan"><i class="fal fa-clipboard-list"> Dalam Tindakan</i></span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/senarai-selesai" title="Aduan Selesai" data-filter-tags="selesai">
+                                                <span class="nav-link-text" data-i18n="nav.selesai"><i class="fal fa-clipboard-check"> Selesai</i></span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/senarai-kiv" title="Aduan KIV" data-filter-tags="kiv">
+                                                <span class="nav-link-text" data-i18n="nav.kiv"><i class="fal fa-eye"> KIV </i></span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/senarai-bertindih" title="Aduan Bertindih" data-filter-tags="bertindih">
+                                                <span class="nav-link-text" data-i18n="nav.bertindih"><i class="fal fa-hourglass-start"> Bertindih </i></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="/export_aduan" title="Laporan" data-filter-tags="laporan">
+                                        <i class="fal fa-file-excel"></i>
+                                        <span class="nav-link-text" data-i18n="nav.laporan">Laporan</span>
+                                    </a>
+                                </li>
                             @endcan
 
-                            @can('view parameter')
-                            <li class="nav-title">Tetapan Parameter</li>
+                            @can('view param')
+                                <li class="nav-title">Tetapan Parameter</li>
 
-                            <li class="open">
-                                <a href="/kategori-aduan" title="Kategori" data-filter-tags="kategori">
-                                    <i class="fal fa-bullhorn"></i>
-                                    <span class="nav-link-text" data-i18n="nav.kategori">Kategori Aduan</span>
-                                </a>
-                                <a href="/jenis-kerosakan" title="Jenis" data-filter-tags="jenis">
-                                    <i class="fal fa-clone"></i>
-                                    <span class="nav-link-text" data-i18n="nav.jenis">Jenis Kerosakan</span>
-                                </a>
-                                <a href="/sebab-kerosakan" title="Sebab" data-filter-tags="sebab">
-                                    <i class="fal fa-filter"></i>
-                                    <span class="nav-link-text" data-i18n="nav.sebab">Sebab Kerosakan</span>
-                                </a>
-                            </li>
+                                <li class="open">
+                                    <a href="/kategori-aduan" title="Kategori" data-filter-tags="kategori">
+                                        <i class="fal fa-bullhorn"></i>
+                                        <span class="nav-link-text" data-i18n="nav.kategori">Kategori Aduan</span>
+                                    </a>
+                                    <a href="/jenis-kerosakan" title="Jenis" data-filter-tags="jenis">
+                                        <i class="fal fa-clone"></i>
+                                        <span class="nav-link-text" data-i18n="nav.jenis">Jenis Kerosakan</span>
+                                    </a>
+                                    <a href="/sebab-kerosakan" title="Sebab" data-filter-tags="sebab">
+                                        <i class="fal fa-filter"></i>
+                                        <span class="nav-link-text" data-i18n="nav.sebab">Sebab Kerosakan</span>
+                                    </a>
+                                    <a href="/alat-ganti" title="Sebab" data-filter-tags="sebab">
+                                        <i class="fal fa-dolly"></i>
+                                        <span class="nav-link-text" data-i18n="nav.sebab">Alat/Bahan Ganti</span>
+                                    </a>
+                                </li>
                             @endcan
                             
                             @can('view admin')
@@ -272,8 +284,14 @@
                             </li>
                             <li class="open">
                                 <a href="/export_covid" title="Report" data-filter-tags="report">
+                                    <i class="fal fa-file-alt"></i>
+                                    <span class="nav-link-text" data-i18n="nav.report">Declared Report</span>
+                                </a>
+                            </li>
+                            <li class="open">
+                                <a href="/all-unregister" title="Report" data-filter-tags="report">
                                     <i class="fal fa-file"></i>
-                                    <span class="nav-link-text" data-i18n="nav.report">Reporting</span>
+                                    <span class="nav-link-text" data-i18n="nav.report">Undeclared Report</span>
                                 </a>
                             </li>
                             @endcan
@@ -438,6 +456,7 @@
         <script src="{{asset('js/formplugins/select2/select2.bundle.js')}}"></script>
 
         <script src="{{ asset('js/formplugins/summernote/summernote-bs4.js') }}"></script>
+        <script src="{{ asset('js/jquery.tabledit.min.js') }}"></script>
 
         @yield('script')
         <script>

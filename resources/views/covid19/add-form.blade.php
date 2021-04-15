@@ -70,13 +70,11 @@
                                         @if (Session::has('message'))
                                             <center><div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc; width: 655px; font-size: 14px;"> {!! session()->get('message') !!}</div></center>
                                         @endif
-                                        <p class="d-flex justify-content-center">If you want to make another declaration, please click button below:</p>
-                                        <div class="d-flex justify-content-center"> 
-                                            <div class="p-2"><a href="{{ route('openForm') }}" class="btn btn-primary"><i class="fal fa-plus-square"></i> DECLARATION FORM</a></div>
-                                        </div>
+                                        @if (Session::has('msg'))
+                                            <center><div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc; width: 655px; font-size: 14px;"> {!! session()->get('msg') !!}</div></center>
+                                        @endif
                                     </div>
                                 </div>
-            
                             </div>
                         </div>
                     </center>
