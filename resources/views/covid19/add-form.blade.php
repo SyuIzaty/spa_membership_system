@@ -9,7 +9,7 @@
                 <div class="card-header">
                     <div class="d-flex justify-content-center">
                         <div class="p-2">
-                            <img src="{{ asset('img/intec_logo.png') }}" class="responsive"/>
+                            <center><img src="{{ asset('img/intec_logo.png') }}" style="max-width: 100%" class="responsive"/></center><br>
                         </div>
                     </div>
                 </div>
@@ -68,10 +68,10 @@
                                             </div>
                                         </div>
                                         @if (Session::has('message'))
-                                            <center><div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc; width: 655px; font-size: 14px;"> {!! session()->get('message') !!}</div></center>
+                                            <center><div class="alert alert-success responsive" style="color: #3b6324; background-color: #d3fabc; width: 100%; font-size: 14px;"> {!! session()->get('message') !!}</div></center>
                                         @endif
                                         @if (Session::has('msg'))
-                                            <center><div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc; width: 655px; font-size: 14px;"> {!! session()->get('msg') !!}</div></center>
+                                            <center><div class="alert alert-success responsive" style="color: #3b6324; background-color: #d3fabc; width: 100%; font-size: 14px;"> {!! session()->get('msg') !!}</div></center>
                                         @endif
                                     </div>
                                 </div>

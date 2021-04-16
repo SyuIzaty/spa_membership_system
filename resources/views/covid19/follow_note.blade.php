@@ -28,11 +28,13 @@
 
                                 <table class="table table-bordered">
                                     <tr> 
-                                        <td width="15%"><label class="form-label" for="follow_up">NOTES :</label>
+                                        <td colspan="5"><label class="form-label" for="follow_up">NOTES :</label>
                                             @error('follow_up')
                                                 <p style="color: red"><strong> * not more than 225 words </strong></p>
                                             @enderror
                                         </td>
+                                    </tr>
+                                    <tr> 
                                         <td colspan="5"><textarea class="form-control summernote" id="follow_up" name="follow_up">{{ old('follow_up') }}</textarea></td>
                                     </tr>
                                 </table>
@@ -44,48 +46,50 @@
                             <br><br>
 
                             <div class="card-body">
-                                @if(session()->has('message'))
-                                <div class="alert alert-success" style="color: #650404; background-color: #ff6c6cc9;"> <i class="icon fal fa-check-circle"></i>
-                                        {{ session()->get('message') }}
-                                    </div>
-                                @endif
-                                @if(session()->has('notification'))
-                                <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i>
-                                        {{ session()->get('notification') }}
-                                    </div>
-                                @endif
-                                @if(session()->has('notify'))
-                                <div class="alert alert-success" style="color: #582b04; background-color: #ffa95f;"> <i class="icon fal fa-check-circle"></i>
-                                        {{ session()->get('notify') }}
-                                    </div>
-                                @endif
-                                <table class="table table-bordered">
-                                    <tr class="bg-primary-50 text-center">
-                                        <td><b>NO.</b></td>
-                                        <td><b>FOLLOW UP</b></td>
-                                        <td><b>CREATED BY</b></td>
-                                        <td><b>DATE</b></td>
-                                        <td><b>ACTION</b></td>
-                                    </tr>
-                                    @if(!empty($notes) && $notes->count() > 0)
-                                        @foreach ($notes as $el)
-                                        <tr align="center">
-                                            <td>{{ $no++ }}</td>
-                                            <td>{!! $el->follow_up !!} </td>
-                                            <td>{{ $el->user->name }}</td>
-                                            <td>{{ date('d-m-Y | h:i A', strtotime($el->created_at)) }}</td>
-                                            <td>
-                                                <a href="/followup-edit/{{ $el->id}}" data-cov="{{$el->id}}" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i> Edit</a>
-                                                <a href="{{ action('CovidController@delFollowup', ['id' => $el->id, 'cov_id' => $declare->id]) }}" class="btn btn-danger btn-sm deleteEl"><i class="fal fa-trash"> Delete</i></a>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    @else
-                                        <tr align="center" class="data-row">
-                                            <td valign="top" colspan="5" class="dataTables_empty">-- NO NOTES AVAILABLE --</td>
-                                        </tr>
+                                <div class="table-responsive">
+                                    @if(session()->has('message'))
+                                    <div class="alert alert-success" style="color: #650404; background-color: #ff6c6cc9;"> <i class="icon fal fa-check-circle"></i>
+                                            {{ session()->get('message') }}
+                                        </div>
                                     @endif
-                                </table>
+                                    @if(session()->has('notification'))
+                                    <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i>
+                                            {{ session()->get('notification') }}
+                                        </div>
+                                    @endif
+                                    @if(session()->has('notify'))
+                                    <div class="alert alert-success" style="color: #582b04; background-color: #ffa95f;"> <i class="icon fal fa-check-circle"></i>
+                                            {{ session()->get('notify') }}
+                                        </div>
+                                    @endif
+                                    <table class="table table-bordered">
+                                        <tr class="bg-primary-50 text-center">
+                                            <td><b>NO.</b></td>
+                                            <td><b>FOLLOW UP</b></td>
+                                            <td><b>CREATED BY</b></td>
+                                            <td><b>DATE</b></td>
+                                            <td><b>ACTION</b></td>
+                                        </tr>
+                                        @if(!empty($notes) && $notes->count() > 0)
+                                            @foreach ($notes as $el)
+                                            <tr align="center">
+                                                <td>{{ $no++ }}</td>
+                                                <td>{!! $el->follow_up !!} </td>
+                                                <td>{{ $el->user->name }}</td>
+                                                <td>{{ date('d-m-Y | h:i A', strtotime($el->created_at)) }}</td>
+                                                <td>
+                                                    <a href="/followup-edit/{{ $el->id}}" data-cov="{{$el->id}}" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i> Edit</a>
+                                                    <a href="{{ action('CovidController@delFollowup', ['id' => $el->id, 'cov_id' => $declare->id]) }}" class="btn btn-danger btn-sm deleteEl"><i class="fal fa-trash"> Delete</i></a>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        @else
+                                            <tr align="center" class="data-row">
+                                                <td valign="top" colspan="5" class="dataTables_empty">-- NO NOTES AVAILABLE --</td>
+                                            </tr>
+                                        @endif
+                                    </table>
+                                </div>
                             </div>
 
                         </div>
@@ -93,35 +97,6 @@
                 </div>
             </div>
         </div>
-
-        {{-- <div class="modal fade" id="crud-modals" aria-hidden="true" >
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="card-header">
-                    <h5 class="card-title w-100"><i class="fal fa-plus-square"></i>  Edit Follow Up</h5>
-                </div>
-                <div class="modal-body">
-                    {!! Form::open(['action' => 'CovidController@updateFollowup', 'method' => 'POST']) !!}
-                    <input type="hidden" name="followup_id" id="followup">
-                    <input type="hidden" name="cov" value="{{ $declare->id }}">
-                    
-                    <td width="15%"><label class="form-label" for="follow_up">NOTES :</label></td>
-                    <td colspan="5"><textarea cols="5" rows="10" class="form-control" id="name" name="follow_up"></textarea>
-                        @error('follow_up')
-                            <p style="color: red"><strong> * {{ $message }} </strong></p>
-                        @enderror
-                    </td>
-                    <br>
-                    <div class="footer">
-                        <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
-                        <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
-                    </div>
-                    {!! Form::close() !!}
-                </div>
-            </div>
-        </div>
-    </div> --}}
-
 </main>
 @endsection
 @section('script')
@@ -129,19 +104,10 @@
         $(document).ready(function() {
 
             $('.summernote').summernote({
-                height: 400,
+                height: 200,
                 spellCheck: true
             });
             
-            // $('#crud-modals').on('show.bs.modal', function(event) {
-            //     var button = $(event.relatedTarget) 
-            //     var followup = button.data('followup') 
-            //     var name = button.data('name')
-
-            //     $('.modal-body #followup').val(followup); 
-            //     $('.modal-body #name').val(name); 
-            // });
-
         });
     </script>
 @endsection

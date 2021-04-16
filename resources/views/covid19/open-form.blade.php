@@ -111,7 +111,7 @@
                                                     <select class="form-control department_id" name="department_id" id="department_id">
                                                         <option value="">Select Department</option>
                                                         @foreach ($department as $depart) 
-                                                            <option value="{{ $depart->id }}" {{ (is_array(old('department_id')) and in_array(old('department_id') ==  $depart->id)) ? ' selected' : '' }}>{{ $depart->department_name }}</option>
+                                                            <option value="{{ $depart->id }}" @if (old('department_id') == $depart->id) selected="selected" @endif>{{ $depart->department_name }}</option>
                                                         @endforeach
                                                     </select>
                                                     @error('department_id')
@@ -139,8 +139,8 @@
                                         <div class="form-group">
                                             <td style="text-align: center" width="4%"><label for="q1">1.</label></td>
                                             <td width="80%;"><label for="q1">Have you been confirmed positive with COVID-19 within 14 days?</label></td>
-                                            <td style="text-align: center"><input type="radio" name="q1" id="q1" value="Y" {{ (is_array(old('q1')) and in_array('Y', old('q1'))) ? ' checked' : '' }}></td>
-                                            <td style="text-align: center"><input type="radio" name="q1" id="q1" value="N" {{ (is_array(old('q1')) and in_array('N', old('q1'))) ? ' checked' : '' }}></td>
+                                            <td style="text-align: center"><input type="radio" name="q1" id="q1" value="Y" {{ (old('q1') && old('q1') == 'Y') ? 'checked' : '' }}></td>
+                                            <td style="text-align: center"><input type="radio" name="q1" id="q1" value="N" {{ (old('q1') && old('q1') == 'N') ? 'checked' : '' }}></td>
                                         </div>
                                     </tr>
                                     <tr class="declare_date1" style="display: none">
@@ -156,8 +156,8 @@
                                         <div class="form-group">
                                             <td style="text-align: center" width="4%"><label for="q2">2.</label></td>
                                             <td><label for="q2">Have you had close contact with anyone who confirmed positive case of COVID-19 within 10 days?</label></td>
-                                            <td style="text-align: center"><input type="radio" name="q2" id="q2" value="Y" {{ (is_array(old('q2')) and in_array('Y', old('q2'))) ? ' checked' : '' }}></td>
-                                            <td style="text-align: center"><input type="radio" name="q2" id="q2" value="N" {{ (is_array(old('q2')) and in_array('N', old('q2'))) ? ' checked' : '' }}></td>
+                                            <td style="text-align: center"><input type="radio" name="q2" id="q2" value="Y" {{ (old('q2') && old('q2') == 'Y') ? 'checked' : '' }}></td>
+                                            <td style="text-align: center"><input type="radio" name="q2" id="q2" value="N" {{ (old('q2') && old('q2') == 'N') ? 'checked' : '' }}></td>
                                         </div>
                                     </tr>
                                     <tr class="declare_date2" style="display: none">
@@ -176,8 +176,8 @@
                                                 Have you had close contact with any individual on question 2 within 10 days <br><br> OR <br><br>
                                                 Have you ever attended an event or visited any place involving suspected or positive COVID-19 case within 10 days <br><br> OR <br><br>
                                                 Are you from an area of Enhanced Movement Control Order (EMCO) in period of 10 days ?</label></td>
-                                            <td style="text-align: center; vertical-align: middle"><input type="radio" name="q3" id="q3" value="Y" {{ (is_array(old('q3')) and in_array('Y', old('q3'))) ? ' checked' : '' }}></td>
-                                            <td style="text-align: center; vertical-align: middle"><input type="radio" name="q3" id="q3" value="N" {{ (is_array(old('q3')) and in_array('N', old('q3'))) ? ' checked' : '' }}></td>
+                                            <td style="text-align: center; vertical-align: middle"><input type="radio" name="q3" id="q3" value="Y" {{ (old('q3') && old('q3') == 'Y') ? 'checked' : '' }}></td>
+                                            <td style="text-align: center; vertical-align: middle"><input type="radio" name="q3" id="q3" value="N" {{ (old('q3') && old('q3') == 'N') ? 'checked' : '' }}></td>
                                         </div>
                                     </tr>
                                     
@@ -191,29 +191,29 @@
                                     <tr class="q4" style="display: none">
                                         <div class="form-group">
                                             <td width="3%"><label for="q4a"><li>Fever</li></label></td>
-                                            <td style="text-align: center"><input type="radio" name="q4a" id="q4a" value="Y" {{ (is_array(old('q4a')) and in_array('Y', old('q4a'))) ? ' checked' : '' }}></td>
-                                            <td style="text-align: center"><input type="radio" name="q4a" id="q4a" value="N" {{ (is_array(old('q4a')) and in_array('N', old('q4a'))) ? ' checked' : '' }}></td>
+                                            <td style="text-align: center"><input type="radio" name="q4a" id="q4a" value="Y" {{ (old('q4a') && old('q4a') == 'Y') ? 'checked' : '' }}></td>
+                                            <td style="text-align: center"><input type="radio" name="q4a" id="q4a" value="N" {{ (old('q4a') && old('q4a') == 'N') ? 'checked' : '' }}></td>
                                         </div>
                                     </tr>
                                     <tr class="q4" style="display: none">
                                         <div class="form-group">
                                             <td width="3%"><label for="q4b"><li>Cough</li></label></td>
-                                            <td style="text-align: center"><input type="radio" name="q4b" id="q4b" value="Y" {{ (is_array(old('q4b')) and in_array('Y', old('q4b'))) ? ' checked' : '' }}></td>
-                                            <td style="text-align: center"><input type="radio" name="q4b" id="q4b" value="N" {{ (is_array(old('q4b')) and in_array('N', old('q4b'))) ? ' checked' : '' }}></td>
+                                            <td style="text-align: center"><input type="radio" name="q4b" id="q4b" value="Y" {{ (old('q4b') && old('q4b') == 'Y') ? 'checked' : '' }}></td>
+                                            <td style="text-align: center"><input type="radio" name="q4b" id="q4b" value="N" {{ (old('q4b') && old('q4b') == 'N') ? 'checked' : '' }}></td>
                                         </div>
                                     </tr>
                                     <tr class="q4" style="display: none">
                                         <div class="form-group">
                                             <td width="3%"><label for="q4c"><li>Flu</li></label></td>
-                                            <td style="text-align: center"><input type="radio" name="q4c" id="q4c" value="Y" {{ (is_array(old('q4c')) and in_array('Y', old('q4c'))) ? ' checked' : '' }}></td>
-                                            <td style="text-align: center"><input type="radio" name="q4c" id="q4c" value="N" {{ (is_array(old('q4c')) and in_array('N', old('q4c'))) ? ' checked' : '' }}></td>
+                                            <td style="text-align: center"><input type="radio" name="q4c" id="q4c" value="Y" {{ (old('q4c') && old('q4c') == 'Y') ? 'checked' : '' }}></td>
+                                            <td style="text-align: center"><input type="radio" name="q4c" id="q4c" value="N" {{ (old('q4c') && old('q4c') == 'N') ? 'checked' : '' }}></td>
                                         </div>
                                     </tr>
                                     <tr class="q4" style="display: none">
                                         <div class="form-group">
                                             <td width="3%"><label for="q4d"><li>Difficulty in Breathing</li></label></td>
-                                            <td style="text-align: center"><input type="radio" name="q4d" id="q4d" value="Y" {{ (is_array(old('q4d')) and in_array('Y', old('q4d'))) ? ' checked' : '' }}></td>
-                                            <td style="text-align: center"><input type="radio" name="q4d" id="q4d" value="N" {{ (is_array(old('q4d')) and in_array('N', old('q4d'))) ? ' checked' : '' }}></td>
+                                            <td style="text-align: center"><input type="radio" name="q4d" id="q4d" value="Y" {{ (old('q4d') && old('q4d') == 'Y') ? 'checked' : '' }}></td>
+                                            <td style="text-align: center"><input type="radio" name="q4d" id="q4d" value="N" {{ (old('q4d') && old('q4d') == 'N') ? 'checked' : '' }}></td>
                                         </div>
                                     </tr>
                                     
@@ -268,19 +268,6 @@
             });
         }
 
-    });
-
-    function btn()
-    {
-        var chk = document.getElementById("chk")
-        var submit = document.getElementById("submit");
-        submit.disabled = chk.checked ? false : true;
-        if(!submit.disabled){
-            submit.focus();
-        }
-    }
-
-    $(function () {          
       $("input[name=q1]").change(function () {        
         if ($(this).val() == "Y") {
           $(".q2").hide();
@@ -393,42 +380,42 @@
             $("#department_id").val("");
       });
 
-    })
+        $('.user_position').val('{{ old('user_position') }}'); 
+        $(".user_position").change(); 
+        $('.user_id').val('{{ old('user_id') }}');
+        $(".user_id").change(); 
+        $('.user_phone').val('{{ old('user_phone') }}');
+        $('.department_id').val('{{ old('department_id') }}');
+        $('#vsr_name').val('{{ old('vsr_name') }}');
+        $('#vsr_email').val('{{ old('vsr_email') }}');
 
-    $(document).ready(function() {
-
-        var post = '{{ old('user_position') }}';
-        var ids = '{{ old('user_id') }}';
-        var vsrName = '{{ old('vsr_name') }}';
-        var vsrMail = '{{ old('vsr_email') }}';
-        var phone = '{{ old('user_phone') }}';
-        var depart = '{{ old('department_id') }}';
-
-        if(post !== '') {
-            $('.user_position').val(post);
-            $(".user_position").change(); 
-        }
-        if(ids !== '') {
-            $('.user_id').val(ids);
-            $(".user_id").change(); 
-        }
-        if(phone !== '') {
-            $('.user_phone').val(phone);
-            $(".user_phone").change(); 
-        }
-        if(depart !== '') {
-            $('.department_id').val(depart);
-            $(".department_id").change(); 
-        }
-        if(vsrName !== '') {
-            $('#vsr_name').val(vsrName);
-            $("#vsr_name").change(); 
-        }
-        if(vsrMail !== '') {
-            $('#vsr_email').val(vsrMail);
-            $("#vsr_email").change(); 
-        }
+        $('input[name="q1"]:checked').val('{{ old('q1') }}');
+        $('input[name="q1"]:checked').change(); 
+        $('#declare_date1').val('{{ old('declare_date1') }}');
+        $('input[name="q2"]:checked').val('{{ old('q2') }}');
+        $('input[name="q2"]:checked').change(); 
+        $('#declare_date2').val('{{ old('declare_date2') }}');
+        $('input[name="q3"]:checked').val('{{ old('q3') }}');
+        $('input[name="q3"]:checked').change(); 
+        $('input[name="q4a"]:checked').val('{{ old('q4a') }}');
+        $('input[name="q4a"]:checked').change(); 
+        $('input[name="q4b"]:checked').val('{{ old('q4b') }}');
+        $('input[name="q4b"]:checked').change(); 
+        $('input[name="q4c"]:checked').val('{{ old('q4c') }}');
+        $('input[name="q4c"]:checked').change(); 
+        $('input[name="q4d"]:checked').val('{{ old('q4d') }}');
+        $('input[name="q4d"]:checked').change(); 
     });
+
+    function btn()
+    {
+        var chk = document.getElementById("chk")
+        var submit = document.getElementById("submit");
+        submit.disabled = chk.checked ? false : true;
+        if(!submit.disabled){
+            submit.focus();
+        }
+    }
 
     </script>
 @endsection

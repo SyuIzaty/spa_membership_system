@@ -872,7 +872,6 @@ class CovidController extends Controller
             {
                 $request->validate([
                     'user_position'   => 'required',
-                    'department_id'   => 'required',
                     'user_id'         => 'required|numeric', 
                     'user_name'       => 'required', 
                     'user_phone'      => 'required|numeric',
@@ -1099,14 +1098,24 @@ class CovidController extends Controller
        ->rawColumns(['user_position', 'department_id', 'declare_date', 'created_at', 'user_name', 'user_ic', 'user_phone', 'user_email', 'q1', 'q2', 'q3', 'q4a', 'q4b', 'q4c', 'q4d'])
        ->make(true);
     }
-
-    
+  
     public function covid_unregister(Request $request)
     {
         $req_date = $request->date;
         $req_post = $request->category;
         $dates = Covid::select('declare_date')->groupBy('declare_date')->get();
-        $posts = User::select('category')->groupBy('category')->get();
+
+        if( Auth::user()->hasRole('HR Admin') )
+        { 
+            $posts = User::select('category')->groupBy('category')->get();
+        }
+        else
+        {
+            $posts = User::select('category')->whereHas('roles', function($query){
+                $query->where('category', 'STD');
+            })->groupBy('category')->get();
+        }
+
         $data = $datas = $datass =  '';
         
         if($request->date != "")

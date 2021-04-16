@@ -26,51 +26,52 @@
 
                         <div class="panel-container show">
                             <div class="panel-content">
-                                
-                                <table id="info" class="table table-bordered table-hover table-striped w-100">
-                                    <thead>
-                                        @can('view admin')
-                                        <tr>
-                                            <div class="form-group">
-                                                <th width="15%"><label for="qHeader">NAME :</label></th>
-                                                <td colspan="2"><label for="qHeader">{{ strtoupper($declare->user_name)}}</label></td>
-                                                @if($declare->user_position == 'GST')
-                                                    <th width="15%"><label for="qHeader">IC/PASSPORT NO :</label></th>
-                                                @elseif($declare->user_position == 'STF')
-                                                    <th width="15%"><label for="qHeader">STAFF ID :</label></th>
-                                                @else
-                                                    <th width="15%"><label for="qHeader">STUDENT ID :</label></th>
-                                                @endif
-                                                <td colspan="2"><label for="qHeader">{{$declare->user_id}}</label></td>
-                                            </div>
-                                        </tr>
-                                        <tr>
-                                            <div class="form-group">
-                                                <th width="15%"><label for="qHeader">EMAIL :</label></th>
-                                                <td colspan="2"><label for="qHeader">{{ isset($declare->user_email) ? $declare->user_email : '-'}}</label></td>
-                                                <th width="25%"><label for="qHeader">PHONE NO. :</label></th>
-                                                <td colspan="2"><label for="qHeader">{{ isset($declare->user_phone) ? $declare->user_phone : '-'}}</label></td>
-                                            </div>
-                                        </tr>
-                                        @endcan
-                                        <tr>
-                                            <div class="form-group">
-                                                <th width="15%"><label for="qHeader">DECLARATION DATE :</label></th>
-                                                <td colspan="2"><label for="qHeader">{{strtoupper(date(' j F Y', strtotime($declare->declare_date) ))}}</label></td>
-                                                <th width="15%"><label for="qHeader">DECLARATION TIME :</label></th>
-                                                <td colspan="2"><label for="qHeader">{{ date(' h:i:s A', strtotime($declare->declare_time) )}}</label></td>
-                                            </div>
-                                        </tr>
-                                        @if($declare->user_position == 'GST')
-                                        <tr>
-                                            <div class="form-group">
-                                                <th width="15%"><label for="qHeader">DEPARTMENT :</label></th>
-                                                <td colspan="4"><label for="qHeader">{{ strtoupper(isset($declare->department->department_name) ? $declare->department->department_name : '-')}}</label></td>
-                                            </div>
-                                        </tr>
-                                        @endif
-                                    </thead>
-                                </table>
+                                <div class="table-responsive">
+                                    <table id="info" class="table table-bordered table-hover table-striped w-100">
+                                        <thead>
+                                            @can('view admin')
+                                            <tr>
+                                                <div class="form-group">
+                                                    <th width="15%"><label for="qHeader">NAME :</label></th>
+                                                    <td colspan="2"><label for="qHeader">{{ strtoupper($declare->user_name)}}</label></td>
+                                                    @if($declare->user_position == 'GST')
+                                                        <th width="15%"><label for="qHeader">IC/PASSPORT NO :</label></th>
+                                                    @elseif($declare->user_position == 'STF')
+                                                        <th width="15%"><label for="qHeader">STAFF ID :</label></th>
+                                                    @else
+                                                        <th width="15%"><label for="qHeader">STUDENT ID :</label></th>
+                                                    @endif
+                                                    <td colspan="2"><label for="qHeader">{{$declare->user_id}}</label></td>
+                                                </div>
+                                            </tr>
+                                            <tr>
+                                                <div class="form-group">
+                                                    <th width="15%"><label for="qHeader">EMAIL :</label></th>
+                                                    <td colspan="2"><label for="qHeader">{{ isset($declare->user_email) ? $declare->user_email : '-'}}</label></td>
+                                                    <th width="25%"><label for="qHeader">PHONE NO. :</label></th>
+                                                    <td colspan="2"><label for="qHeader">{{ isset($declare->user_phone) ? $declare->user_phone : '-'}}</label></td>
+                                                </div>
+                                            </tr>
+                                            @endcan
+                                            <tr>
+                                                <div class="form-group">
+                                                    <th width="15%"><label for="qHeader">DECLARATION DATE :</label></th>
+                                                    <td colspan="2"><label for="qHeader">{{strtoupper(date(' j F Y', strtotime($declare->declare_date) ))}}</label></td>
+                                                    <th width="15%"><label for="qHeader">DECLARATION TIME :</label></th>
+                                                    <td colspan="2"><label for="qHeader">{{ date(' h:i:s A', strtotime($declare->declare_time) )}}</label></td>
+                                                </div>
+                                            </tr>
+                                            @if($declare->user_position == 'GST')
+                                            <tr>
+                                                <div class="form-group">
+                                                    <th width="15%"><label for="qHeader">DEPARTMENT :</label></th>
+                                                    <td colspan="4"><label for="qHeader">{{ strtoupper(isset($declare->department->department_name) ? $declare->department->department_name : '-')}}</label></td>
+                                                </div>
+                                            </tr>
+                                            @endif
+                                        </thead>
+                                    </table>
+                                </div>
                                 
                                     <table id="info" class="table table-bordered table-hover table-striped w-100">
                                         <thead>

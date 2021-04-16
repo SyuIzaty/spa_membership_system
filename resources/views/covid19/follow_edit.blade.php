@@ -27,11 +27,13 @@
 
                                 <table class="table table-bordered">
                                     <tr> 
-                                        <td width="15%"><label class="form-label" for="follow_up">NOTES :</label>
+                                        <td colspan="5"><label class="form-label" for="follow_up">NOTES :</label>
                                             @error('follow_up')
                                                 <p style="color: red"><strong> * not more than 225 words </strong></p>
                                             @enderror
                                         </td>
+                                    </tr>
+                                    <tr> 
                                         <td colspan="5"><textarea value="{{ old('follow_up') }}" class="form-control summernote" id="follow_up" name="follow_up">{!! $notes->follow_up !!}</textarea></td>
                                     </tr>
                                 </table>
@@ -52,7 +54,7 @@
 @section('script')
     <script>
         $('.summernote').summernote({
-            height: 400,
+            height: 200,
             spellCheck: true
         });
     </script>

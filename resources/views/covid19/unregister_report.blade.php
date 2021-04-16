@@ -24,7 +24,7 @@
                             <form action="{{ route('unregister') }}" method="GET" id="form_find">
                                 <p><span class="text-danger">*</span> Required fields</p>
                                 <div class="row">
-                                    <div class="col-lg-6 col-sm-6">
+                                    <div class="col-lg-6 col-sm-6 mb-2">
                                         <div class="form-group">
                                             <label><span class="text-danger">*</span> Date : </label>
                                             <select class="form-control custom-date" name="date" id="date">
