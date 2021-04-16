@@ -44,8 +44,8 @@
                                                 {{-- <option>All</option> --}}
                                                 @foreach ($posts as $post)
                                                     <option value="{{ $post->category }}" {{ $req_post == $post->category  ? 'selected' : '' }}>
-                                                        @if ($post->category == 'STF') STAFF @endif
-                                                        @if ($post->category == 'STD') STUDENT @endif 
+                                                        @if ($post->category == 'STF') Staff @endif
+                                                        @if ($post->category == 'STD') Student @endif 
                                                     </option>
                                                 @endforeach
                                             </select> 

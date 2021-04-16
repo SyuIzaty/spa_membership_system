@@ -943,9 +943,26 @@ class CovidController extends Controller
 
     public function covid_all(Request $request)
     {
-        $name = Covid::select('user_id', 'user_name')->orderBy('user_name')->get();
+        if( Auth::user()->hasRole('HR Admin') )
+        { 
+            $name = Covid::select('user_id', 'user_name')->orderBy('user_name')->get();
+        }
+        else
+        {
+            $name = Covid::select('user_id', 'user_name')->where('user_position', 'STD')->orderBy('user_name')->get();
+        }
+
         $category = Covid::select('category')->groupBy('category')->get();
-        $position = UserType::select('user_code', 'user_type')->get();
+
+        if( Auth::user()->hasRole('HR Admin') )
+        { 
+            $position = UserType::select('user_code', 'user_type')->get();
+        }
+        else
+        {
+            $position = UserType::select('user_code', 'user_type')->where('user_code', 'STD')->get();
+        }
+
         $department = Department::select('id', 'department_name')->orderBy('department_name')->get();
         $date = Covid::select('declare_date')->groupBy('declare_date')->get();
     
