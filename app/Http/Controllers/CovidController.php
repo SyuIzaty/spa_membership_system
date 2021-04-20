@@ -219,7 +219,7 @@ class CovidController extends Controller
         return datatables()::of($declare)
         ->addColumn('action', function ($declare) {
             
-            if($declare->category != 'A' && $declare->category != 'B') {
+            if($declare->category != 'A' && $declare->category != 'B' && $declare->category != 'C') {
                 return '<a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info"><i class="fal fa-eye"></i> Declaration</a>
                     <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> Delete</button>';
             } else {
@@ -291,12 +291,10 @@ class CovidController extends Controller
             $declare = Covid::whereIn('user_id', $user)->whereDate('created_at', '!=', Carbon::now()->toDateString())->with(['user'])->get();
         }
 
-        // $declare = Covid::whereDate('created_at', '!=', now()->toDateString())->get();
-      
         return datatables()::of($declare)
         ->addColumn('action', function ($declare) {
 
-            if($declare->category != 'A' && $declare->category != 'B') {
+            if($declare->category != 'A' && $declare->category != 'B' && $declare->category != 'C') {
                 return '<a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info"><i class="fal fa-eye"></i> Declaration</a>
                     <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> Delete</button>';
             } else {
@@ -433,8 +431,6 @@ class CovidController extends Controller
             $declare = Covid::whereIn('user_id', $user)->where('category', 'A')->where( 'declare_date', '>', Carbon::now()->subDays(14))->with(['user'])->get();
         }
 
-        // $declare = Covid::where('category', 'A')->where( 'declare_date', '>', Carbon::now()->subDays(14))->get();
-
         return datatables()::of($declare)
         ->addColumn('action', function ($declare) {
 
@@ -515,8 +511,6 @@ class CovidController extends Controller
             $user = User::where('category', 'STD')->pluck('id')->toArray();
             $declare = Covid::whereIn('user_id', $user)->where('category', 'B')->where( 'declare_date', '>', Carbon::now()->subDays(10))->with(['user'])->get();
         }
-
-        // $declare = Covid::where('category', 'B')->where( 'declare_date', '>', Carbon::now()->subDays(10))->get();
 
         return datatables()::of($declare)
         ->addColumn('action', function ($declare) {
@@ -653,12 +647,11 @@ class CovidController extends Controller
             $declare = Covid::whereIn('user_id', $user)->where('category', 'C')->whereDate('declare_date', '=', Carbon::now()->toDateString())->with(['user'])->get();
         }
 
-        // $declare = Covid::where('category', 'C')->whereDate('declare_date', '=', Carbon::now()->toDateString())->get();
-
         return datatables()::of($declare)
         ->addColumn('action', function ($declare) {
 
             return '<a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info"><i class="fal fa-eye"></i> Declaration</a>
+            <a href="/followup-list/' . $declare->id.'" class="btn btn-warning btn-sm"><i class="fal fa-plus-square"></i> FollowUp</a>
             <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i>  Delete</button>';
         })
 
@@ -710,8 +703,6 @@ class CovidController extends Controller
             $user = User::where('category', 'STD')->pluck('id')->toArray();
             $declare = Covid::whereIn('user_id', $user)->where('category', 'D')->whereDate('declare_date', '=', Carbon::now()->toDateString())->with(['user'])->get();
         }
-
-        // $declare = Covid::where('category', 'D')->whereDate('declare_date', '=', Carbon::now()->toDateString())->get();
 
         return datatables()::of($declare)
         ->addColumn('action', function ($declare) {
@@ -768,8 +759,6 @@ class CovidController extends Controller
             $user = User::where('category', 'STD')->pluck('id')->toArray();
             $declare = Covid::whereIn('user_id', $user)->where('category', 'E')->whereDate('declare_date', '=', Carbon::now()->toDateString())->with(['user'])->get();
         }
-
-        // $declare = Covid::where('category', 'E')->whereDate('declare_date', '=', Carbon::now()->toDateString())->get();
 
         return datatables()::of($declare)
         ->addColumn('action', function ($declare) {
@@ -870,13 +859,40 @@ class CovidController extends Controller
         {
             if($request->user_position == 'STF' || $request->user_position == 'STD')
             {
-                $request->validate([
+                $validate = [
                     'user_position'   => 'required',
-                    'user_id'         => 'required|numeric', 
+                    'user_id'         => 'required|regex:/^[\w-]*$/', 
                     'user_name'       => 'required', 
                     'user_phone'      => 'required|numeric',
                     'user_email'      => 'nullable|email',
-                ]);
+                    'q1'              => 'required',
+                ];
+
+                if($request->q1 == 'N') 
+                {
+                    $validate['q2'] = 'required'; 
+                } 
+                if($request->q1 == 'Y') 
+                {
+                    $validate['declare_date1'] = 'required'; 
+                }
+                if($request->q2 == 'N') 
+                {
+                    $validate['q3'] = 'required'; 
+                } 
+                if($request->q2 == 'Y')  
+                {
+                    $validate['declare_date2'] = 'required'; 
+                }
+                if($request->q3 == 'N') 
+                {
+                    $validate['q4a'] = 'required';
+                    $validate['q4b'] = 'required';
+                    $validate['q4c'] = 'required';
+                    $validate['q4d'] = 'required';
+                }
+
+                $request->validate($validate);
 
                 $declare = Covid::create([
                     'user_name'       => $request->name,
@@ -909,7 +925,34 @@ class CovidController extends Controller
                     'vsr_name'        => 'required',
                     'user_phone'      => 'required|numeric',
                     'vsr_email'       => 'nullable|email',
+                    'q1'              => 'required',
                 ]);
+
+                if($request->q1 == 'N') 
+                {
+                    $validate['q2'] = 'required'; 
+                } 
+                if($request->q1 == 'Y') 
+                {
+                    $validate['declare_date1'] = 'required'; 
+                }
+                if($request->q2 == 'N') 
+                {
+                    $validate['q3'] = 'required'; 
+                } 
+                if($request->q2 == 'Y')  
+                {
+                    $validate['declare_date2'] = 'required'; 
+                }
+                if($request->q3 == 'N') 
+                {
+                    $validate['q4a'] = 'required';
+                    $validate['q4b'] = 'required';
+                    $validate['q4c'] = 'required';
+                    $validate['q4d'] = 'required';
+                }
+                
+                $request->validate($validate);
 
                 $declare = Covid::create([
                     'user_name'       => $request->vsr_name,
@@ -935,7 +978,7 @@ class CovidController extends Controller
                 ]);
             }
                 
-            Session::flash('message', 'Your declaration on '.date(' j F Y ', strtotime($date)).' has successfully been recorded.<br> Pleas make sure to abide the SOP when you are in INTEC premise. <br> Thank you for your cooperation.');
+            Session::flash('message', 'Your declaration on '.date(' j F Y ', strtotime($date)).' has successfully been recorded.<br> Please make sure to abide the SOP when you are in INTEC premise. <br> Thank you for your cooperation.');
         }
 
        return redirect('add-form');
@@ -983,7 +1026,7 @@ class CovidController extends Controller
         return Excel::download(new CovidExport($name, $category, $position, $department, $date), 'Covid.xlsx');
     }
 
-    public function data_covidexport(Request $request) // Datatable: all covid
+    public function data_covidexport(Request $request) 
     {
         $cond = "1";
         if($request->name && $request->name != "All")
@@ -1075,12 +1118,12 @@ class CovidController extends Controller
             return isset($covid->type->user_type) ? $covid->type->user_type : '<div style="color:red;" > -- </div>';
         })
 
-       ->editColumn('department_id', function ($covid) {
+        ->editColumn('department_id', function ($covid) {
 
             return isset($covid->department->department_name) ? $covid->department->department_name : '<div style="color:red;" > -- </div>';
         })
 
-       ->editColumn('form_type', function ($covid) {
+        ->editColumn('form_type', function ($covid) {
             if($covid->form_type == 'OF'){
                 return 'Open Form';
             } else {
@@ -1088,7 +1131,7 @@ class CovidController extends Controller
             }
         })
 
-       ->editColumn('declare_date', function ($covid) {
+        ->editColumn('declare_date', function ($covid) {
 
             if(isset($covid->declare_date)) {
 
@@ -1100,7 +1143,7 @@ class CovidController extends Controller
             
         })
 
-       ->editColumn('created_at', function ($covid) {
+        ->editColumn('created_at', function ($covid) {
 
             if(isset($covid->created_at)) {
 
@@ -1138,7 +1181,7 @@ class CovidController extends Controller
         if($request->date != "")
         {
             $data = collect(Covid::where('declare_date', $request->date)->pluck('user_id'))->toArray();
-            $datas = User::whereNotIn('id', [$data])->get(); 
+            $datas = User::whereNotIn('id', $data)->get(); 
         }
 
         if($request->category != "" && $request->category != "All")
@@ -1152,7 +1195,7 @@ class CovidController extends Controller
         return view('covid19.unregister_report', compact('dates', 'req_date', 'posts', 'req_post', 'data', 'datas'))->with('no', 1);
     }
 
-    public function exportUnregister($date,$category)
+    public function exportUnregister($date = null,$category = null)
     {
         return Excel::download(new UnregisterCovidExport($date, $category),'Covid.xlsx');
     }

@@ -138,7 +138,7 @@
                                     <tr class="q1">
                                         <div class="form-group">
                                             <td style="text-align: center" width="4%"><label for="q1">1.</label></td>
-                                            <td width="80%;"><label for="q1">Have you been confirmed positive with COVID-19 within 14 days?</label></td>
+                                            <td width="80%;"><label for="q1">Have you been confirmed positive with COVID-19 within 14 days? </label>@error('q1')<b style="color: red"><strong> required </strong></b>@enderror</td>
                                             <td style="text-align: center"><input type="radio" name="q1" id="q1" value="Y" {{ (old('q1') && old('q1') == 'Y') ? 'checked' : '' }}></td>
                                             <td style="text-align: center"><input type="radio" name="q1" id="q1" value="N" {{ (old('q1') && old('q1') == 'N') ? 'checked' : '' }}></td>
                                         </div>
@@ -146,7 +146,7 @@
                                     <tr class="declare_date1" style="display: none">
                                         <div class="form-group">
                                             <td style="text-align: center" width="4%"><label for="declare_date"></label></td>
-                                            <td width="80%" style="vertical-align: middle;"><label for="declare_date1">Date Confirmed Positive : </label></td>
+                                            <td width="80%" style="vertical-align: middle;"><label for="declare_date1"><span class="text-danger">*</span> Date Confirmed Positive : </label>@error('declare_date1')<b style="color: red"><strong> required </strong></b>@enderror</td>
                                             <td colspan="2" style="text-align: center">
                                                 <input class="form-control" type="datetime-local" name="declare_date1" id="declare_date1" value="{{ old('declare_date1') }}">
                                             </td>
@@ -155,7 +155,7 @@
                                     <tr class="q2" style="display: none">
                                         <div class="form-group">
                                             <td style="text-align: center" width="4%"><label for="q2">2.</label></td>
-                                            <td><label for="q2">Have you had close contact with anyone who confirmed positive case of COVID-19 within 10 days?</label></td>
+                                            <td><label for="q2">Have you had close contact with anyone who confirmed positive case of COVID-19 within 10 days? </label>@error('q2')<b style="color: red"><strong> required </strong></b>@enderror</td>
                                             <td style="text-align: center"><input type="radio" name="q2" id="q2" value="Y" {{ (old('q2') && old('q2') == 'Y') ? 'checked' : '' }}></td>
                                             <td style="text-align: center"><input type="radio" name="q2" id="q2" value="N" {{ (old('q2') && old('q2') == 'N') ? 'checked' : '' }}></td>
                                         </div>
@@ -163,7 +163,7 @@
                                     <tr class="declare_date2" style="display: none">
                                         <div class="form-group">
                                             <td style="text-align: center" width="4%"><label for="declare_date"></label></td>
-                                            <td width="80%" style="vertical-align: middle;"><label for="declare_date2">Date Confirmed Contact : </label></td>
+                                            <td width="80%" style="vertical-align: middle;"><label for="declare_date2"><span class="text-danger">*</span> Date Confirmed Contact : </label>@error('declare_date2')<b style="color: red"><strong> required </strong></b>@enderror</td>
                                             <td colspan="2" style="text-align: center">
                                                 <input class="form-control" type="datetime-local" name="declare_date2" id="declare_date2" value="{{ old('declare_date2') }}">
                                             </td>
@@ -175,7 +175,7 @@
                                             <td><label for="q3">
                                                 Have you had close contact with any individual on question 2 within 10 days <br><br> OR <br><br>
                                                 Have you ever attended an event or visited any place involving suspected or positive COVID-19 case within 10 days <br><br> OR <br><br>
-                                                Are you from an area of Enhanced Movement Control Order (EMCO) in period of 10 days ?</label></td>
+                                                Are you from an area of Enhanced Movement Control Order (EMCO) in period of 10 days ?@error('q3')<b style="color: red"><strong> required </strong></b>@enderror</label></td>
                                             <td style="text-align: center; vertical-align: middle"><input type="radio" name="q3" id="q3" value="Y" {{ (old('q3') && old('q3') == 'Y') ? 'checked' : '' }}></td>
                                             <td style="text-align: center; vertical-align: middle"><input type="radio" name="q3" id="q3" value="N" {{ (old('q3') && old('q3') == 'N') ? 'checked' : '' }}></td>
                                         </div>
@@ -190,28 +190,28 @@
                                     </tr>
                                     <tr class="q4" style="display: none">
                                         <div class="form-group">
-                                            <td width="3%"><label for="q4a"><li>Fever</li></label></td>
+                                            <td width="3%"><label for="q4a"><li>Fever</li></label>@error('q4a')<b style="color: red"><strong> required </strong></b>@enderror</td>
                                             <td style="text-align: center"><input type="radio" name="q4a" id="q4a" value="Y" {{ (old('q4a') && old('q4a') == 'Y') ? 'checked' : '' }}></td>
                                             <td style="text-align: center"><input type="radio" name="q4a" id="q4a" value="N" {{ (old('q4a') && old('q4a') == 'N') ? 'checked' : '' }}></td>
                                         </div>
                                     </tr>
                                     <tr class="q4" style="display: none">
                                         <div class="form-group">
-                                            <td width="3%"><label for="q4b"><li>Cough</li></label></td>
+                                            <td width="3%"><label for="q4b"><li>Cough</li></label>@error('q4b')<b style="color: red"><strong> required </strong></b>@enderror</td>
                                             <td style="text-align: center"><input type="radio" name="q4b" id="q4b" value="Y" {{ (old('q4b') && old('q4b') == 'Y') ? 'checked' : '' }}></td>
                                             <td style="text-align: center"><input type="radio" name="q4b" id="q4b" value="N" {{ (old('q4b') && old('q4b') == 'N') ? 'checked' : '' }}></td>
                                         </div>
                                     </tr>
                                     <tr class="q4" style="display: none">
                                         <div class="form-group">
-                                            <td width="3%"><label for="q4c"><li>Flu</li></label></td>
+                                            <td width="3%"><label for="q4c"><li>Flu</li></label>@error('q4c')<b style="color: red"><strong> required </strong></b>@enderror</td>
                                             <td style="text-align: center"><input type="radio" name="q4c" id="q4c" value="Y" {{ (old('q4c') && old('q4c') == 'Y') ? 'checked' : '' }}></td>
                                             <td style="text-align: center"><input type="radio" name="q4c" id="q4c" value="N" {{ (old('q4c') && old('q4c') == 'N') ? 'checked' : '' }}></td>
                                         </div>
                                     </tr>
                                     <tr class="q4" style="display: none">
                                         <div class="form-group">
-                                            <td width="3%"><label for="q4d"><li>Difficulty in Breathing</li></label></td>
+                                            <td width="3%"><label for="q4d"><li>Difficulty in Breathing</li></label>@error('q4d')<b style="color: red"><strong> required </strong></b>@enderror</td>
                                             <td style="text-align: center"><input type="radio" name="q4d" id="q4d" value="Y" {{ (old('q4d') && old('q4d') == 'Y') ? 'checked' : '' }}></td>
                                             <td style="text-align: center"><input type="radio" name="q4d" id="q4d" value="N" {{ (old('q4d') && old('q4d') == 'N') ? 'checked' : '' }}></td>
                                         </div>
@@ -239,7 +239,6 @@
 @endsection
 @section('script')
     <script>
-       
     $(document).ready( function() {
         $('.department_id, .user_position').select2();
 

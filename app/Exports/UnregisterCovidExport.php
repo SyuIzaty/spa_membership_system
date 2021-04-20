@@ -16,7 +16,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 class UnregisterCovidExport implements FromCollection, WithHeadings, WithMapping, WithEvents, ShouldAutoSize
 {
     use Exportable;
-    public function __construct($date, $category)
+    public function __construct(String $date = null, String $category = null)
     {
         $this->date = $date;
         $this->category = $category;
