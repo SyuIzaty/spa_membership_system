@@ -34,7 +34,7 @@
                                                 <div class="form-group">
                                                     <th width="15%"><label for="qHeader">NAME :</label></th>
                                                     <td colspan="2"><label for="qHeader">{{ strtoupper($declare->user_name)}}</label></td>
-                                                    @if($declare->user_position == 'GST')
+                                                    @if($declare->user_position == 'VSR')
                                                         <th width="15%"><label for="qHeader">IC/PASSPORT NO :</label></th>
                                                     @elseif($declare->user_position == 'STF')
                                                         <th width="15%"><label for="qHeader">STAFF ID :</label></th>
