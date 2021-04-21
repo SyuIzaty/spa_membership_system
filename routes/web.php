@@ -138,3 +138,7 @@ Route::get('exportunregister/{date}/{category}','CovidController@exportUnregiste
 // Change Password
 Route::get('change-password','ChangePasswordController@index');
 Route::post('update-password','ChangePasswordController@store')->name('change.password');
+
+
+//Geolocation
+Route::get('/geolocation','GeolocationController@index');
