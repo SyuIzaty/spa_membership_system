@@ -66,6 +66,14 @@ Route::post('senaraiKiv', 'AduanController@data_kiv');
 Route::get('/senarai-bertindih','AduanController@senaraiBertindih')->name('bertindih');
 Route::post('senaraiBertindih', 'AduanController@data_bertindih');
 Route::get('/pdfAduan/{id}', 'AduanController@pdfAduan')->name('pdfAduan');
+Route::get('/export_aduan', 'AduanController@aduan_all')->name('exportAduan');
+Route::post('/data_aduanexport', 'AduanController@data_aduanexport');
+Route::get('/aduanExport', 'AduanController@aduans');
+Route::post('/aduanExport', 'AduanController@aduans');
+Route::get('exportaduan/{kategori?}/{status?}/{tahap?}/{bulan?}','AduanController@aduans');
+Route::get('/juruExport/{juruteknik?}/{stat?}/{kate?}/{bul?}', 'AduanController@jurutekniks');
+Route::post('/juruExport/{juruteknik?}/{stat?}/{kate?}/{bul?}', 'AduanController@jurutekniks');
+Route::get('juruaduan/{juruteknik?}/{stat?}/{kate?}/{bul?}','AduanController@jurutekniks');
 
 Route::get('/export_aduan', 'AduanController@aduan_all');
 Route::post('/data_aduanexport', 'AduanController@data_aduanexport');
@@ -125,15 +133,15 @@ Route::get('/followup-edit/{id}', 'CovidController@followEdit')->name('followEdi
 Route::get('/covid','CovidController@openForm')->name('openForm');
 Route::post('openFormStore','CovidController@storeOpenForm');
 Route::get('/add-form','CovidController@addForm');
-Route::get('/export_covid', 'CovidController@covid_all');
+Route::get('/export_covid', 'CovidController@covid_all')->name('covidreport');
 Route::post('/data_covidexport', 'CovidController@data_covidexport');
 Route::get('/covidExport', 'CovidController@exports');
 Route::post('/covidExport', 'CovidController@exports');
 Route::get('exportcovid/{name?}/{category?}/{position?}/{department?}/{date?}','CovidController@exports');
-Route::get('/all-unregister', 'CovidController@covid_unregister')->name('unregister');
-Route::get('/export-unregister/{date}/{category}', 'CovidController@exportUnregister');
-Route::post('/export-unregister/{date}/{category}', 'CovidController@exportUnregister');
-Route::get('exportunregister/{date}/{category}','CovidController@exportUnregister');
+Route::get('/export-undeclare/{datek?}/{cates?}', 'CovidController@exportUndeclare');
+Route::post('/export-undeclare/{datek?}/{cates?}', 'CovidController@exportUndeclare');
+Route::get('exportundeclare/{datek?}/{cates?}','CovidController@exportUndeclare');
+Route::get('/remainder/{date?}/{cate?}', 'CovidController@sendRemainder')->name('remainder');
 
 // Change Password
 Route::get('change-password','ChangePasswordController@index');

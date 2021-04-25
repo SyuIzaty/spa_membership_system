@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use DB;
 
-class CovidExport implements FromCollection, WithHeadings
+class DeclareCovidExport implements FromCollection, WithHeadings
 {
     use Exportable;
     public function __construct(String $name = null , String $category = null , String $position = null , String $department = null, String $date = null)

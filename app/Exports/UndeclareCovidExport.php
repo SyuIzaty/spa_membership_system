@@ -13,33 +13,52 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class UnregisterCovidExport implements FromCollection, WithHeadings, WithMapping, WithEvents, ShouldAutoSize
+class UndeclareCovidExport implements FromCollection, WithHeadings, WithMapping, WithEvents, ShouldAutoSize
 {
     use Exportable;
-    public function __construct(String $date = null, String $category = null)
+    public function __construct(String $datek = null, String $cates = null)
     {
-        $this->date = $date;
-        $this->category = $category;
+        $this->datek = $datek;
+        $this->cates = $cates;
     }
     /**
     * @return \Illuminate\Support\Collection
     */
     public function collection()
     {
-        $data = collect(Covid::where('declare_date', $this->date)->pluck('user_id'))->toArray();
-        $covid = User::whereNotIn('id',$data)->where('category',$this->category)->get(); 
+        $data = $datas = $datass =  '';
+        
+        if($this->datek || $this->cates)
+        {
+            $result = new User();
 
-        return $covid;
+            if($this->datek != "")
+            {
+                $datas = collect(Covid::where('declare_date', $this->datek)->pluck('user_id'))->toArray();
+                $result = $result->whereNotIn('id', $datas); 
+                
+            }
+
+            if($this->cates != "" )
+            {
+                $datas = collect(Covid::pluck('user_id'))->toArray();
+                $result = $result->whereNotIn('id', $datas)->where('category', $this->cates); 
+            }
+
+            $data = $result->get();
+        }
+        
+        return collect($data);
     }
 
-    public function map($covid): array
+    public function map($data): array
     {
         return [
-            isset($covid->id) ? $covid->id : '--',
-            isset($covid->name) ? $covid->name : '--',
-            isset($covid->email) ? $covid->email : '--',
-            isset($covid->category) ? $covid->category : '--',
-            isset($this->date) ? date(' Y-m-d ', strtotime($this->date)) : '--', 
+            isset($data->id) ? $data->id : '--',
+            isset($data->name) ? $data->name : '--',
+            isset($data->email) ? $data->email : '--',
+            isset($data->category) ? $data->category : '--',
+            isset($this->datek) ? date(' Y-m-d ', strtotime($this->datek)) : '--', 
         ];
     }
 

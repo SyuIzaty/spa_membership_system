@@ -52,6 +52,16 @@
                                                     <td colspan="2"><label for="qHeader">{{ isset($declare->user_phone) ? $declare->user_phone : '-'}}</label></td>
                                                 </div>
                                             </tr>
+                                            @if($declare->user_position == 'STD')
+                                            <tr>
+                                                <div class="form-group">
+                                                    <th width="15%"><label for="qHeader">PROGRAMME :</label></th>
+                                                    <td colspan="2"><label for="qHeader"></label>{{ isset($declare->students->programme->programme_name) ? strtoupper($declare->students->programme->programme_name) : '-' }}</td>
+                                                    <th width="25%"><label for="qHeader">SESSION :</label></th>
+                                                    <td colspan="2"><label for="qHeader"></label>{{ isset($declare->students->current_session) ? strtoupper($declare->students->current_session) : '-'}}</td>
+                                                </div>
+                                            </tr>
+                                            @endif
                                             @endcan
                                             <tr>
                                                 <div class="form-group">
@@ -61,14 +71,12 @@
                                                     <td colspan="2"><label for="qHeader">{{ date(' h:i:s A', strtotime($declare->declare_time) )}}</label></td>
                                                 </div>
                                             </tr>
-                                            @if($declare->user_position == 'GST')
                                             <tr>
                                                 <div class="form-group">
                                                     <th width="15%"><label for="qHeader">DEPARTMENT :</label></th>
                                                     <td colspan="4"><label for="qHeader">{{ strtoupper(isset($declare->department->department_name) ? $declare->department->department_name : '-')}}</label></td>
                                                 </div>
                                             </tr>
-                                            @endif
                                         </thead>
                                     </table>
                                 </div>

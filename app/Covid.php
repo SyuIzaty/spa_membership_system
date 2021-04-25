@@ -31,5 +31,10 @@ class Covid extends Model
     {
         return $this->hasOne('App\Department', 'id', 'department_id');
     }
+
+    public function students()
+    {
+        return $this->hasOne('App\Student','students_id', 'user_id');
+    }
     
 }

@@ -285,13 +285,7 @@
                             <li class="open">
                                 <a href="/export_covid" title="Report" data-filter-tags="report">
                                     <i class="fal fa-file-alt"></i>
-                                    <span class="nav-link-text" data-i18n="nav.report">Declared Report</span>
-                                </a>
-                            </li>
-                            <li class="open">
-                                <a href="/all-unregister" title="Report" data-filter-tags="report">
-                                    <i class="fal fa-file"></i>
-                                    <span class="nav-link-text" data-i18n="nav.report">Undeclared Report</span>
+                                    <span class="nav-link-text" data-i18n="nav.report">Report</span>
                                 </a>
                             </li>
                             @endcan
