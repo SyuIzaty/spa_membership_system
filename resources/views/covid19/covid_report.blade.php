@@ -211,7 +211,7 @@
                                             @if(isset($req_date))
                                                 <a class="btn buttons-csv btn-md float-right mb-4" href="/export-undeclare/{{$req_date}}/{{$req_cate}}"><span><i class="fal fa-file-excel"></i> Export</span></a>
                                                 @if(empty($exist) && $req_cate == 'STF')
-                                                    <a href="{{ route('remainder', ['date' => $req_date, 'cate'=> $req_cate]) }}" class="btn btn-danger ml-auto mr-2 float-right"><i class="fal fa-envelope"></i> Remainder</a><br>
+                                                    <a href="{{ route('remainder', ['date' => $req_date, 'cate'=> $req_cate]) }}" class="btn btn-danger ml-auto mr-2 float-right"><i class="fal fa-envelope"></i> Reminder</a><br>
                                                 @endif
                                             @endif
                                         </div>
