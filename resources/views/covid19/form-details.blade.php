@@ -50,6 +50,7 @@
                                                     <td colspan="2"><label for="qHeader">{{ isset($declare->user_email) ? $declare->user_email : '-'}}</label></td>
                                                     <th width="25%"><label for="qHeader">PHONE NO. :</label></th>
                                                     <td colspan="2"><label for="qHeader">{{ isset($declare->user_phone) ? $declare->user_phone : '-'}}</label></td>
+                                                    {{-- <td colspan="2"><label for="qHeader">{{ isset($declare->staffs->staff_phone) ? $declare->staffs->staff_phone : '-'}}</label></td> --}}
                                                 </div>
                                             </tr>
                                             @if($declare->user_position == 'STD')
@@ -73,7 +74,11 @@
                                             </tr>
                                             <tr>
                                                 <div class="form-group">
-                                                    <th width="15%"><label for="qHeader">DEPARTMENT :</label></th>
+                                                    @if($declare->user_position == 'STF')
+                                                    <th width="15%"><label for="qHeader">STAFF DEPARTMENT :</label></th>
+                                                    <td colspan="2"><label for="qHeader">{{ strtoupper(isset($declare->staffs->staff_dept) ? $declare->staffs->staff_dept : '-')}}</label></td>
+                                                    @endif
+                                                    <th width="15%"><label for="qHeader">DEPARTMENT/PLACE TO GO :</label></th>
                                                     <td colspan="4"><label for="qHeader">{{ strtoupper(isset($declare->department->department_name) ? $declare->department->department_name : '-')}}</label></td>
                                                 </div>
                                             </tr>

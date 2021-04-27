@@ -150,9 +150,10 @@
                                                                 <option value="" selected disabled> Please select </option>
                                                                 {{-- <option>All</option> --}}
                                                                 @foreach ($cates as $post)
-                                                                    <option value="{{ $post->category }}" {{ $req_cate == $post->category  ? 'selected' : '' }}>
-                                                                        @if ($post->category == 'STF') STAFF @endif
-                                                                        @if ($post->category == 'STU') STUDENT @endif 
+                                                                    <option value="{{ $post->user_code }}" {{ $req_cate == $post->user_code  ? 'selected' : '' }}>
+                                                                        @if ($post->user_code == 'STF') STAFF @endif
+                                                                        @if ($post->user_code == 'STD') STUDENT @endif 
+                                                                        @if ($post->user_code == 'VSR') VISITOR @endif 
                                                                     </option>
                                                                 @endforeach
                                                             </select> 
@@ -192,7 +193,8 @@
                                                                 <td>{{ isset($datas['email']) ? $datas['email'] : '--' }}</td>
                                                                 <td class="text-center">
                                                                     @if ($datas['category'] == 'STF') STAFF @endif
-                                                                    @if ($datas['category'] == 'STU') STUDENT @endif 
+                                                                    @if ($datas['category'] == 'STD') STUDENT @endif 
+                                                                    @if ($datas['category'] == 'VSR') VISITOR @endif 
                                                                 </td>
                                                                 @if (isset($req_date) && !empty($req_date))
                                                                     <td class="text-center">{{  date(' Y-m-d ', strtotime($req_date)) }}</td>

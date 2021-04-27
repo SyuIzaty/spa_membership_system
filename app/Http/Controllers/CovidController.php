@@ -11,6 +11,7 @@ use App\Department;
 use Carbon\Carbon;
 use App\CovidNotes;
 use App\Student;
+use App\Staff;
 use App\Jobs\SendEmail;
 use App\CovidRemainder;
 use Illuminate\Http\Request;
@@ -257,9 +258,12 @@ class CovidController extends Controller
     public function declareInfo($id)
     {
         $all = Covid::where('id', $id)->first();
-        $declare = Covid::where('id', $id)->with(['students'=>function($query) use($all){
+        $declare = Covid::where('id', $id)->with(['staffs'=>function($query) use($all){
+            $query->where('staff_id', $all->user_id);
+        },'students'=>function($query) use($all){
             $query->where('students_id', $all->user_id);
         }])->first();
+        
         return view('covid19.form-details', compact('declare'));
     }
 
@@ -271,8 +275,8 @@ class CovidController extends Controller
         }
         else
         {
-            $user = User::where('category', 'STU')->pluck('id')->toArray();
-            $declare = Covid::whereIn('user_id', $user)->whereDate('created_at', '=', Carbon::now()->toDateString())->with(['user'])->get();
+            // $user = User::where('category', 'STU')->pluck('id')->toArray();
+            $declare = Covid::where('user_position', 'STD')->whereDate('created_at', '=', Carbon::now()->toDateString())->with(['user'])->get();
         }
 
         return datatables()::of($declare)
@@ -346,8 +350,7 @@ class CovidController extends Controller
         }
         else
         {
-            $user = User::where('category', 'STU')->pluck('id')->toArray();
-            $declare = Covid::whereIn('user_id', $user)->whereDate('created_at', '!=', Carbon::now()->toDateString())->with(['user'])->get();
+            $declare = Covid::where('user_position', 'STD')->whereDate('created_at', '!=', Carbon::now()->toDateString())->with(['user'])->get();
         }
 
         return datatables()::of($declare)
@@ -486,8 +489,7 @@ class CovidController extends Controller
         }
         else
         {
-            $user = User::where('category', 'STU')->pluck('id')->toArray();
-            $declare = Covid::whereIn('user_id', $user)->where('category', 'A')->where( 'declare_date', '>', Carbon::now()->subDays(14))->with(['user'])->get();
+            $declare = Covid::where('user_position', 'STD')->where('category', 'A')->where( 'declare_date', '>', Carbon::now()->subDays(14))->with(['user'])->get();
         }
 
         return datatables()::of($declare)
@@ -567,8 +569,7 @@ class CovidController extends Controller
         }
         else
         {
-            $user = User::where('category', 'STU')->pluck('id')->toArray();
-            $declare = Covid::whereIn('user_id', $user)->where('category', 'B')->where( 'declare_date', '>', Carbon::now()->subDays(10))->with(['user'])->get();
+           $declare = Covid::where('user_position', 'STD')->where('category', 'B')->where( 'declare_date', '>', Carbon::now()->subDays(10))->with(['user'])->get();
         }
 
         return datatables()::of($declare)
@@ -702,8 +703,7 @@ class CovidController extends Controller
         }
         else
         {
-            $user = User::where('category', 'STU')->pluck('id')->toArray();
-            $declare = Covid::whereIn('user_id', $user)->where('category', 'C')->whereDate('declare_date', '=', Carbon::now()->toDateString())->with(['user'])->get();
+            $declare = Covid::where('user_position', 'STD')->where('category', 'C')->whereDate('declare_date', '=', Carbon::now()->toDateString())->with(['user'])->get();
         }
 
         return datatables()::of($declare)
@@ -759,8 +759,7 @@ class CovidController extends Controller
         }
         else
         {
-            $user = User::where('category', 'STU')->pluck('id')->toArray();
-            $declare = Covid::whereIn('user_id', $user)->where('category', 'D')->whereDate('declare_date', '=', Carbon::now()->toDateString())->with(['user'])->get();
+            $declare = Covid::where('user_position', 'STD')->where('category', 'D')->whereDate('declare_date', '=', Carbon::now()->toDateString())->with(['user'])->get();
         }
 
         return datatables()::of($declare)
@@ -815,8 +814,7 @@ class CovidController extends Controller
         }
         else
         {
-            $user = User::where('category', 'STU')->pluck('id')->toArray();
-            $declare = Covid::whereIn('user_id', $user)->where('category', 'E')->whereDate('declare_date', '=', Carbon::now()->toDateString())->with(['user'])->get();
+            $declare = Covid::where('user_position', 'STD')->where('category', 'E')->whereDate('declare_date', '=', Carbon::now()->toDateString())->with(['user'])->get();
         }
 
         return datatables()::of($declare)
@@ -1047,105 +1045,72 @@ class CovidController extends Controller
     {
         // Declared Report
 
-        if( Auth::user()->hasRole('HR Admin') )
-        { 
-            $name = Covid::select('user_id', 'user_name')->orderBy('user_name')->get();
-        }
-        else
-        {
-            $name = Covid::select('user_id', 'user_name')->where('user_position', 'STD')->orderBy('user_name')->get();
-        }
+            if( Auth::user()->hasRole('HR Admin') )
+            { 
+                $name = Covid::select('user_id', 'user_name')->orderBy('user_name')->get();
+            }
+            else
+            {
+                $name = Covid::select('user_id', 'user_name')->where('user_position', 'STD')->orderBy('user_name')->get();
+            }
 
-        $category = Covid::select('category')->groupBy('category')->get();
+            $category = Covid::select('category')->groupBy('category')->get();
 
-        if( Auth::user()->hasRole('HR Admin') )
-        { 
-            $position = UserType::select('user_code', 'user_type')->get();
-        }
-        else
-        {
-            $position = UserType::select('user_code', 'user_type')->where('user_code', 'STD')->get();
-        }
+            if( Auth::user()->hasRole('HR Admin') )
+            { 
+                $position = UserType::select('user_code', 'user_type')->get();
+            }
+            else
+            {
+                $position = UserType::select('user_code', 'user_type')->where('user_code', 'STD')->get();
+            }
 
-        $department = Department::select('id', 'department_name')->orderBy('department_name')->get();
-        $date = Covid::select('declare_date')->groupBy('declare_date')->get();
-    
-        $cond = "1"; // 1 = selected
+            $department = Department::select('id', 'department_name')->orderBy('department_name')->get();
+            $date = Covid::select('declare_date')->groupBy('declare_date')->get();
+        
+            $cond = "1"; // 1 = selected
 
-        $selectedname = $request->name; 
-        $selectedcategory = $request->category;
-        $selectedposition = $request->position; 
-        $selecteddepartment = $request->department;
-        $selecteddate = $request->date;
-        $list = [];
+            $selectedname = $request->name; 
+            $selectedcategory = $request->category;
+            $selectedposition = $request->position; 
+            $selecteddepartment = $request->department;
+            $selecteddate = $request->date;
+            $list = [];
 
         // Undeclared Report
 
-        $req_date = $request->datek;
-        $req_cate = $request->cates;
+            $req_date = $request->datek;
+            $req_cate = $request->cates;
 
-        if( Auth::user()->hasRole('HR Admin') )
-        { 
             $datek = Covid::select('declare_date')->groupBy('declare_date')->get();
-            $cates = User::select('category')->groupBy('category')->get();
 
+            if( Auth::user()->hasRole('HR Admin') )
+            {
+                $cates = UserType::select('user_code', 'user_type')->get();
+
+            } else {
+                $cates = UserType::select('user_code', 'user_type')->where('user_code', 'STD')->get();
+            }
+            
+            
             $data = $datas = $datass =  '';
         
-            if($request->datek || $request->cates)
+            if($request->datek && $request->cates)
             {
                 $result = new User();
 
-                if($request->datek != "")
+                if($request->datek != "" && $request->cates != "" )
                 {
-                    $datas = collect(Covid::where('declare_date', $request->datek)->pluck('user_id'))->toArray();
-                    $result = $result->whereNotIn('id', $datas); 
-                    
-                }
-
-                if($request->cates != "" )
-                {
-                    $datas = collect(Covid::pluck('user_id'))->toArray();
-                    $result = $result->whereNotIn('id', $datas)->where('category', $request->cates); 
+                    $datas = Covid::select('user_id')->where('user_position',$request->cates)->where('declare_date', $request->datek)->distinct()->get();
+                    $result = User::where('category',$request->cates)->whereNotIn('id',$datas); 
                 }
 
                 $data = $result->get();
             }
 
-        }
-        else
-        {
-            $datek = Covid::select('declare_date')->groupBy('declare_date')->get();
-            $cates = User::select('category')->whereHas('roles', function($query){
-                $query->where('category', 'STU');
-            })->groupBy('category')->get();
+            $this->exportUndeclare($request->datek,$request->cates);
 
-            $data = $datas = $datass =  '';
-        
-            if($request->datek || $request->cates)
-            {
-                $result = new User();
-
-                if($request->datek != "")
-                {
-                    $datas = collect(Covid::where('declare_date', $request->datek)->pluck('user_id'))->toArray();
-                    $result = $result->whereNotIn('id', $datas)->where('category', 'STU'); 
-                    
-                }
-
-                if($request->cates != "" )
-                {
-                    $datas = collect(Covid::pluck('user_id'))->toArray();
-                    $result = $result->whereNotIn('id', $datas)->where('category', $request->cates); 
-                }
-
-                $data = $result->get();
-            }
-
-        }
-
-        $this->exportUndeclare($request->datek,$request->cates);
-
-        $exist = CovidRemainder::whereDate('remainder_date', '=', $request->datek)->first();
+            $exist = CovidRemainder::whereDate('remainder_date', '=', $request->datek)->first();
 
         return view('covid19.covid_report', compact('exist', 'datek', 'req_date', 'req_cate', 'data', 'datas', 'name', 'category', 'cates', 'position', 'date', 'selecteddate', 'department', 'request', 'list', 'selectedname', 'selectedcategory', 'selectedposition', 'selecteddepartment'));
     }
@@ -1183,7 +1148,14 @@ class CovidController extends Controller
             $cond .= " AND declare_date = '".$request->date."' ";
         }
         
-        $covid = Covid::whereRaw($cond)->get();
+        if( Auth::user()->hasRole('HR Admin') )
+        { 
+            $covid = Covid::whereRaw($cond)->get();
+
+        } else {
+
+            $covid = Covid::whereRaw($cond)->where('user_position', 'STD')->get();
+        }
         
         return datatables()::of($covid)
 
@@ -1297,28 +1269,21 @@ class CovidController extends Controller
     {
         $result = new User();
 
-        if($date != "")
+        if($date != "" && $cate != "" )
         {
-            $datas = collect(Covid::where('declare_date', date("Y-m-d", strtotime( $date )))->pluck('user_id'))->toArray();
-            $result = $result->whereNotIn('id', $datas); 
-            
-        }
-
-        if($cate != "" )
-        {
-            $datas = collect(Covid::pluck('user_id'))->toArray();
-            $result = $result->whereNotIn('id', $datas)->where('category', $cate); 
+            $datas = Covid::select('user_id')->where('user_position',$cate)->where('declare_date', $date)->distinct()->get();
+            $result = User::where('category',$cate)->whereNotIn('id',$datas); 
         }
 
         $data = $result->whereNotNull('email')->get();
-
+        
         $remainder = CovidRemainder::create([
             'remainder_date'    => date("Y-m-d", strtotime($date)),
             'status'            => 'Y',
         ]);
 
         $email = array_filter(array_column($data->toArray(), 'email'));
-        // dd($email);
+        
         foreach($data as $value)
         {
             $datas = [

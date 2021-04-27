@@ -27,22 +27,15 @@ class UndeclareCovidExport implements FromCollection, WithHeadings, WithMapping,
     public function collection()
     {
         $data = $datas = $datass =  '';
-        
-        if($this->datek || $this->cates)
+    
+        if($this->datek && $this->cates)
         {
             $result = new User();
 
-            if($this->datek != "")
+            if($this->datek != "" && $this->cates != "" )
             {
-                $datas = collect(Covid::where('declare_date', $this->datek)->pluck('user_id'))->toArray();
-                $result = $result->whereNotIn('id', $datas); 
-                
-            }
-
-            if($this->cates != "" )
-            {
-                $datas = collect(Covid::pluck('user_id'))->toArray();
-                $result = $result->whereNotIn('id', $datas)->where('category', $this->cates); 
+                $datas = Covid::select('user_id')->where('user_position',$this->cates)->where('declare_date', $this->datek)->distinct()->get();
+                $result = User::where('category',$this->cates)->whereNotIn('id',$datas); 
             }
 
             $data = $result->get();
