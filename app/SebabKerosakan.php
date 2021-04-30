@@ -11,11 +11,16 @@ class SebabKerosakan extends Model
     protected $table = 'cms_sebab_kerosakan';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'kategori_aduan', 'sebab_kerosakan'
+        'kategori_aduan', 'jenis_kerosakan', 'sebab_kerosakan'
     ];
 
     public function kategori()
     {
         return $this->hasOne('App\KategoriAduan', 'kod_kategori', 'kategori_aduan');
+    }
+
+    public function jenis()
+    {
+        return $this->hasOne('App\JenisKerosakan', 'id', 'jenis_kerosakan');
     }
 }

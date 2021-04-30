@@ -1,192 +1,301 @@
-@extends('layouts.aduan')
+@extends('layouts.admin')
+
 @section('content')
-<div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-header">
-                <div class="d-flex justify-content-center">
-                    <div class="p-2">
-                        <img src="{{ asset('img/intec_logo.png') }}" class="responsive"/>
+
+<main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div id="panel-1" class="panel">
+                <div class="panel-hdr" style="background-color:rgb(115 16 16)">
+                    <h2>
+                    </h2>
+                    <div class="panel-toolbar">
+                        <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
+                        <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
+                        <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10" data-original-title="Close"></button>
                     </div>
                 </div>
-            </div>
-            <hr class="mb-2 mt-3">
-            <div class="card-body">
-                {!! Form::open(['action' => 'AduanController@simpanAduan', 'method' => 'POST']) !!}
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <div class="row">
-                    <div class="col-md-12">
-                        <p><span class="text-danger">*</span> Maklumat wajib diisi</p>
-                        <div class="card-header">
-                            <h4 class="card-title w-100"><b>INFO PENGADU :</b></h4>
+
+                <div class="panel-container show">
+                    <div class="panel-content">
+                        <center><img src="{{ asset('img/intec_logo.png') }}" style="height: 120px; width: 270px;"></center><br>
+                        <h4 style="text-align: center">
+                            <b>BORANG E-ADUAN INTEC EDUCATION COLLEGE</b>
+                        </h4>
+                        <div>
+                            <p style="padding-left: 40px; padding-right: 40px">
+                                *<i><b>PERHATIAN!</b></i> : Aduan yang diterima akan diproses dalam tempoh 5 hari bekerja tidak termasuk cuti am. Sebarang pemakluman berkaitan status aduan akan dimaklumkan melalui emel. Sila pastikan verifikasi dibuat setelah aduan selesai.
+                            </p>
                         </div>
-                    </div><br><br><br><br><br><br>
-                    <div class="form-group col-md-6">
-                        <span class="text-danger">*</span> {{Form::label('title', 'Nama Pelapor')}}
-                        {{Form::text('nama_pelapor', '', ['class' => 'form-control', 'placeholder' => 'Nama Pelapor', 'id' => 'nama_pelapor', 'onkeyup' => 'this.value = this.value.toUpperCase()'])}}
-                        @error('nama_pelapor')
-                            <p style="color: red">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    <div class="form-group col-md-3">
-                        <span class="text-danger">*</span> {{Form::label('title', 'Emel')}}
-                        {{Form::email('emel_pelapor', '', ['class' => 'form-control', 'placeholder' => 'Emel Pelapor', 'id' => 'emel_pelapor'])}}
-                        @error('emel_pelapor')
-                            <p style="color: red">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    <div class="col-md-3 form-group">
-                        <span class="text-danger">*</span> {{ Form::label('title', 'Jawatan') }}
-                        <select class="form-control jawatan_pelapor" name="jawatan_pelapor" id="jawatan_pelapor">
-                            <option value="">-- Pilih Jawatan --</option>
-                            @foreach ($jawatan as $jwtn) 
-                                <option value="{{ $jwtn->id }}" {{ old('jawatan_pelapor') ? 'selected' : '' }}>{{ $jwtn->nama_jawatan }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-4 form-group">
-                        {{ Form::label('title', 'No Telefon') }}
-                        {{ Form::text('no_tel_pelapor', '', ['class' => 'form-control', 'placeholder' => 'No Telefon']) }}
-                        @error('no_tel_pelapor')
-                            <p style="color: red">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    <div class="col-md-4 form-group">
-                        <span class="text-danger">*</span> {{ Form::label('title', 'No Telefon Bimbit') }}
-                        {{ Form::text('no_tel_bimbit_pelapor', '', ['class' => 'form-control', 'placeholder' => 'No Telefon Bimbit']) }}
-                        @error('no_tel_bimbit_pelapor')
-                            <p style="color: red">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    <div class="col-md-4 form-group no_bilik_pelapor">
-                        {{ Form::label('title', 'No Bilik') }}
-                        {{ Form::text('no_bilik_pelapor', '', ['class' => 'form-control', 'placeholder' => 'No Bilik']) }}
-                        @error('no_bilik_pelapor')
-                            <p style="color: red">{{ $message }}</p>
-                        @enderror
-                    </div>
-                   
-                    <div class="col-md-12">
-                        <div class="card-header">
-                            <h4 class="card-title w-100"><b>BUTIRAN ADUAN :</b></h4>
+                        <div class="panel-container show">
+                            <div class="panel-content">
+
+                                {!! Form::open(['action' => 'AduanController@simpanAduan', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <p><span class="text-danger">*</span> Maklumat wajib diisi</p>
+                                    <div class="table-responsive">
+                                        <table id="info" class="table table-bordered table-hover table-striped w-100">
+                                            <thead>
+                                                <tr>
+                                                    <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-user"></i> INFO PENGADU</label></td>
+                                                </tr>
+                                                <tr>
+                                                    <th width="20%" style="vertical-align: middle">Nama Penuh : </th>
+                                                    <td colspan="2" style="vertical-align: middle">{{ strtoupper($user->name)}}</td>
+                                                    <th width="20%" style="vertical-align: middle">ID Staf : </th>
+                                                    <td colspan="2" style="vertical-align: middle">{{ strtoupper($user->id)}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th width="20%" style="vertical-align: middle">Emel : </th>
+                                                    <td colspan="2" style="vertical-align: middle">{{ $user->email}}</td>
+                                                    <th width="20%" style="vertical-align: middle">No. Telefon : </th>
+                                                    <td colspan="2"><input class="form-control" id="no_tel_pelapor" name="no_tel_pelapor"  value="{{ old('no_tel_pelapor') }}"></td>
+                                                </tr>
+                                            </thead>
+                                        </table>
+
+                                        <table id="aduan" class="table table-bordered table-hover table-striped w-100">
+                                            <thead>
+                                                <tr>
+                                                    <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-info"></i> BUTIRAN ADUAN</label></td>
+                                                </tr>
+                                                <tr>
+                                                    <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Pejabat/Bahagian/ Fakulti/Kolej : </th>
+                                                    <td colspan="2"><input class="form-control" id="lokasi_aduan" name="lokasi_aduan"  value="{{ old('lokasi_aduan') }}" placeholder="Pejabat/Bahagian/Fakulti/Kolej">
+                                                        @error('lokasi_aduan')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror</td>
+                                                    <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Blok : </th>
+                                                    <td colspan="2"><input class="form-control" id="blok_aduan" name="blok_aduan"  value="{{ old('blok_aduan') }}" placeholder="Blok">
+                                                        @error('blok_aduan')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Tingkat/Aras : </th>
+                                                    <td colspan="2"><input class="form-control" id="aras_aduan" name="aras_aduan"  value="{{ old('aras_aduan') }}" placeholder="Tingkat/Aras">
+                                                        @error('aras_aduan')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
+                                                    </td>
+                                                    <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Nama Bilik/No. Bilik : </th>
+                                                    <td colspan="2"><input class="form-control" id="nama_bilik" name="nama_bilik"  value="{{ old('nama_bilik') }}" placeholder="Nama Bilik/No. Bilik">
+                                                        @error('nama_bilik')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Kategori Aduan : </th>
+                                                    <td colspan="2">
+                                                        <select class="form-control kategori" name="kategori_aduan" id="kategori_aduan" >
+                                                            <option value="">Pilih Kategori Aduan</option>
+                                                            @foreach ($kategori as $kat) 
+                                                                <option value="{{ $kat->kod_kategori }}" {{ old('kategori_aduan') ==  $kat->kod_kategori  ? 'selected' : '' }}>{{ $kat->nama_kategori }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        @error('kategori_aduan')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
+                                                    </td>
+                                                    <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Jenis Kerosakan : </th>
+                                                    <td colspan="2">
+                                                        <select class="form-control jenis" name="jenis_kerosakan" id="jenis_kerosakan" >
+                                                        </select>
+                                                        @error('jenis_kerosakan')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th width="20%" style="vertical-align: top"><span class="text-danger">*</span> Sebab Kerosakan : </th>
+                                                    <td colspan="2">
+                                                        <select class="form-control sebab" name="sebab_kerosakan" id="sebab_kerosakan" >
+                                                        </select>
+                                                        @error('sebab_kerosakan')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
+                                                    </td>
+                                                    <th width="20%" style="vertical-align: middle">Kuantiti/Unit : </th>
+                                                    <td colspan="2"><input type="number" class="form-control" id="kuantiti_unit" name="kuantiti_unit"  value="{{ old('kuantiti_unit') }}" placeholder="Kuantiti/Unit ">
+                                                        @error('kuantiti_unit')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
+                                                    </td>
+                                                </tr>
+
+                                                {{-- <tr class="sk_penerangan">
+                                                    <th width="20%" style="vertical-align: top">Penerangan Sebab Kerosakan : </th>
+                                                    <td colspan="4">
+                                                        <textarea rows="5" id="sk_penerangan" name="sk_penerangan" class="form-control">{{ old('sk_penerangan') }}</textarea>
+                                                        @error('sk_penerangan')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
+                                                    </td>
+                                                </tr>
+
+                                                <tr class="jk_penerangan">
+                                                    <th width="20%" style="vertical-align: top">Penerangan Jenis Kerosakan : </th>
+                                                    <td colspan="4"><textarea rows="5" id="jk_penerangan" name="jk_penerangan" class="form-control">{{ old('jk_penerangan') }}</textarea>
+                                                        @error('jk_penerangan')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
+                                                    </td>
+                                                </tr> --}}
+
+                                                <tr>
+                                                    <th width="20%" style="vertical-align: top">Adakah Kerosakan Dicaj ? </th>
+                                                        <td colspan="2" style="padding-top: 20px;">
+                                                            <input class="ml-5" type="radio" name="caj_kerosakan" id="caj_kerosakan" value="Ya" {{ old('caj_kerosakan') == "Ya" ? 'checked' : '' }}> Ya
+                                                            <input class="ml-5" type="radio" name="caj_kerosakan" id="caj_kerosakan" value="Tidak" {{ old('caj_kerosakan') == "Tidak" ? 'checked' : '' }}> Tidak
+                                                        </td>
+                                                    <th width="20%" style="vertical-align: top">Maklumat Tambahan : </th>
+                                                    <td colspan="2"><textarea rows="5" id="maklumat_tambahan" name="maklumat_tambahan" class="form-control" placeholder="Sila isikan maklumat tambahan sekiranya ada">{{ old('maklumat_tambahan') }}</textarea>
+                                                        @error('maklumat_tambahan')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
+                                                    </td>
+                                                </tr>
+                                            </thead>
+                                        </table>
+
+                                        <table id="muatnaik" class="table table-bordered table-hover table-striped w-100">
+                                            <thead>
+                                                <tr>
+                                                    <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-upload"></i> MUATNAIK BUKTI</label></td>
+                                                </tr>
+                                                <tr>
+                                                    <th width="20%" style="vertical-align: middle"> Gambar : </th>
+                                                    <td colspan="2">
+                                                        <input type="file" class="form-control" id="upload_image" name="upload_image[]" multiple>
+                                                        @error('upload_image')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
+                                                    </td>
+                                                    <th width="20%" style="vertical-align: middle"> Resit : </th>
+                                                    <td colspan="2">
+                                                        <input type="file" class="form-control" id="resit_file" name="resit_file[]" accept="application/pdf" multiple>
+                                                        {{-- <input type="file" class="form-control" id="resit_file" name="resit_file" accept="application/pdf"> --}}
+                                                        @error('resit_file')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
+                                                    </td>
+                                                </tr>
+                                                
+                                            </thead>
+                                        </table>
+
+                                        <table id="verifikasi" class="table table-bordered table-hover table-striped w-100">
+                                            <thead>
+                                                <tr>
+                                                    <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-check-square"></i> PERAKUAN DAN PENGESAHAN PELAPOR</label></td>
+                                                </tr>
+                                                <tr>
+                                                    <div class="form-group">
+                                                        <td colspan="4"><p class="form-label" for="pengesahan_aduan">
+                                                        <input style="margin-top: 15px; margin-right: 30px; margin-left: 15px; margin-bottom: 15px;" type="checkbox" name="pengesahan_aduan" id="chk" onclick="btn()"/>
+                                                        SAYA, <b><u>{{ strtoupper($user->name) }}</u></b> MENGESAHKAN BUTIRAN PERIBADI DAN ADUAN DIBERIKAN ADALAH BENAR. SAYA BERSETUJU UNTUK DIHUBUNGI BAGI SEBARANG PERTANYAAN LANJUT BERKAITAN ADUAN YANG DIBUAT.</p> 
+                                                        <button style="margin-top: 5px;" class="btn btn-danger float-right" id="submit" name="submit" disabled><i class="fal fa-check"></i> Hantar Aduan</button></td>
+                                                    </div>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                {!! Form::close() !!}
+                            </div>
                         </div>
-                    </div><br><br><br><br>
-
-                    <div class="form-group col-md-6">
-                        <span class="text-danger">*</span> {{Form::label('title', 'Pejabat/Bahagian/Fakulti/Kolej')}}
-                        {{Form::text('lokasi_aduan', '', ['class' => 'form-control', 'placeholder' => 'Pejabat/Bahagian/Fakulti/Kolej'])}}
-                        @error('lokasi_aduan')
-                            <p style="color: red">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div class="form-group col-md-6">
-                        <span class="text-danger">*</span> {{Form::label('title', 'Blok')}}
-                        {{Form::text('blok_aduan', '', ['class' => 'form-control', 'placeholder' => 'Blok'])}}
-                        @error('blok_aduan')
-                            <p style="color: red">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div class="form-group col-md-6">
-                        <span class="text-danger">*</span> {{Form::label('title', 'Tingkat/Aras')}}
-                        {{Form::text('aras_aduan', '', ['class' => 'form-control', 'placeholder' => 'Aras'])}}
-                        @error('aras_aduan')
-                            <p style="color: red">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div class="form-group col-md-6">
-                        <span class="text-danger">*</span> {{Form::label('title', 'Nama Bilik/No. Bilik')}}
-                        {{Form::text('nama_bilik', '', ['class' => 'form-control', 'placeholder' => 'Nama Bilik/No. Bilik'])}}
-                        @error('nama_bilik')
-                            <p style="color: red">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div class="form-group col-md-4">
-                        <span class="text-danger">*</span> {{Form::label('title', 'Kategori Aduan')}}
-                        <select class="form-control kategori" name="kategori_aduan" id="kategori_aduan" >
-                            <option value="">-- Pilih Kategori Aduan --</option>
-                            @foreach ($kategori as $kat) 
-                                <option value="{{ $kat->kod_kategori }}" {{ old('kategori_aduan') ? 'selected' : '' }}>{{ $kat->nama_kategori }}</option>
-                            @endforeach
-                        </select>
-                        @error('kategori_aduan')
-                            <p style="color: red">{{ $message }}</p>
-                        @enderror
-                    </div>
-                   
-                    <div class="col-md-4 form-group">
-                        <span class="text-danger">*</span> {{Form::label('title', 'Jenis Kerosakan')}}
-                        <select class="form-control jenis" name="jenis_kerosakan" id="jenis_kerosakan" >
-                        </select>
-                        @error('jenis_kerosakan')
-                            <p style="color: red">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    
-                    <div class="col-md-4 form-group">
-                        <span class="text-danger">*</span> {{Form::label('title', 'Sebab Kerosakan')}}
-                        <select class="form-control sebab" name="sebab_kerosakan" id="sebab_kerosakan" >
-                        </select>
-                        @error('sebab_kerosakan')
-                            <p style="color: red">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div class="form-group col-md-6 jk_penerangan">
-                        {{Form::label('title', 'Penerangan Jenis Kerosakan')}}
-                        {{Form::textarea('jk_penerangan', '', ['class' => 'form-control', 'placeholder' => 'Penerangan', 'cols' => '5', 'rows' => '5', 'id' => 'jk_penerangan'])}}
-                        @error('jk_penerangan')
-                            <p style="color: red">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div class="form-group col-md-6 sk_penerangan">
-                        {{Form::label('title', 'Penerangan Sebab Kerosakan')}}
-                        {{Form::textarea('sk_penerangan', '', ['class' => 'form-control', 'placeholder' => 'Penerangan', 'cols' => '5', 'rows' => '5'])}}
-                        @error('sk_penerangan')
-                            <p style="color: red">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div class="form-group col-md-12">
-                        {{Form::label('title', 'Maklumat Tambahan')}}
-                        {{Form::textarea('maklumat_tambahan', '', ['class' => 'form-control', 'placeholder' => 'Sila isikan maklumat tambahan sekiranya ada', 'cols' => '10', 'rows' => '5'])}}
-                        @error('maklumat_tambahan')
-                            <p style="color: red">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-12">
-                        <div class="card-header">
-                            <h4 class="card-title w-100"><b><span class="text-danger">*</span> PERAKUAN DAN PENGESAHAN PELAPOR :</b></h4>
-                        </div>
-                    </div>
-                    <br><br><br><br>
-
-                    <div class="col-md-12">
-                    <div class="card-body" style="font-size: 15px">
-                        <label for="chk" class="form-group col-md-12">
-                            <input type="checkbox" name="chk" id="chk"  onclick="btn()"/>
-                            Saya <input class="border-0" id="nama" name="nama" style="width: 500px; font-weight:bold; text-decoration: underline; text-align: center;" placeholder="____________________________________________________________________" readonly> mengesahkan butiran peribadi dan aduan yang diberi adalah benar. Saya bersetuju untuk dihubungi bagi sebarang pertanyaan lanjut berkaitan aduan yang dibuat.
-                        </label>
-                      </div>
                     </div>
                 </div>
-                <button class="btn btn-primary float-right" id="hantar" name="hantar" disabled><i class="fal fa-check"></i> Hantar Aduan</button>
-                {!! Form::close() !!}
+
             </div>
         </div>
     </div>
-</div>
+
+</main>
+
 @endsection
+
 @section('script')
-    <script>
-        $(document).ready(function() {
-            $('.jawatan_pelapor, #kategori_aduan, #jenis_kerosakan, #sebab_kerosakan').select2();
+<script>
+
+    function btn()
+    {
+        var chk = document.getElementById("chk")
+        var submit = document.getElementById("submit");
+        submit.disabled = chk.checked ? false : true;
+        if(!submit.disabled){
+            submit.focus();
+        }
+    }
+
+    $(function () {          
+        $("input[name=q1]").change(function () {        
+        if ($(this).val() == "Y") {
+          $(".q2").hide();
+          $(".q3").hide();
+          $(".q4").hide();
+          $(".declare_date2").hide();
+          $(".declare_date1").show();
+        }
+        else {
+          $(".q2").show();
+          $(".declare_date1").hide();
+        }
+      });
+
+      $("input[name=q2]").change(function () {        
+        if ($(this).val() == "Y") {
+          $(".q3").hide();
+          $(".q4").hide();
+          $(".declare_date1").hide();
+          $(".declare_date2").show();
+        }
+        else {
+          $(".q3").show();
+          $(".declare_date2").hide();
+        }
+      });
+
+      $("input[name=q3]").change(function () {        
+        if ($(this).val() == "Y") {
+          $(".q4").hide();
+        }
+        else {
+          $(".q4").show();
+        }
+      });
+
+      $(".jk_penerangan").hide();
+
+        $( "#jenis_kerosakan" ).change(function() {
+        var val = $("#jenis_kerosakan").val();
+        if(val==16 || val==23 || val==32 || val==38 || val==42){
+            $(".jk_penerangan").show();
+        } else {
+            $(".jk_penerangan").hide();
+        }
+      });
+
+      $(".sk_penerangan").hide();
+
+        $( "#sebab_kerosakan" ).change(function() {
+        var val = $("#sebab_kerosakan").val();
+        if(val==0){ 
+            // listkan lain-lain id
+            $(".sk_penerangan").show();
+        } else {
+            $(".sk_penerangan").hide();
+        }
+      });
+
+    })
+
+    $(document).ready(function() {
+            $('.kategori, .jenis, .sebab').select2();
 
             if($('.kategori').val()!=''){
                     updateJenis($('.kategori'));
@@ -206,7 +315,7 @@
                     success:function(data)
                     {
                         console.log(data)
-                        op+='<option value="">-- Pilih Jenis Kerosakan --</option>';
+                        op+='<option value="">Pilih Jenis Kerosakan</option>';
                         for (var i=0; i<data.length; i++)
                         {
                             var selected = (data[i].id=="{{old('jenis_kerosakan', $aduan->jenis_kerosakan)}}") ? "selected='selected'" : '';
@@ -221,10 +330,10 @@
                 });
             }
 
-            if($('.kategori').val()!=''){
-                    updateSebab($('.kategori'));
+            if($('.jenis').val()!=''){
+                    updateSebab($('.jenis'));
                 }
-                $(document).on('change','.kategori',function(){
+                $(document).on('change','.jenis',function(){
                     updateSebab($(this));
                 });
 
@@ -239,7 +348,7 @@
                     success:function(data2)
                     {
                         console.log(data2)
-                        op+='<option value="">-- Pilih Sebab Kerosakan --</option>';
+                        op+='<option value="">Pilih Sebab Kerosakan</option>';
                         for (var i=0; i<data2.length; i++)
                         {
                             var selected = (data2[i].id=="{{old('sebab_kerosakan', $aduan->sebab_kerosakan)}}") ? "selected='selected'" : '';
@@ -254,64 +363,8 @@
                 });
             }
 
-            $('#nama_pelapor').on('change', function() {
-                $('#nama').val($(this).val());
-            });
-
-            // sama dgn func btn()
-            // $("#chk").change(function() {
-            // if ($(this).is(':checked')) {
-            //     $('#hantar').show();
-            // } else {
-            //     $('#hantar').hide();
-            // }
-            // });
-            // $("#chk").trigger("change");
-
-            $(".no_bilik_pelapor").hide();
-
-            $( "#jawatan_pelapor" ).change(function() {
-            var val = $("#jawatan_pelapor").val();
-            if(val==1){
-                $(".no_bilik_pelapor").show();
-            } else {
-                $(".no_bilik_pelapor").hide();
-            }
-            });
-
-            $(".jk_penerangan").hide();
-
-            $( "#jenis_kerosakan" ).change(function() {
-            var val = $("#jenis_kerosakan").val();
-            if(val==5 || val==10 || val==18 || val==24 || val==28){
-                $(".jk_penerangan").show();
-            } else {
-                $(".jk_penerangan").hide();
-            }
-            });
-
-            $(".sk_penerangan").hide();
-
-            $( "#sebab_kerosakan" ).change(function() {
-            var val = $("#sebab_kerosakan").val();
-            if(val==8 || val==17 || val==32 || val==40 || val==47){
-                $(".sk_penerangan").show();
-            } else {
-                $(".sk_penerangan").hide();
-            }
-            });
-
         });
 
-    function btn()
-        {
-            var chk = document.getElementById("chk")
-            var hantar = document.getElementById("hantar");
-            hantar.disabled = chk.checked ? false : true;
-            if(!hantar.disabled){
-                hantar.focus();
-            }
-        }
-    
-    </script>
+</script>
 @endsection
+

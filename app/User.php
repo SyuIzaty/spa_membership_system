@@ -59,4 +59,9 @@ class User extends Authenticatable
         return $this->hasMany('App\Covid','user_id');
     }
 
+    public function staff()
+    {
+        return $this->hasOne('App\Staff','staff_id');
+    }
+
 }

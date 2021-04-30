@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreSebabRequest;
 use Illuminate\Http\Request;
 use App\KategoriAduan;
+use App\JenisKerosakan;
 use App\SebabKerosakan;
 use Session;
 
@@ -17,10 +17,21 @@ class SebabKerosakanController extends Controller
      */
     public function index(Request $request)
     {
-        $sebab = SebabKerosakan::where('id', $request->id)->first();
+        $sebab = new SebabKerosakan();
+        // $senarai = SebabKerosakan::where('id', $request->sebab)->first(); 
         $kategori = KategoriAduan::all();
+        $jenis = JenisKerosakan::all();
 
-        return view('sebab-kerosakan.index', compact('sebab', 'kategori'));
+        return view('sebab-kerosakan.index', compact('sebab', 'kategori', 'jenis'));
+    }
+
+    public function cariJenis(Request $request)
+    {
+        $data = JenisKerosakan::select('jenis_kerosakan', 'id')
+                ->where('kategori_aduan', $request->id)
+                ->take(100)->get();
+
+        return response()->json($data);
     }
 
     public function data_sebab()
@@ -31,7 +42,7 @@ class SebabKerosakanController extends Controller
         ->addColumn('action', function ($sebab) {
 
             return '
-            <a href="" data-target="#crud-modals" data-toggle="modal" data-sebab="'.$sebab->id.'" data-kategori="'.$sebab->kategori_aduan.'" data-kerosakan="'.$sebab->sebab_kerosakan.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i> Edit</a>
+            <a href="" data-target="#crud-modals" data-toggle="modal" data-sebab="'.$sebab->id.'" data-kategori="'.$sebab->kategori_aduan.'" data-kerosakan="'.$sebab->sebab_kerosakan.'" data-jenis="'.$sebab->jenis_kerosakan.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i> Edit</a>
             <button class="btn btn-sm btn-danger btn-delete" data-remote="/sebab-kerosakan/' . $sebab->id . '"><i class="fal fa-trash"></i>  Padam</button>'
             ;
         })
@@ -39,17 +50,29 @@ class SebabKerosakanController extends Controller
         ->editColumn('kategori_aduan', function ($sebab) {
 
             return $sebab->kategori->nama_kategori;
-       })
+        })
+
+        ->editColumn('jenis_kerosakan', function ($sebab) {
+
+            return $sebab->jenis->jenis_kerosakan;
+        })
             
         ->make(true);
     }
 
-    public function tambahSebab(StoreSebabRequest $request)
+    public function tambahSebab(Request $request)
     {
         $sebab = SebabKerosakan::where('id', $request->id)->first();
 
+        $request->validate([
+            'kategori_aduan'       => 'required',
+            'jenis_kerosakan'      => 'required',
+            'sebab_kerosakan'      => 'required|max:255',
+        ]);
+
         SebabKerosakan::create([
                 'kategori_aduan'     => $request->kategori_aduan,
+                'jenis_kerosakan'    => $request->jenis_kerosakan,
                 'sebab_kerosakan'    => $request->sebab_kerosakan, 
             ]);
         
@@ -57,12 +80,17 @@ class SebabKerosakanController extends Controller
         return redirect('sebab-kerosakan');
     }
 
-    public function kemaskiniSebab(StoreSebabRequest $request) 
+    public function kemaskiniSebab(Request $request) 
     {
         $sebab = SebabKerosakan::where('id', $request->sebab_id)->first();
+
+        $request->validate([
+            'sebab_kerosakan'       => 'required|max:255',
+        ]);
         
         $sebab->update([
-            'kategori_aduan'     => $request->kategori_aduan,
+            // 'kategori_aduan'     => $request->kategori_aduan,
+            // 'jenis_kerosakan'    => $request->jenis_kerosakan,
             'sebab_kerosakan'    => $request->sebab_kerosakan, 
         ]);
         

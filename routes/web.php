@@ -74,12 +74,9 @@ Route::get('exportaduan/{kategori?}/{status?}/{tahap?}/{bulan?}','AduanControlle
 Route::get('/juruExport/{juruteknik?}/{stat?}/{kate?}/{bul?}', 'AduanController@jurutekniks');
 Route::post('/juruExport/{juruteknik?}/{stat?}/{kate?}/{bul?}', 'AduanController@jurutekniks');
 Route::get('juruaduan/{juruteknik?}/{stat?}/{kate?}/{bul?}','AduanController@jurutekniks');
-
-Route::get('/export_aduan', 'AduanController@aduan_all');
-Route::post('/data_aduanexport', 'AduanController@data_aduanexport');
-Route::get('/aduanExport', 'AduanController@aduans');
-Route::post('/aduanExport', 'AduanController@aduans');
-Route::get('exportaduan/{juruteknik?}/{kategori?}/{status?}/{bulan?}','AduanController@aduans');
+Route::get('/individuExport/{stats?}/{kates?}/{buls?}', 'AduanController@individu');
+Route::post('/individuExport/{stats?}/{kates?}/{buls?}', 'AduanController@individu');
+Route::get('aduanIndividu/{stats?}/{kates?}/{buls?}','AduanController@individu');
 
 //KATEGORI
 Route::resource('kategori-aduan', 'KategoriAduanController');
@@ -98,6 +95,12 @@ Route::resource('sebab-kerosakan', 'SebabKerosakanController');
 Route::post('sebabKerosakan', 'SebabKerosakanController@data_sebab');  
 Route::post('tambahSebab','SebabKerosakanController@tambahSebab');
 Route::post('kemaskiniSebab','SebabKerosakanController@kemaskiniSebab');
+
+//ALAT
+Route::resource('alat-ganti', 'AlatGantiController');
+Route::post('alatGanti', 'AlatGantiController@data_alat');  
+Route::post('tambahAlat','AlatGantiController@tambahAlat');
+Route::post('kemaskiniALat','AlatGantiController@kemaskiniALat');
 
 //COVID19
 Route::get('/declarationForm','CovidController@form')->name('form');

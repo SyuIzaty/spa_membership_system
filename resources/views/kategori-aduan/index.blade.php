@@ -31,11 +31,11 @@
                         <div class="table-responsive">
                             <table id="kategori" class="table table-bordered table-hover table-striped w-100">
                                 <thead>
-                                    <tr class="bg-primary-50 text-center">
-                                        <th style="width:30px">No</th>
-                                        <th>Kod Kategori</th>
-                                        <th>Nama Kategori</th>
-                                        <th>Tindakan</th>
+                                    <tr class="text-center" style="background-color: #880000; color: white">
+                                        <th style="width:30px">NO</th>
+                                        <th>KOD KATEGORI</th>
+                                        <th>NAMA KATEGORI</th>
+                                        <th>TINDAKAN</th>
                                     </tr>
                                     <tr>
                                         <td class="hasinput"></td>

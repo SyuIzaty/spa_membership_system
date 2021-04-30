@@ -11,10 +11,10 @@ class Aduan extends Model
     protected $table = 'cms_aduan';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'nama_pelapor', 'emel_pelapor', 'jawatan_pelapor', 'no_tel_pelapor', 'no_tel_bimbit_pelapor', 'no_bilik_pelapor', 'tarikh_laporan', 'lokasi_aduan', 
-        'blok_aduan', 'aras_aduan', 'nama_bilik', 'kategori_aduan', 'jenis_kerosakan', 'jk_penerangan', 'sebab_kerosakan', 'sk_penerangan', 
-        'status_aduan', 'tahap_kategori', 'juruteknik_bertugas', 'tarikh_serahan_aduan', 'laporan_pembaikan', 'bahan_alat', 'ak_upah', 
-        'ak_bahan_alat', 'jumlah_kos', 'tarikh_selesai_aduan', 'catatan_pembaikan', 'maklumat_tambahan'
+        'nama_pelapor', 'emel_pelapor', 'id_pelapor', 'no_tel_pelapor', 'nama_bilik', 'aras_aduan','blok_aduan', 'lokasi_aduan', 'kategori_aduan', 
+        'jenis_kerosakan', 'jk_penerangan', 'sebab_kerosakan', 'sk_penerangan', 'kuantiti_unit', 'caj_kerosakan', 'maklumat_tambahan', 'pengesahan_aduan', 
+        'pengesahan_pembaikan', 'tarikh_laporan', 'status_aduan', 'bulan_laporan', 'tahap_kategori', 'tarikh_serahan_aduan', 'laporan_pembaikan', 'bahan_alat', 'ak_upah', 
+        'ak_bahan_alat', 'jumlah_kos', 'tarikh_selesai_aduan', 'catatan_pembaikan', 
     ];
 
     public function jawatan()
@@ -49,6 +49,6 @@ class Aduan extends Model
 
     public function juruteknik()
     {
-        return $this->belongsTo('App\User','juruteknik_bertugas');  
+        return $this->hasmany('App\JuruteknikBertugas','id_aduan', 'id');  
     }
 }

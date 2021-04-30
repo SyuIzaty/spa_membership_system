@@ -4,7 +4,7 @@
 <main id="js-page-content" role="main" class="page-content">
     <div class="subheader">
         <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-list'></i>ADUAN SELESAI
+        <i class='subheader-icon fal fa-list'></i>ADUAN BERTINDIH
         </h1>
     </div>
     <div class="row">
@@ -12,7 +12,7 @@
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
                     <h2>
-                        SENARAI <span class="fw-300"><i>ADUAN SELESAI</i></span>
+                        SENARAI <span class="fw-300"><i>ADUAN BERTINDIH</i></span>
                     </h2>
                     <div class="panel-toolbar">
                         <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
@@ -23,7 +23,7 @@
                 <div class="panel-container show">
                     <div class="panel-content">
                         <div class="table-responsive">
-                            <table id="selesai" class="table table-bordered table-hover table-striped w-100">
+                            <table id="tindih" class="table table-bordered table-hover table-striped w-100">
                                 <thead>
                                     <tr class="text-center" style="background-color: #880000; color: white">
                                         <th style="width:30px">ID</th>
@@ -43,8 +43,7 @@
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Tarikh Aduan"></td>
                                         <td class="hasinput"><select id="status_aduan" name="status_aduan" class="form-control">
                                             <option value="">Semua</option>
-                                            <option value="Selesai">Selesai</option>
-                                            <option value="Selesai (Lantikan Kontraktor)">Selesai (Lantikan Kontraktor)</option>
+                                            <option value="Bertindih">Bertindih</option>
                                         </select></td>
                                         <td class="hasinput"><select id="tahap_kategori" name="tahap_kategori" class="form-control">
                                             <option value="">Semua</option>
@@ -58,9 +57,9 @@
                             </table>
                         </div>
                     </div>
-
-                     {{-- Start Petunjuk --}}
-                     <div class="panel-content py-2 mt-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex pull-left">
+                   
+                    {{-- Start Petunjuk --}}
+                    <div class="panel-content py-2 mt-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex pull-left">
                         <div class="row" style="margin-top: -0.75rem;">
                             <div class="col-lg-4.5 col-sm-12">
                                 <div class="card-body">
@@ -99,7 +98,7 @@
     {
         $('#status_aduan, #tahap_kategori').select2();
         
-        $('#selesai thead tr .hasinput').each(function(i)
+        $('#tindih thead tr .hasinput').each(function(i)
         {
             $('input', this).on('keyup change', function()
             {
@@ -125,23 +124,23 @@
         });
 
 
-        var table = $('#selesai').DataTable({
+        var table = $('#tindih').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
-                url: "/senaraiSelesai",
+                url: "/senaraiBertindih",
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
             columns: [
-                { className: 'text-center', data: 'id', name: 'id' },
-                { className: 'text-center', data: 'nama_pelapor', name: 'nama_pelapor' },
-                { data: 'lokasi_aduan', name: 'lokasi_aduan' },
-                { data: 'kategori_aduan', name: 'kategori_aduan' },
-                { className: 'text-center', data: 'tarikh_laporan', name: 'tarikh_laporan' },
-                { className: 'text-center', data: 'status_aduan', name: 'status_aduan' },
-                { className: 'text-center', data: 'tahap_kategori', name: 'tahap_kategori' },
-                { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
+                    { className: 'text-center', data: 'id', name: 'id' },
+                    { className: 'text-center', data: 'nama_pelapor', name: 'nama_pelapor' },
+                    { data: 'lokasi_aduan', name: 'lokasi_aduan' },
+                    { data: 'kategori_aduan', name: 'kategori_aduan' },
+                    { className: 'text-center', data: 'tarikh_laporan', name: 'tarikh_laporan' },
+                    { className: 'text-center', data: 'status_aduan', name: 'status_aduan' },
+                    { className: 'text-center', data: 'tahap_kategori', name: 'tahap_kategori' },
+                    { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
                 "order": [[ 0, "asc" ]],
@@ -150,7 +149,7 @@
                 } 
         });
 
-        $('#selesai').on('click', '.btn-delete[data-remote]', function (e) {
+        $('#tindih').on('click', '.btn-delete[data-remote]', function (e) {
             e.preventDefault();
             $.ajaxSetup({
                 headers: {
@@ -177,7 +176,7 @@
                     dataType: 'json',
                     data: {method: '_DELETE', submit: true}
                     }).always(function (data) {
-                        $('#selesai').DataTable().draw(false);
+                        $('#tindih').DataTable().draw(false);
                     });
                 }
             })

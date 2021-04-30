@@ -31,15 +31,17 @@
                         <div class="table-responsive">
                             <table id="sebab" class="table table-bordered table-hover table-striped w-100">
                                 <thead>
-                                    <tr class="bg-primary-50 text-center">
-                                        <th style="width:30px">No</th>
-                                        <th>Kategori Aduan</th>
-                                        <th>Sebab Kerosakan</th>
-                                        <th>Tindakan</th>
+                                    <tr class="text-center" style="background-color: #880000; color: white">
+                                        <th style="width:30px">NO</th>
+                                        <th>KATEGORI ADUAN</th>
+                                        <th>JENIS KEROSAKAN</th>
+                                        <th>SEBAB KEROSAKAN</th>
+                                        <th>TINDAKAN</th>
                                     </tr>
                                     <tr>
                                         <td class="hasinput"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Carian kategori"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Carian jenis"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Carian sebab"></td>
                                         <td class="hasinput"></td>
                                     </tr>
@@ -65,15 +67,26 @@
                     {!! Form::open(['action' => 'SebabKerosakanController@tambahSebab', 'method' => 'POST']) !!}
                     <p><span class="text-danger">*</span> Maklumat wajib diisi</p>
                         <div class="form-group">
-                            <td width="10%"><label class="form-label" for="kategori_aduan"><span class="text-danger">*</span> Kategori Aduan :</label></td>
+                            <td width="10%"><label class="form-label" for="jenis_kerosakan"><span class="text-danger">*</span> Kategori Aduan :</label></td>
                             <td colspan="4">
                                 <select name="kategori_aduan" id="kategori_aduan" class="kategori form-control">
-                                    <option value="">-- Pilih Kategori Aduan --</option>
+                                    <option value="">Pilih Kategori Aduan</option>
                                     @foreach ($kategori as $kat) 
                                         <option value="{{ $kat->kod_kategori }}" {{ old('kategori_aduan') ? 'selected' : '' }}>{{ $kat->nama_kategori }}</option>
                                     @endforeach
                                  </select>
                                 @error('kategori_aduan')
+                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                @enderror
+                            </td>
+                        </div>
+
+                        <div class="form-group">
+                            <td width="10%"><label class="form-label" for="jenis_kerosakan"><span class="text-danger">*</span> Jenis Kerosakan :</label></td>
+                            <td colspan="4">
+                                <select name="jenis_kerosakan" id="jenis_kerosakan" class="jenis form-control">
+                                </select>
+                                @error('jenis_kerosakan')
                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                 @enderror
                             </td>
@@ -108,15 +121,16 @@
                     {!! Form::open(['action' => 'SebabKerosakanController@kemaskiniSebab', 'method' => 'POST']) !!}
                     <input type="hidden" name="sebab_id" id="sebab">
                     <p><span class="text-danger">*</span> Maklumat wajib diisi</p>
+
                     <div class="form-group">
-                        <td width="15%"><label class="form-label" for="kategori_aduan"><span class="text-danger">*</span> Kategori Aduan :</label></td>
-                        <td colspan="5">
-                            <select class="form-control" name="kategori_aduan" id="aduan">
-                                <option value="">-- Pilih Kategori Aduan --</option>
-                                @foreach($kategori as $kat)
-                                    <option value="{{$kat->kod_kategori}}">{{ $kat->nama_kategori }}</option><br>
+                        <td width="10%"><label class="form-label" for="kategori_aduan">Kategori Aduan :</label></td>
+                        <td colspan="4">
+                            <select name="kategori_aduan" id="kategoris" class="form-control" disabled>
+                                <option value="">Pilih Kategori Aduan</option>
+                                @foreach ($kategori as $kat) 
+                                    <option value="{{ $kat->kod_kategori }}" {{ $sebab->kategori_aduan == $kat->kod_kategori ? 'selected="selected"' : '' }} >{{ $kat->nama_kategori }}</option>
                                 @endforeach
-                            </select>
+                             </select>
                             @error('kategori_aduan')
                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                             @enderror
@@ -124,8 +138,23 @@
                     </div>
 
                     <div class="form-group">
-                        <td width="15%"><label class="form-label" for="sebab_kerosakan"><span class="text-danger">*</span> Sebab Kerosakan :</label></td>
-                        <td colspan="5"><input class="form-control" id="kerosakan" name="sebab_kerosakan">
+                        <td width="10%"><label class="form-label" for="jenis_kerosakan">Jenis Kerosakan :</label></td>
+                        <td colspan="4">
+                            <select name="jenis_kerosakan" id="jeniss" class="form-control" disabled>
+                                <option value="">Pilih Kategori Aduan</option>
+                                @foreach ($jenis as $jen) 
+                                    <option value="{{ $jen->id }}" {{ $sebab->jenis_kerosakan == $jen->id ? 'selected="selected"' : '' }} >{{ $jen->jenis_kerosakan }}</option>
+                                @endforeach
+                             </select>
+                            @error('jenis_kerosakan')
+                                <p style="color: red"><strong> * {{ $message }} </strong></p>
+                            @enderror
+                        </td>
+                    </div>
+
+                    <div class="form-group">
+                        <td width="10%"><label class="form-label" for="sebab_kerosakan"><span class="text-danger">*</span> Sebab Kerosakan :</label></td>
+                        <td colspan="4"><input class="form-control" id="sebabs" name="sebab_kerosakan">
                             @error('sebab_kerosakan')
                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                             @enderror
@@ -151,7 +180,7 @@
 <script>
     $(document).ready(function()
     {
-        $('.kategori').select2({ 
+        $('.kategori, .jenis, .kategoris, .jeniss').select2({ 
             dropdownParent: $('#crud-modal') 
         }); 
 
@@ -164,11 +193,46 @@
             var sebab = button.data('sebab') 
             var kategori = button.data('kategori')
             var kerosakan = button.data('kerosakan')
+            var jenis = button.data('jenis')
 
-            $('.modal-body #sebab').val(sebab); // # for id in form  
-            $('.modal-body #aduan').val(kategori); // $("#aduan")
-            $('.modal-body #kerosakan').val(kerosakan); 
+            $('.modal-body #sebab').val(sebab); 
+            $('.modal-body #kategoris').val(kategori); 
+            $('.modal-body #sebabs').val(kerosakan); 
+            $('.modal-body #jeniss').val(jenis); 
         })
+
+        if($('.kategori').val()!=''){
+                updateJenis($('.kategori'));
+            }
+            $(document).on('change','.kategori',function(){
+                updateJenis($(this));
+            });
+
+            function updateJenis(elem){
+            var katid=elem.val();
+            var op=" "; 
+
+            $.ajax({
+                type:'get',
+                url:'{!!URL::to('cariJenis')!!}',
+                data:{'id':katid},
+                success:function(data)
+                {
+                    console.log(data)
+                    op+='<option value="">Pilih Jenis Kerosakan</option>';
+                    for (var i=0; i<data.length; i++)
+                    {
+                        var selected = (data[i].id=="{{old('jenis_kerosakan', $sebab->jenis_kerosakan)}}") ? "selected='selected'" : '';
+                        op+='<option value="'+data[i].id+'" '+selected+'>'+data[i].jenis_kerosakan+'</option>';
+                    }
+
+                    $('.jenis').html(op);
+                },
+                error:function(){
+                    console.log('success');
+                },
+            });
+        }
 
         $('#sebab thead tr .hasinput').each(function(i)
         {
@@ -207,6 +271,7 @@
             columns: [
                     { className: 'text-center', data: 'id', name: 'id' },
                     { className: 'text-center', data: 'kategori_aduan', name: 'kategori_aduan' },
+                    { className: 'text-center', data: 'jenis_kerosakan', name: 'jenis_kerosakan' },
                     { className: 'text-center', data: 'sebab_kerosakan', name: 'sebab_kerosakan' },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],

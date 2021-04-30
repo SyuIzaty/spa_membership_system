@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreJenisRequest;
 use Illuminate\Http\Request;
 use App\KategoriAduan;
 use App\JenisKerosakan;
@@ -44,9 +43,14 @@ class JenisKerosakanController extends Controller
         ->make(true);
     }
 
-    public function tambahJenis(StoreJenisRequest $request)
+    public function tambahJenis(Request $request)
     {
         $jenis = JenisKerosakan::where('id', $request->id)->first();
+
+        $request->validate([
+            'kategori_aduan'       => 'required',
+            'jenis_kerosakan'      => 'required|max:255',
+        ]);
 
         JenisKerosakan::create([
                 'kategori_aduan'     => $request->kategori_aduan,
@@ -57,12 +61,16 @@ class JenisKerosakanController extends Controller
         return redirect('jenis-kerosakan');
     }
 
-    public function kemaskiniJenis(StoreJenisRequest $request) 
+    public function kemaskiniJenis(Request $request) 
     {
         $jenis = JenisKerosakan::where('id', $request->jenis_id)->first();
         
+        $request->validate([
+            'jenis_kerosakan'      => 'required|max:255',
+        ]);
+
         $jenis->update([
-            'kategori_aduan'     => $request->kategori_aduan,
+            // 'kategori_aduan'     => $request->kategori_aduan,
             'jenis_kerosakan'    => $request->jenis_kerosakan, 
         ]);
         

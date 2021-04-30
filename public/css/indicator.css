@@ -39,23 +39,33 @@
     color: #fff;
     background-color: #28a745;
 }
+/* selesai kontrak*/
+.badge-success2 { 
+  color: #fff;
+  background-color: #075419;
+}
 /* kiv */
 .badge-kiv {
     color: #fff;
-    background-color: #eb1c1c;
+    background-color: #df8585;
+}
+/* tindih */
+.badge-duplicate {
+  color: #fff;
+  background-color: #b51b1b;
 }
 /* baru */
-.badge-new {
+.badge-new { 
     color: #fff;
     background-color: #1c1ceb;
 }
 /* hntr kpd */
-.badge-sent {
+.badge-sent { 
     color: #fff;
     background-color: #b711d5;
 }
 /* ambil tindakan */
-.badge-done {
+.badge-done { 
     color: #fff;
     background-color: #eb911c;
 }
