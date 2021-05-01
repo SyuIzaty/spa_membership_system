@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use Auth;
 use File;
 use Session;
@@ -17,7 +18,6 @@ use App\TahapKategori;
 use App\ImejPembaikan;
 use App\KategoriAduan;
 use App\SebabKerosakan;
-use App\JawatanPengadu;
 use App\JenisKerosakan;
 use App\AlatanPembaikan;
 use App\JuruteknikBertugas;
@@ -37,13 +37,12 @@ class AduanController extends Controller
 
     public function borangAduan()
     {
-        $jawatan = JawatanPengadu::all();
         $kategori = KategoriAduan::all();
         $jenis = JenisKerosakan::all();
         $sebab = SebabKerosakan::all();
         $aduan = new Aduan();
         $user = Auth::user();
-        return view('aduan.borang-aduan', compact('jawatan', 'kategori', 'jenis', 'sebab', 'aduan', 'user'));
+        return view('aduan.borang-aduan', compact('kategori', 'jenis', 'sebab', 'aduan', 'user'));
     }
 
     public function cariJenis(Request $request)
@@ -1286,6 +1285,10 @@ class AduanController extends Controller
         $status = StatusAduan::select('kod_status', 'nama_status')->get();
         $tahap = TahapKategori::select('kod_tahap', 'jenis_tahap')->get();
         $bulan = Aduan::select('bulan_laporan')->groupBy('bulan_laporan')->orderBy('bulan_laporan', 'ASC')->get();
+        // $test = Aduan::select(DB::raw("MONTH(tarikh_laporan) bulan"))
+        // ->groupby('bulan')
+        // ->get();
+        
         $juruteknik = User::select('id', 'name')->whereHas('roles', function($query){
             $query->where('id', 'CMS002');
         })->get();
@@ -1592,7 +1595,53 @@ class AduanController extends Controller
      */
     public function index()
     {
-        //
+        $aduan = DB::table('cms_status_aduan as tblStatus')
+        ->select('tblStatus.kod_status','tblStatus.color','tblStatus.nama_status', DB::raw('COUNT(tblAduan.status_aduan) as count'))
+        ->leftjoin('cms_aduan as tblAduan','tblAduan.status_aduan','=','tblStatus.kod_status')
+        ->groupBy('tblStatus.kod_status','tblStatus.color','tblStatus.nama_status')
+        ->orderBy('count')
+        ->get();
+
+        $list = DB::table('cms_juruteknik as tblJuru')
+        ->select('tblJuru.juruteknik_bertugas','tblUser.name', DB::raw('COUNT(tblAduan.status_aduan) as count'))
+        ->leftJoin('cms_aduan as tblAduan','tblAduan.id','=','tblJuru.id_aduan')
+        ->leftJoin('auth.users as tblUser','tblUser.id','=','tblJuru.juruteknik_bertugas')
+        ->groupBy('tblJuru.juruteknik_bertugas','tblUser.name')
+        ->get();
+
+        $data = DB::table('cms_juruteknik as tblJuru')
+        ->select('tblJuru.juruteknik_bertugas','tblAduan.status_aduan','tblStatus.nama_status', DB::raw('COUNT(tblAduan.status_aduan) as count'))
+        ->leftJoin('cms_aduan as tblAduan','tblAduan.id','=','tblJuru.id_aduan')
+        ->leftJoin('cms_status_aduan as tblStatus','tblStatus.kod_status','=','tblAduan.status_aduan')
+        ->groupBy('tblJuru.juruteknik_bertugas','tblAduan.status_aduan','tblStatus.nama_status')
+        ->get();
+
+        $juruteknik = $data->where('juruteknik_bertugas', Auth::user()->id)->toArray();
+        
+        $result[] = ['Status','Jumlah'];
+        foreach ($aduan as $key => $value) {
+            $result[++$key] = [$value->nama_status, (int)$value->count];
+        }
+
+        $results[] = ['Juruteknik','Aduan'];
+        foreach ($list as $key => $value) {
+            $results[++$key] = [$value->name, (int)$value->count];
+        }
+
+        $res[] = ['Status','Jumlah'];
+        foreach ($juruteknik as $key => $value) {
+            $res[++$key] = [$value->nama_status, (int)$value->count];
+        }
+
+        $senarai = User::whereHas('roles', function($query){
+            $query->where('id', 'CMS002');
+        })->with(['staff'])->get();
+
+        $senaraiAdmin = User::whereHas('roles', function($query){
+            $query->where('id', 'CMS001');
+        })->with(['staff'])->get();
+        
+        return view('aduan.dashboard', compact('senarai','senaraiAdmin'))->with('aduan',json_encode($result))->with('list',json_encode($results))->with('juruteknik',json_encode($res))->with('no', '1');
     }
 
     /**

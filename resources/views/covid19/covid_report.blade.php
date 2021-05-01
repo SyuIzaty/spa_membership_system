@@ -23,10 +23,10 @@
 
                             <ul class="nav nav-pills" role="tablist">
                                 <li class="nav-item" style="margin-right: 2px">
-                                    <a  data-toggle="tab" class="nav-link" href="#declare" role="tab"><i class="fal fa-check-circle"></i> DECLARED</a>
+                                    <a style="border: solid 1px;  border-radius: 0" data-toggle="tab" class="nav-link" href="#declare" role="tab"><i class="fal fa-check-circle"></i> DECLARED</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a  data-toggle="tab" class="nav-link" href="#undeclare" role="tab"><i class="fal fa-times-circle"></i> UNDECLARED</a>
+                                    <a style="border: solid 1px;  border-radius: 0" data-toggle="tab" class="nav-link" href="#undeclare" role="tab"><i class="fal fa-times-circle"></i> UNDECLARED</a>
                                 </li>
                             </ul>
     

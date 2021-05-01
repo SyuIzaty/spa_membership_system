@@ -147,8 +147,18 @@
                                 </a>
                             </li>
 
+                            {{-- Start Aduan --}}
                             @can('view form')
-                                <li class="nav-title">Operasi</li>
+                                @can('view list')
+                                    <li class="nav-title">DASHBOARD E-ADUAN</li>
+                                    <li>
+                                        <a href="/dashboard-aduan" title="Application Intel" data-filter-tags="application intel">
+                                            <i class="fal fa-chart-pie"></i>
+                                            <span class="nav-link-text" data-i18n="nav.application_intel">Dashboard Aduan</span>
+                                        </a>
+                                    </li>
+                                @endcan
+                                <li class="nav-title">OPERASI E-ADUAN</li>
                                 <li>
                                     <a href="#" title="Aduan" data-filter-tags="aduan">
                                         <i class="fal fa-users"></i>
@@ -206,8 +216,7 @@
                             @endcan
 
                             @can('view param')
-                                <li class="nav-title">Tetapan Parameter</li>
-
+                                <li class="nav-title">PARAMETER E-ADUAN</li>
                                 <li class="open">
                                     <a href="/kategori-aduan" title="Kategori" data-filter-tags="kategori">
                                         <i class="fal fa-bullhorn"></i>
@@ -227,10 +236,20 @@
                                     </a>
                                 </li>
                             @endcan
-                            
-                            @can('view admin')
-                            <li class="nav-title">Covid19 Management</li>
+                            {{-- End Aduan --}}
 
+                            {{-- Start Covid --}}
+                            @can('view admin')
+
+                            <li class="nav-title">COVID19 DASHBOARD</li>
+                            <li>
+                                <a href="#" title="Application Intel" data-filter-tags="application intel">
+                                    <i class="fal fa-chart-pie"></i>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Covid19 Dashboard</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-title">COVID19 MANAGEMENT</li>
                             <li class="open">
                                 <a href="/declarationList/{{Auth::user()->id}}" title="Declaration" data-filter-tags="declaration">
                                     <i class="fal fa-calendar-times"></i>
@@ -306,7 +325,7 @@
                                 </a>
                             </li>
                             @endcan
-
+                            {{-- End Covid --}}
                         </ul>
                         
                         <div class="filter-message js-filter-message bg-success-600"></div>

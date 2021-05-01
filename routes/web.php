@@ -77,6 +77,7 @@ Route::get('juruaduan/{juruteknik?}/{stat?}/{kate?}/{bul?}','AduanController@jur
 Route::get('/individuExport/{stats?}/{kates?}/{buls?}', 'AduanController@individu');
 Route::post('/individuExport/{stats?}/{kates?}/{buls?}', 'AduanController@individu');
 Route::get('aduanIndividu/{stats?}/{kates?}/{buls?}','AduanController@individu');
+Route::get('/dashboard-aduan','AduanController@index');
 
 //KATEGORI
 Route::resource('kategori-aduan', 'KategoriAduanController');
