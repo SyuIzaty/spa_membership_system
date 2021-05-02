@@ -17,21 +17,6 @@
         background-color: #880000;
     }
 
-    .glow {
-        color: rgb(0, 0, 0);
-        animation: glow 1s ease-in-out infinite alternate;
-    }
-    
-    @-webkit-keyframes glow {
-        from {
-        text-shadow: 0 0 10px #fff, 0 0 10px #fff, 0 0 10px #d5cbd0, 0 0 10px #f8f0f4, 0 0 10px #d5cbd0, 0 0 10px #d5cbd0, 0 0 10px #d5cbd0;
-        }
-        
-        to {
-        text-shadow: 0 0 20px #fff, 0 0 10px #d5cbd0, 0 0 10px #f8f0f4, 0 0 10px #d5cbd0, 0 0 10px #d5cbd0, 0 0 10px #96868e, 0 0 10px #fff;
-        }
-    }
-
     .tab-content>.tab-pane {
         height: 1px;
         overflow: hidden;
@@ -52,7 +37,7 @@
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
                     <h2>
-                        Dashboard Aduan <small>Info </small><span class="fw-300"><i> </i></span>
+                        DASHBOARD E-ADUAN <small>Info </small><span class="fw-300"><i> </i></span>
                     </h2>
                     <div class="panel-toolbar">
                         <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
@@ -63,7 +48,6 @@
             
                 <div class="panel-container show">
                     <div class="panel-content">
-                        <h3 class="glow">DASHBOARD E-ADUAN INTEC DIGITAL SYSTEM (IDS).</h3><br>
                         
                         <div class="card">
                             <div class="card-header">
@@ -86,11 +70,9 @@
                                         <div class="row">
                                             @role('Operation Admin')
                                             <div class="col-md-6 col-sm-12">
-                                                {{-- <div class="card"> --}}
-                                                    <div class="table-responsive">
-                                                        <div id="chart1" style="height: 500px"></div>
-                                                    </div>
-                                                {{-- </div> --}}
+                                                <div class="table-responsive">
+                                                    <div id="chart1" style="height: 500px"></div>
+                                                </div>
                                             </div>
                                             {{-- <div class="vl"></div> --}}
                                             <div class="col-md-6 col-sm-12">
@@ -161,35 +143,37 @@
                                 </div>
                                 <div id="dJ" class="collapse" data-parent="#dJ">
                                     <div class="card-body">
-                                        <table class="table table-bordered" style="width: 100%" id="dJ_list">
-                                            <thead class="text-center">
-                                                <tr style="background-color: #880000; color:white">
-                                                    <td>NO.</td>
-                                                    <td>ID</td>
-                                                    <td>NAMA</td>
-                                                    <td>NO TELEFON</td>
-                                                    <td>EMEL</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="hasinput"></td>
-                                                    <td class="hasinput"><input type="text" class="form-control" placeholder="ID"></td>
-                                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Nama"></td>
-                                                    <td class="hasinput"><input type="text" class="form-control" placeholder="No Telefon"></td>
-                                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Emel"></td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($senarai as $dJ)
-                                                    <tr>
-                                                        <td class="text-center">{{ $no++ }}</td>
-                                                        <td class="text-center">{{ $dJ->id }}</td>
-                                                        <td>{{ $dJ->name }}</td>
-                                                        <td>{{ isset($dJ->staff->staff_phone) ? $dJ->staff->staff_phone : 'No Data'}}</td>
-                                                        <td>{{ isset($dJ->staff->staff_email) ? $dJ->staff->staff_email : 'No Data'}}</td>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" style="width: 100%" id="dJ_list">
+                                                <thead class="text-center">
+                                                    <tr style="background-color: #880000; color:white">
+                                                        <td>NO.</td>
+                                                        <td>ID</td>
+                                                        <td>NAMA</td>
+                                                        <td>NO TELEFON</td>
+                                                        <td>EMEL</td>
                                                     </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
+                                                    <tr>
+                                                        <td class="hasinput"></td>
+                                                        <td class="hasinput"><input type="text" class="form-control" placeholder="ID"></td>
+                                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Nama"></td>
+                                                        <td class="hasinput"><input type="text" class="form-control" placeholder="No Telefon"></td>
+                                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Emel"></td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($senarai as $dJ)
+                                                        <tr>
+                                                            <td class="text-center">{{ $no++ }}</td>
+                                                            <td class="text-center">{{ $dJ->id }}</td>
+                                                            <td>{{ $dJ->name }}</td>
+                                                            <td>{{ isset($dJ->staff->staff_phone) ? $dJ->staff->staff_phone : 'No Data'}}</td>
+                                                            <td>{{ isset($dJ->staff->staff_email) ? $dJ->staff->staff_email : 'No Data'}}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -218,35 +202,37 @@
                                 </div>
                                 <div id="dJ" class="collapse" data-parent="#dJ">
                                     <div class="card-body">
-                                        <table class="table table-bordered" style="width: 100%" id="dJ_list">
-                                            <thead class="text-center">
-                                                <tr style="background-color: #880000; color:white">
-                                                    <td>NO.</td>
-                                                    <td>ID</td>
-                                                    <td>NAMA</td>
-                                                    <td>NO TELEFON</td>
-                                                    <td>EMEL</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="hasinput"></td>
-                                                    <td class="hasinput"><input type="text" class="form-control" placeholder="ID"></td>
-                                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Nama"></td>
-                                                    <td class="hasinput"><input type="text" class="form-control" placeholder="No Telefon"></td>
-                                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Emel"></td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($senaraiAdmin as $sA)
-                                                    <tr>
-                                                        <td class="text-center">{{ $no++ }}</td>
-                                                        <td class="text-center">{{ $sA->id }}</td>
-                                                        <td>{{ $sA->name }}</td>
-                                                        <td>{{ isset($sA->staff->staff_phone) ? $sA->staff->staff_phone : 'No Data'}}</td>
-                                                        <td>{{ isset($sA->staff->staff_email) ? $sA->staff->staff_email : 'No Data'}}</td>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" style="width: 100%" id="dJ_list">
+                                                <thead class="text-center">
+                                                    <tr style="background-color: #880000; color:white">
+                                                        <td>NO.</td>
+                                                        <td>ID</td>
+                                                        <td>NAMA</td>
+                                                        <td>NO TELEFON</td>
+                                                        <td>EMEL</td>
                                                     </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
+                                                    <tr>
+                                                        <td class="hasinput"></td>
+                                                        <td class="hasinput"><input type="text" class="form-control" placeholder="ID"></td>
+                                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Nama"></td>
+                                                        <td class="hasinput"><input type="text" class="form-control" placeholder="No Telefon"></td>
+                                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Emel"></td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($senaraiAdmin as $sA)
+                                                        <tr>
+                                                            <td class="text-center">{{ $no++ }}</td>
+                                                            <td class="text-center">{{ $sA->id }}</td>
+                                                            <td>{{ $sA->name }}</td>
+                                                            <td>{{ isset($sA->staff->staff_phone) ? $sA->staff->staff_phone : 'No Data'}}</td>
+                                                            <td>{{ isset($sA->staff->staff_email) ? $sA->staff->staff_email : 'No Data'}}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -254,7 +240,6 @@
                     </div>
                 </div>
                 @endrole
-
             </div>
         </div>
     </div>

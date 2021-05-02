@@ -54,7 +54,9 @@
                                                 </tr>
                                             </thead>
                                         </table>
+                                    </div>
 
+                                    <div class="table-responsive">
                                         <table id="aduan" class="table table-bordered table-hover table-striped w-100">
                                             <thead>
                                                 <tr>
@@ -162,7 +164,9 @@
                                                 </tr>
                                             </thead>
                                         </table>
+                                    </div>
 
+                                    <div class="table-responsive">
                                         <table id="muatnaik" class="table table-bordered table-hover table-striped w-100">
                                             <thead>
                                                 <tr>
@@ -188,7 +192,9 @@
                                                 
                                             </thead>
                                         </table>
+                                    </div>
 
+                                    <div class="table-responsive">
                                         <table id="verifikasi" class="table table-bordered table-hover table-striped w-100">
                                             <thead>
                                                 <tr>

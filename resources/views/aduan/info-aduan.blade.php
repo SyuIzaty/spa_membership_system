@@ -60,167 +60,173 @@
                                                 </div>
                                                 <div class="card-body">
                                                     <div style="float: right"><i><b>Tarikh Aduan : </b>{{ date(' j F Y | h:i:s A', strtotime($aduan->tarikh_laporan) )}}</i></div>
-                                                    <table class="table table-bordered table-hover table-striped w-100">
-                                                        <thead>
-                                                            <tr>
-                                                                <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-user"></i> INFO PENGADU</label></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <div class="form-group">
-                                                                    <td width="20%"><label class="form-label" for="nama_pelapor">Nama :</label></td>
-                                                                    <td colspan="2">{{ strtoupper($aduan->nama_pelapor ?? '--')  }}</td>
-                                                                    <td width="20%"><label class="form-label" for="emel_pelapor">Emel :</label></td>
-                                                                    <td colspan="2">{{ $aduan->emel_pelapor ?? '--'  }}</td>
-                                                                </div>
-                                                            </tr>
-                                                            <tr>
-                                                                <div class="form-group">
-                                                                    <td width="20%"><label class="form-label" for="no_tel_pelapor">No Telefon :</label></td>
-                                                                    <td colspan="2">{{ $aduan->no_tel_pelapor ?? '--'  }}</td>
-                                                                    <td width="20%"><label class="form-label" for="no_tel_pelapor">Status Terkini :</label></td>
-                                                                    <td colspan="2"><b>{{ strtoupper($aduan->status->nama_status ?? '--')  }}</b></td>
-                                                                </div>
-                                                            </tr>
-                                                        
-                                                        </thead>
-                                                    </table>
-                            
-                                                    <table class="table table-bordered table-hover table-striped w-100">
-                                                        <thead>
-                                                            <tr>
-                                                                <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-clipboard-list"></i> ADUAN</label></td>
-                                                            </tr>
-                
-                                                            <tr>
-                                                                <div class="form-group">
-                                                                    <td width="20%"><label class="form-label" for="lokasi_aduan">Lokasi :</label></td>
-                                                                    <td colspan="1">
-                                                                       {{ strtoupper($aduan->nama_bilik) . ', ARAS ' . strtoupper($aduan->aras_aduan) . ', BLOK ' . strtoupper($aduan->blok_aduan) . ', ' . strtoupper($aduan->lokasi_aduan) ?? '-- TIADA DATA --'  }}
-                                                                    </td>
-                                                                    <td width="20%"><label class="form-label" for="kategori_aduan">Aduan :</label></td>
-                                                                    <td colspan="3">
-                                                                        <div> Kategori : <b>{{ strtoupper($aduan->kategori->nama_kategori) }}</b></div><br>
-                                                                        <div> Jenis : <b>{{ strtoupper($aduan->jenis->jenis_kerosakan) }}</b></div word-break: break-all>
-                                                                        @if($aduan->jenis->jenis_kerosakan == 'Lain-lain') 
-                                                                            <div> Penerangan : <b>{{ strtoupper($aduan->jk_penerangan ?? '--') }}</b></div><br>
-                                                                        @else 
-                                                                            <br>
-                                                                        @endif
-                                                                        <div> Sebab : <b>{{ strtoupper($aduan->sebab->sebab_kerosakan) }}</b></div word-break: break-all>
-                                                                        @if($aduan->sebab->sebab_kerosakan == 'Lain-lain')
-                                                                            <div> Penerangan : <b>{{ strtoupper($aduan->sk_penerangan ?? '--') }}</b></div>
-                                                                        @endif
-                                                                    </td>
-                                                                </div>
-                                                            </tr>
-                
-                                                            <tr>
-                                                                <div class="form-group">
-                                                                    <td width="20%"><label class="form-label" for="maklumat_tambahan">Kuantiti/Unit :</label></td>
-                                                                    <td colspan="1">{{ $aduan->kuantiti_unit ?? '--'  }}</td>
-                                                                    <td width="20%"><label class="form-label" for="maklumat_tambahan">Caj Kerosakan :</label></td>
-                                                                    <td colspan="3">{{ $aduan->caj_kerosakan ?? '--'  }}</td>
-                                                                </div>
-                                                            </tr>
-                
-                                                            <tr>
-                                                                <div class="form-group">
-                                                                    <td width="20%"><label class="form-label" for="maklumat_tambahan">Maklumat Tambahan :</label></td>
-                                                                    <td colspan="4">{{ $aduan->maklumat_tambahan ?? '--'  }}</td>
-                                                                </div>
-                                                            </tr>
-                
-                                                            <tr>
-                                                                <div class="form-group">
-                                                                    <td width="20%" style="vertical-align: middle"><label class="form-label" for="maklumat_tambahan">Gambar :</label></td>
-                                                                    <td colspan="2">
-                                                                        @if(isset($imej->first()->upload_image))
-                                                                            @foreach($imej as $imejAduan)
-                                                                                <img src="/get-file-resit/{{ $imejAduan->upload_image }}" style="width:150px; height:130px;" class="img-fluid mr-2">
-                                                                            @endforeach
-                                                                        @else
-                                                                            <span>Tiada Gambar Sokongan</span>
-                                                                        @endif
-                                                                    </td>
-                                                                    <td width="20%" style="vertical-align: middle"><label class="form-label" for="maklumat_tambahan">Resit :</label></td>
-                                                                    <td colspan="2" style="vertical-align: middle">
-                                                                        @if(isset($resit->first()->nama_fail))
-                                                                            @foreach ($resit as $failResit)
-                                                                                <a target="_blank" href="{{ url('resit')."/".$failResit->nama_fail }}/Download"">{{ $failResit->nama_fail }}</a>
-                                                                            @endforeach
-                                                                        @else
-                                                                            <span>Tiada Dokumen Sokongan</span>
-                                                                        @endif
-                                                                    </td>
-                                                                </div>
-                                                            </tr>
-                                                        </thead>
-                                                    </table>
-                
+                                                    <div class="table-responsive">
+                                                        <table class="table table-bordered table-hover table-striped w-100">
+                                                            <thead>
+                                                                <tr>
+                                                                    <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-user"></i> INFO PENGADU</label></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <div class="form-group">
+                                                                        <td width="20%"><label class="form-label" for="nama_pelapor">Nama :</label></td>
+                                                                        <td colspan="2">{{ strtoupper($aduan->nama_pelapor ?? '--')  }}</td>
+                                                                        <td width="20%"><label class="form-label" for="emel_pelapor">Emel :</label></td>
+                                                                        <td colspan="2">{{ $aduan->emel_pelapor ?? '--'  }}</td>
+                                                                    </div>
+                                                                </tr>
+                                                                <tr>
+                                                                    <div class="form-group">
+                                                                        <td width="20%"><label class="form-label" for="no_tel_pelapor">No Telefon :</label></td>
+                                                                        <td colspan="2">{{ $aduan->no_tel_pelapor ?? '--'  }}</td>
+                                                                        <td width="20%"><label class="form-label" for="no_tel_pelapor">Status Terkini :</label></td>
+                                                                        <td colspan="2"><b>{{ strtoupper($aduan->status->nama_status ?? '--')  }}</b></td>
+                                                                    </div>
+                                                                </tr>
+                                                            
+                                                            </thead>
+                                                        </table>
+                                                    </div>
+                                                    <div class="table-responsive">
+                                                        <table class="table table-bordered table-hover table-striped w-100">
+                                                            <thead>
+                                                                <tr>
+                                                                    <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-clipboard-list"></i> ADUAN</label></td>
+                                                                </tr>
+                    
+                                                                <tr>
+                                                                    <div class="form-group">
+                                                                        <td width="20%"><label class="form-label" for="lokasi_aduan">Lokasi :</label></td>
+                                                                        <td colspan="1">
+                                                                        {{ strtoupper($aduan->nama_bilik) . ', ARAS ' . strtoupper($aduan->aras_aduan) . ', BLOK ' . strtoupper($aduan->blok_aduan) . ', ' . strtoupper($aduan->lokasi_aduan) ?? '-- TIADA DATA --'  }}
+                                                                        </td>
+                                                                        <td width="20%"><label class="form-label" for="kategori_aduan">Aduan :</label></td>
+                                                                        <td colspan="3">
+                                                                            <div> Kategori : <b>{{ strtoupper($aduan->kategori->nama_kategori) }}</b></div><br>
+                                                                            <div> Jenis : <b>{{ strtoupper($aduan->jenis->jenis_kerosakan) }}</b></div word-break: break-all>
+                                                                            @if($aduan->jenis->jenis_kerosakan == 'Lain-lain') 
+                                                                                <div> Penerangan : <b>{{ strtoupper($aduan->jk_penerangan ?? '--') }}</b></div><br>
+                                                                            @else 
+                                                                                <br>
+                                                                            @endif
+                                                                            <div> Sebab : <b>{{ strtoupper($aduan->sebab->sebab_kerosakan) }}</b></div word-break: break-all>
+                                                                            @if($aduan->sebab->sebab_kerosakan == 'Lain-lain')
+                                                                                <div> Penerangan : <b>{{ strtoupper($aduan->sk_penerangan ?? '--') }}</b></div>
+                                                                            @endif
+                                                                        </td>
+                                                                    </div>
+                                                                </tr>
+                    
+                                                                <tr>
+                                                                    <div class="form-group">
+                                                                        <td width="20%"><label class="form-label" for="maklumat_tambahan">Kuantiti/Unit :</label></td>
+                                                                        <td colspan="1">{{ $aduan->kuantiti_unit ?? '--'  }}</td>
+                                                                        <td width="20%"><label class="form-label" for="maklumat_tambahan">Caj Kerosakan :</label></td>
+                                                                        <td colspan="3">{{ $aduan->caj_kerosakan ?? '--'  }}</td>
+                                                                    </div>
+                                                                </tr>
+                    
+                                                                <tr>
+                                                                    <div class="form-group">
+                                                                        <td width="20%"><label class="form-label" for="maklumat_tambahan">Maklumat Tambahan :</label></td>
+                                                                        <td colspan="4">{{ $aduan->maklumat_tambahan ?? '--'  }}</td>
+                                                                    </div>
+                                                                </tr>
+                    
+                                                                <tr>
+                                                                    <div class="form-group">
+                                                                        <td width="20%" style="vertical-align: middle"><label class="form-label" for="maklumat_tambahan">Gambar :</label></td>
+                                                                        <td colspan="2">
+                                                                            @if(isset($imej->first()->upload_image))
+                                                                                @foreach($imej as $imejAduan)
+                                                                                    <img src="/get-file-resit/{{ $imejAduan->upload_image }}" style="width:150px; height:130px;" class="img-fluid mr-2">
+                                                                                @endforeach
+                                                                            @else
+                                                                                <span>Tiada Gambar Sokongan</span>
+                                                                            @endif
+                                                                        </td>
+                                                                        <td width="20%" style="vertical-align: middle"><label class="form-label" for="maklumat_tambahan">Resit :</label></td>
+                                                                        <td colspan="2" style="vertical-align: middle">
+                                                                            @if(isset($resit->first()->nama_fail))
+                                                                                @foreach ($resit as $failResit)
+                                                                                    <a target="_blank" href="{{ url('resit')."/".$failResit->nama_fail }}/Download"">{{ $failResit->nama_fail }}</a>
+                                                                                @endforeach
+                                                                            @else
+                                                                                <span>Tiada Dokumen Sokongan</span>
+                                                                            @endif
+                                                                        </td>
+                                                                    </div>
+                                                                </tr>
+                                                            </thead>
+                                                        </table>
+                                                    </div>
                                                     @if($aduan->status_aduan == 'BS') 
                                                         @can('handover')
 
                                                         {!! Form::open(['action' => 'AduanController@updateJuruteknik', 'method' => 'POST']) !!}
                                                             <input type="hidden" name="id" value="{{ $aduan->id }}">
-                                                            <table class="table table-bordered table-hover table-striped w-100">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-handshake"></i> PENYERAHAN ADUAN</label></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <div class="form-group">
-                                                                            <td width="10%" style="vertical-align: middle"><label class="form-label" for="tahap_kategori"><span class="text-danger">*</span> Tahap Aduan :</label></td>
-                                                                            <td colspan="4" style="vertical-align: middle">
-                                                                                <select class="form-control tahap_kategori" name="tahap_kategori" id="tahap_kategori" >
-                                                                                    <option value="">Pilih Tahap Aduan</option>
-                                                                                    @foreach ($tahap as $thp) 
-                                                                                    <option value="{{ $thp->kod_tahap }}" {{ old('tahap_kategori') ? 'selected' : '' }}>
-                                                                                            {{ $thp->jenis_tahap }}</option>
-                                                                                    @endforeach
-                                                                                </select>
-                                                                                @error('tahap_kategori')
-                                                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                                @enderror
-                                                                            </td>
-                                                                        </div>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <div class="form-group">
-                                                                            <td width="10%" style="vertical-align: middle"><label class="form-label" for="juruteknik_bertugas"><span class="text-danger">*</span> Juruteknik :</label></td>
-                                                                            <td colspan="4">
-                                                                                <div class="card-body test" id="test">
-                                                                                    <table class="table table-bordered" id="head_field">
-                                                                                        <tr class="bg-primary-50 text-center">
-                                                                                            <td>Juruteknik</td>
-                                                                                            <td>Tugas</td>
-                                                                                            <td></td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>
-                                                                                                <select class="form-control juruteknik_bertugas" name="juruteknik_bertugas[]" required>
-                                                                                                    <option value="">Pilih Juruteknik</option>
-                                                                                                    @foreach ($juruteknik as $juru) 
-                                                                                                    <option value="{{ $juru->id }}" {{ old('juruteknik_bertugas') ? 'selected' : '' }}>
-                                                                                                            {{ $juru->name }}</option>
-                                                                                                    @endforeach
-                                                                                                </select>
-                                                                                            </td>
-                                                                                            <td>
-                                                                                                <select class="form-control jenis_juruteknik" name="jenis_juruteknik[]" required>
-                                                                                                    <option value="">Pilih Tugas</option>
-                                                                                                    <option value="K">Ketua</option>
-                                                                                                    <option value="P">Pembantu</option>
-                                                                                                </select>
-                                                                                            </td>
-                                                                                            <td class="text-center"><button type="button" name="addhead" id="addhead" class="btn btn-success btn-sm"><i class="fal fa-plus"></i></button></td>
-                                                                                        </tr>
-                                                                                    </table>
-                                                                                </div>
-                                                                            </td>
-                                                                        </div>
-                                                                    </tr>
-                                                                </thead>
-                                                            </table>
+                                                            <div class="table-responsive">
+                                                                <table class="table table-bordered table-hover table-striped w-100">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-handshake"></i> PENYERAHAN ADUAN</label></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <div class="form-group">
+                                                                                <td width="10%" style="vertical-align: middle"><label class="form-label" for="tahap_kategori"><span class="text-danger">*</span> Tahap Aduan :</label></td>
+                                                                                <td colspan="4" style="vertical-align: middle">
+                                                                                    <select class="form-control tahap_kategori" name="tahap_kategori" id="tahap_kategori" >
+                                                                                        <option value="">Pilih Tahap Aduan</option>
+                                                                                        @foreach ($tahap as $thp) 
+                                                                                        <option value="{{ $thp->kod_tahap }}" {{ old('tahap_kategori') ? 'selected' : '' }}>
+                                                                                                {{ $thp->jenis_tahap }}</option>
+                                                                                        @endforeach
+                                                                                    </select>
+                                                                                    @error('tahap_kategori')
+                                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                    @enderror
+                                                                                </td>
+                                                                            </div>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <div class="form-group">
+                                                                                <td width="10%" style="vertical-align: middle"><label class="form-label" for="juruteknik_bertugas"><span class="text-danger">*</span> Juruteknik :</label></td>
+                                                                                <td colspan="4">
+                                                                                    <div class="card-body test" id="test">
+                                                                                        <div class="table-responsive">
+                                                                                            <table class="table table-bordered" id="head_field">
+                                                                                                <tr class="bg-primary-50 text-center">
+                                                                                                    <td>Juruteknik</td>
+                                                                                                    <td>Tugas</td>
+                                                                                                    <td></td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <td>
+                                                                                                        <select class="form-control juruteknik_bertugas" name="juruteknik_bertugas[]" required>
+                                                                                                            <option value="">Pilih Juruteknik</option>
+                                                                                                            @foreach ($juruteknik as $juru) 
+                                                                                                            <option value="{{ $juru->id }}" {{ old('juruteknik_bertugas') ? 'selected' : '' }}>
+                                                                                                                    {{ $juru->name }}</option>
+                                                                                                            @endforeach
+                                                                                                        </select>
+                                                                                                    </td>
+                                                                                                    <td>
+                                                                                                        <select class="form-control jenis_juruteknik" name="jenis_juruteknik[]" required>
+                                                                                                            <option value="">Pilih Tugas</option>
+                                                                                                            <option value="K">Ketua</option>
+                                                                                                            <option value="P">Pembantu</option>
+                                                                                                        </select>
+                                                                                                    </td>
+                                                                                                    <td class="text-center"><button type="button" name="addhead" id="addhead" class="btn btn-success btn-sm"><i class="fal fa-plus"></i></button></td>
+                                                                                                </tr>
+                                                                                            </table>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </div>
+                                                                        </tr>
+                                                                    </thead>
+                                                                </table>
+                                                            </div>
                                                             <button type="submit" class="btn btn-danger float-right" name="submit" id="submithead"><i class="fal fa-save"></i> Hantar Aduan</button>
                                                         {!! Form::close() !!}
                                                             
@@ -234,69 +240,71 @@
                                                         @endif
                                                             {!! Form::open(['action' => 'AduanController@updateTahap', 'method' => 'POST']) !!}
                                                                 <input type="hidden" name="id_adu" value="{{ $aduan->id }}">
-                                                                <table class="table table-bordered table-hover w-100">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-handshake"></i> KEMASKINI PENYERAHAN ADUAN</label></td>
-                                                                        </tr>
-                
-                                                                        <tr>
-                                                                            <div class="form-group">
-                                                                                <td width="10%" style="vertical-align: middle"><label class="form-label" for="tahap_kategori"><span class="text-danger">*</span> Tahap Aduan :</label></td>
-                                                                                <td colspan="4" style="vertical-align: middle">
-                                                                                    <select class="form-control tahap_kategori" name="tahap_kategori" id="tahap_kategori">
-                                                                                        <option value="">Pilih Tahap Aduan</option>
-                                                                                        @foreach ($tahap as $thp) 
-                                                                                            <option value="{{ $thp->kod_tahap }}" {{ $aduan->tahap_kategori == $thp->kod_tahap ? 'selected="selected"' : '' }}>{{ $thp->jenis_tahap }}</option>
-                                                                                        @endforeach
-                                                                                    </select>
-                                                                                </td>
-                                                                            </div>
-                                                                        </tr>
-                
-                                                                        <tr>
-                                                                            <div>
-                                                                                <td width="10%" style="vertical-align: middle"><label class="form-label" for="juruteknik_bertugas"><span class="text-danger">*</span> Juruteknik :</label></td>
-                                                                                <td colspan="4">
-                                                                                    <div class="card-body">
-                                                                                        <table class="table table-bordered">
-                                                                                            <thead>
-                                                                                                <tr class="text-center" style="background-color: #fbfbfb82">
-                                                                                                    <td style="width: 5px">ID</td>
-                                                                                                    <td>Juruteknik</td>
-                                                                                                    <td>Tugas</td>
-                                                                                                </tr>
-                                                                                            </thead>
-                                                                                            <tbody>
-                                                                                                @foreach ($senarai_juruteknik as $sJ)
-                                                                                                <input type="hidden" name="id" value="{{ $sJ->id }}">
-                                                                                                <tr class="data-row">
-                                                                                                    <td style="vertical-align: middle">{{ $sJ->juruteknik_bertugas }}</td>
-                                                                                                    <td>
-                                                                                                        <select class="form-control juruteknik_bertugas" name="juruteknik_bertugas[]" id="juruteknik_bertugas">
-                                                                                                            <option disabled selected>Pilih Juruteknik</option>
-                                                                                                            @foreach ($juruteknik as $juru) 
-                                                                                                                <option value="{{ $juru->id }}" {{ $sJ->juruteknik_bertugas == $juru->id ? 'selected="selected"' : '' }}>{{ $juru->name }}</option>
-                                                                                                            @endforeach
-                                                                                                        </select>
-                                                                                                    </td>
-                                                                                                    <td>
-                                                                                                        <select class="form-control jenis_juruteknik" name="jenis_juruteknik[]" id="jenis_juruteknik">
-                                                                                                            <option disabled selected>Pilih Tugas</option>
-                                                                                                            <option value="K" {{ $sJ->jenis_juruteknik == 'K' ? 'selected="selected"' : '' }}>Ketua</option>
-                                                                                                            <option value="P" {{ $sJ->jenis_juruteknik == 'P' ? 'selected="selected"' : '' }}>Pembantu</option>
-                                                                                                        </select>
-                                                                                                    </td>
-                                                                                                </tr>
-                                                                                                @endforeach
-                                                                                            </tbody>
-                                                                                        </table>
-                                                                                    </div>
-                                                                                </td>
-                                                                            </div>
-                                                                        </tr>
-                                                                    </thead>
-                                                                </table>
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-bordered table-hover w-100">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-handshake"></i> KEMASKINI PENYERAHAN ADUAN</label></td>
+                                                                            </tr>
+                    
+                                                                            <tr>
+                                                                                <div class="form-group">
+                                                                                    <td width="10%" style="vertical-align: middle"><label class="form-label" for="tahap_kategori"><span class="text-danger">*</span> Tahap Aduan :</label></td>
+                                                                                    <td colspan="4" style="vertical-align: middle">
+                                                                                        <select class="form-control tahap_kategori" name="tahap_kategori" id="tahap_kategori">
+                                                                                            <option value="">Pilih Tahap Aduan</option>
+                                                                                            @foreach ($tahap as $thp) 
+                                                                                                <option value="{{ $thp->kod_tahap }}" {{ $aduan->tahap_kategori == $thp->kod_tahap ? 'selected="selected"' : '' }}>{{ $thp->jenis_tahap }}</option>
+                                                                                            @endforeach
+                                                                                        </select>
+                                                                                    </td>
+                                                                                </div>
+                                                                            </tr>
+                    
+                                                                            <tr>
+                                                                                <div>
+                                                                                    <td width="10%" style="vertical-align: middle"><label class="form-label" for="juruteknik_bertugas"><span class="text-danger">*</span> Juruteknik :</label></td>
+                                                                                    <td colspan="4">
+                                                                                        <div class="card-body">
+                                                                                            <table class="table table-bordered">
+                                                                                                <thead>
+                                                                                                    <tr class="text-center" style="background-color: #fbfbfb82">
+                                                                                                        <td style="width: 5px">ID</td>
+                                                                                                        <td>Juruteknik</td>
+                                                                                                        <td>Tugas</td>
+                                                                                                    </tr>
+                                                                                                </thead>
+                                                                                                <tbody>
+                                                                                                    @foreach ($senarai_juruteknik as $sJ)
+                                                                                                    <input type="hidden" name="id" value="{{ $sJ->id }}">
+                                                                                                    <tr class="data-row">
+                                                                                                        <td style="vertical-align: middle">{{ $sJ->juruteknik_bertugas }}</td>
+                                                                                                        <td>
+                                                                                                            <select class="form-control juruteknik_bertugas" name="juruteknik_bertugas[]" id="juruteknik_bertugas">
+                                                                                                                <option disabled selected>Pilih Juruteknik</option>
+                                                                                                                @foreach ($juruteknik as $juru) 
+                                                                                                                    <option value="{{ $juru->id }}" {{ $sJ->juruteknik_bertugas == $juru->id ? 'selected="selected"' : '' }}>{{ $juru->name }}</option>
+                                                                                                                @endforeach
+                                                                                                            </select>
+                                                                                                        </td>
+                                                                                                        <td>
+                                                                                                            <select class="form-control jenis_juruteknik" name="jenis_juruteknik[]" id="jenis_juruteknik">
+                                                                                                                <option disabled selected>Pilih Tugas</option>
+                                                                                                                <option value="K" {{ $sJ->jenis_juruteknik == 'K' ? 'selected="selected"' : '' }}>Ketua</option>
+                                                                                                                <option value="P" {{ $sJ->jenis_juruteknik == 'P' ? 'selected="selected"' : '' }}>Pembantu</option>
+                                                                                                            </select>
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                    @endforeach
+                                                                                                </tbody>
+                                                                                            </table>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </div>
+                                                                            </tr>
+                                                                        </thead>
+                                                                    </table>
+                                                                </div>
                                                                 <button type="submit" class="btn btn-danger ml-auto float-right"><i class="fal fa-save"></i> Kemaskini Aduan</button>
                                                             {!! Form::close() !!}
 
@@ -306,6 +314,7 @@
                                                     @can('view handover')
                                                         @role('Operation Admin')
                                                             @if($aduan->status_aduan == 'TD' || $aduan->status_aduan == 'AS' || $aduan->status_aduan == 'LK' || $aduan->status_aduan == 'AK' || $aduan->status_aduan == 'DP') 
+                                                            <div class="table-responsive">
                                                                 <table class="table table-bordered table-hover table-striped w-100">
                                                                     <thead>
                                                                         <tr>
@@ -330,9 +339,11 @@
                                                                         </tr>
                                                                     </thead>
                                                                 </table>
+                                                            </div>
                                                             @endif  
                                                         @endrole
                                                         @role('Technical Staff')
+                                                        <div class="table-responsive">
                                                         <table class="table table-bordered table-hover table-striped w-100">
                                                             <thead>
                                                                 <tr>
@@ -357,6 +368,7 @@
                                                                 </tr>
                                                             </thead>
                                                         </table>
+                                                        </div>
                                                         @endrole
                                                     @endcan
                                                     <br>
@@ -383,6 +395,7 @@
                                                                 @endif
                                                                 {!! Form::open(['action' => 'AduanController@simpanPenambahbaikan', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                                                                 {{Form::hidden('id', $aduan->id)}}
+                                                                <div class="table-responsive">
                                                                     <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
                                                                         <thead>
                                                                             <tr>
@@ -497,6 +510,7 @@
                                                                             </tr>
                                                                         </thead>
                                                                     </table>
+                                                                </div>
                                                                     <button type="submit" class="btn btn-danger float-right"><i class="fal fa-save"></i> Hantar Tindakan</button>
                                                                 {!! Form::close() !!}
                                                             @endif
@@ -510,175 +524,176 @@
                                                                     @endif
                                                                     {!! Form::open(['action' => 'AduanController@kemaskiniPenambahbaikan', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                                                                     {{Form::hidden('id', $aduan->id)}}
-                                                                    
-                                                                    <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
-                                                                        <thead>
-                                                                            <tr>
-                                                                                <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-box"></i> KEMASKINI PENAMBAHBAIKAN</label></td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <div class="form-group">
-                                                                                    <td width="20%"><label class="form-label" for="lokasi_aduan">Tarikh Serahan Aduan :</label></td>
-                                                                                    <td colspan="2"><b>{{ date(' j F Y ', strtotime($aduan->tarikh_serahan_aduan)) }}</b></td>
-                                                                                    <td width="20%"><label class="form-label" for="lokasi_aduan">Masa Serahan Aduan :</label></td>
-                                                                                    <td colspan="2"><b>{{ date(' h:i:s A ', strtotime($aduan->tarikh_serahan_aduan)) }}</b></td>
-                                                                                </div>
-                                                                            </tr>
+                                                                    <div class="table-responsive">
+                                                                        <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-box"></i> KEMASKINI PENAMBAHBAIKAN</label></td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <div class="form-group">
+                                                                                        <td width="20%"><label class="form-label" for="lokasi_aduan">Tarikh Serahan Aduan :</label></td>
+                                                                                        <td colspan="2"><b>{{ date(' j F Y ', strtotime($aduan->tarikh_serahan_aduan)) }}</b></td>
+                                                                                        <td width="20%"><label class="form-label" for="lokasi_aduan">Masa Serahan Aduan :</label></td>
+                                                                                        <td colspan="2"><b>{{ date(' h:i:s A ', strtotime($aduan->tarikh_serahan_aduan)) }}</b></td>
+                                                                                    </div>
+                                                                                </tr>
 
-                                                                            <tr>
-                                                                                <div class="form-group">
-                                                                                    <td width="20%"><label class="form-label" for="laporan_pembaikan"><span class="text-danger">*</span> Laporan Pembaikan :</label></td>
-                                                                                    <td colspan="4">
-                                                                                        <textarea rows="5" class="form-control" id="laporan_pembaikan" name="laporan_pembaikan">{{ $aduan->laporan_pembaikan }}</textarea>
-                                                                                            @error('laporan_pembaikan')
-                                                                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                                            @enderror
-                                                                                    </td>
-                                                                                </div>
-                                                                            </tr>
+                                                                                <tr>
+                                                                                    <div class="form-group">
+                                                                                        <td width="20%"><label class="form-label" for="laporan_pembaikan"><span class="text-danger">*</span> Laporan Pembaikan :</label></td>
+                                                                                        <td colspan="4">
+                                                                                            <textarea rows="5" class="form-control" id="laporan_pembaikan" name="laporan_pembaikan">{{ $aduan->laporan_pembaikan }}</textarea>
+                                                                                                @error('laporan_pembaikan')
+                                                                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                                @enderror
+                                                                                        </td>
+                                                                                    </div>
+                                                                                </tr>
 
-                                                                            <tr>
-                                                                                <div class="form-group">
-                                                                                    <td width="20%"><label class="form-label" for="bahan_alat"> Bahan/ Alat Ganti :</label></td>
-                                                                                    <td colspan="2">
-                                                                                        <select class="form-control bahan_alat" name="bahan_alat[]" multiple>
-                                                                                            <option value="" disabled>Sila Pilih</option>
-                                                                                                @foreach ($senarai_alat as $alats)
-                                                                                                    <option value="{{ $alats->id }}">{{ $alats->alat_ganti }}</option>
-                                                                                                @endforeach
-                                                                                            </select>                                           
-                                                                                            @error('bahan_alat')
-                                                                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                                            @enderror
-                                                                                    </td>
-                                                                                    <td colspan="2">
-                                                                                        <div class="card-body">
-                                                                                            @if(session()->has('message'))
-                                                                                            <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i>
-                                                                                                    {{ session()->get('message') }}
-                                                                                                </div>
-                                                                                            @endif
-                                                                                            @if(session()->has('notification'))
-                                                                                            <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i>
-                                                                                                    {{ session()->get('notification') }}
-                                                                                                </div>
-                                                                                            @endif
-                                                                                            <table class="table table-bordered">
-                                                                                                <tr class="text-center">
-                                                                                                    <td>No</td>
-                                                                                                    <td>Bahan/Alat Ganti</td>
-                                                                                                    <td>Tindakan</td>
-                                                                                                </tr>
-                                                                                                @if(!empty($alatan_ganti) && $alatan_ganti->count() > 0)
-                                                                                                    @foreach ($alatan_ganti as $aG)
-                                                                                                    <tr align="center">
-                                                                                                        <td>{{ $urutan++}}</td>
-                                                                                                        <td>{{ $aG->alat->alat_ganti }}</td>
-                                                                                                        <td>
-                                                                                                            <a href="{{ action('AduanController@padamAlatan', ['id' => $aG->id, 'id_aduan' => $aG->id_aduan]) }}" class="btn btn-danger btn-sm deleteEl"><i class="fal fa-trash"></i></a>
-                                                                                                        </td>
-                                                                                                    </tr>
+                                                                                <tr>
+                                                                                    <div class="form-group">
+                                                                                        <td width="20%"><label class="form-label" for="bahan_alat"> Bahan/ Alat Ganti :</label></td>
+                                                                                        <td colspan="2">
+                                                                                            <select class="form-control bahan_alat" name="bahan_alat[]" multiple>
+                                                                                                <option value="" disabled>Sila Pilih</option>
+                                                                                                    @foreach ($senarai_alat as $alats)
+                                                                                                        <option value="{{ $alats->id }}">{{ $alats->alat_ganti }}</option>
                                                                                                     @endforeach
-                                                                                                @else
-                                                                                                    <tr align="center" class="data-row">
-                                                                                                        <td valign="top" colspan="3" class="dataTables_empty">-- TIADA DATA --</td>
-                                                                                                    </tr>
+                                                                                                </select>                                           
+                                                                                                @error('bahan_alat')
+                                                                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                                @enderror
+                                                                                        </td>
+                                                                                        <td colspan="2">
+                                                                                            <div class="card-body">
+                                                                                                @if(session()->has('message'))
+                                                                                                <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i>
+                                                                                                        {{ session()->get('message') }}
+                                                                                                    </div>
                                                                                                 @endif
-                                                                                            </table>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                </div>
-                                                                            </tr>
+                                                                                                @if(session()->has('notification'))
+                                                                                                <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i>
+                                                                                                        {{ session()->get('notification') }}
+                                                                                                    </div>
+                                                                                                @endif
+                                                                                                <table class="table table-bordered">
+                                                                                                    <tr class="text-center">
+                                                                                                        <td>No</td>
+                                                                                                        <td>Bahan/Alat Ganti</td>
+                                                                                                        <td>Tindakan</td>
+                                                                                                    </tr>
+                                                                                                    @if(!empty($alatan_ganti) && $alatan_ganti->count() > 0)
+                                                                                                        @foreach ($alatan_ganti as $aG)
+                                                                                                        <tr align="center">
+                                                                                                            <td>{{ $urutan++}}</td>
+                                                                                                            <td>{{ $aG->alat->alat_ganti }}</td>
+                                                                                                            <td>
+                                                                                                                <a href="{{ action('AduanController@padamAlatan', ['id' => $aG->id, 'id_aduan' => $aG->id_aduan]) }}" class="btn btn-danger btn-sm deleteEl"><i class="fal fa-trash"></i></a>
+                                                                                                            </td>
+                                                                                                        </tr>
+                                                                                                        @endforeach
+                                                                                                    @else
+                                                                                                        <tr align="center" class="data-row">
+                                                                                                            <td valign="top" colspan="3" class="dataTables_empty">-- TIADA DATA --</td>
+                                                                                                        </tr>
+                                                                                                    @endif
+                                                                                                </table>
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    </div>
+                                                                                </tr>
 
-                                                                            <tr>
-                                                                                <div class="form-group">
-                                                                                    <td class="card-header" width="20%" style="border-right-style: hidden; background-color: #fbfbfb82"><label class="form-label" for="laporan_pembaikan"><i class="fal fa-money-bill"></i> Anggaran Kos</label></td>
-                                                                                    <td class="card-header" style="background-color: #fbfbfb82" colspan="2"><b></b></td>
-                                                                                    <td width="20%"><label class="form-label" for="tarikh_selesai_aduan"><span class="text-danger">*</span> Tarikh Selesai Pembaikan :</label></td>
-                                                                                    <td colspan="2">
-                                                                                        @if(isset($aduan->tarikh_selesai_aduan))
-                                                                                            <input type="datetime-local" class="form-control" id="tarikh_selesai_aduan" name="tarikh_selesai_aduan" value="{{ date('Y-m-d\TH:i', strtotime($aduan->tarikh_selesai_aduan)) }}" />
-                                                                                        @else
-                                                                                            <input type="datetime-local" class="form-control" id="tarikh_selesai_aduan" name="tarikh_selesai_aduan" value="{{ old('tarikh_selesai_aduan') }}">
-                                                                                        @endif
-                                                                                </div>
-                                                                            </tr>
+                                                                                <tr>
+                                                                                    <div class="form-group">
+                                                                                        <td class="card-header" width="20%" style="border-right-style: hidden; background-color: #fbfbfb82"><label class="form-label" for="laporan_pembaikan"><i class="fal fa-money-bill"></i> Anggaran Kos</label></td>
+                                                                                        <td class="card-header" style="background-color: #fbfbfb82" colspan="2"><b></b></td>
+                                                                                        <td width="20%"><label class="form-label" for="tarikh_selesai_aduan"><span class="text-danger">*</span> Tarikh Selesai Pembaikan :</label></td>
+                                                                                        <td colspan="2">
+                                                                                            @if(isset($aduan->tarikh_selesai_aduan))
+                                                                                                <input type="datetime-local" class="form-control" id="tarikh_selesai_aduan" name="tarikh_selesai_aduan" value="{{ date('Y-m-d\TH:i', strtotime($aduan->tarikh_selesai_aduan)) }}" />
+                                                                                            @else
+                                                                                                <input type="datetime-local" class="form-control" id="tarikh_selesai_aduan" name="tarikh_selesai_aduan" value="{{ old('tarikh_selesai_aduan') }}">
+                                                                                            @endif
+                                                                                    </div>
+                                                                                </tr>
 
-                                                                            <tr>
-                                                                                <div class="form-group">
-                                                                                    <td width="20%">
-                                                                                        <label class="form-label" for="ak_upah">Upah :</label><label class="form-label" style="padding-left: 205px;" for="ak_upah">RM</label><br><br><br><br>
-                                                                                        <label class="form-label" for="ak_bahan_alat">Bahan/ Alat Ganti :</label><label class="form-label" style="padding-left: 130px;" for="ak_bahan_alat">RM</label>
-                                                                                    </td>
-                                                                                    <td colspan="2">
-                                                                                        <input type="number" step="any" class="form-control" id="ak_upah" name="ak_upah"  value="{{ $aduan->ak_upah }}">
-                                                                                            @error('ak_upah')
-                                                                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                                            @enderror<br><br>
-                                                                                        <input type="number" step="any" class="form-control" id="ak_bahan_alat" name="ak_bahan_alat" value="{{ $aduan->ak_bahan_alat }}">
-                                                                                            @error('ak_bahan_alat')
-                                                                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                                            @enderror<br>
-                                                                                    </td>
-                                                                                    {{-- @if($aduan->status_aduan == 'AS')  --}}
-                                                                                        {{-- <td width="20%"><label class="form-label" for="status_aduan">Status Aduan :</label></td>
-                                                                                        <td colspan="4"><b>{{ $aduan->status->nama_status }}</b></td> --}}
-                                                                                    {{-- @else --}}
-                                                                                    <td width="20%"><label class="form-label" for="status_aduan"><span class="text-danger">*</span> Status Aduan :</label></td>
-                                                                                    <td colspan="2"> 
-                                                                                        <select class="form-control status_aduan" name="status_aduan" id="status_aduan" >
-                                                                                        <option value="">-- Pilih Status Aduan --</option>
-                                                                                            @foreach($status as $stt)
-                                                                                                <option value="{{$stt->kod_status}}"  {{ $aduan->status_aduan == $stt->kod_status ? 'selected="selected"' : '' }}>{{$stt->nama_status}}</option>
-                                                                                            @endforeach
-                                                                                        </select>
-                                                                                        @error('status_aduan')
-                                                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                                        @enderror
-                                                                                    </td>
-                                                                                    {{-- @endif --}}
-                                                                                </div>
-                                                                            </tr>
-
-                                                                            <tr>
-                                                                                <div class="form-group">
-                                                                                    <td width="20%" style="background-color: #ddd; cursor: not-allowed;">
-                                                                                        <label class="form-label" for="jumlah_kos"><b>(+) JUMLAH KOS :</b></label><label class="form-label" style="padding-left: 142px;" for="jumlah_kos">RM</label>
-                                                                                    </td>
-                                                                                    <td colspan="2" style="background-color: #ddd; cursor: not-allowed;">
-                                                                                        <input type="number" step="any" class="form-control" id="jumlah_kos" style="cursor:context-menu;" name="jumlah_kos" value="{{ $aduan->jumlah_kos }}" readonly>
-                                                                                            @error('jumlah_kos')
+                                                                                <tr>
+                                                                                    <div class="form-group">
+                                                                                        <td width="20%">
+                                                                                            <label class="form-label" for="ak_upah">Upah :</label><label class="form-label" style="padding-left: 205px;" for="ak_upah">RM</label><br><br><br><br>
+                                                                                            <label class="form-label" for="ak_bahan_alat">Bahan/ Alat Ganti :</label><label class="form-label" style="padding-left: 130px;" for="ak_bahan_alat">RM</label>
+                                                                                        </td>
+                                                                                        <td colspan="2">
+                                                                                            <input type="number" step="any" class="form-control" id="ak_upah" name="ak_upah"  value="{{ $aduan->ak_upah }}">
+                                                                                                @error('ak_upah')
+                                                                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                                @enderror<br><br>
+                                                                                            <input type="number" step="any" class="form-control" id="ak_bahan_alat" name="ak_bahan_alat" value="{{ $aduan->ak_bahan_alat }}">
+                                                                                                @error('ak_bahan_alat')
+                                                                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                                @enderror<br>
+                                                                                        </td>
+                                                                                        {{-- @if($aduan->status_aduan == 'AS')  --}}
+                                                                                            {{-- <td width="20%"><label class="form-label" for="status_aduan">Status Aduan :</label></td>
+                                                                                            <td colspan="4"><b>{{ $aduan->status->nama_status }}</b></td> --}}
+                                                                                        {{-- @else --}}
+                                                                                        <td width="20%"><label class="form-label" for="status_aduan"><span class="text-danger">*</span> Status Aduan :</label></td>
+                                                                                        <td colspan="2"> 
+                                                                                            <select class="form-control status_aduan" name="status_aduan" id="status_aduan" >
+                                                                                            <option value="">-- Pilih Status Aduan --</option>
+                                                                                                @foreach($status as $stt)
+                                                                                                    <option value="{{$stt->kod_status}}"  {{ $aduan->status_aduan == $stt->kod_status ? 'selected="selected"' : '' }}>{{$stt->nama_status}}</option>
+                                                                                                @endforeach
+                                                                                            </select>
+                                                                                            @error('status_aduan')
                                                                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                             @enderror
-                                                                                    </td>
+                                                                                        </td>
+                                                                                        {{-- @endif --}}
+                                                                                    </div>
+                                                                                </tr>
 
-                                                                                    <td width="20%" style="border-top-style: hidden;"><label class="form-label" for=""></label></td>
-                                                                                    <td colspan="2" style="border-top-style: hidden;"></td>
-                                                                                </div>
-                                                                            </tr>
+                                                                                <tr>
+                                                                                    <div class="form-group">
+                                                                                        <td width="20%" style="background-color: #ddd; cursor: not-allowed;">
+                                                                                            <label class="form-label" for="jumlah_kos"><b>(+) JUMLAH KOS :</b></label><label class="form-label" style="padding-left: 142px;" for="jumlah_kos">RM</label>
+                                                                                        </td>
+                                                                                        <td colspan="2" style="background-color: #ddd; cursor: not-allowed;">
+                                                                                            <input type="number" step="any" class="form-control" id="jumlah_kos" style="cursor:context-menu;" name="jumlah_kos" value="{{ $aduan->jumlah_kos }}" readonly>
+                                                                                                @error('jumlah_kos')
+                                                                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                                @enderror
+                                                                                        </td>
 
-                                                                            <tr>
-                                                                                <th width="20%" style="vertical-align: middle"> Gambar : </th>
-                                                                                    @if(isset($gambar->first()->upload_image))
-                                                                                        <td colspan="2">
-                                                                                            @foreach($gambar as $imejPembaikan)
-                                                                                                <img src="/get-file-gambar/{{ $imejPembaikan->upload_image }}" style="width:150px; height:130px;" class="img-fluid mr-2">
-                                                                                            @endforeach
-                                                                                        </td>
-                                                                                        <td colspan="2" style="vertical-align: middle">
-                                                                                            <input type="file" class="form-control" id="upload_image" name="upload_image[]" multiple>
-                                                                                        </td>
-                                                                                    @else
-                                                                                        <td colspan="2" style="vertical-align: middle">
-                                                                                            <span>Tiada Gambar Sokongan</span>
-                                                                                        </td>
-                                                                                        <td colspan="2">
-                                                                                            <input type="file" class="form-control" id="upload_image" name="upload_image[]" multiple>
-                                                                                        </td>
-                                                                                    @endif
-                                                                            </tr> 
-                                                                        </thead>
-                                                                    </table>
+                                                                                        <td width="20%" style="border-top-style: hidden;"><label class="form-label" for=""></label></td>
+                                                                                        <td colspan="2" style="border-top-style: hidden;"></td>
+                                                                                    </div>
+                                                                                </tr>
+
+                                                                                <tr>
+                                                                                    <th width="20%" style="vertical-align: middle"> Gambar : </th>
+                                                                                        @if(isset($gambar->first()->upload_image))
+                                                                                            <td colspan="2">
+                                                                                                @foreach($gambar as $imejPembaikan)
+                                                                                                    <img src="/get-file-gambar/{{ $imejPembaikan->upload_image }}" style="width:150px; height:130px;" class="img-fluid mr-2">
+                                                                                                @endforeach
+                                                                                            </td>
+                                                                                            <td colspan="2" style="vertical-align: middle">
+                                                                                                <input type="file" class="form-control" id="upload_image" name="upload_image[]" multiple>
+                                                                                            </td>
+                                                                                        @else
+                                                                                            <td colspan="2" style="vertical-align: middle">
+                                                                                                <span>Tiada Gambar Sokongan</span>
+                                                                                            </td>
+                                                                                            <td colspan="2">
+                                                                                                <input type="file" class="form-control" id="upload_image" name="upload_image[]" multiple>
+                                                                                            </td>
+                                                                                        @endif
+                                                                                </tr> 
+                                                                            </thead>
+                                                                        </table>
+                                                                    </div>
                                                                     <button type="submit" class="btn btn-danger float-right"><i class="fal fa-save"></i> Kemaskini Tindakan</button>
                                                                     {!! Form::close() !!}
                                                                 @endif
@@ -689,6 +704,7 @@
                                                             {{-- pembantu --}}
                                                             @if($juru->jenis_juruteknik != 'K') 
                                                                 @if($aduan->status_aduan != 'BS')
+                                                                <div class="table-responsive">
                                                                     <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
                                                                         <thead>
                                                                             <tr>
@@ -788,11 +804,13 @@
                                                                             </tr> 
                                                                         </thead>
                                                                     </table>
+                                                                </div>
                                                                 @endif
                                                             @endif
                                                             {{-- ketua --}}
                                                             @if($juru->jenis_juruteknik == 'K') 
                                                                 @if($aduan->status_aduan == 'AS' || $aduan->status_aduan == 'LK' || $aduan->status_aduan == 'DP')
+                                                                <div class="table-responsive">
                                                                     <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
                                                                         <thead>
                                                                             <tr>
@@ -888,12 +906,14 @@
                                                                             </tr> 
                                                                         </thead>
                                                                     </table>
+                                                                </div>
                                                                 @endif
                                                             @endif
                                                         @endcan
 
                                                         @can('show repair')
                                                             @if($aduan->status_aduan != 'BS' || $aduan->status_aduan != 'DJ') 
+                                                            <div class="table-responsive">
                                                                 <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
                                                                     <thead>
                                                                         <tr>
@@ -993,6 +1013,7 @@
                                                                         </tr> 
                                                                     </thead>
                                                                 </table>
+                                                            </div>
                                                             @endif
                                                         @endcan
                                                             
@@ -1003,6 +1024,7 @@
                                                                 @endif
                                                                 {!! Form::open(['action' => 'AduanController@simpanStatus', 'method' => 'POST']) !!}
                                                                 {{Form::hidden('id', $aduan->id)}}
+                                                                <div class="table-responsive">
                                                                     <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
                                                                         <thead>
                                                                             <tr>
@@ -1028,6 +1050,7 @@
 
                                                                         </thead>
                                                                     </table>
+                                                                </div>
                                                                     <button type="submit" class="btn btn-danger float-right"><i class="fal fa-save"></i> Kemaskini Pengesahan</button>
                                                                 {!! Form::close() !!}
                                                             @endif
@@ -1040,6 +1063,7 @@
                                                                 @endif
                                                                 {!! Form::open(['action' => 'AduanController@simpanStatus', 'method' => 'POST']) !!}
                                                                 {{Form::hidden('id', $aduan->id)}}
+                                                                <div class="table-responsive">
                                                                     <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
                                                                         <thead>
                                                                             <tr>
@@ -1072,6 +1096,7 @@
 
                                                                         </thead>
                                                                     </table>
+                                                                </div>
                                                                     <button type="submit" class="btn btn-danger float-right"><i class="fal fa-save"></i> Hantar Pengesahan</button>
                                                                 {!! Form::close() !!}     
                                                             @endif
@@ -1079,6 +1104,7 @@
                                                     
                                                         @role('Operation Admin')
                                                             @if($aduan->status_aduan == 'AS' | $aduan->status_aduan == 'LK' && $aduan->pengesahan_pembaikan == 'Y') 
+                                                            <div class="table-responsive">
                                                                 <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
                                                                     <thead>
                                                                         <tr>
@@ -1092,10 +1118,12 @@
                                                                         </tr>
                                                                     </thead>
                                                                 </table>
+                                                            </div>
                                                             @endif
                                                         @endrole
                                                         @role('Technical Staff')
                                                             @if($aduan->status_aduan == 'AS' || $aduan->status_aduan == 'LK') 
+                                                            <div class="table-responsive">
                                                                 <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
                                                                     <thead>
                                                                         <tr>
@@ -1109,10 +1137,12 @@
                                                                         </tr>
                                                                     </thead>
                                                                 </table>
+                                                            </div>
                                                             @endif
                                                         @endrole
 
                                                         @if($aduan->pengesahan_pembaikan == 'Y')
+                                                        <div class="table-responsive">
                                                             <table id="pengesahan" class="table table-bordered table-hover table-striped w-100">
                                                                 <thead>
                                                                     <tr>
@@ -1125,6 +1155,7 @@
                                                                     </tr>
                                                                 </thead>
                                                             </table>
+                                                        </div>
                                                         @endif
 
                                                         <a style="margin-right:5px" href="{{ url()->previous() }}" class="btn btn-success float-right"><i class="fal fa-angle-double-left"></i> Kembali</a>

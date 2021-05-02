@@ -18,7 +18,6 @@ class SebabKerosakanController extends Controller
     public function index(Request $request)
     {
         $sebab = new SebabKerosakan();
-        // $senarai = SebabKerosakan::where('id', $request->sebab)->first(); 
         $kategori = KategoriAduan::all();
         $jenis = JenisKerosakan::all();
 

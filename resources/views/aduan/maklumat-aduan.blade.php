@@ -29,6 +29,7 @@
                                 @if (Session::has('simpanPengesahan'))
                                     <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('simpanPengesahan') }}</div>
                                 @endif
+                                <div class="table-responsive">
                                 <table id="info" class="table table-bordered table-hover table-striped w-100">
                                     <thead>
                                         <tr>
@@ -48,7 +49,9 @@
                                         </tr>
                                     </thead>
                                 </table>
+                                </div>
 
+                                <div class="table-responsive">
                                 <table id="aduan" class="table table-bordered table-hover table-striped w-100">
                                     <thead>
                                         <tr>
@@ -99,7 +102,9 @@
                                         </tr>
                                     </thead>
                                 </table>
+                                </div>
 
+                                <div class="table-responsive">
                                 <table id="muatnaik" class="table table-bordered table-hover table-striped w-100">
                                     <thead>
                                         <tr>
@@ -131,7 +136,9 @@
                                         
                                     </thead>
                                 </table>
+                                </div>
 
+                                <div class="table-responsive">
                                 <table id="verifikasi" class="table table-bordered table-hover table-striped w-100">
                                     <thead>
                                         <tr>
@@ -208,6 +215,7 @@
                                             
                                     </thead>
                                 </table>
+                                </div>
                                 <a href="/aduan" class="btn btn-success ml-auto float-right" ><i class="fal fa-angle-double-left"></i> Kembali</a><br>
                             </div>
                         </div>
