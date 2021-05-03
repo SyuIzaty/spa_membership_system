@@ -1,12 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<style>
-    .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
-    color: white !important;
-    background-color: #880000;
-}
-</style>
+
 <main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
         <div class="subheader">
             <h1 class="subheader-title">
@@ -30,15 +25,15 @@
                             <ul class="nav nav-pills" role="tablist">
                                 @role('Operation Admin')
                                 <li class="nav-item" style="margin-right: 2px">
-                                    <a style="color: #880000; border: solid 1px;  border-radius: 0" data-toggle="tab" class="nav-link" href="#all" role="tab"><i class="fal fa-file"></i> KESELURUHAN</a>
+                                    <a style="border: solid 1px;  border-radius: 0" data-toggle="tab" class="nav-link" href="#all" role="tab"><i class="fal fa-file"></i> KESELURUHAN</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a style="color: #880000; border: solid 1px; border-radius: 0" data-toggle="tab" class="nav-link" href="#juru" role="tab"><i class="fal fa-user"></i> JURUTEKNIK</a>
+                                    <a style="border: solid 1px; border-radius: 0" data-toggle="tab" class="nav-link" href="#juru" role="tab"><i class="fal fa-user"></i> JURUTEKNIK</a>
                                 </li>
                                 @endrole
                                 @role('Technical Staff')
                                 <li class="nav-item">
-                                    <a style="color: #880000; border: solid 1px; border-radius: 0" data-toggle="tab" class="nav-link" href="#test" role="tab"><i class="fal fa-user"></i> JURUTEKNIK</a>
+                                    <a style="border: solid 1px; border-radius: 0" data-toggle="tab" class="nav-link" href="#test" role="tab"><i class="fal fa-user"></i> JURUTEKNIK</a>
                                 </li>
                                 @endrole
                             </ul>
@@ -100,7 +95,7 @@
                                             <div class="table-responsive">
                                                 <table class="table table-bordered" id="rep">
                                                     <thead>
-                                                        <tr class="text-center" style="background-color: #880000; color: white">
+                                                        <tr class="text-center bg-primary-50">
                                                             <th>#ID</th>
                                                             <th>NAMA</th>
                                                             <th>EMEL</th>
@@ -189,7 +184,7 @@
                                                 <div class="table-responsive">
                                                     <table class="table table-bordered" id="reps">
                                                         <thead>
-                                                            <tr class="text-center" style="background-color: #880000; color: white">
+                                                            <tr class="text-center bg-primary-50">
                                                                 <th>#ID</th>
                                                                 <th>JURUTEKNIK</th>
                                                                 <th>PELAPOR</th>
@@ -287,7 +282,7 @@
                                                 <div class="table-responsive">
                                                     <table class="table table-bordered" id="repo">
                                                         <thead>
-                                                            <tr class="text-center" style="background-color: #880000; color: white">
+                                                            <tr class="text-center bg-primary-50">
                                                                 <th>#ID</th>
                                                                 <th>PELAPOR</th>
                                                                 <th>TARIKH LAPORAN</th>

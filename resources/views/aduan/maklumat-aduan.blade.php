@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-xl-12">
             <div id="panel-1" class="panel">
-                <div class="panel-hdr" style="background-color:rgb(115 16 16)">
+                <div class="panel-hdr bg-primary">
                     <h2>
                     </h2>
                     <div class="panel-toolbar">
@@ -33,7 +33,7 @@
                                 <table id="info" class="table table-bordered table-hover table-striped w-100">
                                     <thead>
                                         <tr>
-                                            <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-user"></i> INFO PENGADU</label></td>
+                                            <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> INFO PENGADU</label></td>
                                         </tr>
                                         <tr>
                                             <th width="20%" style="vertical-align: middle">Nama Penuh : </th>
@@ -55,7 +55,7 @@
                                 <table id="aduan" class="table table-bordered table-hover table-striped w-100">
                                     <thead>
                                         <tr>
-                                            <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-info"></i> BUTIRAN ADUAN</label></td>
+                                            <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-info"></i> BUTIRAN ADUAN</label></td>
                                         </tr>
                                         <tr>
                                             <th width="20%" style="vertical-align: middle">Pejabat/Bahagian/ Fakulti/Kolej : </th>
@@ -108,7 +108,7 @@
                                 <table id="muatnaik" class="table table-bordered table-hover table-striped w-100">
                                     <thead>
                                         <tr>
-                                            <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-upload"></i> BUKTI DIMUATNAIK</label></td>
+                                            <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-upload"></i> BUKTI DIMUATNAIK</label></td>
                                         </tr>
                                         <tr>
                                             <th width="20%" style="vertical-align: middle"> Gambar : </th>
@@ -142,7 +142,7 @@
                                 <table id="verifikasi" class="table table-bordered table-hover table-striped w-100">
                                     <thead>
                                         <tr>
-                                            <td colspan="5" style="background-color: hsl(0deg 29% 93%)">
+                                            <td colspan="5" class="bg-primary-50">
                                                 <label class="form-label">
                                                     <i class="fal fa-check-circle"></i> STATUS TERKINI ADUAN : 
                                                         @if($aduan->status_aduan=='BS')
@@ -197,7 +197,7 @@
                                                         <div class="form-group">
                                                             <td colspan="5"><p class="form-label">
                                                             <input style="margin-top: 15px; margin-right: 30px; margin-left: 15px" type="checkbox" checked disabled>
-                                                            SAYA, <b><u>{{ strtoupper($aduan->nama_pelapor) }}</u></b> MENGESAHKAN BAHAWA ADUAN YANG DIBUAT TELAH DILAKUKAN PEMBAIKAN OLEH PIHAK SEKIAN2. </p> 
+                                                            SAYA, <b><u>{{ strtoupper($aduan->nama_pelapor) }}</u></b> MENGESAHKAN BAHAWA ADUAN YANG DIBUAT TELAH DILAKUKAN PEMBAIKAN. </p> 
                                                         </div>
                                                     </tr>
                                                 @else
@@ -205,7 +205,7 @@
                                                         <div class="form-group">
                                                             <td colspan="5"><p class="form-label" for="pengesahan_pembaikan">
                                                             <input style="margin-top: 15px; margin-right: 30px; margin-left: 15px; margin-bottom: 15px;" type="checkbox" name="pengesahan_pembaikan" id="chk" onclick="btn()"/>
-                                                            SAYA, <b><u>{{ strtoupper($aduan->nama_pelapor) }}</u></b> MENGESAHKAN BAHAWA ADUAN YANG DIBUAT TELAH DILAKUKAN PEMBAIKAN OLEH PIHAK SEKIAN2. </p> 
+                                                            SAYA, <b><u>{{ strtoupper($aduan->nama_pelapor) }}</u></b> MENGESAHKAN BAHAWA ADUAN YANG DIBUAT TELAH DILAKUKAN PEMBAIKAN. </p> 
                                                             <button style="margin-top: 5px;" class="btn btn-danger float-right" id="submit" name="submit" disabled><i class="fal fa-check"></i> Hantar Pengesahan</button></td>
                                                         </div>
                                                     </tr>

@@ -1,12 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<style>
-    .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
-    color: white !important;
-    background-color: #880000;
-}
-</style>
+
 <main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
     <div class="subheader">
         <h1 class="subheader-title">
@@ -33,11 +28,11 @@
                     
                         <ul class="nav nav-pills" role="tablist">
                             <li class="nav-item" style="margin-right: 2px">
-                                <a style="color: #880000; border: solid 1px;  border-radius: 0" data-toggle="tab" class="nav-link" href="#aduan" role="tab"><i class="fal fa-info"></i> ADUAN</a>
+                                <a style="border: solid 1px;  border-radius: 0" data-toggle="tab" class="nav-link" href="#aduan" role="tab"><i class="fal fa-info"></i> ADUAN</a>
                             </li>
                             @if($aduan->status_aduan != 'BS')
                             <li class="nav-item">
-                                <a style="color: #880000; border: solid 1px; border-radius: 0" data-toggle="tab" class="nav-link" href="#baiki" role="tab"><i class="fal fa-clone"></i> PENAMBAHBAIKAN</a>
+                                <a style="border: solid 1px; border-radius: 0" data-toggle="tab" class="nav-link" href="#baiki" role="tab"><i class="fal fa-clone"></i> PENAMBAHBAIKAN</a>
                             </li>
                                 @if($aduan->status_aduan == 'AS' || $aduan->status_aduan == 'LK' || $aduan->status_aduan == 'DP')
                                     <a data-page="/pdfAduan/{{ $aduan->id }}" class="btn btn-sm btn-danger ml-auto float-right" onclick="Print(this)" style="color: white; padding-top: 8px"><i class="fal fa-download"></i> PDF</a>
@@ -55,7 +50,7 @@
                                     <div class="row"><br>
                                         <div class="col-md-12 col-sm-12" style="margin-bottom: 20px">
                                             <div class="card card-primary card-outline">
-                                                <div class="card-header text-white" style="background-color:rgb(115 16 16)">
+                                                <div class="card-header text-white" style="background-color:#886ab5">
                                                     <span class="fw-300"></span><i class="fal fa-list"></i><b> BUTIRAN ADUAN </b>
                                                 </div>
                                                 <div class="card-body">
@@ -64,7 +59,7 @@
                                                         <table class="table table-bordered table-hover table-striped w-100">
                                                             <thead>
                                                                 <tr>
-                                                                    <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-user"></i> INFO PENGADU</label></td>
+                                                                    <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> INFO PENGADU</label></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <div class="form-group">
@@ -90,7 +85,7 @@
                                                         <table class="table table-bordered table-hover table-striped w-100">
                                                             <thead>
                                                                 <tr>
-                                                                    <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-clipboard-list"></i> ADUAN</label></td>
+                                                                    <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-clipboard-list"></i> ADUAN</label></td>
                                                                 </tr>
                     
                                                                 <tr>
@@ -168,7 +163,7 @@
                                                                 <table class="table table-bordered table-hover table-striped w-100">
                                                                     <thead>
                                                                         <tr>
-                                                                            <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-handshake"></i> PENYERAHAN ADUAN</label></td>
+                                                                            <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-handshake"></i> PENYERAHAN ADUAN</label></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <div class="form-group">
@@ -244,7 +239,7 @@
                                                                     <table class="table table-bordered table-hover w-100">
                                                                         <thead>
                                                                             <tr>
-                                                                                <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-handshake"></i> KEMASKINI PENYERAHAN ADUAN</label></td>
+                                                                                <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-handshake"></i> KEMASKINI PENYERAHAN ADUAN</label></td>
                                                                             </tr>
                     
                                                                             <tr>
@@ -318,7 +313,7 @@
                                                                 <table class="table table-bordered table-hover table-striped w-100">
                                                                     <thead>
                                                                         <tr>
-                                                                            <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-handshake"></i> MAKLUMAT PENYERAHAN ADUAN</label></td>
+                                                                            <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-handshake"></i> MAKLUMAT PENYERAHAN ADUAN</label></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <div class="form-group">
@@ -347,7 +342,7 @@
                                                         <table class="table table-bordered table-hover table-striped w-100">
                                                             <thead>
                                                                 <tr>
-                                                                    <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-handshake"></i> MAKLUMAT PENYERAHAN ADUAN</label></td>
+                                                                    <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-handshake"></i> MAKLUMAT PENYERAHAN ADUAN</label></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <div class="form-group">
@@ -384,7 +379,7 @@
                                         <div class="row"><br>
                                             <div class="col-md-12 col-sm-12" style="margin-bottom: 20px">
                                                 <div class="card card-primary card-outline">
-                                                    <div class="card-header text-white" style="background-color:rgb(115 16 16)">
+                                                    <div class="card-header text-white" style="background-color:#886ab5">
                                                         <span class="fw-300"></span><i class="fal fa-check-square"></i><b> BUTIRAN PENAMBAHBAIKAN </b>
                                                     </div>
                                                     <div class="card-body">
@@ -399,7 +394,7 @@
                                                                     <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
                                                                         <thead>
                                                                             <tr>
-                                                                                <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-box"></i> PENAMBAHBAIKAN</label></td>
+                                                                                <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-box"></i> PENAMBAHBAIKAN</label></td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <div class="form-group">
@@ -528,7 +523,7 @@
                                                                         <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
                                                                             <thead>
                                                                                 <tr>
-                                                                                    <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-box"></i> KEMASKINI PENAMBAHBAIKAN</label></td>
+                                                                                    <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-box"></i> KEMASKINI PENAMBAHBAIKAN</label></td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <div class="form-group">
@@ -708,7 +703,7 @@
                                                                     <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
                                                                         <thead>
                                                                             <tr>
-                                                                                <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-info"></i> INFO PENAMBAHBAIKAN</label></td>
+                                                                                <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-info"></i> INFO PENAMBAHBAIKAN</label></td>
                                                                             </tr>
 
                                                                             <tr>
@@ -814,7 +809,7 @@
                                                                     <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
                                                                         <thead>
                                                                             <tr>
-                                                                                <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-info"></i> INFO PENAMBAHBAIKAN</label></td>
+                                                                                <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-info"></i> INFO PENAMBAHBAIKAN</label></td>
                                                                             </tr>
 
                                                                             <tr>
@@ -917,7 +912,7 @@
                                                                 <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
                                                                     <thead>
                                                                         <tr>
-                                                                            <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-info"></i> INFO PENAMBAHBAIKAN</label></td>
+                                                                            <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-info"></i> INFO PENAMBAHBAIKAN</label></td>
                                                                         </tr>
 
                                                                         <tr>
@@ -1028,7 +1023,7 @@
                                                                     <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
                                                                         <thead>
                                                                             <tr>
-                                                                                <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-clipboard-check"></i> KEMASKINI PENGESAHAN PENAMBAHBAIKAN</label></td>
+                                                                                <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-clipboard-check"></i> KEMASKINI PENGESAHAN PENAMBAHBAIKAN</label></td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <div class="form-group">
@@ -1067,7 +1062,7 @@
                                                                     <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
                                                                         <thead>
                                                                             <tr>
-                                                                                <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-clipboard-check"></i> PENGESAHAN PENAMBAHBAIKAN</label></td>
+                                                                                <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-clipboard-check"></i> PENGESAHAN PENAMBAHBAIKAN</label></td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <div class="form-group">
@@ -1108,7 +1103,7 @@
                                                                 <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
                                                                     <thead>
                                                                         <tr>
-                                                                            <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-clipboard-check"></i> CATATAN</label></td>
+                                                                            <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-clipboard-check"></i> CATATAN</label></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <div class="form-group">
@@ -1127,7 +1122,7 @@
                                                                 <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
                                                                     <thead>
                                                                         <tr>
-                                                                            <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-clipboard-check"></i> CATATAN</label></td>
+                                                                            <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-clipboard-check"></i> CATATAN</label></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <div class="form-group">
@@ -1146,7 +1141,7 @@
                                                             <table id="pengesahan" class="table table-bordered table-hover table-striped w-100">
                                                                 <thead>
                                                                     <tr>
-                                                                        <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-clipboard-check"></i> PENGESAHAN PELAPOR</label></td>
+                                                                        <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-clipboard-check"></i> PENGESAHAN PELAPOR</label></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <div class="form-group">

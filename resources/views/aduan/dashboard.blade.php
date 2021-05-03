@@ -12,11 +12,6 @@
       /* top: 0; */
     }
 
-    .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
-        color: white !important;
-        background-color: #880000;
-    }
-
     .tab-content>.tab-pane {
         height: 1px;
         overflow: hidden;
@@ -54,10 +49,10 @@
                             <div class="card-tools">
                                 <ul class="nav nav-pills ml-auto">
                                 <li class="nav-item">
-                                    <a style="color: #880000; border: solid 1px;  border-radius: 0" class="nav-link active test" href="#revenue-chart" data-toggle="tab">Carta Pie</a>
+                                    <a style="border: solid 1px; border-radius: 0" class="nav-link active test" href="#revenue-chart" data-toggle="tab">Carta Pie</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a style="color: #880000; border: solid 1px;  border-radius: 0" class="nav-link" href="#sales-chart" data-toggle="tab">Carta Bar</a>
+                                    <a style="border: solid 1px; border-radius: 0" class="nav-link" href="#sales-chart" data-toggle="tab">Carta Bar</a>
                                 </li>
                                     <a href="/export_aduan" class="btn btn-sm btn-danger ml-auto float-right" style="color: white; padding-top: 8px"><i class="fal fa-eye"></i> Lihat Laporan</a>
                                 </ul>
@@ -128,7 +123,7 @@
                         <div class="accordion accordion-outline" id="js_demo_accordion-3">
                             <div class="card">
                                 <div class="card-header">
-                                    <a href="javascript:void(0);" class="card-title collapsed" data-toggle="collapse" data-target="#dJ" aria-expanded="false" style="color: maroon">
+                                    <a href="javascript:void(0);" class="card-title collapsed" data-toggle="collapse" data-target="#dJ" aria-expanded="false">
                                         <i class="fal fa-users width-2 fs-xl"></i>
                                         Senarai Juruteknik
                                         <span class="ml-auto">
@@ -146,7 +141,7 @@
                                         <div class="table-responsive">
                                             <table class="table table-bordered" style="width: 100%" id="dJ_list">
                                                 <thead class="text-center">
-                                                    <tr style="background-color: #880000; color:white">
+                                                    <tr class="bg-primary-50">
                                                         <td>NO.</td>
                                                         <td>ID</td>
                                                         <td>NAMA</td>

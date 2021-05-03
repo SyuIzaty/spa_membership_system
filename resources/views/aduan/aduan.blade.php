@@ -28,7 +28,7 @@
                             @endif
                             <table id="aduan" class="table table-bordered table-hover table-striped w-100">
                                 <thead>
-                                    <tr class="text-center" style="background-color: #880000; color: white">
+                                    <tr class="text-center bg-primary-50">
                                         <th style="width:20px">NO</th>
                                         <th style="width:30px">ID</th>
                                         <th style="text-align: center; width: 250px">LOKASI</th>

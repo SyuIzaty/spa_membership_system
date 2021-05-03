@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-xl-12">
             <div id="panel-1" class="panel">
-                <div class="panel-hdr" style="background-color:rgb(115 16 16)">
+                <div class="panel-hdr bg-primary">
                     <h2>
                     </h2>
                     <div class="panel-toolbar">
@@ -38,7 +38,7 @@
                                         <table id="info" class="table table-bordered table-hover table-striped w-100">
                                             <thead>
                                                 <tr>
-                                                    <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-user"></i> INFO PENGADU</label></td>
+                                                    <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> INFO PENGADU</label></td>
                                                 </tr>
                                                 <tr>
                                                     <th width="20%" style="vertical-align: middle">Nama Penuh : </th>
@@ -60,7 +60,7 @@
                                         <table id="aduan" class="table table-bordered table-hover table-striped w-100">
                                             <thead>
                                                 <tr>
-                                                    <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-info"></i> BUTIRAN ADUAN</label></td>
+                                                    <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-info"></i> BUTIRAN ADUAN</label></td>
                                                 </tr>
                                                 <tr>
                                                     <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Pejabat/Bahagian/ Fakulti/Kolej : </th>
@@ -170,7 +170,7 @@
                                         <table id="muatnaik" class="table table-bordered table-hover table-striped w-100">
                                             <thead>
                                                 <tr>
-                                                    <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-upload"></i> MUATNAIK BUKTI</label></td>
+                                                    <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-upload"></i> MUATNAIK BUKTI</label></td>
                                                 </tr>
                                                 <tr>
                                                     <th width="20%" style="vertical-align: middle"> Gambar : </th>
@@ -198,7 +198,7 @@
                                         <table id="verifikasi" class="table table-bordered table-hover table-striped w-100">
                                             <thead>
                                                 <tr>
-                                                    <td colspan="5" style="background-color: hsl(0deg 29% 93%)"><label class="form-label"><i class="fal fa-check-square"></i> PERAKUAN DAN PENGESAHAN PELAPOR</label></td>
+                                                    <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-check-square"></i> PERAKUAN DAN PENGESAHAN PELAPOR</label></td>
                                                 </tr>
                                                 <tr>
                                                     <div class="form-group">

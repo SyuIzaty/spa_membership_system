@@ -31,7 +31,7 @@
                         <div class="table-responsive">
                             <table id="jenis" class="table table-bordered table-hover table-striped w-100">
                                 <thead>
-                                    <tr class="text-center" style="background-color: #880000; color: white">
+                                    <tr class="text-center bg-primary-50">
                                         <th style="width:30px">NO</th>
                                         <th>KATEGORI ADUAN</th>
                                         <th>JENIS KEROSAKAN</th>
@@ -58,7 +58,7 @@
     <div class="modal fade" id="crud-modal" aria-hidden="true" >
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="card-header">
+                <div class="card-header bg-primary-50">
                     <h5 class="card-title w-100">JENIS KEROSAKAN BARU</h5>
                 </div>
                 <div class="modal-body">
@@ -101,7 +101,7 @@
     <div class="modal fade" id="crud-modals" aria-hidden="true" >
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="card-header">
+                <div class="card-header bg-primary-50">
                     <h5 class="card-title w-100">EDIT JENIS KEROSAKAN</h5>
                 </div>
                 <div class="modal-body">
