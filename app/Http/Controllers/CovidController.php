@@ -1035,7 +1035,7 @@ class CovidController extends Controller
                 ]);
             }
                 
-            Session::flash('message', 'Your declaration on '.date(' j F Y ', strtotime($date)).' has successfully been recorded.<br>  The result for your declaration is under category <b>'.$category.'</b>.<br> Please make sure to abide the SOP when you are in INTEC premise. <br> Thank you for your cooperation.');
+            Session::flash('message', 'Your declaration on '.date(' j F Y ', strtotime($date)).' has successfully been recorded.<br>  The result for your declaration is category <b>'.$category.'</b>.<br> Please make sure to abide the SOP when you are in INTEC premise. <br> Thank you for your cooperation.');
         }
 
        return redirect('add-form');

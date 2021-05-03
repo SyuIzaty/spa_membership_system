@@ -67,6 +67,48 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <a href="javascript:void(0);" class="card-title" data-toggle="collapse" data-target="#js_demo_accordion-5a" aria-expanded="true">
+                                                    COVID-19 CATEGORY
+                                                    <span class="ml-auto">
+                                                        <span class="collapsed-reveal">
+                                                            <i class="fal fa-chevron-up fs-xl"></i>
+                                                        </span>
+                                                        <span class="collapsed-hidden">
+                                                            <i class="fal fa-chevron-down fs-xl"></i>
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                            <div id="js_demo_accordion-5a" class="collapse show" data-parent="#js_demo_accordion-5" style="">
+                                                <div class="card-body">
+                                                    <table class="table table-bordered table-sm">
+                                                        <tr>
+                                                            <td class="text-nowrap">A</td>
+                                                            <td>You are a patient who has been confirmed positive for COVID-19.</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-nowrap">B</td>
+                                                            <td>You are an individual who has close contact with individuals from category A</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-nowrap">C</td>
+                                                            <td>You are an individual who has close contact with individuals from category B</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-nowrap">D</td>
+                                                            <td>No close contact but there are symptoms</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-nowrap">E</td>
+                                                            <td>No close contact and no symptoms</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
                                         @if (Session::has('message'))
                                             <center><div class="alert alert-success responsive" style="color: #3b6324; background-color: #d3fabc; width: 100%; font-size: 14px;"> {!! session()->get('message') !!}</div></center>
                                         @endif

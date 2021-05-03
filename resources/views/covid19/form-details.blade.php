@@ -190,7 +190,13 @@
                                             <tr>
                                                 <div class="form-group">
                                                     <td colspan="4">
-                                                        <label for="confirmation" style="margin-left: 55px;"><b> OVERALL RESULT : </b><b style="font-size: 20px">CATEGORY {{$declare->category}}</b> [ Description on category ]</label>
+                                                        <label for="confirmation" style="margin-left: 55px;"><b> OVERALL RESULT : </b><b style="font-size: 20px">CATEGORY {{$declare->category}}</b> 
+                                                            [ @if ($declare->category == 'A') You are a patient who has been confirmed positive for COVID-19 @endif
+                                                              @if ($declare->category == 'B') You are an individual who has close contact with individuals from category A @endif
+                                                              @if ($declare->category == 'C') You are an individual who has close contact with individuals from category B @endif
+                                                              @if ($declare->category == 'D') No close contact but there are symptoms @endif
+                                                              @if ($declare->category == 'E') No close contact and no symptoms @endif ]
+                                                        </label>
                                                     </td>
                                                 </div>
                                             </tr>
