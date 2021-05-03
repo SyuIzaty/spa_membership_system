@@ -148,7 +148,7 @@
                             </li>
 
                             {{-- Start Aduan --}}
-                            {{-- @can('view form') --}}
+                            @can('view form')
                                 @can('view list')
                                     <li class="nav-title">DASHBOARD E-ADUAN</li>
                                     <li>
@@ -177,7 +177,7 @@
                                         </li>
                                     </ul>
                                 </li>
-                            {{-- @endcan --}}
+                            @endcan
                             @can('view list')
                                 <li class="open">
                                     <a href="#" title="Aduan" data-filter-tags="aduan">
