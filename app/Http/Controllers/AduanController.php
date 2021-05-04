@@ -123,7 +123,7 @@ class AduanController extends Controller
         $file = $request->resit_file;
         $path=storage_path()."/resit/";
 
-        if (isset($image)) { 
+        if (isset($file)) { 
 
             for($x = 0; $x < count($file) ; $x ++)
             {
