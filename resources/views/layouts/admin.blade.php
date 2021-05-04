@@ -149,10 +149,10 @@
 
                             {{-- Start Aduan --}}
                             @php
-                                $user = Auth()->user();
-                                $permission = $user->getAllPermissions();
-                                echo ($user);
-                                echo ($permission);
+                                // $user = Auth()->user();
+                                // $permission = $user->getAllPermissions();
+                                // echo ($user);
+                                // echo ($permission);
                             @endphp
                             @can('view form')
                                 @can('view list')
