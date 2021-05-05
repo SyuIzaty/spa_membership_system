@@ -119,6 +119,6 @@ class DeclareCovidExport implements FromCollection, WithHeadings
 
     public function headings(): array
     {
-        return ['ID','NAME','IC/PASSPORT NO','EMAIL','PHONE NUMBER', 'Q1', 'Q2','Q3','Q4A','Q4B','Q4C','Q4D','CATEGORY','USER CATEGORY','POSITION','DEPARTMENT','FORM TYPE', 'DECLARE DATE', 'CREATED AT'];
+        return ['ID','NAME','IC/PASSPORT NO','EMAIL','PHONE NUMBER', 'Q1', 'Q2','Q3','Q4A','Q4B','Q4C','Q4D','DECLARE CATEGORY','STAFF CATEGORY','POSITION','DEPARTMENT','FORM TYPE', 'DECLARE DATE', 'CREATED AT'];
     }
 }

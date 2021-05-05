@@ -41,7 +41,8 @@
                             <p>Assalamualaikum wbt. & Salam Sejahtera.</p><br>
                             <p style="line-height: 2em">Tuan/Puan, {{-- {{ strtoupper($receiver_name) }} --}}</p>
                             <p>Semakan data esaring mendapati tuan/puan masih belum mengisi maklumat untuk tarikh hari ini iaitu {{ date('j F Y', strtotime($details)) }}. </p>
-                            <p>Oleh itu, tuan/puan adalah diminta untuk mengisi data esaring dengan segera bagi tarikh ini dan pada setiap hari berikutnya di link <a href="https://ids.intec.edu.my/covid">https://ids.intec.edu.my/covid</a> atau terus ke scan barcode berikut :</p>
+                            <p>Oleh itu, tuan/puan adalah diminta untuk mengisi data esaring dengan segera bagi tarikh hari ini dan pada
+                                <b>setiap hari bekerja (termasuk cuti rehat & cuti sakit – data tidak direkod pada hari sabtu, ahad & cuti umum)</b> berikutnya di link <a href="https://ids.intec.edu.my/covid">https://ids.intec.edu.my/covid</a> atau terus ke scan barcode berikut :</p>
                             <p><center><img src="{{ URL::to('/') }}/img/covid_qrcode.png" height="200" width="200" alt="QR"></center></p>
                             <p>Data esaring ini perlu diisi setiap hari oleh semua staf tidak kira bekerja dari rumah atau di pejabat dan pihak Sumber Manusia akan mengemaskini rekod pengesahan esaring dibuat oleh staf setiap hari.</p>
                             <p>Kegagalan staf mengisi esaring mungkin akan mengakibatkan permohonan masuk ke kampus tidak dibenarkan atau rekod staf yang mempunyai kontak rapat dan bergelaja untuk permohonan bekerja dari rumah.</p>

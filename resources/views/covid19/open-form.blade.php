@@ -106,7 +106,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr class="intecStf">
-                                                    <td width="20%"><label class="form-label" for="user_category"><span class="text-danger">*</span> User Category </label></td>
+                                                    <td width="20%"><label class="form-label" for="user_category"><span class="text-danger">*</span> Staff Category </label></td>
                                                     <td colspan="6">
                                                         <select class="form-control user_category" name="user_category" id="user_category">
                                                             <option value="">Select Category</option>
