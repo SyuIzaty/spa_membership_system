@@ -14,6 +14,7 @@ use App\Student;
 use App\Staff;
 use App\Jobs\SendEmail;
 use App\CovidRemainder;
+use App\UserCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -654,14 +655,14 @@ class CovidController extends Controller
         $declare = Covid::where('id', $request->covD)->first();
         $notes = CovidNotes::where('id', $request->cov)->first(); 
         $request->validate([
-            'follow_up'       => 'nullable|max:255',
+            'follow_up'       => 'nullable',
         ]);
         
         $notes->update([
             'follow_up'    => $request->follow_up,
         ]);
         
-        return redirect('followup-list/'.$declare->id)->with('notify', 'Follow Up Notes Edited');
+        return redirect('followup-list/'.$declare->id)->with('notify', 'Follow Up Notes Successfully Updated');
     }
 
     public function delFollowup($id, $cov_id)
@@ -669,7 +670,7 @@ class CovidController extends Controller
         $hd = CovidNotes::where('id',$cov_id)->first();
         $el = CovidNotes::find($id);
         $el->delete($hd);
-        return redirect()->back()->with('message', 'Follow Up Notes Deleted');
+        return redirect()->back()->with('message', 'Follow Up Notes Have Been Deleted');
     }
 
     public function addFollowup(Request $request)
@@ -678,7 +679,7 @@ class CovidController extends Controller
         $id = Auth::user()->id;
 
         $request->validate([
-            'follow_up'       => 'nullable|max:255',
+            'follow_up'       => 'nullable',
         ]);
         
         CovidNotes::create([
@@ -687,7 +688,7 @@ class CovidController extends Controller
             'created_by'        => $id,
         ]);
         
-        return redirect('followup-list/'.$declare->id)->with('notification', 'New Follow Up Added');
+        return redirect('followup-list/'.$declare->id)->with('notification', 'New Follow Up Successfully Added');
     }
 
     public function categoryC()
@@ -860,7 +861,8 @@ class CovidController extends Controller
         $user_list = User::all();
         $type = UserType::all();
         $department = Department::orderBy('department_name')->get();
-        return view('covid19.open-form', compact('department', 'type', 'user_list'));
+        $category = UserCategory::orderBy('category_name')->get();
+        return view('covid19.open-form', compact('department', 'type', 'user_list', 'category'));
     }
 
     public function addForm()
@@ -914,8 +916,69 @@ class CovidController extends Controller
         } 
         else 
         {
-            if($request->user_position == 'STF' || $request->user_position == 'STD')
+            if($request->user_position == 'STF')
             {
+                $validate = [
+                    'user_position'   => 'required',
+                    'user_id'         => 'required|regex:/^[\w-]*$/', 
+                    'user_name'       => 'required', 
+                    'user_phone'      => 'required|numeric',
+                    'user_email'      => 'nullable|email',
+                    'q1'              => 'required',
+                    'user_category'   => 'required',
+                ];
+
+                if($request->q1 == 'N') 
+                {
+                    $validate['q2'] = 'required'; 
+                } 
+                if($request->q1 == 'Y') 
+                {
+                    $validate['declare_date1'] = 'required'; 
+                }
+                if($request->q2 == 'N') 
+                {
+                    $validate['q3'] = 'required'; 
+                } 
+                if($request->q2 == 'Y')  
+                {
+                    $validate['declare_date2'] = 'required'; 
+                }
+                if($request->q3 == 'N') 
+                {
+                    $validate['q4a'] = 'required';
+                    $validate['q4b'] = 'required';
+                    $validate['q4c'] = 'required';
+                    $validate['q4d'] = 'required';
+                }
+
+                $request->validate($validate);
+
+                $declare = Covid::create([
+                    'user_name'       => $request->name,
+                    'user_id'         => $request->user_id,
+                    'user_email'      => $request->email,
+                    'user_phone'      => $request->user_phone,
+                    'department_id'   => $request->department_id,
+                    'user_category'   => $request->user_category,
+                    'user_position'   => $request->user_position,
+                    'q1'              => $request->q1,
+                    'q2'              => $request->q2,
+                    'q3'              => $request->q3, 
+                    'q4a'             => $request->q4a, 
+                    'q4b'             => $request->q4b,
+                    'q4c'             => $request->q4c,
+                    'q4d'             => $request->q4d, 
+                    'confirmation'    => 'Y',
+                    'category'        => $category,
+                    'declare_date'    => $date,
+                    'declare_time'    => $time,
+                    'form_type'       => 'OF',
+                    'created_by'      => $request->user_id,
+                ]);
+
+            } elseif($request->user_position == 'STD') {
+
                 $validate = [
                     'user_position'   => 'required',
                     'user_id'         => 'required|regex:/^[\w-]*$/', 
@@ -1047,11 +1110,11 @@ class CovidController extends Controller
 
             if( Auth::user()->hasRole('HR Admin') )
             { 
-                $name = Covid::select('user_id', 'user_name')->orderBy('user_name')->get();
+                $name = Covid::select('user_id', 'user_name')->groupBy('user_id', 'user_name')->orderBy('user_name')->get();
             }
             else
             {
-                $name = Covid::select('user_id', 'user_name')->where('user_position', 'STD')->orderBy('user_name')->get();
+                $name = Covid::select('user_id', 'user_name')->groupBy('user_id', 'user_name')->where('user_position', 'STD')->orderBy('user_name')->get();
             }
 
             $category = Covid::select('category')->groupBy('category')->get();
@@ -1224,6 +1287,11 @@ class CovidController extends Controller
             return isset($covid->department->department_name) ? $covid->department->department_name : '<div style="color:red;" > -- </div>';
         })
 
+        ->editColumn('user_category', function ($covid) {
+
+            return isset($covid->categoryUser->category_name) ? $covid->categoryUser->category_name : '<div style="color:red;" > -- </div>';
+        })
+
         ->editColumn('form_type', function ($covid) {
             if($covid->form_type == 'OF'){
                 return 'Open Form';
@@ -1256,7 +1324,7 @@ class CovidController extends Controller
             
         })
     
-       ->rawColumns(['user_position', 'department_id', 'declare_date', 'created_at', 'user_name', 'user_ic', 'user_phone', 'user_email', 'q1', 'q2', 'q3', 'q4a', 'q4b', 'q4c', 'q4d'])
+       ->rawColumns(['user_category', 'user_position', 'department_id', 'declare_date', 'created_at', 'user_name', 'user_ic', 'user_phone', 'user_email', 'q1', 'q2', 'q3', 'q4a', 'q4b', 'q4c', 'q4d'])
        ->make(true);
     }
 

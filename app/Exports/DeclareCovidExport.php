@@ -5,6 +5,7 @@ namespace App\Exports;
 use App\Covid;
 use App\UserType;
 use App\Department;
+use App\UserCategory;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -57,6 +58,7 @@ class DeclareCovidExport implements FromCollection, WithHeadings
         $list =  Covid::whereRaw($cond)
         ->join('user_position','cdd_user_types.user_code','=','cdd_covid_declarations.user_position')
         ->join('department_id','cdd_department.id','=','cdd_covid_declarations.department_id')
+        ->join('user_category','cdd_user_category.category_code','=','cdd_covid_declarations.user_category')
         ->get();
 
         $collected1 = collect($list)->groupBy('id')->toarray();
@@ -76,6 +78,7 @@ class DeclareCovidExport implements FromCollection, WithHeadings
                 'Q4c'           => "",
                 'Q4d'           => "",
                 'Category'      => "",
+                'User_category' => "",
                 'Position'      => "",
                 'Department'    => "",
                 'Form_type'     => "",
@@ -99,6 +102,7 @@ class DeclareCovidExport implements FromCollection, WithHeadings
                     $data['Q4c'] =$ivalue->q4c;
                     $data['Q4d'] =$ivalue->q4d;
                     $data['Category'] =$ivalue->category;
+                    $data['User_category'] =$ivalue->user_category;
                     $data['Position'] =$ivalue->user_position;
                     $data['Department'] =$ivalue->department_id;
                     $data['Form_type'] =$ivalue->form_type;
@@ -115,6 +119,6 @@ class DeclareCovidExport implements FromCollection, WithHeadings
 
     public function headings(): array
     {
-        return ['ID','NAME','IC/PASSPORT NO','EMAIL','PHONE NUMBER', 'Q1', 'Q2','Q3','Q4A','Q4B','Q4C','Q4D','CATEGORY','POSITION','DEPARTMENT','FORM TYPE', 'DECLARE DATE', 'CREATED AT'];
+        return ['ID','NAME','IC/PASSPORT NO','EMAIL','PHONE NUMBER', 'Q1', 'Q2','Q3','Q4A','Q4B','Q4C','Q4D','CATEGORY','USER CATEGORY','POSITION','DEPARTMENT','FORM TYPE', 'DECLARE DATE', 'CREATED AT'];
     }
 }

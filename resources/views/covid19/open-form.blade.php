@@ -105,7 +105,21 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-                                                <tr class="all">
+                                                <tr class="intecStf">
+                                                    <td width="20%"><label class="form-label" for="user_category"><span class="text-danger">*</span> User Category </label></td>
+                                                    <td colspan="6">
+                                                        <select class="form-control user_category" name="user_category" id="user_category">
+                                                            <option value="">Select Category</option>
+                                                            @foreach ($category as $cate) 
+                                                                <option value="{{ $cate->category_code }}" @if (old('user_category') == $cate->category_code) selected="selected" @endif>{{ $cate->category_name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        @error('user_category')
+                                                            <p style="color: red"><strong> {{ $message }} </strong></p>
+                                                        @enderror
+                                                    </td>
+                                                </tr>
+                                                <tr class="stdVsr select-depart">
                                                     <td width="20%"><label class="form-label" for="department_id"><span class="text-danger">*</span> Department To Go </label></td>
                                                     <td colspan="6">
                                                         <select class="form-control department_id" name="department_id" id="department_id">
@@ -241,7 +255,7 @@
 @section('script')
     <script>
     $(document).ready( function() {
-        $('.department_id, .user_position').select2();
+        $('.department_id, .user_position, .user_category').select2();
 
         if($('.user_id').val()!=''){
             updateCr($('.user_id'));
@@ -304,6 +318,19 @@
         }
       });
 
+
+      $(".select-depart").hide();
+
+      $( "#user_category" ).change(function() {
+        var val = $("#user_category").val();
+        if(val=="WFO"){
+            $(".select-depart").show();
+        } else {
+            $(".select-depart").hide();
+        }
+      });
+      
+
       $(".intec").hide();
 
       $( "#user_position" ).change(function() {
@@ -359,6 +386,18 @@
         }
       });
 
+      $(".stdVsr").hide();
+
+      $( "#user_position" ).change(function() {
+        var val = $("#user_position").val();
+        if(val=="STD" || val=="VSR"){
+            $(".stdVsr").show();
+        } else {
+            $(".stdVsr").hide();
+        }
+      });
+
+
       $(".all").hide();
 
       $( "#user_position" ).change(function() {
@@ -384,6 +423,8 @@
         $(".user_position").change(); 
         $('.user_id').val('{{ old('user_id') }}');
         $(".user_id").change(); 
+        $('.user_category').val('{{ old('user_category') }}'); 
+        $(".user_category").change(); 
         $('.user_phone').val('{{ old('user_phone') }}');
         $('.department_id').val('{{ old('department_id') }}');
         $('#vsr_name').val('{{ old('vsr_name') }}');

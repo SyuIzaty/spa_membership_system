@@ -48,7 +48,7 @@
                             <div class="card-body">
                                 <div class="table-responsive">
                                     @if(session()->has('message'))
-                                    <div class="alert alert-success" style="color: #650404; background-color: #ff6c6cc9;"> <i class="icon fal fa-check-circle"></i>
+                                    <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i>
                                             {{ session()->get('message') }}
                                         </div>
                                     @endif
@@ -58,7 +58,7 @@
                                         </div>
                                     @endif
                                     @if(session()->has('notify'))
-                                    <div class="alert alert-success" style="color: #582b04; background-color: #ffa95f;"> <i class="icon fal fa-check-circle"></i>
+                                    <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i>
                                             {{ session()->get('notify') }}
                                         </div>
                                     @endif
@@ -72,12 +72,12 @@
                                         </tr>
                                         @if(!empty($notes) && $notes->count() > 0)
                                             @foreach ($notes as $el)
-                                            <tr align="center">
-                                                <td>{{ $no++ }}</td>
-                                                <td>{!! $el->follow_up !!} </td>
-                                                <td>{{ $el->user->name }}</td>
-                                                <td>{{ date('d-m-Y | h:i A', strtotime($el->created_at)) }}</td>
-                                                <td>
+                                            <tr>
+                                                <td align="center">{{ $no++ }}</td>
+                                                <td style="width: 775px">{!! $el->follow_up !!} </td>
+                                                <td align="center">{{ $el->user->name }}</td>
+                                                <td align="center">{{ date('d-m-Y | h:i A', strtotime($el->created_at)) }}</td>
+                                                <td align="center">
                                                     <a href="/followup-edit/{{ $el->id}}" data-cov="{{$el->id}}" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i> Edit</a>
                                                     <a href="{{ action('CovidController@delFollowup', ['id' => $el->id, 'cov_id' => $declare->id]) }}" class="btn btn-danger btn-sm deleteEl"><i class="fal fa-trash"> Delete</i></a>
                                                 </td>

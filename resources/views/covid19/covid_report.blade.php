@@ -109,7 +109,8 @@
                                                             <th>Q4B</th>
                                                             <th>Q4C</th>
                                                             <th>Q4D</th>
-                                                            <th>CATEGORY</th>
+                                                            <th>DECLARE CATEGORY</th>
+                                                            <th>USER CATEGORY</th>
                                                             <th>POSITION</th>
                                                             <th>DEPARTMENT</th>
                                                             <th>FORM TYPE</th>
@@ -277,6 +278,7 @@
                     { data: 'q4c', name: 'q4c' },
                     { data: 'q4d', name: 'q4d' },
                     { data: 'category', name: 'category' },
+                    { data: 'user_category', name: 'user_category' },
                     { data: 'user_position', name: 'user_position' },
                     { data: 'department_id', name: 'department_id' },
                     { data: 'form_type', name: 'form_type' },

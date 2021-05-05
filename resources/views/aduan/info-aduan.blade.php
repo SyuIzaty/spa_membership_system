@@ -143,7 +143,7 @@
                                                                         <td colspan="2" style="vertical-align: middle">
                                                                             @if(isset($resit->first()->nama_fail))
                                                                                 @foreach ($resit as $failResit)
-                                                                                    <a target="_blank" href="{{ url('resit')."/".$failResit->nama_fail }}/Download"">{{ $failResit->nama_fail }}</a>
+                                                                                    <a target="_blank" href="{{ url('resit')."/".$failResit->nama_fail }}/Download">{{ $failResit->nama_fail }}</a>
                                                                                 @endforeach
                                                                             @else
                                                                                 <span>Tiada Dokumen Sokongan</span>
