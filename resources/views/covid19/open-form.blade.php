@@ -39,7 +39,7 @@
                                         <table class="table table-bordered table-hover table-striped w-100">
                                             <thead>
                                                 <p><span class="text-danger">*</span> Required fields</p>
-                                                <td width="20%"><label class="form-label" for="user_position"><span class="text-danger">*</span> Category</label></td>
+                                                <td width="20%"><label class="form-label" for="user_position"><span class="text-danger">*</span> Type</label></td>
                                                 <td colspan="6">
                                                     <select class="form-control user_position" name="user_position" id="user_position">
                                                         <option value="">Please select</option>
@@ -106,7 +106,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr class="intecStf">
-                                                    <td width="20%"><label class="form-label" for="user_category"><span class="text-danger">*</span> Staff Category </label></td>
+                                                    <td width="20%"><label class="form-label" for="user_category"><span class="text-danger">*</span> Category </label></td>
                                                     <td colspan="6">
                                                         <select class="form-control user_category" name="user_category" id="user_category">
                                                             <option value="">Select Category</option>

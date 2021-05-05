@@ -77,8 +77,8 @@ class DeclareCovidExport implements FromCollection, WithHeadings
                 'Q4b'           => "",
                 'Q4c'           => "",
                 'Q4d'           => "",
+                'Result'        => "",
                 'Category'      => "",
-                'User_category' => "",
                 'Position'      => "",
                 'Department'    => "",
                 'Form_type'     => "",
@@ -101,8 +101,8 @@ class DeclareCovidExport implements FromCollection, WithHeadings
                     $data['Q4b'] =$ivalue->q4b;
                     $data['Q4c'] =$ivalue->q4c;
                     $data['Q4d'] =$ivalue->q4d;
-                    $data['Category'] =$ivalue->category;
-                    $data['User_category'] =$ivalue->user_category;
+                    $data['Result'] =$ivalue->category;
+                    $data['Category'] =$ivalue->user_category;
                     $data['Position'] =$ivalue->user_position;
                     $data['Department'] =$ivalue->department_id;
                     $data['Form_type'] =$ivalue->form_type;
@@ -119,6 +119,6 @@ class DeclareCovidExport implements FromCollection, WithHeadings
 
     public function headings(): array
     {
-        return ['ID','NAME','IC/PASSPORT NO','EMAIL','PHONE NUMBER', 'Q1', 'Q2','Q3','Q4A','Q4B','Q4C','Q4D','DECLARE CATEGORY','STAFF CATEGORY','POSITION','DEPARTMENT','FORM TYPE', 'DECLARE DATE', 'CREATED AT'];
+        return ['ID','NAME','IC/PASSPORT NO','EMAIL','PHONE NUMBER', 'Q1', 'Q2','Q3','Q4A','Q4B','Q4C','Q4D','RESULT','CATEGORY','POSITION','DEPARTMENT','FORM TYPE', 'DECLARE DATE', 'CREATED AT'];
     }
 }
