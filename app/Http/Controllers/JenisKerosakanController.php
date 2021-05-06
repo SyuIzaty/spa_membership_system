@@ -30,8 +30,8 @@ class JenisKerosakanController extends Controller
         ->addColumn('action', function ($jenis) {
 
             return '
-            <a href="" data-target="#crud-modals" data-toggle="modal" data-jenis="'.$jenis->id.'" data-kategori="'.$jenis->kategori_aduan.'" data-kerosakan="'.$jenis->jenis_kerosakan.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i> Edit</a>
-            <button class="btn btn-sm btn-danger btn-delete" data-remote="/jenis-kerosakan/' . $jenis->id . '"><i class="fal fa-trash"></i>  Padam</button>'
+            <a href="" data-target="#crud-modals" data-toggle="modal" data-jenis="'.$jenis->id.'" data-kategori="'.$jenis->kategori_aduan.'" data-kerosakan="'.$jenis->jenis_kerosakan.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
+            <button class="btn btn-sm btn-danger btn-delete" data-remote="/jenis-kerosakan/' . $jenis->id . '"><i class="fal fa-trash"></i></button>'
             ;
         })
 

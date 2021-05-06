@@ -27,8 +27,8 @@ class AlatGantiController extends Controller
         ->addColumn('action', function ($alat) {
 
             return '
-            <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'.$alat->id.'" data-alat="'.$alat->alat_ganti.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i> Edit</a>
-            <button class="btn btn-sm btn-danger btn-delete" data-remote="/alat-ganti/' . $alat->id . '"><i class="fal fa-trash"></i>  Padam</button>'
+            <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'.$alat->id.'" data-alat="'.$alat->alat_ganti.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
+            <button class="btn btn-sm btn-danger btn-delete" data-remote="/alat-ganti/' . $alat->id . '"><i class="fal fa-trash"></i></button>'
             ;
         })
             

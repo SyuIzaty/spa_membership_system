@@ -25,7 +25,7 @@
                         </h4>
                         <div>
                             <p style="padding-left: 40px; padding-right: 40px">
-                                *<i><b>PERHATIAN!</b></i> : Aduan yang diterima akan diproses dalam tempoh 5 hari bekerja tidak termasuk cuti am. Sebarang pemakluman berkaitan status aduan akan dimaklumkan melalui emel. Sila pastikan verifikasi dibuat setelah aduan selesai.
+                                *<i><b>PERHATIAN!</b></i> : Sebarang aduan kerosakkan akan diambil tindakan di dalam tempoh <b>tiga (3)</b> hari bekerja. Sekiranya tiada tindakan dibuat sila rujuk kepada <b>Pegawai Fasiliti (Ahmad Yusri/ Mohd Norshah)</b> untuk laporan/semakan. Sebarang aduan adalah diwajibkan secara online. Laporan secara manual atau pun emel adalah tidak akan diproses. 
                             </p>
                         </div>
                         <div class="panel-container show">
