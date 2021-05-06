@@ -74,26 +74,26 @@
                                             <th width="20%" style="vertical-align: middle">Kategori Aduan : </th>
                                             <td colspan="2" style="vertical-align: middle">{{ strtoupper($aduan->kategori->nama_kategori) }}</td>
                                             <th width="20%" style="vertical-align: middle">Jenis Kerosakan : </th>
-                                            <td colspan="2" style="vertical-align: middle">{{ strtoupper($aduan->jenis->jenis_kerosakan) }}</td>
+                                            <td colspan="2" style="vertical-align: middle">
+                                                <div>{{ strtoupper($aduan->jenis->jenis_kerosakan) }}</div word-break: break-all>
+                                                @if($aduan->jenis->jenis_kerosakan == 'Lain-lain') 
+                                                    <div> Penerangan : {{ strtoupper($aduan->jk_penerangan ?? '--') }}</div>
+                                                @endif 
+                                            </td>
                                         </tr>
 
                                         <tr>
                                             <th width="20%" style="vertical-align: top">Sebab Kerosakan : </th>
-                                            <td colspan="2" style="vertical-align: middle">{{ strtoupper($aduan->sebab->sebab_kerosakan) }}</td>
+                                            <td colspan="2" style="vertical-align: middle">
+                                                <div>{{ strtoupper($aduan->sebab->sebab_kerosakan) }}</div word-break: break-all>
+                                                @if($aduan->sebab->sebab_kerosakan == 'Lain-lain')
+                                                    <div> Penerangan : {{ strtoupper($aduan->sk_penerangan ?? '--') }}</div>
+                                                @endif
+                                            </td>
                                             <th width="20%" style="vertical-align: middle">Kuantiti/Unit : </th>
                                             <td colspan="2" style="vertical-align: middle">{{ $aduan->kuantiti_unit}}</td>
                                         </tr>
-
-                                        <tr class="sk_penerangan">
-                                            <th width="20%" style="vertical-align: top">Penerangan Sebab Kerosakan : </th>
-                                            <td colspan="2" style="vertical-align: middle">{{ $aduan->sk_penerangan}}</td>
-                                        </tr>
-
-                                        <tr class="jk_penerangan">
-                                            <th width="20%" style="vertical-align: top">Penerangan Jenis Kerosakan : </th>
-                                            <td colspan="2" style="vertical-align: middle">{{ $aduan->jk_penerangan}}</td>
-                                        </tr>
-
+                                       
                                         <tr>
                                             <th width="20%" style="vertical-align: top">Adakah Kerosakan Dicaj ? </th>
                                             <td colspan="2" style="vertical-align: middle">{{ strtoupper($aduan->caj_kerosakan) }}</td>
@@ -242,33 +242,6 @@
             submit.focus();
         }
     }
-
-    $(function () {          
-
-      $(".jk_penerangan").hide();
-
-        $( "#jenis_kerosakan" ).change(function() {
-        var val = $("#jenis_kerosakan").val();
-        if(val==16 || val==23 || val==32 || val==38 || val==42){
-            $(".jk_penerangan").show();
-        } else {
-            $(".jk_penerangan").hide();
-        }
-      });
-
-      $(".sk_penerangan").hide();
-
-        $( "#sebab_kerosakan" ).change(function() {
-        var val = $("#sebab_kerosakan").val();
-        if(val==0){ 
-            // listkan lain-lain id
-            $(".sk_penerangan").show();
-        } else {
-            $(".sk_penerangan").hide();
-        }
-      });
-
-    })
 
 </script>
 @endsection

@@ -34,14 +34,14 @@
                                     <tr class="text-center bg-primary-50">
                                         <th style="width:30px">NO</th>
                                         <th>KATEGORI ADUAN</th>
-                                        <th>JENIS KEROSAKAN</th>
+                                        {{-- <th>JENIS KEROSAKAN</th> --}}
                                         <th>SEBAB KEROSAKAN</th>
                                         <th>TINDAKAN</th>
                                     </tr>
                                     <tr>
                                         <td class="hasinput"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Carian kategori"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Carian jenis"></td>
+                                        {{-- <td class="hasinput"><input type="text" class="form-control" placeholder="Carian jenis"></td> --}}
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Carian sebab"></td>
                                         <td class="hasinput"></td>
                                     </tr>
@@ -81,7 +81,7 @@
                             </td>
                         </div>
 
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <td width="10%"><label class="form-label" for="jenis_kerosakan"><span class="text-danger">*</span> Jenis Kerosakan :</label></td>
                             <td colspan="4">
                                 <select name="jenis_kerosakan" id="jenis_kerosakan" class="jenis form-control">
@@ -90,7 +90,7 @@
                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                 @enderror
                             </td>
-                        </div>
+                        </div> --}}
 
                         <div class="form-group">
                             <td width="10%"><label class="form-label" for="sebab_kerosakan"><span class="text-danger">*</span> Sebab Kerosakan :</label></td>
@@ -137,7 +137,7 @@
                         </td>
                     </div>
 
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <td width="10%"><label class="form-label" for="jenis_kerosakan">Jenis Kerosakan :</label></td>
                         <td colspan="4">
                             <select name="jenis_kerosakan" id="jeniss" class="form-control" disabled>
@@ -150,7 +150,7 @@
                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                             @enderror
                         </td>
-                    </div>
+                    </div> --}}
 
                     <div class="form-group">
                         <td width="10%"><label class="form-label" for="sebab_kerosakan"><span class="text-danger">*</span> Sebab Kerosakan :</label></td>
@@ -271,12 +271,12 @@
             columns: [
                     { className: 'text-center', data: 'id', name: 'id' },
                     { className: 'text-center', data: 'kategori_aduan', name: 'kategori_aduan' },
-                    { className: 'text-center', data: 'jenis_kerosakan', name: 'jenis_kerosakan' },
+                    // { className: 'text-center', data: 'jenis_kerosakan', name: 'jenis_kerosakan' },
                     { className: 'text-center', data: 'sebab_kerosakan', name: 'sebab_kerosakan' },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
-                "order": [[ 1, "asc" ]],
+                "order": [[ 0, "asc" ]],
                 "initComplete": function(settings, json) {
 
                 } 

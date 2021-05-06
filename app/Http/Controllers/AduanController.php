@@ -57,7 +57,7 @@ class AduanController extends Controller
     public function cariSebab(Request $request)
     {
         $data2 = SebabKerosakan::select('sebab_kerosakan', 'id')
-                ->where('jenis_kerosakan', $request->id)
+                ->where('kategori_aduan', $request->id)
                 ->take(100)->get();
 
         return response()->json($data2);
@@ -90,9 +90,9 @@ class AduanController extends Controller
             'nama_bilik'                => $request->nama_bilik,
             'kategori_aduan'            => $request->kategori_aduan,
             'jenis_kerosakan'           => $request->jenis_kerosakan,
-            // 'jk_penerangan'             => $request->jk_penerangan,
+            'jk_penerangan'             => $request->jk_penerangan,
             'sebab_kerosakan'           => $request->sebab_kerosakan,
-            // 'sk_penerangan'             => $request->sk_penerangan,
+            'sk_penerangan'             => $request->sk_penerangan,
             'kuantiti_unit'             => $request->kuantiti_unit,
             'caj_kerosakan'             => $request->caj_kerosakan,
             'maklumat_tambahan'         => $request->maklumat_tambahan,

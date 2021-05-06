@@ -130,7 +130,16 @@
                                                     </td>
                                                 </tr>
 
-                                                {{-- <tr class="sk_penerangan">
+                                                <tr class="jk_penerangan">
+                                                    <th width="20%" style="vertical-align: top">Penerangan Jenis Kerosakan : </th>
+                                                    <td colspan="4"><textarea rows="5" id="jk_penerangan" name="jk_penerangan" class="form-control">{{ old('jk_penerangan') }}</textarea>
+                                                        @error('jk_penerangan')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
+                                                    </td>
+                                                </tr>
+
+                                                <tr class="sk_penerangan">
                                                     <th width="20%" style="vertical-align: top">Penerangan Sebab Kerosakan : </th>
                                                     <td colspan="4">
                                                         <textarea rows="5" id="sk_penerangan" name="sk_penerangan" class="form-control">{{ old('sk_penerangan') }}</textarea>
@@ -139,15 +148,6 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-
-                                                <tr class="jk_penerangan">
-                                                    <th width="20%" style="vertical-align: top">Penerangan Jenis Kerosakan : </th>
-                                                    <td colspan="4"><textarea rows="5" id="jk_penerangan" name="jk_penerangan" class="form-control">{{ old('jk_penerangan') }}</textarea>
-                                                        @error('jk_penerangan')
-                                                            <p style="color: red">{{ $message }}</p>
-                                                        @enderror
-                                                    </td>
-                                                </tr> --}}
 
                                                 <tr>
                                                     <th width="20%" style="vertical-align: top">Adakah Kerosakan Dicaj ? </th>
@@ -290,8 +290,7 @@
 
         $( "#sebab_kerosakan" ).change(function() {
         var val = $("#sebab_kerosakan").val();
-        if(val==0){ 
-            // listkan lain-lain id
+        if(val==65 || val==75 || val==97 || val==106 || val==115){ 
             $(".sk_penerangan").show();
         } else {
             $(".sk_penerangan").hide();
@@ -336,10 +335,10 @@
                 });
             }
 
-            if($('.jenis').val()!=''){
-                    updateSebab($('.jenis'));
+            if($('.kategori').val()!=''){
+                    updateSebab($('.kategori'));
                 }
-                $(document).on('change','.jenis',function(){
+                $(document).on('change','.kategori',function(){
                     updateSebab($(this));
                 });
 

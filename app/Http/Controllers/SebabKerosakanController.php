@@ -51,10 +51,10 @@ class SebabKerosakanController extends Controller
             return $sebab->kategori->nama_kategori;
         })
 
-        ->editColumn('jenis_kerosakan', function ($sebab) {
+        // ->editColumn('jenis_kerosakan', function ($sebab) {
 
-            return $sebab->jenis->jenis_kerosakan;
-        })
+        //     return $sebab->jenis->jenis_kerosakan;
+        // })
             
         ->make(true);
     }
@@ -65,13 +65,13 @@ class SebabKerosakanController extends Controller
 
         $request->validate([
             'kategori_aduan'       => 'required',
-            'jenis_kerosakan'      => 'required',
+            // 'jenis_kerosakan'      => 'required',
             'sebab_kerosakan'      => 'required|max:255',
         ]);
 
         SebabKerosakan::create([
                 'kategori_aduan'     => $request->kategori_aduan,
-                'jenis_kerosakan'    => $request->jenis_kerosakan,
+                // 'jenis_kerosakan'    => $request->jenis_kerosakan,
                 'sebab_kerosakan'    => $request->sebab_kerosakan, 
             ]);
         
