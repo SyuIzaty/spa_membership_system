@@ -1370,7 +1370,7 @@ class CovidController extends Controller
         //     });
         // }
 
-        $value = User::where('id', '20020443')->first();
+        $value = User::where('id', '20010433')->first();
         // dd($value);
         $datas = [
             'receiver_name' => $value->name,
