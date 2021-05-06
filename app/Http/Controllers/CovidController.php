@@ -132,7 +132,9 @@ class CovidController extends Controller
     {
         if( Auth::user()->hasRole('HR Admin') )
         { 
-            $user = User::whereHas('roles')->orderBy('name')->get();
+            $user = User::whereHas('roles', function($query){
+                $query->where('category', 'STF');
+            })->orderBy('name')->get();
         }
         else
         {
@@ -272,11 +274,10 @@ class CovidController extends Controller
     {
         if( Auth::user()->hasRole('HR Admin') )
         { 
-            $declare = Covid::whereDate('created_at', '=', Carbon::now()->toDateString())->get();
+            $declare = Covid::where('user_position', '!=', 'STD')->whereDate('created_at', '=', Carbon::now()->toDateString())->with(['user'])->get();
         }
         else
         {
-            // $user = User::where('category', 'STU')->pluck('id')->toArray();
             $declare = Covid::where('user_position', 'STD')->whereDate('created_at', '=', Carbon::now()->toDateString())->with(['user'])->get();
         }
 
@@ -347,7 +348,7 @@ class CovidController extends Controller
     {
         if( Auth::user()->hasRole('HR Admin') )
         { 
-            $declare = Covid::whereDate('created_at', '!=', Carbon::now()->toDateString())->get();
+            $declare = Covid::where('user_position', '!=', 'STD')->whereDate('created_at', '!=', Carbon::now()->toDateString())->with(['user'])->get();
         }
         else
         {
@@ -486,7 +487,7 @@ class CovidController extends Controller
 
         if( Auth::user()->hasRole('HR Admin') )
         { 
-            $declare = Covid::where('category', 'A')->where( 'declare_date', '>', Carbon::now()->subDays(14))->get();
+            $declare = Covid::where('user_position', '!=', 'STD')->where('category', 'A')->where( 'declare_date', '>', Carbon::now()->subDays(14))->with(['user'])->get();
         }
         else
         {
@@ -566,7 +567,7 @@ class CovidController extends Controller
 
         if( Auth::user()->hasRole('HR Admin') )
         { 
-            $declare = Covid::where('category', 'B')->where( 'declare_date', '>', Carbon::now()->subDays(10))->get();
+            $declare = Covid::where('user_position', '!=', 'STD')->where('category', 'B')->where( 'declare_date', '>', Carbon::now()->subDays(10))->with(['user'])->get();
         }
         else
         {
@@ -700,7 +701,7 @@ class CovidController extends Controller
     {
         if( Auth::user()->hasRole('HR Admin') )
         { 
-            $declare = Covid::where('category', 'C')->whereDate('declare_date', '=', Carbon::now()->toDateString())->get();
+            $declare = Covid::where('user_position', '!=', 'STD')->where('category', 'C')->whereDate('declare_date', '=', Carbon::now()->toDateString())->with(['user'])->get();
         }
         else
         {
@@ -756,7 +757,7 @@ class CovidController extends Controller
 
         if( Auth::user()->hasRole('HR Admin') )
         { 
-            $declare = Covid::where('category', 'D')->whereDate('declare_date', '=', Carbon::now()->toDateString())->get();
+            $declare = Covid::where('user_position', '!=', 'STD')->where('category', 'D')->whereDate('declare_date', '=', Carbon::now()->toDateString())->with(['user'])->get();
         }
         else
         {
@@ -811,7 +812,7 @@ class CovidController extends Controller
 
         if( Auth::user()->hasRole('HR Admin') )
         { 
-            $declare = Covid::where('category', 'E')->whereDate('declare_date', '=', Carbon::now()->toDateString())->get();
+            $declare = Covid::where('user_position', '!=', 'STD')->where('category', 'E')->whereDate('declare_date', '=', Carbon::now()->toDateString())->with(['user'])->get();
         }
         else
         {
@@ -1110,7 +1111,7 @@ class CovidController extends Controller
 
             if( Auth::user()->hasRole('HR Admin') )
             { 
-                $name = Covid::select('user_id', 'user_name')->groupBy('user_id', 'user_name')->orderBy('user_name')->get();
+                $name = Covid::select('user_id', 'user_name')->groupBy('user_id', 'user_name')->where('user_position', '!=', 'STD')->orderBy('user_name')->get();
             }
             else
             {
@@ -1121,7 +1122,7 @@ class CovidController extends Controller
 
             if( Auth::user()->hasRole('HR Admin') )
             { 
-                $position = UserType::select('user_code', 'user_type')->get();
+                $position = UserType::select('user_code', 'user_type')->where('user_code', '!=', 'STD')->get();
             }
             else
             {
@@ -1149,7 +1150,7 @@ class CovidController extends Controller
 
             if( Auth::user()->hasRole('HR Admin') )
             {
-                $cates = UserType::select('user_code', 'user_type')->get();
+                $cates = UserType::select('user_code', 'user_type')->where('user_code', '!=', 'STD')->get();
 
             } else {
                 $cates = UserType::select('user_code', 'user_type')->where('user_code', 'STD')->get();
@@ -1165,10 +1166,11 @@ class CovidController extends Controller
                 if($request->datek != "" && $request->cates != "" )
                 {
                     $datas = Covid::select('user_id')->where('user_position',$request->cates)->where('declare_date', $request->datek)->distinct()->get();
-                    $result = User::where('category',$request->cates)->whereNotIn('id',$datas); 
+                    $result = User::where('category', $request->cates)->whereNotIn('id',$datas); 
                 }
-
+                
                 $data = $result->get();
+                // dd($data);
             }
 
             $this->exportUndeclare($request->datek,$request->cates);
@@ -1213,7 +1215,7 @@ class CovidController extends Controller
         
         if( Auth::user()->hasRole('HR Admin') )
         { 
-            $covid = Covid::whereRaw($cond)->get();
+            $covid = Covid::whereRaw($cond)->where('user_position', '!=', 'STD')->get();
 
         } else {
 
@@ -1319,7 +1321,7 @@ class CovidController extends Controller
                 return date(' Y-m-d | H:i A', strtotime($covid->created_at) );
             } else {
 
-                return 'Not Created';
+                return 'No Created Date';
             }
             
         })
@@ -1335,37 +1337,52 @@ class CovidController extends Controller
 
     public function sendRemainder(Request $request, $date, $cate)
     {
-        $result = new User();
+        // $result = new User();
 
-        if($date != "" && $cate != "" )
-        {
-            $datas = Covid::select('user_id')->where('user_position',$cate)->where('declare_date', $date)->distinct()->get();
-            $result = User::where('category',$cate)->whereNotIn('id',$datas); 
-        }
+        // if($date != "" && $cate != "" )
+        // {
+        //     $datas = Covid::select('user_id')->where('user_position',$cate)->where('declare_date', $date)->distinct()->get();
+        //     $result = User::where('category',$cate)->whereNotIn('id',$datas); 
+        // }
 
-        $data = $result->whereNotNull('email')->get();
+        // $data = $result->whereNotNull('email')->get();
+        // // dd($data);
         
-        $remainder = CovidRemainder::create([
-            'remainder_date'    => date("Y-m-d", strtotime($date)),
-            'status'            => 'Y',
-        ]);
+        // $remainder = CovidRemainder::create([
+        //     'remainder_date'    => date("Y-m-d", strtotime($date)),
+        //     'status'            => 'Y',
+        // ]);
 
-        $email = array_filter(array_column($data->toArray(), 'email'));
+        // $email = array_filter(array_column($data->toArray(), 'email'));
         
-        foreach($data as $value)
-        {
-            $datas = [
-                    'receiver_name' => $value->name,
-                    'details' => $remainder->remainder_date,
-                ];
+        // foreach($data as $value)
+        // {
+        //     $datas = [
+        //             'receiver_name' => $value->name,
+        //             'details' => $remainder->remainder_date,
+        //         ];
 
-            $email = $value->email;
+        //     $email = $value->email;
 
-            Mail::send('covid19.remainder', $datas, function($message) use ($email) {
-                $message->to($email ?: [])->subject('PENGISIAN DATA ESARING');
-                $message->from('HRadmin@intec.edu.my');
-            });
-        }
+        //     Mail::send('covid19.remainder', $datas, function($message) use ($email) {
+        //         $message->to($email ?: [])->subject('PENGISIAN DATA ESARING');
+        //         $message->from('HRadmin@intec.edu.my');
+        //     });
+        // }
+
+        $value = User::where('id', '20020443')->first();
+        // dd($value);
+        $datas = [
+            'receiver_name' => $value->name,
+            'details' => Carbon::now()->toDateString(),
+        ];
+
+        $email = $value->email;
+
+        Mail::send('covid19.remainder', $datas, function($message) use ($email) {
+            $message->to($email ?: [])->subject('PENGISIAN DATA ESARING');
+            $message->from('HRadmin@intec.edu.my');
+        });
 
         Session::flash('message', 'Remainder has been sent');
         return redirect('/export_covid');

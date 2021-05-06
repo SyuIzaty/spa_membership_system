@@ -72,16 +72,32 @@
                                                     <td colspan="2"><label for="qHeader">{{ date(' h:i:s A', strtotime($declare->declare_time) )}}</label></td>
                                                 </div>
                                             </tr>
+                                            @if($declare->user_position == 'STF')
                                             <tr>
                                                 <div class="form-group">
-                                                    @if($declare->user_position == 'STF')
                                                     <th width="15%"><label for="qHeader">STAFF DEPARTMENT :</label></th>
                                                     <td colspan="2"><label for="qHeader">{{ strtoupper(isset($declare->staffs->staff_dept) ? $declare->staffs->staff_dept : '-')}}</label></td>
-                                                    @endif
-                                                    <th width="15%"><label for="qHeader">DEPARTMENT/PLACE TO GO :</label></th>
-                                                    <td colspan="4"><label for="qHeader">{{ strtoupper(isset($declare->department->department_name) ? $declare->department->department_name : '-')}}</label></td>
+                                                    <th width="15%"><label for="qHeader">CATEGORY :</label></th>
+                                                    <td colspan="4"><label for="qHeader">{{ strtoupper(isset($declare->categoryUser->category_name) ? $declare->categoryUser->category_name : '-')}}</label></td>
                                                 </div>
                                             </tr>
+                                                @if($declare->user_category == 'WFO')
+                                                <tr>
+                                                    <div class="form-group">
+                                                        <th width="15%"><label for="qHeader">DEPARTMENT/PLACE TO GO :</label></th>
+                                                        <td colspan="6"><label for="qHeader">{{ strtoupper(isset($declare->department->department_name) ? $declare->department->department_name : '-')}}</label></td>
+                                                    </div>
+                                                </tr>
+                                                @endif
+                                            @endif
+                                            @if($declare->user_position == 'STD' || $declare->user_position == 'VSR')
+                                            <tr>
+                                                <div class="form-group">
+                                                    <th width="15%"><label for="qHeader">DEPARTMENT/PLACE TO GO :</label></th>
+                                                    <td colspan="6"><label for="qHeader">{{ strtoupper(isset($declare->department->department_name) ? $declare->department->department_name : '-')}}</label></td>
+                                                </div>
+                                            </tr>
+                                            @endif
                                         </thead>
                                     </table>
                                 </div>
