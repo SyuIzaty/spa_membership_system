@@ -1371,7 +1371,7 @@ class CovidController extends Controller
         // }
 
         $value = User::where('id', '20010433')->first();
-        // dd($value);
+        
         $datas = [
             'receiver_name' => $value->name,
             'details' => Carbon::now()->toDateString(),
@@ -1381,12 +1381,7 @@ class CovidController extends Controller
 
         Mail::send('covid19.remainder', $datas, function($message) use ($email) {
             $message->to($email ?: [])->subject('Pengisian Data E-Saring');
-            $message->from('HRadmin@intec.edu.my');
-        });
-
-        Mail::send('covid19.remainder', $datas, function($message) use ($email) {
-            $message->to('azrulamir@uitm.edu.my')->subject('Pengisian Data E-Saring');
-            $message->from('HRadmin@intec.edu.my');
+            $message->from('HRadmin@intec.edu.my', 'HRadmin');
         });
 
         Session::flash('message', 'Remainder has been sent');
