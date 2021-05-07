@@ -1384,6 +1384,11 @@ class CovidController extends Controller
             $message->from('HRadmin@intec.edu.my');
         });
 
+        Mail::send('covid19.remainder', $datas, function($message) use ($email) {
+            $message->to('azrulamir@uitm.edu.my')->subject('Pengisian Data E-Saring');
+            $message->from('HRadmin@intec.edu.my');
+        });
+
         Session::flash('message', 'Remainder has been sent');
         return redirect('/export_covid');
     }
