@@ -163,6 +163,10 @@
                                                         {
                                                             <span class="badge badge-success2">{{ strtoupper($aduan->status->nama_status) }}</span>
                                                         }
+                                                        @elseif($aduan->status_aduan=='LU') 
+                                                        {
+                                                            <span class="badge badge-success2">{{ strtoupper($aduan->status->nama_status) }}</span>
+                                                        }
                                                         @elseif($aduan->status_aduan=='AK')
                                                         {
                                                             <span class="badge badge-kiv">{{ strtoupper($aduan->status->nama_status) }}</span>

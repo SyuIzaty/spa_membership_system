@@ -45,6 +45,7 @@
                                             <option value="">Semua</option>
                                             <option value="Selesai">Selesai</option>
                                             <option value="Selesai (Lantikan Kontraktor)">Selesai (Lantikan Kontraktor)</option>
+                                            <option value="Selesai (Lantikan UiTM)">Selesai (Lantikan UiTM)</option>
                                         </select></td>
                                         <td class="hasinput"><select id="tahap_kategori" name="tahap_kategori" class="form-control">
                                             <option value="">Semua</option>

@@ -34,8 +34,10 @@
                             <li class="nav-item">
                                 <a style="border: solid 1px; border-radius: 0" data-toggle="tab" class="nav-link" href="#baiki" role="tab"><i class="fal fa-clone"></i> PENAMBAHBAIKAN</a>
                             </li>
-                                @if($aduan->status_aduan == 'AS' || $aduan->status_aduan == 'LK' || $aduan->status_aduan == 'LU' && $aduan->pengesahan_pembaikan == 'Y' || $aduan->status_aduan == 'DP')
-                                    <a data-page="/pdfAduan/{{ $aduan->id }}" class="btn btn-sm btn-danger ml-auto float-right" onclick="Print(this)" style="color: white; padding-top: 8px"><i class="fal fa-download"></i> PDF</a>
+                                @if($aduan->status_aduan == 'AS' || $aduan->status_aduan == 'LK' || $aduan->status_aduan == 'LU' || $aduan->status_aduan == 'DP')
+                                    @if($aduan->pengesahan_pembaikan == 'Y')
+                                        <a data-page="/pdfAduan/{{ $aduan->id }}" class="btn btn-sm btn-danger ml-auto float-right" onclick="Print(this)" style="color: white; padding-top: 8px"><i class="fal fa-download"></i> PDF</a>
+                                    @endif
                                 @endif
                             @endif
                         </ul>

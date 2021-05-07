@@ -153,7 +153,7 @@ class AduanController extends Controller
             ];
 
             Mail::send('aduan.emel-aduan-baru', $data, function ($message) use ($admin_email) {
-                $message->subject('ADUAN BARU');
+                $message->subject('Aduan Baru');
                 $message->from('ITadmin@intec.edu.my');
                 $message->to($admin_email);
             });
@@ -231,6 +231,10 @@ class AduanController extends Controller
                     return '<span class="badge badge-success">' . strtoupper($aduan->status->nama_status) . '</span>';
                 }
                 elseif($aduan->status_aduan=='LK') 
+                {
+                    return '<span class="badge badge-success2">' . strtoupper($aduan->status->nama_status) . '</span>';
+                }
+                elseif($aduan->status_aduan=='LU') 
                 {
                     return '<span class="badge badge-success2">' . strtoupper($aduan->status->nama_status) . '</span>';
                 }
@@ -379,7 +383,7 @@ class AduanController extends Controller
             {
                 if($list->aduan->status_aduan=='DJ') {
                     return '<a href="/info-aduan/' . $list->id_aduan.'" class="btn btn-sm btn-info"><i class="fal fa-pencil"></i></a>
-                            <a href="/download/' . $list->id_aduan.'" class="btn btn-sm btn-primary text-white"><i class="fal fa-file"></i></a>';
+                            <a data-page="/download/' . $list->id_aduan.'" class="btn btn-sm btn-primary text-white" onclick="Print(this)"><i class="fal fa-file"></i></a>';
                 } else {
                     return '<a href="/info-aduan/' . $list->id_aduan.'" class="btn btn-sm btn-info"><i class="fal fa-pencil"></i></a>';
                 }
@@ -587,7 +591,7 @@ class AduanController extends Controller
             $email = $juruteknik->juruteknik->email;
 
             Mail::send('aduan.emel-aduan', $data, function ($message) use ($email, $juruteknik) {
-                $message->subject('ADUAN BARU ID : ' . $juruteknik->id_aduan);
+                $message->subject('Aduan Baru ID : ' . $juruteknik->id_aduan);
                 $message->from(Auth::user()->email);
                 $message->to($email);
             });
@@ -650,7 +654,7 @@ class AduanController extends Controller
         $email = $juruteknik->juruteknik->email;
 
         Mail::send('aduan.emel-aduan', $data, function ($message) use ($email, $juruteknik) {
-            $message->subject('ADUAN BARU ID : ' . $juruteknik->id_aduan);
+            $message->subject('Aduan Baru ID : ' . $juruteknik->id_aduan);
             $message->from(Auth::user()->email);
             $message->to($email);
         });
@@ -724,7 +728,7 @@ class AduanController extends Controller
             ];
 
             Mail::send('aduan.emel-pembaikan', $data, function ($message) use ($admin_email) {
-                $message->subject('PERLAKSANAAN PENAMBAHBAIKAN ADUAN');
+                $message->subject('Perlaksanaan Pembaikan Aduan');
                 $message->from(Auth::user()->email);
                 $message->to($admin_email);
             });
@@ -830,12 +834,12 @@ class AduanController extends Controller
        
         if( Auth::user()->hasRole('Operation Admin') )
         { 
-            $list = Aduan::all()->whereIn('status_aduan', ['AS','LK']);
+            $list = Aduan::all()->whereIn('status_aduan', ['AS','LK','LU']);
         }
         else
         {
             $list = JuruteknikBertugas::where('juruteknik_bertugas', Auth::user()->id)->whereHas('aduan', function($query) {
-                $query->select('*')->whereIn('status_aduan', ['AS','LK']);
+                $query->select('*')->whereIn('status_aduan', ['AS','LK','LU']);
             })->get();
             
         }
@@ -1321,7 +1325,7 @@ class AduanController extends Controller
         ];
 
         Mail::send('aduan.emel-semakan', $data2, function ($message) use ($emel) {
-            $message->subject('PENGESAHAN PENAMBAHBAIKAN ADUAN');
+            $message->subject('Pengesahan Penambahbaikan Aduan');
             $message->from(Auth::user()->email);
             $message->to($emel);
         });
