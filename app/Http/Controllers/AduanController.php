@@ -94,7 +94,6 @@ class AduanController extends Controller
             'sebab_kerosakan'           => $request->sebab_kerosakan,
             'sk_penerangan'             => $request->sk_penerangan,
             'kuantiti_unit'             => $request->kuantiti_unit,
-            'caj_kerosakan'             => $request->caj_kerosakan,
             'maklumat_tambahan'         => $request->maklumat_tambahan,
             'pengesahan_aduan'          => 'Y',
             'tarikh_laporan'            => Carbon::now()->toDateTimeString(),
@@ -111,11 +110,11 @@ class AduanController extends Controller
                 $originalsName = $image[$y]->getClientOriginalName();
                 $fileSizes = $image[$y]->getSize();
                 $fileNames = $originalsName;
-                $image[$y]->storeAs('/aduan', $fileNames.date('dmyhis'));
+                $image[$y]->storeAs('/aduan', $fileNames);
                 ImejAduan::create([
                     'id_aduan'  => $aduan->id,
-                    'upload_image' => $originalsName.date('dmyhis'),
-                    'web_path'  => "app/aduan/".$fileNames.date('dmyhis'),
+                    'upload_image' => $originalsName,
+                    'web_path'  => "app/aduan/".$fileNames,
                 ]);
             }
         }
@@ -130,12 +129,12 @@ class AduanController extends Controller
                 $originalName = $file[$x]->getClientOriginalName();
                 $fileSize = $file[$x]->getSize();
                 $fileName = $originalName;
-                $file[$x]->storeAs('/resit', $fileName.date('dmyhis'));
+                $file[$x]->storeAs('/resit', $fileName);
                 ResitAduan::create([
                     'id_aduan'  => $aduan->id,
-                    'nama_fail' => $originalName.date('dmyhis'),
+                    'nama_fail' => $originalName,
                     'saiz_fail' => $fileSize,
-                    'web_path'  => "app/resit/".$fileName.date('dmyhis'),
+                    'web_path'  => "app/resit/".$fileName,
                 ]);
             }
         }
@@ -319,6 +318,28 @@ class AduanController extends Controller
         return redirect('maklumat-aduan/'.$request->id);
     }
 
+    public function failPembaikan($filename,$type)
+    {
+        $path = storage_path().'/'.'app'.'/pembaikan/'.$filename;
+
+        if($type == "Download")
+        {
+            if (file_exists($path)) {
+                return Response::download($path);
+            }
+        }
+        else
+        {
+            $file = File::get($path);
+            $filetype = File::mimeType($path);
+
+            $response = Response::make($file, 200);
+            $response->header("Content-Type", $type);
+
+            return $response;
+        }
+    }
+
     //Senarai Aduan
 
     public function senaraiAduan(Request $request)
@@ -345,12 +366,23 @@ class AduanController extends Controller
 
             if( Auth::user()->hasRole('Operation Admin') )
             { 
-                return '<a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info"><i class="fal fa-pencil"></i></a>
-                        <button class="btn btn-sm btn-danger btn-delete" data-remote="/senarai-aduan/' . $list->id . '"><i class="fal fa-trash"></i></button>';
+                if($list->status_aduan == 'DJ') {
+                    return '<a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info"><i class="fal fa-pencil"></i></a>
+                            <a data-page="/download/' . $list->id.'" class="btn btn-sm btn-primary text-white" onclick="Print(this)"><i class="fal fa-file"></i></a>
+                            <button class="btn btn-sm btn-danger btn-delete" data-remote="/senarai-aduan/' . $list->id . '"><i class="fal fa-trash"></i></button>';
+                } else {
+                    return '<a href="/info-aduan/' . $list->id.'" class="btn btn-sm btn-info"><i class="fal fa-pencil"></i></a>
+                            <button class="btn btn-sm btn-danger btn-delete" data-remote="/senarai-aduan/' . $list->id . '"><i class="fal fa-trash"></i></button>';
+                }
             }
             else
             {
-                return '<a href="/info-aduan/' . $list->id_aduan.'" class="btn btn-sm btn-info"><i class="fal fa-pencil"></i></a>';
+                if($list->aduan->status_aduan=='DJ') {
+                    return '<a href="/info-aduan/' . $list->id_aduan.'" class="btn btn-sm btn-info"><i class="fal fa-pencil"></i></a>
+                            <a href="/download/' . $list->id_aduan.'" class="btn btn-sm btn-primary text-white"><i class="fal fa-file"></i></a>';
+                } else {
+                    return '<a href="/info-aduan/' . $list->id_aduan.'" class="btn btn-sm btn-info"><i class="fal fa-pencil"></i></a>';
+                }
             }
             
         })
@@ -457,6 +489,37 @@ class AduanController extends Controller
             }
 
         })
+
+        ->editColumn('tempoh', function ($list) {
+        
+            if( Auth::user()->hasRole('Operation Admin') )
+            { 
+                if(isset($list->tarikh_selesai_aduan))
+                {
+                    $tempoh = Carbon::parse($list->tarikh_laporan)->diffInDays($list->tarikh_selesai_aduan);
+
+                } else {
+
+                    $tempoh = Carbon::parse($list->tarikh_laporan)->diffInDays(Carbon::now());
+                }
+                
+                return $tempoh.' hari';
+            }
+            else
+            {
+                if(isset($list->aduan->tarikh_selesai_aduan))
+                {
+                    $tempoh = Carbon::parse($list->aduan->tarikh_laporan)->diffInDays($list->aduan->tarikh_selesai_aduan);
+
+                } else {
+
+                    $tempoh = Carbon::parse($list->aduan->tarikh_laporan)->diffInDays(Carbon::now());
+                }
+                
+                return $tempoh.' hari';
+                
+            }
+        })
         
         ->editColumn('tahap_kategori', function ($list) {
 
@@ -492,7 +555,7 @@ class AduanController extends Controller
             }
         })
         
-        ->rawColumns(['lokasi_aduan', 'id', 'action', 'tahap_kategori', 'status_aduan', 'kategori_aduan', 'nama_pelapor'])
+        ->rawColumns(['lokasi_aduan', 'id', 'action', 'tahap_kategori', 'status_aduan', 'kategori_aduan', 'nama_pelapor', 'tempoh'])
         ->make(true);
     }
 
@@ -503,6 +566,7 @@ class AduanController extends Controller
         $aduan->update([
             'tahap_kategori'         => $request->tahap_kategori,
             'status_aduan'           => 'DJ',
+            'caj_kerosakan'          => $request->caj_kerosakan,
             'tarikh_serahan_aduan'   => Carbon::now()->toDateTimeString(),
         ]);
 
@@ -538,7 +602,7 @@ class AduanController extends Controller
         $aduan = Aduan::where('id', $id)->first(); 
         $tahap = TahapKategori::all();
         $status = StatusAduan::select('*')->whereIn('kod_status', ['TD', 'AK', 'DP'])->get();
-        $tukarStatus = StatusAduan::select('*')->whereIn('kod_status', ['AS', 'LK'])->get();
+        $tukarStatus = StatusAduan::select('*')->whereIn('kod_status', ['AS', 'LK', 'LU'])->get();
         $juruteknik = User::whereHas('roles', function($query){
             $query->where('id', 'CMS002');
         })->get();
@@ -563,6 +627,7 @@ class AduanController extends Controller
 
         $aduan->update([
             'tahap_kategori'         => $request->tahap_kategori,
+            'caj_kerosakan'          => $request->caj_kerosakan,
         ]);
 
         $juruteknik = JuruteknikBertugas::where('id_aduan', $request->id_adu)->delete();
@@ -596,14 +661,13 @@ class AduanController extends Controller
 
     public function simpanPenambahbaikan(Request $request)
     {
-        // dd($request);
+        
         $aduan = Aduan::where('id', $request->id)->first();
 
         $request->validate([
-            'laporan_pembaikan'       => 'required|min:5|max:255',
+            'laporan_pembaikan'       => 'required',
             'tarikh_selesai_aduan'    => 'required',
             'status_aduan'            => 'required',
-            // 'alat_ganti'           => 'required',
         ]);
 
         $aduan->update([
@@ -635,11 +699,11 @@ class AduanController extends Controller
                 $originalsName = $image[$y]->getClientOriginalName();
                 $fileSizes = $image[$y]->getSize();
                 $fileNames = $originalsName;
-                $image[$y]->storeAs('/pembaikan', $fileNames.date('dmyhis'));
+                $image[$y]->storeAs('/pembaikan', $fileNames);
                 ImejPembaikan::create([
                     'id_aduan'  => $aduan->id,
-                    'upload_image' => $originalsName.date('dmyhis'),
-                    'web_path'  => "app/pembaikan/".$fileNames.date('dmyhis'),
+                    'upload_image' => $originalsName,
+                    'web_path'  => "app/pembaikan/".$fileNames,
                 ]);
             }
         }
@@ -675,10 +739,9 @@ class AduanController extends Controller
         $aduan = Aduan::where('id', $request->id)->first();
 
         $request->validate([
-            'laporan_pembaikan'       => 'required|min:5|max:255',
+            'laporan_pembaikan'       => 'required',
             'tarikh_selesai_aduan'    => 'required',
             'status_aduan'            => 'required',
-            // 'alat_ganti'           => 'required',
         ]);
 
         $aduan->update([
@@ -710,11 +773,11 @@ class AduanController extends Controller
                 $originalsName = $image[$y]->getClientOriginalName();
                 $fileSizes = $image[$y]->getSize();
                 $fileNames = $originalsName;
-                $image[$y]->storeAs('/pembaikan', $fileNames.date('dmyhis'));
+                $image[$y]->storeAs('/pembaikan', $fileNames);
                 ImejPembaikan::create([
                     'id_aduan'  => $aduan->id,
-                    'upload_image' => $originalsName.date('dmyhis'),
-                    'web_path'  => "app/pembaikan/".$fileNames.date('dmyhis'),
+                    'upload_image' => $originalsName,
+                    'web_path'  => "app/pembaikan/".$fileNames,
                 ]);
             }
         }
@@ -1267,6 +1330,14 @@ class AduanController extends Controller
         return redirect('info-aduan/'.$aduan->id);
     }
 
+    public function padamGambar($id, $id_aduan)
+    {
+        $aduan = Aduan::where('id',$id_aduan)->first();
+        $imej = ImejPembaikan::find($id);
+        $imej->delete($aduan);
+        return redirect()->back()->with('messages', 'Imej Pembaikan Berjaya Dipadam');
+    }
+
     // Export & PDF
 
     public function pdfAduan(Request $request, $id)
@@ -1276,7 +1347,8 @@ class AduanController extends Controller
         $imej = ImejAduan::where('id_aduan', $id)->get();
         $gambar = ImejPembaikan::where('id_aduan', $id)->get();
         $juruteknik = JuruteknikBertugas::where('id_aduan', $id)->orderBy('jenis_juruteknik', 'ASC')->get();
-        return view('aduan.aduanPdf', compact('aduan', 'resit', 'imej', 'gambar', 'juruteknik'));
+        $alatan_ganti = AlatanPembaikan::where('id_aduan', $id)->get();
+        return view('aduan.aduanPdf', compact('aduan', 'resit', 'imej', 'gambar', 'juruteknik','alatan_ganti'));
     }
 
     public function aduan_all(Request $request)
@@ -1588,11 +1660,24 @@ class AduanController extends Controller
         return Excel::download(new IndividuExport($stats,$kates,$buls),'Laporan Aduan Individu.xlsx');
     }
 
+    public function downloadBorang(Request $request, $id)
+    {
+        $aduan = Aduan::where('id', $id)->first();
+        $resit = ResitAduan::where('id_aduan', $id)->get();
+        $imej = ImejAduan::where('id_aduan', $id)->get();
+        $gambar = ImejPembaikan::where('id_aduan', $id)->get();
+        $juruteknik = JuruteknikBertugas::where('id_aduan', $id)->orderBy('jenis_juruteknik', 'ASC')->get();
+        return view('aduan.borangManual', compact('aduan', 'resit', 'imej', 'gambar', 'juruteknik'));
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
+    // Dashboard
+
     public function index()
     {
         $aduan = DB::table('cms_status_aduan as tblStatus')

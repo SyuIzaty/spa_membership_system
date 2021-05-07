@@ -95,10 +95,8 @@
                                         </tr>
                                        
                                         <tr>
-                                            <th width="20%" style="vertical-align: top">Adakah Kerosakan Dicaj ? </th>
-                                            <td colspan="2" style="vertical-align: middle">{{ strtoupper($aduan->caj_kerosakan) }}</td>
                                             <th width="20%" style="vertical-align: top">Maklumat Tambahan : </th>
-                                            <td colspan="2" style="vertical-align: middle">{{ isset($aduan->maklumat_tambahan) ? $aduan->maklumat_tambahan : '-'}}</td>
+                                            <td colspan="4" style="vertical-align: middle">{{ isset($aduan->maklumat_tambahan) ? $aduan->maklumat_tambahan : '-'}}</td>
                                         </tr>
                                     </thead>
                                 </table>

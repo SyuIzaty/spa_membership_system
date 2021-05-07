@@ -144,7 +144,7 @@
                 { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
-                "order": [[ 0, "desc" ]],
+                "order": [[ 4, "desc" ]],
                 "initComplete": function(settings, json) {
 
                 } 

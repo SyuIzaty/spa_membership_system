@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\KategoriAduan;
 use App\JenisKerosakan;
 use App\SebabKerosakan;
+use App\Aduan;
 use Session;
 
 class SebabKerosakanController extends Controller
@@ -40,10 +41,18 @@ class SebabKerosakanController extends Controller
         return datatables()::of($sebab)
         ->addColumn('action', function ($sebab) {
 
-            return '
-            <a href="" data-target="#crud-modals" data-toggle="modal" data-sebab="'.$sebab->id.'" data-kategori="'.$sebab->kategori_aduan.'" data-kerosakan="'.$sebab->sebab_kerosakan.'" data-jenis="'.$sebab->jenis_kerosakan.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
-            <button class="btn btn-sm btn-danger btn-delete" data-remote="/sebab-kerosakan/' . $sebab->id . '"><i class="fal fa-trash"></i></button>'
-            ;
+            $exist = Aduan::where('sebab_kerosakan', $sebab->id)->first();
+
+            if(isset($exist)) {
+
+                return '<a href="" data-target="#crud-modals" data-toggle="modal" data-sebab="'.$sebab->id.'" data-kategori="'.$sebab->kategori_aduan.'" data-kerosakan="'.$sebab->sebab_kerosakan.'" data-jenis="'.$sebab->jenis_kerosakan.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>';
+
+            } else {
+
+                return '<a href="" data-target="#crud-modals" data-toggle="modal" data-sebab="'.$sebab->id.'" data-kategori="'.$sebab->kategori_aduan.'" data-kerosakan="'.$sebab->sebab_kerosakan.'" data-jenis="'.$sebab->jenis_kerosakan.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
+                <button class="btn btn-sm btn-danger btn-delete" data-remote="/sebab-kerosakan/' . $sebab->id . '"><i class="fal fa-trash"></i></button>';
+            }
+            
         })
 
         ->editColumn('kategori_aduan', function ($sebab) {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreKategoriRequest;
 use Illuminate\Http\Request;
 use App\KategoriAduan;
+use App\Aduan;
 use Session;
 
 class KategoriAduanController extends Controller
@@ -29,10 +30,19 @@ class KategoriAduanController extends Controller
         return datatables()::of($kategori)
         ->addColumn('action', function ($kategori) {
 
-            return '
-            <a href="" data-target="#crud-modals" data-toggle="modal" data-kategori="'.$kategori->id.'" data-nama="'.$kategori->nama_kategori.'" data-kod="'.$kategori->kod_kategori.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
-            <button class="btn btn-sm btn-danger btn-delete" data-remote="/kategori-aduan/' . $kategori->id . '"><i class="fal fa-trash"></i></button>'
-            ;
+            $exist = Aduan::where('kategori_aduan', $kategori->kod_kategori)->first();
+
+            if(isset($exist)) {
+            
+                return '
+                <a href="" data-target="#crud-modals" data-toggle="modal" data-kategori="'.$kategori->id.'" data-nama="'.$kategori->nama_kategori.'" data-kod="'.$kategori->kod_kategori.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>';
+
+            } else {
+
+                return '
+                <a href="" data-target="#crud-modals" data-toggle="modal" data-kategori="'.$kategori->id.'" data-nama="'.$kategori->nama_kategori.'" data-kod="'.$kategori->kod_kategori.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
+                <button class="btn btn-sm btn-danger btn-delete" data-remote="/kategori-aduan/' . $kategori->id . '"><i class="fal fa-trash"></i></button>';
+            }
         })
             
         ->make(true);
@@ -54,7 +64,7 @@ class KategoriAduanController extends Controller
     public function kemaskiniKategori(StoreKategoriRequest $request) 
     {
         $kategori = KategoriAduan::where('id', $request->kategori_id)->first();
-        // dd($kategori);
+        
         $kategori->update([
             'kod_kategori'     => $request->kod_kategori,
             'nama_kategori'    => $request->nama_kategori, 

@@ -3,15 +3,6 @@
 @section('content')
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <style>
-    .vl {
-      border-left: 2px solid rgba(186, 178, 178, 0.469);
-      height: 510px;
-      position: absolute;
-      left: 50%;
-      margin-left: -3px;
-      /* top: 0; */
-    }
-
     .tab-content>.tab-pane {
         height: 1px;
         overflow: hidden;
@@ -49,10 +40,10 @@
                             <div class="card-tools">
                                 <ul class="nav nav-pills ml-auto">
                                 <li class="nav-item">
-                                    <a style="border: solid 1px; border-radius: 0" class="nav-link active test" href="#revenue-chart" data-toggle="tab">Carta Pie</a>
+                                    <a style="border: solid 1px; border-radius: 0" class="nav-link active test" href="#pie-chart" data-toggle="tab">Carta Pie</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a style="border: solid 1px; border-radius: 0" class="nav-link" href="#sales-chart" data-toggle="tab">Carta Bar</a>
+                                    <a style="border: solid 1px; border-radius: 0" class="nav-link" href="#bar-chart" data-toggle="tab">Carta Bar</a>
                                 </li>
                                     <a href="/export_aduan" class="btn btn-sm btn-danger ml-auto float-right" style="color: white; padding-top: 8px"><i class="fal fa-eye"></i> Lihat Laporan</a>
                                 </ul>
@@ -61,7 +52,7 @@
                             <div class="card-body">
                                 <div class="tab-content p-0">
 
-                                    <div class="chart tab-pane active" id="revenue-chart" >
+                                    <div class="chart tab-pane active" id="pie-chart" >
                                         <div class="row">
                                             @role('Operation Admin')
                                             <div class="col-md-6 col-sm-12">
@@ -69,7 +60,6 @@
                                                     <div id="chart1" style="height: 500px"></div>
                                                 </div>
                                             </div>
-                                            {{-- <div class="vl"></div> --}}
                                             <div class="col-md-6 col-sm-12">
                                                 <div class="table-responsive">
                                                     <div id="chart2" style="height: 500px"></div>
@@ -86,25 +76,24 @@
                                         </div>
                                     </div>
 
-                                    <div class="chart tab-pane" id="sales-chart" >
+                                    <div class="chart tab-pane" id="bar-chart" >
                                         <div class="row">
                                             @role('Operation Admin')
                                             <div class="col-md-6 col-sm-12">
                                                 <div class="table-responsive">
-                                                    <div id="chart3" style="height: 500px; margin-left: 15px;"></div>
+                                                    <div id="chart3" style="height: 500px"></div>
                                                 </div>
                                             </div>
-                                            <div class="vl"></div>
                                             <div class="col-md-6 col-sm-12">
                                                 <div class="table-responsive">
-                                                    <div id="chart4" style="height: 500px; margin-left: 15px;"></div>
+                                                    <div id="chart4" style="height: 500px"></div>
                                                 </div>
                                             </div>
                                             @endrole
                                             @role('Technical Staff')
                                             <div class="col-md-12 col-sm-12">
                                                 <div class="table-responsive">
-                                                    <div id="chart6" style="height: 500px; margin-left: 15px;"></div>
+                                                    <div id="chart6" style="height: 500px"></div>
                                                 </div>
                                             </div>
                                             @endrole
@@ -287,8 +276,8 @@
         var aduan = <?php echo $aduan; ?>;
         console.log(aduan);
         google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
-        function drawChart() {
+        google.charts.setOnLoadCallback(drawChart1);
+        function drawChart1() {
             var data = google.visualization.arrayToDataTable(aduan);
             var options = {
             title: 'LAPORAN ADUAN KEROSAKAN BERDASARKAN STATUS',
@@ -303,8 +292,8 @@
             legend: { position: 'bottom'},
             is3D: true,
             } 
-            var chart1 = new google.visualization.PieChart(document.getElementById('chart1'));
-            chart1.draw(data, options);
+            var chart = new google.visualization.PieChart(document.getElementById('chart1'));
+            chart.draw(data, options);
             
         }
 
@@ -314,8 +303,8 @@
         var list = <?php echo $list; ?>;
         console.log(list);
         google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
-        function drawChart() {
+        google.charts.setOnLoadCallback(drawChart2);
+        function drawChart2() {
             var data = google.visualization.arrayToDataTable(list);
             var options = {
             title: 'LAPORAN ADUAN KEROSAKAN JURUTEKNIK TERKINI',
@@ -337,8 +326,8 @@
         var juruteknik = <?php echo $juruteknik; ?>;
         console.log(juruteknik);
         google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
-        function drawChart() {
+        google.charts.setOnLoadCallback(drawChart5);
+        function drawChart5() {
             var data = google.visualization.arrayToDataTable(juruteknik);
             var options = {
             title: 'LAPORAN ADUAN KEROSAKAN JURUTEKNIK',
@@ -360,8 +349,8 @@
         var aduan = <?php echo $aduan; ?>;
         console.log(aduan);
         google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
-        function drawChart() {
+        google.charts.setOnLoadCallback(drawChart3);
+        function drawChart3() {
             var data = google.visualization.arrayToDataTable(aduan);
             var options = {
             title: 'LAPORAN ADUAN KEROSAKAN BERDASARKAN STATUS',
@@ -385,8 +374,8 @@
         var list = <?php echo $list; ?>;
         console.log(list);
         google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
-        function drawChart() {
+        google.charts.setOnLoadCallback(drawChart4);
+        function drawChart4() {
             var data = google.visualization.arrayToDataTable(list);
             var options = {
             title: 'LAPORAN ADUAN KEROSAKAN JURUTEKNIK TERKINI',
@@ -407,8 +396,8 @@
         var juruteknik = <?php echo $juruteknik; ?>;
         console.log(juruteknik);
         google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
-        function drawChart() {
+        google.charts.setOnLoadCallback(drawChart6);
+        function drawChart6() {
             var data = google.visualization.arrayToDataTable(juruteknik);
             var options = {
             title: 'LAPORAN ADUAN KEROSAKAN JURUTEKNIK',

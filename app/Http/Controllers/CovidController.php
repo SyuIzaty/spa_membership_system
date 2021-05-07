@@ -1380,7 +1380,7 @@ class CovidController extends Controller
         $email = $value->email;
 
         Mail::send('covid19.remainder', $datas, function($message) use ($email) {
-            $message->to($email ?: [])->subject('PENGISIAN DATA ESARING');
+            $message->to($email ?: [])->subject('Pengisian Data E-Saring');
             $message->from('HRadmin@intec.edu.my');
         });
 

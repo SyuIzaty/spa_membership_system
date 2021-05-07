@@ -31,6 +31,7 @@
                                          <th style="text-align: center; width: 170px">LOKASI</th>
                                         <th style="width: 200px">ADUAN</th>
                                         <th style="width: 140px">TARIKH ADUAN</th>
+                                        <th>TEMPOH ADUAN</th>
                                         <th style="width: 165px">STATUS</th>
                                         <th style="width: 145px">TAHAP</th>
                                         <th>TINDAKAN</th> 
@@ -41,6 +42,7 @@
                                          <td class="hasinput"><input type="text" class="form-control" placeholder="Lokasi"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Kategori"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Tarikh Aduan"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Tempoh Kelewatan"></td>
                                         <td class="hasinput"><select id="status_aduan" name="status_aduan" class="form-control">
                                             <option value="">Semua</option>
                                             <option value="Belum Selesai">Belum Selesai</option>
@@ -140,12 +142,13 @@
                     { data: 'lokasi_aduan', name: 'lokasi_aduan' },
                     { data: 'kategori_aduan', name: 'kategori_aduan' },
                     { className: 'text-center', data: 'tarikh_laporan', name: 'tarikh_laporan' },
+                    { className: 'text-center', data: 'tempoh', name: 'tempoh' },
                     { className: 'text-center', data: 'status_aduan', name: 'status_aduan' },
                     { className: 'text-center', data: 'tahap_kategori', name: 'tahap_kategori' },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
-                "order": [[ 0, "desc" ]],
+                "order": [[ 4, "desc" ]],
                 "initComplete": function(settings, json) {
 
                 } 
@@ -185,6 +188,15 @@
         });
 
     });
+
+    function Print(button)
+        {
+            var url = $(button).data('page');
+            var printWindow = window.open( '{{url("/")}}'+url+'', 'Print', 'left=200, top=200, width=950, height=500, toolbar=0, resizable=0');
+            printWindow.addEventListener('load', function(){
+                printWindow.print();
+            }, true);
+        }
 
 </script>
 

@@ -78,6 +78,9 @@ Route::get('/individuExport/{stats?}/{kates?}/{buls?}', 'AduanController@individ
 Route::post('/individuExport/{stats?}/{kates?}/{buls?}', 'AduanController@individu');
 Route::get('aduanIndividu/{stats?}/{kates?}/{buls?}','AduanController@individu');
 Route::get('/dashboard-aduan','AduanController@index');
+Route::get('/download/{id}', 'AduanController@downloadBorang')->name('downloadBorang');
+Route::get('pembaikan/{filename}/{type}','AduanController@failPembaikan');
+Route::get('padamGambar/{id}/{id_aduan}', 'AduanController@padamGambar')->name('padamGambar');
 
 //KATEGORI
 Route::resource('kategori-aduan', 'KategoriAduanController');

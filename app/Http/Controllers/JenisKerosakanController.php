@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\KategoriAduan;
 use App\JenisKerosakan;
+use App\Aduan;
 use Session;
 
 class JenisKerosakanController extends Controller
@@ -29,10 +30,18 @@ class JenisKerosakanController extends Controller
         return datatables()::of($jenis)
         ->addColumn('action', function ($jenis) {
 
-            return '
-            <a href="" data-target="#crud-modals" data-toggle="modal" data-jenis="'.$jenis->id.'" data-kategori="'.$jenis->kategori_aduan.'" data-kerosakan="'.$jenis->jenis_kerosakan.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
-            <button class="btn btn-sm btn-danger btn-delete" data-remote="/jenis-kerosakan/' . $jenis->id . '"><i class="fal fa-trash"></i></button>'
-            ;
+            $exist = Aduan::where('jenis_kerosakan', $jenis->id)->first();
+
+            if(isset($exist)) {
+
+                return '<a href="" data-target="#crud-modals" data-toggle="modal" data-jenis="'.$jenis->id.'" data-kategori="'.$jenis->kategori_aduan.'" data-kerosakan="'.$jenis->jenis_kerosakan.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>';
+
+            } else {
+
+                return '<a href="" data-target="#crud-modals" data-toggle="modal" data-jenis="'.$jenis->id.'" data-kategori="'.$jenis->kategori_aduan.'" data-kerosakan="'.$jenis->jenis_kerosakan.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
+                        <button class="btn btn-sm btn-danger btn-delete" data-remote="/jenis-kerosakan/' . $jenis->id . '"><i class="fal fa-trash"></i></button>';
+            }
+            
         })
 
         ->editColumn('kategori_aduan', function ($jenis) {

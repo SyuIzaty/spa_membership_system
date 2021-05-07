@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\AlatGanti;
+use App\AlatanPembaikan;
 use Session;
 
 class AlatGantiController extends Controller
@@ -26,10 +27,18 @@ class AlatGantiController extends Controller
         return datatables()::of($alat)
         ->addColumn('action', function ($alat) {
 
-            return '
-            <a href="" data-target="#crud-modals" data-toggle="modal" data-id="'.$alat->id.'" data-alat="'.$alat->alat_ganti.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
-            <button class="btn btn-sm btn-danger btn-delete" data-remote="/alat-ganti/' . $alat->id . '"><i class="fal fa-trash"></i></button>'
-            ;
+            $exist = AlatanPembaikan::where('alat_ganti', $alat->id)->first();
+
+            if(isset($exist)) {
+
+                return '<a href="" data-target="#crud-modals" data-toggle="modal" data-id="'.$alat->id.'" data-alat="'.$alat->alat_ganti.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>';
+
+            } else {
+
+                return '<a href="" data-target="#crud-modals" data-toggle="modal" data-id="'.$alat->id.'" data-alat="'.$alat->alat_ganti.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
+                        <button class="btn btn-sm btn-danger btn-delete" data-remote="/alat-ganti/' . $alat->id . '"><i class="fal fa-trash"></i></button>';
+            }
+            
         })
             
         ->make(true);

@@ -150,13 +150,8 @@
                                                 </tr>
 
                                                 <tr>
-                                                    <th width="20%" style="vertical-align: top">Adakah Kerosakan Dicaj ? </th>
-                                                        <td colspan="2" style="padding-top: 20px;">
-                                                            <input class="ml-5" type="radio" name="caj_kerosakan" id="caj_kerosakan" value="Ya" {{ old('caj_kerosakan') == "Ya" ? 'checked' : '' }}> Ya
-                                                            <input class="ml-5" type="radio" name="caj_kerosakan" id="caj_kerosakan" value="Tidak" {{ old('caj_kerosakan') == "Tidak" ? 'checked' : '' }}> Tidak
-                                                        </td>
                                                     <th width="20%" style="vertical-align: top">Maklumat Tambahan : </th>
-                                                    <td colspan="2"><textarea rows="5" id="maklumat_tambahan" name="maklumat_tambahan" class="form-control" placeholder="Sila isikan maklumat tambahan sekiranya ada">{{ old('maklumat_tambahan') }}</textarea>
+                                                    <td colspan="4"><textarea rows="5" id="maklumat_tambahan" name="maklumat_tambahan" class="form-control" placeholder="Sila isikan maklumat tambahan sekiranya ada">{{ old('maklumat_tambahan') }}</textarea>
                                                         @error('maklumat_tambahan')
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror
@@ -183,7 +178,6 @@
                                                     <th width="20%" style="vertical-align: middle"> Resit : </th>
                                                     <td colspan="2">
                                                         <input type="file" class="form-control" id="resit_file" name="resit_file[]" accept="application/pdf" multiple>
-                                                        {{-- <input type="file" class="form-control" id="resit_file" name="resit_file" accept="application/pdf"> --}}
                                                         @error('resit_file')
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror
