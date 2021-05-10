@@ -1130,7 +1130,7 @@ class CovidController extends Controller
             }
 
             $department = Department::select('id', 'department_name')->orderBy('department_name')->get();
-            $date = Covid::select('declare_date')->groupBy('declare_date')->get();
+            $date = Covid::select('declare_date')->groupBy('declare_date')->orderBy('declare_date', 'desc')->get();
         
             $cond = "1"; // 1 = selected
 
@@ -1146,7 +1146,7 @@ class CovidController extends Controller
             $req_date = $request->datek;
             $req_cate = $request->cates;
 
-            $datek = Covid::select('declare_date')->groupBy('declare_date')->get();
+            $datek = Covid::select('declare_date')->groupBy('declare_date')->orderBy('declare_date', 'desc')->get();
 
             if( Auth::user()->hasRole('HR Admin') )
             {

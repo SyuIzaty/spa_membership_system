@@ -109,7 +109,7 @@
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
-                "order": [[ 5, "asc" ], [ 2, "asc"]],
+                "order": [[ 5, "desc" ], [ 2, "asc"]],
                 "initComplete": function(settings, json) {
 
                 } 
