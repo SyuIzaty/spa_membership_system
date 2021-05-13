@@ -38,7 +38,7 @@
             }
         </style>
     </head>
-    <body class="mod-bg-1 ">
+    <body class="mod-bg-1 mod-nav-link">
         <!-- DOC: script to save and load page settings -->
         <script>
             /**
