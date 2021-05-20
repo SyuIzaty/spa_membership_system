@@ -173,12 +173,12 @@
                                     <ul>
                                         <li>
                                             <a href="/borang-aduan" title="Borang Aduan" data-filter-tags="borang">
-                                                <span class="nav-link-text" data-i18n="nav.borang"><i class="fal fa-file"> Borang Aduan</i></span>
+                                                <span class="nav-link-text" data-i18n="nav.borang"> Borang Aduan</span>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="/aduan" title="Senarai Aduan" data-filter-tags="senarai">
-                                                <span class="nav-link-text" data-i18n="nav.senarai"><i class="fal fa-bookmark"> Aduan</i></span>
+                                                <span class="nav-link-text" data-i18n="nav.senarai"> Aduan</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -193,22 +193,22 @@
                                     <ul>
                                         <li>
                                             <a href="/senarai-aduan" title="Dalam Tindakan" data-filter-tags="dlm_tindakan">
-                                                <span class="nav-link-text" data-i18n="nav.dlm_tindakan"><i class="fal fa-clipboard-list"> Dalam Tindakan</i></span>
+                                                <span class="nav-link-text" data-i18n="nav.dlm_tindakan"> Dalam Tindakan</span>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="/senarai-selesai" title="Aduan Selesai" data-filter-tags="selesai">
-                                                <span class="nav-link-text" data-i18n="nav.selesai"><i class="fal fa-clipboard-check"> Selesai</i></span>
+                                                <span class="nav-link-text" data-i18n="nav.selesai"> Selesai</span>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="/senarai-kiv" title="Aduan KIV" data-filter-tags="kiv">
-                                                <span class="nav-link-text" data-i18n="nav.kiv"><i class="fal fa-eye"> KIV </i></span>
+                                                <span class="nav-link-text" data-i18n="nav.kiv"> KIV </span>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="/senarai-bertindih" title="Aduan Bertindih" data-filter-tags="bertindih">
-                                                <span class="nav-link-text" data-i18n="nav.bertindih"><i class="fal fa-hourglass-start"> Bertindih </i></span>
+                                                <span class="nav-link-text" data-i18n="nav.bertindih"> Bertindih</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -270,27 +270,27 @@
                                 <ul>
                                     <li>
                                         <a href="/catA" title="catA" data-filter-tags="catA">
-                                            <span class="nav-link-text" data-i18n="nav.catA"><i class="fal fa-arrow-right"> Category A</i></span>
+                                            <span class="nav-link-text" data-i18n="nav.catA"> Category A</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="/catB" title="catB" data-filter-tags="catB">
-                                            <span class="nav-link-text" data-i18n="nav.catB"><i class="fal fa-arrow-right"> Category B</i></span>
+                                            <span class="nav-link-text" data-i18n="nav.catB"> Category B</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="/catC" title="catC" data-filter-tags="catC">
-                                            <span class="nav-link-text" data-i18n="nav.catC"><i class="fal fa-arrow-right"> Category C</i></span>
+                                            <span class="nav-link-text" data-i18n="nav.catC"> Category C</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="/catD" title="catD" data-filter-tags="catD">
-                                            <span class="nav-link-text" data-i18n="nav.catD"><i class="fal fa-arrow-right"> Category D</i></span>
+                                            <span class="nav-link-text" data-i18n="nav.catD"> Category D</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="/catE" title="catE" data-filter-tags="catE">
-                                            <span class="nav-link-text" data-i18n="nav.catE"><i class="fal fa-arrow-right"> Category E</i></span>
+                                            <span class="nav-link-text" data-i18n="nav.catE"> Category E</span>
                                         </a>
                                     </li>
                                 </ul>
