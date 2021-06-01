@@ -30,7 +30,9 @@ class CovidController extends Controller
         $user = User::where('id',$id)->first();
         $declare = Covid::where('user_id', $id)->latest('declare_date')->first();
         $exist = Covid::with(['user'])->where('user_id', $id)->whereDate('created_at', '=', now()->toDateString())->first();
-        return view('covid19.declare-form', compact('user', 'declare', 'exist'));
+        $department = Department::orderBy('department_name')->get();
+        $category = UserCategory::orderBy('category_name')->get();
+        return view('covid19.declare-form', compact('user', 'declare', 'exist', 'department', 'category'));
     }
 
     public function formStore(Request $request)
@@ -72,6 +74,11 @@ class CovidController extends Controller
             $date = $request->declare_date1;
             $time = date("H:i:s", strtotime( $request->declare_date1 ));
         }
+
+        $validate = [
+            'q1'              => 'required',
+            'user_category'   => 'required',
+        ];
 
         if($request->q1 == 'N') 
         {
@@ -118,6 +125,9 @@ class CovidController extends Controller
             'form_type'       => 'PF',
             'declare_date'    => $date,
             'declare_time'    => $time,
+            'department_id'   => $request->department_id,
+            'user_category'   => $request->user_category,
+            'temperature'     => $request->temperature,
         ]);
             
        return redirect('/declarationForm');
@@ -145,8 +155,10 @@ class CovidController extends Controller
         
         $declare = Covid::where('user_id', $id)->first();
         $exist = Covid::with(['user'])->where('user_id', $id)->whereDate('created_at', '=', now()->toDateString())->first();
+        $department = Department::orderBy('department_name')->get();
+        $category = UserCategory::orderBy('category_name')->get();
         
-        return view('covid19.new-form', compact('user', 'declare', 'exist'));
+        return view('covid19.new-form', compact('user', 'declare', 'exist', 'department', 'category'));
     }
 
     public function findUser(Request $request)
@@ -205,6 +217,11 @@ class CovidController extends Controller
             Session::flash('notification', 'Declaration Have Been Made');
         } else {
 
+            $validate = [
+                'q1'              => 'required',
+                'user_category'   => 'required',
+            ];
+            
             if($request->q1 == 'N') 
             {
                 $validate['q2'] = 'required'; 
@@ -250,6 +267,9 @@ class CovidController extends Controller
                 'form_type'       => 'PF',
                 'declare_date'    => $date,
                 'declare_time'    => $time,
+                'department_id'   => $request->department_id,
+                'user_category'   => $request->user_category,
+                'temperature'     => $request->temperature,
             ]);
             
            Session::flash('message', 'New Data Successfully Created');
@@ -960,7 +980,7 @@ class CovidController extends Controller
                     'user_id'         => $request->user_id,
                     'user_email'      => $request->email,
                     'user_phone'      => $request->user_phone,
-                    'department_id'   => $request->department_id,
+                    'department_id'   => $request->department_stf,
                     'user_category'   => $request->user_category,
                     'user_position'   => $request->user_position,
                     'q1'              => $request->q1,
@@ -976,6 +996,7 @@ class CovidController extends Controller
                     'declare_time'    => $time,
                     'form_type'       => 'OF',
                     'created_by'      => $request->user_id,
+                    'temperature'     => $request->temperature_stf,
                 ]);
 
             } elseif($request->user_position == 'STD') {
@@ -1035,6 +1056,7 @@ class CovidController extends Controller
                     'declare_time'    => $time,
                     'form_type'       => 'OF',
                     'created_by'      => $request->user_id,
+                    'temperature'     => $request->temperature,
                 ]);
 
             } else {
@@ -1074,7 +1096,7 @@ class CovidController extends Controller
                 }
                 
                 $request->validate($validate);
-
+                
                 $declare = Covid::create([
                     'user_name'       => $request->vsr_name,
                     'user_id'         => $request->user_id,
@@ -1096,6 +1118,7 @@ class CovidController extends Controller
                     'declare_time'    => $time,
                     'form_type'       => 'OF',
                     'created_by'      => $request->user_id,
+                    'temperature'     => $request->temperature,
                 ]);
             }
                 
@@ -1284,6 +1307,11 @@ class CovidController extends Controller
             return isset($covid->type->user_type) ? $covid->type->user_type : '<div style="color:red;" > -- </div>';
         })
 
+        ->editColumn('temperature', function ($covid) {
+
+            return isset($covid->temperature) ? $covid->temperature.' °C'  : '<div style="color:red;" > -- </div>';
+        })
+
         ->editColumn('department_id', function ($covid) {
 
             return isset($covid->department->department_name) ? $covid->department->department_name : '<div style="color:red;" > -- </div>';
@@ -1326,7 +1354,7 @@ class CovidController extends Controller
             
         })
     
-       ->rawColumns(['user_category', 'user_position', 'department_id', 'declare_date', 'created_at', 'user_name', 'user_ic', 'user_phone', 'user_email', 'q1', 'q2', 'q3', 'q4a', 'q4b', 'q4c', 'q4d'])
+       ->rawColumns(['user_category', 'user_position', 'department_id', 'declare_date', 'created_at', 'user_name', 'temperature', 'user_ic', 'user_phone', 'user_email', 'q1', 'q2', 'q3', 'q4a', 'q4b', 'q4c', 'q4d'])
        ->make(true);
     }
 

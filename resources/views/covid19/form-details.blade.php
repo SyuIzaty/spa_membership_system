@@ -85,7 +85,9 @@
                                                 <tr>
                                                     <div class="form-group">
                                                         <th width="15%"><label for="qHeader">DEPARTMENT/PLACE TO GO :</label></th>
-                                                        <td colspan="6"><label for="qHeader">{{ strtoupper(isset($declare->department->department_name) ? $declare->department->department_name : '-')}}</label></td>
+                                                        <td colspan="2"><label for="qHeader">{{ strtoupper(isset($declare->department->department_name) ? $declare->department->department_name : '-')}}</label></td>
+                                                        <th width="15%"><label for="qHeader">TEMPERATURE (°C) :</label></th>
+                                                        <td colspan="4"><label for="qHeader">{{ strtoupper(isset($declare->temperature) ? $declare->temperature.' °C' : '-')}}</label></td>
                                                     </div>
                                                 </tr>
                                                 @endif
@@ -94,7 +96,9 @@
                                             <tr>
                                                 <div class="form-group">
                                                     <th width="15%"><label for="qHeader">DEPARTMENT/PLACE TO GO :</label></th>
-                                                    <td colspan="6"><label for="qHeader">{{ strtoupper(isset($declare->department->department_name) ? $declare->department->department_name : '-')}}</label></td>
+                                                    <td colspan="2"><label for="qHeader">{{ strtoupper(isset($declare->department->department_name) ? $declare->department->department_name : '-')}}</label></td>
+                                                    <th width="15%"><label for="qHeader">TEMPERATURE (°C) :</label></th>
+                                                    <td colspan="4"><label for="qHeader">{{ strtoupper(isset($declare->temperature) ? $declare->temperature.' °C' : '-')}}</label></td>
                                                 </div>
                                             </tr>
                                             @endif

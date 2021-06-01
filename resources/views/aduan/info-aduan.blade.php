@@ -530,73 +530,105 @@
                                                         @endcan
                                                     
                                                         @can('update repair')
-                                                            @if($juru->jenis_juruteknik == 'K') 
-                                                                @if($aduan->status_aduan == 'TD' || $aduan->status_aduan == 'AK' )
-                                                                    @if (Session::has('kemaskiniPembaikan'))
-                                                                        <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('kemaskiniPembaikan') }}</div>
-                                                                    @endif
-                                                                    {!! Form::open(['action' => 'AduanController@kemaskiniPenambahbaikan', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
-                                                                    {{Form::hidden('id', $aduan->id)}}
-                                                                    <div class="table-responsive">
-                                                                        <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
-                                                                            <thead>
-                                                                                <tr>
-                                                                                    <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-box"></i> KEMASKINI PENAMBAHBAIKAN</label></td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <div class="form-group">
-                                                                                        <td width="20%"><label class="form-label" for="lokasi_aduan">Tarikh Serahan Aduan :</label></td>
-                                                                                        <td colspan="2"><b>{{ date(' j F Y ', strtotime($aduan->tarikh_serahan_aduan)) }}</b></td>
-                                                                                        <td width="20%"><label class="form-label" for="lokasi_aduan">Masa Serahan Aduan :</label></td>
-                                                                                        <td colspan="2"><b>{{ date(' h:i:s A ', strtotime($aduan->tarikh_serahan_aduan)) }}</b></td>
-                                                                                    </div>
-                                                                                </tr>
+                                                            @if(isset($juru))
+                                                                @if($juru->jenis_juruteknik == 'K') 
+                                                                    @if($aduan->status_aduan == 'TD' || $aduan->status_aduan == 'AK' )
+                                                                        @if (Session::has('kemaskiniPembaikan'))
+                                                                            <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('kemaskiniPembaikan') }}</div>
+                                                                        @endif
+                                                                        {!! Form::open(['action' => 'AduanController@kemaskiniPenambahbaikan', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                                                                        {{Form::hidden('id', $aduan->id)}}
+                                                                        <div class="table-responsive">
+                                                                            <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-box"></i> KEMASKINI PENAMBAHBAIKAN</label></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <div class="form-group">
+                                                                                            <td width="20%"><label class="form-label" for="lokasi_aduan">Tarikh Serahan Aduan :</label></td>
+                                                                                            <td colspan="2"><b>{{ date(' j F Y ', strtotime($aduan->tarikh_serahan_aduan)) }}</b></td>
+                                                                                            <td width="20%"><label class="form-label" for="lokasi_aduan">Masa Serahan Aduan :</label></td>
+                                                                                            <td colspan="2"><b>{{ date(' h:i:s A ', strtotime($aduan->tarikh_serahan_aduan)) }}</b></td>
+                                                                                        </div>
+                                                                                    </tr>
 
-                                                                                <tr>
-                                                                                    <div class="form-group">
-                                                                                        <td width="20%"><label class="form-label" for="laporan_pembaikan"><span class="text-danger">*</span> Laporan Pembaikan :</label></td>
-                                                                                        <td colspan="4">
-                                                                                            <textarea rows="5" class="form-control" id="laporan_pembaikan" name="laporan_pembaikan">{{ $aduan->laporan_pembaikan }}</textarea>
-                                                                                                @error('laporan_pembaikan')
-                                                                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                                                @enderror
-                                                                                        </td>
-                                                                                    </div>
-                                                                                </tr>
+                                                                                    <tr>
+                                                                                        <div class="form-group">
+                                                                                            <td width="20%"><label class="form-label" for="laporan_pembaikan"><span class="text-danger">*</span> Laporan Pembaikan :</label></td>
+                                                                                            <td colspan="4">
+                                                                                                <textarea rows="5" class="form-control" id="laporan_pembaikan" name="laporan_pembaikan">{{ $aduan->laporan_pembaikan }}</textarea>
+                                                                                                    @error('laporan_pembaikan')
+                                                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                                    @enderror
+                                                                                            </td>
+                                                                                        </div>
+                                                                                    </tr>
 
-                                                                                <tr>
-                                                                                    <div class="form-group">
-                                                                                        <td width="20%"><label class="form-label" for="bahan_alat"> Bahan/ Alat Ganti :</label></td>
-                                                                                        <td colspan="2">
-                                                                                            <select class="form-control bahan_alat" name="bahan_alat[]" multiple>
-                                                                                                <option value="" disabled>Sila Pilih</option>
-                                                                                                    @foreach ($senarai_alat as $alats)
-                                                                                                        <option value="{{ $alats->id }}">{{ $alats->alat_ganti }}</option>
-                                                                                                    @endforeach
-                                                                                                </select>                                           
-                                                                                                @error('bahan_alat')
-                                                                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                                                @enderror
-                                                                                                <br>
+                                                                                    <tr>
+                                                                                        <div class="form-group">
+                                                                                            <td width="20%"><label class="form-label" for="bahan_alat"> Bahan/ Alat Ganti :</label></td>
+                                                                                            <td colspan="2">
+                                                                                                <select class="form-control bahan_alat" name="bahan_alat[]" multiple>
+                                                                                                    <option value="" disabled>Sila Pilih</option>
+                                                                                                        @foreach ($senarai_alat as $alats)
+                                                                                                            <option value="{{ $alats->id }}">{{ $alats->alat_ganti }}</option>
+                                                                                                        @endforeach
+                                                                                                    </select>                                           
+                                                                                                    @error('bahan_alat')
+                                                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                                    @enderror
+                                                                                                    <br>
+                                                                                                    <div class="card-body">
+                                                                                                        @if(session()->has('message'))
+                                                                                                        <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i>
+                                                                                                                {{ session()->get('message') }}
+                                                                                                            </div>
+                                                                                                        @endif
+                                                                                                        <table class="table table-bordered">
+                                                                                                            <tr class="text-center">
+                                                                                                                <td>No</td>
+                                                                                                                <td>Bahan/Alat Ganti</td>
+                                                                                                                <td>Tindakan</td>
+                                                                                                            </tr>
+                                                                                                            @if(!empty($alatan_ganti) && $alatan_ganti->count() > 0)
+                                                                                                                @foreach ($alatan_ganti as $aG)
+                                                                                                                <tr align="center">
+                                                                                                                    <td>{{ $urutan++}}</td>
+                                                                                                                    <td>{{ $aG->alat->alat_ganti }}</td>
+                                                                                                                    <td>
+                                                                                                                        <a href="{{ action('AduanController@padamAlatan', ['id' => $aG->id, 'id_aduan' => $aG->id_aduan]) }}" class="btn btn-danger btn-sm deleteEl"><i class="fal fa-trash"></i></a>
+                                                                                                                    </td>
+                                                                                                                </tr>
+                                                                                                                @endforeach
+                                                                                                            @else
+                                                                                                                <tr align="center" class="data-row">
+                                                                                                                    <td valign="top" colspan="3" class="dataTables_empty">-- TIADA DATA --</td>
+                                                                                                                </tr>
+                                                                                                            @endif
+                                                                                                        </table>
+                                                                                                    </div>
+                                                                                            </td>
+                                                                                            <td width="20%"><label class="form-label" for="upload_image"> Gambar Pembaikan:</label></td>
+                                                                                            <td colspan="2" style="vertical-align: middle">
+                                                                                                <input type="file" class="form-control" id="upload_image" name="upload_image[]" multiple><br>
                                                                                                 <div class="card-body">
-                                                                                                    @if(session()->has('message'))
+                                                                                                    @if(session()->has('messages'))
                                                                                                     <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i>
-                                                                                                            {{ session()->get('message') }}
+                                                                                                            {{ session()->get('messages') }}
                                                                                                         </div>
                                                                                                     @endif
                                                                                                     <table class="table table-bordered">
                                                                                                         <tr class="text-center">
-                                                                                                            <td>No</td>
-                                                                                                            <td>Bahan/Alat Ganti</td>
+                                                                                                            <td>Gambar</td>
                                                                                                             <td>Tindakan</td>
                                                                                                         </tr>
-                                                                                                        @if(!empty($alatan_ganti) && $alatan_ganti->count() > 0)
-                                                                                                            @foreach ($alatan_ganti as $aG)
+                                                                                                        @if(!empty($gambar) && $gambar->count() > 0)
+                                                                                                            @foreach($gambar as $imejPembaikan)
                                                                                                             <tr align="center">
-                                                                                                                <td>{{ $urutan++}}</td>
-                                                                                                                <td>{{ $aG->alat->alat_ganti }}</td>
-                                                                                                                <td>
-                                                                                                                    <a href="{{ action('AduanController@padamAlatan', ['id' => $aG->id, 'id_aduan' => $aG->id_aduan]) }}" class="btn btn-danger btn-sm deleteEl"><i class="fal fa-trash"></i></a>
+                                                                                                                <td><a target="_blank" href="{{ url('pembaikan')."/".$imejPembaikan->upload_image }}/Download">{{ $imejPembaikan->upload_image }}</a></td>
+                                                                                                                <td style="vertical-align: middle">
+                                                                                                                    <a href="{{ action('AduanController@padamGambar', ['id' => $imejPembaikan->id, 'id_aduan' => $imejPembaikan->id_aduan]) }}" class="btn btn-danger btn-sm deleteEg"><i class="fal fa-trash"></i></a>
                                                                                                                 </td>
                                                                                                             </tr>
                                                                                                             @endforeach
@@ -607,38 +639,118 @@
                                                                                                         @endif
                                                                                                     </table>
                                                                                                 </div>
-                                                                                        </td>
-                                                                                        <td width="20%"><label class="form-label" for="upload_image"> Gambar Pembaikan:</label></td>
-                                                                                        <td colspan="2" style="vertical-align: middle">
-                                                                                            <input type="file" class="form-control" id="upload_image" name="upload_image[]" multiple><br>
-                                                                                            <div class="card-body">
-                                                                                                @if(session()->has('messages'))
-                                                                                                <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i>
-                                                                                                        {{ session()->get('messages') }}
-                                                                                                    </div>
+                                                                                            </td>
+                                                                                        </div>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <div class="form-group">
+                                                                                            <td class="card-header" width="20%" style="border-right-style: hidden; background-color: #fbfbfb82"><label class="form-label" for="laporan_pembaikan"><i class="fal fa-money-bill"></i> Anggaran Kos</label></td>
+                                                                                            <td class="card-header" style="background-color: #fbfbfb82" colspan="2"><b></b></td>
+                                                                                            <td width="20%"><label class="form-label" for="tarikh_selesai_aduan"><span class="text-danger">*</span> Tarikh Selesai Pembaikan :</label></td>
+                                                                                            <td colspan="2">
+                                                                                                @if(isset($aduan->tarikh_selesai_aduan))
+                                                                                                    <input type="datetime-local" class="form-control" id="tarikh_selesai_aduan" name="tarikh_selesai_aduan" value="{{ date('Y-m-d\TH:i', strtotime($aduan->tarikh_selesai_aduan)) }}" />
+                                                                                                @else
+                                                                                                    <input type="datetime-local" class="form-control" id="tarikh_selesai_aduan" name="tarikh_selesai_aduan" value="{{ old('tarikh_selesai_aduan') }}">
                                                                                                 @endif
-                                                                                                <table class="table table-bordered">
-                                                                                                    <tr class="text-center">
-                                                                                                        <td>Gambar</td>
-                                                                                                        <td>Tindakan</td>
-                                                                                                    </tr>
-                                                                                                    @if(!empty($gambar) && $gambar->count() > 0)
-                                                                                                        @foreach($gambar as $imejPembaikan)
-                                                                                                        <tr align="center">
-                                                                                                            {{-- <td><img src="/get-file-gambar/{{ $imejPembaikan->upload_image }}" style="width:150px; height:130px;" class="img-fluid mr-2"></td> --}}
-                                                                                                            <td><a target="_blank" href="{{ url('pembaikan')."/".$imejPembaikan->upload_image }}/Download">{{ $imejPembaikan->upload_image }}</a></td>
-                                                                                                            <td style="vertical-align: middle">
-                                                                                                                <a href="{{ action('AduanController@padamGambar', ['id' => $imejPembaikan->id, 'id_aduan' => $imejPembaikan->id_aduan]) }}" class="btn btn-danger btn-sm deleteEg"><i class="fal fa-trash"></i></a>
-                                                                                                            </td>
-                                                                                                        </tr>
-                                                                                                        @endforeach
-                                                                                                    @else
-                                                                                                        <tr align="center" class="data-row">
-                                                                                                            <td valign="top" colspan="3" class="dataTables_empty">-- TIADA DATA --</td>
-                                                                                                        </tr>
-                                                                                                    @endif
-                                                                                                </table>
-                                                                                            </div>
+                                                                                        </div>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <div class="form-group">
+                                                                                            <td width="20%">
+                                                                                                <label class="form-label" for="ak_upah">Upah :</label><label class="form-label" style="padding-left: 205px;" for="ak_upah">RM</label><br><br><br><br>
+                                                                                                <label class="form-label" for="ak_bahan_alat">Bahan/ Alat Ganti :</label><label class="form-label" style="padding-left: 130px;" for="ak_bahan_alat">RM</label>
+                                                                                            </td>
+                                                                                            <td colspan="2">
+                                                                                                <input type="number" step="any" class="form-control" id="ak_upah" name="ak_upah"  value="{{ $aduan->ak_upah }}">
+                                                                                                    @error('ak_upah')
+                                                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                                    @enderror<br><br>
+                                                                                                <input type="number" step="any" class="form-control" id="ak_bahan_alat" name="ak_bahan_alat" value="{{ $aduan->ak_bahan_alat }}">
+                                                                                                    @error('ak_bahan_alat')
+                                                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                                    @enderror<br>
+                                                                                            </td>
+                                                                                            <td width="20%"><label class="form-label" for="status_aduan"><span class="text-danger">*</span> Status Aduan :</label></td>
+                                                                                            <td colspan="2"> 
+                                                                                                <select class="form-control status_aduan" name="status_aduan" id="status_aduan" >
+                                                                                                <option value="">-- Pilih Status Aduan --</option>
+                                                                                                    @foreach($status as $stt)
+                                                                                                        <option value="{{$stt->kod_status}}"  {{ $aduan->status_aduan == $stt->kod_status ? 'selected="selected"' : '' }}>{{$stt->nama_status}}</option>
+                                                                                                    @endforeach
+                                                                                                </select>
+                                                                                                @error('status_aduan')
+                                                                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                                @enderror
+                                                                                            </td>
+                                                                                        </div>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <div class="form-group">
+                                                                                            <td width="20%" style="background-color: #ddd; cursor: not-allowed;">
+                                                                                                <label class="form-label" for="jumlah_kos"><b>(+) JUMLAH KOS :</b></label><label class="form-label" style="padding-left: 133px;" for="jumlah_kos">RM</label>
+                                                                                            </td>
+                                                                                            <td colspan="2" style="background-color: #ddd; cursor: not-allowed;">
+                                                                                                <input type="number" step="any" class="form-control" id="jumlah_kos" style="cursor:context-menu;" name="jumlah_kos" value="{{ $aduan->jumlah_kos }}" readonly>
+                                                                                                    @error('jumlah_kos')
+                                                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                                    @enderror
+                                                                                            </td>
+
+                                                                                            <td width="20%" style="border-top-style: hidden;"><label class="form-label" for=""></label></td>
+                                                                                            <td colspan="2" style="border-top-style: hidden;"></td>
+                                                                                        </div>
+                                                                                    </tr>
+
+                                                                                </thead>
+                                                                            </table>
+                                                                        </div>
+                                                                        <button type="submit" class="btn btn-danger float-right"><i class="fal fa-save"></i> Kemaskini Tindakan</button>
+                                                                        {!! Form::close() !!}
+                                                                    @endif
+                                                                @endif
+                                                            @endif
+                                                        @endcan
+
+                                                        @can('view repair')
+                                                            @if(isset($juru))
+                                                                {{-- pembantu --}}
+                                                                @if($juru->jenis_juruteknik != 'K') 
+                                                                    @if($aduan->status_aduan != 'BS')
+                                                                    <div class="table-responsive">
+                                                                        <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-info"></i> INFO PENAMBAHBAIKAN</label></td>
+                                                                                </tr>
+
+                                                                                <tr>
+                                                                                    <div class="form-group">
+                                                                                        <td width="20%"><label class="form-label" for="lokasi_aduan">Tarikh Serahan Aduan :</label></td>
+                                                                                        <td colspan="2">{{ date(' j F Y ', strtotime($aduan->tarikh_serahan_aduan)) }}</td>
+                                                                                        <td width="20%"><label class="form-label" for="lokasi_aduan">Masa Serahan Aduan :</label></td>
+                                                                                        <td colspan="2">{{ date(' h:i:s A ', strtotime($aduan->tarikh_serahan_aduan)) }}</td>
+                                                                                    </div>
+                                                                                </tr>
+
+                                                                                <tr>
+                                                                                    <div class="form-group">
+                                                                                        <td width="20%"><label class="form-label" for="laporan_pembaikan">Laporan Pembaikan :</label></td>
+                                                                                        <td colspan="2">{{ $aduan->laporan_pembaikan ?? '--'   }}</td>
+                                                                                        <td width="20%"><label class="form-label" for="bahan_alat">Bahan/ Alat Ganti :</label></td>
+                                                                                        <td colspan="2">
+                                                                                            @if(isset($alatan_ganti->first()->alat_ganti))
+                                                                                            <ol>
+                                                                                                @foreach($alatan_ganti as $al)
+                                                                                                    <li>{{ $al->alat->alat_ganti}}</li>
+                                                                                                @endforeach
+                                                                                            </ol>
+                                                                                            @else
+                                                                                                --
+                                                                                            @endif
                                                                                         </td>
                                                                                     </div>
                                                                                 </tr>
@@ -647,43 +759,35 @@
                                                                                     <div class="form-group">
                                                                                         <td class="card-header" width="20%" style="border-right-style: hidden; background-color: #fbfbfb82"><label class="form-label" for="laporan_pembaikan"><i class="fal fa-money-bill"></i> Anggaran Kos</label></td>
                                                                                         <td class="card-header" style="background-color: #fbfbfb82" colspan="2"><b></b></td>
-                                                                                        <td width="20%"><label class="form-label" for="tarikh_selesai_aduan"><span class="text-danger">*</span> Tarikh Selesai Pembaikan :</label></td>
+                                                                                        <td width="20%">
+                                                                                            <label class="form-label" for="tarikh_selesai_aduan">Tarikh Selesai Pembaikan :</label>
+                                                                                        </td>
                                                                                         <td colspan="2">
                                                                                             @if(isset($aduan->tarikh_selesai_aduan))
-                                                                                                <input type="datetime-local" class="form-control" id="tarikh_selesai_aduan" name="tarikh_selesai_aduan" value="{{ date('Y-m-d\TH:i', strtotime($aduan->tarikh_selesai_aduan)) }}" />
+                                                                                                {{ date(' j F Y | h:i:s A ', strtotime($aduan->tarikh_selesai_aduan)) }}
                                                                                             @else
-                                                                                                <input type="datetime-local" class="form-control" id="tarikh_selesai_aduan" name="tarikh_selesai_aduan" value="{{ old('tarikh_selesai_aduan') }}">
+                                                                                                --
                                                                                             @endif
+                                                                                            
+                                                                                        </td>
                                                                                     </div>
                                                                                 </tr>
 
                                                                                 <tr>
                                                                                     <div class="form-group">
                                                                                         <td width="20%">
-                                                                                            <label class="form-label" for="ak_upah">Upah :</label><label class="form-label" style="padding-left: 205px;" for="ak_upah">RM</label><br><br><br><br>
-                                                                                            <label class="form-label" for="ak_bahan_alat">Bahan/ Alat Ganti :</label><label class="form-label" style="padding-left: 130px;" for="ak_bahan_alat">RM</label>
+                                                                                            <label class="form-label" for="ak_upah">Upah :</label><br><br>
+                                                                                            <label class="form-label" for="ak_bahan_alat">Bahan/ Alat Ganti :</label>
                                                                                         </td>
                                                                                         <td colspan="2">
-                                                                                            <input type="number" step="any" class="form-control" id="ak_upah" name="ak_upah"  value="{{ $aduan->ak_upah }}">
-                                                                                                @error('ak_upah')
-                                                                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                                                @enderror<br><br>
-                                                                                            <input type="number" step="any" class="form-control" id="ak_bahan_alat" name="ak_bahan_alat" value="{{ $aduan->ak_bahan_alat }}">
-                                                                                                @error('ak_bahan_alat')
-                                                                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                                                @enderror<br>
+                                                                                            RM {{ $aduan->ak_upah ?? '--'   }}<br><br>
+                                                                                            RM {{ $aduan->ak_bahan_alat ?? '--'   }}
                                                                                         </td>
-                                                                                        <td width="20%"><label class="form-label" for="status_aduan"><span class="text-danger">*</span> Status Aduan :</label></td>
-                                                                                        <td colspan="2"> 
-                                                                                            <select class="form-control status_aduan" name="status_aduan" id="status_aduan" >
-                                                                                            <option value="">-- Pilih Status Aduan --</option>
-                                                                                                @foreach($status as $stt)
-                                                                                                    <option value="{{$stt->kod_status}}"  {{ $aduan->status_aduan == $stt->kod_status ? 'selected="selected"' : '' }}>{{$stt->nama_status}}</option>
-                                                                                                @endforeach
-                                                                                            </select>
-                                                                                            @error('status_aduan')
-                                                                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                                            @enderror
+                                                                                        <td width="20%">
+                                                                                            <label class="form-label" for="status_aduan">Status Aduan :</label>
+                                                                                        </td>
+                                                                                        <td colspan="2">
+                                                                                            <b>{{ strtoupper($aduan->status->nama_status) }}</b>
                                                                                         </td>
                                                                                     </div>
                                                                                 </tr>
@@ -691,13 +795,10 @@
                                                                                 <tr>
                                                                                     <div class="form-group">
                                                                                         <td width="20%" style="background-color: #ddd; cursor: not-allowed;">
-                                                                                            <label class="form-label" for="jumlah_kos"><b>(+) JUMLAH KOS :</b></label><label class="form-label" style="padding-left: 133px;" for="jumlah_kos">RM</label>
+                                                                                            <label class="form-label" for="jumlah_kos"><b>(+) JUMLAH KOS :</b></label>
                                                                                         </td>
                                                                                         <td colspan="2" style="background-color: #ddd; cursor: not-allowed;">
-                                                                                            <input type="number" step="any" class="form-control" id="jumlah_kos" style="cursor:context-menu;" name="jumlah_kos" value="{{ $aduan->jumlah_kos }}" readonly>
-                                                                                                @error('jumlah_kos')
-                                                                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                                                @enderror
+                                                                                            RM {{ $aduan->jumlah_kos ?? '--'   }}
                                                                                         </td>
 
                                                                                         <td width="20%" style="border-top-style: hidden;"><label class="form-label" for=""></label></td>
@@ -705,226 +806,128 @@
                                                                                     </div>
                                                                                 </tr>
 
+                                                                                <tr>
+                                                                                    <th width="20%" style="vertical-align: middle"> Gambar : </th>
+                                                                                    <td colspan="4">
+                                                                                        @if(isset($gambar->first()->upload_image))
+                                                                                            @foreach($gambar as $imejPembaikan)
+                                                                                                <img src="/get-file-gambar/{{ $imejPembaikan->upload_image }}" style="width:150px; height:130px;" class="img-fluid mr-2">
+                                                                                            @endforeach
+                                                                                        @else
+                                                                                            <span>Tiada Gambar Sokongan</span>
+                                                                                        @endif
+                                                                                    </td>
+                                                                                </tr> 
                                                                             </thead>
                                                                         </table>
                                                                     </div>
-                                                                    <button type="submit" class="btn btn-danger float-right"><i class="fal fa-save"></i> Kemaskini Tindakan</button>
-                                                                    {!! Form::close() !!}
+                                                                    @endif
                                                                 @endif
-                                                            @endif
-                                                        @endcan
+                                                                {{-- ketua --}}
+                                                                @if($juru->jenis_juruteknik == 'K') 
+                                                                    @if($aduan->status_aduan == 'AS' || $aduan->status_aduan == 'LK' || $aduan->status_aduan == 'LU' || $aduan->status_aduan == 'DP')
+                                                                    <div class="table-responsive">
+                                                                        <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-info"></i> INFO PENAMBAHBAIKAN</label></td>
+                                                                                </tr>
 
-                                                        @can('view repair')
-                                                            {{-- pembantu --}}
-                                                            @if($juru->jenis_juruteknik != 'K') 
-                                                                @if($aduan->status_aduan != 'BS')
-                                                                <div class="table-responsive">
-                                                                    <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
-                                                                        <thead>
-                                                                            <tr>
-                                                                                <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-info"></i> INFO PENAMBAHBAIKAN</label></td>
-                                                                            </tr>
+                                                                                <tr>
+                                                                                    <div class="form-group">
+                                                                                        <td width="20%"><label class="form-label" for="lokasi_aduan">Tarikh Serahan Aduan :</label></td>
+                                                                                        <td colspan="2">{{ date(' j F Y ', strtotime($aduan->tarikh_serahan_aduan)) }}</td>
+                                                                                        <td width="20%"><label class="form-label" for="lokasi_aduan">Masa Serahan Aduan :</label></td>
+                                                                                        <td colspan="2">{{ date(' h:i:s A ', strtotime($aduan->tarikh_serahan_aduan)) }}</td>
+                                                                                    </div>
+                                                                                </tr>
 
-                                                                            <tr>
-                                                                                <div class="form-group">
-                                                                                    <td width="20%"><label class="form-label" for="lokasi_aduan">Tarikh Serahan Aduan :</label></td>
-                                                                                    <td colspan="2">{{ date(' j F Y ', strtotime($aduan->tarikh_serahan_aduan)) }}</td>
-                                                                                    <td width="20%"><label class="form-label" for="lokasi_aduan">Masa Serahan Aduan :</label></td>
-                                                                                    <td colspan="2">{{ date(' h:i:s A ', strtotime($aduan->tarikh_serahan_aduan)) }}</td>
-                                                                                </div>
-                                                                            </tr>
+                                                                                <tr>
+                                                                                    <div class="form-group">
+                                                                                        <td width="20%"><label class="form-label" for="laporan_pembaikan">Laporan Pembaikan :</label></td>
+                                                                                        <td colspan="2">{{ $aduan->laporan_pembaikan ?? '--'   }}</td>
+                                                                                        <td width="20%"><label class="form-label" for="bahan_alat">Bahan/ Alat Ganti :</label></td>
+                                                                                        <td colspan="2">
+                                                                                            @if(isset($alatan_ganti->first()->alat_ganti))
+                                                                                                <ol>
+                                                                                                    @foreach($alatan_ganti as $al)
+                                                                                                        <li>{{ $al->alat->alat_ganti}}</li>
+                                                                                                    @endforeach
+                                                                                                </ol>
+                                                                                            @else
+                                                                                                --
+                                                                                            @endif
+                                                                                        </td>
+                                                                                    </div>
+                                                                                </tr>
 
-                                                                            <tr>
-                                                                                <div class="form-group">
-                                                                                    <td width="20%"><label class="form-label" for="laporan_pembaikan">Laporan Pembaikan :</label></td>
-                                                                                    <td colspan="2">{{ $aduan->laporan_pembaikan ?? '--'   }}</td>
-                                                                                    <td width="20%"><label class="form-label" for="bahan_alat">Bahan/ Alat Ganti :</label></td>
-                                                                                    <td colspan="2">
-                                                                                        @if(isset($alatan_ganti->first()->alat_ganti))
-                                                                                        <ol>
-                                                                                            @foreach($alatan_ganti as $al)
-                                                                                                <li>{{ $al->alat->alat_ganti}}</li>
+                                                                                <tr>
+                                                                                    <div class="form-group">
+                                                                                        <td class="card-header" width="20%" style="border-right-style: hidden; background-color: #fbfbfb82"><label class="form-label" for="laporan_pembaikan"><i class="fal fa-money-bill"></i> Anggaran Kos</label></td>
+                                                                                        <td class="card-header" style="background-color: #fbfbfb82" colspan="2"><b></b></td>
+                                                                                        <td width="20%">
+                                                                                            <label class="form-label" for="tarikh_selesai_aduan">Tarikh Selesai Pembaikan :</label>
+                                                                                        </td>
+                                                                                        <td colspan="2">
+                                                                                            @if(isset($aduan->tarikh_selesai_aduan))
+                                                                                                {{ date(' j F Y | h:i:s A ', strtotime($aduan->tarikh_selesai_aduan)) }}
+                                                                                            @else
+                                                                                                --
+                                                                                            @endif
+                                                                                            
+                                                                                        </td>
+                                                                                    </div>
+                                                                                </tr>
+
+                                                                                <tr>
+                                                                                    <div class="form-group">
+                                                                                        <td width="20%">
+                                                                                            <label class="form-label" for="ak_upah">Upah :</label><br><br>
+                                                                                            <label class="form-label" for="ak_bahan_alat">Bahan/ Alat Ganti :</label>
+                                                                                        </td>
+                                                                                        <td colspan="2">
+                                                                                            RM {{ $aduan->ak_upah ?? '--'   }}<br><br>
+                                                                                            RM {{ $aduan->ak_bahan_alat ?? '--'   }}
+                                                                                        </td>
+                                                                                        <td width="20%">
+                                                                                            <label class="form-label" for="status_aduan">Status Aduan :</label>
+                                                                                        </td>
+                                                                                        <td colspan="2">
+                                                                                            <b>{{ strtoupper($aduan->status->nama_status) }}</b>
+                                                                                        </td>
+                                                                                    </div>
+                                                                                </tr>
+
+                                                                                <tr>
+                                                                                    <div class="form-group">
+                                                                                        <td width="20%" style="background-color: #ddd; cursor: not-allowed;">
+                                                                                            <label class="form-label" for="jumlah_kos"><b>(+) JUMLAH KOS :</b></label>
+                                                                                        </td>
+                                                                                        <td colspan="2" style="background-color: #ddd; cursor: not-allowed;">
+                                                                                            RM {{ $aduan->jumlah_kos ?? '--'   }}
+                                                                                        </td>
+
+                                                                                        <td width="20%" style="border-top-style: hidden;"><label class="form-label" for=""></label></td>
+                                                                                        <td colspan="2" style="border-top-style: hidden;"></td>
+                                                                                    </div>
+                                                                                </tr>
+
+                                                                                <tr>
+                                                                                    <th width="20%" style="vertical-align: middle"> Gambar : </th>
+                                                                                    <td colspan="4">
+                                                                                        @if(isset($gambar->first()->upload_image))
+                                                                                            @foreach($gambar as $imejPembaikan)
+                                                                                                <img src="/get-file-gambar/{{ $imejPembaikan->upload_image }}" style="width:150px; height:130px;" class="img-fluid mr-2">
                                                                                             @endforeach
-                                                                                        </ol>
                                                                                         @else
-                                                                                            --
+                                                                                            <span>Tiada Gambar Sokongan</span>
                                                                                         @endif
                                                                                     </td>
-                                                                                </div>
-                                                                            </tr>
-
-                                                                            <tr>
-                                                                                <div class="form-group">
-                                                                                    <td class="card-header" width="20%" style="border-right-style: hidden; background-color: #fbfbfb82"><label class="form-label" for="laporan_pembaikan"><i class="fal fa-money-bill"></i> Anggaran Kos</label></td>
-                                                                                    <td class="card-header" style="background-color: #fbfbfb82" colspan="2"><b></b></td>
-                                                                                    <td width="20%">
-                                                                                        <label class="form-label" for="tarikh_selesai_aduan">Tarikh Selesai Pembaikan :</label>
-                                                                                    </td>
-                                                                                    <td colspan="2">
-                                                                                        @if(isset($aduan->tarikh_selesai_aduan))
-                                                                                            {{ date(' j F Y | h:i:s A ', strtotime($aduan->tarikh_selesai_aduan)) }}
-                                                                                        @else
-                                                                                            --
-                                                                                        @endif
-                                                                                        
-                                                                                    </td>
-                                                                                </div>
-                                                                            </tr>
-
-                                                                            <tr>
-                                                                                <div class="form-group">
-                                                                                    <td width="20%">
-                                                                                        <label class="form-label" for="ak_upah">Upah :</label><br><br>
-                                                                                        <label class="form-label" for="ak_bahan_alat">Bahan/ Alat Ganti :</label>
-                                                                                    </td>
-                                                                                    <td colspan="2">
-                                                                                        RM {{ $aduan->ak_upah ?? '--'   }}<br><br>
-                                                                                        RM {{ $aduan->ak_bahan_alat ?? '--'   }}
-                                                                                    </td>
-                                                                                    <td width="20%">
-                                                                                        <label class="form-label" for="status_aduan">Status Aduan :</label>
-                                                                                    </td>
-                                                                                    <td colspan="2">
-                                                                                        <b>{{ strtoupper($aduan->status->nama_status) }}</b>
-                                                                                    </td>
-                                                                                </div>
-                                                                            </tr>
-
-                                                                            <tr>
-                                                                                <div class="form-group">
-                                                                                    <td width="20%" style="background-color: #ddd; cursor: not-allowed;">
-                                                                                        <label class="form-label" for="jumlah_kos"><b>(+) JUMLAH KOS :</b></label>
-                                                                                    </td>
-                                                                                    <td colspan="2" style="background-color: #ddd; cursor: not-allowed;">
-                                                                                        RM {{ $aduan->jumlah_kos ?? '--'   }}
-                                                                                    </td>
-
-                                                                                    <td width="20%" style="border-top-style: hidden;"><label class="form-label" for=""></label></td>
-                                                                                    <td colspan="2" style="border-top-style: hidden;"></td>
-                                                                                </div>
-                                                                            </tr>
-
-                                                                            <tr>
-                                                                                <th width="20%" style="vertical-align: middle"> Gambar : </th>
-                                                                                <td colspan="4">
-                                                                                    @if(isset($gambar->first()->upload_image))
-                                                                                        @foreach($gambar as $imejPembaikan)
-                                                                                            <img src="/get-file-gambar/{{ $imejPembaikan->upload_image }}" style="width:150px; height:130px;" class="img-fluid mr-2">
-                                                                                        @endforeach
-                                                                                    @else
-                                                                                        <span>Tiada Gambar Sokongan</span>
-                                                                                    @endif
-                                                                                </td>
-                                                                            </tr> 
-                                                                        </thead>
-                                                                    </table>
-                                                                </div>
-                                                                @endif
-                                                            @endif
-                                                            {{-- ketua --}}
-                                                            @if($juru->jenis_juruteknik == 'K') 
-                                                                @if($aduan->status_aduan == 'AS' || $aduan->status_aduan == 'LK' || $aduan->status_aduan == 'LU' || $aduan->status_aduan == 'DP')
-                                                                <div class="table-responsive">
-                                                                    <table id="tindakan" class="table table-bordered table-hover table-striped w-100">
-                                                                        <thead>
-                                                                            <tr>
-                                                                                <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-info"></i> INFO PENAMBAHBAIKAN</label></td>
-                                                                            </tr>
-
-                                                                            <tr>
-                                                                                <div class="form-group">
-                                                                                    <td width="20%"><label class="form-label" for="lokasi_aduan">Tarikh Serahan Aduan :</label></td>
-                                                                                    <td colspan="2">{{ date(' j F Y ', strtotime($aduan->tarikh_serahan_aduan)) }}</td>
-                                                                                    <td width="20%"><label class="form-label" for="lokasi_aduan">Masa Serahan Aduan :</label></td>
-                                                                                    <td colspan="2">{{ date(' h:i:s A ', strtotime($aduan->tarikh_serahan_aduan)) }}</td>
-                                                                                </div>
-                                                                            </tr>
-
-                                                                            <tr>
-                                                                                <div class="form-group">
-                                                                                    <td width="20%"><label class="form-label" for="laporan_pembaikan">Laporan Pembaikan :</label></td>
-                                                                                    <td colspan="2">{{ $aduan->laporan_pembaikan ?? '--'   }}</td>
-                                                                                    <td width="20%"><label class="form-label" for="bahan_alat">Bahan/ Alat Ganti :</label></td>
-                                                                                    <td colspan="2">
-                                                                                        @if(isset($alatan_ganti->first()->alat_ganti))
-                                                                                            <ol>
-                                                                                                @foreach($alatan_ganti as $al)
-                                                                                                    <li>{{ $al->alat->alat_ganti}}</li>
-                                                                                                @endforeach
-                                                                                            </ol>
-                                                                                        @else
-                                                                                            --
-                                                                                        @endif
-                                                                                    </td>
-                                                                                </div>
-                                                                            </tr>
-
-                                                                            <tr>
-                                                                                <div class="form-group">
-                                                                                    <td class="card-header" width="20%" style="border-right-style: hidden; background-color: #fbfbfb82"><label class="form-label" for="laporan_pembaikan"><i class="fal fa-money-bill"></i> Anggaran Kos</label></td>
-                                                                                    <td class="card-header" style="background-color: #fbfbfb82" colspan="2"><b></b></td>
-                                                                                    <td width="20%">
-                                                                                        <label class="form-label" for="tarikh_selesai_aduan">Tarikh Selesai Pembaikan :</label>
-                                                                                    </td>
-                                                                                    <td colspan="2">
-                                                                                        @if(isset($aduan->tarikh_selesai_aduan))
-                                                                                            {{ date(' j F Y | h:i:s A ', strtotime($aduan->tarikh_selesai_aduan)) }}
-                                                                                        @else
-                                                                                            --
-                                                                                        @endif
-                                                                                        
-                                                                                    </td>
-                                                                                </div>
-                                                                            </tr>
-
-                                                                            <tr>
-                                                                                <div class="form-group">
-                                                                                    <td width="20%">
-                                                                                        <label class="form-label" for="ak_upah">Upah :</label><br><br>
-                                                                                        <label class="form-label" for="ak_bahan_alat">Bahan/ Alat Ganti :</label>
-                                                                                    </td>
-                                                                                    <td colspan="2">
-                                                                                        RM {{ $aduan->ak_upah ?? '--'   }}<br><br>
-                                                                                        RM {{ $aduan->ak_bahan_alat ?? '--'   }}
-                                                                                    </td>
-                                                                                    <td width="20%">
-                                                                                        <label class="form-label" for="status_aduan">Status Aduan :</label>
-                                                                                    </td>
-                                                                                    <td colspan="2">
-                                                                                        <b>{{ strtoupper($aduan->status->nama_status) }}</b>
-                                                                                    </td>
-                                                                                </div>
-                                                                            </tr>
-
-                                                                            <tr>
-                                                                                <div class="form-group">
-                                                                                    <td width="20%" style="background-color: #ddd; cursor: not-allowed;">
-                                                                                        <label class="form-label" for="jumlah_kos"><b>(+) JUMLAH KOS :</b></label>
-                                                                                    </td>
-                                                                                    <td colspan="2" style="background-color: #ddd; cursor: not-allowed;">
-                                                                                        RM {{ $aduan->jumlah_kos ?? '--'   }}
-                                                                                    </td>
-
-                                                                                    <td width="20%" style="border-top-style: hidden;"><label class="form-label" for=""></label></td>
-                                                                                    <td colspan="2" style="border-top-style: hidden;"></td>
-                                                                                </div>
-                                                                            </tr>
-
-                                                                            <tr>
-                                                                                <th width="20%" style="vertical-align: middle"> Gambar : </th>
-                                                                                <td colspan="4">
-                                                                                    @if(isset($gambar->first()->upload_image))
-                                                                                        @foreach($gambar as $imejPembaikan)
-                                                                                            <img src="/get-file-gambar/{{ $imejPembaikan->upload_image }}" style="width:150px; height:130px;" class="img-fluid mr-2">
-                                                                                        @endforeach
-                                                                                    @else
-                                                                                        <span>Tiada Gambar Sokongan</span>
-                                                                                    @endif
-                                                                                </td>
-                                                                            </tr> 
-                                                                        </thead>
-                                                                    </table>
-                                                                </div>
+                                                                                </tr> 
+                                                                            </thead>
+                                                                        </table>
+                                                                    </div>
+                                                                    @endif
                                                                 @endif
                                                             @endif
                                                         @endcan

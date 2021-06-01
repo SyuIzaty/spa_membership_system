@@ -119,7 +119,7 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-                                                <tr class="stdVsr select-depart">
+                                                <tr class="stdVsr">
                                                     <td width="20%"><label class="form-label" for="department_id"><span class="text-danger">*</span> Department To Go </label></td>
                                                     <td colspan="6">
                                                         <select class="form-control department_id" name="department_id" id="department_id">
@@ -133,6 +133,39 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
+                                                <tr class="stdVsr">
+                                                    <td width="20%"><label class="form-label" for="temperature"> Temperature (°C) </label></td>
+                                                    <td colspan="6">
+                                                        <input class="form-control temperature" type="number" step="any" id="temperature" name="temperature">
+                                                        @error('temperature')
+                                                            <p style="color: red"><strong> {{ $message }} </strong></p>
+                                                        @enderror
+                                                    </td>
+                                                </tr>
+                                                <tr class="select-depart">
+                                                    <td width="20%"><label class="form-label" for="department_stf"><span class="text-danger">*</span> Department To Go </label></td>
+                                                    <td colspan="6">
+                                                        <select class="form-control department_stf" name="department_stf" id="department_stf">
+                                                            <option value="">Select Department</option>
+                                                            @foreach ($department as $depart) 
+                                                                <option value="{{ $depart->id }}" @if (old('department_stf') == $depart->id) selected="selected" @endif>{{ $depart->department_name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        @error('department_stf')
+                                                            <p style="color: red"><strong> {{ $message }} </strong></p>
+                                                        @enderror
+                                                    </td>
+                                                </tr>
+                                                <tr class="select-depart">
+                                                    <td width="20%"><label class="form-label" for="temperature_stf"> Temperature (°C) </label></td>
+                                                    <td colspan="6">
+                                                        <input class="form-control temperature_stf" type="number" step="any" id="temperature_stf" name="temperature_stf">
+                                                        @error('temperature_stf')
+                                                            <p style="color: red"><strong> {{ $message }} </strong></p>
+                                                        @enderror
+                                                    </td>
+                                                </tr>
+
                                             </thead>
                                         </table>
                                     </div>
@@ -255,7 +288,7 @@
 @section('script')
     <script>
     $(document).ready( function() {
-        $('.department_id, .user_position, .user_category').select2();
+        $('.department_id, .user_position, .user_category, .department_stf').select2();
 
         if($('.user_id').val()!=''){
             updateCr($('.user_id'));
@@ -416,7 +449,10 @@
             $("#vsr_email").val("");
             $("#user_id").val("");
             $("#user_phone").val("");
-            $("#department_id").val("");
+            $("#department_id").val(""); 
+            $("#department_stf").val(""); 
+            $("#temperature").val("");
+            $("#temperature_stf").val("");
       });
 
         $('.user_position').val('{{ old('user_position') }}'); 
@@ -427,6 +463,9 @@
         $(".user_category").change(); 
         $('.user_phone').val('{{ old('user_phone') }}');
         $('.department_id').val('{{ old('department_id') }}');
+        $('.temperature').val('{{ old('temperature') }}');
+        $('.department_stf').val('{{ old('department_stf') }}');
+        $('.temperature_stf').val('{{ old('temperature_stf') }}');
         $('#vsr_name').val('{{ old('vsr_name') }}');
         $('#vsr_email').val('{{ old('vsr_email') }}');
 

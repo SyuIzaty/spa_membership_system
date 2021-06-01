@@ -110,6 +110,7 @@
                                                             <th>Q4C</th>
                                                             <th>Q4D</th>
                                                             <th>RESULT</th>
+                                                            <th>TEMPERATURE</th>
                                                             <th>CATEGORY</th>
                                                             <th>POSITION</th>
                                                             <th>DEPARTMENT</th>
@@ -263,7 +264,7 @@
             "dom" : "Bltp",
             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             iDisplayLength: 10,
-            columnDefs: [{ "visible": false,"targets":[17]}],
+            columnDefs: [{ "visible": false,"targets":[19]}],
             columns: [
                     { data: 'user_id', name: 'user_id' },
                     { data: 'user_name', name: 'user_name' },
@@ -278,6 +279,7 @@
                     { data: 'q4c', name: 'q4c' },
                     { data: 'q4d', name: 'q4d' },
                     { data: 'category', name: 'category' },
+                    { data: 'temperature', name: 'temperature' },
                     { data: 'user_category', name: 'user_category' },
                     { data: 'user_position', name: 'user_position' },
                     { data: 'department_id', name: 'department_id' },
@@ -286,7 +288,7 @@
                     { data: 'created_at', name: 'created_at' },
                 ],
                 orderCellsTop: true,
-                "order": [[ 16, "desc" ]],
+                "order": [[ 18, "desc" ]],
                 "initComplete": function(settings, json) {
                 },
                 select : true,

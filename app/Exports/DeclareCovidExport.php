@@ -78,6 +78,7 @@ class DeclareCovidExport implements FromCollection, WithHeadings
                 'Q4c'           => "",
                 'Q4d'           => "",
                 'Result'        => "",
+                'Temperature'   => "",
                 'Category'      => "",
                 'Position'      => "",
                 'Department'    => "",
@@ -102,6 +103,7 @@ class DeclareCovidExport implements FromCollection, WithHeadings
                     $data['Q4c'] =$ivalue->q4c;
                     $data['Q4d'] =$ivalue->q4d;
                     $data['Result'] =$ivalue->category;
+                    $data['Temperature'] =$ivalue->temperature;
                     $data['Category'] =$ivalue->user_category;
                     $data['Position'] =$ivalue->user_position;
                     $data['Department'] =$ivalue->department_id;
@@ -119,6 +121,6 @@ class DeclareCovidExport implements FromCollection, WithHeadings
 
     public function headings(): array
     {
-        return ['ID','NAME','IC/PASSPORT NO','EMAIL','PHONE NUMBER', 'Q1', 'Q2','Q3','Q4A','Q4B','Q4C','Q4D','RESULT','CATEGORY','POSITION','DEPARTMENT','FORM TYPE', 'DECLARE DATE', 'CREATED AT'];
+        return ['ID','NAME','IC/PASSPORT NO','EMAIL','PHONE NUMBER', 'Q1', 'Q2','Q3','Q4A','Q4B','Q4C','Q4D','RESULT','TEMPERATURE','CATEGORY','POSITION','DEPARTMENT','FORM TYPE', 'DECLARE DATE', 'CREATED AT'];
     }
 }

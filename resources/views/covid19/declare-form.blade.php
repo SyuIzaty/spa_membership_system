@@ -118,10 +118,8 @@
                         @endif
                                 <div class="panel-container show {{ $display ? '' : 'd-none' }}">
                                     <div class="panel-content">
-
                                         {!! Form::open(['action' => 'CovidController@formStore', 'method' => 'POST']) !!}
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        
                                             <div>
                                                 <div class="table-responsive">
                                                     <table class="table table-bordered table-hover table-striped w-100">
@@ -131,7 +129,7 @@
                                                                     <th style="text-align: center; border-left-style: hidden; border-right-style: hidden"><label>Full Name : </label>
                                                                         <b style="font-size: 15px; letter-spacing: 1px; padding-left: 18px; color: rgb(27, 57, 3); font-weight: normal">{{ strtoupper($user->name)}}</b>
                                                                     </th>
-                                                                    <th style="text-align: center; border-right-style: hidden"><label>Staff ID / Student ID: </label>
+                                                                    <th style="text-align: center; border-right-style: hidden"><label>Staff ID / Student ID : </label>
                                                                         <b style="font-size: 15px; letter-spacing: 1px; padding-left: 18px; color: rgb(27, 57, 3); font-weight: normal">{{ strtoupper($user->id)}}</b>
                                                                     </th>
                                                                     <th style="text-align: center; border-right-style: hidden"><label>Email : </label>
@@ -146,6 +144,45 @@
                                                         </thead>
                                                     </table>
                                                 </div>
+                                                    <table class="table table-bordered table-hover table-striped w-100">
+                                                        <thead>
+                                                            <tr>
+                                                                <td width="20%"><label class="form-label" for="user_category"> Category : @error('user_category')<b style="color: red"><strong> required </strong></b>@enderror</label></td>
+                                                                <td colspan="6">
+                                                                    <select class="form-control user_category" name="user_category" id="user_category">
+                                                                        <option value="">Select Category</option>
+                                                                        @foreach ($category as $cate) 
+                                                                            <option value="{{ $cate->category_code }}" @if (old('user_category') == $cate->category_code) selected="selected" @endif>{{ $cate->category_name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="select-depart">
+                                                                <td width="20%"><label class="form-label" for="department_id"> Department To Go : </label></td>
+                                                                <td colspan="6">
+                                                                    <select class="form-control department_id" name="department_id" id="department_id">
+                                                                        <option value="">Select Department</option>
+                                                                        @foreach ($department as $depart) 
+                                                                            <option value="{{ $depart->id }}" @if (old('department_id') == $depart->id) selected="selected" @endif>{{ $depart->department_name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    @error('department_id')
+                                                                        <p style="color: red"><strong> {{ $message }} </strong></p>
+                                                                    @enderror
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="select-depart">
+                                                                <td width="20%"><label class="form-label" for="temperature"> Temperature (°C) : </label></td>
+                                                                <td colspan="6">
+                                                                    <input class="form-control temperature" type="number" step="any" id="temperature" name="temperature">
+                                                                    @error('temperature')
+                                                                        <p style="color: red"><strong> {{ $message }} </strong></p>
+                                                                    @enderror
+                                                                </td>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                
                                             </div>
 
                                             <div class="table-responsive">
@@ -268,6 +305,9 @@
 
 @section('script')
 <script>
+    $(document).ready( function() {
+        $('.department_id, .user_category').select2();
+    })
 
     function btn()
     {
@@ -316,6 +356,21 @@
         }
       });
 
+      $(".select-depart").hide();
+
+      $( "#user_category" ).change(function() {
+        var val = $("#user_category").val();
+        if(val=="WFO"){
+            $(".select-depart").show();
+        } else {
+            $(".select-depart").hide();
+        }
+      });
+
+        $('.user_category').val('{{ old('user_category') }}'); 
+        $(".user_category").change(); 
+        $('.department_id').val('{{ old('department_id') }}');
+        $('.temperature').val('{{ old('temperature') }}');
         $('.user_phone').val('{{ old('user_phone') }}');
         $('input[name="q1"]:checked').val('{{ old('q1') }}');
         $('input[name="q1"]:checked').change(); 
