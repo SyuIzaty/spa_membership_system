@@ -106,6 +106,64 @@ Route::post('alatGanti', 'AlatGantiController@data_alat');
 Route::post('tambahAlat','AlatGantiController@tambahAlat');
 Route::post('kemaskiniALat','AlatGantiController@kemaskiniALat');
 
+//ASSET-TYPE
+Route::resource('asset-type', 'AssetTypeController');
+Route::post('assetType', 'AssetTypeController@data_asset');  
+Route::post('addType','AssetTypeController@addType');
+Route::post('updateType','AssetTypeController@updateType');
+
+//CUSTODIAN-DEPARTMENT
+Route::resource('asset-custodian', 'AssetCustodianController');
+Route::post('addDepartment','AssetCustodianController@addDepartment');
+Route::get('/custodian-list/{id}', 'AssetCustodianController@custodianList');
+Route::post('/storeDepartCust','AssetCustodianController@storeDepartCust');
+Route::delete('deleteCustodian/{id}', 'AssetCustodianController@deleteCustodian')->name('deleteCustodian');
+Route::delete('deleteDepartment/{id}', 'AssetCustodianController@deleteDepartment')->name('deleteDepartment');
+
+//Asset
+Route::get('/asset-index', 'AssetController@assetIndex');
+Route::get('/asset-new', 'AssetController@assetNew');
+Route::post('newAssetStore', 'AssetController@newAssetStore')->name('newAsset');
+Route::get('/findAssetType', 'AssetController@findAssetType');
+Route::get('/findCustodian', 'AssetController@findCustodian');
+Route::post('assetList', 'AssetController@data_assetList');  
+Route::delete('asset-index/{id}', 'AssetController@assetDelete');
+Route::get('/asset-detail/{id}', 'AssetController@assetDetail');
+Route::get('get-file-image/{filename}','AssetController@getImage');
+Route::post('assetUpdate', 'AssetController@assetUpdate');
+Route::post('createCustodian','AssetController@createCustodian');
+Route::post('updateCustodian', 'AssetController@updateCustodian');
+Route::get('/assetPdf/{id}', 'AssetController@assetPdf')->name('assetPdf');
+Route::get('/export_asset', 'AssetController@asset_all')->name('assetreport');
+Route::post('/data_assetexport', 'AssetController@data_assetexport');
+Route::get('/assetExport', 'AssetController@exports');
+Route::post('/assetExport', 'AssetController@exports');
+Route::get('exportasset/{department?}/{status?}/{type?}','AssetController@exports');
+
+//Stock
+Route::get('/stock-index', 'StockController@stockIndex');
+Route::post('newStockStore', 'StockController@newStockStore')->name('newStock');
+Route::post('stockList', 'StockController@data_stockList');  
+Route::delete('stock-index/{id}', 'StockController@stockDelete');
+Route::get('/stock-detail/{id}', 'StockController@stockDetail');
+Route::get('get-file-images/{filename}','StockController@getImages');
+Route::post('stockUpdate', 'StockController@stockUpdate');
+Route::post('createTransIn','StockController@createTransIn');
+Route::post('createTransOut','StockController@createTransOut');
+Route::get('/stockPdf/{id}', 'StockController@stockPdf')->name('stockPdf');
+
+//Borrow
+Route::get('/borrow-index', 'BorrowController@borrowIndex');
+Route::get('/borrow-new', 'BorrowController@borrowNew');
+Route::post('newBorrowStore', 'BorrowController@newBorrowStore')->name('newBorrow');
+Route::post('borrowList', 'BorrowController@data_borrowList');  
+Route::delete('borrow-index/{id}', 'BorrowController@borrowDelete');
+Route::get('/borrow-detail/{id}', 'BorrowController@borrowDetail');
+Route::post('borrowUpdate', 'BorrowController@borrowUpdate');
+Route::get('/findUsers', 'BorrowController@findUsers');
+Route::get('/findAsset', 'BorrowController@findAsset');
+Route::get('/findAssets', 'BorrowController@findAssets');
+
 //COVID19
 Route::get('/declarationForm','CovidController@form')->name('form');
 Route::post('formStore','CovidController@formStore');

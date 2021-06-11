@@ -115,6 +115,12 @@
                                         @if (Session::has('msg'))
                                             <center><div class="alert alert-success responsive" style="color: #3b6324; background-color: #d3fabc; width: 100%; font-size: 14px;"> {!! session()->get('msg') !!}</div></center>
                                         @endif
+                                        @if (Session::has('msgA'))
+                                            <center><div class="alert alert-success responsive" style="color: #3b6324; background-color: #d3fabc; width: 100%; font-size: 14px;"> {!! session()->get('msgA') !!}</div></center>
+                                        @endif
+                                        @if (Session::has('msgB'))
+                                            <center><div class="alert alert-success responsive" style="color: #3b6324; background-color: #d3fabc; width: 100%; font-size: 14px;"> {!! session()->get('msgB') !!}</div></center>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

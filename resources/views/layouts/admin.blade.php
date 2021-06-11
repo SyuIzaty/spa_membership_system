@@ -244,6 +244,108 @@
                             @endcan
                             {{-- End Aduan --}}
 
+                            {{-- Start Inventory --}}
+
+                            <li class="nav-title">INVENTORY DASHBOARD</li>
+                            <li>
+                                <a href="#" title="Application Intel" data-filter-tags="application intel">
+                                    <i class="fal fa-chart-pie"></i>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Inventory Dashboard</span>
+                                </a>
+                            </li>
+
+                            {{-- <li class="nav-title">INVENTORY OPERATION</li>
+                            <li>
+                                <a href="#" title="Application Intel" data-filter-tags="application intel">
+                                    <i class="fal fa-file-archive"></i>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Borrowing</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="#" title="Form" data-filter-tags="form">
+                                            <span class="nav-link-text" data-i18n="nav.form"> Borrow Form</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" title="List" data-filter-tags="list">
+                                            <span class="nav-link-text" data-i18n="nav.list"> Borrow List</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li> --}}
+
+                            <li class="nav-title">INVENTORY MANAGEMENT</li>
+                            <li class="open">
+                                <a href="#" title="Asset" data-filter-tags="asset">
+                                    <i class="fal fa-barcode-read"></i>
+                                    <span class="nav-link-text" data-i18n="nav.asset">Asset Management</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/asset-index" title="Detail" data-filter-tags="detail">
+                                            <span class="nav-link-text" data-i18n="nav.detail"> Asset Detail</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/export_asset" title="Report" data-filter-tags="report">
+                                            <span class="nav-link-text" data-i18n="nav.report"> Reporting</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="open">
+                                <a href="#" title="Stock" data-filter-tags="stock">
+                                    <i class="fal fa-calendar-times"></i>
+                                    <span class="nav-link-text" data-i18n="nav.stock">Stock Management</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/stock-index" title="Detail" data-filter-tags="detail">
+                                            <span class="nav-link-text" data-i18n="nav.detail"> Stock Detail</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" title="Report" data-filter-tags="report">
+                                            <span class="nav-link-text" data-i18n="nav.report"> Reporting</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="open">
+                                <a href="#" title="Borrow" data-filter-tags="borrow">
+                                    <i class="fal fa-address-book"></i>
+                                    <span class="nav-link-text" data-i18n="nav.borrow">Borrower Management</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/borrow-index" title="Detail" data-filter-tags="detail">
+                                            <span class="nav-link-text" data-i18n="nav.detail"> Borrower Detail</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" title="Report" data-filter-tags="report">
+                                            <span class="nav-link-text" data-i18n="nav.report"> Reporting</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-title">INVENTORY PARAMETER</li>
+                            <li class="open">
+                                <a href="/asset-type" title="Asset" data-filter-tags="asset">
+                                    <i class="fal fa-bullhorn"></i>
+                                    <span class="nav-link-text" data-i18n="nav.asset">Asset Type</span>
+                                </a>
+                            </li>
+                            <li class="open">
+                                <a href="/asset-custodian" title="Custodian" data-filter-tags="custodian">
+                                    <i class="fal fa-users"></i>
+                                    <span class="nav-link-text" data-i18n="nav.custodian">Custodian</span>
+                                </a>
+                            </li>
+
+                            {{-- End Inventory --}}
+
                             {{-- Start Covid --}}
                             @can('view admin')
 
@@ -466,7 +568,7 @@
         <script src="{{asset('js/app.bundle.js')}}"></script>
         <script src="{{asset('js/datagrid/datatables/datatables.bundle.js')}}"></script>
         <script src="{{ asset('js/notifications/sweetalert2/sweetalert2.bundle.js') }}"></script>
-
+        <script src="{{ asset('js/sweetalert.min.js') }} "></script>
         {{-- <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script> --}}
 

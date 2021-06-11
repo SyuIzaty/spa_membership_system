@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -46,5 +47,11 @@ class Covid extends Model
     {
         return $this->hasOne('App\Staff','staff_id', 'user_id');
     }
-    
+
+    public function scopeUnderQuarantine($query)
+    {        
+        return $query->select('user_id')->where('category', 'A')->where( 'declare_date', '>', Carbon::now()->subDays(14))->orWhere(function ($query) {
+            $query->select('user_id')->where('category', 'B')->where( 'declare_date', '>', Carbon::now()->subDays(10));
+        });
+    }
 }
