@@ -131,6 +131,7 @@ Route::delete('asset-index/{id}', 'AssetController@assetDelete');
 Route::get('/asset-detail/{id}', 'AssetController@assetDetail');
 Route::get('get-file-image/{filename}','AssetController@getImage');
 Route::post('assetUpdate', 'AssetController@assetUpdate');
+Route::post('assetPurchaseUpdate', 'AssetController@assetPurchaseUpdate');
 Route::post('createCustodian','AssetController@createCustodian');
 Route::post('updateCustodian', 'AssetController@updateCustodian');
 Route::get('/assetPdf/{id}', 'AssetController@assetPdf')->name('assetPdf');
@@ -138,7 +139,10 @@ Route::get('/export_asset', 'AssetController@asset_all')->name('assetreport');
 Route::post('/data_assetexport', 'AssetController@data_assetexport');
 Route::get('/assetExport', 'AssetController@exports');
 Route::post('/assetExport', 'AssetController@exports');
-Route::get('exportasset/{department?}/{status?}/{type?}','AssetController@exports');
+Route::get('exportasset/{department?}/{availability?}/{type?}/{status?}','AssetController@exports');
+Route::get('deleteImage/{id}/{asset_id}', 'AssetController@deleteImage')->name('deleteImage');
+Route::get('deleteSet/{id}/{asset_id}', 'AssetController@deleteSet')->name('deleteSet');
+Route::post('updateSet', 'AssetController@updateSet');
 
 //Stock
 Route::get('/stock-index', 'StockController@stockIndex');
@@ -151,6 +155,11 @@ Route::post('stockUpdate', 'StockController@stockUpdate');
 Route::post('createTransIn','StockController@createTransIn');
 Route::post('createTransOut','StockController@createTransOut');
 Route::get('/stockPdf/{id}', 'StockController@stockPdf')->name('stockPdf');
+Route::get('deleteImages/{id}/{stock_id}', 'StockController@deleteImages')->name('deleteImages');
+Route::get('deleteTrans/{id}/{stock_id}', 'StockController@deleteTrans')->name('deleteTrans');
+Route::post('updateTransin', 'StockController@updateTransin');
+Route::post('updateTransout', 'StockController@updateTransout');
+Route::get('/export-stock', 'StockController@exportStock');
 
 //Borrow
 Route::get('/borrow-index', 'BorrowController@borrowIndex');
@@ -163,6 +172,13 @@ Route::post('borrowUpdate', 'BorrowController@borrowUpdate');
 Route::get('/findUsers', 'BorrowController@findUsers');
 Route::get('/findAsset', 'BorrowController@findAsset');
 Route::get('/findAssets', 'BorrowController@findAssets');
+Route::get('/monitor-list', 'BorrowController@monitorList');
+Route::post('monitorList', 'BorrowController@data_monitorList'); 
+Route::get('/export-borrow', 'BorrowController@borrow_all')->name('borrowreport');
+Route::post('/data_borrowexport', 'BorrowController@data_borrowexport');
+Route::get('/borrowExport', 'BorrowController@exports');
+Route::post('/borrowExport', 'BorrowController@exports');
+Route::get('exportborrow/{asset?}/{borrower?}/{status?}','BorrowController@exports');
 
 //COVID19
 Route::get('/declarationForm','CovidController@form')->name('form');
@@ -207,6 +223,15 @@ Route::get('/export-undeclare/{datek?}/{cates?}', 'CovidController@exportUndecla
 Route::post('/export-undeclare/{datek?}/{cates?}', 'CovidController@exportUndeclare');
 Route::get('exportundeclare/{datek?}/{cates?}','CovidController@exportUndeclare');
 Route::get('/remainder/{date?}/{cate?}', 'CovidController@sendRemainder')->name('remainder');
+
+// Vaccine
+Route::get('/vaccineForm','VaccineController@form')->name('vaccineForm');
+Route::post('vaccineStore','VaccineController@vaccineStore');
+Route::post('vaccineUpdate','VaccineController@vaccineUpdate');
+Route::get('/vaccineIndex','VaccineController@vaccineIndex')->name('vaccineIndex');
+Route::post('vaccineList', 'VaccineController@data_vaccine');
+Route::get('/vaccine-detail/{id}', 'VaccineController@vaccineDetail')->name('vaccineDetail');
+Route::get('/export-vaccine', 'VaccineController@exportVaccine');
 
 // Change Password
 Route::get('change-password','ChangePasswordController@index');

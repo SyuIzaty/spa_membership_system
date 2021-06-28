@@ -30,6 +30,7 @@
         {{-- <link rel="stylesheet" media="screen, print" href="{{asset('css/select2.min.css')}}"> --}}
         <link rel="stylesheet" href="{{ asset('css/formplugins/summernote/summernote-bs4.css') }}" >
         <link rel="stylesheet" href="{{ asset('css/indicator.css') }}"> 
+        <link rel="stylesheet" href="{{ asset('css/jquery.fancybox.css') }}" />
 
         @yield('css')
         <style>
@@ -245,8 +246,8 @@
                             {{-- End Aduan --}}
 
                             {{-- Start Inventory --}}
-
-                            <li class="nav-title">INVENTORY DASHBOARD</li>
+                            @can('view inventory')
+                            <li class="nav-title">INVENTORY MANAGEMENT</li>
                             <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-chart-pie"></i>
@@ -254,27 +255,6 @@
                                 </a>
                             </li>
 
-                            {{-- <li class="nav-title">INVENTORY OPERATION</li>
-                            <li>
-                                <a href="#" title="Application Intel" data-filter-tags="application intel">
-                                    <i class="fal fa-file-archive"></i>
-                                    <span class="nav-link-text" data-i18n="nav.application_intel">Borrowing</span>
-                                </a>
-                                <ul>
-                                    <li>
-                                        <a href="#" title="Form" data-filter-tags="form">
-                                            <span class="nav-link-text" data-i18n="nav.form"> Borrow Form</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" title="List" data-filter-tags="list">
-                                            <span class="nav-link-text" data-i18n="nav.list"> Borrow List</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li> --}}
-
-                            <li class="nav-title">INVENTORY MANAGEMENT</li>
                             <li class="open">
                                 <a href="#" title="Asset" data-filter-tags="asset">
                                     <i class="fal fa-barcode-read"></i>
@@ -304,11 +284,6 @@
                                             <span class="nav-link-text" data-i18n="nav.detail"> Stock Detail</span>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="#" title="Report" data-filter-tags="report">
-                                            <span class="nav-link-text" data-i18n="nav.report"> Reporting</span>
-                                        </a>
-                                    </li>
                                 </ul>
                             </li>
                             <li class="open">
@@ -323,41 +298,48 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" title="Report" data-filter-tags="report">
+                                        <a href="/monitor-list" title="Monitoring" data-filter-tags="delay">
+                                            <span class="nav-link-text" data-i18n="nav.delay"> Monitoring</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/export-borrow" title="Report" data-filter-tags="report">
                                             <span class="nav-link-text" data-i18n="nav.report"> Reporting</span>
                                         </a>
                                     </li>
                                 </ul>
                             </li>
-
-                            <li class="nav-title">INVENTORY PARAMETER</li>
                             <li class="open">
-                                <a href="/asset-type" title="Asset" data-filter-tags="asset">
-                                    <i class="fal fa-bullhorn"></i>
-                                    <span class="nav-link-text" data-i18n="nav.asset">Asset Type</span>
+                                <a href="#" title="Borrow" data-filter-tags="borrow">
+                                    <i class="fal fa-asterisk"></i>
+                                    <span class="nav-link-text" data-i18n="nav.borrow">Parameter Settings</span>
                                 </a>
+                                <ul>
+                                    <li>
+                                        <a href="/asset-type" title="Asset" data-filter-tags="asset">
+                                            <span class="nav-link-text" data-i18n="nav.asset">Asset Type</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/asset-custodian" title="Custodian" data-filter-tags="custodian">
+                                            <span class="nav-link-text" data-i18n="nav.custodian">Custodian</span>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
-                            <li class="open">
-                                <a href="/asset-custodian" title="Custodian" data-filter-tags="custodian">
-                                    <i class="fal fa-users"></i>
-                                    <span class="nav-link-text" data-i18n="nav.custodian">Custodian</span>
-                                </a>
-                            </li>
-
+                            @endcan
                             {{-- End Inventory --}}
 
                             {{-- Start Covid --}}
                             @can('view admin')
 
-                            <li class="nav-title">COVID19 DASHBOARD</li>
-                            <li>
+                            <li class="nav-title">COVID19 MANAGEMENT</li>
+                            <li class="open">
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-chart-pie"></i>
                                     <span class="nav-link-text" data-i18n="nav.application_intel">Covid19 Dashboard</span>
                                 </a>
                             </li>
-
-                            <li class="nav-title">COVID19 MANAGEMENT</li>
                             <li class="open">
                                 <a href="/declarationList/{{Auth::user()->id}}" title="Declaration" data-filter-tags="declaration">
                                     <i class="fal fa-calendar-times"></i>
@@ -415,6 +397,12 @@
                                     <span class="nav-link-text" data-i18n="nav.report">Report</span>
                                 </a>
                             </li>
+                            <li class="open">
+                                <a href="/vaccineIndex" title="Vaccine" data-filter-tags="vaccine">
+                                    <i class="fal fa-head-side-mask"></i>
+                                    <span class="nav-link-text" data-i18n="nav.vaccine">Vaccination Details</span>
+                                </a>
+                            </li>
                             @endcan
 
                             @can('view user')
@@ -424,6 +412,12 @@
                                 <a href="/declarationForm" title="Declaration" data-filter-tags="declaration">
                                     <i class="fal fa-calendar-times"></i>
                                     <span class="nav-link-text" data-i18n="nav.declaration">Today Declaration</span>
+                                </a>
+                            </li>
+                            <li class="open">
+                                <a href="/vaccineForm" title="Vaccine" data-filter-tags="vaccine">
+                                    <i class="fal fa-syringe"></i>
+                                    <span class="nav-link-text" data-i18n="nav.vaccine">Vaccination</span>
                                 </a>
                             </li>
                             <li class="open">
@@ -578,6 +572,7 @@
 
         <script src="{{ asset('js/formplugins/summernote/summernote-bs4.js') }}"></script>
         <script src="{{ asset('js/jquery.tabledit.min.js') }}"></script>
+        <script src="{{ asset('js/jquery.fancybox.js') }}"></script>
 
         @yield('script')
         <script>
