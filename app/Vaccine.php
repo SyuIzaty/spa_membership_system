@@ -11,7 +11,7 @@ class Vaccine extends Model
     protected $table = 'cdd_vaccine';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'user_id', 'q1', 'q1_reason', 'q1_other_reason', 'q2', 'q3', 'q3_date', 'q3_reason', 'q3_effect', 'q3_effect_remark', 'q4', 'q4_date', 'q4_reason', 'q4_effect', 'q4_effect_remark'
+        'user_id', 'q1', 'q1_reason', 'q1_other_reason', 'q2', 'q3', 'q3_date', 'q3_effect', 'q3_effect_remark', 'q4', 'q4_date', 'q4_effect', 'q4_effect_remark'
     ];
 
     public function reasons()

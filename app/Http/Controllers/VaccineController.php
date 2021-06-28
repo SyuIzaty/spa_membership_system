@@ -50,10 +50,6 @@ class VaccineController extends Controller
             $validate['q3'] = 'required'; 
             $validate['q3_date'] = 'required'; 
         } 
-        if($request->q3 == 'N')  
-        {
-            $validate['q3_reason'] = 'required'; 
-        }
         if($request->q3 == 'Y') 
         {
             $validate['q4'] = 'required';
@@ -79,12 +75,10 @@ class VaccineController extends Controller
             'q2'                => $request->q2, 
             'q3'                => $request->q3,
             'q3_date'           => $request->q3_date,
-            'q3_reason'         => $request->q3_reason, 
             'q3_effect'         => $request->q3_effect, 
             'q3_effect_remark'  => $request->q3_effect_remark,
             'q4'                => $request->q4,
             'q4_date'           => $request->q4_date, 
-            'q4_reason'         => $request->q4_reason, 
             'q4_effect'         => $request->q4_effect,
             'q4_effect_remark'  => $request->q4_effect_remark,
         ]);
@@ -107,7 +101,6 @@ class VaccineController extends Controller
             
             return '<a href="/vaccine-detail/' . $vaccine->id.'" class="btn btn-sm btn-info"><i class="fal fa-eye"></i></a>
                 <button class="btn btn-sm btn-danger btn-delete" data-remote="/vaccineList/' . $vaccine->id . '"><i class="fal fa-trash"></i></button>';
-            
         })
 
         ->editColumn('created_at', function ($vaccine) {
@@ -198,7 +191,7 @@ class VaccineController extends Controller
 
     public function vaccineUpdate(Request $request)
     {
-        $id = Auth::user();
+       $id = Auth::user();
         $vaccine = Vaccine::where('id', $request->id)->first();
 
         // radiobtn validation
@@ -222,10 +215,6 @@ class VaccineController extends Controller
             $validate['q3s'] = 'required'; 
             $validate['q3_dates'] = 'required'; 
         } 
-        if($request->q3s == 'N')  
-        {
-            $validate['q3_reasons'] = 'required'; 
-        }
         if($request->q3s == 'Y') 
         {
             $validate['q4s'] = 'required';
@@ -244,155 +233,89 @@ class VaccineController extends Controller
         $request->validate($validate);
          
         // onchange null
-        if($request->q1s != $vaccine->q1)
+
+        if($request->q1s == 'Y')
         {
-                if($request->q1s == 'Y'){
-                    $vaccine->update([
-                        'q1'                => $request->q1s, 
-                        'q2'                => $request->q2s, 
-                        'q1_reason'         => null,
-                        'q1_other_reason'   => null,
-                    ]);
-                }else{
-                    $vaccine->update([
-                        'q2'                => null, 
-                        'q1'                => $request->q1s, 
-                        'q1_reason'         => $request->q1_reasons,
-                        'q1_other_reason'   => $request->q1_other_reasons, 
-                    ]);
-                }
-            }else{
-                if($request->q1s == 'Y'){
-                    $vaccine->update([
-                        'q2'                => $request->q2s, 
-                    ]);
-                }else{
-                    $vaccine->update([
-                        'q1_reason'         => $request->q1_reasons,
-                        'q1_other_reason'   => $request->q1_other_reasons, 
-                    ]);
-                }
-        }
-
-        if($request->q2s != $vaccine->q2)
-        {
-                if($request->q2s == 'Y'){
-                    $vaccine->update([
-                        'q2'                => $request->q2s, 
-                        'q3'                => $request->q3s, 
-                        'q3_date'           => $request->q3_dates, 
-                    ]);
-                }else{
-                    $vaccine->update([
-                        'q2'                => $request->q2s, 
-                        'q3'                => null, 
-                        'q3_date'           => null, 
-                    ]);
-                }
-            }else{
-                if($request->q2s == 'Y'){
-                    $vaccine->update([
-                        'q3'                => $request->q3s, 
-                        'q3_date'           => $request->q3_dates, 
-                    ]);
-                }
-        }
-
-        if($request->q3s != $vaccine->q3){
-                if($request->q3s == 'Y'){
-                    $vaccine->update([
-                        'q3'                => $request->q3s, 
-                        'q3_reason'         => null, 
-                        'q3_effect'         => $request->q3_effects, 
-                        'q4'                => $request->q4s, 
-                        'q4_date'           => $request->q4_dates, 
-                    ]);
-                }else{
+            if($request->q2s == 'Y')
+            {
+                if($request->q3s == 'Y')
+                {
+                    if($request->q4s == 'Y')
+                    {
                         $vaccine->update([
-                            'q3'                => $request->q3s,
-                            'q3_reason'         => $request->q3_reasons, 
-                        ]);
-                }
-            }else{
-                if($request->q3s == 'Y'){
-                    $vaccine->update([
-                        'q3_effect'         => $request->q3_effects, 
-                        'q4'                => $request->q4s, 
-                        'q4_date'           => $request->q4_dates, 
-                        'q3_reason'         => null, 
-                    ]);
-                }else{
-                    $vaccine->update([
-                        'q3_reason'         => $request->q3_reasons, 
-                    ]);
-                }
-        }
-
-        if($request->q3_effects != $vaccine->q3_effect){
-                if($request->q3_effects == 'Y'){
-                    $vaccine->update([
-                        'q3_effect'                => $request->q3_effects, 
-                        'q3_effect_remark'         => $request->q3_effect_remarks, 
-                    ]);
-                }else{
-                    $vaccine->update([
-                        'q3_effect'                => $request->q3_effects,
-                        'q3_effect_remark'         => null,
-                    ]);
-                }
-            }else{
-                if($request->q3_effects == 'Y'){
-                    $vaccine->update([
-                        'q3_effect_remark'         => $request->q3_effect_remarks,
-                    ]);
-                }
-        }
-
-        if($request->q4s != $vaccine->q4){
-                if($request->q4s == 'Y'){
-                        $vaccine->update([
-                            'q4'                => $request->q4s,
-                            'q4_reason'         => null, 
+                            'q1'                => $request->q1s, 
+                            'q1_reason'         => null,
+                            'q1_other_reason'   => null,
+                            'q2'                => $request->q2s, 
+                            'q3'                => $request->q3s, 
+                            'q3_date'           => $request->q3_dates, 
+                            'q3_effect'         => $request->q3_effects, 
+                            'q3_effect_remark'  => $request->q3_effects ?  $request->q3_effect_remarks : null, 
+                            'q4'                => $request->q4s, 
+                            'q4_date'           => $request->q4_dates, 
                             'q4_effect'         => $request->q4_effects, 
-                        ]);
-                        
-                    }else{
-                        $vaccine->update([
-                            'q4'                => $request->q4s,
-                            'q4_reason'         => $request->q4_reasons, 
+                            'q4_effect_remark'  => $request->q4_effects ?  $request->q4_effect_remarks : null,
                         ]);
                     }
-            }else{
-                if($request->q4s == 'Y'){
+                    else
+                    {
+                        $vaccine->update([
+                            'q1'                => $request->q1s, 
+                            'q1_reason'         => null,
+                            'q1_other_reason'   => null,
+                            'q2'                => $request->q2s, 
+                            'q3'                => $request->q3s, 
+                            'q3_date'           => $request->q3_dates, 
+                            'q3_effect'         => $request->q3_effects, 
+                            'q3_effect_remark'  => $request->q3_effects ?  $request->q3_effect_remarks : null,
+                            'q4'                => $request->q4s, 
+                            'q4_date'           => $request->q4_dates, 
+                        ]);
+                    }  
+                }
+                else
+                {
                     $vaccine->update([
-                        'q4_effect'         => $request->q4_effects, 
-                    ]);
-                    
-                }else{
-                    $vaccine->update([
-                        'q4_reason'         => $request->q4_reasons, 
+                        'q1'                => $request->q1s, 
+                        'q1_reason'         => null,
+                        'q1_other_reason'   => null,
+                        'q2'                => $request->q2s, 
+                        'q3'                => $request->q3s, 
+                        'q3_date'           => $request->q3_dates, 
+                        'q3_effect'         => null, 
+                        'q3_effect_remark'  => null, 
+                        'q4'                => null, 
+                        'q4_date'           => null, 
+                        'q4_effect'         => null, 
+                        'q4_effect_remark'  => null,
                     ]);
                 }
+            }
+            else
+            {
+                $vaccine->update([
+                    'q1'                => $request->q1s, 
+                    'q1_reason'         => null,
+                    'q1_other_reason'   => null,
+                    'q2'                => $request->q2s, 
+                    'q3'                => null, 
+                    'q3_date'           => null, 
+                    'q3_effect'         => null, 
+                    'q3_effect_remark'  => null, 
+                    'q4'                => null, 
+                    'q4_date'           => null, 
+                    'q4_effect'         => null, 
+                    'q4_effect_remark'  => null,
+                ]);
+            }
         }
-            
-        if($request->q4_effects != $vaccine->q4_effect){
-                if($request->q4_effects == 'Y'){
-                    $vaccine->update([
-                        'q4_effect'         => $request->q4_effects, 
-                        'q4_effect_remark'  => $request->q4_effect_remarks, 
-                    ]);
-                }else{
-                    $vaccine->update([
-                        'q4_effect'         => $request->q4_effects, 
-                        'q4_effect_remark'  => null, 
-                    ]);
-                }
-            }else{
-                if($request->q4_effects == 'Y'){
-                    $vaccine->update([
-                        'q4_effect_remark'  => $request->q4_effect_remarks, 
-                    ]);
-                }
+        else
+        {
+            $vaccine->update([
+                'q1'                => $request->q1s, 
+                'q1_reason'         => $request->q1_reasons,
+                'q1_other_reason'   => $request->q1_other_reasons, 
+            ]);
         }
 
        Session::flash('message', 'Your Vaccine Detail Successfully Recorded');

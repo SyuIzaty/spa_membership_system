@@ -97,13 +97,6 @@
                                                         <td colspan="2" style="text-align: center"><input type="datetime-local" class="form-control" id="q3_dates" name="q3_dates" value="{{ isset($vaccine->q3_date) ? date('Y-m-d\TH:i', strtotime($vaccine->q3_date)) : old('q3_dates') }}" /></td>
                                                     </div>
                                                 </tr>
-                                                <tr class="q3_reasons" style="display:  none ">
-                                                    <div class="form-group">
-                                                        <td style="text-align: center" width="4%"><label for="q3_reasons"></label></td>
-                                                        <td width="50%" style="vertical-align: middle;"><label for="q3_reasons"><span class="text-danger">*</span> Reason : </label>@error('q3_reasons')<b style="color: red"><strong> required </strong></b>@enderror</td>
-                                                        <td colspan="2" style="text-align: center"><input placeholder="Please state your reason..." class="form-control" name="q3_reasons" id="q3_reasons" value="{{ old('q3_reasons') ?? $vaccine->q3_reason}}"></td>
-                                                    </div>
-                                                </tr>
                                                 <tr class="q3_effects" style="display: none ">
                                                     <div class="form-group">
                                                         <td style="text-align: center" width="4%"><label for="q3_effects">4.</label></td>
@@ -132,13 +125,6 @@
                                                         <td style="text-align: center" width="4%"><label for="q4_dates"></label></td>
                                                         <td width="50%" style="vertical-align: middle;"><label for="q4_dates"><span class="text-danger">*</span> Second Dose Appointment Date : </label>@error('q4_dates')<b style="color: red"><strong> required </strong></b>@enderror</td>
                                                         <td colspan="2" style="text-align: center"><input type="datetime-local" class="form-control" id="q4_dates" name="q4_dates" value="{{ isset($vaccine->q4_date) ? date('Y-m-d\TH:i', strtotime($vaccine->q4_date)) : old('q4_dates') }}" /></td>
-                                                    </div>
-                                                </tr>
-                                                <tr class="q4_reasons" style="display: none ">
-                                                    <div class="form-group">
-                                                        <td style="text-align: center" width="4%"><label for="q4_reasons"></label></td>
-                                                        <td width="50%" style="vertical-align: middle;"><label for="q4_reasons"><span class="text-danger">*</span> Reason : </label>@error('q4_reasons')<b style="color: red"><strong> required </strong></b>@enderror</td>
-                                                        <td colspan="2" style="text-align: center"><input placeholder="Please state your reason..." class="form-control" name="q4_reasons" id="q4_reasons" value="{{ old('q4_reasons') ?? $vaccine->q4_reason}}"></td>
                                                     </div>
                                                 </tr>
                                                 <tr class="q4_effects" style="display: none  ">
@@ -235,13 +221,6 @@
                                                         <td colspan="2" style="text-align: center"><input class="form-control" type="datetime-local" name="q3_date" id="q3_date" value="{{ old('q3_date') }}"></td>
                                                     </div>
                                                 </tr>
-                                                <tr class="q3_reason" style="display: none">
-                                                    <div class="form-group">
-                                                        <td style="text-align: center" width="4%"><label for="q3_reason"></label></td>
-                                                        <td width="50%" style="vertical-align: middle;"><label for="q3_reason"><span class="text-danger">*</span> Reason : </label>@error('q3_reason')<b style="color: red"><strong> required </strong></b>@enderror</td>
-                                                        <td colspan="2" style="text-align: center"><input placeholder="Please state your reason..." class="form-control" name="q3_reason" id="q3_reason" value="{{ old('q3_reason') }}"></td>
-                                                    </div>
-                                                </tr>
                                                 <tr class="q3_effect" style="display: none">
                                                     <div class="form-group">
                                                         <td style="text-align: center" width="4%"><label for="q3_effect">4.</label></td>
@@ -270,13 +249,6 @@
                                                         <td style="text-align: center" width="4%"><label for="q4_date"></label></td>
                                                         <td width="50%" style="vertical-align: middle;"><label for="q4_date"><span class="text-danger">*</span> Second Dose Appointment Date : </label>@error('q4_date')<b style="color: red"><strong> required </strong></b>@enderror</td>
                                                         <td colspan="2" style="text-align: center"><input class="form-control" type="datetime-local" name="q4_date" id="q4_date" value="{{ old('q4_date') }}"></td>
-                                                    </div>
-                                                </tr>
-                                                <tr class="q4_reason" style="display: none">
-                                                    <div class="form-group">
-                                                        <td style="text-align: center" width="4%"><label for="q4_reason"></label></td>
-                                                        <td width="50%" style="vertical-align: middle;"><label for="q4_reason"><span class="text-danger">*</span> Reason : </label>@error('q4_reason')<b style="color: red"><strong> required </strong></b>@enderror</td>
-                                                        <td colspan="2" style="text-align: center"><input placeholder="Please state your reason..." class="form-control" name="q4_reason" id="q4_reason" value="{{ old('q4_reason') }}"></td>
                                                     </div>
                                                 </tr>
                                                 <tr class="q4_effect" style="display: none">
@@ -334,13 +306,11 @@
             $(".q1_reason").hide();
             $(".q1_other_reason").hide();
             $(".q3").hide();
-            $(".q3_reason").hide();
             $(".q3_date").hide();
             $(".q3_effect").hide();
             $(".q3_effect_remark").hide();
             $(".q4").hide();
             $(".q4_date").hide();
-            $(".q4_reason").hide();
             $(".q4_effect").hide();
             $(".q4_effect_remark").hide();
             
@@ -350,13 +320,11 @@
             $(".q1_other_reason").hide();
             $(".q2").hide();
             $(".q3").hide();
-            $(".q3_reason").hide();
             $(".q3_date").hide();
             $(".q3_effect").hide();
             $(".q3_effect_remark").hide();
             $(".q4").hide();
             $(".q4_date").hide();
-            $(".q4_reason").hide();
             $(".q4_effect").hide();
             $(".q4_effect_remark").hide();
             }
@@ -379,24 +347,20 @@
             $(".q3").show();
             $(".q3_effect").hide();
             $(".q3_effect_remark").hide();
-            $(".q3_reason").hide();
             $(".q4_date").hide();
             $(".q4").hide();
             $(".q4_effect").hide();
             $(".q4_effect_remark").hide();
-            $(".q4_reason").hide();
             }
             else {
             $(".q3_date").hide();
             $(".q3").hide();
             $(".q3_effect").hide();
             $(".q3_effect_remark").hide();
-            $(".q3_reason").hide();
             $(".q4_date").hide();
             $(".q4").hide();
             $(".q4_effect").hide();
             $(".q4_effect_remark").hide();
-            $(".q4_reason").hide();
             }
         });
 
@@ -406,20 +370,16 @@
             $(".q4").show();
             $(".q3_effect").show();
             $(".q3_effect_remark").hide();
-            $(".q3_reason").hide();
             $(".q4_effect").hide();
-            $(".q4_reason").hide();
             $(".q4_effect_remark").hide();
             }
             else {
             $(".q3_effect").hide();
             $(".q3_effect_remark").hide();
-            $(".q3_reason").show();
             $(".q4_date").hide();
             $(".q4").hide();
             $(".q4_effect").hide();
             $(".q4_effect_remark").hide();
-            $(".q4_reason").hide();
             }
         });
 
@@ -445,12 +405,10 @@
             if ($(this).val() == "Y") {
             $(".q4_effect").show();
             $(".q4_effect_remark").hide();
-            $(".q4_reason").hide();
             }
             else {
             $(".q4_effect").hide();
             $(".q4_effect_remark").hide();
-            $(".q4_reason").show();
             }
         });
  
@@ -472,10 +430,8 @@
         $("#q1_reason").change(); 
         $('#q1_other_reason').val('{{ old('q1_other_reason') }}'); 
         $('#q3_date').val('{{ old('q3_date') }}');
-        $('#q3_reason').val('{{ old('q3_reason') }}');
         $('#q3_effect_remark').val('{{ old('q3_effect_remark') }}');
         $('#q4_date').val('{{ old('q4_date') }}');
-        $('#q4_reason').val('{{ old('q4_reason') }}');
         $('#q4_effect_remark').val('{{ old('q4_effect_remark') }}');
     })
 
@@ -487,13 +443,11 @@
             $(".q1_reasons").hide();
             $("#q1_other_reasons").hide();
             $(".q3s").hide();
-            $(".q3_reasons").hide();
             $(".q3_dates").hide();
             $(".q3_effects").hide();
             $(".q3_effect_remarks").hide();
             $(".q4s").hide();
             $(".q4_dates").hide();
-            $(".q4_reasons").hide();
             $(".q4_effects").hide();
             $(".q4_effect_remarks").hide();
             
@@ -503,13 +457,11 @@
             $("#q1_other_reasons").hide();
             $(".q2s").hide();
             $(".q3s").hide();
-            $(".q3_reasons").hide();
             $(".q3_dates").hide();
             $(".q3_effects").hide();
             $(".q3_effect_remarks").hide();
             $(".q4s").hide();
             $(".q4_dates").hide();
-            $(".q4_reasons").hide();
             $(".q4_effects").hide();
             $(".q4_effect_remarks").hide();
             }
@@ -532,24 +484,20 @@
             $(".q3s").show();
             $(".q3_effects").hide();
             $(".q3_effect_remarks").hide();
-            $(".q3_reasons").hide();
             $(".q4_dates").hide();
             $(".q4s").hide();
             $(".q4_effects").hide();
             $(".q4_effect_remarks").hide();
-            $(".q4_reasons").hide();
             }
             else {
             $(".q3_dates").hide();
             $(".q3s").hide();
             $(".q3_effects").hide();
             $(".q3_effect_remarks").hide();
-            $(".q3_reasons").hide();
             $(".q4_dates").hide();
             $(".q4s").hide();
             $(".q4_effects").hide();
             $(".q4_effect_remarks").hide();
-            $(".q4_reasons").hide();
             }
         });
 
@@ -559,20 +507,16 @@
             $(".q4s").show();
             $(".q3_effects").show();
             $(".q3_effect_remarks").hide();
-            $(".q3_reasons").hide();
             $(".q4_effects").hide();
-            $(".q4_reasons").hide();
             $(".q4_effect_remarks").hide();
             }
             else {
             $(".q3_effects").hide();
             $(".q3_effect_remarks").hide();
-            $(".q3_reasons").show();
             $(".q4_dates").hide();
             $(".q4s").hide();
             $(".q4_effects").hide();
             $(".q4_effect_remarks").hide();
-            $(".q4_reasons").hide();
             }
         });
 
@@ -598,12 +542,10 @@
             if ($(this).val() == "Y") {
             $(".q4_effects").show();
             $(".q4_effect_remarks").hide();
-            $(".q4_reasons").hide();
             }
             else {
             $(".q4_effects").hide();
             $(".q4_effect_remarks").hide();
-            $(".q4_reasons").show();
             }
         });
 
@@ -623,10 +565,8 @@
         $("#q1_reasons").change(); 
         $('#q1_other_reasons').val(); 
         $('#q3_dates').val();
-        $('#q3_reasons').val();
         $('#q3_effect_remarks').val();
         $('#q4_dates').val();
-        $('#q4_reasons').val();
         $('#q4_effect_remarks').val();
     })
 </script>

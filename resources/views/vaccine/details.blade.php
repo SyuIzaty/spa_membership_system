@@ -136,17 +136,6 @@
                                             </div>
                                         </tr>
                                         @endif
-                                        @if(!empty($vaccine->q3_reason))
-                                        <tr class="q3_reason">
-                                            <div class="form-group">
-                                                <td style="text-align: center" width="4%"><label for="q3_reason"></label></td>
-                                                <td><label for="q3_reason">Reason</label></td>
-                                                <td style="text-align: center">
-                                                    {{ strtoupper($vaccine->q3_reason) ?? '--' }}
-                                                </td>
-                                            </div>
-                                        </tr>
-                                        @endif
                                         @if(!empty($vaccine->q3_effect))
                                         <tr class="q3_effect">
                                             <div class="form-group">
@@ -191,17 +180,6 @@
                                                 <td><label for="q4_date">Second Dose Appointment Date :</label></td>
                                                 <td style="text-align: center">
                                                     {{ date('d-m-Y | h:i A', strtotime($vaccine->q4_date)) }}
-                                                </td>
-                                            </div>
-                                        </tr>
-                                        @endif
-                                        @if(!empty($vaccine->q4_reason))
-                                        <tr class="q4_reason">
-                                            <div class="form-group">
-                                                <td style="text-align: center" width="4%"><label for="q4_reason"></label></td>
-                                                <td><label for="q4_reason">Reason</label></td>
-                                                <td style="text-align: center">
-                                                    {{ strtoupper($vaccine->q4_reason) ?? '--' }}
                                                 </td>
                                             </div>
                                         </tr>
