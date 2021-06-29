@@ -15,13 +15,7 @@
                     <thead>
                         <tr>
                             <div class="form-group">
-                                <td rowspan="10" align="center" style="vertical-align: middle">
-                                    @if(isset($image))
-                                        <img src="/get-file-image/{{ $image->upload_image }}" style="width:300px; height:300px;" class="img-fluid">
-                                    @else
-                                        <img src="{{ asset('img/default.png') }}" style="height: 300px; width: 300px;" class="img-fluid">
-                                    @endif
-                                </td>
+                                <td colspan="6"><label class="form-label"> Asset Profile</label></td>
                             </div>
                         </tr>
                         <tr>
@@ -36,24 +30,38 @@
                             <div class="form-group">
                                 <td width="15%"><label class="form-label" for="asset_code">Asset Code : </label></td>
                                 <td colspan="3">{{ isset($asset->asset_code) ? $asset->asset_code : '--' }}</td>
+                                <td width="15%"><label class="form-label" for="finance_code">Asset Code (Finance):</label></td>
+                                <td colspan="3">{{ isset($asset->finance_code) ? $asset->finance_code : '--' }}</td>
+                            </div>
+                        </tr>
+                        <tr>
+                            <div class="form-group">
                                 <td width="15%"><label class="form-label" for="asset_name">Asset Name:</label></td>
                                 <td colspan="3">{{ isset($asset->asset_name) ? $asset->asset_name : '--' }}</td>
-                            </div>
-                        </tr>
-                        <tr>
-                            <div class="form-group">
                                 <td width="15%"><label class="form-label" for="serial_no">Serial No. : </label></td>
                                 <td colspan="3">{{ isset($asset->serial_no) ? $asset->serial_no : '--' }}</td>
-                                <td width="15%"><label class="form-label" for="model">Model:</label></td>
-                                <td colspan="3">{{ isset($asset->model) ? $asset->model : '--' }}</td>
                             </div>
                         </tr>
                         <tr>
                             <div class="form-group">
+                                <td width="15%"><label class="form-label" for="model">Model:</label></td>
+                                <td colspan="3">{{ isset($asset->model) ? $asset->model : '--' }}</td>
                                 <td width="15%"><label class="form-label" for="brand"> Brand : </label></td>
                                 <td colspan="3">{{ isset($asset->brand) ? $asset->brand : '--' }}</td>
+                            </div>
+                        </tr>
+                        <tr>
+                            <div class="form-group">
+                                <td width="15%"><label class="form-label" for="status"> Status:</label></td>
+                                <td colspan="3">
+                                    @if($asset->status == '0') 
+                                        ACTIVE 
+                                    @else 
+                                        INACTIVE 
+                                    @endif
+                                </td>
                                 <td width="15%"><label class="form-label" for="status"> Availability:</label></td>
-                                <td colspan="3">{{ isset($asset->invStatus->status_name) ? $asset->invStatus->status_name : '--' }}</td>
+                                <td colspan="3">{{ isset($asset->availabilities->name) ? strtoupper($asset->availabilities->name) : '--' }}</td>
                             </div>
                         </tr>
                         <tr>
@@ -62,6 +70,39 @@
                                 <td colspan="3">{{ isset($asset->custodian->custodian->name) ? $asset->custodian->custodian->name : '--' }}</td>
                                 <td width="15%"><label class="form-label" for="storage_location"> Storage:</label></td>
                                 <td colspan="3">{{ isset($asset->storage_location) ? $asset->storage_location : '--' }}</td>
+                            </div>
+                        </tr>
+                        <tr>
+                            <div class="form-group">
+                                <td width="15%"><label class="form-label" for="custodian_id"> Set Package : </label></td>
+                                <td colspan="6">
+                                    @if($asset->set_package == 'Y') 
+                                        YES 
+                                    @else 
+                                        NO 
+                                    @endif
+                                </td>
+                            </div>
+                        </tr>
+                        @if($asset->set_package == 'Y')
+                            @foreach ($set as $sets)
+                                <tr align="center">
+                                    <td>{{ $num++ }}</td>
+                                    <td colspan="2">{{ $sets->type->asset_type }}</td>
+                                    <td>{{ $sets->serial_no }}</td>
+                                    <td>{{ $sets->model }}</td>
+                                    <td>{{ $sets->brand }}</td>
+                                </tr>
+                            @endforeach
+                        @endif
+                    </thead>
+                </table>
+
+                <table id="asset" class="table table-bordered table-hover table-striped w-100 mb-1">
+                    <thead>
+                        <tr>
+                            <div class="form-group">
+                                <td colspan="6"><label class="form-label"> Purchase Detail</label></td>
                             </div>
                         </tr>
                         <tr>
@@ -97,7 +138,26 @@
                     </thead>
                 </table>
 
-                <table id="assets" class="table table-bordered table-hover table-striped w-100 mb-1" style="table-layout: fixed">
+                {{-- <table id="assets" class="table table-bordered table-hover table-striped w-100 mb-1" style="table-layout: fixed">
+                    <thead>
+                        <tr>
+                            <td colspan="5" align="center" style="vertical-align: middle">Image</td>
+                        </tr>
+                        <tr align="center">
+                            @if(isset($image->first()->upload_image))
+                                @foreach($image as $images)
+                                <td>
+                                    <img src="/get-file-image/{{ $images->upload_image }}" style="width:150px; height:130px;" class="img-fluid mr-2"><br><br>
+                                </td>
+                                @endforeach
+                            @else
+                                <span>No Image Uploaded</span>
+                            @endif
+                        </tr>
+                    </thead>
+                </table> --}}
+
+                <table id="assets" class="table table-bordered table-hover table-striped w-100 mb-1">
                     <thead>
                         <tr>
                             <div class="form-group">
@@ -108,12 +168,10 @@
                         <tr>
                             <div class="form-group">
                                 <td colspan="4" align="center" style="vertical-align: middle">
-                                    @php echo DNS1D::getBarcodeSVG($asset->barcode, 'C39',1.0,33,'black', false); @endphp <br>
-                                    {{ $asset->barcode}}
+                                    @php echo DNS1D::getBarcodeSVG($asset->asset_code, 'C39',1.0,33,'black', false); @endphp <br>
                                 </td>
                                 <td colspan="4" align="center" style="vertical-align: middle">
-                                    {!! QrCode::generate($asset->qrcode); !!} <br>
-                                    {{ $asset->qrcode }}
+                                    {!! QrCode::generate($asset->asset_code); !!} <br>
                                 </td>
                             </div>
                         </tr>

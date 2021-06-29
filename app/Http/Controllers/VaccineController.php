@@ -109,27 +109,27 @@ class VaccineController extends Controller
 
         ->editColumn('created_at', function ($vaccine) {
 
-            return strtoupper(date(' d/m/Y | h:i A', strtotime($vaccine->created_at) ));
+            return strtoupper(date(' d/m/Y | h:i A', strtotime($vaccine->created_at) )) ?? '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('updated_at', function ($vaccine) {
 
-            return strtoupper(date(' d/m/Y | h:i A', strtotime($vaccine->updated_at) ));
+            return strtoupper(date(' d/m/Y | h:i A', strtotime($vaccine->updated_at) )) ?? '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('user_name', function ($vaccine) {
 
-            return strtoupper($vaccine->staffs->staff_name);
+            return strtoupper($vaccine->staffs->staff_name) ?? '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('user_position', function ($vaccine) {
 
-            return strtoupper($vaccine->staffs->staff_position);
+            return strtoupper($vaccine->staffs->staff_position) ?? '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('user_depart', function ($vaccine) {
 
-            return strtoupper($vaccine->staffs->staff_dept);
+            return strtoupper($vaccine->staffs->staff_dept) ?? '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('q1', function ($vaccine) {

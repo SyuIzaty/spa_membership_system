@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\AssetType;
+use App\AssetCustodian;
 use App\AssetDepartment;
 use App\Asset;
 use Session;
+use Auth;
+use DB;
 
 class AssetTypeController extends Controller
 {
@@ -19,20 +22,40 @@ class AssetTypeController extends Controller
     public function index(Request $request)
     {
         $assetType = AssetType::where('id', $request->id)->first();
-        $department = AssetDepartment::all();
+        
+        if( Auth::user()->hasRole('Inventory Admin') )
+        { 
+            $department = AssetDepartment::all();
+        }
+        else
+        {
+            $department = AssetDepartment::whereHas('custodians', function($query){
+                $query->where('custodian_id', Auth::user()->id);
+            })->get();
+        }
 
         return view('asset-type.index', compact('assetType', 'department'));
     }
 
     public function data_asset()
     {
-        $assetType = AssetType::all();
+        if( Auth::user()->hasRole('Inventory Admin') )
+        { 
+            $assetType = AssetType::all();
+        }
+        else
+        {
+            $as = AssetCustodian::where('custodian_id', Auth::user()->id)->pluck('department_id');
+
+            $assetType = AssetType::whereHas('department', function($q) use ($as){
+                $q->whereIn('department_id', $as);
+            })->get();
+        }
 
         return datatables()::of($assetType)
         ->addColumn('action', function ($assetType) {
 
             $exist = Asset::where('asset_type', $assetType->id)->first();
-
             if(isset($exist)) {
 
                 return '<a href="" data-target="#crud-modals" data-toggle="modal" data-type="'.$assetType->id.'" data-department="'.$assetType->department_id.'" data-asset="'.$assetType->asset_type.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>';
@@ -42,14 +65,14 @@ class AssetTypeController extends Controller
                 return '<a href="" data-target="#crud-modals" data-toggle="modal" data-type="'.$assetType->id.'" data-department="'.$assetType->department_id.'" data-asset="'.$assetType->asset_type.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
                         <button class="btn btn-sm btn-danger btn-delete" data-remote="/asset-type/' . $assetType->id . '"><i class="fal fa-trash"></i></button>';
             }
-            
         })
 
         ->editColumn('department_id', function ($assetType) {
 
-            return strtoupper($assetType->department->department_name);
+            return strtoupper($assetType->department->department_name) ?? '--';
         })
-            
+        
+        ->addIndexColumn()
         ->make(true);
     }
 

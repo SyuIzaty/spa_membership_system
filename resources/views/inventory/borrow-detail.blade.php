@@ -136,7 +136,7 @@
                                                                     <td colspan="3">
                                                                         <input class="form-control" id="staff_dept" style="cursor:context-menu" name="staff_dept" value="{{ $borrow->asset->storage_location }}" readonly>
                                                                     </td>
-                                                                    <td width="15%"><label class="form-label" for="created_by"> Verifier : </label></td>
+                                                                    <td width="15%"><label class="form-label" for="created_by"> Created By : </label></td>
                                                                     <td colspan="3">
                                                                         <input class="form-control" style="cursor:context-menu" id="created_by" name="created_by" value="{{ $borrow->borrower->staff_name }}" readonly>
                                                                         @error('created_by')
@@ -165,14 +165,67 @@
                                                             </tr>
                                                             <tr>
                                                                 <div class="form-group">
-                                                                    <td width="15%"><label class="form-label" for="remark"> Remark : </label></td>
+                                                                    <td width="15%"><label class="form-label" for="reason"><span class="text-danger">*</span> Reason : </label></td>
                                                                     <td colspan="3">
-                                                                        <textarea rows="5" class="form-control" id="remark" name="remark">{{ $borrow->remark }}</textarea>
+                                                                        <textarea rows="5" class="form-control" id="reason" name="reason">{{ $borrow->reason }}</textarea>
+                                                                        @error('reason')
+                                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                        @enderror
+                                                                    </td>
+                                                                    <td width="15%"><label class="form-label" for="status">Current Status:</label></td>
+                                                                    <td colspan="3">
+                                                                        @if($borrow->status=='1')
+                                                                            <div class="ml-2" style="text-transform: uppercase; color:#CC0000"><b>{{ isset($borrow->borrow_status->status_name) ? $borrow->borrow_status->status_name : '--' }}</b></div>
+                                                                        @else 
+                                                                            <div class="ml-2" style="text-transform: uppercase; color:#3CBC3C"><b>{{ isset($borrow->borrow_status->status_name) ? $borrow->borrow_status->status_name : '--' }}</b></div>
+                                                                        @endif
+                                                                    </td>
+                                                                </div>
+                                                            </tr>
+                                                            
+                                                        </thead>
+                                                    </table>
+
+                                                    <table id="asset" class="table table-bordered table-hover table-striped w-100 mb-1">
+                                                        <thead>
+                                                            <tr class="bg-primary-50">
+                                                                <div class="form-group">
+                                                                    <td colspan="6"><label class="form-label"> RETURN INFO</label></td>
+                                                                </div>
+                                                            </tr>
+                                                            <tr>
+                                                                <div class="form-group">
+                                                                    <td width="15%"><label class="form-label" for="created_by"><span class="text-danger">*</span> Verifier : </label></td>
+                                                                    <td colspan="3">
+                                                                        <select class="form-control verified_by" name="verified_by" id="verified_by" >
+                                                                            <option value=""> Select Verifier </option>
+                                                                            @foreach ($user as $usr) 
+                                                                                <option value="{{ $usr->id }}" {{ old('verified_by', ($borrow->users ? $borrow->users->id : '')) ==  $usr->id  ? 'selected' : '' }}>{{ $usr->name }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                        @error('verified_by')
+                                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                        @enderror
+                                                                    </td>
+                                                                    <td width="15%"><label class="form-label" for="actual_return_date"><span class="text-danger">*</span> Actual Return Date:</label></td>
+                                                                    <td colspan="3">
+                                                                        <input type="date" class="form-control" id="actual_return_date" name="actual_return_date" value="{{ old('actual_return_date') ?? $borrow->actual_return_date }}">
+                                                                        @error('actual_return_date')
+                                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                        @enderror
+                                                                    </td>
+                                                                </div>
+                                                            </tr>
+                                                            <tr>
+                                                                <div class="form-group">
+                                                                    <td width="15%"><label class="form-label" for="remark"> Remark : </label></td>
+                                                                    <td colspan="6">
+                                                                        <textarea rows="5" class="form-control" id="remark" name="remark">{{ old('remark') ?? $borrow->remark }}</textarea>
                                                                         @error('remark')
                                                                             <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                         @enderror
                                                                     </td>
-                                                                    <td width="15%"><label class="form-label" for="status"><span class="text-danger">*</span> Status:</label></td>
+                                                                    {{-- <td width="15%"><label class="form-label" for="status"><span class="text-danger">*</span> Change Status:</label></td>
                                                                     <td colspan="3">
                                                                         <select class="form-control status" name="status" id="status">
                                                                             <option value="">Select Status</option>
@@ -183,16 +236,16 @@
                                                                         @error('status')
                                                                             <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                         @enderror
-                                                                    </td>
+                                                                    </td> --}}
                                                                 </div>
                                                             </tr>
                                                             
-                                                            
                                                         </thead>
                                                     </table>
+
                                                     <br>
                                                     <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Update</button>
-                                                    <a style="margin-right:5px" href="/borrow-index" class="btn btn-success ml-auto float-right"><i class="fal fa-arrow-alt-left"></i> Back</a><br><br>
+                                                    <a style="margin-right:5px" href="{{ url()->previous() }}" class="btn btn-success ml-auto float-right"><i class="fal fa-arrow-alt-left"></i> Back</a><br><br>
                                                 </div>
                                             </div>
                                         </div>
@@ -215,7 +268,7 @@
 
     $(document).ready(function()
     {
-        $('#status').select2();
+        $('#status, .verified_by').select2();
 
         $('.department, .custodian_id').select2({ 
             dropdownParent: $("#crud-modal") 

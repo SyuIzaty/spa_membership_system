@@ -11,7 +11,7 @@ class Borrow extends Model
     protected $table = 'inv_borrower';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'asset_id', 'borrower_id', 'borrow_date', 'return_date', 'created_by', 'remark', 'status'
+        'asset_id', 'borrower_id', 'borrow_date', 'return_date', 'reason', 'created_by', 'remark', 'status', 'verified_by', 'actual_return_date'
     ];
 
     public function asset()
@@ -24,8 +24,18 @@ class Borrow extends Model
         return $this->hasOne('App\User', 'id', 'created_by');
     }
 
+    public function users()
+    {
+        return $this->hasOne('App\User', 'id', 'verified_by');
+    }
+
     public function borrower()
     {
         return $this->hasOne('App\Staff', 'staff_id', 'borrower_id');
+    }
+
+    public function borrow_status()
+    {
+        return $this->hasOne('App\BorrowStatus', 'id', 'status');
     }
 }

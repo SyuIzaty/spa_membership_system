@@ -5,12 +5,12 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class InventoryStatus extends Model
+class AssetAvailability extends Model
 {
     use SoftDeletes;
-    protected $table = 'inv_status';
+    protected $table = 'inv_asset_availability';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'status_name'
+        'name'
     ];
 }

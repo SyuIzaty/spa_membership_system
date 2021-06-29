@@ -72,32 +72,50 @@
 
                                                         <tr>
                                                             <div class="form-group">
+                                                                <td width="10%"><label class="form-label" for="finance_code"> Asset Code (Finance) :</label></td>
+                                                                <td colspan="3"><input value="{{ old('finance_code') }}" class="form-control" id="finance_code" name="finance_code">
+                                                                    @error('finance_code')
+                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                    @enderror
+                                                                </td>
                                                                 <td width="10%"><label class="form-label" for="asset_name"><span class="text-danger">*</span> Asset Name :</label></td>
-                                                                <td colspan="3"><input value="{{ old('asset_name') }}" class="form-control" id="asset_name" name="asset_name">
+                                                                <td colspan="3"><input value="{{ old('asset_name') }}" class="form-control" id="asset_name" name="asset_name" style="text-transform: uppercase">
                                                                     @error('asset_name')
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                     @enderror
                                                                 </td>
+                                                            </div>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <div class="form-group">
                                                                 <td width="10%"><label class="form-label" for="serial_no"><span class="text-danger">*</span> Serial No. :</label></td>
-                                                                <td colspan="3"><input value="{{ old('serial_no') }}" class="form-control" id="serial_no" name="serial_no">
+                                                                <td colspan="3"><input value="{{ old('serial_no') }}" class="form-control" id="serial_no" name="serial_no" style="text-transform: uppercase">
                                                                     @error('serial_no')
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                     @enderror
                                                                 </td>
-                                                            </div>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <div class="form-group">
                                                                 <td width="10%"><label class="form-label" for="model"><span class="text-danger">*</span> Model :</label></td>
-                                                                <td colspan="3"><input value="{{ old('model') }}" class="form-control" id="model" name="model">
+                                                                <td colspan="3"><input value="{{ old('model') }}" class="form-control" id="model" name="model" style="text-transform: uppercase">
                                                                     @error('model')
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                     @enderror
                                                                 </td>
+                                                            </div>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <div class="form-group">
                                                                 <td width="10%"><label class="form-label" for="brand"> Brand :</label></td>
-                                                                <td colspan="3"><input value="{{ old('brand') }}" class="form-control" id="brand" name="brand">
+                                                                <td colspan="3"><input value="{{ old('brand') }}" class="form-control" id="brand" name="brand" style="text-transform: uppercase">
                                                                     @error('brand')
+                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                    @enderror
+                                                                </td>
+                                                                <td width="10%"><label class="form-label" for="upload_image"> Image :</label></td>
+                                                                <td colspan="3">
+                                                                    <input type="file" class="form-control" id="upload_image" name="upload_image[]" multiple>
+                                                                    @error('upload_image')
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                     @enderror
                                                                 </td>
@@ -106,31 +124,74 @@
 
                                                         <tr>
                                                             <div class="form-group">
-                                                                <td width="10%"><label class="form-label" for="upload_image"> Image :</label></td>
+                                                                <td width="10%"><label class="form-label" for="status"><span class="text-danger">*</span> Status :</label></td>
                                                                 <td colspan="3">
-                                                                    <input type="file" class="form-control" id="upload_image" name="upload_image">
-                                                                    @error('upload_image')
-                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                    @enderror
-                                                                </td>
-                                                                <td width="10%"><label class="form-label" for="status"> Availability :</label></td>
-                                                                <td colspan="3">
-                                                                    <select class="form-control status" name="status" id="status" >
+                                                                    <select class="form-control status" id="status" name="status">
                                                                         <option value="">Select Status</option>
-                                                                        @foreach ($status as $stat) 
-                                                                            <option value="{{ $stat->id }}" {{ old('status') ==  $stat->id  ? 'selected' : '' }}>{{ $stat->status_name }}</option>
-                                                                        @endforeach
+                                                                        <option value="1" {{ old('status') == '1' ? 'selected':''}} >Active</option>
+                                                                        <option value="0" {{ old('status') == '0' ? 'selected':''}} >Inactive</option>
                                                                     </select>
                                                                     @error('status')
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                     @enderror
                                                                 </td>
+                                                                <td width="10%"><label class="form-label" for="availability"> Availability :</label></td>
+                                                                <td colspan="3">
+                                                                    <select class="form-control availability" name="availability" id="availability" >
+                                                                        <option value="">Select Availability</option>
+                                                                        @foreach ($availability as $available) 
+                                                                            <option value="{{ $available->id }}" {{ old('availability') ==  $available->id  ? 'selected' : '' }}>{{ $available->name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    @error('availability')
+                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                    @enderror
+                                                                </td>
                                                             </div>
                                                         </tr>
+                                                        <tr>
+                                                            <div class="form-group">
+                                                                <td colspan="6">
+                                                                    <label class="form-label" for="set_package"><span class="text-danger">*</span> Set Package ? 
+                                                                        <input class="ml-5" type="radio" name="set_package" id="set_package" value="Y" {{ old('set_package') == "Y" ? 'checked' : '' }}> Yes
+                                                                        <input class="ml-5" type="radio" name="set_package" id="set_package" value="N" {{ old('set_package') == "N" ? 'checked' : '' }}> No
+                                                                        @error('set_package')
+                                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                        @enderror
+                                                                    </label>
+                                                                </td>
+                                                            </div>
+                                                        </tr>
+                                                        {{-- <tr class="set_tab">
+                                                            <div class="form-group">
+                                                                <td colspan="6">
+                                                                    <div class="card-body test" id="test">
+                                                                        <table class="table table-bordered text-center" id="head_field">
+                                                                            <tr class="bg-primary-50">
+                                                                                <td>Asset Type</td>
+                                                                                <td>Serial No.</td>
+                                                                                <td>Model</td>
+                                                                                <td>Brand</td>
+                                                                                <td></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <select class="form-control asset_types" name="asset_types[]" id="asset_types" ></select>
+                                                                                </td>
+                                                                                <td><input name="serial_nos[]" class="form-control serial_nos"/></td>
+                                                                                <td><input name="models[]" class="form-control models"/></td>
+                                                                                <td><input name="brands[]" class="form-control brands"/></td>
+                                                                                <td style="vertical-align: middle"><button type="button" name="addhead" id="addhead" class="btn btn-success btn-sm"><i class="fal fa-plus"></i></button></td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </div>
+                                                                </td>
+                                                            </div>
+                                                        </tr> --}}
                                                     </thead>
                                                 </table>
                                             </div>
-
+                                             
                                             <div class="table-responsive">
                                                 <table id="new_assets" class="table table-bordered table-hover table-striped w-100">
                                                     <thead>
@@ -258,75 +319,180 @@
 @section('script')
 <script>
   $(document).ready( function() {
-        $('#department_id, #asset_type, #custodian_id, #status').select2();
+        $('#department_id, #asset_type, #asset_types, #custodian_id, #status, #availability').select2();
+
+         // Add Set
+         $('#addhead').click(function(){
+            i++;
+            $('#head_field').append(`
+            <tr id="row${i}" class="head-added">
+            <td><select class="form-control assetType" name="asset_types[]"></select></td>
+            <td><input name="serial_nos[]" class="form-control serial_nos"/></td>
+            <td><input name="models[]" class="form-control models"/></td>
+            <td><input name="brands[]" class="form-control brands"/></td>
+            <td><button type="button" name="remove" id="${i}" class="btn btn-sm btn-danger btn_remove"><i class="fal fa-trash"></i></button></td>
+            </tr>
+            `);
+            $('.assetType').select2();
+        });
+
+        var postURL = "<?php echo url('addmore'); ?>";
+        var i=1;
+
+        $.ajaxSetup({
+            headers:{
+            'X-CSRF-Token' : $("input[name=_token]").val()
+            }
+        });
+
+        $(document).on('click', '.btn_remove', function(){
+            var button_id = $(this).attr("id");
+            $('#row'+button_id+'').remove();
+        });
+
+        $.ajaxSetup({
+            headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $('#submit').click(function(){
+            $.ajax({
+                url:postURL,
+                method:"POST",
+                data:$('#add_name').serialize(),
+                type:'json',
+                success:function(data)
+                {
+                    if(data.error){
+                        printErrorMsg(data.error);
+                    }else{
+                        i=1;
+                        $('.dynamic-added').remove();
+                    }
+                }
+            });
+        });
+
+        // Selection
+        if($('.department').val()!=''){
+                updateType($('.department'));
+            }
+            $(document).on('change','.department',function(){
+                updateType($(this));
+            });
+
+            function updateType(elem){
+            var eduid=elem.val();
+            var op=" "; 
+
+            $.ajax({
+                type:'get',
+                url:'{!!URL::to('findAssetType')!!}',
+                data:{'id':eduid},
+                success:function(data)
+                {
+                    console.log(data)
+                    op+='<option value=""> Select Asset Type </option>';
+                    for (var i=0; i<data.length; i++)
+                    {
+                        var selected = (data[i].id=="{{old('asset_type', $asset->asset_type)}}") ? "selected='selected'" : '';
+                        op+='<option value="'+data[i].id+'" '+selected+'>'+data[i].asset_type+'</option>';
+                    }
+
+                    $('.asset_type').html(op);
+                },
+                error:function(){
+                    console.log('success');
+                },
+            });
+        }
 
         if($('.department').val()!=''){
-                    updateType($('.department'));
-                }
-                $(document).on('change','.department',function(){
-                    updateType($(this));
-                });
-
-                function updateType(elem){
-                var eduid=elem.val();
-                var op=" "; 
-
-                $.ajax({
-                    type:'get',
-                    url:'{!!URL::to('findAssetType')!!}',
-                    data:{'id':eduid},
-                    success:function(data)
-                    {
-                        console.log(data)
-                        op+='<option value=""> Select Asset Type </option>';
-                        for (var i=0; i<data.length; i++)
-                        {
-                            var selected = (data[i].id=="{{old('asset_type', $asset->asset_type)}}") ? "selected='selected'" : '';
-                            op+='<option value="'+data[i].id+'" '+selected+'>'+data[i].asset_type+'</option>';
-                        }
-
-                        $('.asset_type').html(op);
-                    },
-                    error:function(){
-                        console.log('success');
-                    },
-                });
+                updateCust($('.department'));
             }
+            $(document).on('change','.department',function(){
+                updateCust($(this));
+            });
 
-            if($('.department').val()!=''){
-                    updateCust($('.department'));
-                }
-                $(document).on('change','.department',function(){
-                    updateCust($(this));
-                });
+            function updateCust(elem){
+            var eduid=elem.val();
+            var op=" "; 
 
-                function updateCust(elem){
-                var eduid=elem.val();
-                var op=" "; 
-
-                $.ajax({
-                    type:'get',
-                    url:'{!!URL::to('findCustodian')!!}',
-                    data:{'id':eduid},
-                    success:function(data)
+            $.ajax({
+                type:'get',
+                url:'{!!URL::to('findCustodian')!!}',
+                data:{'id':eduid},
+                success:function(data)
+                {
+                    console.log(data)
+                    op+='<option value=""> Select Custodian </option>';
+                    for (var i=0; i<data.length; i++)
                     {
-                        console.log(data)
-                        op+='<option value=""> Select Custodian </option>';
-                        for (var i=0; i<data.length; i++)
-                        {
-                            var selected = (data[i].id=="{{old('custodian_id', $asset->custodian_id)}}") ? "selected='selected'" : '';
-                            op+='<option value="'+data[i].id+'" '+selected+'>'+data[i].custodian.name+'</option>';
-                        }
+                        var selected = (data[i].id=="{{old('custodian_id', $asset->custodian_id)}}") ? "selected='selected'" : '';
+                        op+='<option value="'+data[i].id+'" '+selected+'>'+data[i].custodian.name+'</option>';
+                    }
 
-                        $('.custodian_id').html(op);
-                    },
-                    error:function(){
-                        console.log('success');
-                    },
-                });
-            }
+                    $('.custodian_id').html(op);
+                },
+                error:function(){
+                    console.log('success');
+                },
+            });
+        }
 
     });
+
+    // Radiobutton
+    $(function () {          
+
+        $(".set_tab").hide();
+
+        $("input[name=set_package]").change(function () {        
+            if ($(this).val() == "Y") {
+            $(".set_tab").show();
+            }
+            else {
+            $(".set_tab").hide();
+            }
+        });
+
+        // Selection
+        if($('.department').val()!=''){
+                updateType($('.department'));
+            }
+            $(document).on('change','.department',function(){
+                updateType($(this));
+            });
+
+            function updateType(elem){
+            var eduid=elem.val();
+            var op=" "; 
+
+            $.ajax({
+                type:'get',
+                url:'{!!URL::to('findAssetType')!!}',
+                data:{'id':eduid},
+                success:function(data)
+                {
+                    console.log(data)
+                    op+='<option value=""> Select Asset Type </option>';
+                    for (var i=0; i<data.length; i++)
+                    {
+                        var selected = (data[i].id=="{{old('asset_types', $assetSet->asset_types)}}") ? "selected='selected'" : '';
+                        op+='<option value="'+data[i].id+'" '+selected+'>'+data[i].asset_type+'</option>';
+                    }
+
+                    $('.asset_types').html(op);
+                    $('.assetType').html(op);
+                },
+                error:function(){
+                    console.log('success');
+                },
+            });
+        }
+
+    })
 
 </script>
 @endsection

@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-<style>
+{{-- <style>
     .circle {
         width: 100px;
         height: 100px;
@@ -12,7 +12,7 @@
         font-family: fantasy;
         /* background: rgb(179, 146, 146) */
     }
-</style>
+</style> --}}
 @section('content')
 <main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
     <div class="subheader">
@@ -35,36 +35,53 @@
                 </div>
                 <div class="panel-container show">
                     <div class="panel-content">
-                        <div class="row col-md-12">
-                        @foreach ($department as $depart)
-                            <div class="col-lg-3 col-md-3 mt-5">
-                                <div class="card">
-                                    <div class="card-header text-center">
-                                        {{ strtoupper($depart->department_name) }}
-                                    </div><br>
-                                    <div class="card-body circle" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover; margin: auto;">
-                                        {{-- <img src="/get-file-club/{{ $clubs->upload_image }}" style=" margin-top: 10px" class="img-fluid"> --}}
-                                        {{ $depart->total }}
-                                    </div><br>
-                                    <div class="card-footer">
-                                        <div class="text-center">
+                        @if (Session::has('message'))
+                            <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}</div>
+                        @endif
+                        @if (Session::has('notification'))
+                            <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('notification') }}</div>
+                        @endif
+                        <div class="table-responsive">
+                            <table id="ast" class="table table-bordered table-hover table-striped w-100">
+                                <thead>
+                                    <tr class="text-center bg-primary-50">
+                                        <th>NO.</th>
+                                        <th>DEPARTMENT</th>
+                                        <th>TOTAL CUSTODIAN</th>
+                                        <th>ACTION</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="hasinput"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Department"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Total Custodian"></td>
+                                        <td class="hasinput"></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($department as $depart)
+                                    <tr class="text-center">
+                                        <td>{{ $no++}}</td>
+                                        <td>{{ strtoupper($depart->department_name) }}</td>
+                                        <td style="font-size: 30px; color: rgb(0, 0, 0); text-align: center; font-style: italic; font-family: fantasy;">{{ $depart->total }}</td>
+                                        <td>
                                             <form action="{{route('deleteDepartment', $depart->id)}}" method="POST" class="delete_form"> 
                                                 @method('DELETE')  
                                                 @csrf
-                                                <a href="/custodian-list/{{$depart->id}}" class="btn btn-sm btn-warning"><i class="fal fa-eye"></i> View</a>
-                                                <button type="submit" class="btn btn-danger btn-sm delete-alert"><i class="fal fa-trash"></i> Delete</button>               
+                                                <a href="/custodian-list/{{$depart->id}}" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
+                                                <button type="submit" class="btn btn-danger btn-sm delete-alert"><i class="fal fa-trash"></i></button>               
                                             </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
                     <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex pull-right">
                         <a href="javascript:;" data-toggle="modal" id="new" class="btn btn-primary ml-auto float-right"><i class="fal fa-plus-square"></i> Add New Department</a>
                     </div>
                 </div>
+                
             </div>
         </div>
     </div>
@@ -111,6 +128,39 @@
 
         $('#new').click(function () {
             $('#crud-modal').modal('show');
+        });
+
+        $('#ast thead tr .hasinput').each(function(i)
+        {
+            $('input', this).on('keyup change', function()
+            {
+                if (table.column(i).search() !== this.value)
+                {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+
+            $('select', this).on('keyup change', function()
+            {
+                if (table.column(i).search() !== this.value)
+                {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+
+        var table = $('#ast').DataTable({
+            columnDefs: [],
+                orderCellsTop: true,
+                "order": [[ 0, "asc" ]],
+                "initComplete": function(settings, json) {
+                }
         });
 
     });

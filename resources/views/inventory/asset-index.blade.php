@@ -30,6 +30,7 @@
                                 <thead>
                                     <tr class="bg-primary-50 text-center">
                                         <th>#ID</th>
+                                        <th>FINANCE CODE</th>
                                         <th>CODE</th>
                                         <th>NAME</th>
                                         <th>TYPE</th>
@@ -40,10 +41,13 @@
                                         <th>CUSTODIAN</th>
                                         <th style="width: 110px">PURCHASE DATE</th>
                                         <th style="width: 150px">STATUS</th>
+                                        <th style="width: 150px">AVAILABILITY</th>
+                                        <th>CREATED BY</th>
                                         <th>ACTION</th>
                                     </tr>
                                     <tr>
                                         <td class="hasinput"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Finance Code"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Code"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Name"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Type"></td>
@@ -56,10 +60,18 @@
                                         <td class="hasinput">
                                             <select id="status" name="status" class="form-control">
                                                 <option value="">ALL</option>
-                                                <option value="0">UNAVAILABLE</option>
-                                                <option value="1">AVAILABLE</option>
+                                                <option value="1">ACTIVE</option>
+                                                <option value="0">INACTIVE</option>
                                             </select>
                                         </td>
+                                        <td class="hasinput">
+                                            <select id="availability" name="availability" class="form-control">
+                                                <option value="">ALL</option>
+                                                <option value="1">UNAVAILABLE</option>
+                                                <option value="2">AVAILABLE</option>
+                                            </select>
+                                        </td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Created By"></td>
                                         <td class="hasinput"></td>
                                     </tr>
                                 </thead>
@@ -82,7 +94,7 @@
 <script>
     $(document).ready(function()
     {
-        $('#status').select2();
+        $('#status, #availability').select2();
 
         $('#assets thead tr .hasinput').each(function(i)
         {
@@ -119,6 +131,7 @@
             },
             columns: [
                     { className: 'text-center', data: 'id', name: 'id' },
+                    { className: 'text-center', data: 'finance_code', name: 'finance_code' },
                     { className: 'text-center', data: 'asset_code', name: 'asset_code' },
                     { className: 'text-center', data: 'asset_name', name: 'asset_name' },
                     { className: 'text-center', data: 'asset_type', name: 'asset_type' },
@@ -129,10 +142,12 @@
                     { className: 'text-center', data: 'custodian_id', name: 'custodian_id'},
                     { className: 'text-center', data: 'purchase_date', name: 'purchase_date'},
                     { className: 'text-center', data: 'status', name: 'status'},
+                    { className: 'text-center', data: 'availability', name: 'availability'},
+                    { className: 'text-center', data: 'created_by', name: 'created_by'},
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
-                "order": [[ 9, "desc" ]],
+                "order": [[ 0, "desc" ]],
                 "initComplete": function(settings, json) {
 
                 } 

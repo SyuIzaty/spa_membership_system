@@ -7,20 +7,34 @@ use App\Stock;
 use App\StockImage;
 use App\InventoryStatus;
 use App\StockTransaction;
+use App\AssetDepartment;
 use Carbon\Carbon;
+use App\AssetCustodian;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\StockExport;
 use Session;
 use Response;
 use Auth;
 use File;
 use DB;
+use App\User;
 
 class StockController extends Controller
 {
     public function stockIndex()
     {  
-        $status = InventoryStatus::whereIn('id', ['3','4'])->get();
+        if( Auth::user()->hasRole('Inventory Admin') )
+        { 
+            $department = AssetDepartment::all();
+        }
+        else
+        {
+            $department = AssetDepartment::whereHas('custodians', function($query){
+                $query->where('custodian_id', Auth::user()->id);
+            })->get();
+        }
 
-        return view('inventory.stock-index', compact('status'));
+        return view('inventory.stock-index', compact('department'));
     }
 
     public function newStockStore(Request $request)
@@ -29,15 +43,18 @@ class StockController extends Controller
         $code = Carbon::now()->format('Y').mt_rand(100000, 999999);
 
         $request->validate([
+            'department_id'     => 'required',
             'stock_name'        => 'required',
             'model'             => 'required',
+            'status'            => 'required',
         ]);
 
         $stock = Stock::create([
+            'department_id'         => $request->department_id, 
             'stock_code'            => $code,
-            'stock_name'            => $request->stock_name, 
-            'model'                 => $request->model,
-            'brand'                 => $request->brand,
+            'stock_name'            => strtoupper($request->stock_name), 
+            'model'                 => strtoupper($request->model),
+            'brand'                 => strtoupper($request->brand),
             'status'                => $request->status,
             'created_by'            => $user->id,
         ]);
@@ -46,15 +63,18 @@ class StockController extends Controller
         $paths = storage_path()."/stock/";
 
         if (isset($image)) { 
-            $originalsName = $image->getClientOriginalName();
-            $fileSizes = $image->getSize();
-            $fileNames = $originalsName;
-            $image->storeAs('/stock', $fileNames);
-            StockImage::create([
-                'stock_id'  => $stock->id,
-                'upload_image' => $originalsName,
-                'web_path'  => "app/stock/".$fileNames,
-            ]);
+            for($y = 0; $y < count($image); $y++)
+            {
+                $originalsName = $image[$y]->getClientOriginalName();
+                $fileSizes = $image[$y]->getSize();
+                $fileNames = $originalsName;
+                $image[$y]->storeAs('/stock', $fileNames);
+                StockImage::create([
+                    'stock_id'  => $stock->id,
+                    'upload_image' => $originalsName,
+                    'web_path'  => "app/stock/".$fileNames,
+                ]);
+            }
         }
 
         Session::flash('message', 'New Stock Data Have Been Successfully Recorded');
@@ -63,7 +83,18 @@ class StockController extends Controller
 
     public function data_stockList()
     {
-        $stock = Stock::all();
+        if( Auth::user()->hasRole('Inventory Admin') )
+        { 
+            $stock = Stock::all();
+        }
+        else
+        {
+            $as = AssetCustodian::where('custodian_id', Auth::user()->id)->pluck('department_id');
+            
+            $stock = Stock::whereHas('departments', function($q) use ($as){
+                    $q->whereIn('id', $as);
+                 })->get();
+        }
 
         return datatables()::of($stock)
         ->addColumn('action', function ($stock) {
@@ -74,34 +105,60 @@ class StockController extends Controller
 
         ->addColumn('created_at', function ($stock) {
 
-            return date(' d/m/Y ', strtotime($stock->created_at)); 
+            return date(' d/m/Y ', strtotime($stock->created_at)) ?? '<div style="color:red;" >--</div>'; 
         })
 
         ->editColumn('stock_name', function ($stock) {
 
-            return isset($stock->stock_name) ? strtoupper($stock->stock_name) : '<div style="color:red;" >--</div>';
-        })
-
-        ->editColumn('created_by', function ($stock) {
-
-            return isset($stock->user->name) ? $stock->user->name : '<div style="color:red;" >--</div>'; 
+            return strtoupper($stock->stock_name) ?? '<div style="color:red;" >--</div>';
         })
 
         ->editColumn('status', function ($stock) {
 
-            if($stock->status=='3')
+            if($stock->status=='1')
             {
                 $color = '#3CBC3C';
-                return '<div style="text-transform: uppercase; color:' . $color . '"><b>'.$stock->invStatus->status_name.'</b></div>';
+                return '<div style="text-transform: uppercase; color:' . $color . '"><b>ACTIVE</b></div>';
             }
             else 
             {
                 $color = '#CC0000';
-                return '<div style="text-transform: uppercase; color:' . $color . '"><b>'.$stock->invStatus->status_name.'</b></div>';
+                return '<div style="text-transform: uppercase; color:' . $color . '"><b>INACTIVE</b></div>';
             }
         })
-        
-        ->rawColumns(['action', 'status', 'created_by', 'stock_name', 'created_at'])
+
+        ->addColumn('department_id', function ($stock) {
+
+            return strtoupper($stock->departments->department_name) ?? '<div style="color:red;" >--</div>';
+        })
+
+        ->addColumn('current_balance', function ($stock) {
+            
+            $total_bal = 0;
+            foreach($stock->transaction as $list){
+                $total_bal += ($list->stock_in - $list->stock_out);
+            }
+
+            return strtoupper($total_bal) ?? '<div style="color:red;" >--</div>';
+        })
+
+        ->addColumn('balance_status', function ($stock) {
+             
+            $total_bal = 0;
+            foreach($stock->transaction as $list){
+                $total_bal += ($list->stock_in - $list->stock_out);
+            }
+
+            if($total_bal <= 0) {
+                $stat = '<b style="color:red">OUT OF STOCK</b>';
+            } else {
+                $stat = '<b style="color:green">READY STOCK</b>';
+            }
+
+            return strtoupper($stat) ?? '<div style="color:red;" >--</div>';
+        })
+
+        ->rawColumns(['action', 'status', 'created_by', 'stock_name', 'created_at', 'department_id', 'current_balance', 'balance_status'])
         ->make(true);
     }
 
@@ -115,11 +172,25 @@ class StockController extends Controller
     public function stockDetail($id)
     {
         $stock = Stock::where('id', $id)->first(); 
-        $image = StockImage::where('stock_id', $id)->first();
-        $status = InventoryStatus::whereIn('id', ['3','4'])->get();
-        $transIn = StockTransaction::where('stock_id', $id)->latest()->first();
+        $image = StockImage::where('stock_id', $id)->get();
+        $transaction = StockTransaction::where('stock_id', $id)->first();
+        $department = AssetDepartment::all();
+        $user = User::all();
 
-        return view('inventory.stock-detail', compact('stock', 'image', 'status', 'transIn'))->with('no', 1);
+        $total_bal = 0;
+        foreach($stock->transaction as $list){
+            $total_bal += ($list->stock_in - $list->stock_out);
+        }
+
+        return view('inventory.stock-detail', compact('stock', 'image', 'department', 'transaction', 'user', 'total_bal'))->with('no', 1);
+    }
+
+    public function deleteImages($id, $stock_id)
+    {
+        $stock = Stock::where('id', $stock_id)->first();
+        $image = StockImage::find($id);
+        $image->delete($stock);
+        return redirect()->back()->with('messages', 'Stock Image Deleted Successfully');
     }
 
     public function stockUpdate(Request $request)
@@ -132,9 +203,9 @@ class StockController extends Controller
         ]);
 
         $stock->update([
-            'stock_name'            => $request->stock_name, 
-            'model'                 => $request->model,
-            'brand'                 => $request->brand,
+            'stock_name'            => strtoupper($request->stock_name), 
+            'model'                 => strtoupper($request->model),
+            'brand'                 => strtoupper($request->brand),
             'status'                => $request->status,
         ]);
 
@@ -176,18 +247,14 @@ class StockController extends Controller
     public function createTransIn(Request $request)
     {
         $user = Auth::user();
-        $transIn = StockTransaction::where('stock_id', $request->id)->latest()->first();
-
-        if(isset($transIn))
-        {
-            $balance = $request->trans_in - $request->trans_out;
-            $current_balance = $transIn->current_balance + $request->trans_in;
+        $balance = $request->stock_in - $request->stock_out;
 
             $request->validate([
                 'lo_no'           => 'required',
                 'io_no'           => 'required',
-                'trans_in'        => 'required',
+                'stock_in'        => 'required',
                 'unit_price'      => 'required',
+                'purchase_date'   => 'required',
                 'trans_date'      => 'required',
             ]);
     
@@ -195,41 +262,15 @@ class StockController extends Controller
                 'stock_id'         => $request->id,
                 'lo_no'            => $request->lo_no, 
                 'io_no'            => $request->io_no,
+                'purchase_date'    => $request->purchase_date,
                 'trans_date'       => $request->trans_date,
-                'trans_in'         => $request->trans_in,
-                'trans_out'        => $request->trans_in - $balance,
-                'current_balance'  => $current_balance,
+                'stock_in'         => $request->stock_in,
+                'stock_out'        => $request->stock_in - $balance,
                 'unit_price'       => $request->unit_price,
                 'created_by'       => $user->id,
                 'remark'           => $request->remark,
                 'status'           => '1',
             ]);
-
-        } else {
-
-            $request->validate([
-                'lo_no'           => 'required',
-                'io_no'           => 'required',
-                'trans_in'        => 'required',
-                'unit_price'      => 'required',
-                'trans_date'      => 'required',
-            ]);
-    
-            $stockIn = StockTransaction::create([
-                'stock_id'         => $request->id,
-                'lo_no'            => $request->lo_no, 
-                'io_no'            => $request->io_no,
-                'trans_date'       => $request->trans_date,
-                'trans_in'         => $request->trans_in,
-                'trans_out'        => '0',
-                'current_balance'  => $request->trans_in,
-                'unit_price'       => $request->unit_price,
-                'created_by'       => $user->id,
-                'remark'           => $request->remark,
-                'status'           => '1',
-            ]);
-
-        }
         
         Session::flash('msg', 'Transaction In Details Successfully Updated');
         return redirect('stock-detail/'.$request->id);
@@ -238,23 +279,27 @@ class StockController extends Controller
     public function createTransOut(Request $request)
     {
         $user = Auth::user();
-        $transOut = StockTransaction::where('stock_id', $request->id)->latest()->first();
-        $current_balance = $transOut->current_balance - $request->trans_out;
-        $balance = $current_balance + $request->trans_out - $transOut->current_balance;
-        
+        $stock = Stock::where('id', $request->id)->first(); 
+        $total_bal = 0;
+        foreach($stock->transaction as $list){
+            $total_bal += ($list->stock_in - $list->stock_out);
+        }
+         
         $request->validate([
-            'trans_out'        => 'required',
-            // 'trans_date'      => 'trans_date',
+            'stock_out'        => 'required|numeric|lte:'.$total_bal,
+            'reason'           => 'required',
+            'trans_date'       => 'required',
+            'supply_to'        => 'required',
         ]);
 
-        $stockIn = StockTransaction::create([
+        $stockOut = StockTransaction::create([
             'stock_id'         => $request->id,
-            // 'trans_date'       => $request->trans_date,
-            'trans_in'         => $balance,
-            'trans_out'        => $request->trans_out,
-            'current_balance'  => $current_balance,
+            'stock_in'         => '0',
+            'stock_out'        => $request->stock_out,
             'created_by'       => $user->id,
-            'remark'           => $request->remark,
+            'reason'           => $request->reason,
+            'supply_to'        => $request->supply_to,
+            'trans_date'       => $request->trans_date,
             'status'           => '0',
         ]);
 
@@ -262,11 +307,81 @@ class StockController extends Controller
         return redirect('stock-detail/'.$request->id);
     }
 
+    public function updateTransin(Request $request)
+    {
+        $user = Auth::user();
+        $stock = StockTransaction::where('id', $request->ids)->first();
+
+        $request->validate([
+            'lo_no'           => 'required',
+            'io_no'           => 'required',
+            'stock_in'        => 'required',
+            'unit_price'      => 'required',
+            'purchase_date'   => 'required',
+            'trans_date'      => 'required',
+        ]);
+
+        $stock->update([
+                'lo_no'            => $request->lo_no, 
+                'io_no'            => $request->io_no,
+                'purchase_date'    => $request->purchase_date,
+                'trans_date'       => $request->trans_date,
+                'stock_in'         => $request->stock_in,
+                'stock_out'        => '0',
+                'unit_price'       => $request->unit_price,
+                'remark'           => $request->remark,
+        ]);
+
+        Session::flash('notyIn', 'Stock Transaction Successfully Updated');
+        return redirect('stock-detail/'.$stock->stock_id);
+    }
+
+    public function updateTransout(Request $request)
+    {
+        $user = Auth::user();
+        $stock = StockTransaction::where('id', $request->ids)->first();
+
+        $request->validate([
+            'stock_out'        => 'required',
+            'reason'           => 'required',
+            'trans_date'       => 'required',
+            'supply_to'        => 'required',
+        ]);
+
+        $stock->update([
+            'stock_in'         => '0',
+            'stock_out'        => $request->stock_out,
+            'reason'           => $request->reason,
+            'supply_to'        => $request->supply_to,
+            'trans_date'       => $request->trans_date,
+        ]);
+
+        Session::flash('notyOut', 'Stock Transaction Successfully Updated');
+        return redirect('stock-detail/'.$stock->stock_id);
+    }
+
+    public function deleteTrans($id, $stock_id)
+    {
+        $stock = Stock::where('id', $stock_id)->first();
+        $trans = StockTransaction::find($id);
+        $trans->delete($stock);
+        return redirect()->back()->with('messages', 'Stock Transaction Deleted Successfully');
+    }
+
     public function stockPdf(Request $request, $id)
     {
         $stock = Stock::where('id', $id)->first(); 
         $image = StockImage::where('stock_id', $id)->first();
-        return view('inventory.stock-pdf', compact('stock', 'image'))->with('no', 1);
+        $total_bal = 0;
+        foreach($stock->transaction as $list){
+            $total_bal += ($list->stock_in - $list->stock_out);
+        }
+        return view('inventory.stock-pdf', compact('stock', 'image', 'total_bal'))->with('no', 1);
+    }
+
+    public function exportStock()
+    {
+        return Excel::download(new StockExport,'Stock.xlsx');
     }
 
     /**

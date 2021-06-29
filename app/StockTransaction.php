@@ -11,11 +11,21 @@ class StockTransaction extends Model
     protected $table = 'inv_stock_transaction';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'stock_id', 'trans_date', 'lo_no', 'io_no', 'trans_in', 'trans_out', 'current_balance', 'unit_price', 'created_by', 'remark', 'status'
+        'stock_id', 'stock_in', 'lo_no', 'io_no', 'unit_price', 'purchase_date', 'trans_date', 'remark', 'stock_out', 'reason', 'supply_to', 'status', 'created_by'
     ];
 
     public function user()
     {
         return $this->hasOne('App\User', 'id', 'created_by');
+    }
+
+    public function stocks()
+    {
+        return $this->belongsTo('App\Stock', 'id', 'stock_id');
+    }
+
+    public function users()
+    {
+        return $this->hasOne('App\User', 'id', 'supply_to');
     }
 }

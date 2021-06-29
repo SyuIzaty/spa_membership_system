@@ -45,15 +45,15 @@
                                                             <p style="margin-bottom: -15px"><span class="text-danger">*</span> Required fields</p>
                                                             <tr>
                                                                 <div class="form-group">
-                                                                    <td colspan="3" align="center" style="vertical-align: middle">
-                                                                        @if(isset($image))
-                                                                            <img src="/get-file-images/{{ $image->upload_image }}" style="width:300px; height:300px;" class="img-fluid">
-                                                                        @else
-                                                                            <img src="{{ asset('img/default.png') }}" style="height: 300px; width: 300px;" class="img-fluid">
-                                                                        @endif
-                                                                        <br><br>
-                                                                        <input style="width: 300px" type="file" class="form-control" id="upload_image" name="upload_image">
-                                                                        @error('upload_image')
+                                                                    <td width="25%"><label class="form-label" for="department_id"><span class="text-danger">*</span> Department : </label></td>
+                                                                    <td colspan="3">
+                                                                        <select class="form-control department" name="department_id" id="department_id" disabled>
+                                                                            <option value="">Select Department</option>
+                                                                            @foreach ($department as $depart) 
+                                                                                <option value="{{ $depart->id }}" {{ $stock->department_id == $depart->id ? 'selected="selected"' : '' }}>{{ strtoupper($depart->department_name) }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                        @error('department_id')
                                                                             <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                         @enderror
                                                                     </td>
@@ -71,7 +71,7 @@
                                                                 <div class="form-group">
                                                                     <td width="25%"><label class="form-label" for="stock_name"><span class="text-danger">*</span> Stock Name:</label></td>
                                                                     <td colspan="3">
-                                                                        <input class="form-control" id="stock_name" name="stock_name" value="{{ $stock->stock_name }}">
+                                                                        <input class="form-control" id="stock_name" name="stock_name" value="{{ $stock->stock_name }}" style="text-transform: uppercase">
                                                                         @error('stock_name')
                                                                             <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                         @enderror
@@ -82,7 +82,7 @@
                                                                 <div class="form-group">
                                                                     <td width="25%"><label class="form-label" for="model"><span class="text-danger">*</span> Model:</label></td>
                                                                     <td colspan="3">
-                                                                        <input class="form-control" id="model" name="model" value="{{ $stock->model }}">
+                                                                        <input class="form-control" id="model" name="model" value="{{ $stock->model }}" style="text-transform: uppercase">
                                                                         @error('model')
                                                                             <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                         @enderror
@@ -93,7 +93,7 @@
                                                                 <div class="form-group">
                                                                     <td width="25%"><label class="form-label" for="brand"> Brand : </label></td>
                                                                     <td colspan="3">
-                                                                        <input class="form-control" id="brand" name="brand" value="{{ $stock->brand }}">
+                                                                        <input class="form-control" id="brand" name="brand" value="{{ $stock->brand }}" style="text-transform: uppercase">
                                                                         @error('brand')
                                                                             <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                         @enderror
@@ -102,13 +102,12 @@
                                                             </tr>
                                                             <tr>
                                                                 <div class="form-group">
-                                                                    <td width="25%"><label class="form-label" for="status"> Availability:</label></td>
+                                                                    <td width="25%"><label class="form-label" for="status"> Status:</label></td>
                                                                     <td colspan="3">
-                                                                        <select class="form-control status" name="status" id="status">
+                                                                        <select class="form-control" id="status" name="status">
                                                                             <option value="">Select Status</option>
-                                                                            @foreach ($status as $stat) 
-                                                                                <option value="{{ $stat->id }}" {{ $stock->status == $stat->id ? 'selected="selected"' : '' }}>{{ $stat->status_name }}</option>
-                                                                            @endforeach
+                                                                            <option value="1" {{ old('status', $stock->status) == '1' ? 'selected':''}} >ACTIVE</option>
+                                                                            <option value="0" {{ old('status', $stock->status) == '0' ? 'selected':''}} >INACTIVE</option>
                                                                         </select>
                                                                         @error('status')
                                                                             <p style="color: red"><strong> * {{ $message }} </strong></p>
@@ -135,7 +134,18 @@
                                                                     </td>
                                                                 </div>
                                                             </tr>
-                                                           
+                                                            <tr>
+                                                                <div class="form-group">
+                                                                    <td width="25%"><label class="form-label" for="balance_status"> Balance Status:</label></td>
+                                                                    <td colspan="3" style="vertical-align: middle">
+                                                                        @if($total_bal <= 0)
+                                                                            <b style="color:red">OUT OF STOCK</b>
+                                                                        @else 
+                                                                            <b style="color:green">READY STOCK</b>
+                                                                        @endif
+                                                                    </td>
+                                                                </div>
+                                                            </tr>
                                                         </thead>
                                                     </table>
                                                     <br>
@@ -149,87 +159,165 @@
                                 </div>
 
                                 <div class="col-md-8 col-sm-12">
-                                    <div class="card card-primary card-outline">
+                                    {{-- Image --}}
+                                    <div class="accordion accordion-outline" id="js_demo_accordion-3">
+                                        <div class="card">
                                             <div class="card-header">
-                                                <h5 class="card-title w-100"><i class="fal fa-cog width-2 fs-xl"></i>TRANSACTION LOG</h5>
+                                                <a href="javascript:void(0);" class="card-title collapsed" data-toggle="collapse" data-target="#image" aria-expanded="false">
+                                                    <i class="fal fa-camera width-2 fs-xl"></i>
+                                                    STOCK IMAGE
+                                                    <span class="ml-auto">
+                                                        <span class="collapsed-reveal">
+                                                            <i class="fal fa-minus fs-xl"></i>
+                                                        </span>
+                                                        <span class="collapsed-hidden">
+                                                            <i class="fal fa-plus fs-xl"></i>
+                                                        </span>
+                                                    </span>
+                                                </a>
                                             </div>
-                                            <div class="card-body">
-                                                @if (Session::has('msg'))
-                                                    <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('msg') }}</div>
-                                                @endif
-                                                @if (Session::has('noty'))
-                                                    <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('noty') }}</div>
-                                                @endif
-                                                <div class="table-responsive">
-                                                    <table id="log" class="table table-bordered table-hover table-striped w-100">
-                                                        <thead>
-                                                            <tr align="center" class="bg-primary-50">
-                                                                <th style="vertical-align: middle">No.</th>
-                                                                <th style="width:90px; vertical-align: middle" width="90">StockIn (+)</th>
-                                                                <th style="width:90px; vertical-align: middle">StockOut (-)</th>
-                                                                <th style="vertical-align: middle">Balance (=)</th>
-                                                                <th style="vertical-align: middle">UnitPrice (RM)</th>
-                                                                <th style="vertical-align: middle">Status</th>
-                                                                <th style="vertical-align: middle">Remark</th>
-                                                                <th style="vertical-align: middle">L.O. Number</th>
-                                                                <th style="vertical-align: middle">Invoice Number</th>
-                                                                <th style="vertical-align: middle">Purchase Date</th>
-                                                                <th style="vertical-align: middle">Created Date</th>
-                                                                <th style="vertical-align: middle">Created By</th>
-                                                                {{-- <th style="vertical-align: middle">Action</th> --}}
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @foreach($stock->transaction as $list)
-                                                            <tr align="center" class="data-row">
-                                                                <td>{{ $no++ }}</td>
-                                                                <td>{{ isset($list->trans_in) ? $list->trans_in : '--'}}</td>
-                                                                <td>{{ isset($list->trans_out) ? $list->trans_out : '--'}}</td>
-                                                                <td>{{ isset($list->current_balance) ? $list->current_balance : '--'}}</td>
-                                                                <td>{{ isset($list->unit_price) ? $list->unit_price : '--'}}</td>
-                                                                {{-- <td>
-                                                                    @if($list->status == '1')
-                                                                        <div style="text-transform: uppercase; color: #3CBC3C"><b>IN</b></div>
-                                                                    @else
-                                                                        <div style="text-transform: uppercase; color: #CC0000"><b>OUT</b></div>
-                                                                    @endif
-                                                                </td> --}}
-                                                                @if($list->status == '1')
-                                                                    <td style="background-color: #1dc9b7">
-                                                                        <div style="text-transform: uppercase; color: #000000"><b>IN</b></div>
-                                                                    </td>
-                                                                @else
-                                                                    <td style="background-color: #fd3995">
-                                                                        <div style="text-transform: uppercase; color: #000000"><b>OUT</b></div>
-                                                                    </td>
-                                                                @endif
-                                                                </td>
-                                                                <td>{{ isset($list->remark) ? $list->remark : '--'}}</td>
-                                                                <td>{{ isset($list->lo_no) ? $list->lo_no : '--'}}</td>
-                                                                <td>{{ isset($list->io_no) ? $list->io_no : '--'}}</td>
-                                                                <td>{{ isset($list->trans_date) ? date('d/m/Y', strtotime($list->trans_date)) : '--' }}</td>
-                                                                <td>{{ isset($list->created_at) ? date('d/m/Y', strtotime($list->created_at)) : '--' }}</td>
-                                                                <td>{{ isset($list->user->name) ? strtoupper($list->user->name) : '--' }}</td>
-                                                                {{-- <td>
-                                                                    <a href="" data-target="#crud-modals" data-toggle="modal" data-id="{{$list->id}}" data-custodian="{{$list->custodian->custodian->name}}" data-reason="{{$list->reason_remark}}" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
-                                                                    <meta name="csrf-token" content="{{ csrf_token() }}">
-                                                                </td> --}}
-                                                            </tr>
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table>
-                                                </div><br>
-                                                @if(isset($transIn))
-                                                    @if($transIn->current_balance > 0)
-                                                        <a href="javascript:;" data-toggle="modal" id="news" class="btn btn-danger ml-2 float-right"><i class="fal fa-minus-square"></i> Transaction Out</a>
-                                                    @else
-                                                        <a href="#" data-toggle="modal" class="btn btn-secondary ml-2 float-right disabled"><i class="fal fa-minus-square"></i> Transaction Out</a>
-                                                    @endif
+                                            <div id="image" class="collapse" data-parent="#image">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            @if (Session::has('messages'))
+                                                                <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('messages') }}</div>
+                                                            @endif
+                                                            <table id="assets" class="table table-bordered table-hover table-striped w-100 mb-1">
+                                                                <thead>
+                                                                    <tr align="center">
+                                                                        @if(isset($image->first()->upload_image))
+                                                                            @foreach($image as $images)
+                                                                            <td colspan="5">
+                                                                                <a data-fancybox="gallery" href="/get-file-images/{{ $images->upload_image }}"><img src="/get-file-images/{{ $images->upload_image }}" style="width:150px; height:130px;" class="img-fluid mr-2"></a><br><br>
+                                                                                <a href="{{ action('StockController@deleteImages', ['id' => $images->id, 'stock_id' => $images->stock_id]) }}" class="btn btn-danger btn-sm"><i class="fal fa-trash"></i> Delete</a>
+                                                                            </td>
+                                                                            @endforeach
+                                                                        @else
+                                                                            <span>No Image Uploaded</span>
+                                                                        @endif
+                                                                    </tr>
+                                                                </thead>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{-- Transaction --}}
+                                    <div class="card card-primary card-outline">
+                                        <div class="card-header">
+                                            <h5 class="card-title w-100"><i class="fal fa-cog width-2 fs-xl"></i>TRANSACTION LOG</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            @if (Session::has('msg'))
+                                                <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('msg') }}</div>
+                                            @endif
+                                            @if (Session::has('noty'))
+                                                <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('noty') }}</div>
+                                            @endif
+                                            @if (Session::has('notyIn'))
+                                                <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('notyIn') }}</div>
+                                            @endif
+                                            @if (Session::has('notyOut'))
+                                                <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('notyOut') }}</div>
+                                            @endif
+                                            <div class="table-responsive">
+                                                <table id="log" class="table table-bordered table-hover table-striped w-100">
+                                                    <thead>
+                                                        <tr align="center" class="bg-primary-50">
+                                                            <th style="vertical-align: middle">#ID</th>
+                                                            <th style="vertical-align: middle">StockIn (+)</th>
+                                                            <th style="vertical-align: middle">StockOut (-)</th>
+                                                            <th style="vertical-align: middle">Balance (=)</th>
+                                                            <th style="vertical-align: middle">UnitPrice (RM)</th>
+                                                            <th style="vertical-align: middle">Status</th>
+                                                            <th style="vertical-align: middle">Transaction Date</th>
+                                                            <th style="vertical-align: middle">Remark</th>
+                                                            <th style="vertical-align: middle">L.O. Number</th>
+                                                            <th style="vertical-align: middle">Invoice Number</th>
+                                                            <th style="vertical-align: middle">Purchase Date</th>
+                                                            <th style="vertical-align: middle">Supply To</th>
+                                                            <th style="vertical-align: middle">Reason</th>
+                                                            <th style="vertical-align: middle">Created By</th>
+                                                            <th style="vertical-align: middle">Created Date</th>
+                                                            <th style="vertical-align: middle">Action</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="hasinput"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Stock In"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Stock Out"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Balance"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Unit Price"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Status"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Transaction Date"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Remark"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="L.O. Number"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Invoice Number"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Purchase Date"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Reason"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Supply To"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Created By"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Created At"></td>
+                                                            <td class="hasinput"></td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @php $total_bal = 0; @endphp
+
+                                                    @foreach($stock->transaction as $list)
+                                                    <tr align="center" class="data-row">
+                                                        <td>{{ isset($list->id) ? $list->id : '--'}}</td>
+                                                        <td>{{ isset($list->stock_in) ? $list->stock_in : '--'}}</td>
+                                                        <td>{{ isset($list->stock_out) ? $list->stock_out : '--'}}</td>
+                                                        <td>{{ $total_bal += ($list->stock_in - $list->stock_out) }}</td>
+                                                        <td>{{ isset($list->unit_price) ? $list->unit_price : '--'}}</td>
+                                                        @if($list->status == '1')
+                                                            <td style="background-color: #1dc9b7">
+                                                                <div style="text-transform: uppercase; color: #000000"><b>IN</b></div>
+                                                            </td>
+                                                        @else
+                                                            <td style="background-color: #fd3995">
+                                                                <div style="text-transform: uppercase; color: #000000"><b>OUT</b></div>
+                                                            </td>
+                                                        @endif
+                                                        </td>
+                                                        <td>{{ isset($list->trans_date) ? date('Y-m-d', strtotime($list->trans_date)) : '--' }}</td>
+                                                        <td>{{ isset($list->remark) ? $list->remark : '--'}}</td>
+                                                        <td>{{ isset($list->lo_no) ? $list->lo_no : '--'}}</td>
+                                                        <td>{{ isset($list->io_no) ? $list->io_no : '--'}}</td>
+                                                        <td>{{ isset($list->purchase_date) ? date('Y-m-d', strtotime($list->purchase_date)) : '--' }}</td>
+                                                        <td>{{ isset($list->users->name) ? strtoupper($list->users->name) : '--' }}</td>
+                                                        <td>{{ isset($list->reason) ? $list->reason : '--'}}</td>
+                                                        <td>{{ isset($list->user->name) ? strtoupper($list->user->name) : '--' }}</td>
+                                                        <td>{{ isset($list->created_at) ? date('Y-m-d |  h:i A', strtotime($list->created_at)) : '--' }}</td>
+                                                        <td>
+                                                            @if($list->status == '1')
+                                                                <a href="" data-target="#crud-modalIn" data-toggle="modal" data-id="{{$list->id}}" data-stock="{{$list->stock_in}}" data-lo="{{$list->lo_no}}" data-io="{{$list->io_no}}" 
+                                                                    data-price="{{$list->unit_price}}" data-purchase="{{$list->purchase_date}}" data-trans="{{$list->trans_date}}" data-remark="{{$list->remark}}" class="btn btn-sm btn-success"><i class="fal fa-pencil"></i></a>
+                                                            @else
+                                                                <a href="" data-target="#crud-modalOut" data-toggle="modal" data-id="{{$list->id}}" data-stock="{{$list->stock_out}}" data-reason="{{$list->reason}}" data-supply="{{$list->supply_to}}" 
+                                                                    data-trans="{{$list->trans_date}}" class="btn btn-sm btn-danger"><i class="fal fa-pencil"></i></a>
+                                                            @endif
+                                                            <a href="{{ action('StockController@deleteTrans', ['id' => $list->id, 'stock_id' => $list->stock_id]) }}" class="btn btn-warning btn-sm"><i class="fal fa-trash"></i></a>
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div><br>
+                                            @if(isset($total_bal))
+                                                @if($total_bal > 0) 
+                                                    <a href="javascript:;" data-toggle="modal" id="news" class="btn btn-danger ml-2 float-right"><i class="fal fa-minus-square"></i> Transaction Out</a>
                                                 @else
                                                     <a href="#" data-toggle="modal" class="btn btn-secondary ml-2 float-right disabled"><i class="fal fa-minus-square"></i> Transaction Out</a>
                                                 @endif
-                                                <a href="javascript:;" data-toggle="modal" id="new" class="btn btn-success ml-auto float-right"><i class="fal fa-plus-square"></i> Transaction In</a>
-                                            </div>
+                                            @else
+                                                <a href="#" data-toggle="modal" class="btn btn-secondary ml-2 float-right disabled"><i class="fal fa-minus-square"></i> Transaction Out</a>
+                                            @endif
+                                            <a href="javascript:;" data-toggle="modal" id="new" class="btn btn-success ml-auto float-right"><i class="fal fa-plus-square"></i> Transaction In</a>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -248,6 +336,38 @@
                                     {{Form::hidden('id', $stock->id)}}
                                     <p><span class="text-danger">*</span> Required fields</p>
                                         <div class="form-group">
+                                            <td width="15%"><label class="form-label" for="stock_in"><span class="text-danger">*</span> Stock In :</label></td>
+                                            <td colspan="7">
+                                                <input type="number" step="any" value="{{ old('stock_in') }}" class="form-control" id="stock_in" name="stock_in">
+                                                @error('stock_in')
+                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                @enderror
+                                        </div>
+                                        <div class="form-group">
+                                            <td width="15%"><label class="form-label" for="unit_price"><span class="text-danger">*</span> Unit Price (RM) :</label></td>
+                                            <td colspan="7">
+                                                <input type="number" step="any" value="{{ old('unit_price') }}" class="form-control" id="unit_price" name="unit_price">
+                                                @error('unit_price')
+                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                @enderror
+                                        </div>
+                                        <div class="form-group">
+                                            <td width="15%"><label class="form-label" for="purchase_date"><span class="text-danger">*</span> Purchase Date :</label></td>
+                                            <td colspan="7">
+                                                <input type="date" class="form-control" id="purchase_date" name="purchase_date" value="{{ old('purchase_date') }}">
+                                                @error('purchase_date')
+                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                @enderror
+                                        </div>
+                                        <div class="form-group">
+                                            <td width="15%"><label class="form-label" for="trans_date"><span class="text-danger">*</span> Stock In Date :</label></td>
+                                            <td colspan="7">
+                                                <input type="date" class="form-control" id="trans_date" name="trans_date" value="{{ old('trans_date') }}">
+                                                @error('trans_date')
+                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                @enderror
+                                        </div>
+                                        <div class="form-group">
                                             <td width="15%"><label class="form-label" for="lo_no"><span class="text-danger">*</span> L.O. Number :</label></td>
                                             <td colspan="7">
                                                 <input value="{{ old('lo_no') }}" class="form-control" id="lo_no" name="lo_no">
@@ -264,30 +384,6 @@
                                                 @enderror
                                         </div>
                                         <div class="form-group">
-                                            <td width="15%"><label class="form-label" for="trans_in"><span class="text-danger">*</span> Stock In :</label></td>
-                                            <td colspan="7">
-                                                <input type="number" step="any" value="{{ old('trans_in') }}" class="form-control" id="trans_in" name="trans_in">
-                                                @error('trans_in')
-                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                @enderror
-                                        </div>
-                                        <div class="form-group">
-                                            <td width="15%"><label class="form-label" for="unit_price"><span class="text-danger">*</span> Unit Price (RM) :</label></td>
-                                            <td colspan="7">
-                                                <input type="number" step="any" value="{{ old('unit_price') }}" class="form-control" id="unit_price" name="unit_price">
-                                                @error('unit_price')
-                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                @enderror
-                                        </div>
-                                        <div class="form-group">
-                                            <td width="15%"><label class="form-label" for="trans_date"><span class="text-danger">*</span> Purchase Date :</label></td>
-                                            <td colspan="7">
-                                                <input type="date" class="form-control" id="trans_date" name="trans_date" value="{{ old('trans_date') }}">
-                                                @error('trans_date')
-                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                @enderror
-                                        </div>
-                                        <div class="form-group">
                                             <td width="15%"><label class="form-label" for="remark"> Remark :</label></td>
                                             <td colspan="7">
                                                 <textarea rows="5" class="form-control" id="remark" name="remark">{{ old('remark') }}</textarea>
@@ -296,7 +392,6 @@
                                                 @enderror
                                             </td>
                                         </div>
-                                     
                                     <div class="footer">
                                         <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
                                         <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
@@ -318,26 +413,39 @@
                                     {{Form::hidden('id', $stock->id)}}
                                     <p><span class="text-danger">*</span> Required fields</p>
                                         <div class="form-group">
-                                            <td width="15%"><label class="form-label" for="trans_out"><span class="text-danger">*</span> Stock Out :</label></td>
+                                            <td width="15%"><label class="form-label" for="stock_out"><span class="text-danger">*</span> Stock Out :</label></td>
                                             <td colspan="7">
-                                                <input type="number" step="any" value="{{ old('trans_out') }}" class="form-control" id="trans_out" name="trans_out">
-                                                @error('trans_out')
+                                                <input type="number" step="any" value="{{ old('stock_out') }}" class="form-control" id="stock_out" name="stock_out">
+                                                @error('stock_out')
                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                 @enderror
                                         </div>
-                                        {{-- <div class="form-group">
-                                            <td width="15%"><label class="form-label" for="trans_date"><span class="text-danger">*</span> Transaction Date :</label></td>
+                                        <div class="form-group">
+                                            <td width="15%"><label class="form-label" for="trans_date"><span class="text-danger">*</span> Stock Out Date :</label></td>
                                             <td colspan="7">
                                                 <input type="date" class="form-control" id="trans_date" name="trans_date" value="{{ old('trans_date') }}">
                                                 @error('trans_date')
                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                 @enderror
-                                        </div> --}}
+                                        </div>
                                         <div class="form-group">
-                                            <td width="15%"><label class="form-label" for="remark"> Remark :</label></td>
+                                            <td width="15%"><label class="form-label" for="supply_to"><span class="text-danger">*</span> Supply To :</label></td>
                                             <td colspan="7">
-                                                <textarea rows="5" class="form-control" id="remark" name="remark">{{ old('remark') }}</textarea>
-                                                @error('remark')
+                                                <select class="form-control supply_to" name="supply_to" id="supply_to" >
+                                                    <option value=""> Select User </option>
+                                                    @foreach ($user as $usr) 
+                                                        <option value="{{ $usr->id }}" {{ old('supply_to') ==  $usr->id  ? 'selected' : '' }}>{{ $usr->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('supply_to')
+                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                @enderror
+                                        </div>
+                                        <div class="form-group">
+                                            <td width="15%"><label class="form-label" for="reason"> Reason :</label></td>
+                                            <td colspan="7">
+                                                <textarea rows="5" class="form-control" id="reason" name="reason">{{ old('reason') }}</textarea>
+                                                @error('reason')
                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                 @enderror
                                             </td>
@@ -352,7 +460,140 @@
                             </div>
                         </div>
                     </div>
-                       
+
+                    <div class="modal fade" id="crud-modalIn" aria-hidden="true" >
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="card-header bg-secondary text-white">
+                                    <h5 class="card-title w-100"><i class="fal fa-sign-in-alt width-2 fs-xl"></i>EDIT TRANSACTION IN</h5>
+                                </div>
+                                <div class="modal-body">
+                                    {!! Form::open(['action' => 'StockController@updateTransin', 'method' => 'POST']) !!}
+                                    <input type="hidden" name="ids" id="ids">
+                                    <div class="form-group">
+                                        <td width="15%"><label class="form-label" for="stock_in"><span class="text-danger">*</span> Stock In :</label></td>
+                                        <td colspan="7">
+                                            <input type="number" step="any" value="{{ old('stock_in') }}" class="form-control stock" id="stock_in" name="stock_in">
+                                            @error('stock_in')
+                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                            @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <td width="15%"><label class="form-label" for="unit_price"><span class="text-danger">*</span> Unit Price (RM) :</label></td>
+                                        <td colspan="7">
+                                            <input type="number" step="any" value="{{ old('unit_price') }}" class="form-control price" id="unit_price" name="unit_price">
+                                            @error('unit_price')
+                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                            @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <td width="15%"><label class="form-label" for="purchase_date"><span class="text-danger">*</span> Purchase Date :</label></td>
+                                        <td colspan="7">
+                                            <input type="date" class="form-control purchase" id="purchase_date" name="purchase_date" value="{{ old('purchase_date') }}">
+                                            @error('purchase_date')
+                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                            @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <td width="15%"><label class="form-label" for="trans_date"><span class="text-danger">*</span> Stock In Date :</label></td>
+                                        <td colspan="7">
+                                            <input type="date" class="form-control trans" id="trans_date" name="trans_date" value="{{ old('trans_date') }}">
+                                            @error('trans_date')
+                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                            @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <td width="15%"><label class="form-label" for="lo_no"><span class="text-danger">*</span> L.O. Number :</label></td>
+                                        <td colspan="7">
+                                            <input value="{{ old('lo_no') }}" class="form-control lo" id="lo_no" name="lo_no">
+                                            @error('lo_no')
+                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                            @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <td width="15%"><label class="form-label" for="io_no"><span class="text-danger">*</span> Invoice Number :</label></td>
+                                        <td colspan="7">
+                                            <input value="{{ old('io_no') }}" class="form-control io" id="io_no" name="io_no">
+                                            @error('io_no')
+                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                            @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <td width="15%"><label class="form-label" for="remark"> Remark :</label></td>
+                                        <td colspan="7">
+                                            <textarea rows="5" class="form-control remark" id="remark" name="remark">{{ old('remark') }}</textarea>
+                                            @error('remark')
+                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                            @enderror
+                                        </td>
+                                    </div>
+                                    <div class="footer">
+                                        <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Update</button>
+                                        <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
+                                    </div>
+                                    {!! Form::close() !!}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="crud-modalOut" aria-hidden="true" >
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="card-header bg-secondary text-white">
+                                    <h5 class="card-title w-100"><i class="fal fa-sign-in-alt width-2 fs-xl"></i>EDIT TRANSACTION OUT</h5>
+                                </div>
+                                <div class="modal-body">
+                                    {!! Form::open(['action' => 'StockController@updateTransout', 'method' => 'POST']) !!}
+                                    <input type="hidden" name="ids" id="ids">
+                                    <div class="form-group">
+                                        <td width="15%"><label class="form-label" for="stock_out"><span class="text-danger">*</span> Stock Out :</label></td>
+                                        <td colspan="7">
+                                            <input type="number" step="any" value="{{ old('stock_out') }}" class="form-control stock" id="stock_out" name="stock_out">
+                                            @error('stock_out')
+                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                            @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <td width="15%"><label class="form-label" for="trans_date"><span class="text-danger">*</span> Stock Out Date :</label></td>
+                                        <td colspan="7">
+                                            <input type="date" class="form-control trans" id="trans_date" name="trans_date" value="{{ old('trans_date') }}">
+                                            @error('trans_date')
+                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                            @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <td width="15%"><label class="form-label" for="supply_to"><span class="text-danger">*</span> Supply To :</label></td>
+                                        <td colspan="7">
+                                            <select class="form-control supply" name="supply_to" id="supply_to" >
+                                                <option value=""> Select User </option>
+                                                @foreach ($user as $usr) 
+                                                    <option value="{{ $usr->id }}" {{ old('supply_to') ==  $usr->id  ? 'selected' : '' }}>{{ $usr->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('supply_to')
+                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                            @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <td width="15%"><label class="form-label" for="reason"><span class="text-danger">*</span> Reason :</label></td>
+                                        <td colspan="7">
+                                            <textarea rows="5" class="form-control reason" id="reason" name="reason">{{ old('reason') }}</textarea>
+                                            @error('reason')
+                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                            @enderror
+                                        </td>
+                                    </div>
+                                    <div class="footer">
+                                        <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Update</button>
+                                        <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
+                                    </div>
+                                    {!! Form::close() !!}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
             </div>
         </div>
     </div>
@@ -371,27 +612,50 @@
             $('#crud-modal').modal('show');
         });
 
-        // $('#crud-modal').on('show.bs.modal', function(event) {
-        //     var button = $(event.relatedTarget) 
-        //     var depart = button.data('depart') 
-
-        //     document.getElementById("depart").value = depart;
-        // });
-
         $('#news').click(function () {
             $('#crud-modals').modal('show');
         });
 
-        // $('#crud-modals').on('show.bs.modal', function(event) {
-        //     var button = $(event.relatedTarget) 
-        //     var id = button.data('id') 
-        //     var custodian = button.data('custodian')
-        //     var reason = button.data('reason')
+        $('#supply_to').select2({ 
+            dropdownParent: $('#crud-modals') 
+        }); 
 
-        //     $('.modal-body #ids').val(id); 
-        //     $('.modal-body #custodian').val(custodian); 
-        //     $('.modal-body #reason').val(reason); 
-        // });
+        $('#crud-modalIn').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget) 
+            var id = button.data('id') 
+            var stock = button.data('stock') 
+            var lo = button.data('lo') 
+            var io = button.data('io')
+            var price = button.data('price')
+            var purchase = button.data('purchase')
+            var trans = button.data('trans')
+            var remark = button.data('remark')
+
+            $('.modal-body #ids').val(id); 
+            $('.modal-body .stock').val(stock); 
+            $('.modal-body .lo').val(lo); 
+            $('.modal-body .io').val(io); 
+            $('.modal-body .price').val(price); 
+            $('.modal-body .purchase').val(purchase); 
+            $('.modal-body .trans').val(trans); 
+            $('.modal-body .remark').val(remark); 
+
+        });
+
+        $('#crud-modalOut').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget) 
+            var id = button.data('id') 
+            var stock = button.data('stock') 
+            var reason = button.data('reason') 
+            var supply = button.data('supply')
+            var trans = button.data('trans')
+
+            $('.modal-body #ids').val(id); 
+            $('.modal-body .stock').val(stock); 
+            $('.modal-body .reason').val(reason); 
+            $('.modal-body .supply').val(supply); 
+            $('.modal-body .trans').val(trans); 
+        });
 
     });
 
@@ -399,38 +663,38 @@
     {
         $('#statuss').select2();
 
-        // $('#log thead tr .hasinput').each(function(i)
-        // {
-        //     $('input', this).on('keyup change', function()
-        //     {
-        //         if (table.column(i).search() !== this.value)
-        //         {
-        //             table
-        //                 .column(i)
-        //                 .search(this.value)
-        //                 .draw();
-        //         }
-        //     });
+        $('#log thead tr .hasinput').each(function(i)
+        {
+            $('input', this).on('keyup change', function()
+            {
+                if (table.column(i).search() !== this.value)
+                {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
 
-        //     $('select', this).on('keyup change', function()
-        //     {
-        //         if (table.column(i).search() !== this.value)
-        //         {
-        //             table
-        //                 .column(i)
-        //                 .search(this.value)
-        //                 .draw();
-        //         }
-        //     });
-        // });
+            $('select', this).on('keyup change', function()
+            {
+                if (table.column(i).search() !== this.value)
+                {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
 
-        // var table = $('#log').DataTable({
-        //     columnDefs: [],
-        //         orderCellsTop: true,
-        //         "order": [[ 0, "asc" ]],
-        //         "initComplete": function(settings, json) {
-        //         }
-        // });
+        var table = $('#log').DataTable({
+            columnDefs: [],
+                orderCellsTop: true,
+                "order": [[ 6, "desc" ]],
+                "initComplete": function(settings, json) {
+                }
+        });
 
     });
 

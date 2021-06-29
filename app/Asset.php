@@ -11,8 +11,8 @@ class Asset extends Model
     protected $table = 'inv_asset';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'asset_code', 'asset_name', 'asset_type', 'serial_no', 'model', 'brand', 'total_price', 'lo_no', 'io_no', 'do_no', 'purchase_date', 'vendor_name', 
-        'custodian_id', 'created_by', 'remark', 'status', 'barcode', 'qrcode', 'storage_location'
+        'asset_code', 'finance_code', 'asset_name', 'asset_type', 'serial_no', 'model', 'brand', 'total_price', 'lo_no', 'io_no', 'do_no', 'purchase_date', 'vendor_name', 
+        'custodian_id', 'created_by', 'remark', 'status', 'availability', 'storage_location', 'set_package'
     ];
 
     public function type()
@@ -35,9 +35,9 @@ class Asset extends Model
         return $this->hasOne('App\User', 'id', 'created_by');
     }
 
-    public function invStatus()
+    public function availabilities()
     {
-        return $this->hasOne('App\InventoryStatus', 'id', 'status');
+        return $this->hasOne('App\AssetAvailability', 'id', 'availability');
     }
 
 }

@@ -13,4 +13,9 @@ class AssetDepartment extends Model
     protected $fillable = [
         'department_name'
     ];
+
+    public function custodians()
+    {
+        return $this->hasMany('App\AssetCustodian', 'department_id');
+    }
 }

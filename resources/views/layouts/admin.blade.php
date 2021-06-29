@@ -320,11 +320,13 @@
                                             <span class="nav-link-text" data-i18n="nav.asset">Asset Type</span>
                                         </a>
                                     </li>
+                                    @can('create custodian')
                                     <li>
                                         <a href="/asset-custodian" title="Custodian" data-filter-tags="custodian">
                                             <span class="nav-link-text" data-i18n="nav.custodian">Custodian</span>
                                         </a>
                                     </li>
+                                    @endcan
                                 </ul>
                             </li>
                             @endcan

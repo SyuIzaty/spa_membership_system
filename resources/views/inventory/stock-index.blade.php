@@ -30,29 +30,33 @@
                                 <thead>
                                     <tr class="bg-primary-50 text-center">
                                         <th>#ID</th>
+                                        <th>DEPARTMENT</th>
                                         <th>CODE</th>
                                         <th>NAME</th>
                                         <th>MODEL</th>
                                         <th>BRAND</th>
+                                        <th>CURRENT BALANCE</th>
+                                        <th style="width: 150px">BALANCE STATUS</th>
                                         <th style="width: 150px">STATUS</th>
-                                        <th>CREATED BY</th>
                                         <th>CREATED DATE</th>
                                         <th>ACTION</th>
                                     </tr>
                                     <tr>
                                         <td class="hasinput"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Department"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Code"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Name"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Model"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Brand"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Current Balance"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Balance Status"></td>
                                         <td class="hasinput">
                                             <select id="statuss" name="statuss" class="form-control">
                                                 <option value="">ALL</option>
-                                                <option value="0">UNAVAILABLE</option>
-                                                <option value="1">AVAILABLE</option>
+                                                <option value="1">ACTIVE</option>
+                                                <option value="0">INACTIVE</option>
                                             </select>
                                         </td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Created By"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Created Date"></td>
                                         <td class="hasinput"></td>
                                     </tr>
@@ -61,7 +65,8 @@
                         </div>
                     </div>
                     <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">
-                        <a href="javascript:;" data-toggle="modal" id="new" class="btn btn-primary ml-auto float-right"><i class="fal fa-plus-square"></i> Add New Stock</a>
+                        <a class="btn btn-warning ml-auto float-right mr-2" href="/export-stock"><i class="fal fa-file-excel"></i> Export</a>
+                        <a href="javascript:;" data-toggle="modal" id="new" class="btn btn-primary float-right"><i class="fal fa-plus-square"></i> Add New Stock</a>
                     </div>
                 </div>
             </div>
@@ -78,8 +83,22 @@
                     {!! Form::open(['action' => 'StockController@newStockStore', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                     <p><span class="text-danger">*</span> Required fields</p>
                         <div class="form-group">
+                            <td width="10%"><label class="form-label" for="department_id"><span class="text-danger">*</span> Department :</label></td>
+                            <td colspan="4">
+                                <select name="department_id" id="department_id" class="department form-control">
+                                    <option value="">Select Department</option>
+                                    @foreach ($department as $depart) 
+                                        <option value="{{ $depart->id }}" {{ old('department_id') ? 'selected' : '' }}>{{ $depart->department_name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('department_id')
+                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                @enderror
+                            </td>
+                        </div>
+                        <div class="form-group">
                             <td width="10%"><label class="form-label" for="stock_name"><span class="text-danger">*</span> Stock Name :</label></td>
-                                <td colspan="4"><input value="{{ old('stock_name') }}" class="form-control" id="stock_name" name="stock_name">
+                                <td colspan="4"><input value="{{ old('stock_name') }}" class="form-control" id="stock_name" name="stock_name" style="text-transform: uppercase">
                                     @error('stock_name')
                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                     @enderror
@@ -88,7 +107,7 @@
                         </div>
                         <div class="form-group">
                             <td width="10%"><label class="form-label" for="model"><span class="text-danger">*</span> Model :</label></td>
-                                <td colspan="4"><input value="{{ old('model') }}" class="form-control" id="model" name="model">
+                                <td colspan="4"><input value="{{ old('model') }}" class="form-control" id="model" name="model" style="text-transform: uppercase">
                                     @error('model')
                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                     @enderror
@@ -97,7 +116,7 @@
                         </div>
                         <div class="form-group">
                             <td width="10%"><label class="form-label" for="brand"> Brand :</label></td>
-                                <td colspan="4"><input value="{{ old('brand') }}" class="form-control" id="brand" name="brand">
+                                <td colspan="4"><input value="{{ old('brand') }}" class="form-control" id="brand" name="brand" style="text-transform: uppercase">
                                     @error('brand')
                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                     @enderror
@@ -105,13 +124,12 @@
                             </td>
                         </div>
                         <div class="form-group">
-                            <td width="10%"><label class="form-label" for="status"> Availability :</label></td>
+                            <td width="10%"><label class="form-label" for="status"><span class="text-danger">*</span> Status :</label></td>
                             <td colspan="4">
-                                <select class="form-control stat" name="status" id="status" >
+                                <select class="form-control stat" id="status" name="status">
                                     <option value="">Select Status</option>
-                                    @foreach ($status as $stat) 
-                                        <option value="{{ $stat->id }}" {{ old('status') ==  $stat->id  ? 'selected' : '' }}>{{ $stat->status_name }}</option>
-                                    @endforeach
+                                    <option value="1" {{ old('status') == '1' ? 'selected':''}} >Active</option>
+                                    <option value="0" {{ old('status') == '0' ? 'selected':''}} >Inactive</option>
                                 </select>
                                 @error('status')
                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
@@ -121,7 +139,7 @@
                         <div class="form-group">
                             <td width="10%"><label class="form-label" for="upload_image"> Image :</label></td>
                             <td colspan="4">
-                                <input type="file" class="form-control" id="upload_image" name="upload_image">
+                                <input type="file" class="form-control" id="upload_image" name="upload_image[]" multiple>
                                 @error('upload_image')
                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                 @enderror
@@ -147,7 +165,7 @@
     {
         $('#statuss').select2();
 
-        $('.stat').select2({ 
+        $('.stat, .department').select2({ 
             dropdownParent: $('#crud-modal') 
         }); 
 
@@ -190,17 +208,19 @@
             },
             columns: [
                     { className: 'text-center', data: 'id', name: 'id' },
+                    { className: 'text-center', data: 'department_id', name: 'department_id' },
                     { className: 'text-center', data: 'stock_code', name: 'stock_code' },
                     { className: 'text-center', data: 'stock_name', name: 'stock_name' },
                     { className: 'text-center', data: 'model', name: 'model' },
                     { className: 'text-center', data: 'brand', name: 'brand' },
+                    { className: 'text-center', data: 'current_balance', name: 'current_balance' },
+                    { className: 'text-center', data: 'balance_status', name: 'balance_status' },
                     { className: 'text-center', data: 'status', name: 'status' },
-                    { className: 'text-center', data: 'created_by', name: 'created_by'},
                     { className: 'text-center', data: 'created_at', name: 'created_at'},
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
-                "order": [[ 7, "desc" ]],
+                "order": [[ 9, "desc" ]],
                 "initComplete": function(settings, json) {
 
                 } 

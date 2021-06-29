@@ -190,7 +190,7 @@
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                     @enderror
                                                                 </td>
-                                                                <td width="10%"><label class="form-label" for="return_date"> Return Date :</label></td>
+                                                                <td width="10%"><label class="form-label" for="return_date"><span class="text-danger">*</span> Return Date :</label></td>
                                                                 <td colspan="3"><input type="date" class="form-control" id="return_date" name="return_date" value="{{ old('return_date') }}">
                                                                     @error('return_date')
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
@@ -200,10 +200,10 @@
                                                         </tr>
                                                         <tr>
                                                             <div class="form-group">
-                                                                <td width="10%"><label class="form-label" for="remark"> Remark :</label></td>
+                                                                <td width="10%"><label class="form-label" for="reason"><span class="text-danger">*</span> Reason :</label></td>
                                                                 <td colspan="6">
-                                                                    <textarea rows="5" class="form-control" id="remark" name="remark"></textarea>
-                                                                    @error('remark')
+                                                                    <textarea rows="5" class="form-control" id="reason" name="reason"></textarea>
+                                                                    @error('reason')
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                     @enderror
                                                                 </td>

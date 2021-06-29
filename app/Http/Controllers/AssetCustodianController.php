@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\AssetCustodian;
 use App\AssetDepartment;
+use App\AssetType;
 use App\Asset;
 use App\User;
 use Session;
@@ -28,7 +29,7 @@ class AssetCustodianController extends Controller
                 ->groupBy('a.id')
                 ->get();
          
-        return view('asset-custodian.index', compact('department'));
+        return view('asset-custodian.index', compact('department'))->with('no', 1);
     }
 
     public function addDepartment(Request $request)

@@ -11,8 +11,13 @@ class Stock extends Model
     protected $table = 'inv_stock';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'stock_code', 'stock_name', 'model', 'brand', 'status', 'created_by'
+        'stock_code', 'stock_name', 'model', 'brand', 'status', 'created_by', 'department_id'
     ];
+
+    public function type()
+    {
+        return $this->hasOne('App\AssetType', 'department_id');
+    }
 
     public function user()
     {
@@ -21,11 +26,11 @@ class Stock extends Model
 
     public function transaction()
     {
-        return $this->hasMany('App\StockTransaction','stock_id');  
+        return $this->hasMany('App\StockTransaction','stock_id')->orderBy('trans_date', 'asc');  
     }
 
-    public function invStatus()
+    public function departments()
     {
-        return $this->hasOne('App\InventoryStatus', 'id', 'status');
+        return $this->hasOne('App\AssetDepartment', 'id', 'department_id');
     }
 }

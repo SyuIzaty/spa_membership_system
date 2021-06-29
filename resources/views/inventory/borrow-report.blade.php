@@ -4,14 +4,14 @@
 <main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
         <div class="subheader">
             <h1 class="subheader-title">
-                <i class='subheader-icon fal fa-search'></i> ASSET REPORT
+                <i class='subheader-icon fal fa-search'></i> BORROW REPORT
             </h1>
         </div>
         <div class="row">
             <div class="col-xl-12">
                 <div id="panel-1" class="panel">
                     <div class="panel-hdr">
-                        <h2>EXPORT ASSET REPORT</h2>
+                        <h2>EXPORT BORROW REPORT</h2>
                         <div class="panel-toolbar">
                             <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
                             <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
@@ -23,32 +23,22 @@
 
                             <div class="row">
                                 <div class="col-md-6 mt-3">
-                                    <label>Department</label>
-                                    <select class="selectfilter form-control" name="department" id="department">
-                                        <option value="">Select Department</option>
+                                    <label>Asset</label>
+                                    <select class="selectfilter form-control" name="asset" id="asset">
+                                        <option value="">Select Asset</option>
                                         <option>All</option>
-                                        @foreach($department as $depart)
-                                            <option value="{{$depart->id}}" <?php if($request->department == $depart->id) echo "selected"; ?> >{{strtoupper($depart->department_name)}}</option>
+                                        @foreach($asset as $assets)
+                                            <option value="{{$assets->id}}" <?php if($request->asset == $assets->id) echo "selected"; ?> >{{strtoupper($assets->asset_code)}} - {{strtoupper($assets->asset_name)}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="col-md-6 mt-3">
-                                    <label>Availability</label>
-                                    <select class="selectfilter form-control" name="availability" id="availability">
-                                        <option value="">Select Availability</option>
+                                    <label>Borrower</label>
+                                    <select class="selectfilter form-control" name="borrower" id="borrower">
+                                        <option value="">Select Borrower</option>
                                         <option>All</option>
-                                        @foreach($availability as $available)
-                                            <option value="{{$available->id}}" {{ $request->availability == $available->id  ? 'selected' : '' }}>{{strtoupper($available->name)}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-6 mt-3">
-                                    <label>Type</label>
-                                    <select class="selectfilter form-control" name="type" id="type">
-                                        <option value="">Select Type</option>
-                                        <option>All</option>
-                                        @foreach($type as $types)
-                                            <option value="{{$types->id}}" <?php if($request->type == $types->id) echo "selected"; ?> >{{$types->asset_type}}</option>
+                                        @foreach($borrower as $borrowers)
+                                            <option value="{{$borrowers->borrower_id}}" {{ $request->borrower == $borrowers->borrower_id  ? 'selected' : '' }}>{{strtoupper($borrowers->borrower->staff_name)}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -57,8 +47,9 @@
                                     <select class="selectfilter form-control" name="status" id="status">
                                         <option value="">Select Status</option>
                                         <option>All</option>
-                                        <option value="1" {{ $request->status == '1' ? 'selected' : '' }}>ACTIVE</option>
-                                        <option value="0" {{ $request->status == '0' ? 'selected' : '' }}>INACTIVE</option>
+                                        @foreach($status as $statuss)
+                                            <option value="{{$statuss->id}}" <?php if($request->status == $statuss->id) echo "selected"; ?> >{{$statuss->status_name}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -68,27 +59,20 @@
                                 <table class="table table-bordered" id="rep">
                                     <thead>
                                         <tr class="bg-primary-50 text-center">
-                                            <th>ID</th>
-                                            <th>FINANCE CODE</th>
+                                            <th>#ID</th>
+                                            <th>BORROWER</th>
+                                            <th>ASSET TYPE</th>
                                             <th>ASSET CODE</th>
                                             <th>ASSET NAME</th>
-                                            <th>ASSET TYPE</th>
-                                            <th>SERIAL NO.</th>
-                                            <th>MODEL</th>
-                                            <th>BRAND</th>
-                                            <th>STATUS</th>
-                                            <th>AVAILABILITY</th>
-                                            <th>SET</th>
-                                            <th>PRICE (RM)</th>
-                                            <th>L.O. NO.</th>
-                                            <th>D.O. NO.</th>
-                                            <th>INVOICE NO.</th>
-                                            <th>PURCHASE DATE</th>
-                                            <th>VENDOR</th>
-                                            <th>CUSTODIAN</th>
-                                            <th>LOCATION</th>
-                                            <th>CREATED BY</th>
+                                            <th>REASON</th>
+                                            <th>BORROW DATE</th>
+                                            <th>RETURN DATE</th>
+                                            <th>ACTUAL RETURN DATE</th>
+                                            <th>VERIFIED BY</th>
                                             <th>REMARK</th>
+                                            <th style="width: 150px">STATUS</th>
+                                            <th>CREATED BY</th>
+                                            <th>CREATED AT</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -117,9 +101,9 @@
     
     $(document).ready(function()
     {
-        $('#department, #availability, #type, #status').select2();
+        $('#asset, #borrower, #status').select2();
 
-        function createDatatable(department = null, availability = null, type = null, status = null)
+        function createDatatable(asset = null, borrower = null, status = null)
         {
             $('#rep').DataTable().destroy();
             var table = $('#rep').DataTable({
@@ -127,40 +111,33 @@
             // serverSide: true,
             autowidth: false,
             ajax: {
-                url: "/data_assetexport",
-                data: {department:department, availability:availability, type:type, status:status},
+                url: "/data_borrowexport",
+                data: {asset:asset, borrower:borrower, status:status},
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
             "dom" : "Bltp",
             "lengthMenu": [[10, 25, 50, 0], [10, 25, 50, "All"]],
             iDisplayLength: 10,
-            columnDefs: [{ "visible": false,"targets":[19]}],
+            columnDefs: [{ "visible": false,"targets":[13]}],
             columns: [
                     { data: 'id', name: 'id' },
-                    { data: 'finance_code', name: 'finance_code' },
+                    { data: 'borrower_id', name: 'borrower_id' },
+                    { data: 'asset_type', name: 'asset_type' },
                     { data: 'asset_code', name: 'asset_code' },
                     { data: 'asset_name', name: 'asset_name' },
-                    { data: 'asset_type', name: 'asset_type' },
-                    { data: 'serial_no', name: 'serial_no' },
-                    { data: 'model', name: 'model' },
-                    { data: 'brand', name: 'brand' },
-                    { data: 'status', name: 'status' },
-                    { data: 'availability', name: 'availability' },
-                    { data: 'set_package', name: 'set_package' },
-                    { data: 'total_price', name: 'total_price' },
-                    { data: 'lo_no', name: 'lo_no' },
-                    { data: 'do_no', name: 'do_no' },
-                    { data: 'io_no', name: 'io_no' },
-                    { data: 'purchase_date', name: 'purchase_date' },
-                    { data: 'vendor_name', name: 'vendor_name' },
-                    { data: 'custodian_id', name: 'custodian_id' },
-                    { data: 'storage_location', name: 'storage_location' },
-                    { data: 'created_by', name: 'created_by' },
+                    { data: 'reason', name: 'reason' },
+                    { data: 'borrow_date', name: 'borrow_date' },
+                    { data: 'return_date', name: 'return_date' },
+                    { data: 'actual_return_date', name: 'actual_return_date' },
+                    { data: 'verified_by', name: 'verified_by' },
                     { data: 'remark', name: 'remark' },
+                    { data: 'status', name: 'status' },
+                    { data: 'created_by', name: 'created_by' },
+                    { data: 'created_at', name: 'created_at' },
                 ],
                 orderCellsTop: true,
-                "order": [[ 0, "asc" ]],
+                "order": [[ 0, "desc" ]],
                 "initComplete": function(settings, json) {
                 },
                 select : true,
@@ -182,11 +159,10 @@
         }
 
         $('.selectfilter').on('change',function(){
-            var department = $('#department').val();
-            var availability = $('#availability').val();
-            var type = $('#type').val();
+            var asset = $('#asset').val();
+            var borrower = $('#borrower').val();
             var status = $('#status').val();
-            createDatatable(department,availability,type,status);
+            createDatatable(asset,borrower,status);
         });
 
     });

@@ -15,37 +15,46 @@
                     <thead>
                         <tr>
                             <div class="form-group">
-                                <td rowspan="4" align="center" style="vertical-align: middle">
-                                    @if(isset($image))
-                                        <img src="/get-file-images/{{ $image->upload_image }}" style="width:200px; height:200px;" class="img-fluid">
+                                <td style="vertical-align: middle" width="15%"><label class="form-label" for="stock_code">Stock Code : </label></td>
+                                <td style="vertical-align: middle" colspan="3">{{ isset($stock->stock_code) ? $stock->stock_code : '--' }}</td>
+                                <td style="vertical-align: middle" width="15%"><label class="form-label" for="stock_name">Stock Name:</label></td>
+                                <td style="vertical-align: middle" colspan="3">{{ isset($stock->stock_name) ? strtoupper($stock->stock_name) : '--' }}</td>
+                            </div>
+                        </tr>
+                        <tr>
+                            <div class="form-group">
+                                <td style="vertical-align: middle" width="15%"><label class="form-label" for="model">Model:</label></td>
+                                <td style="vertical-align: middle" colspan="3">{{ isset($stock->model) ? strtoupper($stock->model) : '--' }}</td>
+                                <td style="vertical-align: middle" width="15%"><label class="form-label" for="brand"> Brand : </label></td>
+                                <td style="vertical-align: middle" colspan="3">{{ isset($stock->brand) ? strtoupper($stock->brand) : '--' }}</td>
+                            </div>
+                        </tr>
+                        <tr>
+                            <div class="form-group">
+                                <td style="vertical-align: middle" width="15%"><label class="form-label" for="status"> Status:</label></td>
+                                <td style="vertical-align: middle" colspan="3">
+                                    @if ($stock->status == '1')
+                                        ACTIVE
                                     @else
-                                        <img src="{{ asset('img/default.png') }}" style="height: 200px; width: 200px;" class="img-fluid">
+                                        INACTIVE
+                                    @endif
+                                </td>
+                                <td style="vertical-align: middle" width="15%"><label class="form-label" for="availability"> Balance Status : </label></td>
+                                <td style="vertical-align: middle" colspan="3">
+                                    @if($total_bal <= 0)
+                                        <b style="color:red">OUT OF STOCK</b>
+                                    @else 
+                                        <b style="color:green">READY STOCK</b>
                                     @endif
                                 </td>
                             </div>
                         </tr>
                         <tr>
                             <div class="form-group">
-                                <td style="vertical-align: middle" width="15%"><label class="form-label" for="stock_code">Stock Code : </label></td>
-                                <td style="vertical-align: middle" colspan="3">{{ isset($stock->stock_code) ? $stock->stock_code : '--' }}</td>
-                                <td style="vertical-align: middle" width="15%"><label class="form-label" for="stock_name">Stock Name:</label></td>
-                                <td style="vertical-align: middle" colspan="3">{{ isset($stock->stock_name) ? $stock->stock_name : '--' }}</td>
-                            </div>
-                        </tr>
-                        <tr>
-                            <div class="form-group">
-                                <td style="vertical-align: middle" width="15%"><label class="form-label" for="model">Model:</label></td>
-                                <td style="vertical-align: middle" colspan="3">{{ isset($stock->model) ? $stock->model : '--' }}</td>
-                                <td style="vertical-align: middle" width="15%"><label class="form-label" for="brand"> Brand : </label></td>
-                                <td style="vertical-align: middle" colspan="3">{{ isset($stock->brand) ? $stock->brand : '--' }}</td>
-                            </div>
-                        </tr>
-                        <tr>
-                            <div class="form-group">
-                                <td style="vertical-align: middle" width="15%"><label class="form-label" for="status"> Availability:</label></td>
-                                <td style="vertical-align: middle" colspan="3">{{ isset($stock->invStatus->status_name) ? $stock->invStatus->status_name : '--' }}</td>
                                 <td style="vertical-align: middle" width="15%"><label class="form-label" for="created_by"> Created By : </label></td>
                                 <td style="vertical-align: middle" colspan="3">{{ isset($stock->user->name) ? $stock->user->name : '--' }}</td>
+                                <td style="vertical-align: middle" width="15%"><label class="form-label" for="created_at"> Created Date : </label></td>
+                                <td style="vertical-align: middle" colspan="3">{{ isset($stock->created_at) ? date(' d/m/Y | h:i:s A', strtotime($stock->created_at) ) : '--' }}</td>
                             </div>
                         </tr>
                     </thead>
@@ -56,27 +65,32 @@
                 <table id="log" class="table table-bordered table-hover table-striped w-100">
                     <thead>
                         <tr align="center" class="bg-primary-50">
-                            <th style="vertical-align: middle">No.</th>
-                            <th style="width:90px; vertical-align: middle" width="90">StockIn (+)</th>
-                            <th style="width:90px; vertical-align: middle">StockOut (-)</th>
+                            <th style="vertical-align: middle">#ID</th>
+                            <th style="vertical-align: middle">StockIn (+)</th>
+                            <th style="vertical-align: middle">StockOut (-)</th>
                             <th style="vertical-align: middle">Balance (=)</th>
                             <th style="vertical-align: middle">UnitPrice (RM)</th>
                             <th style="vertical-align: middle">Status</th>
+                            <th style="vertical-align: middle">Transaction Date</th>
                             <th style="vertical-align: middle">Remark</th>
                             <th style="vertical-align: middle">L.O. Number</th>
                             <th style="vertical-align: middle">Invoice Number</th>
                             <th style="vertical-align: middle">Purchase Date</th>
-                            <th style="vertical-align: middle">Created Date</th>
+                            <th style="vertical-align: middle">Supply To</th>
+                            <th style="vertical-align: middle">Reason</th>
                             <th style="vertical-align: middle">Created By</th>
+                            <th style="vertical-align: middle">Created Date</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @php $total_bal = 0; @endphp
+
                         @foreach($stock->transaction as $list)
                         <tr align="center" class="data-row">
-                            <td>{{ $no++ }}</td>
-                            <td>{{ isset($list->trans_in) ? $list->trans_in : '--'}}</td>
-                            <td>{{ isset($list->trans_out) ? $list->trans_out : '--'}}</td>
-                            <td>{{ isset($list->current_balance) ? $list->current_balance : '--'}}</td>
+                            <td>{{ isset($list->id) ? $list->id : '--'}}</td>
+                            <td>{{ isset($list->stock_in) ? $list->stock_in : '--'}}</td>
+                            <td>{{ isset($list->stock_out) ? $list->stock_out : '--'}}</td>
+                            <td>{{ $total_bal += ($list->stock_in - $list->stock_out) }}</td>
                             <td>{{ isset($list->unit_price) ? $list->unit_price : '--'}}</td>
                             @if($list->status == '1')
                                 <td style="background-color: #1dc9b7">
@@ -88,12 +102,15 @@
                                 </td>
                             @endif
                             </td>
+                            <td>{{ isset($list->trans_date) ? date('Y-m-d | h:i A', strtotime($list->trans_date)) : '--' }}</td>
                             <td>{{ isset($list->remark) ? $list->remark : '--'}}</td>
                             <td>{{ isset($list->lo_no) ? $list->lo_no : '--'}}</td>
                             <td>{{ isset($list->io_no) ? $list->io_no : '--'}}</td>
-                            <td>{{ isset($list->trans_date) ? date('d/m/Y', strtotime($list->trans_date)) : '--' }}</td>
-                            <td>{{ isset($list->created_at) ? date('d/m/Y', strtotime($list->created_at)) : '--' }}</td>
+                            <td>{{ isset($list->purchase_date) ? date('Y-m-d', strtotime($list->purchase_date)) : '--' }}</td>
+                            <td>{{ isset($list->users->name) ? strtoupper($list->users->name) : '--' }}</td>
+                            <td>{{ isset($list->reason) ? $list->reason : '--'}}</td>
                             <td>{{ isset($list->user->name) ? strtoupper($list->user->name) : '--' }}</td>
+                            <td>{{ isset($list->created_at) ? date('Y-m-d |  h:i A', strtotime($list->created_at)) : '--' }}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -111,6 +128,16 @@
 
 @section('script')
 <script>
-    //
+    // $(document).ready(function()
+    // {
+    //     var table = $('#log').DataTable({
+    //         columnDefs: [],
+    //             orderCellsTop: true,
+    //             "order": [[ 6, "desc" ]],
+    //             "initComplete": function(settings, json) {
+    //             }
+    //     });
+
+    // });
 </script>
 @endsection
