@@ -232,6 +232,7 @@ Route::get('/vaccineIndex','VaccineController@vaccineIndex')->name('vaccineIndex
 Route::post('vaccineList', 'VaccineController@data_vaccine');
 Route::get('/vaccine-detail/{id}', 'VaccineController@vaccineDetail')->name('vaccineDetail');
 Route::get('/export-vaccine', 'VaccineController@exportVaccine');
+Route::delete('deleteVaccine/{id}', 'VaccineController@deleteVaccine')->name('deleteVaccine');
 
 // Change Password
 Route::get('change-password','ChangePasswordController@index');

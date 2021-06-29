@@ -100,7 +100,7 @@ class VaccineController extends Controller
         ->addColumn('action', function ($vaccine) {
             
             return '<a href="/vaccine-detail/' . $vaccine->id.'" class="btn btn-sm btn-info"><i class="fal fa-eye"></i></a>
-                <button class="btn btn-sm btn-danger btn-delete" data-remote="/vaccineList/' . $vaccine->id . '"><i class="fal fa-trash"></i></button>';
+                <button class="btn btn-sm btn-danger btn-delete" data-remote="/deleteVaccine/' . $vaccine->id . '"><i class="fal fa-trash"></i></button>';
         })
 
         ->editColumn('created_at', function ($vaccine) {
@@ -320,6 +320,14 @@ class VaccineController extends Controller
 
        Session::flash('message', 'Your Vaccine Detail Successfully Recorded');
        return redirect('/vaccineForm');
+    }
+
+    public function deleteVaccine($id)
+    {
+        $exist = Vaccine::find($id);
+        $exist->delete();
+
+        return redirect('/vaccineIndex');
     }
 
     /**
