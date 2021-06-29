@@ -47,14 +47,18 @@ class VaccineController extends Controller
         }
         if($request->q2 == 'Y') 
         {
-            $validate['q3'] = 'required'; 
-            $validate['q3_date'] = 'required'; 
+            $validate['q3'] = 'required';  
         } 
         if($request->q3 == 'Y') 
         {
             $validate['q4'] = 'required';
-            $validate['q4_date'] = 'required';
+            $validate['q3_date'] = 'required';
             $validate['q3_effect'] = 'required';
+        }
+        if($request->q4 == 'Y') 
+        {
+            $validate['q4_date'] = 'required';
+            $validate['q4_effect'] = 'required';
         }
         if($request->q3_effect == 'Y') 
         {
@@ -213,13 +217,17 @@ class VaccineController extends Controller
         if($request->q2s == 'Y') 
         {
             $validate['q3s'] = 'required'; 
-            $validate['q3_dates'] = 'required'; 
         } 
         if($request->q3s == 'Y') 
         {
             $validate['q4s'] = 'required';
-            $validate['q4_dates'] = 'required';
+            $validate['q3_dates'] = 'required';
             $validate['q3_effects'] = 'required';
+        }
+        if($request->q4s == 'Y') 
+        {
+            $validate['q4_dates'] = 'required';
+            $validate['q4_effects'] = 'required';
         }
         if($request->q3_effects == 'Y') 
         {
