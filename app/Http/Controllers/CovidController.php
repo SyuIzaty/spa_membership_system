@@ -369,11 +369,11 @@ class CovidController extends Controller
     {
         if( Auth::user()->hasRole('HR Admin') )
         { 
-            $declare = Covid::where('user_position', '!=', 'STD')->whereDate('created_at', '!=', Carbon::now()->toDateString())->with(['user'])->get();
+            $declare = Covid::where('user_position', '!=', 'STD')->whereDate('created_at', '!=', Carbon::now()->toDateString())->with(['user'])->select('cdd_covid_declarations.*');
         }
         else
         {
-            $declare = Covid::where('user_position', 'STD')->whereDate('created_at', '!=', Carbon::now()->toDateString())->with(['user'])->get();
+            $declare = Covid::where('user_position', 'STD')->whereDate('created_at', '!=', Carbon::now()->toDateString())->with(['user'])->select('cdd_covid_declarations.*');
         }
 
         return datatables()::of($declare)

@@ -104,7 +104,7 @@
                     { className: 'text-center', data: 'user_name', name: 'user_name' },
                     { className: 'text-center', data: 'user_position', name: 'user_position' },
                     { className: 'text-center', data: 'category', name: 'category' },
-                    { className: 'text-center', data: 'date', name: 'date' },
+                    { className: 'text-center', data: 'date', name: 'created_at' },
                     { className: 'text-center', data: 'time', name: 'time' },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
