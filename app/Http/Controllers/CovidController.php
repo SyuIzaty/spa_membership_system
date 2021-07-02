@@ -295,11 +295,11 @@ class CovidController extends Controller
     {
         if( Auth::user()->hasRole('HR Admin') )
         { 
-            $declare = Covid::where('user_position', '!=', 'STD')->whereDate('created_at', '=', Carbon::now()->toDateString())->with(['user'])->get();
+            $declare = Covid::where('user_position', '!=', 'STD')->whereDate('created_at', '=', Carbon::now()->toDateString())->with(['user'])->select('cdd_covid_declarations.*');
         }
         else
         {
-            $declare = Covid::where('user_position', 'STD')->whereDate('created_at', '=', Carbon::now()->toDateString())->with(['user'])->get();
+            $declare = Covid::where('user_position', 'STD')->whereDate('created_at', '=', Carbon::now()->toDateString())->with(['user'])->select('cdd_covid_declarations.*');
         }
 
         return datatables()::of($declare)
@@ -317,7 +317,7 @@ class CovidController extends Controller
 
         ->editColumn('date', function ($declare) {
 
-            return strtoupper(date(' j F Y', strtotime($declare->created_at) ));
+            return strtoupper(date(' Y-m-d ', strtotime($declare->created_at) ));
         })
 
         ->editColumn('time', function ($declare) {
@@ -340,13 +340,8 @@ class CovidController extends Controller
                 return 'VISITOR';
             }
         })
-
-        ->editColumn('follow_up', function ($declare) {
-
-            return isset($declare->follow_up) ? $declare->follow_up : '<div style="color:red;" >--</div>';
-        })
         
-        ->rawColumns(['action', 'date', 'time', 'user_name', 'follow_up'])
+        ->rawColumns(['action', 'date', 'time', 'user_name'])
         ->addIndexColumn()
         ->make(true);
     }
@@ -391,7 +386,7 @@ class CovidController extends Controller
 
         ->editColumn('date', function ($declare) {
 
-            return strtoupper(date(' j F Y', strtotime($declare->created_at) ));
+            return strtoupper(date(' Y-m-d ', strtotime($declare->created_at) ));
         })
 
         ->editColumn('time', function ($declare) {
@@ -414,13 +409,8 @@ class CovidController extends Controller
                 return 'VISITOR';
             }
         })
-
-        ->editColumn('follow_up', function ($declare) {
-
-            return isset($declare->follow_up) ? $declare->follow_up : '<div style="color:red;" >--</div>';
-        })
         
-        ->rawColumns(['action', 'date', 'time', 'user_name', 'follow_up'])
+        ->rawColumns(['action', 'date', 'time', 'user_name'])
         ->addIndexColumn()
         ->make(true);
     }
@@ -433,7 +423,7 @@ class CovidController extends Controller
     public function data_selfHistory()
     {
 
-        $declare = Covid::whereDate('created_at', '!=', now()->toDateString())->where('user_id', Auth::user()->id)->get();
+        $declare = Covid::whereDate('created_at', '!=', now()->toDateString())->where('user_id', Auth::user()->id)->select('cdd_covid_declarations.*');
 
         return datatables()::of($declare)
         ->addColumn('action', function ($declare) {
@@ -443,47 +433,47 @@ class CovidController extends Controller
 
         ->editColumn('q1', function ($declare) {
 
-            return isset($declare->q1) ? $declare->q1 : '<div style="color:red;" >--</div>';
+            return $declare->q1 ?? '<div style="color:red;" >--</div>';
         })
 
         ->editColumn('q2', function ($declare) {
 
-            return isset($declare->q2) ? $declare->q2 : '<div style="color:red;" >--</div>';
+            return $declare->q2 ?? '<div style="color:red;" >--</div>';
         })
 
         ->editColumn('q3', function ($declare) {
 
-            return isset($declare->q3) ? $declare->q3 : '<div style="color:red;" >--</div>';
+            return $declare->q3 ?? '<div style="color:red;" >--</div>';
         })
 
         ->editColumn('q4a', function ($declare) {
 
-            return isset($declare->q4a) ? $declare->q4a : '<div style="color:red;" >--</div>';
+            return $declare->q4a ?? '<div style="color:red;" >--</div>';
         })
 
         ->editColumn('q4b', function ($declare) {
 
-            return isset($declare->q4b) ? $declare->q4b : '<div style="color:red;" >--</div>';
+            return $declare->q4b ?? '<div style="color:red;" >--</div>';
         })
 
         ->editColumn('q4c', function ($declare) {
 
-            return isset($declare->q4c) ? $declare->q4c : '<div style="color:red;" >--</div>';
+            return $declare->q4c ?? '<div style="color:red;" >--</div>';
         })
 
         ->editColumn('q4d', function ($declare) {
 
-            return isset($declare->q4d) ? $declare->q4d : '<div style="color:red;" >--</div>';
+            return $declare->q4d ?? '<div style="color:red;" >--</div>';
         })
 
         ->editColumn('date', function ($declare) {
 
-            return strtoupper(date(' j F Y', strtotime($declare->created_at) ));
+            return strtoupper(date(' Y-m-d ', strtotime($declare->created_at) )) ?? '<div style="color:red;" >--</div>';
         })
 
         ->editColumn('time', function ($declare) {
 
-            return date(' h:i:s A', strtotime($declare->created_at) );
+            return date(' h:i:s A', strtotime($declare->created_at) ) ?? '<div style="color:red;" >--</div>';
         })
         
         ->rawColumns(['action', 'date', 'time', 'q1', 'q2', 'q3', 'q4a', 'q4b', 'q4c', 'q4d'])
@@ -508,11 +498,11 @@ class CovidController extends Controller
 
         if( Auth::user()->hasRole('HR Admin') )
         { 
-            $declare = Covid::where('user_position', '!=', 'STD')->where('category', 'A')->where( 'declare_date', '>', Carbon::now()->subDays(14))->with(['user'])->get();
+            $declare = Covid::where('user_position', '!=', 'STD')->where('category', 'A')->where( 'declare_date', '>', Carbon::now()->subDays(14))->select('cdd_covid_declarations.*');
         }
         else
         {
-            $declare = Covid::where('user_position', 'STD')->where('category', 'A')->where( 'declare_date', '>', Carbon::now()->subDays(14))->with(['user'])->get();
+            $declare = Covid::where('user_position', 'STD')->where('category', 'A')->where( 'declare_date', '>', Carbon::now()->subDays(14))->select('cdd_covid_declarations.*');
         }
 
         return datatables()::of($declare)
@@ -560,7 +550,7 @@ class CovidController extends Controller
 
         ->editColumn('date', function ($declare) {
 
-            return strtoupper(date(' j F Y', strtotime($declare->declare_date) ));
+            return strtoupper(date(' Y-m-d ', strtotime($declare->declare_date) ));
         })
 
         ->editColumn('time', function ($declare) {
@@ -568,12 +558,7 @@ class CovidController extends Controller
             return date(' h:i:s A', strtotime($declare->declare_time) );
         })
 
-        ->editColumn('follow_up', function ($declare) {
-
-            return isset($declare->follow_up) ? $declare->follow_up : '<div style="color:red;" >--</div>';
-        })
-        
-        ->rawColumns(['action', 'date', 'time', 'quarantine_day', 'follow_up'])
+        ->rawColumns(['action', 'date', 'time', 'quarantine_day'])
         ->addIndexColumn()
         ->make(true);
     }
@@ -588,11 +573,11 @@ class CovidController extends Controller
 
         if( Auth::user()->hasRole('HR Admin') )
         { 
-            $declare = Covid::where('user_position', '!=', 'STD')->where('category', 'B')->where( 'declare_date', '>', Carbon::now()->subDays(10))->with(['user'])->get();
+            $declare = Covid::where('user_position', '!=', 'STD')->where('category', 'B')->where( 'declare_date', '>', Carbon::now()->subDays(10))->select('cdd_covid_declarations.*');
         }
         else
         {
-           $declare = Covid::where('user_position', 'STD')->where('category', 'B')->where( 'declare_date', '>', Carbon::now()->subDays(10))->with(['user'])->get();
+           $declare = Covid::where('user_position', 'STD')->where('category', 'B')->where( 'declare_date', '>', Carbon::now()->subDays(10))->select('cdd_covid_declarations.*');
         }
 
         return datatables()::of($declare)
@@ -640,20 +625,15 @@ class CovidController extends Controller
 
         ->editColumn('date', function ($declare) {
 
-            return strtoupper(date(' j F Y', strtotime($declare->declare_date) ));
+            return strtoupper(date(' Y-m-d ', strtotime($declare->declare_date) ));
         })
 
         ->editColumn('time', function ($declare) {
 
             return date(' h:i:s A', strtotime($declare->declare_time) );
         })
-
-        ->editColumn('follow_up', function ($declare) {
-
-            return isset($declare->follow_up) ? $declare->follow_up : '<div style="color:red;" >--</div>';
-        })
         
-        ->rawColumns(['action', 'date', 'time', 'quarantine_day', 'follow_up'])
+        ->rawColumns(['action', 'date', 'time', 'quarantine_day'])
         ->addIndexColumn()
         ->make(true);
     }
@@ -722,11 +702,11 @@ class CovidController extends Controller
     {
         if( Auth::user()->hasRole('HR Admin') )
         { 
-            $declare = Covid::where('user_position', '!=', 'STD')->where('category', 'C')->whereDate('declare_date', '=', Carbon::now()->toDateString())->with(['user'])->get();
+            $declare = Covid::where('user_position', '!=', 'STD')->where('category', 'C')->whereDate('declare_date', '=', Carbon::now()->toDateString())->select('cdd_covid_declarations.*');
         }
         else
         {
-            $declare = Covid::where('user_position', 'STD')->where('category', 'C')->whereDate('declare_date', '=', Carbon::now()->toDateString())->with(['user'])->get();
+            $declare = Covid::where('user_position', 'STD')->where('category', 'C')->whereDate('declare_date', '=', Carbon::now()->toDateString())->select('cdd_covid_declarations.*');
         }
 
         return datatables()::of($declare)
@@ -755,7 +735,7 @@ class CovidController extends Controller
 
         ->editColumn('date', function ($declare) {
 
-            return strtoupper(date(' j F Y', strtotime($declare->declare_date) ));
+            return strtoupper(date(' Y-m-d ', strtotime($declare->declare_date) ));
         })
 
         ->editColumn('time', function ($declare) {
@@ -778,11 +758,11 @@ class CovidController extends Controller
 
         if( Auth::user()->hasRole('HR Admin') )
         { 
-            $declare = Covid::where('user_position', '!=', 'STD')->where('category', 'D')->whereDate('declare_date', '=', Carbon::now()->toDateString())->with(['user'])->get();
+            $declare = Covid::where('user_position', '!=', 'STD')->where('category', 'D')->whereDate('declare_date', '=', Carbon::now()->toDateString())->select('cdd_covid_declarations.*');
         }
         else
         {
-            $declare = Covid::where('user_position', 'STD')->where('category', 'D')->whereDate('declare_date', '=', Carbon::now()->toDateString())->with(['user'])->get();
+            $declare = Covid::where('user_position', 'STD')->where('category', 'D')->whereDate('declare_date', '=', Carbon::now()->toDateString())->select('cdd_covid_declarations.*');
         }
 
         return datatables()::of($declare)
@@ -810,7 +790,7 @@ class CovidController extends Controller
 
         ->editColumn('date', function ($declare) {
 
-            return strtoupper(date(' j F Y', strtotime($declare->declare_date) ));
+            return strtoupper(date(' Y-m-d ', strtotime($declare->declare_date) ));
         })
 
         ->editColumn('time', function ($declare) {
@@ -833,11 +813,11 @@ class CovidController extends Controller
 
         if( Auth::user()->hasRole('HR Admin') )
         { 
-            $declare = Covid::where('user_position', '!=', 'STD')->where('category', 'E')->whereDate('declare_date', '=', Carbon::now()->toDateString())->with(['user'])->get();
+            $declare = Covid::where('user_position', '!=', 'STD')->where('category', 'E')->whereDate('declare_date', '=', Carbon::now()->toDateString())->select('cdd_covid_declarations.*');
         }
         else
         {
-            $declare = Covid::where('user_position', 'STD')->where('category', 'E')->whereDate('declare_date', '=', Carbon::now()->toDateString())->with(['user'])->get();
+            $declare = Covid::where('user_position', 'STD')->where('category', 'E')->whereDate('declare_date', '=', Carbon::now()->toDateString())->select('cdd_covid_declarations.*');
         }
 
         return datatables()::of($declare)
@@ -865,7 +845,7 @@ class CovidController extends Controller
 
         ->editColumn('date', function ($declare) {
 
-            return strtoupper(date(' j F Y', strtotime($declare->declare_date) ));
+            return strtoupper(date(' Y-m-d', strtotime($declare->declare_date) ));
         })
 
         ->editColumn('time', function ($declare) {
@@ -1661,77 +1641,77 @@ class CovidController extends Controller
 
         ->editColumn('user_name', function ($covid) {
 
-            return strtoupper(isset($covid->user_name) ? $covid->user_name : '<div style="color:red;" > -- </div>');
+            return strtoupper($covid->user_name) ?? '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('user_ic', function ($covid) {
 
-            return isset($covid->user_ic) ? $covid->user_ic : '<div style="color:red;" > -- </div>';
+            return $covid->user_ic ?? '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('user_email', function ($covid) {
 
-            return isset($covid->user_email) ? $covid->user_email : '<div style="color:red;" > -- </div>';
+            return $covid->user_email ?? '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('user_phone', function ($covid) {
 
-            return isset($covid->user_phone) ? $covid->user_phone : '<div style="color:red;" > -- </div>';
+            return $covid->user_phone ?? '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('q1', function ($covid) {
 
-            return isset($covid->q1) ? $covid->q1 : '<div style="color:red;" > -- </div>';
+            return $covid->q1 ?? '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('q2', function ($covid) {
 
-            return isset($covid->q2) ? $covid->q2 : '<div style="color:red;" > -- </div>';
+            return $covid->q2 ?? '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('q3', function ($covid) {
 
-            return isset($covid->q3) ? $covid->q3 : '<div style="color:red;" > -- </div>';
+            return $covid->q3 ?? '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('q4a', function ($covid) {
 
-            return isset($covid->q4a) ? $covid->q4a : '<div style="color:red;" > -- </div>';
+            return $covid->q4a ?? '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('q4b', function ($covid) {
 
-            return isset($covid->q4b) ? $covid->q4b : '<div style="color:red;" > -- </div>';
+            return $covid->q4b ?? '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('q4c', function ($covid) {
 
-            return isset($covid->q4c) ? $covid->q4c : '<div style="color:red;" > -- </div>';
+            return $covid->q4c ?? '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('q4d', function ($covid) {
 
-            return isset($covid->q4d) ? $covid->q4d : '<div style="color:red;" > -- </div>';
+            return $covid->q4d ?? '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('user_position', function ($covid) {
 
-            return isset($covid->type->user_type) ? $covid->type->user_type : '<div style="color:red;" > -- </div>';
+            return $covid->type->user_type ?? '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('temperature', function ($covid) {
 
-            return isset($covid->temperature) ? $covid->temperature.' °C'  : '<div style="color:red;" > -- </div>';
+            return $covid->temperature.' °C'  ?? '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('department_id', function ($covid) {
 
-            return isset($covid->department->department_name) ? $covid->department->department_name : '<div style="color:red;" > -- </div>';
+            return $covid->department->department_name ?? '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('user_category', function ($covid) {
 
-            return isset($covid->categoryUser->category_name) ? $covid->categoryUser->category_name : '<div style="color:red;" > -- </div>';
+            return $covid->categoryUser->category_name ?? '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('form_type', function ($covid) {

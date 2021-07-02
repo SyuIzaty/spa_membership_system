@@ -12,7 +12,7 @@
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
                     <h2>
-                        History Declaration <span class="fw-300"><i>List</i></span>
+                        Self History Declaration <span class="fw-300"><i>List</i></span>
                     </h2>
                     <div class="panel-toolbar">
                         <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
@@ -115,8 +115,8 @@
                     { className: 'text-center', data: 'q4c', name: 'q4c' },
                     { className: 'text-center', data: 'q4d', name: 'q4d' },
                     { className: 'text-center', data: 'category', name: 'category' },
-                    { className: 'text-center', data: 'date', name: 'date' },
-                    { className: 'text-center', data: 'time', name: 'time' },
+                    { className: 'text-center', data: 'date', name: 'created_at' },
+                    { className: 'text-center', data: 'time', name: 'created_at' },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,

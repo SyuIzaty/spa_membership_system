@@ -103,8 +103,8 @@
                     { className: 'text-center', data: 'user_name', name: 'user_name' },
                     { className: 'text-center', data: 'user_position', name: 'user_position' },
                     { className: 'text-center', data: 'quarantine_day', name: 'quarantine_day' },
-                    { className: 'text-center', data: 'date', name: 'date' },
-                    { className: 'text-center', data: 'time', name: 'time' },
+                    { className: 'text-center', data: 'date', name: 'declare_date' },
+                    { className: 'text-center', data: 'time', name: 'declare_time' },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
