@@ -43,10 +43,11 @@ class AssetController extends Controller
         $members = User::whereHas('roles', function($query){
             $query->where('id', 'INV002');
         })->get();        
+        $custodian = User::all();
         $availability = AssetAvailability::all();
         $asset = new Asset();
         $assetSet = new AssetSet();
-        return view('inventory.asset-new', compact('department', 'members', 'asset', 'availability', 'assetSet'));
+        return view('inventory.asset-new', compact('department', 'members', 'asset', 'availability', 'assetSet', 'custodian'));
     }
 
     public function findAssetType(Request $request)
@@ -126,18 +127,21 @@ class AssetController extends Controller
                 ]);
             }
         }
+        
+        foreach($request->input('asset_types') as $key => $value) {
+            if(isset($value) && !empty($value))
+            {
+                AssetSet::create([
+                    'asset_id'      => $asset->id,
+                    'asset_type'    => $value,
+                    'serial_no'     => strtoupper($request->serial_nos[$key]),
+                    'model'         => strtoupper($request->models[$key]),
+                    'brand'         => strtoupper($request->brands[$key]),
+                ]);
+            }
+        }
 
-        // foreach($request->input('asset_types') as $key => $value) {
-        //     AssetSet::create([
-        //         'asset_id'      => $asset->id,
-        //         'asset_type'    => $value,
-        //         'serial_no'     => strtoupper($request->serial_nos[$key]),
-        //         'model'         => strtoupper($request->models[$key]),
-        //         'brand'         => strtoupper($request->brands[$key]),
-        //     ]);
-        // }
-
-        $asset = Custodian::create([
+        $cust = Custodian::create([
             'asset_id'         => $asset->id,
             'custodian_id'     => $asset->custodian_id,
             'assigned_by'      => $user->id,
@@ -196,7 +200,7 @@ class AssetController extends Controller
 
         ->editColumn('custodian_id', function ($asset) {
 
-            return $asset->custodian->custodian->name ?? '<div style="color:red;" >--</div>'; 
+            return $asset->custodians->name ?? '<div style="color:red;" >--</div>'; 
         })
 
         ->editColumn('asset_type', function ($asset) {
@@ -252,9 +256,10 @@ class AssetController extends Controller
         $department = AssetDepartment::all();
         $availability = AssetAvailability::all();
         $set = AssetSet::where('asset_id', $id)->get();
+        $custodian = User::all();
         $setType = AssetType::where('department_id', $asset->type->department_id)->get();
 
-        return view('inventory.asset-detail', compact('asset', 'image', 'department', 'availability', 'set', 'setType'))->with('no', 1)->with('num', 1);
+        return view('inventory.asset-detail', compact('asset', 'image', 'department', 'availability', 'set', 'setType', 'custodian'))->with('no', 1)->with('num', 1);
     }
 
     public function deleteImage($id, $asset_id)
@@ -343,13 +348,16 @@ class AssetController extends Controller
         }
 
         foreach($request->input('asset_types') as $key => $value) {
-            AssetSet::create([
-                'asset_id'      => $asset->id,
-                'asset_type'    => $value,
-                'serial_no'     => strtoupper($request->serial_nos[$key]),
-                'model'         => strtoupper($request->models[$key]),
-                'brand'         => strtoupper($request->brands[$key]),
-            ]);
+            if(isset($value) && !empty($value))
+            {
+                AssetSet::create([
+                    'asset_id'      => $asset->id,
+                    'asset_type'    => $value,
+                    'serial_no'     => strtoupper($request->serial_nos[$key]),
+                    'model'         => strtoupper($request->models[$key]),
+                    'brand'         => strtoupper($request->brands[$key]),
+                ]);
+            }
         }
 
         Session::flash('notification', 'Asset Details Successfully Updated');
@@ -576,7 +584,7 @@ class AssetController extends Controller
 
         ->editColumn('custodian_id', function ($asset) {
 
-            return $asset->custodian->custodian->name ?? '<div style="color:red;" > -- </div>';
+            return $asset->custodians->name ?? '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('created_by', function ($asset) {
@@ -591,7 +599,7 @@ class AssetController extends Controller
 
         ->editColumn('availability', function ($asset) {
 
-            return strtoupper($asset->availabilities->name) ?? '<div style="color:red;" > -- </div>';
+            return isset($asset->availabilities->name) ? strtoupper($asset->availabilities->name) : '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('status', function ($asset) {

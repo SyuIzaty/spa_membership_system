@@ -323,7 +323,7 @@
                                     @can('create custodian')
                                     <li>
                                         <a href="/asset-custodian" title="Custodian" data-filter-tags="custodian">
-                                            <span class="nav-link-text" data-i18n="nav.custodian">Custodian</span>
+                                            <span class="nav-link-text" data-i18n="nav.custodian">Manager List</span>
                                         </a>
                                     </li>
                                     @endcan

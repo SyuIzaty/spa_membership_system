@@ -21,40 +21,40 @@
                         <tr>
                             <div class="form-group">
                                 <td width="15%"><label class="form-label" for="department_id"> Department : </label></td>
-                                <td colspan="3">{{ isset($asset->type->department->department_name) ? $asset->type->department->department_name : '--' }}</td>
+                                <td colspan="3">{{ $asset->type->department->department_name ?? '--' }}</td>
                                 <td width="15%"><label class="form-label" for="asset_type"> Asset Type : </label></td>
-                                <td colspan="3">{{ isset($asset->type->asset_type) ? $asset->type->asset_type : '--' }}</td>
+                                <td colspan="3">{{ $asset->type->asset_type ?? '--' }}</td>
                             </div>
                         </tr>
                         <tr>
                             <div class="form-group">
                                 <td width="15%"><label class="form-label" for="asset_code">Asset Code : </label></td>
-                                <td colspan="3">{{ isset($asset->asset_code) ? $asset->asset_code : '--' }}</td>
+                                <td colspan="3">{{ $asset->asset_code ?? '--' }}</td>
                                 <td width="15%"><label class="form-label" for="finance_code">Asset Code (Finance):</label></td>
-                                <td colspan="3">{{ isset($asset->finance_code) ? $asset->finance_code : '--' }}</td>
+                                <td colspan="3">{{ $asset->finance_code ?? '--' }}</td>
                             </div>
                         </tr>
                         <tr>
                             <div class="form-group">
                                 <td width="15%"><label class="form-label" for="asset_name">Asset Name:</label></td>
-                                <td colspan="3">{{ isset($asset->asset_name) ? $asset->asset_name : '--' }}</td>
+                                <td colspan="3">{{ $asset->asset_name ?? '--' }}</td>
                                 <td width="15%"><label class="form-label" for="serial_no">Serial No. : </label></td>
-                                <td colspan="3">{{ isset($asset->serial_no) ? $asset->serial_no : '--' }}</td>
+                                <td colspan="3">{{ $asset->serial_no ?? '--' }}</td>
                             </div>
                         </tr>
                         <tr>
                             <div class="form-group">
                                 <td width="15%"><label class="form-label" for="model">Model:</label></td>
-                                <td colspan="3">{{ isset($asset->model) ? $asset->model : '--' }}</td>
+                                <td colspan="3">{{ $asset->model ?? '--' }}</td>
                                 <td width="15%"><label class="form-label" for="brand"> Brand : </label></td>
-                                <td colspan="3">{{ isset($asset->brand) ? $asset->brand : '--' }}</td>
+                                <td colspan="3">{{ $asset->brand ?? '--' }}</td>
                             </div>
                         </tr>
                         <tr>
                             <div class="form-group">
                                 <td width="15%"><label class="form-label" for="status"> Status:</label></td>
                                 <td colspan="3">
-                                    @if($asset->status == '0') 
+                                    @if($asset->status == '1') 
                                         ACTIVE 
                                     @else 
                                         INACTIVE 
@@ -67,9 +67,9 @@
                         <tr>
                             <div class="form-group">
                                 <td width="15%"><label class="form-label" for="custodian_id"> Current Custodian : </label></td>
-                                <td colspan="3">{{ isset($asset->custodian->custodian->name) ? $asset->custodian->custodian->name : '--' }}</td>
+                                <td colspan="3">{{ $asset->custodians->name ?? '--' }}</td>
                                 <td width="15%"><label class="form-label" for="storage_location"> Storage:</label></td>
-                                <td colspan="3">{{ isset($asset->storage_location) ? $asset->storage_location : '--' }}</td>
+                                <td colspan="3">{{ $asset->storage_location ?? '--' }}</td>
                             </div>
                         </tr>
                         <tr>
@@ -108,31 +108,31 @@
                         <tr>
                             <div class="form-group">
                                 <td width="15%"><label class="form-label" for="purchase_date"> Purchase Date : </label></td>
-                                <td colspan="3">{{ isset($asset->purchase_date) ? date('d-m-Y', strtotime($asset->purchase_date)) : '--' }}</td>
+                                <td colspan="3">{{ date('d-m-Y', strtotime($asset->purchase_date)) ?? '--' }}</td>
                                 <td width="15%"><label class="form-label" for="vendor_name"> Vendor :</label></td>
-                                <td colspan="3">{{ isset($asset->vendor_name) ? $asset->vendor_name : '--' }}</td>
+                                <td colspan="3">{{ $asset->vendor_name ??'--' }}</td>
                             </div>
                         </tr>
                         <tr>
                             <div class="form-group">
                                 <td width="15%"><label class="form-label" for="lo_no"> L.O. Number : </label></td>
-                                <td colspan="3">{{ isset($asset->lo_no) ? $asset->lo_no : '--' }}</td>
+                                <td colspan="3">{{ $asset->lo_no ?? '--' }}</td>
                                 <td width="15%"><label class="form-label" for="do_no"> D.O. Number :</label></td>
-                                <td colspan="3">{{ isset($asset->do_no) ? $asset->do_no : '--' }}</td>
+                                <td colspan="3">{{ $asset->do_no ?? '--' }}</td>
                             </div>
                         </tr>
                         <tr>
                             <div class="form-group">
                                 <td width="15%"><label class="form-label" for="io_no"> Invoice Number : </label></td>
-                                <td colspan="3">{{ isset($asset->io_no) ? $asset->io_no : '--'}}</td>
+                                <td colspan="3">{{ $asset->io_no ?? '--'}}</td>
                                 <td width="15%"><label class="form-label" for="total_price"> Price (RM) :</label></td>
-                                <td colspan="3">{{ isset($asset->total_price) ? $asset->total_price : '--' }}</td>
+                                <td colspan="3">{{ $asset->total_price ?? '--' }}</td>
                             </div>
                         </tr>
                         <tr>
                             <div class="form-group">
                                 <td width="15%"><label class="form-label" for="remark"> Remark : </label></td>
-                                <td colspan="6">{{ isset($asset->remark) ? $asset->remark : '--' }}</td>
+                                <td colspan="6">{{ $asset->remark ?? '--' }}</td>
                             </div>
                         </tr>
                     </thead>
