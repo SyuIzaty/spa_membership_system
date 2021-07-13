@@ -50,7 +50,7 @@
                                                 </table>
                                                 <div class="footer">
                                                     <button type="submit" class="btn btn-primary ml-auto float-right" name="submit" id="submithead"><i class="fal fa-save"></i> Save</button>
-                                                    <a href="/asset-custodian" class="btn btn-success ml-auto float-right mr-2" ><i class="fal fa-angle-double-left"></i> Back</a>
+                                                    <a href="/asset-custodian" class="btn btn-success ml-auto float-right mr-2" ><i class="fal fa-arrow-alt-left"></i> Back</a>
                                                 </div><br><br>
                                         </div>
                                     {!! Form::close() !!}

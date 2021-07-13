@@ -218,7 +218,7 @@
                                     </thead>
                                 </table>
                                 </div>
-                                <a href="/aduan" class="btn btn-success ml-auto float-right" ><i class="fal fa-angle-double-left"></i> Kembali</a><br>
+                                <a href="/aduan" class="btn btn-success ml-auto float-right" ><i class="fal fa-arrow-alt-left"></i> Kembali</a><br>
                             </div>
                         </div>
                     </div>

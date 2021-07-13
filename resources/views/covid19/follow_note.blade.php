@@ -40,7 +40,7 @@
                                 </table>
 
                                 <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
-                                <a href="{{ URL::previous() }}" class="btn btn-success ml-auto float-right mr-2" ><i class="fal fa-window-close"></i> Back</a>
+                                <a href="{{ URL::previous() }}" class="btn btn-success ml-auto float-right mr-2" ><i class="fal fa-arrow-alt-left"></i> Back</a>
                                 {!! Form::close() !!}
                             </div>
                             <br><br>

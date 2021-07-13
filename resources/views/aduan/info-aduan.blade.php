@@ -385,7 +385,7 @@
                                                         @endrole
                                                     @endcan
                                                     <br>
-                                                    <a style="margin-right:5px; margin-top:-18px" href="{{ url()->previous() }}" class="btn btn-success float-right"><i class="fal fa-angle-double-left"></i> Kembali</a>
+                                                    <a style="margin-right:5px; margin-top:-18px" href="{{ url()->previous() }}" class="btn btn-success float-right"><i class="fal fa-arrow-alt-left"></i> Kembali</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -1183,7 +1183,7 @@
                                                         </div>
                                                         @endif
 
-                                                        <a style="margin-right:5px" href="{{ url()->previous() }}" class="btn btn-success float-right"><i class="fal fa-angle-double-left"></i> Kembali</a>
+                                                        <a style="margin-right:5px" href="{{ url()->previous() }}" class="btn btn-success float-right"><i class="fal fa-arrow-alt-left"></i> Kembali</a>
                                                         
                                                     </div>
                                                 </div>

@@ -209,7 +209,7 @@
                                         @endif
                                     </thead>
                                 </table>
-                                    <a style="margin-right:5px" href="{{ URL::previous() }}" class="btn btn-success ml-auto float-right"><i class="fal fa-angle-double-left"></i> Back</a><br>
+                                    <a style="margin-right:5px" href="{{ URL::previous() }}" class="btn btn-success ml-auto float-right"><i class="fal fa-arrow-alt-left"></i> Back</a><br>
                             </div>
                         </div>
                     
