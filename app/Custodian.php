@@ -26,6 +26,6 @@ class Custodian extends Model
 
     public function custodian()
     {
-        return $this->hasOne('App\AssetCustodian', 'id', 'custodian_id');
+        return $this->hasOne('App\User', 'id', 'custodian_id');
     }
 }

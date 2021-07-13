@@ -49,7 +49,7 @@
                                                                 <td width="10%"><label class="form-label" for="department_id"><span class="text-danger">*</span> Department :</label></td>
                                                                 <td colspan="3">
                                                                     <select name="department_id" id="department_id" class="department form-control">
-                                                                        <option value="">-- Select Department --</option>
+                                                                        <option value="">Select Department</option>
                                                                         @foreach ($department as $depart) 
                                                                             <option value="{{ $depart->id }}" {{ old('department_id') ? 'selected' : '' }}>{{ $depart->department_name }}</option>
                                                                         @endforeach
@@ -162,7 +162,7 @@
                                                                 </td>
                                                             </div>
                                                         </tr>
-                                                        {{-- <tr class="set_tab">
+                                                        <tr class="set_tab">
                                                             <div class="form-group">
                                                                 <td colspan="6">
                                                                     <div class="card-body test" id="test">
@@ -176,7 +176,7 @@
                                                                             </tr>
                                                                             <tr>
                                                                                 <td>
-                                                                                    <select class="form-control asset_types" name="asset_types[]" id="asset_types" ></select>
+                                                                                    <select class="form-control asset_types" name="asset_types[]" id="asset_types"></select>
                                                                                 </td>
                                                                                 <td><input name="serial_nos[]" class="form-control serial_nos"/></td>
                                                                                 <td><input name="models[]" class="form-control models"/></td>
@@ -187,7 +187,7 @@
                                                                     </div>
                                                                 </td>
                                                             </div>
-                                                        </tr> --}}
+                                                        </tr>
                                                     </thead>
                                                 </table>
                                             </div>
@@ -278,6 +278,10 @@
                                                                 <td width="10%"><label class="form-label" for="custodian_id"><span class="text-danger">*</span> Custodian :</label></td>
                                                                 <td colspan="3">
                                                                     <select class="form-control custodian_id" name="custodian_id" id="custodian_id" >
+                                                                        <option value="">Select Custodian</option>
+                                                                        @foreach ($custodian as $custs) 
+                                                                            <option value="{{ $custs->id }}" {{ old('custodian_id') ==  $custs->id  ? 'selected' : '' }}>{{ $custs->name }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                     @error('custodian_id')
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
@@ -323,6 +327,36 @@
 
          // Add Set
          $('#addhead').click(function(){
+            var e = document.getElementById("department_id");
+            // var strUser = e.value; 
+
+            var eduid=e.value; 
+            var op=" "; 
+
+            $.ajax({
+                type:'get',
+                url:'{!!URL::to('findAssetType')!!}',
+                data:{'id':eduid},
+                success:function(data)
+                {
+                    // console.log(eduid)
+                    op+='<option value=""> Select Asset Type </option>';
+                    for (var i=0; i<data.length; i++)
+                    {
+                        var selected = (data[i].id=="{{old('asset_types', $assetSet->asset_types)}}") ? "selected='selected'" : '';
+                        op+='<option value="'+data[i].id+'" '+selected+'>'+data[i].asset_type+'</option>';
+                    }
+
+                    // $('.asset_types').html(op);
+                    $('.assetType').html(op);
+                },
+                error:function(){
+                    console.log('success');
+                },
+            });
+
+            console.log(eduid)
+
             i++;
             $('#head_field').append(`
             <tr id="row${i}" class="head-added">
@@ -408,39 +442,6 @@
             });
         }
 
-        if($('.department').val()!=''){
-                updateCust($('.department'));
-            }
-            $(document).on('change','.department',function(){
-                updateCust($(this));
-            });
-
-            function updateCust(elem){
-            var eduid=elem.val();
-            var op=" "; 
-
-            $.ajax({
-                type:'get',
-                url:'{!!URL::to('findCustodian')!!}',
-                data:{'id':eduid},
-                success:function(data)
-                {
-                    console.log(data)
-                    op+='<option value=""> Select Custodian </option>';
-                    for (var i=0; i<data.length; i++)
-                    {
-                        var selected = (data[i].id=="{{old('custodian_id', $asset->custodian_id)}}") ? "selected='selected'" : '';
-                        op+='<option value="'+data[i].id+'" '+selected+'>'+data[i].custodian.name+'</option>';
-                    }
-
-                    $('.custodian_id').html(op);
-                },
-                error:function(){
-                    console.log('success');
-                },
-            });
-        }
-
     });
 
     // Radiobutton
@@ -475,7 +476,7 @@
                 data:{'id':eduid},
                 success:function(data)
                 {
-                    console.log(data)
+                    // console.log(eduid)
                     op+='<option value=""> Select Asset Type </option>';
                     for (var i=0; i<data.length; i++)
                     {
@@ -484,14 +485,14 @@
                     }
 
                     $('.asset_types').html(op);
-                    $('.assetType').html(op);
+                    // $('.assetType').html(op);
                 },
                 error:function(){
                     console.log('success');
                 },
             });
         }
-
+        
     })
 
 </script>

@@ -12,7 +12,7 @@
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
                     <h2>
-                        DEPARTMENT CUSTODIAN <span class="fw-300"><i>LIST</i></span>
+                        DEPARTMENT MANAGER <span class="fw-300"><i>LIST</i></span>
                     </h2>
                     <div class="panel-toolbar">
                         <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
@@ -26,20 +26,20 @@
                             <div class="col-sm-12 col-md-6 mb-4">
                                 <div class="card card-primary card-outline">
                                     <div class="card-header">
-                                        <p class="card-title w-100" style="font-weight: 500">Add Custodian</p>
+                                        <p class="card-title w-100" style="font-weight: 500">Add Manager</p>
                                     </div>
                                     {!! Form::open(['action' => 'AssetCustodianController@storeDepartCust', 'method' => 'POST']) !!}
                                     <input type="hidden" name="ids" value="{{ $department->id }}">
                                         <div class="card-body test" id="test">
                                                 <table class="table table-bordered text-center" id="head_field">
                                                     <tr class="bg-primary-50">
-                                                        <td>Custodian</td>
+                                                        <td>Manager</td>
                                                         <td></td>
                                                     </tr>
                                                     <tr>
                                                         <td>
                                                             <select name="custodian_id[]" id="custodian_id" class="custodian_id form-control">
-                                                                <option value="">-- Select Custodian --</option>
+                                                                <option value="">Select Manager</option>
                                                                 @foreach ($members as $member) 
                                                                     <option value="{{ $member->id }}" {{ old('custodian_id') ? 'selected' : '' }}>{{ $member->name }}</option>
                                                                 @endforeach
@@ -50,7 +50,7 @@
                                                 </table>
                                                 <div class="footer">
                                                     <button type="submit" class="btn btn-primary ml-auto float-right" name="submit" id="submithead"><i class="fal fa-save"></i> Save</button>
-                                                    <a href="/asset-custodian" class="btn btn-success ml-auto float-right mr-2" ><i class="fal fa-window-close"></i> Back</a>
+                                                    <a href="/asset-custodian" class="btn btn-success ml-auto float-right mr-2" ><i class="fal fa-angle-double-left"></i> Back</a>
                                                 </div><br><br>
                                         </div>
                                     {!! Form::close() !!}
@@ -62,7 +62,7 @@
                             <div class="col-sm-12 col-md-6 mb-4">
                                 <div class="card card-primary card-outline">
                                     <div class="card-header">
-                                        <p class="card-title w-100" style="font-weight: 500">Custodian List</p>
+                                        <p class="card-title w-100" style="font-weight: 500">Manager List</p>
                                     </div>
                                 
                                     <div class="card-body">
@@ -74,7 +74,7 @@
                                                 <thead class="bg-primary-50 text-center">
                                                     <tr>
                                                         <td>No</td>
-                                                        <td>Custodian</td>
+                                                        <td>Manager</td>
                                                         <td>Action</td>
                                                     </tr>
                                                 </thead>

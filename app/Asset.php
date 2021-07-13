@@ -20,9 +20,9 @@ class Asset extends Model
         return $this->hasOne('App\AssetType', 'id', 'asset_type');
     }
 
-    public function custodian()
+    public function custodians()
     {
-        return $this->hasOne('App\AssetCustodian', 'id', 'custodian_id');
+        return $this->hasOne('App\User', 'id', 'custodian_id');
     }
 
     public function assetCustodian()

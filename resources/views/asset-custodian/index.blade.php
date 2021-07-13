@@ -17,7 +17,7 @@
 <main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
     <div class="subheader">
         <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-adjust'></i>ASSET CUSTODIAN
+        <i class='subheader-icon fal fa-adjust'></i>ASSET MANAGER
         </h1>
     </div>
     <div class="row">
@@ -25,7 +25,7 @@
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
                     <h2>
-                        ASSET CUSTODIAN <span class="fw-300"><i>LIST</i></span>
+                        ASSET MANAGER <span class="fw-300"><i>LIST</i></span>
                     </h2>
                     <div class="panel-toolbar">
                         <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
@@ -47,13 +47,13 @@
                                     <tr class="text-center bg-primary-50">
                                         <th>NO.</th>
                                         <th>DEPARTMENT</th>
-                                        <th>TOTAL CUSTODIAN</th>
+                                        <th>TOTAL MANAGER</th>
                                         <th>ACTION</th>
                                     </tr>
                                     <tr>
                                         <td class="hasinput"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Department"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Total Custodian"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Total Manager"></td>
                                         <td class="hasinput"></td>
                                     </tr>
                                 </thead>

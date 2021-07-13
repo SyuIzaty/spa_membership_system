@@ -157,7 +157,7 @@
                                                                             <div class="form-group">
                                                                                 <td width="15%"><label class="form-label" for="custodian_id"><span class="text-danger">*</span> Current Custodian : </label></td>
                                                                                 <td colspan="3">
-                                                                                    <input class="form-control" id="custodian_id" style="cursor:context-menu" name="custodian_id" value="{{ $asset->custodian->custodian->name }}" readonly>
+                                                                                    <input class="form-control" id="custodian_id" style="cursor:context-menu" name="custodian_id" value="{{ $asset->custodians->name }}" readonly>
                                                                                 </td>
                                                                                 <td width="15%"><label class="form-label" for="storage_location"> Storage:</label></td>
                                                                                 <td colspan="3">
@@ -512,12 +512,12 @@
                                                             @foreach($asset->assetCustodian as $list)
                                                             <tr align="center"  class="data-row">
                                                                 <td>{{ $no++ }}</td>
-                                                                <td class="custodian">{{$list->custodian->custodian->name}}</td>
+                                                                <td class="custodian">{{$list->custodian->name}}</td>
                                                                 <td class="reason">{{ isset($list->reason_remark) ? $list->reason_remark : '--'}}</td>
                                                                 <td class="date">{{ date('d-m-Y | h:i A', strtotime($list->created_at)) }}</td>
                                                                 <td class="user">{{ strtoupper($list->user->name) }}</td>
                                                                 <td>
-                                                                    <a href="" data-target="#crud-modal2" data-toggle="modal" data-id="{{$list->id}}" data-custodian="{{$list->custodian->custodian->name}}" data-reason="{{$list->reason_remark}}" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
+                                                                    <a href="" data-target="#crud-modal2" data-toggle="modal" data-id="{{$list->id}}" data-custodian="{{$list->custodian->name}}" data-reason="{{$list->reason_remark}}" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
                                                                     <meta name="csrf-token" content="{{ csrf_token() }}">
                                                                 </td>
                                                             </tr>
@@ -563,6 +563,10 @@
                                             <td width="15%"><label class="form-label" for="custodian_id"><span class="text-danger">*</span> Custodian :</label></td>
                                             <td colspan="7">
                                                 <select class="form-control custodian_id" name="custodian_id" id="custodian_id" >
+                                                    <option value="">Select Custodian</option>
+                                                    @foreach ($custodian as $custs) 
+                                                        <option value="{{ $custs->id }}" {{ old('custodian_id') ==  $custs->id  ? 'selected' : '' }}>{{ $custs->name }}</option>
+                                                    @endforeach
                                                 </select>
                                                 @error('custodian_id')
                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
@@ -824,38 +828,38 @@
             });
         });
 
-        if($('.department').val()!=''){
-                    updateCust($('.department'));
-                }
-                $(document).on('change','.department',function(){
-                    updateCust($(this));
-                });
+        // if($('.department').val()!=''){
+        //             updateCust($('.department'));
+        //         }
+        //         $(document).on('change','.department',function(){
+        //             updateCust($(this));
+        //         });
 
-                function updateCust(elem){
-                var eduid=elem.val();
-                var op=" "; 
+        //         function updateCust(elem){
+        //         var eduid=elem.val();
+        //         var op=" "; 
 
-                $.ajax({
-                    type:'get',
-                    url:'{!!URL::to('findCustodian')!!}',
-                    data:{'id':eduid},
-                    success:function(data)
-                    {
-                        console.log(data)
-                        op+='<option value=""> Select Custodian </option>';
-                        for (var i=0; i<data.length; i++)
-                        {
-                            var selected = (data[i].id=="{{old('custodian_id', $asset->custodian_id)}}") ? "selected='selected'" : '';
-                            op+='<option value="'+data[i].id+'" '+selected+'>'+data[i].custodian.name+'</option>';
-                        }
+        //         $.ajax({
+        //             type:'get',
+        //             url:'{!!URL::to('findCustodian')!!}',
+        //             data:{'id':eduid},
+        //             success:function(data)
+        //             {
+        //                 console.log(data)
+        //                 op+='<option value=""> Select Custodian </option>';
+        //                 for (var i=0; i<data.length; i++)
+        //                 {
+        //                     var selected = (data[i].id=="{{old('custodian_id', $asset->custodian_id)}}") ? "selected='selected'" : '';
+        //                     op+='<option value="'+data[i].id+'" '+selected+'>'+data[i].custodian.name+'</option>';
+        //                 }
 
-                        $('.custodian_id').html(op);
-                    },
-                    error:function(){
-                        console.log('success');
-                    },
-                });
-            }
+        //                 $('.custodian_id').html(op);
+        //             },
+        //             error:function(){
+        //                 console.log('success');
+        //             },
+        //         });
+        //     }
 
     });
 
