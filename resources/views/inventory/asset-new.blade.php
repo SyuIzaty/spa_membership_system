@@ -328,7 +328,6 @@
          // Add Set
          $('#addhead').click(function(){
             var e = document.getElementById("department_id");
-            // var strUser = e.value; 
 
             var eduid=e.value; 
             var op=" "; 
@@ -339,7 +338,6 @@
                 data:{'id':eduid},
                 success:function(data)
                 {
-                    // console.log(eduid)
                     op+='<option value=""> Select Asset Type </option>';
                     for (var i=0; i<data.length; i++)
                     {
