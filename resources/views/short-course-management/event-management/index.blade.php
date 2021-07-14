@@ -1,0 +1,116 @@
+@extends('layouts.admin')
+
+@section('content')
+    <main id="js-page-content" role="main" class="page-content">
+        <div class="subheader">
+            <h1 class="subheader-title">
+                <i class='subheader-icon fal fa-table'></i> Event Management
+            </h1>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div id="panel-1" class="panel">
+                    <div class="panel-hdr">
+                        <h2>Events</h2>
+                        <div class="panel-toolbar">
+                            <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
+                            <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
+                            <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10" data-original-title="Close"></button>
+                        </div>
+                    </div>
+                    <div class="panel-container show">
+                        <div class="panel-content">
+                            <span id="intake_fail"></span>
+                            @csrf
+                            @if(session()->has('message'))
+                                <div class="alert alert-success">
+                                    {{ session()->get('message') }}
+                                </div>
+                            @endif
+                            <table class="table table-bordered" id="event">
+                                <thead>
+                                    <tr class="bg-primary-50 text-center">
+                                        <th>ID</th>
+                                        <th>NAME</th>
+                                        <th>DATES</th>
+                                        <th>PARTICIPANT</th>
+                                        <th>MANAGE. DETAILS</th>
+                                        <th>ACTION</th>
+                                    </tr>
+                                    {{-- <tr>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Name"></td> --}}
+                                        {{-- <td class="hasinput"><input type="text" class="form-control" placeholder="Search Dates"></td> --}}
+                                        {{-- <td></td>
+                                    </tr> --}}
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+@endsection
+@section('script')
+<script>
+    $(document).ready(function()
+    {
+
+        $('#event thead tr .hasinput').each(function(i)
+        {
+            $('input', this).on('keyup change', function()
+            {
+                if (table.column(i).search() !== this.value)
+                {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+
+            $('select', this).on('keyup change', function()
+            {
+                if (table.column(i).search() !== this.value)
+                {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+
+
+        var table = $('#event').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "/events/data",
+                type: 'POST',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
+            },
+            columns: [
+                    { data: 'id', name: 'id'},
+                    { data: 'name', name: 'name'},
+                    { data: 'dates', name: 'dates'},
+                    { data: 'participant', name: 'participant'},
+                    { data: 'management_details', name: 'management_details'},
+                    { data: 'action', name: 'action', orderable: false, searchable: false}
+                ],
+                orderCellsTop: true,
+                "order": [[ 2, "desc" ]],
+                "initComplete": function(settings, json) {
+
+
+                }
+        });
+
+    });
+
+
+</script>
+@endsection

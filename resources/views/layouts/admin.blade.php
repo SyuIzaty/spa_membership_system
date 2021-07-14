@@ -159,35 +159,55 @@
                         @can('Short Course Management - View All')
                             <li class="nav-title">Short Course Management</li>
                             <li>
-                                <a href="#" title="Public View" data-filter-tags="public-view">
-                                    <i class="fal fa-users"></i>
-                                    <span class="nav-link-text" data-i18n="nav.public-view">Public View</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="Course Catalogue" data-filter-tags="course-catalogue">
-                                    <i class="ni ni-book-open"></i>
-                                    <span class="nav-link-text" data-i18n="nav.course-catalogue">Course Catalogue</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="Venue Maintenance" data-filter-tags="venue-maintenance">
-                                    <i class="ni ni-globe"></i>
-                                    <span class="nav-link-text" data-i18n="nav.venue-maintenance">Venue Maintenance</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="Trainer" data-filter-tags="trainer">
-                                    <i class="ni ni-earphones-alt"></i>
-                                    <span class="nav-link-text" data-i18n="nav.trainer">Trainer</span>
+                                <a href="/events" title="Event Management" data-filter-tags="event-management">
+                                    <i class="ni ni-calendar-fine"></i>
+                                    <span class="nav-link-text" data-i18n="nav.event-management">Event Management</span>
                                 </a>
                             </li>
 
                             <li>
-                                <a href="#" title="Participant" data-filter-tags="participant">
-                                    <i class="ni ni-earphones-alt"></i>
-                                    <span class="nav-link-text" data-i18n="nav.participant">Participant</span>
+                                <a href="#" title="Catalogues" data-filter-tags="catalogues">
+                                    <i class="ni ni-list"></i>
+                                    <span class="nav-link-text" data-i18n="nav.catalogues">Catalogues</span>
                                 </a>
+                                <ul>
+                                    <li>
+                                        <a href="#" title="Course Catalogue" data-filter-tags="course-catalogue">
+                                            <i class="ni ni-book-open"></i>
+                                            <span class="nav-link-text" data-i18n="nav.course-catalogue">Course
+                                                Catalogue</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" title="Venue Catalogue" data-filter-tags="venue-catalogue">
+                                            <i class="ni ni-globe"></i>
+                                            <span class="nav-link-text" data-i18n="nav.venue-catalogue">Venue
+                                                Catalogue</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="#" title="People" data-filter-tags="people">
+                                    <i class="ni ni-list"></i>
+                                    <span class="nav-link-text" data-i18n="nav.people">People</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="#" title="Participant" data-filter-tags="participant">
+                                            <i class="ni ni-users"></i>
+                                            <span class="nav-link-text" data-i18n="nav.participant">Participant</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" title="Trainer" data-filter-tags="trainer">
+                                            <i class="ni ni-earphones-alt"></i>
+                                            <span class="nav-link-text" data-i18n="nav.trainer">Trainer</span>
+                                        </a>
+                                    </li>
+
+                                </ul>
                             </li>
                             <li>
                                 <a href="#" title="Application" data-filter-tags="application">
@@ -197,10 +217,18 @@
                                 <ul>
                                     <li>
                                         <a href="#" title="Records" data-filter-tags="records">
+                                            <i class="ni ni-notebook"></i>
                                             <span class="nav-link-text" data-i18n="nav.records">Records</span>
                                         </a>
                                     </li>
                                 </ul>
+                            </li>
+
+                            <li>
+                                <a href="#" title="Public View" data-filter-tags="public-view">
+                                    <i class="fal fa-users"></i>
+                                    <span class="nav-link-text" data-i18n="nav.public-view">Public View</span>
+                                </a>
                             </li>
                         @endcan
                         @can('view form')
@@ -369,11 +397,11 @@
                                         </a>
                                     </li>
                                     @can('create custodian')
-                                    <li>
-                                        <a href="/asset-custodian" title="Custodian" data-filter-tags="custodian">
-                                            <span class="nav-link-text" data-i18n="nav.custodian">Manager List</span>
-                                        </a>
-                                    </li>
+                                        <li>
+                                            <a href="/asset-custodian" title="Custodian" data-filter-tags="custodian">
+                                                <span class="nav-link-text" data-i18n="nav.custodian">Manager List</span>
+                                            </a>
+                                        </li>
                                     @endcan
                                 </ul>
                             </li>

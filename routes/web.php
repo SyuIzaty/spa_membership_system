@@ -84,31 +84,31 @@ Route::get('padamGambar/{id}/{id_aduan}', 'AduanController@padamGambar')->name('
 
 //KATEGORI
 Route::resource('kategori-aduan', 'KategoriAduanController');
-Route::post('kategoriAduan', 'KategoriAduanController@data_kategori');  
+Route::post('kategoriAduan', 'KategoriAduanController@data_kategori');
 Route::post('tambahKategori','KategoriAduanController@tambahKategori');
 Route::post('kemaskiniKategori','KategoriAduanController@kemaskiniKategori');
 
 //JENIS
 Route::resource('jenis-kerosakan', 'JenisKerosakanController');
-Route::post('jenisKerosakan', 'JenisKerosakanController@data_jenis');  
+Route::post('jenisKerosakan', 'JenisKerosakanController@data_jenis');
 Route::post('tambahJenis','JenisKerosakanController@tambahJenis');
 Route::post('kemaskiniJenis','JenisKerosakanController@kemaskiniJenis');
 
 //SEBAB
 Route::resource('sebab-kerosakan', 'SebabKerosakanController');
-Route::post('sebabKerosakan', 'SebabKerosakanController@data_sebab');  
+Route::post('sebabKerosakan', 'SebabKerosakanController@data_sebab');
 Route::post('tambahSebab','SebabKerosakanController@tambahSebab');
 Route::post('kemaskiniSebab','SebabKerosakanController@kemaskiniSebab');
 
 //ALAT
 Route::resource('alat-ganti', 'AlatGantiController');
-Route::post('alatGanti', 'AlatGantiController@data_alat');  
+Route::post('alatGanti', 'AlatGantiController@data_alat');
 Route::post('tambahAlat','AlatGantiController@tambahAlat');
 Route::post('kemaskiniALat','AlatGantiController@kemaskiniALat');
 
 //ASSET-TYPE
 Route::resource('asset-type', 'AssetTypeController');
-Route::post('assetType', 'AssetTypeController@data_asset');  
+Route::post('assetType', 'AssetTypeController@data_asset');
 Route::post('addType','AssetTypeController@addType');
 Route::post('updateType','AssetTypeController@updateType');
 
@@ -126,7 +126,7 @@ Route::get('/asset-new', 'AssetController@assetNew');
 Route::post('newAssetStore', 'AssetController@newAssetStore')->name('newAsset');
 Route::get('/findAssetType', 'AssetController@findAssetType');
 Route::get('/findCustodian', 'AssetController@findCustodian');
-Route::post('assetList', 'AssetController@data_assetList');  
+Route::post('assetList', 'AssetController@data_assetList');
 Route::delete('asset-index/{id}', 'AssetController@assetDelete');
 Route::get('/asset-detail/{id}', 'AssetController@assetDetail');
 Route::get('get-file-image/{filename}','AssetController@getImage');
@@ -147,7 +147,7 @@ Route::post('updateSet', 'AssetController@updateSet');
 //Stock
 Route::get('/stock-index', 'StockController@stockIndex');
 Route::post('newStockStore', 'StockController@newStockStore')->name('newStock');
-Route::post('stockList', 'StockController@data_stockList');  
+Route::post('stockList', 'StockController@data_stockList');
 Route::delete('stock-index/{id}', 'StockController@stockDelete');
 Route::get('/stock-detail/{id}', 'StockController@stockDetail');
 Route::get('get-file-images/{filename}','StockController@getImages');
@@ -165,7 +165,7 @@ Route::get('/export-stock', 'StockController@exportStock');
 Route::get('/borrow-index', 'BorrowController@borrowIndex');
 Route::get('/borrow-new', 'BorrowController@borrowNew');
 Route::post('newBorrowStore', 'BorrowController@newBorrowStore')->name('newBorrow');
-Route::post('borrowList', 'BorrowController@data_borrowList');  
+Route::post('borrowList', 'BorrowController@data_borrowList');
 Route::delete('borrow-index/{id}', 'BorrowController@borrowDelete');
 Route::get('/borrow-detail/{id}', 'BorrowController@borrowDetail');
 Route::post('borrowUpdate', 'BorrowController@borrowUpdate');
@@ -173,7 +173,7 @@ Route::get('/findUsers', 'BorrowController@findUsers');
 Route::get('/findAsset', 'BorrowController@findAsset');
 Route::get('/findAssets', 'BorrowController@findAssets');
 Route::get('/monitor-list', 'BorrowController@monitorList');
-Route::post('monitorList', 'BorrowController@data_monitorList'); 
+Route::post('monitorList', 'BorrowController@data_monitorList');
 Route::get('/export-borrow', 'BorrowController@borrow_all')->name('borrowreport');
 Route::post('/data_borrowexport', 'BorrowController@data_borrowexport');
 Route::get('/borrowExport', 'BorrowController@exports');
@@ -241,3 +241,12 @@ Route::post('update-password','ChangePasswordController@store')->name('change.pa
 
 //Geolocation
 Route::get('/geolocation','GeolocationController@index');
+
+//Short Course Management
+//Event Management
+// Route::resource('event-management', 'ShortCourseManagement\EventManagement\EventManagementController');
+Route::post('/events/data','ShortCourseManagement\EventManagement\EventManagementController@data');
+Route::get('/events', 'ShortCourseManagement\EventManagement\EventManagementController@index');
+Route::post('/event','ShortCourseManagement\EventManagement\EventManagementController@addEvent');
+Route::get('/event/{id}', 'ShortCourseManagement\EventManagement\EventManagementController@eventDetails');
+Route::delete('/event/{id}', 'ShortCourseManagement\EventManagement\EventManagementController@deleteEvent');
