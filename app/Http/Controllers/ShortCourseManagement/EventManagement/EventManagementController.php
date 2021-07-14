@@ -41,7 +41,7 @@ class EventManagementController extends Controller
                 return 'Total Valid: ' . $events->totalValidParticipants . '<br> Total Not Approved Yet:' . $events->totalParticipantsNotApprovedYet . '<br> Total Reject:' . $events->totalRejected;
             })
             ->addColumn('management_details', function ($events) {
-                return 'Created By: ' . $events->created_by . 'Created At: ' . $events->created_at;
+                return 'Created By: ' . $events->created_by . '<br> Created At: ' . $events->created_at;
             })
             ->addColumn('action', function ($events) {
                 return '<a href="/event/' . $events->events_id . '" class="btn btn-sm btn-primary">Detail</a>';
