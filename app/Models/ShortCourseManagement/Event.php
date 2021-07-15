@@ -42,12 +42,12 @@ class Event extends Model
 
     public function venue()
     {
-        return $this->belongsTo('App\Models\ShortCourseManagement\Venue', 'id', 'venue_id');
+        return $this->belongsTo('App\Models\ShortCourseManagement\Venue', 'venue_id', 'id');
     }
 
     public function event_status()
     {
-        return $this->belongsTo('App\Models\ShortCourseManagement\EventStatus', 'id', 'event_status_id');
+        return $this->belongsTo('App\Models\ShortCourseManagement\EventStatus', 'event_status_id', 'id');
     }
 
     public function events_shortcourses()

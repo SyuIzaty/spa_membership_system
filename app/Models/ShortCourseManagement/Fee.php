@@ -16,7 +16,7 @@ class Fee extends Model
 
     public function events()
     {
-        return $this->belongsTo('App\Models\ShortCourseManagement\Event', 'id', 'event_id');
+        return $this->belongsTo('App\Models\ShortCourseManagement\Event', 'event_id', 'id');
     }
 
     public function events_participants()

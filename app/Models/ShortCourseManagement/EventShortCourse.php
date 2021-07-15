@@ -16,11 +16,11 @@ class EventShortCourse extends Model
 
     public function event()
     {
-        return $this->belongsTo('App\Models\ShortCourseManagement\Event', 'id', 'event_id');
+        return $this->belongsTo('App\Models\ShortCourseManagement\Event', 'event_id', 'id');
     }
 
     public function shortcourse()
     {
-        return $this->belongsTo('App\Models\ShortCourseManagement\ShortCourse', 'id', 'shortcourse_id');
+        return $this->belongsTo('App\Models\ShortCourseManagement\ShortCourse', 'shortcourse_id', 'id');
     }
 }

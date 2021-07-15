@@ -19,16 +19,21 @@ class EventParticipant extends Model
         'is_verified_payment_proof',
         'payment_datetime',
         'payment_remark',
-        'is_approved',
-        'approved_datetime',
+        'is_approved_application',
+        'is_approved_participation',
+        'approved_application_datetime',
+        'approved_participation_datetime',
         'organization_representative_id',
         'is_actively_participate',
         'is_done_email_registration_confirmation',
+        'is_done_email_application_approval',
         'is_done_email_payment_reminder',
+        'is_done_email_participation_approval',
         'is_done_email_event_reminder',
         'is_done_email_feedback_reminder',
         'is_done_email_completed',
         'is_done_email_cancellation_disqualified',
+        'is_not_participate',
         'is_active',
         'created_by',
         'created_at',
@@ -42,22 +47,27 @@ class EventParticipant extends Model
     public function event()
     {
         //Paramenet 1 belongs to parameter 0
-        return $this->belongsTo('App\Models\ShortCourseManagement\Event', 'id', 'event_id');
+        return $this->belongsTo('App\Models\ShortCourseManagement\Event', 'event_id', 'id');
     }
     public function participant()
     {
-        return $this->belongsTo('App\Models\ShortCourseManagement\Participant', 'id', 'participant_id');
+        return $this->belongsTo('App\Models\ShortCourseManagement\Participant', 'participant_id', 'id');
     }
     public function fee()
     {
-        return $this->belongsTo('App\Models\ShortCourseManagement\Fee', 'id', 'fee_id');
+        return $this->belongsTo('App\Models\ShortCourseManagement\Fee', 'fee_id', 'id');
     }
     public function payment_type()
     {
-        return $this->belongsTo('App\Models\ShortCourseManagement\PaymentType', 'id', 'payment_type_id');
+        return $this->belongsTo('App\Models\ShortCourseManagement\PaymentType', 'payment_type_id', 'id');
     }
     public function organization_representative()
     {
-        return $this->belongsTo('App\Models\ShortCourseManagement\EventParticipant', 'id', 'organisation_representative_id');
+        return $this->belongsTo('App\Models\ShortCourseManagement\EventParticipant', 'organisation_representative_id', 'id');
     }
+    public function organization_members_under()
+    {
+        return $this->hasMany('App\Models\ShortCourseManagement\EventParticipant', 'organisation_representative_id', 'id');
+    }
+    // $this->belongsTo(self::class, 'parent_id');
 }

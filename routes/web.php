@@ -244,9 +244,12 @@ Route::get('/geolocation','GeolocationController@index');
 
 //Short Course Management
 //Event Management
-// Route::resource('event-management', 'ShortCourseManagement\EventManagement\EventManagementController');
-Route::post('/events/data','ShortCourseManagement\EventManagement\EventManagementController@data');
-Route::get('/events', 'ShortCourseManagement\EventManagement\EventManagementController@index');
-Route::post('/event','ShortCourseManagement\EventManagement\EventManagementController@addEvent');
-Route::get('/event/{id}', 'ShortCourseManagement\EventManagement\EventManagementController@eventDetails');
-Route::delete('/event/{id}', 'ShortCourseManagement\EventManagement\EventManagementController@deleteEvent');
+//EventParticipant
+Route::post('/event/{id}/events-participants/data','ShortCourseManagement\EventManagement\EventParticipantController@data');
+//Event
+Route::post('/events/data','ShortCourseManagement\EventManagement\EventController@data');
+Route::get('/events', 'ShortCourseManagement\EventManagement\EventController@index');
+Route::post('/event','ShortCourseManagement\EventManagement\EventController@addEvent');
+Route::get('/event/{id}', 'ShortCourseManagement\EventManagement\EventController@show');
+Route::delete('/event/{id}', 'ShortCourseManagement\EventManagement\EventController@deleteEvent');
+

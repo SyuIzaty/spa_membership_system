@@ -16,11 +16,11 @@ class OrganisationTrainer extends Model
 
     public function organisation()
     {
-        return $this->belongsTo('App\Models\ShortCourseManagement\Organisation', 'id', 'organisation_id');
+        return $this->belongsTo('App\Models\ShortCourseManagement\Organisation', 'organisation_id', 'id');
     }
 
     public function trainer()
     {
-        return $this->belongsTo('App\Models\ShortCourseManagement\Trainer', 'id', 'trainer_id');
+        return $this->belongsTo('App\Models\ShortCourseManagement\Trainer', 'trainer_id', 'id');
     }
 }

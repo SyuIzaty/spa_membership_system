@@ -5,8 +5,9 @@ namespace App\Http\Controllers\ShortCourseManagement\EventManagement;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ShortCourseManagement\Event;
+use App\User;
 
-class EventManagementController extends Controller
+class EventController extends Controller
 {
     public function index()
     {
@@ -15,9 +16,8 @@ class EventManagementController extends Controller
 
     public function data()
     {
-        $events = Event::all()->load(['events_participants']);
-        // return $events;
-        $index=0;
+        $events = Event::all()->load(['events_participants', 'venue']);
+        $index = 0;
         foreach ($events as $event) {
             if (isset($event->events_participants)) {
                 $totalValidParticipants = $event->events_participants->where('is_approved', 1)->count();
@@ -44,7 +44,7 @@ class EventManagementController extends Controller
                 return 'Created By: ' . $events->created_by . '<br> Created At: ' . $events->created_at;
             })
             ->addColumn('action', function ($events) {
-                return '<a href="/event/' . $events->events_id . '" class="btn btn-sm btn-primary">Detail</a>';
+                return '<a href="/event/' . $events->id . '" class="btn btn-sm btn-primary">Detail</a>';
             })
             ->rawColumns(['action', 'management_details', 'participant', 'dates'])
             ->make(true);
@@ -59,7 +59,23 @@ class EventManagementController extends Controller
     }
     function show($id)
     {
+
+        $event = Event::find($id)->load([
+            'events_participants',
+            'venue',
+            'events_shortcourses',
+            'events_shortcourses.shortcourse',
+            'events_trainers',
+            'events_trainers.trainer',
+            'fees'
+        ]);
+
+        $trainers = array();
+        foreach ($event->events_trainers as $event_trainer){
+            array_push($trainers, User::find($event_trainer->trainer->user_id));
+        }
         //
+        return view('short-course-management.event-management.show', compact('event','trainers'));
     }
     public function edit($id)
     {

@@ -16,7 +16,7 @@ class Topic extends Model
 
     public function subcategory()
     {
-        return $this->belongsTo('App\Models\ShortCourseManagement\SubCategory', 'id', 'subcategory_id');
+        return $this->belongsTo('App\Models\ShortCourseManagement\SubCategory', 'subcategory_id', 'id');
     }
 
     public function shortcourses()

@@ -16,7 +16,7 @@ class ShortCourse extends Model
 
     public function topic()
     {
-        return $this->belongsTo('App\Models\ShortCourseManagement\Topic', 'id', 'topic_id');
+        return $this->belongsTo('App\Models\ShortCourseManagement\Topic', 'topic_id', 'id');
     }
     public function materials()
     {

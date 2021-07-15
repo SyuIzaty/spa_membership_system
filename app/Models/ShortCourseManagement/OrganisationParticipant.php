@@ -17,11 +17,11 @@ class OrganisationParticipant extends Model
     public function organisation()
     {
         //Paramenet 1 belongs to parameter 0
-        return $this->belongsTo('App\Models\ShortCourseManagement\Organisation', 'id', 'organisation_id');
+        return $this->belongsTo('App\Models\ShortCourseManagement\Organisation', 'organisation_id', 'id');
     }
 
     public function participant()
     {
-        return $this->belongsTo('App\Models\ShortCourseManagement\Participant', 'id', 'participant_id');
+        return $this->belongsTo('App\Models\ShortCourseManagement\Participant', 'participant_id', 'id');
     }
 }

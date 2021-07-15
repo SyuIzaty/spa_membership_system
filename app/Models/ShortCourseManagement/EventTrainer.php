@@ -28,17 +28,17 @@ class EventTrainer extends Model
     public function event()
     {
         //Paramenet 1 belongs to parameter 0
-        return $this->belongsTo('App\Models\ShortCourseManagement\Event', 'id', 'event_id');
+        return $this->belongsTo('App\Models\ShortCourseManagement\Event', 'event_id', 'id');
     }
 
     public function trainer()
     {
-        return $this->belongsTo('App\Models\ShortCourseManagement\Trainer', 'id', 'trainer_id');
+        return $this->belongsTo('App\Models\ShortCourseManagement\Trainer', 'trainer_id', 'id');
     }
 
     public function trainer_representative()
     {
-        return $this->belongsTo('App\Models\ShortCourseManagement\EventTrainer', 'id', 'trainer_representative_id');
+        return $this->belongsTo('App\Models\ShortCourseManagement\EventTrainer', 'trainer_representative_id', 'id');
     }
 
 }
