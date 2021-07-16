@@ -35,7 +35,7 @@ class EventParticipant extends Model
         'is_done_email_cancellation_disqualified',
         'is_disqualified',
         'disqualified_datetime',
-        'is_not_participate',
+        'is_not_attend',
         'is_active',
         'created_by',
         'created_at',

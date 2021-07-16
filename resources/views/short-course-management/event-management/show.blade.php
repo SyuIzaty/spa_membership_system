@@ -35,6 +35,10 @@
                                     <a data-toggle="tab" class="nav-link" href="#participant-pre-event"
                                         role="tab">Participants (Pre-Event)</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a data-toggle="tab" class="nav-link" href="#participant-during-event"
+                                        role="tab">Participants (During Event)</a>
+                                </li>
                             </ul>
                             <div class="row">
                                 <div class="tab-content col-md-12">
@@ -70,7 +74,7 @@
                                                 <table class="table table-striped table-bordered m-0">
                                                     <thead class="thead">
                                                         <tr class=" bg-primary-50" scope="row">
-                                                            <th colspan="4"><b>List of Fee</b></th>
+                                                            <th colspan="4"><b>List of Fees</b></th>
                                                         </tr>
                                                         <tr style="background-color:plum" scope="row">
                                                             <th scope="col">Name</th>
@@ -94,7 +98,7 @@
                                                 <table class="table table-striped table-bordered m-0">
                                                     <thead class="thead">
                                                         <tr class=" bg-primary-50">
-                                                            <th colspan="2"><b>List of Trainer</b></th>
+                                                            <th colspan="2"><b>List of Trainers</b></th>
                                                         </tr>
                                                         <tr style="background-color:plum">
                                                             <th>ID</th>
@@ -114,7 +118,7 @@
                                                 <table class="table table-striped table-bordered m-0">
                                                     <thead class="thead">
                                                         <tr class=" bg-primary-50">
-                                                            <th colspan="2"><b>List of Short Course</b></th>
+                                                            <th colspan="2"><b>List of Short Courses</b></th>
                                                         </tr>
                                                         <tr style="background-color:plum">
                                                             <th>ID</th>
@@ -227,7 +231,7 @@
                                                                         data-original-title="Close"></button>
                                                                 </div>
                                                             </div>
-                                                            <div class="panel-container collapse">
+                                                            <div class="panel-container">
                                                                 {{-- <form action="{{ url('/senarai_kolej/student/bundle/into/' . $event->id) }}" method="post"
                                                                     name="form"> --}}
                                                                 {{-- <form name="form"> --}}
@@ -264,49 +268,175 @@
                                                                                     <input type="hidden" name="id" id="id">
                                                                                     <p><span class="text-danger">*</span>
                                                                                         Vital Information</p>
-
-                                                                                    <div class="form-group"
-                                                                                        style="width:100%">
-                                                                                        <td class="form-inline"
+                                                                                    <hr class="mt-1 mb-2">
+                                                                                    <div class="form-group">
+                                                                                        <label for="ic"><span
+                                                                                                class="text-danger">*</span>
+                                                                                            IC</label>
+                                                                                        <div class="form-inline"
                                                                                             style="width:100%">
-                                                                                            <div class="form-inline"
-                                                                                                style="width:100%">
-                                                                                                <div
-                                                                                                    class="form-group mb-2">
-                                                                                                    <label for="ic"><span
-                                                                                                            class="text-danger">*</span>
-                                                                                                        IC:</label>
-                                                                                                </div>
-                                                                                                <div
-                                                                                                    class="form-group mx-sm-3 mb-2">
-                                                                                                    <input
-                                                                                                        class="form-control"
-                                                                                                        id="ic" name="ic">
-                                                                                                </div>
-                                                                                                <a href="javascript:;"
-                                                                                                    data-toggle="#" id="#"
-                                                                                                    class="btn btn-primary mb-2"><i
-                                                                                                        class="ni ni-magnifier"></i></a>
+                                                                                            <div class="form-group mr-2 mb-2"
+                                                                                                style="width:85%">
+                                                                                                <input
+                                                                                                    class="form-control w-100"
+                                                                                                    id="ic" name="ic">
                                                                                             </div>
-                                                                                            @error('ic')
+                                                                                            <a href="javascript:;"
+                                                                                                data-toggle="#"
+                                                                                                id="search-by-ic"
+                                                                                                class="btn btn-primary mb-2"><i
+                                                                                                    class="ni ni-magnifier"></i></a>
+                                                                                        </div>
+                                                                                        @error('ic')
+                                                                                            <p style="color: red">
+                                                                                                <strong> *
+                                                                                                    {{ $message }}
+                                                                                                </strong>
+                                                                                            </p>
+                                                                                        @enderror
+                                                                                    </div>
+                                                                                    <hr class="mt-1 mb-2">
+                                                                                    <div id="form-application-second-part"
+                                                                                        style="display: none">
+                                                                                        <div class="form-group">
+                                                                                            <label class="form-label"
+                                                                                                for="fullname"><span
+                                                                                                    class="text-danger">*</span>Fullname</label>
+                                                                                            <input class="form-control"
+                                                                                                id="fullname"
+                                                                                                name="fullname">
+                                                                                            @error('name')
                                                                                                 <p style="color: red">
                                                                                                     <strong> *
                                                                                                         {{ $message }}
                                                                                                     </strong>
                                                                                                 </p>
                                                                                             @enderror
-                                                                                        </td>
+                                                                                        </div>
+                                                                                        <hr class="mt-1 mb-2">
+                                                                                        <div class="form-group">
+                                                                                            <label class="form-label"
+                                                                                                for="phone"><span
+                                                                                                    class="text-danger">*</span>Phone</label>
+                                                                                            <input class="form-control"
+                                                                                                id="phone" name="phone">
+                                                                                            @error('phone')
+                                                                                                <p style="color: red">
+                                                                                                    <strong> *
+                                                                                                        {{ $message }}
+                                                                                                    </strong>
+                                                                                                </p>
+                                                                                            @enderror
+                                                                                        </div>
+
+                                                                                        <hr class="mt-1 mb-2">
+                                                                                        <div class="form-group">
+                                                                                            <label class="form-label"
+                                                                                                for="email"><span
+                                                                                                    class="text-danger">*</span>Email</label>
+                                                                                            <input class="form-control"
+                                                                                                id="email" name="email">
+                                                                                            @error('email')
+                                                                                                <p style="color: red">
+                                                                                                    <strong> *
+                                                                                                        {{ $message }}
+                                                                                                    </strong>
+                                                                                                </p>
+                                                                                            @enderror
+                                                                                        </div>
+
+                                                                                        <hr class="mt-1 mb-2">
+                                                                                        <div
+                                                                                            class="custom-control custom-checkbox">
+                                                                                            <input type="checkbox"
+                                                                                                class="custom-control-input"
+                                                                                                id="represent-by-himself">
+                                                                                            <label
+                                                                                                class="custom-control-label"
+                                                                                                for="represent-by-himself">Represent
+                                                                                                By Himself</label>
+                                                                                        </div>
+                                                                                        <hr class="mt-1 mb-2">
+                                                                                        <div id="representative">
+                                                                                            <div class="form-group">
+                                                                                                <label
+                                                                                                    for="representative-ic"><span
+                                                                                                        class="text-danger">*</span>
+                                                                                                    Representative
+                                                                                                    IC</label>
+                                                                                                <div class="form-inline"
+                                                                                                    style="width:100%">
+                                                                                                    <div class="form-group mr-2 mb-2"
+                                                                                                        style="width:85%">
+                                                                                                        <input
+                                                                                                            class="form-control w-100"
+                                                                                                            id="representative-ic"
+                                                                                                            name="representative-ic">
+                                                                                                    </div>
+                                                                                                    <a href="javascript:;"
+                                                                                                        data-toggle="#"
+                                                                                                        id="search-by-representative-ic"
+                                                                                                        class="btn btn-primary mb-2"><i
+                                                                                                            class="ni ni-magnifier"></i></a>
+                                                                                                </div>
+                                                                                                @error('representative-ic')
+                                                                                                    <p style="color: red">
+                                                                                                        <strong> *
+                                                                                                            {{ $message }}
+                                                                                                        </strong>
+                                                                                                    </p>
+                                                                                                @enderror
+                                                                                            </div>
+                                                                                            <p id="representative-doesnt-exist"
+                                                                                                style="color: red; display:none;">
+                                                                                                <strong> * The
+                                                                                                    representative doesn't
+                                                                                                    exist
+                                                                                                </strong>
+                                                                                            </p>
+                                                                                            <p id="representative-doesnt-valid"
+                                                                                                style="color: red; display:none;">
+                                                                                                <strong> * The choosen
+                                                                                                    participant is not valid
+                                                                                                    to represent others
+                                                                                                </strong>
+                                                                                            </p>
+                                                                                            <div id="form-application-third-part"
+                                                                                                style="display: none">
+                                                                                                <div class="form-group">
+                                                                                                    <label
+                                                                                                        class="form-label"
+                                                                                                        for="representative-fullname"><span
+                                                                                                            class="text-danger">*</span>Representative
+                                                                                                        Fullname</label>
+                                                                                                    <input
+                                                                                                        id="representative-fullname"
+                                                                                                        name="representative-fullname"
+                                                                                                        class="form-control"
+                                                                                                        readonly>
+                                                                                                    @error('representative-name')
+                                                                                                        <p style="color: red">
+                                                                                                            <strong> *
+                                                                                                                {{ $message }}
+                                                                                                            </strong>
+                                                                                                        </p>
+                                                                                                    @enderror
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
                                                                                     </div>
+                                                                                    <hr class="mt-1 mb-2">
                                                                                     <div class="footer">
                                                                                         <button type="button"
                                                                                             class="btn btn-success ml-auto float-right mr-2"
-                                                                                            data-dismiss="modal"><i
+                                                                                            data-dismiss="modal"
+                                                                                            id="close-new-application"><i
                                                                                                 class="fal fa-window-close"></i>
                                                                                             Close</button>
                                                                                         <button type="submit"
                                                                                             class="btn btn-primary ml-auto float-right mr-2"><i
                                                                                                 class="ni ni-plus"></i>
-                                                                                            Add</button>
+                                                                                            Apply</button>
                                                                                     </div>
 
                                                                                     {{-- {!! Form::close() !!} --}}
@@ -328,8 +458,8 @@
                                                         <div id="panel-1" class="panel">
                                                             <div class="panel-hdr">
                                                                 <h2>
-                                                                    <span class="fw-300">Step 2 - </span> Application to be
-                                                                    Approved
+                                                                    <span class="fw-300">Step 2 - </span> Approved
+                                                                    Application from this List of Applications
                                                                 </h2>
                                                                 <div class="panel-toolbar">
                                                                     <button class="btn btn-panel"
@@ -415,7 +545,8 @@
                                                         <div id="panel-1" class="panel">
                                                             <div class="panel-hdr">
                                                                 <h2>
-                                                                    <span class="fw-300">Step 3 - </span> No Payment Yet
+                                                                    <span class="fw-300">Step 3 - </span> Wait for this List
+                                                                    of Applicant to Make Payments
                                                                 </h2>
                                                                 <div class="panel-toolbar">
                                                                     <button class="btn btn-panel"
@@ -496,8 +627,8 @@
                                                         <div id="panel-1" class="panel">
                                                             <div class="panel-hdr">
                                                                 <h2>
-                                                                    <span class="fw-300">Step 4 - </span> Already Make
-                                                                    Payment (Need to be Verified)
+                                                                    <span class="fw-300">Step 4 - </span> Verify Payment
+                                                                    from this List of Applicants
                                                                 </h2>
                                                                 <div class="panel-toolbar">
                                                                     <button class="btn btn-panel"
@@ -750,6 +881,98 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="tab-pane" id="participant-during-event" role="tabpanel">
+                                        <hr class="mt-2 mb-3">
+                                        <div class="row">
+                                            <div class="col-md-12 grid-margin stretch-card">
+                                                <div class="row">
+                                                    <div class="col-xl-12">
+                                                        <div id="panel-1" class="panel">
+                                                            <div class="panel-hdr">
+                                                                <h2>
+                                                                    <span class="fw-300">Step 1 - </span> Verify Attendance
+                                                                    from this List of Expected Attendances
+                                                                </h2>
+                                                                <div class="panel-toolbar">
+                                                                    <button class="btn btn-panel"
+                                                                        data-action="panel-collapse" data-toggle="tooltip"
+                                                                        data-offset="0,10"
+                                                                        data-original-title="Collapse"></button>
+                                                                    <button class="btn btn-panel"
+                                                                        data-action="panel-fullscreen" data-toggle="tooltip"
+                                                                        data-offset="0,10"
+                                                                        data-original-title="Fullscreen"></button>
+                                                                    <button class="btn btn-panel" data-action="panel-close"
+                                                                        data-toggle="tooltip" data-offset="0,10"
+                                                                        data-original-title="Close"></button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="panel-container show">
+                                                                {{-- <form action="{{ url('/senarai_kolej/student/bundle/into/' . $event->id) }}" method="post"
+                                                                    name="form"> --}}
+                                                                <form name="form">
+                                                                    @csrf
+                                                                    <div class="panel-content">
+                                                                        @if (Session::has('messageAllExpectedAttendances'))
+                                                                            <div class="alert alert-success"
+                                                                                style="color: #3b6324; background-color: #d3fabc;">
+                                                                                <i class="icon fal fa-check-circle"></i>
+                                                                                {{ Session::get('messageAllExpectedAttendances') }}
+                                                                            </div>
+                                                                        @endif
+                                                                        @if (Session::has('notification'))
+                                                                            <div class="alert alert-success"
+                                                                                style="color: #3b6324; background-color: #d3fabc;">
+                                                                                <i class="icon fal fa-check-circle"></i>
+                                                                                {{ Session::get('notification') }}
+                                                                            </div>
+                                                                        @endif
+
+                                                                        <div class="table-responsive">
+                                                                            <table id="table-expected-attendances"
+                                                                                class="table table-bordered table-hover table-striped w-100">
+                                                                                <thead>
+                                                                                    <tr class="bg-primary-50 text-center">
+                                                                                        <th style="width:10px"><input
+                                                                                                type="checkbox"
+                                                                                                id="check-all-expected-attendances">
+                                                                                        </th>
+                                                                                        <th style="width:30px">Id</th>
+                                                                                        <th>Organisation</th>
+                                                                                        <th>Name</th>
+                                                                                        <th>Phone</th>
+                                                                                        <th>Email</th>
+                                                                                        {{-- <th>Representative Name</th>
+                                                                                        <th>Representative Phone</th>
+                                                                                        <th>Representative Email</th> --}}
+                                                                                        <th>Date Apply</th>
+                                                                                        <th>Action</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                            </table>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
+                                                                        style="content-align:right">
+                                                                        <button type="submit"
+                                                                            class="btn btn-success ml-auto mr-2 waves-effect waves-themed"><i
+                                                                                class="ni ni-check"></i> All
+                                                                            Ticked Are Attend</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-danger float-right mr-2 waves-effect waves-themed"><i
+                                                                                class="ni ni-close"></i> All
+                                                                            Ticked Are Not Attend</button>
+                                                                    </div>
+                                                                    {{-- <button type="button" class="btn btn-success ml-auto mr-2 waves-effect waves-themed" onclick="window.location='http://sims.test/checkrequirements'"><i class="fal fa-check-circle"></i> Run All</button> --}}
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -779,6 +1002,64 @@
 
             $('.modal-body #id').val(id);
             $('.modal-body #ic').val(ic);
+        });
+
+        $('#search-by-ic').click(function() {
+            var ic = $('.modal-body #ic').val();
+            $.get("/participant/search-by-ic/" + ic, function(data) {
+                $('.modal-body #fullname').val(data.name);
+                $('.modal-body #phone').val(data.phone);
+                $('.modal-body #email').val(data.email);
+
+            }).fail(
+                function() {
+                $('.modal-body #fullname').val(null);
+                $('.modal-body #phone').val(null);
+                $('.modal-body #email').val(null);
+                }).always(
+                function() {
+                    $("div[id=form-application-second-part]").show();
+                });
+
+        });
+
+
+        $("input[id=represent-by-himself]").change(function() {
+            var representByHimself = '';
+
+            $('.modal-body #representative-ic').val(null);
+            $('.modal-body #representative-email').val(null);
+            $("p[id=representative-doesnt-exist]").hide();
+            $("div[id=form-application-third-part]").hide();
+            $('.modal-body #represent-by-himself').val(representByHimself);
+            if ($(this)[0].checked) {
+                $("div[id=representative]").hide();
+            } else {
+                $("div[id=representative]").show();
+            }
+        });
+
+
+        // search-by-representative-ic
+        $('#search-by-representative-ic').click(function() {
+            var representativeIc = $('.modal-body #representative-ic').val();
+            $.get("/participant/search-by-representative-ic/" + representativeIc, function(data) {
+                $('.modal-body #representative-fullname').val(data.name);
+            }).fail(
+                function() {
+                    $("p[id=representative-doesnt-exist]").show();
+                }).done(
+                function() {
+                    $("div[id=form-application-third-part]").show();
+                });
+
+        });
+
+        $('#close-new-application').click(function() {
+            $('.modal-body #ic').val(null);
+            $('.modal-body #fullname').val(null);
+            $('.modal-body #phone').val(null);
+            $('.modal-body #email').val(null);
         });
 
         // all applicants
@@ -1258,19 +1539,7 @@
             })
         });
 
-        // ready for event
-        // $(document).ready(function() {
-        //     $("#check-ready-for-event").click(function() {
-        //         $("input[type=checkbox]").prop("checked", $(this).prop("checked"));
-        //     });
-
-        //     $("input[type=checkbox]").click(function() {
-        //         if (!$(this).prop("checked")) {
-        //             $('#check-ready-for-event').prop("checked", false);
-        //         }
-        //     });
-        // })
-
+        // all ready for event
         var tableReadyForEvent = $('#table-ready-for-event').DataTable({
             columnDefs: [{
                 targets: [2],
@@ -1374,64 +1643,7 @@
             });
         });
 
-        // $('#table-ready-for-event').on('click', '.btn-delete[data-remote]', function(e) {
-        //     e.preventDefault();
-        //     $.ajaxSetup({
-        //         headers: {
-        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //         }
-        //     });
-        //     var url = $(this).data('remote');
-
-        //     Swal.fire({
-        //         title: 'Verify this payment?',
-        //         text: "This payment will be verified!",
-        //         icon: 'warning',
-        //         showCancelButton: true,
-        //         confirmButtonColor: '#3085d6',
-        //         cancelButtonColor: '#d33',
-        //         confirmButtonText: 'Yes, verify this payment!',
-        //         cancelButtonText: 'No'
-        //     }).then((result) => {
-        //         if (result.value) {
-        //             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-        //             $.ajax({
-        //                 url: url,
-        //                 type: 'POST',
-        //                 dataType: 'json',
-        //                 data: {
-        //                     method: 'POST',
-        //                     submit: true
-        //                 }
-        //             }).always(function(data) {
-        //                 $('#table-ready-for-event').DataTable().draw(false);
-        //             });
-
-
-        //             // var delayInMilliseconds = 5000; //5 second
-
-        //             // setTimeout(function() {
-        //             //     //your code to be executed after 5 second
-        //             //     $('#studentWithoutKolej').DataTable().ajax.reload();
-        //             // }, delayInMilliseconds);
-
-        //         }
-        //     })
-        // });
-
-        // disqualified
-        // $(document).ready(function() {
-        //     $("#check-disqualified").click(function() {
-        //         $("input[type=checkbox]").prop("checked", $(this).prop("checked"));
-        //     });
-
-        //     $("input[type=checkbox]").click(function() {
-        //         if (!$(this).prop("checked")) {
-        //             $('#check-disqualified').prop("checked", false);
-        //         }
-        //     });
-        // })
-
+        // all disqualified
         var tableDisqualified = $('#table-disqualified').DataTable({
             columnDefs: [{
                 targets: [2],
@@ -1535,49 +1747,163 @@
             });
         });
 
-        // $('#table-disqualified').on('click', '.btn-delete[data-remote]', function(e) {
-        //     e.preventDefault();
-        //     $.ajaxSetup({
-        //         headers: {
-        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //         }
-        //     });
-        //     var url = $(this).data('remote');
+        // all expected attendances
+        $(document).ready(function() {
+            $("#check-all-expected-attendances").click(function() {
+                $("input[type=checkbox]").prop("checked", $(this).prop("checked"));
+            });
 
-        //     Swal.fire({
-        //         title: 'Verify this payment?',
-        //         text: "This payment will be verified!",
-        //         icon: 'warning',
-        //         showCancelButton: true,
-        //         confirmButtonColor: '#3085d6',
-        //         cancelButtonColor: '#d33',
-        //         confirmButtonText: 'Yes, verify this payment!',
-        //         cancelButtonText: 'No'
-        //     }).then((result) => {
-        //         if (result.value) {
-        //             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-        //             $.ajax({
-        //                 url: url,
-        //                 type: 'POST',
-        //                 dataType: 'json',
-        //                 data: {
-        //                     method: 'POST',
-        //                     submit: true
-        //                 }
-        //             }).always(function(data) {
-        //                 $('#table-disqualified').DataTable().draw(false);
-        //             });
+            $("input[type=checkbox]").click(function() {
+                if (!$(this).prop("checked")) {
+                    $('#check-all-expected-attendances').prop("checked", false);
+                }
+            });
+        })
+
+        var tableExpectedAttendances = $('#table-expected-attendances').DataTable({
+            columnDefs: [{
+                targets: [2],
+                render: function(data, type, row) {
+                    return !data ? 'N/A' : data;
+                }
+            }],
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "/event/" + event_id + "/events-participants/data-expected-attendances",
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            },
+            columns: [{
+                    data: 'checkExpectedAttendace',
+                    name: 'checkExpectedAttendace',
+                    orderable: false,
+                    searchable: false
+                }, {
+                    className: 'text-center',
+                    data: 'id',
+                    name: 'id',
+                },
+                {
+                    className: 'text-center',
+                    data: 'organisationsString',
+                    name: 'organisationsString'
+                },
+                {
+                    className: 'text-center',
+                    data: 'participant.name',
+                    name: 'participant.name'
+                },
+                {
+                    className: 'text-center',
+                    data: 'participant.phone',
+                    name: 'participant.phone'
+                },
+                {
+                    className: 'text-center',
+                    data: 'participant.email',
+                    name: 'participant.email'
+                },
+                // {
+                //     className: 'text-center',
+                //     data: 'organization_representative.participant.name',
+                //     name: 'organization_representative.participant.name'
+                // },
+                // {
+                //     className: 'text-center',
+                //     data: 'organization_representative.participant.phone',
+                //     name: 'organization_representative.participant.phone'
+                // },
+                // {
+                //     className: 'text-center',
+                //     data: 'organization_representative.participant.email',
+                //     name: 'organization_representative.participant.email'
+                // },
+                {
+                    className: 'text-center',
+                    data: 'created_at_diffForHumans',
+                    name: 'created_at_diffForHumans',
+                },
+                {
+                    className: 'text-center',
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                }
+            ],
+            orderCellsTop: true,
+            "order": [
+                [1, "desc"]
+            ],
+            "initComplete": function(settings, json) {}
+        });
+
+        $('#table-expected-attendances thead tr .hasinput').each(function(i) {
+            $('input', this).on('keyup change', function() {
+                if (tableExpectedAttendances.column(i).search() !== this.value) {
+                    tableExpectedAttendances
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+
+            $('select', this).on('keyup change', function() {
+                if (tableExpectedAttendances.column(i).search() !== this.value) {
+                    tableExpectedAttendances
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+
+        $('#table-expected-attendances').on('click', '.btn-delete[data-remote]', function(e) {
+            e.preventDefault();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            var url = $(this).data('remote');
+
+            Swal.fire({
+                title: 'Verify attendance for this attendant?',
+                text: "This attendant attendance will be verified!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, this attendant attand this event!',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.value) {
+                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            method: 'POST',
+                            submit: true
+                        }
+                    }).always(function(data) {
+                        $('#table-expected-attendances').DataTable().draw(false);
+                    });
 
 
-        //             // var delayInMilliseconds = 5000; //5 second
+                    // var delayInMilliseconds = 5000; //5 second
 
-        //             // setTimeout(function() {
-        //             //     //your code to be executed after 5 second
-        //             //     $('#studentWithoutKolej').DataTable().ajax.reload();
-        //             // }, delayInMilliseconds);
+                    // setTimeout(function() {
+                    //     //your code to be executed after 5 second
+                    //     $('#studentWithoutKolej').DataTable().ajax.reload();
+                    // }, delayInMilliseconds);
 
-        //         }
-        //     })
-        // });
+                }
+            })
+        });
     </script>
 @endsection

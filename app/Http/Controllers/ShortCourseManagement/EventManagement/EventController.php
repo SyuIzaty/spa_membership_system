@@ -63,9 +63,7 @@ class EventController extends Controller
         $event = Event::find($id)->load([
             'events_participants',
             'venue',
-            'events_shortcourses',
             'events_shortcourses.shortcourse',
-            'events_trainers',
             'events_trainers.trainer',
             'fees'
         ]);

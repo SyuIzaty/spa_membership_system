@@ -250,10 +250,17 @@ Route::post('/event/{id}/events-participants/data-no-payment-yet','ShortCourseMa
 Route::post('/event/{id}/events-participants/data-payment-wait-for-verification','ShortCourseManagement\EventManagement\EventParticipantController@dataPaymentWaitForVerification');
 Route::post('/event/{id}/events-participants/data-ready-for-event','ShortCourseManagement\EventManagement\EventParticipantController@dataReadyForEvent');
 Route::post('/event/{id}/events-participants/data-disqualified','ShortCourseManagement\EventManagement\EventParticipantController@dataDisqualified');
+Route::post('/event/{id}/events-participants/data-expected-attendances','ShortCourseManagement\EventManagement\EventParticipantController@dataExpectedAttendances');
+
 //Event
 Route::post('/events/data','ShortCourseManagement\EventManagement\EventController@data');
 Route::get('/events', 'ShortCourseManagement\EventManagement\EventController@index');
 Route::post('/event','ShortCourseManagement\EventManagement\EventController@addEvent');
 Route::get('/event/{id}', 'ShortCourseManagement\EventManagement\EventController@show');
 Route::delete('/event/{id}', 'ShortCourseManagement\EventManagement\EventController@deleteEvent');
+
+//Participant
+Route::get('/participant/search-by-ic/{ic}','ShortCourseManagement\People\Participant\ParticipantController@searchByIc');
+Route::get('/participant/search-by-representative-ic/{ic}','ShortCourseManagement\People\Participant\ParticipantController@searchByRepresentativeIc');
+
 
