@@ -12,10 +12,20 @@ class EventParticipantController extends Controller
     {
         //
     }
-    public function data($id)
+    public function dataApplicants($id)
     {
-        // return $id;
-        $eventsParticipants = EventParticipant::where('event_id', $id)->get()->load(['event', 'participant', 'organization_representative', 'participant.organisations_participants', 'participant.organisations_participants.organisation']);
+        $eventsParticipants = EventParticipant::where([
+            ['event_id', '=', $id],
+            ['is_approved_application', '=', 0],
+            ['is_disqualified', '=',0]
+        ])->get()
+            ->load([
+                'event',
+                'participant',
+                'organization_representative',
+                'participant.organisations_participants',
+                'participant.organisations_participants.organisation'
+            ]);
 
         $index = 0;
         foreach ($eventsParticipants as $eventParticipant) {
@@ -32,17 +42,177 @@ class EventParticipantController extends Controller
         }
 
         return datatables()::of($eventsParticipants)
-            ->addColumn('checkapplicant', function ($eventsParticipants) {
-                return '<input type="checkbox" name="applicants_checkbox[]" value="' . $eventsParticipants->id . '" class="applicants_checkbox">';
+            ->addColumn('checkApplicant', function ($eventsParticipants) {
+                return '<input type="checkbox" name="applicants_checkbox[]" value="' .
+                    $eventsParticipants->id .
+                    '" class="applicants_checkbox">';
             })
             ->addColumn('action', function ($eventsParticipants) {
                 // return '<a href="/event/' . $eventsParticipants->id . '" class="btn btn-sm btn-success">Approved</a>
                 //         <a href="/event/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger">Reject</a>';
-                return '<a href="#" class="btn btn-sm btn-success">Approved</a>
+                return '<a href="#" class="btn btn-sm btn-success">Approve</a>
                         <a href="#" class="btn btn-sm btn-danger">Reject</a>';
             })
-            ->rawColumns(['action', 'checkapplicant'])
+            ->rawColumns(['action', 'checkApplicant'])
             ->make(true);
+    }
+    public function dataNoPaymentYet($id)
+    {
+        $eventsParticipants = EventParticipant::where([
+            ['event_id', '=', $id],
+            ['is_approved_application', '=', 1],
+            ['is_paid', '=', 0],
+            ['is_disqualified', '=',0]
+        ])->get()
+            ->load([
+                'event',
+                'participant',
+                'organization_representative',
+                'participant.organisations_participants',
+                'participant.organisations_participants.organisation'
+            ]);
+
+        $index = 0;
+        foreach ($eventsParticipants as $eventParticipant) {
+            // $eventsParticipants[$index]->organisations = array();
+            // $organization_representative = EventParticipant::find($eventParticipant->organization_representative_id)->load(['participant']);
+            // $eventsParticipants[$index]->organization_representative=$organization_representative;
+            $eventsParticipants[$index]->created_at_diffForHumans = $eventsParticipants[$index]->created_at->diffForHumans();
+            $eventsParticipants[$index]->organisationsString = '';
+            foreach ($eventParticipant->participant->organisations_participants as $organisation_participant) {
+                // array_push($eventsParticipants[$index]->organisations, $organisation_participant->organisation->name);
+                $eventsParticipants[$index]->organisationsString = ($eventsParticipants[$index]->organisationsString) .
+                    ($organisation_participant->organisation->name) .
+                    '.';
+            }
+            $index++;
+        }
+
+        return datatables()::of($eventsParticipants)
+            ->addColumn('checkNoPaymentYet', function ($eventsParticipants) {
+                return '<input type="checkbox" name="noPaymentYet_checkbox[]" value="' .
+                    $eventsParticipants->id .
+                    '" class="noPaymentYet_checkbox">';
+            })
+            ->addColumn('action', function ($eventsParticipants) {
+                return '<a href="#" class="btn btn-sm btn-danger">Disqualified</a>';
+            })
+            ->rawColumns(['action', 'checkNoPaymentYet'])
+            ->make(true);
+    }
+    public function dataPaymentWaitForVerification($id)
+    {
+        $eventsParticipants = EventParticipant::where([
+            ['event_id', '=', $id],
+            ['is_approved_application', '=', 1],
+            ['is_paid', '=', 1],
+            ['is_verified_payment_proof', '=', 0],
+            ['is_disqualified', '=',0]
+        ])->get()
+            ->load([
+                'event',
+                'participant',
+                'organization_representative',
+                'participant.organisations_participants',
+                'participant.organisations_participants.organisation'
+            ]);
+
+        $index = 0;
+        foreach ($eventsParticipants as $eventParticipant) {
+            // $eventsParticipants[$index]->organisations = array();
+            // $organization_representative = EventParticipant::find($eventParticipant->organization_representative_id)->load(['participant']);
+            // $eventsParticipants[$index]->organization_representative=$organization_representative;
+            $eventsParticipants[$index]->created_at_diffForHumans = $eventsParticipants[$index]->created_at->diffForHumans();
+            $eventsParticipants[$index]->organisationsString = '';
+            foreach ($eventParticipant->participant->organisations_participants as $organisation_participant) {
+                // array_push($eventsParticipants[$index]->organisations, $organisation_participant->organisation->name);
+                $eventsParticipants[$index]->organisationsString = ($eventsParticipants[$index]->organisationsString) .
+                ($organisation_participant->organisation->name) .
+                '.';
+            }
+            $index++;
+        }
+
+        return datatables()::of($eventsParticipants)
+            ->addColumn('checkPaymentWaitForVerification', function ($eventsParticipants) {
+                return '<input type="checkbox" name="paymentWaitForVerification_checkbox[]" value="' .
+                $eventsParticipants->id .
+                '" class="paymentWaitForVerification_checkbox">';
+            })
+            ->addColumn('action', function ($eventsParticipants) {
+                return '
+                <a href="#" class="btn btn-sm btn-success">Verify</a>
+                <a href="#" class="btn btn-sm btn-danger">Reject</a>';
+            })
+            ->rawColumns(['action', 'checkPaymentWaitForVerification'])
+            ->make(true);
+    }
+    public function dataReadyForEvent($id)
+    {
+        $eventsParticipants = EventParticipant::where([
+            ['event_id', '=', $id],
+            ['is_approved_application', '=', 1],
+            ['is_paid', '=', 1],
+            ['is_verified_payment_proof', '=', 1],
+            ['is_disqualified', '=',0]
+        ])->get()
+            ->load([
+                'event',
+                'participant',
+                'organization_representative',
+                'participant.organisations_participants',
+                'participant.organisations_participants.organisation'
+            ]);
+
+        $index = 0;
+        foreach ($eventsParticipants as $eventParticipant) {
+            // $eventsParticipants[$index]->organisations = array();
+            // $organization_representative = EventParticipant::find($eventParticipant->organization_representative_id)->load(['participant']);
+            // $eventsParticipants[$index]->organization_representative=$organization_representative;
+            $eventsParticipants[$index]->created_at_diffForHumans = $eventsParticipants[$index]->created_at->diffForHumans();
+            $eventsParticipants[$index]->organisationsString = '';
+            foreach ($eventParticipant->participant->organisations_participants as $organisation_participant) {
+                // array_push($eventsParticipants[$index]->organisations, $organisation_participant->organisation->name);
+                $eventsParticipants[$index]->organisationsString = ($eventsParticipants[$index]->organisationsString) .
+                ($organisation_participant->organisation->name) .
+                '.';
+            }
+            $index++;
+        }
+
+        return datatables()::of($eventsParticipants)->make(true);
+    }
+    public function dataDisqualified($id)
+    {
+        $eventsParticipants = EventParticipant::where([
+            ['event_id', '=', $id],
+            ['is_disqualified', '=',1]
+        ])->get()
+            ->load([
+                'event',
+                'participant',
+                'organization_representative',
+                'participant.organisations_participants',
+                'participant.organisations_participants.organisation'
+            ]);
+
+        $index = 0;
+        foreach ($eventsParticipants as $eventParticipant) {
+            // $eventsParticipants[$index]->organisations = array();
+            // $organization_representative = EventParticipant::find($eventParticipant->organization_representative_id)->load(['participant']);
+            // $eventsParticipants[$index]->organization_representative=$organization_representative;
+            $eventsParticipants[$index]->created_at_diffForHumans = $eventsParticipants[$index]->created_at->diffForHumans();
+            $eventsParticipants[$index]->organisationsString = '';
+            foreach ($eventParticipant->participant->organisations_participants as $organisation_participant) {
+                // array_push($eventsParticipants[$index]->organisations, $organisation_participant->organisation->name);
+                $eventsParticipants[$index]->organisationsString = ($eventsParticipants[$index]->organisationsString) .
+                ($organisation_participant->organisation->name) .
+                '.';
+            }
+            $index++;
+        }
+
+        return datatables()::of($eventsParticipants)->make(true);
     }
     public function create()
     {

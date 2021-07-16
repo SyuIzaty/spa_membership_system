@@ -245,7 +245,11 @@ Route::get('/geolocation','GeolocationController@index');
 //Short Course Management
 //Event Management
 //EventParticipant
-Route::post('/event/{id}/events-participants/data','ShortCourseManagement\EventManagement\EventParticipantController@data');
+Route::post('/event/{id}/events-participants/data-applicants','ShortCourseManagement\EventManagement\EventParticipantController@dataApplicants');
+Route::post('/event/{id}/events-participants/data-no-payment-yet','ShortCourseManagement\EventManagement\EventParticipantController@dataNoPaymentYet');
+Route::post('/event/{id}/events-participants/data-payment-wait-for-verification','ShortCourseManagement\EventManagement\EventParticipantController@dataPaymentWaitForVerification');
+Route::post('/event/{id}/events-participants/data-ready-for-event','ShortCourseManagement\EventManagement\EventParticipantController@dataReadyForEvent');
+Route::post('/event/{id}/events-participants/data-disqualified','ShortCourseManagement\EventManagement\EventParticipantController@dataDisqualified');
 //Event
 Route::post('/events/data','ShortCourseManagement\EventManagement\EventController@data');
 Route::get('/events', 'ShortCourseManagement\EventManagement\EventController@index');
