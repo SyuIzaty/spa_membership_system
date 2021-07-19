@@ -11,12 +11,20 @@ class Organisation extends Model
     protected $table = 'scm_organisation';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'name', 'created_by', 'created_at', 'updated_by', 'updated_at', 'deleted_by', 'deleted_at'
+        'name',
+        'created_by',
+        'created_at',
+        'updated_by',
+        'updated_at',
+        'deleted_by',
+        'deleted_at'
     ];
 
     public function organisations_trainers()
     {
-        return $this->hasMany('App\Models\ShortCourseManagement\OrganisationTrainer', 'organisation_id', 'id');
+        return $this->hasMany('App\Models\ShortCourseManagement\OrganisationTrainer',
+        'organisation_id',
+        'id');
     }
 
     public function organisations_participants()

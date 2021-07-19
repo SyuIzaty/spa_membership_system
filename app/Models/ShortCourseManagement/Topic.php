@@ -11,16 +11,27 @@ class Topic extends Model
     protected $table = 'scm_topic';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'name', 'subcategory_id', 'created_by', 'created_at', 'updated_by', 'updated_at', 'deleted_by', 'deleted_at'
+        'name',
+        'subcategory_id',
+        'created_by',
+        'created_at',
+        'updated_by',
+        'updated_at',
+        'deleted_by',
+        'deleted_at'
     ];
 
     public function subcategory()
     {
-        return $this->belongsTo('App\Models\ShortCourseManagement\SubCategory', 'subcategory_id', 'id');
+        return $this->belongsTo('App\Models\ShortCourseManagement\SubCategory',
+        'subcategory_id',
+        'id');
     }
 
     public function shortcourses()
     {
-        return $this->hasMany('App\Models\ShortCourseManagement\ShortCourse', 'topic_id', 'id');
+        return $this->hasMany('App\Models\ShortCourseManagement\ShortCourse',
+        'topic_id',
+        'id');
     }
 }

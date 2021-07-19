@@ -11,12 +11,22 @@ class OrganisationTrainer extends Model
     protected $table = 'scm_organisation_trainer';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'organisation_id', 'trainer_id', 'is_active', 'created_by', 'created_at', 'updated_by', 'updated_at', 'deleted_by', 'deleted_at'
+        'organisation_id',
+        'trainer_id',
+        'is_active',
+        'created_by',
+        'created_at',
+        'updated_by',
+        'updated_at',
+        'deleted_by',
+        'deleted_at'
     ];
 
     public function organisation()
     {
-        return $this->belongsTo('App\Models\ShortCourseManagement\Organisation', 'organisation_id', 'id');
+        return $this->belongsTo('App\Models\ShortCourseManagement\Organisation',
+        'organisation_id',
+        'id');
     }
 
     public function trainer()

@@ -27,7 +27,6 @@ class Event extends Model
         'online_password',
         'address',
         'registration_due_date',
-        'payment_due_date',
         'venue_id',
         'event_status_id',
         'is_cancelled',

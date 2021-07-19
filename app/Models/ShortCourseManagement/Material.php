@@ -11,12 +11,20 @@ class Material extends Model
     protected $table = 'scm_material';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'path','shortcourse_id', 'created_by', 'created_at', 'updated_by', 'updated_at', 'deleted_by', 'deleted_at'
+        'path',
+        'shortcourse_id',
+        'created_by',
+        'created_at',
+        'updated_by',
+        'updated_at',
+        'deleted_by',
+        'deleted_at'
     ];
 
 
     public function shortcourses()
     {
-        return $this->belongsTo('App\Models\ShortCourseManagement\ShortCourse', 'material_id', 'id');
+        return $this->belongsTo('App\Models\ShortCourseManagement\ShortCourse',
+         'material_id', 'id');
     }
 }

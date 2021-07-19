@@ -11,11 +11,19 @@ class PaymentType extends Model
     protected $table = 'scm_payment_type';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'name', 'created_by', 'created_at', 'updated_by', 'updated_at', 'deleted_by', 'deleted_at'
+        'name',
+        'created_by',
+        'created_at',
+        'updated_by',
+        'updated_at',
+        'deleted_by',
+        'deleted_at'
     ];
 
     public function events_participants()
     {
-        return $this->hasMany('App\Models\ShortCourseManagement\EventParticipant', 'payment_type_id', 'id');
+        return $this->hasMany('App\Models\ShortCourseManagement\EventParticipant',
+        'payment_type_id',
+        'id');
     }
 }

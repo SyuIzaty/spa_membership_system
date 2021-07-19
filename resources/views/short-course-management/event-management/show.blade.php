@@ -39,6 +39,10 @@
                                     <a data-toggle="tab" class="nav-link" href="#participant-during-event"
                                         role="tab">Participants (During Event)</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a data-toggle="tab" class="nav-link" href="#participant-post-event"
+                                        role="tab">Participants (Post-Event)</a>
+                                </li>
                             </ul>
                             <div class="row">
                                 <div class="tab-content col-md-12">
@@ -205,7 +209,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="tab-pane" id="participant-pre-event" role="tabpanel">
                                         <hr class="mt-2 mb-3">
                                         <div class="row">
@@ -713,7 +716,7 @@
                                                         <div id="panel-1" class="panel">
                                                             <div class="panel-hdr">
                                                                 <h2>
-                                                                    <span class="fw-300">Succeed - </span> 100% Ready for
+                                                                    <span class="fw-300">Succeed - </span> Ready for
                                                                     Event
                                                                 </h2>
                                                                 <div class="panel-toolbar">
@@ -965,6 +968,369 @@
                                                                             Ticked Are Not Attend</button>
                                                                     </div>
                                                                     {{-- <button type="button" class="btn btn-success ml-auto mr-2 waves-effect waves-themed" onclick="window.location='http://sims.test/checkrequirements'"><i class="fal fa-check-circle"></i> Run All</button> --}}
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 grid-margin stretch-card">
+                                                <div class="row">
+                                                    <div class="col-xl-12">
+                                                        <div id="panel-1" class="panel">
+                                                            <div class="panel-hdr">
+                                                                <h2>
+                                                                    <span class="fw-300">Succeed - </span> Attended Participant
+                                                                </h2>
+                                                                <div class="panel-toolbar">
+                                                                    <button class="btn btn-panel"
+                                                                        data-action="panel-collapse" data-toggle="tooltip"
+                                                                        data-offset="0,10"
+                                                                        data-original-title="Collapse"></button>
+                                                                    <button class="btn btn-panel"
+                                                                        data-action="panel-fullscreen" data-toggle="tooltip"
+                                                                        data-offset="0,10"
+                                                                        data-original-title="Fullscreen"></button>
+                                                                    <button class="btn btn-panel" data-action="panel-close"
+                                                                        data-toggle="tooltip" data-offset="0,10"
+                                                                        data-original-title="Close"></button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="panel-container show">
+                                                                {{-- <form action="{{ url('/senarai_kolej/student/bundle/into/' . $event->id) }}" method="post"
+                                                                    name="form"> --}}
+                                                                <form name="form">
+                                                                    @csrf
+                                                                    <div class="panel-content">
+                                                                        @if (Session::has('messageAllAttendedParticipant'))
+                                                                            <div class="alert alert-success"
+                                                                                style="color: #3b6324; background-color: #d3fabc;">
+                                                                                <i class="icon fal fa-check-circle"></i>
+                                                                                {{ Session::get('messageAllAttendedParticipant') }}
+                                                                            </div>
+                                                                        @endif
+                                                                        @if (Session::has('notification'))
+                                                                            <div class="alert alert-success"
+                                                                                style="color: #3b6324; background-color: #d3fabc;">
+                                                                                <i class="icon fal fa-check-circle"></i>
+                                                                                {{ Session::get('notification') }}
+                                                                            </div>
+                                                                        @endif
+
+                                                                        <div class="table-responsive">
+                                                                            <table id="table-attended-participants"
+                                                                                class="table table-bordered table-hover table-striped w-100">
+                                                                                <thead>
+                                                                                    <tr class="bg-primary-50 text-center">
+                                                                                        <th style="width:30px">Id</th>
+                                                                                        <th>Organisation</th>
+                                                                                        <th>Name</th>
+                                                                                        <th>Phone</th>
+                                                                                        <th>Email</th>
+                                                                                        {{-- <th>Representative Name</th>
+                                                                                        <th>Representative Phone</th>
+                                                                                        <th>Representative Email</th> --}}
+                                                                                        <th>Date Apply</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 grid-margin stretch-card">
+                                                <div class="row">
+                                                    <div class="col-xl-12">
+                                                        <div id="panel-1" class="panel">
+                                                            <div class="panel-hdr">
+                                                                <h2>
+                                                                    <span class="fw-300">Failed - </span> Not Attended Participant
+                                                                </h2>
+                                                                <div class="panel-toolbar">
+                                                                    <button class="btn btn-panel"
+                                                                        data-action="panel-collapse" data-toggle="tooltip"
+                                                                        data-offset="0,10"
+                                                                        data-original-title="Collapse"></button>
+                                                                    <button class="btn btn-panel"
+                                                                        data-action="panel-fullscreen" data-toggle="tooltip"
+                                                                        data-offset="0,10"
+                                                                        data-original-title="Fullscreen"></button>
+                                                                    <button class="btn btn-panel" data-action="panel-close"
+                                                                        data-toggle="tooltip" data-offset="0,10"
+                                                                        data-original-title="Close"></button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="panel-container show">
+                                                                {{-- <form action="{{ url('/senarai_kolej/student/bundle/into/' . $event->id) }}" method="post"
+                                                                    name="form"> --}}
+                                                                <form name="form">
+                                                                    @csrf
+                                                                    <div class="panel-content">
+                                                                        @if (Session::has('messageAllNotAttendedParticipant'))
+                                                                            <div class="alert alert-success"
+                                                                                style="color: #3b6324; background-color: #d3fabc;">
+                                                                                <i class="icon fal fa-check-circle"></i>
+                                                                                {{ Session::get('messageAllNotAttendedParticipant') }}
+                                                                            </div>
+                                                                        @endif
+                                                                        @if (Session::has('notification'))
+                                                                            <div class="alert alert-success"
+                                                                                style="color: #3b6324; background-color: #d3fabc;">
+                                                                                <i class="icon fal fa-check-circle"></i>
+                                                                                {{ Session::get('notification') }}
+                                                                            </div>
+                                                                        @endif
+
+                                                                        <div class="table-responsive">
+                                                                            <table id="table-not-attended-participants"
+                                                                                class="table table-bordered table-hover table-striped w-100">
+                                                                                <thead>
+                                                                                    <tr class="bg-primary-50 text-center">
+                                                                                        <th style="width:30px">Id</th>
+                                                                                        <th>Organisation</th>
+                                                                                        <th>Name</th>
+                                                                                        <th>Phone</th>
+                                                                                        <th>Email</th>
+                                                                                        {{-- <th>Representative Name</th>
+                                                                                        <th>Representative Phone</th>
+                                                                                        <th>Representative Email</th> --}}
+                                                                                        <th>Date Apply</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="participant-post-event" role="tabpanel">
+                                        <hr class="mt-2 mb-3">
+                                        <div class="row">
+                                            <div class="col-md-12 grid-margin stretch-card">
+                                                <div class="row">
+                                                    <div class="col-xl-12">
+                                                        <div id="panel-1" class="panel">
+                                                            <div class="panel-hdr">
+                                                                <h2>
+                                                                    <span class="fw-300">Step 1 - </span> Send Feedback Questionaire
+                                                                </h2>
+                                                                <div class="panel-toolbar">
+                                                                    <button class="btn btn-panel"
+                                                                        data-action="panel-collapse" data-toggle="tooltip"
+                                                                        data-offset="0,10"
+                                                                        data-original-title="Collapse"></button>
+                                                                    <button class="btn btn-panel"
+                                                                        data-action="panel-fullscreen" data-toggle="tooltip"
+                                                                        data-offset="0,10"
+                                                                        data-original-title="Fullscreen"></button>
+                                                                    <button class="btn btn-panel" data-action="panel-close"
+                                                                        data-toggle="tooltip" data-offset="0,10"
+                                                                        data-original-title="Close"></button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="panel-container show">
+                                                                {{-- <form action="{{ url('/senarai_kolej/student/bundle/into/' . $event->id) }}" method="post"
+                                                                    name="form"> --}}
+                                                                <form name="form">
+                                                                    @csrf
+                                                                    <div class="panel-content">
+                                                                        @if (Session::has('messageAllPartcipantPostEvent'))
+                                                                            <div class="alert alert-success"
+                                                                                style="color: #3b6324; background-color: #d3fabc;">
+                                                                                <i class="icon fal fa-check-circle"></i>
+                                                                                {{ Session::get('messageAllPartcipantPostEvent') }}
+                                                                            </div>
+                                                                        @endif
+                                                                        @if (Session::has('notification'))
+                                                                            <div class="alert alert-success"
+                                                                                style="color: #3b6324; background-color: #d3fabc;">
+                                                                                <i class="icon fal fa-check-circle"></i>
+                                                                                {{ Session::get('notification') }}
+                                                                            </div>
+                                                                        @endif
+
+                                                                        <div class="table-responsive">
+                                                                            <table id="table-participant-post-event"
+                                                                                class="table table-bordered table-hover table-striped w-100">
+                                                                                <thead>
+                                                                                    <tr class="bg-primary-50 text-center">
+                                                                                        <th style="width:10px"><input
+                                                                                                type="checkbox"
+                                                                                                id="check-all-participants-post-event">
+                                                                                        </th>
+                                                                                        <th style="width:30px">Id</th>
+                                                                                        <th>Organisation</th>
+                                                                                        <th>Name</th>
+                                                                                        <th>Phone</th>
+                                                                                        <th>Email</th>
+                                                                                        {{-- <th>Representative Name</th>
+                                                                                        <th>Representative Phone</th>
+                                                                                        <th>Representative Email</th> --}}
+                                                                                        <th>Date Apply</th>
+                                                                                        <th>Action</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                            </table>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
+                                                                        style="content-align:right">
+                                                                        <button type="submit"
+                                                                            class="btn btn-success ml-auto mr-2 waves-effect waves-themed"><i
+                                                                                class="ni ni-check"></i> Send Questionaire to All
+                                                                            Ticked</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-danger float-right mr-2 waves-effect waves-themed"><i
+                                                                                class="ni ni-close"></i> Ignore Questionaire to All
+                                                                                Ticked</button>
+                                                                    </div>
+                                                                    {{-- <button type="button" class="btn btn-success ml-auto mr-2 waves-effect waves-themed" onclick="window.location='http://sims.test/checkrequirements'"><i class="fal fa-check-circle"></i> Run All</button> --}}
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 grid-margin stretch-card">
+                                                <div class="row">
+                                                    <div class="col-xl-12">
+                                                        <div id="panel-1" class="panel">
+                                                            <div class="panel-hdr">
+                                                                <h2>
+                                                                    <span class="fw-300">Succeed - </span> Completed Participation Process
+                                                                </h2>
+                                                                <div class="panel-toolbar">
+                                                                    <button class="btn btn-panel"
+                                                                        data-action="panel-collapse" data-toggle="tooltip"
+                                                                        data-offset="0,10"
+                                                                        data-original-title="Collapse"></button>
+                                                                    <button class="btn btn-panel"
+                                                                        data-action="panel-fullscreen" data-toggle="tooltip"
+                                                                        data-offset="0,10"
+                                                                        data-original-title="Fullscreen"></button>
+                                                                    <button class="btn btn-panel" data-action="panel-close"
+                                                                        data-toggle="tooltip" data-offset="0,10"
+                                                                        data-original-title="Close"></button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="panel-container show">
+                                                                {{-- <form action="{{ url('/senarai_kolej/student/bundle/into/' . $event->id) }}" method="post"
+                                                                    name="form"> --}}
+                                                                <form name="form">
+                                                                    @csrf
+                                                                    <div class="panel-content">
+                                                                        @if (Session::has('messageCompletedParticipationProcess'))
+                                                                            <div class="alert alert-success"
+                                                                                style="color: #3b6324; background-color: #d3fabc;">
+                                                                                <i class="icon fal fa-check-circle"></i>
+                                                                                {{ Session::get('messageCompletedParticipationProcess') }}
+                                                                            </div>
+                                                                        @endif
+                                                                        @if (Session::has('notification'))
+                                                                            <div class="alert alert-success"
+                                                                                style="color: #3b6324; background-color: #d3fabc;">
+                                                                                <i class="icon fal fa-check-circle"></i>
+                                                                                {{ Session::get('notification') }}
+                                                                            </div>
+                                                                        @endif
+
+                                                                        <div class="table-responsive">
+                                                                            <table id="table-completed-participation-process"
+                                                                                class="table table-bordered table-hover table-striped w-100">
+                                                                                <thead>
+                                                                                    <tr class="bg-primary-50 text-center">
+                                                                                        <th style="width:30px">Id</th>
+                                                                                        <th>Organisation</th>
+                                                                                        <th>Name</th>
+                                                                                        <th>Phone</th>
+                                                                                        <th>Email</th>
+                                                                                        {{-- <th>Representative Name</th>
+                                                                                        <th>Representative Phone</th>
+                                                                                        <th>Representative Email</th> --}}
+                                                                                        <th>Date Apply</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 grid-margin stretch-card">
+                                                <div class="row">
+                                                    <div class="col-xl-12">
+                                                        <div id="panel-1" class="panel">
+                                                            <div class="panel-hdr">
+                                                                <h2>
+                                                                    <span class="fw-300">Failed - </span> Not Completed Participation Process
+                                                                </h2>
+                                                                <div class="panel-toolbar">
+                                                                    <button class="btn btn-panel"
+                                                                        data-action="panel-collapse" data-toggle="tooltip"
+                                                                        data-offset="0,10"
+                                                                        data-original-title="Collapse"></button>
+                                                                    <button class="btn btn-panel"
+                                                                        data-action="panel-fullscreen" data-toggle="tooltip"
+                                                                        data-offset="0,10"
+                                                                        data-original-title="Fullscreen"></button>
+                                                                    <button class="btn btn-panel" data-action="panel-close"
+                                                                        data-toggle="tooltip" data-offset="0,10"
+                                                                        data-original-title="Close"></button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="panel-container show">
+                                                                {{-- <form action="{{ url('/senarai_kolej/student/bundle/into/' . $event->id) }}" method="post"
+                                                                    name="form"> --}}
+                                                                <form name="form">
+                                                                    @csrf
+                                                                    <div class="panel-content">
+                                                                        @if (Session::has('messageAllNotCompletedParticipationProcess'))
+                                                                            <div class="alert alert-success"
+                                                                                style="color: #3b6324; background-color: #d3fabc;">
+                                                                                <i class="icon fal fa-check-circle"></i>
+                                                                                {{ Session::get('messageAllNotCompletedParticipationProcess') }}
+                                                                            </div>
+                                                                        @endif
+                                                                        @if (Session::has('notification'))
+                                                                            <div class="alert alert-success"
+                                                                                style="color: #3b6324; background-color: #d3fabc;">
+                                                                                <i class="icon fal fa-check-circle"></i>
+                                                                                {{ Session::get('notification') }}
+                                                                            </div>
+                                                                        @endif
+
+                                                                        <div class="table-responsive">
+                                                                            <table id="table-not-completed-participation-process"
+                                                                                class="table table-bordered table-hover table-striped w-100">
+                                                                                <thead>
+                                                                                    <tr class="bg-primary-50 text-center">
+                                                                                        <th style="width:30px">Id</th>
+                                                                                        <th>Organisation</th>
+                                                                                        <th>Name</th>
+                                                                                        <th>Phone</th>
+                                                                                        <th>Email</th>
+                                                                                        {{-- <th>Representative Name</th>
+                                                                                        <th>Representative Phone</th>
+                                                                                        <th>Representative Email</th> --}}
+                                                                                        <th>Date Apply</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
                                                                 </form>
                                                             </div>
                                                         </div>
@@ -1618,7 +1984,7 @@
             ],
             orderCellsTop: true,
             "order": [
-                [1, "desc"]
+                [0, "desc"]
             ],
             "initComplete": function(settings, json) {}
         });
@@ -1722,7 +2088,7 @@
             ],
             orderCellsTop: true,
             "order": [
-                [1, "desc"]
+                [0, "desc"]
             ],
             "initComplete": function(settings, json) {}
         });
@@ -1904,6 +2270,582 @@
 
                 }
             })
+        });
+
+        // all attended participant
+        var tableAttendedParticipants = $('#table-attended-participants').DataTable({
+            columnDefs: [{
+                targets: [2],
+                render: function(data, type, row) {
+                    return !data ? 'N/A' : data;
+                }
+            }],
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "/event/" + event_id + "/events-participants/data-attended-participants",
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            },
+            columns: [
+                // {
+                //     data: 'checkAttendedParticipants',
+                //     name: 'checkAttendedParticipants',
+                //     orderable: false,
+                //     searchable: false
+                // },
+                {
+                    className: 'text-center',
+                    data: 'id',
+                    name: 'id',
+                },
+                {
+                    className: 'text-center',
+                    data: 'organisationsString',
+                    name: 'organisationsString'
+                },
+                {
+                    className: 'text-center',
+                    data: 'participant.name',
+                    name: 'participant.name'
+                },
+                {
+                    className: 'text-center',
+                    data: 'participant.phone',
+                    name: 'participant.phone'
+                },
+                {
+                    className: 'text-center',
+                    data: 'participant.email',
+                    name: 'participant.email'
+                },
+                // {
+                //     className: 'text-center',
+                //     data: 'organization_representative.participant.name',
+                //     name: 'organization_representative.participant.name'
+                // },
+                // {
+                //     className: 'text-center',
+                //     data: 'organization_representative.participant.phone',
+                //     name: 'organization_representative.participant.phone'
+                // },
+                // {
+                //     className: 'text-center',
+                //     data: 'organization_representative.participant.email',
+                //     name: 'organization_representative.participant.email'
+                // },
+                {
+                    className: 'text-center',
+                    data: 'created_at_diffForHumans',
+                    name: 'created_at_diffForHumans',
+                },
+                // {
+                //     className: 'text-center',
+                //     data: 'action',
+                //     name: 'action',
+                //     orderable: false,
+                //     searchable: false
+                // }
+            ],
+            orderCellsTop: true,
+            "order": [
+                [0, "desc"]
+            ],
+            "initComplete": function(settings, json) {}
+        });
+
+        $('#table-attended-participants thead tr .hasinput').each(function(i) {
+            $('input', this).on('keyup change', function() {
+                if (tableAttendedParticipants.column(i).search() !== this.value) {
+                    tableAttendedParticipants
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+
+            $('select', this).on('keyup change', function() {
+                if (tableAttendedParticipants.column(i).search() !== this.value) {
+                    tableAttendedParticipants
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+
+        // all not attended participant
+        var tableNotAttendedParticipants = $('#table-not-attended-participants').DataTable({
+            columnDefs: [{
+                targets: [2],
+                render: function(data, type, row) {
+                    return !data ? 'N/A' : data;
+                }
+            }],
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "/event/" + event_id + "/events-participants/data-not-attended-participants",
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            },
+            columns: [
+                // {
+                //     data: 'checkAttendedParticipants',
+                //     name: 'checkAttendedParticipants',
+                //     orderable: false,
+                //     searchable: false
+                // },
+                {
+                    className: 'text-center',
+                    data: 'id',
+                    name: 'id',
+                },
+                {
+                    className: 'text-center',
+                    data: 'organisationsString',
+                    name: 'organisationsString'
+                },
+                {
+                    className: 'text-center',
+                    data: 'participant.name',
+                    name: 'participant.name'
+                },
+                {
+                    className: 'text-center',
+                    data: 'participant.phone',
+                    name: 'participant.phone'
+                },
+                {
+                    className: 'text-center',
+                    data: 'participant.email',
+                    name: 'participant.email'
+                },
+                // {
+                //     className: 'text-center',
+                //     data: 'organization_representative.participant.name',
+                //     name: 'organization_representative.participant.name'
+                // },
+                // {
+                //     className: 'text-center',
+                //     data: 'organization_representative.participant.phone',
+                //     name: 'organization_representative.participant.phone'
+                // },
+                // {
+                //     className: 'text-center',
+                //     data: 'organization_representative.participant.email',
+                //     name: 'organization_representative.participant.email'
+                // },
+                {
+                    className: 'text-center',
+                    data: 'created_at_diffForHumans',
+                    name: 'created_at_diffForHumans',
+                },
+                // {
+                //     className: 'text-center',
+                //     data: 'action',
+                //     name: 'action',
+                //     orderable: false,
+                //     searchable: false
+                // }
+            ],
+            orderCellsTop: true,
+            "order": [
+                [0, "desc"]
+            ],
+            "initComplete": function(settings, json) {}
+        });
+
+        $('#table-not-attended-participants thead tr .hasinput').each(function(i) {
+            $('input', this).on('keyup change', function() {
+                if (tableNotAttendedParticipants.column(i).search() !== this.value) {
+                    tableNotAttendedParticipants
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+
+            $('select', this).on('keyup change', function() {
+                if (tableNotAttendedParticipants.column(i).search() !== this.value) {
+                    tableNotAttendedParticipants
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+
+        // all participants post event
+        $(document).ready(function() {
+            $("#check-all-participants-post-event").click(function() {
+                $("input[type=checkbox]").prop("checked", $(this).prop("checked"));
+            });
+
+            $("input[type=checkbox]").click(function() {
+                if (!$(this).prop("checked")) {
+                    $('#check-all-participants-post-event').prop("checked", false);
+                }
+            });
+        })
+
+        var tableParticipantPostEvent = $('#table-participant-post-event').DataTable({
+            columnDefs: [{
+                targets: [2],
+                render: function(data, type, row) {
+                    return !data ? 'N/A' : data;
+                }
+            }],
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "/event/" + event_id + "/events-participants/data-participant-post-event",
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            },
+            columns: [{
+                    data: 'checkParticipantPostEvent',
+                    name: 'checkParticipantPostEvent',
+                    orderable: false,
+                    searchable: false
+                }, {
+                    className: 'text-center',
+                    data: 'id',
+                    name: 'id',
+                },
+                {
+                    className: 'text-center',
+                    data: 'organisationsString',
+                    name: 'organisationsString'
+                },
+                {
+                    className: 'text-center',
+                    data: 'participant.name',
+                    name: 'participant.name'
+                },
+                {
+                    className: 'text-center',
+                    data: 'participant.phone',
+                    name: 'participant.phone'
+                },
+                {
+                    className: 'text-center',
+                    data: 'participant.email',
+                    name: 'participant.email'
+                },
+                // {
+                //     className: 'text-center',
+                //     data: 'organization_representative.participant.name',
+                //     name: 'organization_representative.participant.name'
+                // },
+                // {
+                //     className: 'text-center',
+                //     data: 'organization_representative.participant.phone',
+                //     name: 'organization_representative.participant.phone'
+                // },
+                // {
+                //     className: 'text-center',
+                //     data: 'organization_representative.participant.email',
+                //     name: 'organization_representative.participant.email'
+                // },
+                {
+                    className: 'text-center',
+                    data: 'created_at_diffForHumans',
+                    name: 'created_at_diffForHumans',
+                },
+                {
+                    className: 'text-center',
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                }
+            ],
+            orderCellsTop: true,
+            "order": [
+                [1, "desc"]
+            ],
+            "initComplete": function(settings, json) {}
+        });
+
+        $('#table-participant-post-event thead tr .hasinput').each(function(i) {
+            $('input', this).on('keyup change', function() {
+                if (tableParticipantPostEvent.column(i).search() !== this.value) {
+                    tableParticipantPostEvent
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+
+            $('select', this).on('keyup change', function() {
+                if (tableParticipantPostEvent.column(i).search() !== this.value) {
+                    tableParticipantPostEvent
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+
+        $('#table-participant-post-event').on('click', '.btn-delete[data-remote]', function(e) {
+            e.preventDefault();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            var url = $(this).data('remote');
+
+            Swal.fire({
+                title: 'Verify attendance for this attendant?',
+                text: "This attendant attendance will be verified!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, this attendant attand this event!',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.value) {
+                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            method: 'POST',
+                            submit: true
+                        }
+                    }).always(function(data) {
+                        $('#table-participant-post-event').DataTable().draw(false);
+                    });
+
+
+                    // var delayInMilliseconds = 5000; //5 second
+
+                    // setTimeout(function() {
+                    //     //your code to be executed after 5 second
+                    //     $('#studentWithoutKolej').DataTable().ajax.reload();
+                    // }, delayInMilliseconds);
+
+                }
+            })
+        });
+
+       // all completed participation process
+       var tableCompletedParticipationProcess = $('#table-completed-participation-process').DataTable({
+            columnDefs: [{
+                targets: [2],
+                render: function(data, type, row) {
+                    return !data ? 'N/A' : data;
+                }
+            }],
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "/event/" + event_id + "/events-participants/data-completed-participation-process",
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            },
+            columns: [
+                // {
+                //     data: 'checkCompletedParticipationProcess',
+                //     name: 'checkCompletedParticipationProcess',
+                //     orderable: false,
+                //     searchable: false
+                // },
+                {
+                    className: 'text-center',
+                    data: 'id',
+                    name: 'id',
+                },
+                {
+                    className: 'text-center',
+                    data: 'organisationsString',
+                    name: 'organisationsString'
+                },
+                {
+                    className: 'text-center',
+                    data: 'participant.name',
+                    name: 'participant.name'
+                },
+                {
+                    className: 'text-center',
+                    data: 'participant.phone',
+                    name: 'participant.phone'
+                },
+                {
+                    className: 'text-center',
+                    data: 'participant.email',
+                    name: 'participant.email'
+                },
+                // {
+                //     className: 'text-center',
+                //     data: 'organization_representative.participant.name',
+                //     name: 'organization_representative.participant.name'
+                // },
+                // {
+                //     className: 'text-center',
+                //     data: 'organization_representative.participant.phone',
+                //     name: 'organization_representative.participant.phone'
+                // },
+                // {
+                //     className: 'text-center',
+                //     data: 'organization_representative.participant.email',
+                //     name: 'organization_representative.participant.email'
+                // },
+                {
+                    className: 'text-center',
+                    data: 'created_at_diffForHumans',
+                    name: 'created_at_diffForHumans',
+                },
+                // {
+                //     className: 'text-center',
+                //     data: 'action',
+                //     name: 'action',
+                //     orderable: false,
+                //     searchable: false
+                // }
+            ],
+            orderCellsTop: true,
+            "order": [
+                [0, "desc"]
+            ],
+            "initComplete": function(settings, json) {}
+        });
+
+
+        $('#table-completed-participation-process thead tr .hasinput').each(function(i) {
+            $('input', this).on('keyup change', function() {
+                if (tableCompletedParticipationProcess.column(i).search() !== this.value) {
+                    tableCompletedParticipationProcess
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+
+            $('select', this).on('keyup change', function() {
+                if (tableCompletedParticipationProcess.column(i).search() !== this.value) {
+                    tableCompletedParticipationProcess
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+
+        // all not completed participation process
+        var tableNotCompletedParticipationProcess = $('#table-not-completed-participation-process').DataTable({
+            columnDefs: [{
+                targets: [2],
+                render: function(data, type, row) {
+                    return !data ? 'N/A' : data;
+                }
+            }],
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "/event/" + event_id + "/events-participants/data-not-completed-participation-process",
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            },
+            columns: [
+                // {
+                //     data: 'checkCompletedParticipationProcess',
+                //     name: 'checkCompletedParticipationProcess',
+                //     orderable: false,
+                //     searchable: false
+                // },
+                {
+                    className: 'text-center',
+                    data: 'id',
+                    name: 'id',
+                },
+                {
+                    className: 'text-center',
+                    data: 'organisationsString',
+                    name: 'organisationsString'
+                },
+                {
+                    className: 'text-center',
+                    data: 'participant.name',
+                    name: 'participant.name'
+                },
+                {
+                    className: 'text-center',
+                    data: 'participant.phone',
+                    name: 'participant.phone'
+                },
+                {
+                    className: 'text-center',
+                    data: 'participant.email',
+                    name: 'participant.email'
+                },
+                // {
+                //     className: 'text-center',
+                //     data: 'organization_representative.participant.name',
+                //     name: 'organization_representative.participant.name'
+                // },
+                // {
+                //     className: 'text-center',
+                //     data: 'organization_representative.participant.phone',
+                //     name: 'organization_representative.participant.phone'
+                // },
+                // {
+                //     className: 'text-center',
+                //     data: 'organization_representative.participant.email',
+                //     name: 'organization_representative.participant.email'
+                // },
+                {
+                    className: 'text-center',
+                    data: 'created_at_diffForHumans',
+                    name: 'created_at_diffForHumans',
+                },
+                // {
+                //     className: 'text-center',
+                //     data: 'action',
+                //     name: 'action',
+                //     orderable: false,
+                //     searchable: false
+                // }
+            ],
+            orderCellsTop: true,
+            "order": [
+                [0, "desc"]
+            ],
+            "initComplete": function(settings, json) {}
+        });
+
+        $('#table-not-completed-participation-process thead tr .hasinput').each(function(i) {
+            $('input', this).on('keyup change', function() {
+                if (tableNotCompletedParticipationProcess.column(i).search() !== this.value) {
+                    tableNotCompletedParticipationProcess
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+
+            $('select', this).on('keyup change', function() {
+                if (tableNotCompletedParticipationProcess.column(i).search() !== this.value) {
+                    tableNotCompletedParticipationProcess
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
         });
     </script>
 @endsection

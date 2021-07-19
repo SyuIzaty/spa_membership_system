@@ -11,12 +11,23 @@ class Participant extends Model
     protected $table = 'scm_participant';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'name', 'ic', 'phone', 'email','created_by', 'created_at', 'updated_by', 'updated_at', 'deleted_by', 'deleted_at'
+        'name',
+        'ic',
+        'phone',
+        'email',
+        'created_by',
+        'created_at',
+        'updated_by',
+        'updated_at',
+        'deleted_by',
+        'deleted_at'
     ];
 
     public function events_participants()
     {
-        return $this->hasMany('App\Models\ShortCourseManagement\EventParticipant', 'participant_id', 'id');
+        return $this->hasMany('App\Models\ShortCourseManagement\EventParticipant',
+        'participant_id',
+        'id');
     }
 
     public function organisations_participants()

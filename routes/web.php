@@ -251,6 +251,11 @@ Route::post('/event/{id}/events-participants/data-payment-wait-for-verification'
 Route::post('/event/{id}/events-participants/data-ready-for-event','ShortCourseManagement\EventManagement\EventParticipantController@dataReadyForEvent');
 Route::post('/event/{id}/events-participants/data-disqualified','ShortCourseManagement\EventManagement\EventParticipantController@dataDisqualified');
 Route::post('/event/{id}/events-participants/data-expected-attendances','ShortCourseManagement\EventManagement\EventParticipantController@dataExpectedAttendances');
+Route::post('/event/{id}/events-participants/data-attended-participants','ShortCourseManagement\EventManagement\EventParticipantController@dataAttendedParticipants');
+Route::post('/event/{id}/events-participants/data-not-attended-participants','ShortCourseManagement\EventManagement\EventParticipantController@dataNotAttendedParticipants');
+Route::post('/event/{id}/events-participants/data-participant-post-event','ShortCourseManagement\EventManagement\EventParticipantController@dataParticipantPostEvent');
+Route::post('/event/{id}/events-participants/data-completed-participation-process','ShortCourseManagement\EventManagement\EventParticipantController@dataCompletedParticipationProcess');
+Route::post('/event/{id}/events-participants/data-not-completed-participation-process','ShortCourseManagement\EventManagement\EventParticipantController@dataNotCompletedParticipationProcess');
 
 //Event
 Route::post('/events/data','ShortCourseManagement\EventManagement\EventController@data');
