@@ -82,6 +82,24 @@ class EventController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validated = $request->validate([
+            'name' => 'required|max:255',
+            'datetime_start' => 'required',
+            'datetime_end' => 'required',
+        ], [
+            'name.required' => 'Please insert event name',
+            'name.max' => 'Name exceed maximum length',
+            'datetime_start.required' => 'Please insert event datetime start',
+            'datetime_end.required' => 'Please insert event datetime end',
+        ]);
+
+        $update = Event::find($id)->update([
+            'name' => $request->name,
+            'datetime_start' => $request->datetime_start,
+            'datetime_end' => $request->datetime_end,
+        ]);
+
+        return Redirect()->back()->with('messageEventBasicDetails', 'Bacic Details Update Successfully');
     }
     public function destroy($id)
     {

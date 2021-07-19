@@ -43,6 +43,10 @@
                                     <a data-toggle="tab" class="nav-link" href="#participant-post-event"
                                         role="tab">Participants (Post-Event)</a>
                                 </li>
+                                {{-- <li class="nav-item">
+                                    <a data-toggle="tab" class="nav-link" href="#edit-event"
+                                        role="tab">Edit Event</a>
+                                </li> --}}
                             </ul>
                             <div class="row">
                                 <div class="tab-content col-md-12">
@@ -50,31 +54,99 @@
                                         <hr class="mt-2 mb-3">
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
-                                                <table class="table">
-                                                    <thead class="thead bg-primary-50">
-                                                        <tr>
-                                                            <th colspan="2"><b>Basic Information</b></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <th style="background-color:plum">Name</th>
-                                                            <td>: <b>{{ $event->name }}</b></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th style="background-color:plum">Date Start</th>
-                                                            <td>: <b>{{ $event->datetime_start }}</b></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th style="background-color:plum">Date End</th>
-                                                            <td>: <b>{{ $event->datetime_end }}</b></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th style="background-color:plum">Venue</th>
-                                                            <td>: <b>{{ $event->venue->name }}</b></td>
-                                                        </tr>
-                                                    <tbody>
-                                                </table>
+                                                <form action="{{ url('/events/update/'.$event->id) }}"  method="post"
+                                                    name="form">
+                                                    @csrf
+                                                    <table class="table">
+                                                        <thead class="thead bg-primary-50">
+                                                            <tr>
+                                                                <th><b>Basic Information</b></th>
+                                                                <th>
+                                                                    <a href="#" class="btn btn-sm btn-info float-right mr-2" name="edit-basic" id="edit-basic">
+                                                                        <i class="fal fa-pencil"></i>
+                                                                    </a>
+                                                                    <button type="button" class="btn btn-sm btn-danger float-right mr-2" name="edit-basic-close" id="edit-basic-close"  style="display: none">
+                                                                        <i class="fal fa-window-close"></i>
+                                                                    </button>
+                                                                    <button type="submit" class="btn btn-sm btn-success float-right mr-2" name="save-basic" id="save-basic"  style="display: none">
+                                                                        <i class="fal fa-save"></i>
+                                                                    </button>
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <th style="background-color:plum">Name</th>
+                                                                {{-- <td>: <b>{{ $event->name }}</b></td> --}}
+                                                                <td>
+                                                                    <div class="form-group">
+                                                                        <input
+                                                                            id="name"
+                                                                            name="name"
+                                                                            type="text"
+                                                                            value="{{ $event->name }}"
+                                                                            class="form-control-plaintext font-weight-bold">
+                                                                            @error('name')
+                                                                        <p style="color: red">
+                                                                            <strong> *
+                                                                                {{ $message }}
+                                                                            </strong>
+                                                                        </p>
+                                                                    @enderror
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th style="background-color:plum">Date Start</th>
+                                                                <td name="datetime_start_show" id="datetime_start_show"><b>{{ date('d/m/Y h:i A', strtotime($event->datetime_start)) }}</b></td>
+                                                                {{-- <input class="form-control" type="datetime-local" value="2023-07-23T11:25:00" id="example-datetime-local-input"> --}}
+                                                                <td  name="datetime_start_edit" id="datetime_start_edit" style="display: none">
+                                                                    <div class="form-group">
+                                                                        <input
+                                                                            id="datetime_start"
+                                                                            name="datetime_start"
+                                                                            type="datetime-local"
+                                                                            value="{{ substr(date('c', strtotime($event->datetime_start)),0,-6) }}"
+                                                                            class="form-control font-weight-bold">
+                                                                            @error('datetime_start')>
+                                                                        <p style="color: red">
+                                                                            <strong> *
+                                                                                {{ $message }}
+                                                                            </strong>
+                                                                        </p>
+                                                                    @enderror
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th style="background-color:plum">Date End</th>
+                                                                <td name="datetime_end_show" id="datetime_end_show"><b>{{ date('d/m/Y h:i A', strtotime($event->datetime_end)) }}</b></td>
+                                                                {{-- <input class="form-control" type="datetime-local" value="2023-07-23T11:25:00" id="example-datetime-local-input"> --}}
+                                                                <td  name="datetime_end_edit" id="datetime_end_edit" style="display: none">
+                                                                    <div class="form-group">
+                                                                        <input
+                                                                            id="datetime_end"
+                                                                            name="datetime_end"
+                                                                            type="datetime-local"
+                                                                            value="{{ substr(date('c', strtotime($event->datetime_end)),0,-6) }}"
+                                                                            class="form-control font-weight-bold">
+                                                                            @error('datetime_end')>
+                                                                        <p style="color: red">
+                                                                            <strong> *
+                                                                                {{ $message }}
+                                                                            </strong>
+                                                                        </p>
+                                                                    @enderror
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th style="background-color:plum">Venue</th>
+                                                                <td><b>{{ $event->venue->name }}</b></td>
+                                                            </tr>
+                                                        <tbody>
+                                                    </table>
+                                                </form>
                                                 <table class="table table-striped table-bordered m-0">
                                                     <thead class="thead">
                                                         <tr class=" bg-primary-50" scope="row">
@@ -1339,6 +1411,107 @@
                                             </div>
                                         </div>
                                     </div>
+                                    {{-- <div class="tab-pane" id="edit-event" role="tabpanel">
+                                        <hr class="mt-2 mb-3">
+                                        <div class="row">
+                                            <div class="col-md-12 grid-margin stretch-card">
+                                                <table class="table">
+                                                    <thead class="thead bg-primary-50">
+                                                        <tr>
+                                                            <th colspan="2"><b>Basic Information</b></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <th style="background-color:plum">Name</th>
+                                                            <td>: <b>{{ $event->name }}</b></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th style="background-color:plum">Date Start</th>
+                                                            <td>: <b>{{ $event->datetime_start }}</b></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th style="background-color:plum">Date End</th>
+                                                            <td>: <b>{{ $event->datetime_end }}</b></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th style="background-color:plum">Venue</th>
+                                                            <td>: <b>{{ $event->venue->name }}</b></td>
+                                                        </tr>
+                                                    <tbody>
+                                                </table>
+                                                <table class="table table-striped table-bordered m-0">
+                                                    <thead class="thead">
+                                                        <tr class=" bg-primary-50" scope="row">
+                                                            <th colspan="4"><b>List of Fees</b></th>
+                                                        </tr>
+                                                        <tr style="background-color:plum" scope="row">
+                                                            <th scope="col">Name</th>
+                                                            <th scope="col">Amount</th>
+                                                            <th scope="col">Fee Type</th>
+                                                            <th scope="col">Promo Code</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($event->fees as $fee)
+                                                            <tr scope="row">
+                                                                <td><b>{{ $fee->name }}</b></td>
+                                                                <td><b>{{ $fee->amount }}</b></td>
+                                                                <td><b>{{ $fee->is_base_fee }}</b></td>
+                                                                <td><b>{{ $fee->promo_code }}</b></td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                                <hr class="mt-2 mb-3">
+                                                <table class="table table-striped table-bordered m-0">
+                                                    <thead class="thead">
+                                                        <tr class=" bg-primary-50">
+                                                            <th colspan="2"><b>List of Trainers</b></th>
+                                                        </tr>
+                                                        <tr style="background-color:plum">
+                                                            <th>ID</th>
+                                                            <th>Name</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($trainers as $trainer)
+                                                            <tr>
+                                                                <td><b>{{ $trainer->id }}</b></td>
+                                                                <td><b>{{ $trainer->name }}</b></td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                                <hr class="mt-2 mb-3">
+                                                <table class="table table-striped table-bordered m-0">
+                                                    <thead class="thead">
+                                                        <tr class=" bg-primary-50">
+                                                            <th colspan="2"><b>List of Short Courses</b></th>
+                                                        </tr>
+                                                        <tr style="background-color:plum">
+                                                            <th>ID</th>
+                                                            <th>Name</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($event->events_shortcourses as $events_shortcourses)
+                                                            <tr>
+                                                                <td><b>{{ $events_shortcourses->shortcourse->id }}</b>
+                                                                </td>
+                                                                <td><b>{{ $events_shortcourses->shortcourse->name }}</b>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+
+                                                <hr class="mt-2 mb-3">
+
+                                            </div>
+                                        </div>
+
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>
@@ -1351,8 +1524,48 @@
     <script>
         var event_id = '<?php echo $event->id; ?>';
 
-        // new application
+        $("#edit-basic").click(function(e){
+            $("#name").removeClass('form-control-plaintext');
+            $("#name").addClass('form-control');
 
+
+            $("#datetime_start_show").hide();
+            $("#datetime_start_edit").show();
+
+
+            $("#datetime_end_show").hide();
+            $("#datetime_end_edit").show();
+
+
+            $("#edit-basic").hide();
+            $("#save-basic").show();
+            $("#edit-basic-close").show();
+        });
+
+        $("#edit-basic-close").click(function(e){
+            $("#name").removeClass('form-control');
+            $("#name").addClass('form-control-plaintext');
+
+            $("#datetime_start_show").show();
+            $("#datetime_start_edit").hide();
+
+            $("#datetime_end_show").show();
+            $("#datetime_end_edit").hide();
+
+
+            $("#edit-basic").show();
+            $("#save-basic").hide();
+            $("#edit-basic-close").hide();
+        });
+
+        // if ($(this)[0].checked) {
+        //             $("div[name=kolejInputNew]").show();
+        //         } else {
+        //             $("div[name=kolejInputNew]").hide();
+        //             // $('.modal-body #hasKolejNew').val(false);
+        //         }
+
+        // new application
         $('#new-application').click(function() {
             var id = null;
             var ic = null;
@@ -2640,7 +2853,7 @@
         });
 
        // all completed participation process
-       var tableCompletedParticipationProcess = $('#table-completed-participation-process').DataTable({
+        var tableCompletedParticipationProcess = $('#table-completed-participation-process').DataTable({
             columnDefs: [{
                 targets: [2],
                 render: function(data, type, row) {
@@ -2722,7 +2935,6 @@
             ],
             "initComplete": function(settings, json) {}
         });
-
 
         $('#table-completed-participation-process thead tr .hasinput').each(function(i) {
             $('input', this).on('keyup change', function() {
