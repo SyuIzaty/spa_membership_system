@@ -124,7 +124,6 @@
                                                                 <td name="datetime_end_show" id="datetime_end_show">
                                                                     <b>{{ date('d/m/Y h:i A', strtotime($event->datetime_end)) }}</b>
                                                                 </td>
-                                                                {{-- <input class="form-control" type="datetime-local" value="2023-07-23T11:25:00" id="example-datetime-local-input"> --}}
                                                                 <td name="datetime_end_edit" id="datetime_end_edit"
                                                                     style="display: none">
                                                                     <div class="form-group">
@@ -144,34 +143,263 @@
                                                             </tr>
                                                             <tr>
                                                                 <th style="background-color:plum">Venue</th>
-                                                                <td><b>{{ $event->venue->name }}</b></td>
+                                                                <td name="venue_show" id="venue_show">
+                                                                    <b>{{ $event->venue->name }}</b>
+                                                                </td>
+                                                                <td name="venue_edit" id="venue_edit" style="display: none">
+                                                                    {{-- <div class="form-group">
+                                                                        <input id="venue.name" name="venue.name"
+                                                                            value="{{$event->venue->name}}"
+                                                                            class="form-control font-weight-bold">
+                                                                        @error('venue.name')>
+                                                                            <p style="color: red">
+                                                                                <strong> *
+                                                                                    {{ $message }}
+                                                                                </strong>
+                                                                            </p>
+                                                                        @enderror
+                                                                    </div> --}}
+                                                                    <div class="form-group">
+                                                                        <select class="form-control venue  font-weight-bold"
+                                                                            name="venue" id="venue" data-select2-id="venue"
+                                                                            tabindex="-1" aria-hidden="true">
+                                                                            <option
+                                                                                value={{ $event->venue ? $event->venue->id : '' }}
+                                                                                data-select2-id={{ $event->venue ? $event->venue->id : '' }}>
+                                                                                {{ $event->venue ? $event->venue->name : 'Choose a venue' }}
+                                                                            </option>
+                                                                            @foreach ($venues as $venue)
+                                                                                @if ($event->venue ? $venue->id != $event->venue->id : true)
+                                                                                    <option value="{{ $venue->id }}"
+                                                                                        data-select2-id="{{ $venue->id }}">
+                                                                                        {{ $venue->name }}
+                                                                                    </option>
+                                                                                @endif
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                </td>
                                                             </tr>
                                                         <tbody>
                                                     </table>
                                                 </form>
+
                                                 <table class="table table-striped table-bordered m-0">
                                                     <thead class="thead">
                                                         <tr class=" bg-primary-50" scope="row">
-                                                            <th colspan="4"><b>List of Fees</b></th>
+                                                            <th colspan="5"><b>List of Fees</b></th>
                                                         </tr>
                                                         <tr style="background-color:plum" scope="row">
                                                             <th scope="col">Name</th>
                                                             <th scope="col">Amount</th>
                                                             <th scope="col">Fee Type</th>
                                                             <th scope="col">Promo Code</th>
+                                                            <th scope="col">Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($event->fees as $fee)
                                                             <tr scope="row">
-                                                                <td><b>{{ $fee->name }}</b></td>
+                                                                <td>
+                                                                    <b>{{ $fee->name }}</b>
+                                                                </td>
                                                                 <td><b>{{ $fee->amount }}</b></td>
                                                                 <td><b>{{ $fee->is_base_fee }}</b></td>
                                                                 <td><b>{{ $fee->promo_code }}</b></td>
+                                                                <td><a href="#" class="btn btn-sm btn-info float-right mr-2"
+                                                                        name="edit-fee" id="edit-fee"
+                                                                        data-target="#edit-fee-modal" data-toggle="modal"
+                                                                        data-id={{ $fee->id }}
+                                                                        data-name={{ $fee->name }}
+                                                                        data-amount={{ $fee->amount }}
+                                                                        data-is_base_fee={{ $fee->is_base_fee }}
+                                                                        data-promo_code={{ $fee->promo_code }}>
+                                                                        <i class="fal fa-pencil"></i>
+                                                                    </a>
+                                                                </td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
                                                 </table>
+                                                <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
+                                                    style="content-align:right">
+                                                    <a href="javascript:;" data-toggle="modal" id="new-fee"
+                                                        class="btn btn-primary ml-auto mt-2 mr-2 waves-effect waves-themed"><i
+                                                            class="ni ni-plus"> </i> Create New Fee</a>
+                                                    <div class="modal fade" id="crud-modal-new-fee" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="card-header">
+                                                                    <h5 class="card-title w-150">Add New
+                                                                        Fee</h5>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    {{-- {!! Form::open(['action' => 'EventParticipantController@store', 'method' => 'POST']) !!} --}}
+                                                                    <input type="hidden" name="id" id="id">
+                                                                    <p><span class="text-danger">*</span>
+                                                                        Vital Information</p>
+                                                                    <hr class="mt-1 mb-2">
+                                                                    <div id="form-fee">
+                                                                        <div class="form-group">
+                                                                            <label class="form-label" for="name"><span
+                                                                                    class="text-danger">*</span>name</label>
+                                                                            <input class="form-control" id="name"
+                                                                                name="name">
+                                                                            @error('name')
+                                                                                <p style="color: red">
+                                                                                    <strong> *
+                                                                                        {{ $message }}
+                                                                                    </strong>
+                                                                                </p>
+                                                                            @enderror
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label class="form-label" for="amount"><span
+                                                                                    class="text-danger">*</span>amount</label>
+                                                                            <input class="form-control" id="amount"
+                                                                                name="amount">
+                                                                            @error('amount')
+                                                                                <p style="color: red">
+                                                                                    <strong> *
+                                                                                        {{ $message }}
+                                                                                    </strong>
+                                                                                </p>
+                                                                            @enderror
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label class="form-label"
+                                                                                for="is_base_fee"><span
+                                                                                    class="text-danger">*</span>Fee
+                                                                                Type</label>
+                                                                            <input class="form-control" id="is_base_fee"
+                                                                                name="is_base_fee">
+                                                                            @error('is_base_fee')
+                                                                                <p style="color: red">
+                                                                                    <strong> *
+                                                                                        {{ $message }}
+                                                                                    </strong>
+                                                                                </p>
+                                                                            @enderror
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label class="form-label" for="promo_code"><span
+                                                                                    class="text-danger">*</span>promo_code</label>
+                                                                            <input class="form-control" id="promo_code"
+                                                                                name="promo_code">
+                                                                            @error('promo_code')
+                                                                                <p style="color: red">
+                                                                                    <strong> *
+                                                                                        {{ $message }}
+                                                                                    </strong>
+                                                                                </p>
+                                                                            @enderror
+                                                                        </div>
+                                                                    </div>
+                                                                    <hr class="mt-1 mb-2">
+                                                                    <div class="footer">
+                                                                        <button type="button"
+                                                                            class="btn btn-success ml-auto float-right mr-2"
+                                                                            data-dismiss="modal" id="close-new-fee"><i
+                                                                                class="fal fa-window-close"></i>
+                                                                            Close</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary ml-auto float-right mr-2"><i
+                                                                                class="ni ni-plus"></i>
+                                                                            Apply</button>
+                                                                    </div>
+
+                                                                    {{-- {!! Form::close() !!} --}}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal fade" id="edit-fee-modal" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="card-header">
+                                                                <h5 class="card-title w-150">Edit Current
+                                                                    Fee</h5>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                {{-- {!! Form::open(['action' => 'EventParticipantController@store', 'method' => 'POST']) !!} --}}
+                                                                <input type="hidden" name="id" id="id">
+                                                                <p><span class="text-danger">*</span>
+                                                                    Vital Information</p>
+                                                                <hr class="mt-1 mb-2">
+                                                                <div id="form-fee">
+                                                                    <div class="form-group">
+                                                                        <input type="hidden" name="id" id="id">
+                                                                        <label class="form-label" for="name"><span
+                                                                                class="text-danger">*</span>name</label>
+                                                                        <input class="form-control" id="name" name="name">
+                                                                        @error('name')
+                                                                            <p style="color: red">
+                                                                                <strong> *
+                                                                                    {{ $message }}
+                                                                                </strong>
+                                                                            </p>
+                                                                        @enderror
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" for="amount"><span
+                                                                                class="text-danger">*</span>amount</label>
+                                                                        <input class="form-control" id="amount"
+                                                                            name="amount">
+                                                                        @error('amount')
+                                                                            <p style="color: red">
+                                                                                <strong> *
+                                                                                    {{ $message }}
+                                                                                </strong>
+                                                                            </p>
+                                                                        @enderror
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" for="is_base_fee"><span
+                                                                                class="text-danger">*</span>Fee
+                                                                            Type</label>
+                                                                        <input class="form-control" id="is_base_fee"
+                                                                            name="is_base_fee">
+                                                                        @error('is_base_fee')
+                                                                            <p style="color: red">
+                                                                                <strong> *
+                                                                                    {{ $message }}
+                                                                                </strong>
+                                                                            </p>
+                                                                        @enderror
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" for="promo_code"><span
+                                                                                class="text-danger">*</span>promo_code</label>
+                                                                        <input class="form-control" id="promo_code"
+                                                                            name="promo_code">
+                                                                        @error('promo_code')
+                                                                            <p style="color: red">
+                                                                                <strong> *
+                                                                                    {{ $message }}
+                                                                                </strong>
+                                                                            </p>
+                                                                        @enderror
+                                                                    </div>
+                                                                </div>
+                                                                <hr class="mt-1 mb-2">
+                                                                <div class="footer">
+                                                                    <button type="button"
+                                                                        class="btn btn-success ml-auto float-right mr-2"
+                                                                        data-dismiss="modal" id="close-new-fee"><i
+                                                                            class="fal fa-window-close"></i>
+                                                                        Close</button>
+                                                                    <button type="submit"
+                                                                        class="btn btn-primary ml-auto float-right mr-2"><i
+                                                                            class="ni ni-plus"></i>
+                                                                        Apply</button>
+                                                                </div>
+
+                                                                {{-- {!! Form::close() !!} --}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <hr class="mt-2 mb-3">
                                                 <table class="table table-striped table-bordered m-0">
                                                     <thead class="thead">
@@ -1436,39 +1664,88 @@
 
         // Editor
         {
-            $("#edit-basic").click(function(e) {
-                $("#name").removeClass('form-control-plaintext');
-                $("#name").addClass('form-control');
+            // Basic Information
+            {
+                $("#edit-basic").click(function(e) {
+                    $("#name").removeClass('form-control-plaintext');
+                    $("#name").addClass('form-control');
 
 
-                $("#datetime_start_show").hide();
-                $("#datetime_start_edit").show();
+                    $("#datetime_start_show").hide();
+                    $("#datetime_start_edit").show();
 
 
-                $("#datetime_end_show").hide();
-                $("#datetime_end_edit").show();
+                    $("#datetime_end_show").hide();
+                    $("#datetime_end_edit").show();
+
+                    $("#venue_show").hide();
+                    $("#venue_edit").show();
 
 
-                $("#edit-basic").hide();
-                $("#save-basic").show();
-                $("#edit-basic-close").show();
-            });
+                    $("#edit-basic").hide();
+                    $("#save-basic").show();
+                    $("#edit-basic-close").show();
+                });
 
-            $("#edit-basic-close").click(function(e) {
-                $("#name").removeClass('form-control');
-                $("#name").addClass('form-control-plaintext');
+                $("#edit-basic-close").click(function(e) {
+                    $("#name").removeClass('form-control');
+                    $("#name").addClass('form-control-plaintext');
 
-                $("#datetime_start_show").show();
-                $("#datetime_start_edit").hide();
+                    $("#datetime_start_show").show();
+                    $("#datetime_start_edit").hide();
 
-                $("#datetime_end_show").show();
-                $("#datetime_end_edit").hide();
+                    $("#datetime_end_show").show();
+                    $("#datetime_end_edit").hide();
+
+                    $("#venue_show").show();
+                    $("#venue_edit").hide();
 
 
-                $("#edit-basic").show();
-                $("#save-basic").hide();
-                $("#edit-basic-close").hide();
-            });
+                    $("#edit-basic").show();
+                    $("#save-basic").hide();
+                    $("#edit-basic-close").hide();
+                });
+            }
+
+            // List of fees
+            {
+                // new fee
+                {
+                    $('#new-fee').click(function() {
+                        var id = null;
+                        var name = null;
+                        $('.modal-body #id').val(id);
+                        $('.modal-body #name').val(name);
+                        $('#crud-modal-new-fee').modal('show');
+                    });
+
+                    $('#crud-modal-new-fee').on('show.bs.modal', function(event) {
+                        var button = $(event.relatedTarget)
+                        var id = button.data('id');
+                        var name = button.data('name');
+
+                        $('.modal-body #id').val(id);
+                        $('.modal-body #name').val(name);
+                    });
+                }
+
+                // edit fee
+                $('#edit-fee-modal').on('show.bs.modal', function(event) {
+                    var button = $(event.relatedTarget)
+                    var id = button.data('id');
+                    var name = button.data('name');
+                    var amount = button.data('amount');
+                    var is_base_fee = button.data('is_base_fee');
+                    var promo_code = button.data('promo_code');
+
+                    $('.modal-body #id').val(id);
+                    $('.modal-body #name').val(name);
+                    $('.modal-body #amount').val(amount);
+                    $('.modal-body #is_base_fee').val(is_base_fee);
+                    $('.modal-body #promo_code').val(promo_code);
+                });
+
+            }
         }
 
         // Processes

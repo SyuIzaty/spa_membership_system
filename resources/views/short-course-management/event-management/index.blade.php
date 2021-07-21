@@ -13,16 +13,19 @@
                     <div class="panel-hdr">
                         <h2>Events</h2>
                         <div class="panel-toolbar">
-                            <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
-                            <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
-                            <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10" data-original-title="Close"></button>
+                            <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip"
+                                data-offset="0,10" data-original-title="Collapse"></button>
+                            <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip"
+                                data-offset="0,10" data-original-title="Fullscreen"></button>
+                            <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10"
+                                data-original-title="Close"></button>
                         </div>
                     </div>
                     <div class="panel-container show">
                         <div class="panel-content">
                             <span id="intake_fail"></span>
                             @csrf
-                            @if(session()->has('message'))
+                            @if (session()->has('message'))
                                 <div class="alert alert-success">
                                     {{ session()->get('message') }}
                                 </div>
@@ -40,13 +43,19 @@
                                     {{-- <tr>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Name"></td> --}}
-                                        {{-- <td class="hasinput"><input type="text" class="form-control" placeholder="Search Dates"></td> --}}
-                                        {{-- <td></td>
+                                    {{-- <td class="hasinput"><input type="text" class="form-control" placeholder="Search Dates"></td> --}}
+                                    {{-- <td></td>
                                     </tr> --}}
                                 </thead>
                                 <tbody>
                                 </tbody>
                             </table>
+
+                            <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
+                                style="content-align:right">
+                                <a href="/event/create" class="btn btn-primary ml-auto mt-2 mr-2 waves-effect waves-themed"><i
+                                        class="ni ni-plus"> </i> Create New Event</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -55,62 +64,77 @@
     </main>
 @endsection
 @section('script')
-<script>
-    $(document).ready(function()
-    {
+    <script>
+        $(document).ready(function() {
 
-        $('#event thead tr .hasinput').each(function(i)
-        {
-            $('input', this).on('keyup change', function()
-            {
-                if (table.column(i).search() !== this.value)
-                {
-                    table
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
+            $('#event thead tr .hasinput').each(function(i) {
+                $('input', this).on('keyup change', function() {
+                    if (table.column(i).search() !== this.value) {
+                        table
+                            .column(i)
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+
+                $('select', this).on('keyup change', function() {
+                    if (table.column(i).search() !== this.value) {
+                        table
+                            .column(i)
+                            .search(this.value)
+                            .draw();
+                    }
+                });
             });
 
-            $('select', this).on('keyup change', function()
-            {
-                if (table.column(i).search() !== this.value)
-                {
-                    table
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
 
-
-        var table = $('#event').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: "/events/data",
-                type: 'POST',
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
-            },
-            columns: [
-                    { data: 'id', name: 'id'},
-                    { data: 'name', name: 'name'},
-                    { data: 'dates', name: 'dates'},
-                    { data: 'participant', name: 'participant'},
-                    { data: 'management_details', name: 'management_details'},
-                    { data: 'action', name: 'action', orderable: false, searchable: false}
+            var table = $('#event').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "/events/data",
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                },
+                columns: [{
+                        data: 'id',
+                        name: 'id'
+                    },
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'dates',
+                        name: 'dates'
+                    },
+                    {
+                        data: 'participant',
+                        name: 'participant'
+                    },
+                    {
+                        data: 'management_details',
+                        name: 'management_details'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    }
                 ],
                 orderCellsTop: true,
-                "order": [[ 2, "desc" ]],
+                "order": [
+                    [2, "desc"]
+                ],
                 "initComplete": function(settings, json) {
 
 
                 }
+            });
+
         });
-
-    });
-
-
-</script>
+    </script>
 @endsection

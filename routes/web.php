@@ -260,6 +260,7 @@ Route::post('/event/{id}/events-participants/data-not-completed-participation-pr
 //Event
 Route::post('/events/data','ShortCourseManagement\EventManagement\EventController@data');
 Route::post('/events/update/{id}','ShortCourseManagement\EventManagement\EventController@update');
+Route::get('/event/create','ShortCourseManagement\EventManagement\EventController@create');
 Route::get('/events', 'ShortCourseManagement\EventManagement\EventController@index');
 Route::post('/event','ShortCourseManagement\EventManagement\EventController@addEvent');
 Route::get('/event/{id}', 'ShortCourseManagement\EventManagement\EventController@show');

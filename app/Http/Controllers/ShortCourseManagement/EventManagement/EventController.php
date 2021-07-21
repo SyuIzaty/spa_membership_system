@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ShortCourseManagement\EventManagement;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ShortCourseManagement\Event;
+use App\Models\ShortCourseManagement\Venue;
 use App\User;
 
 class EventController extends Controller
@@ -52,6 +53,7 @@ class EventController extends Controller
     public function create()
     {
         //
+        return view('short-course-management.event-management.create');
     }
     public function store(Request $request)
     {
@@ -68,12 +70,15 @@ class EventController extends Controller
             'fees'
         ]);
 
+
+        $venues = Venue::all();
+
         $trainers = array();
         foreach ($event->events_trainers as $event_trainer){
             array_push($trainers, User::find($event_trainer->trainer->user_id));
         }
         //
-        return view('short-course-management.event-management.show', compact('event','trainers'));
+        return view('short-course-management.event-management.show', compact('event','trainers', 'venues'));
     }
     public function edit($id)
     {
@@ -86,20 +91,23 @@ class EventController extends Controller
             'name' => 'required|max:255',
             'datetime_start' => 'required',
             'datetime_end' => 'required',
+            'venue' => 'required',
         ], [
             'name.required' => 'Please insert event name',
             'name.max' => 'Name exceed maximum length',
             'datetime_start.required' => 'Please insert event datetime start',
             'datetime_end.required' => 'Please insert event datetime end',
+            'venue.required' => 'Please insert event venue',
         ]);
 
         $update = Event::find($id)->update([
             'name' => $request->name,
             'datetime_start' => $request->datetime_start,
             'datetime_end' => $request->datetime_end,
+            'venue_id' => $request->venue,
         ]);
 
-        return Redirect()->back()->with('messageEventBasicDetails', 'Bacic Details Update Successfully');
+        return Redirect()->back()->with('messageEventBasicDetails', 'Basic Details Update Successfully');
     }
     public function destroy($id)
     {
