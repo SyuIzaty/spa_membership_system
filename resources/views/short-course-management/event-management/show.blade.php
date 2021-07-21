@@ -43,10 +43,6 @@
                                     <a data-toggle="tab" class="nav-link" href="#participant-post-event"
                                         role="tab">Participants (Post-Event)</a>
                                 </li>
-                                {{-- <li class="nav-item">
-                                    <a data-toggle="tab" class="nav-link" href="#edit-event"
-                                        role="tab">Edit Event</a>
-                                </li> --}}
                             </ul>
                             <div class="row">
                                 <div class="tab-content col-md-12">
@@ -54,7 +50,7 @@
                                         <hr class="mt-2 mb-3">
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
-                                                <form action="{{ url('/events/update/'.$event->id) }}"  method="post"
+                                                <form action="{{ url('/events/update/' . $event->id) }}" method="post"
                                                     name="form">
                                                     @csrf
                                                     <table class="table">
@@ -62,13 +58,20 @@
                                                             <tr>
                                                                 <th><b>Basic Information</b></th>
                                                                 <th>
-                                                                    <a href="#" class="btn btn-sm btn-info float-right mr-2" name="edit-basic" id="edit-basic">
+                                                                    <a href="#" class="btn btn-sm btn-info float-right mr-2"
+                                                                        name="edit-basic" id="edit-basic">
                                                                         <i class="fal fa-pencil"></i>
                                                                     </a>
-                                                                    <button type="button" class="btn btn-sm btn-danger float-right mr-2" name="edit-basic-close" id="edit-basic-close"  style="display: none">
+                                                                    <button type="button"
+                                                                        class="btn btn-sm btn-danger float-right mr-2"
+                                                                        name="edit-basic-close" id="edit-basic-close"
+                                                                        style="display: none">
                                                                         <i class="fal fa-window-close"></i>
                                                                     </button>
-                                                                    <button type="submit" class="btn btn-sm btn-success float-right mr-2" name="save-basic" id="save-basic"  style="display: none">
+                                                                    <button type="submit"
+                                                                        class="btn btn-sm btn-success float-right mr-2"
+                                                                        name="save-basic" id="save-basic"
+                                                                        style="display: none">
                                                                         <i class="fal fa-save"></i>
                                                                     </button>
                                                                 </th>
@@ -80,63 +83,62 @@
                                                                 {{-- <td>: <b>{{ $event->name }}</b></td> --}}
                                                                 <td>
                                                                     <div class="form-group">
-                                                                        <input
-                                                                            id="name"
-                                                                            name="name"
-                                                                            type="text"
+                                                                        <input id="name" name="name" type="text"
                                                                             value="{{ $event->name }}"
                                                                             class="form-control-plaintext font-weight-bold">
-                                                                            @error('name')
-                                                                        <p style="color: red">
-                                                                            <strong> *
-                                                                                {{ $message }}
-                                                                            </strong>
-                                                                        </p>
-                                                                    @enderror
+                                                                        @error('name')
+                                                                            <p style="color: red">
+                                                                                <strong> *
+                                                                                    {{ $message }}
+                                                                                </strong>
+                                                                            </p>
+                                                                        @enderror
                                                                     </div>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <th style="background-color:plum">Date Start</th>
-                                                                <td name="datetime_start_show" id="datetime_start_show"><b>{{ date('d/m/Y h:i A', strtotime($event->datetime_start)) }}</b></td>
+                                                                <td name="datetime_start_show" id="datetime_start_show">
+                                                                    <b>{{ date('d/m/Y h:i A', strtotime($event->datetime_start)) }}</b>
+                                                                </td>
                                                                 {{-- <input class="form-control" type="datetime-local" value="2023-07-23T11:25:00" id="example-datetime-local-input"> --}}
-                                                                <td  name="datetime_start_edit" id="datetime_start_edit" style="display: none">
+                                                                <td name="datetime_start_edit" id="datetime_start_edit"
+                                                                    style="display: none">
                                                                     <div class="form-group">
-                                                                        <input
-                                                                            id="datetime_start"
-                                                                            name="datetime_start"
+                                                                        <input id="datetime_start" name="datetime_start"
                                                                             type="datetime-local"
-                                                                            value="{{ substr(date('c', strtotime($event->datetime_start)),0,-6) }}"
+                                                                            value="{{ substr(date('c', strtotime($event->datetime_start)), 0, -6) }}"
                                                                             class="form-control font-weight-bold">
-                                                                            @error('datetime_start')>
-                                                                        <p style="color: red">
-                                                                            <strong> *
-                                                                                {{ $message }}
-                                                                            </strong>
-                                                                        </p>
-                                                                    @enderror
+                                                                        @error('datetime_start')>
+                                                                            <p style="color: red">
+                                                                                <strong> *
+                                                                                    {{ $message }}
+                                                                                </strong>
+                                                                            </p>
+                                                                        @enderror
                                                                     </div>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <th style="background-color:plum">Date End</th>
-                                                                <td name="datetime_end_show" id="datetime_end_show"><b>{{ date('d/m/Y h:i A', strtotime($event->datetime_end)) }}</b></td>
+                                                                <td name="datetime_end_show" id="datetime_end_show">
+                                                                    <b>{{ date('d/m/Y h:i A', strtotime($event->datetime_end)) }}</b>
+                                                                </td>
                                                                 {{-- <input class="form-control" type="datetime-local" value="2023-07-23T11:25:00" id="example-datetime-local-input"> --}}
-                                                                <td  name="datetime_end_edit" id="datetime_end_edit" style="display: none">
+                                                                <td name="datetime_end_edit" id="datetime_end_edit"
+                                                                    style="display: none">
                                                                     <div class="form-group">
-                                                                        <input
-                                                                            id="datetime_end"
-                                                                            name="datetime_end"
+                                                                        <input id="datetime_end" name="datetime_end"
                                                                             type="datetime-local"
-                                                                            value="{{ substr(date('c', strtotime($event->datetime_end)),0,-6) }}"
+                                                                            value="{{ substr(date('c', strtotime($event->datetime_end)), 0, -6) }}"
                                                                             class="form-control font-weight-bold">
-                                                                            @error('datetime_end')>
-                                                                        <p style="color: red">
-                                                                            <strong> *
-                                                                                {{ $message }}
-                                                                            </strong>
-                                                                        </p>
-                                                                    @enderror
+                                                                        @error('datetime_end')>
+                                                                            <p style="color: red">
+                                                                                <strong> *
+                                                                                    {{ $message }}
+                                                                                </strong>
+                                                                            </p>
+                                                                        @enderror
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -308,7 +310,7 @@
                                                             </div>
                                                             <div class="panel-container">
                                                                 {{-- <form action="{{ url('/senarai_kolej/student/bundle/into/' . $event->id) }}" method="post"
-                                                                    name="form"> --}}
+                                                                        name="form"> --}}
                                                                 {{-- <form name="form"> --}}
                                                                 <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex justify-content-center"
                                                                     style="content-align:center">
@@ -1052,7 +1054,8 @@
                                                         <div id="panel-1" class="panel">
                                                             <div class="panel-hdr">
                                                                 <h2>
-                                                                    <span class="fw-300">Succeed - </span> Attended Participant
+                                                                    <span class="fw-300">Succeed - </span> Attended
+                                                                    Participant
                                                                 </h2>
                                                                 <div class="panel-toolbar">
                                                                     <button class="btn btn-panel"
@@ -1120,7 +1123,8 @@
                                                         <div id="panel-1" class="panel">
                                                             <div class="panel-hdr">
                                                                 <h2>
-                                                                    <span class="fw-300">Failed - </span> Not Attended Participant
+                                                                    <span class="fw-300">Failed - </span> Not Attended
+                                                                    Participant
                                                                 </h2>
                                                                 <div class="panel-toolbar">
                                                                     <button class="btn btn-panel"
@@ -1193,7 +1197,8 @@
                                                         <div id="panel-1" class="panel">
                                                             <div class="panel-hdr">
                                                                 <h2>
-                                                                    <span class="fw-300">Step 1 - </span> Send Feedback Questionaire
+                                                                    <span class="fw-300">Step 1 - </span> Send Feedback
+                                                                    Questionaire
                                                                 </h2>
                                                                 <div class="panel-toolbar">
                                                                     <button class="btn btn-panel"
@@ -1259,12 +1264,14 @@
                                                                         style="content-align:right">
                                                                         <button type="submit"
                                                                             class="btn btn-success ml-auto mr-2 waves-effect waves-themed"><i
-                                                                                class="ni ni-check"></i> Send Questionaire to All
+                                                                                class="ni ni-check"></i> Send Questionaire
+                                                                            to All
                                                                             Ticked</button>
                                                                         <button type="submit"
                                                                             class="btn btn-danger float-right mr-2 waves-effect waves-themed"><i
-                                                                                class="ni ni-close"></i> Ignore Questionaire to All
-                                                                                Ticked</button>
+                                                                                class="ni ni-close"></i> Ignore Questionaire
+                                                                            to All
+                                                                            Ticked</button>
                                                                     </div>
                                                                     {{-- <button type="button" class="btn btn-success ml-auto mr-2 waves-effect waves-themed" onclick="window.location='http://sims.test/checkrequirements'"><i class="fal fa-check-circle"></i> Run All</button> --}}
                                                                 </form>
@@ -1279,7 +1286,8 @@
                                                         <div id="panel-1" class="panel">
                                                             <div class="panel-hdr">
                                                                 <h2>
-                                                                    <span class="fw-300">Succeed - </span> Completed Participation Process
+                                                                    <span class="fw-300">Succeed - </span> Completed
+                                                                    Participation Process
                                                                 </h2>
                                                                 <div class="panel-toolbar">
                                                                     <button class="btn btn-panel"
@@ -1317,7 +1325,8 @@
                                                                         @endif
 
                                                                         <div class="table-responsive">
-                                                                            <table id="table-completed-participation-process"
+                                                                            <table
+                                                                                id="table-completed-participation-process"
                                                                                 class="table table-bordered table-hover table-striped w-100">
                                                                                 <thead>
                                                                                     <tr class="bg-primary-50 text-center">
@@ -1347,7 +1356,8 @@
                                                         <div id="panel-1" class="panel">
                                                             <div class="panel-hdr">
                                                                 <h2>
-                                                                    <span class="fw-300">Failed - </span> Not Completed Participation Process
+                                                                    <span class="fw-300">Failed - </span> Not Completed
+                                                                    Participation Process
                                                                 </h2>
                                                                 <div class="panel-toolbar">
                                                                     <button class="btn btn-panel"
@@ -1385,7 +1395,8 @@
                                                                         @endif
 
                                                                         <div class="table-responsive">
-                                                                            <table id="table-not-completed-participation-process"
+                                                                            <table
+                                                                                id="table-not-completed-participation-process"
                                                                                 class="table table-bordered table-hover table-striped w-100">
                                                                                 <thead>
                                                                                     <tr class="bg-primary-50 text-center">
@@ -1411,107 +1422,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {{-- <div class="tab-pane" id="edit-event" role="tabpanel">
-                                        <hr class="mt-2 mb-3">
-                                        <div class="row">
-                                            <div class="col-md-12 grid-margin stretch-card">
-                                                <table class="table">
-                                                    <thead class="thead bg-primary-50">
-                                                        <tr>
-                                                            <th colspan="2"><b>Basic Information</b></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <th style="background-color:plum">Name</th>
-                                                            <td>: <b>{{ $event->name }}</b></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th style="background-color:plum">Date Start</th>
-                                                            <td>: <b>{{ $event->datetime_start }}</b></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th style="background-color:plum">Date End</th>
-                                                            <td>: <b>{{ $event->datetime_end }}</b></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th style="background-color:plum">Venue</th>
-                                                            <td>: <b>{{ $event->venue->name }}</b></td>
-                                                        </tr>
-                                                    <tbody>
-                                                </table>
-                                                <table class="table table-striped table-bordered m-0">
-                                                    <thead class="thead">
-                                                        <tr class=" bg-primary-50" scope="row">
-                                                            <th colspan="4"><b>List of Fees</b></th>
-                                                        </tr>
-                                                        <tr style="background-color:plum" scope="row">
-                                                            <th scope="col">Name</th>
-                                                            <th scope="col">Amount</th>
-                                                            <th scope="col">Fee Type</th>
-                                                            <th scope="col">Promo Code</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($event->fees as $fee)
-                                                            <tr scope="row">
-                                                                <td><b>{{ $fee->name }}</b></td>
-                                                                <td><b>{{ $fee->amount }}</b></td>
-                                                                <td><b>{{ $fee->is_base_fee }}</b></td>
-                                                                <td><b>{{ $fee->promo_code }}</b></td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                                <hr class="mt-2 mb-3">
-                                                <table class="table table-striped table-bordered m-0">
-                                                    <thead class="thead">
-                                                        <tr class=" bg-primary-50">
-                                                            <th colspan="2"><b>List of Trainers</b></th>
-                                                        </tr>
-                                                        <tr style="background-color:plum">
-                                                            <th>ID</th>
-                                                            <th>Name</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($trainers as $trainer)
-                                                            <tr>
-                                                                <td><b>{{ $trainer->id }}</b></td>
-                                                                <td><b>{{ $trainer->name }}</b></td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                                <hr class="mt-2 mb-3">
-                                                <table class="table table-striped table-bordered m-0">
-                                                    <thead class="thead">
-                                                        <tr class=" bg-primary-50">
-                                                            <th colspan="2"><b>List of Short Courses</b></th>
-                                                        </tr>
-                                                        <tr style="background-color:plum">
-                                                            <th>ID</th>
-                                                            <th>Name</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($event->events_shortcourses as $events_shortcourses)
-                                                            <tr>
-                                                                <td><b>{{ $events_shortcourses->shortcourse->id }}</b>
-                                                                </td>
-                                                                <td><b>{{ $events_shortcourses->shortcourse->name }}</b>
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-
-                                                <hr class="mt-2 mb-3">
-
-                                            </div>
-                                        </div>
-
-                                    </div> --}}
                                 </div>
                             </div>
                         </div>
@@ -1524,1540 +1434,1571 @@
     <script>
         var event_id = '<?php echo $event->id; ?>';
 
-        $("#edit-basic").click(function(e){
-            $("#name").removeClass('form-control-plaintext');
-            $("#name").addClass('form-control');
+        // Editor
+        {
+            $("#edit-basic").click(function(e) {
+                $("#name").removeClass('form-control-plaintext');
+                $("#name").addClass('form-control');
 
 
-            $("#datetime_start_show").hide();
-            $("#datetime_start_edit").show();
+                $("#datetime_start_show").hide();
+                $("#datetime_start_edit").show();
 
 
-            $("#datetime_end_show").hide();
-            $("#datetime_end_edit").show();
+                $("#datetime_end_show").hide();
+                $("#datetime_end_edit").show();
 
 
-            $("#edit-basic").hide();
-            $("#save-basic").show();
-            $("#edit-basic-close").show();
-        });
+                $("#edit-basic").hide();
+                $("#save-basic").show();
+                $("#edit-basic-close").show();
+            });
 
-        $("#edit-basic-close").click(function(e){
-            $("#name").removeClass('form-control');
-            $("#name").addClass('form-control-plaintext');
+            $("#edit-basic-close").click(function(e) {
+                $("#name").removeClass('form-control');
+                $("#name").addClass('form-control-plaintext');
 
-            $("#datetime_start_show").show();
-            $("#datetime_start_edit").hide();
+                $("#datetime_start_show").show();
+                $("#datetime_start_edit").hide();
 
-            $("#datetime_end_show").show();
-            $("#datetime_end_edit").hide();
-
-
-            $("#edit-basic").show();
-            $("#save-basic").hide();
-            $("#edit-basic-close").hide();
-        });
-
-        // if ($(this)[0].checked) {
-        //             $("div[name=kolejInputNew]").show();
-        //         } else {
-        //             $("div[name=kolejInputNew]").hide();
-        //             // $('.modal-body #hasKolejNew').val(false);
-        //         }
-
-        // new application
-        $('#new-application').click(function() {
-            var id = null;
-            var ic = null;
-            $('.modal-body #id').val(id);
-            $('.modal-body #ic').val(ic);
-            $('#crud-modal-new-application').modal('show');
-        });
-
-        $('#crud-modal-new-application').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget)
-            var id = button.data('id');
-            var ic = button.data('ic');
-
-            $('.modal-body #id').val(id);
-            $('.modal-body #ic').val(ic);
-        });
-
-        $('#search-by-ic').click(function() {
-            var ic = $('.modal-body #ic').val();
-            $.get("/participant/search-by-ic/" + ic, function(data) {
-                $('.modal-body #fullname').val(data.name);
-                $('.modal-body #phone').val(data.phone);
-                $('.modal-body #email').val(data.email);
-
-            }).fail(
-                function() {
-                $('.modal-body #fullname').val(null);
-                $('.modal-body #phone').val(null);
-                $('.modal-body #email').val(null);
-                }).always(
-                function() {
-                    $("div[id=form-application-second-part]").show();
-                });
-
-        });
+                $("#datetime_end_show").show();
+                $("#datetime_end_edit").hide();
 
 
-        $("input[id=represent-by-himself]").change(function() {
-            var representByHimself = '';
+                $("#edit-basic").show();
+                $("#save-basic").hide();
+                $("#edit-basic-close").hide();
+            });
+        }
 
-            $('.modal-body #representative-ic').val(null);
-            $('.modal-body #representative-email').val(null);
-            $("p[id=representative-doesnt-exist]").hide();
-            $("div[id=form-application-third-part]").hide();
-            $('.modal-body #represent-by-himself').val(representByHimself);
-            if ($(this)[0].checked) {
-                $("div[id=representative]").hide();
-            } else {
-                $("div[id=representative]").show();
+        // Processes
+        { // Pre-Event
+            { // new application
+                {
+                    $('#new-application').click(function() {
+                        var id = null;
+                        var ic = null;
+                        $('.modal-body #id').val(id);
+                        $('.modal-body #ic').val(ic);
+                        $('#crud-modal-new-application').modal('show');
+                    });
+
+                    $('#crud-modal-new-application').on('show.bs.modal', function(event) {
+                        var button = $(event.relatedTarget)
+                        var id = button.data('id');
+                        var ic = button.data('ic');
+
+                        $('.modal-body #id').val(id);
+                        $('.modal-body #ic').val(ic);
+                    });
+
+                    $('#search-by-ic').click(function() {
+                        var ic = $('.modal-body #ic').val();
+                        $.get("/participant/search-by-ic/" + ic, function(data) {
+                            $('.modal-body #fullname').val(data.name);
+                            $('.modal-body #phone').val(data.phone);
+                            $('.modal-body #email').val(data.email);
+
+                        }).fail(
+                            function() {
+                                $('.modal-body #fullname').val(null);
+                                $('.modal-body #phone').val(null);
+                                $('.modal-body #email').val(null);
+                            }).always(
+                            function() {
+                                $("div[id=form-application-second-part]").show();
+                            });
+
+                    });
+
+
+                    $("input[id=represent-by-himself]").change(function() {
+                        var representByHimself = '';
+
+                        $('.modal-body #representative-ic').val(null);
+                        $('.modal-body #representative-email').val(null);
+                        $("p[id=representative-doesnt-exist]").hide();
+                        $("div[id=form-application-third-part]").hide();
+                        $('.modal-body #represent-by-himself').val(representByHimself);
+                        if ($(this)[0].checked) {
+                            $("div[id=representative]").hide();
+                        } else {
+                            $("div[id=representative]").show();
+                        }
+                    });
+                }
+
+                // search-by-representative-ic
+                {
+                    $('#search-by-representative-ic').click(function() {
+                        var representativeIc = $('.modal-body #representative-ic').val();
+                        $.get("/participant/search-by-representative-ic/" + representativeIc, function(data) {
+                            $('.modal-body #representative-fullname').val(data.name);
+                        }).fail(
+                            function() {
+                                $("p[id=representative-doesnt-exist]").show();
+                            }).done(
+                            function() {
+                                $("div[id=form-application-third-part]").show();
+                            });
+
+                    });
+
+                    $('#close-new-application').click(function() {
+                        $('.modal-body #ic').val(null);
+                        $('.modal-body #fullname').val(null);
+                        $('.modal-body #phone').val(null);
+                        $('.modal-body #email').val(null);
+                    });
+                }
+
+                // all applicants
+                {
+                    $(document).ready(function() {
+                        $("#check-all-applicants").click(function() {
+                            $("input[type=checkbox]").prop("checked", $(this).prop("checked"));
+                        });
+
+                        $("input[type=checkbox]").click(function() {
+                            if (!$(this).prop("checked")) {
+                                $('#check-all-applicants').prop("checked", false);
+                            }
+                        });
+                    })
+
+                    var tableApplicants = $('#table-applicants').DataTable({
+                        columnDefs: [{
+                            targets: [2],
+                            render: function(data, type, row) {
+                                return !data ? 'N/A' : data;
+                            }
+                        }],
+                        processing: true,
+                        serverSide: true,
+                        ajax: {
+                            url: "/event/" + event_id + "/events-participants/data-applicants",
+                            type: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        },
+                        columns: [{
+                                data: 'checkApplicant',
+                                name: 'checkApplicant',
+                                orderable: false,
+                                searchable: false
+                            }, {
+                                className: 'text-center',
+                                data: 'id',
+                                name: 'id',
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'organisationsString',
+                                name: 'organisationsString'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.name',
+                                name: 'participant.name'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.phone',
+                                name: 'participant.phone'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.email',
+                                name: 'participant.email'
+                            },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.name',
+                            //     name: 'organization_representative.participant.name'
+                            // },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.phone',
+                            //     name: 'organization_representative.participant.phone'
+                            // },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.email',
+                            //     name: 'organization_representative.participant.email'
+                            // },
+                            {
+                                className: 'text-center',
+                                data: 'created_at_diffForHumans',
+                                name: 'created_at_diffForHumans',
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'action',
+                                name: 'action',
+                                orderable: false,
+                                searchable: false
+                            }
+                        ],
+                        orderCellsTop: true,
+                        "order": [
+                            [1, "desc"]
+                        ],
+                        "initComplete": function(settings, json) {}
+                    });
+
+                    $('#table-applicants thead tr .hasinput').each(function(i) {
+                        $('input', this).on('keyup change', function() {
+                            if (tableApplicants.column(i).search() !== this.value) {
+                                tableApplicants
+                                    .column(i)
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+
+                        $('select', this).on('keyup change', function() {
+                            if (tableApplicants.column(i).search() !== this.value) {
+                                tableApplicants
+                                    .column(i)
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+                    });
+
+                    $('#table-applicants').on('click', '.btn-delete[data-remote]', function(e) {
+                        e.preventDefault();
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                        var url = $(this).data('remote');
+
+                        Swal.fire({
+                            title: 'Approved this applicant?',
+                            text: "This applicant will be approved!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, approve this applicant!',
+                            cancelButtonText: 'No'
+                        }).then((result) => {
+                            if (result.value) {
+                                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                                $.ajax({
+                                    url: url,
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    data: {
+                                        method: 'POST',
+                                        submit: true
+                                    }
+                                }).always(function(data) {
+                                    $('#table-applicants').DataTable().draw(false);
+                                });
+
+
+                                // var delayInMilliseconds = 5000; //5 second
+
+                                // setTimeout(function() {
+                                //     //your code to be executed after 5 second
+                                //     $('#studentWithoutKolej').DataTable().ajax.reload();
+                                // }, delayInMilliseconds);
+
+                            }
+                        })
+                    });
+                }
+
+                // all no payment yet
+                {
+                    $(document).ready(function() {
+                        $("#check-all-no-payment-yet").click(function() {
+                            $("input[type=checkbox]").prop("checked", $(this).prop("checked"));
+                        });
+
+                        $("input[type=checkbox]").click(function() {
+                            if (!$(this).prop("checked")) {
+                                $('#check-all-no-payment-yet').prop("checked", false);
+                            }
+                        });
+                    })
+
+                    var tableAllNoPaymentYet = $('#table-all-no-payment-yet').DataTable({
+                        columnDefs: [{
+                            targets: [2],
+                            render: function(data, type, row) {
+                                return !data ? 'N/A' : data;
+                            }
+                        }],
+                        processing: true,
+                        serverSide: true,
+                        ajax: {
+                            url: "/event/" + event_id + "/events-participants/data-no-payment-yet",
+                            type: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        },
+                        columns: [{
+                                data: 'checkNoPaymentYet',
+                                name: 'checkNoPaymentYet',
+                                orderable: false,
+                                searchable: false
+                            }, {
+                                className: 'text-center',
+                                data: 'id',
+                                name: 'id',
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'organisationsString',
+                                name: 'organisationsString'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.name',
+                                name: 'participant.name'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.phone',
+                                name: 'participant.phone'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.email',
+                                name: 'participant.email'
+                            },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.name',
+                            //     name: 'organization_representative.participant.name'
+                            // },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.phone',
+                            //     name: 'organization_representative.participant.phone'
+                            // },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.email',
+                            //     name: 'organization_representative.participant.email'
+                            // },
+                            {
+                                className: 'text-center',
+                                data: 'created_at_diffForHumans',
+                                name: 'created_at_diffForHumans',
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'action',
+                                name: 'action',
+                                orderable: false,
+                                searchable: false
+                            }
+                        ],
+                        orderCellsTop: true,
+                        "order": [
+                            [1, "desc"]
+                        ],
+                        "initComplete": function(settings, json) {}
+                    });
+
+                    $('#table-all-no-payment-yet thead tr .hasinput').each(function(i) {
+                        $('input', this).on('keyup change', function() {
+                            if (tableAllNoPaymentYet.column(i).search() !== this.value) {
+                                tableAllNoPaymentYet
+                                    .column(i)
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+
+                        $('select', this).on('keyup change', function() {
+                            if (tableAllNoPaymentYet.column(i).search() !== this.value) {
+                                tableAllNoPaymentYet
+                                    .column(i)
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+                    });
+
+                    $('#table-all-no-payment-yet').on('click', '.btn-delete[data-remote]', function(e) {
+                        e.preventDefault();
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                        var url = $(this).data('remote');
+
+                        Swal.fire({
+                            title: 'Disqualify this applicant?',
+                            text: "This applicant will be disqualified!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, disqualify this applicant!',
+                            cancelButtonText: 'No'
+                        }).then((result) => {
+                            if (result.value) {
+                                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                                $.ajax({
+                                    url: url,
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    data: {
+                                        method: 'POST',
+                                        submit: true
+                                    }
+                                }).always(function(data) {
+                                    $('#table-all-no-payment-yet').DataTable().draw(false);
+                                });
+
+
+                                // var delayInMilliseconds = 5000; //5 second
+
+                                // setTimeout(function() {
+                                //     //your code to be executed after 5 second
+                                //     $('#studentWithoutKolej').DataTable().ajax.reload();
+                                // }, delayInMilliseconds);
+
+                            }
+                        })
+                    });
+                }
+
+                // all payment waiting for verification
+                {
+                    $(document).ready(function() {
+                        $("#check-payment-wait-for-verification").click(function() {
+                            $("input[type=checkbox]").prop("checked", $(this).prop("checked"));
+                        });
+
+                        $("input[type=checkbox]").click(function() {
+                            if (!$(this).prop("checked")) {
+                                $('#check-payment-wait-for-verification').prop("checked", false);
+                            }
+                        });
+                    })
+
+                    var tablePaymentWaitForVerification = $('#table-payment-wait-for-verification').DataTable({
+                        columnDefs: [{
+                            targets: [2],
+                            render: function(data, type, row) {
+                                return !data ? 'N/A' : data;
+                            }
+                        }],
+                        processing: true,
+                        serverSide: true,
+                        ajax: {
+                            url: "/event/" + event_id + "/events-participants/data-payment-wait-for-verification",
+                            type: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        },
+                        columns: [{
+                                data: 'checkPaymentWaitForVerification',
+                                name: 'checkPaymentWaitForVerification',
+                                orderable: false,
+                                searchable: false
+                            }, {
+                                className: 'text-center',
+                                data: 'id',
+                                name: 'id',
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'organisationsString',
+                                name: 'organisationsString'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.name',
+                                name: 'participant.name'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.phone',
+                                name: 'participant.phone'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.email',
+                                name: 'participant.email'
+                            },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.name',
+                            //     name: 'organization_representative.participant.name'
+                            // },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.phone',
+                            //     name: 'organization_representative.participant.phone'
+                            // },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.email',
+                            //     name: 'organization_representative.participant.email'
+                            // },
+                            {
+                                className: 'text-center',
+                                data: 'created_at_diffForHumans',
+                                name: 'created_at_diffForHumans',
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'action',
+                                name: 'action',
+                                orderable: false,
+                                searchable: false
+                            }
+                        ],
+                        orderCellsTop: true,
+                        "order": [
+                            [1, "desc"]
+                        ],
+                        "initComplete": function(settings, json) {}
+                    });
+
+                    $('#table-payment-wait-for-verification thead tr .hasinput').each(function(i) {
+                        $('input', this).on('keyup change', function() {
+                            if (tablePaymentWaitForVerification.column(i).search() !== this.value) {
+                                tablePaymentWaitForVerification
+                                    .column(i)
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+
+                        $('select', this).on('keyup change', function() {
+                            if (tablePaymentWaitForVerification.column(i).search() !== this.value) {
+                                tablePaymentWaitForVerification
+                                    .column(i)
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+                    });
+
+                    $('#table-payment-wait-for-verification').on('click', '.btn-delete[data-remote]', function(e) {
+                        e.preventDefault();
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                        var url = $(this).data('remote');
+
+                        Swal.fire({
+                            title: 'Verify this payment?',
+                            text: "This payment will be verified!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, verify this payment!',
+                            cancelButtonText: 'No'
+                        }).then((result) => {
+                            if (result.value) {
+                                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                                $.ajax({
+                                    url: url,
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    data: {
+                                        method: 'POST',
+                                        submit: true
+                                    }
+                                }).always(function(data) {
+                                    $('#table-payment-wait-for-verification').DataTable().draw(
+                                        false);
+                                });
+
+
+                                // var delayInMilliseconds = 5000; //5 second
+
+                                // setTimeout(function() {
+                                //     //your code to be executed after 5 second
+                                //     $('#studentWithoutKolej').DataTable().ajax.reload();
+                                // }, delayInMilliseconds);
+
+                            }
+                        })
+                    });
+                }
+
+                // all ready for event
+                {
+                    var tableReadyForEvent = $('#table-ready-for-event').DataTable({
+                        columnDefs: [{
+                            targets: [2],
+                            render: function(data, type, row) {
+                                return !data ? 'N/A' : data;
+                            }
+                        }],
+                        processing: true,
+                        serverSide: true,
+                        ajax: {
+                            url: "/event/" + event_id + "/events-participants/data-ready-for-event",
+                            type: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        },
+                        columns: [
+                            // {
+                            //     data: 'checkReadyForEvent',
+                            //     name: 'checkReadyForEvent',
+                            //     orderable: false,
+                            //     searchable: false
+                            // },
+                            {
+                                className: 'text-center',
+                                data: 'id',
+                                name: 'id',
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'organisationsString',
+                                name: 'organisationsString'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.name',
+                                name: 'participant.name'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.phone',
+                                name: 'participant.phone'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.email',
+                                name: 'participant.email'
+                            },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.name',
+                            //     name: 'organization_representative.participant.name'
+                            // },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.phone',
+                            //     name: 'organization_representative.participant.phone'
+                            // },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.email',
+                            //     name: 'organization_representative.participant.email'
+                            // },
+                            {
+                                className: 'text-center',
+                                data: 'created_at_diffForHumans',
+                                name: 'created_at_diffForHumans',
+                            },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'action',
+                            //     name: 'action',
+                            //     orderable: false,
+                            //     searchable: false
+                            // }
+                        ],
+                        orderCellsTop: true,
+                        "order": [
+                            [0, "desc"]
+                        ],
+                        "initComplete": function(settings, json) {}
+                    });
+
+                    $('#table-ready-for-event thead tr .hasinput').each(function(i) {
+                        $('input', this).on('keyup change', function() {
+                            if (tableReadyForEvent.column(i).search() !== this.value) {
+                                tableReadyForEvent
+                                    .column(i)
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+
+                        $('select', this).on('keyup change', function() {
+                            if (tableReadyForEvent.column(i).search() !== this.value) {
+                                tableReadyForEvent
+                                    .column(i)
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+                    });
+                }
+
+                // all disqualified
+                {
+                    var tableDisqualified = $('#table-disqualified').DataTable({
+                        columnDefs: [{
+                            targets: [2],
+                            render: function(data, type, row) {
+                                return !data ? 'N/A' : data;
+                            }
+                        }],
+                        processing: true,
+                        serverSide: true,
+                        ajax: {
+                            url: "/event/" + event_id + "/events-participants/data-disqualified",
+                            type: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        },
+                        columns: [
+                            // {
+                            //     data: 'checkDisqualified',
+                            //     name: 'checkDisqualified',
+                            //     orderable: false,
+                            //     searchable: false
+                            // },
+                            {
+                                className: 'text-center',
+                                data: 'id',
+                                name: 'id',
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'organisationsString',
+                                name: 'organisationsString'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.name',
+                                name: 'participant.name'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.phone',
+                                name: 'participant.phone'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.email',
+                                name: 'participant.email'
+                            },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.name',
+                            //     name: 'organization_representative.participant.name'
+                            // },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.phone',
+                            //     name: 'organization_representative.participant.phone'
+                            // },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.email',
+                            //     name: 'organization_representative.participant.email'
+                            // },
+                            {
+                                className: 'text-center',
+                                data: 'created_at_diffForHumans',
+                                name: 'created_at_diffForHumans',
+                            },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'action',
+                            //     name: 'action',
+                            //     orderable: false,
+                            //     searchable: false
+                            // }
+                        ],
+                        orderCellsTop: true,
+                        "order": [
+                            [0, "desc"]
+                        ],
+                        "initComplete": function(settings, json) {}
+                    });
+
+                    $('#table-disqualified thead tr .hasinput').each(function(i) {
+                        $('input', this).on('keyup change', function() {
+                            if (tableDisqualified.column(i).search() !== this.value) {
+                                tableDisqualified
+                                    .column(i)
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+
+                        $('select', this).on('keyup change', function() {
+                            if (tableDisqualified.column(i).search() !== this.value) {
+                                tableDisqualified
+                                    .column(i)
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+                    });
+                }
             }
-        });
 
-
-        // search-by-representative-ic
-        $('#search-by-representative-ic').click(function() {
-            var representativeIc = $('.modal-body #representative-ic').val();
-            $.get("/participant/search-by-representative-ic/" + representativeIc, function(data) {
-                $('.modal-body #representative-fullname').val(data.name);
-            }).fail(
-                function() {
-                    $("p[id=representative-doesnt-exist]").show();
-                }).done(
-                function() {
-                    $("div[id=form-application-third-part]").show();
-                });
-
-        });
-
-        $('#close-new-application').click(function() {
-            $('.modal-body #ic').val(null);
-            $('.modal-body #fullname').val(null);
-            $('.modal-body #phone').val(null);
-            $('.modal-body #email').val(null);
-        });
-
-        // all applicants
-        $(document).ready(function() {
-            $("#check-all-applicants").click(function() {
-                $("input[type=checkbox]").prop("checked", $(this).prop("checked"));
-            });
-
-            $("input[type=checkbox]").click(function() {
-                if (!$(this).prop("checked")) {
-                    $('#check-all-applicants').prop("checked", false);
-                }
-            });
-        })
-
-        var tableApplicants = $('#table-applicants').DataTable({
-            columnDefs: [{
-                targets: [2],
-                render: function(data, type, row) {
-                    return !data ? 'N/A' : data;
-                }
-            }],
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: "/event/" + event_id + "/events-participants/data-applicants",
-                type: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            },
-            columns: [{
-                    data: 'checkApplicant',
-                    name: 'checkApplicant',
-                    orderable: false,
-                    searchable: false
-                }, {
-                    className: 'text-center',
-                    data: 'id',
-                    name: 'id',
-                },
+            // During Event
+            { // all expected attendances
                 {
-                    className: 'text-center',
-                    data: 'organisationsString',
-                    name: 'organisationsString'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.name',
-                    name: 'participant.name'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.phone',
-                    name: 'participant.phone'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.email',
-                    name: 'participant.email'
-                },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.name',
-                //     name: 'organization_representative.participant.name'
-                // },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.phone',
-                //     name: 'organization_representative.participant.phone'
-                // },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.email',
-                //     name: 'organization_representative.participant.email'
-                // },
-                {
-                    className: 'text-center',
-                    data: 'created_at_diffForHumans',
-                    name: 'created_at_diffForHumans',
-                },
-                {
-                    className: 'text-center',
-                    data: 'action',
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
-                }
-            ],
-            orderCellsTop: true,
-            "order": [
-                [1, "desc"]
-            ],
-            "initComplete": function(settings, json) {}
-        });
+                    $(document).ready(function() {
+                        $("#check-all-expected-attendances").click(function() {
+                            $("input[type=checkbox]").prop("checked", $(this).prop("checked"));
+                        });
 
-        $('#table-applicants thead tr .hasinput').each(function(i) {
-            $('input', this).on('keyup change', function() {
-                if (tableApplicants.column(i).search() !== this.value) {
-                    tableApplicants
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
+                        $("input[type=checkbox]").click(function() {
+                            if (!$(this).prop("checked")) {
+                                $('#check-all-expected-attendances').prop("checked", false);
+                            }
+                        });
+                    })
 
-            $('select', this).on('keyup change', function() {
-                if (tableApplicants.column(i).search() !== this.value) {
-                    tableApplicants
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
-
-        $('#table-applicants').on('click', '.btn-delete[data-remote]', function(e) {
-            e.preventDefault();
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            var url = $(this).data('remote');
-
-            Swal.fire({
-                title: 'Approved this applicant?',
-                text: "This applicant will be approved!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, approve this applicant!',
-                cancelButtonText: 'No'
-            }).then((result) => {
-                if (result.value) {
-                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-                    $.ajax({
-                        url: url,
-                        type: 'POST',
-                        dataType: 'json',
-                        data: {
-                            method: 'POST',
-                            submit: true
-                        }
-                    }).always(function(data) {
-                        $('#table-applicants').DataTable().draw(false);
+                    var tableExpectedAttendances = $('#table-expected-attendances').DataTable({
+                        columnDefs: [{
+                            targets: [2],
+                            render: function(data, type, row) {
+                                return !data ? 'N/A' : data;
+                            }
+                        }],
+                        processing: true,
+                        serverSide: true,
+                        ajax: {
+                            url: "/event/" + event_id + "/events-participants/data-expected-attendances",
+                            type: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        },
+                        columns: [{
+                                data: 'checkExpectedAttendace',
+                                name: 'checkExpectedAttendace',
+                                orderable: false,
+                                searchable: false
+                            }, {
+                                className: 'text-center',
+                                data: 'id',
+                                name: 'id',
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'organisationsString',
+                                name: 'organisationsString'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.name',
+                                name: 'participant.name'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.phone',
+                                name: 'participant.phone'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.email',
+                                name: 'participant.email'
+                            },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.name',
+                            //     name: 'organization_representative.participant.name'
+                            // },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.phone',
+                            //     name: 'organization_representative.participant.phone'
+                            // },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.email',
+                            //     name: 'organization_representative.participant.email'
+                            // },
+                            {
+                                className: 'text-center',
+                                data: 'created_at_diffForHumans',
+                                name: 'created_at_diffForHumans',
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'action',
+                                name: 'action',
+                                orderable: false,
+                                searchable: false
+                            }
+                        ],
+                        orderCellsTop: true,
+                        "order": [
+                            [1, "desc"]
+                        ],
+                        "initComplete": function(settings, json) {}
                     });
 
+                    $('#table-expected-attendances thead tr .hasinput').each(function(i) {
+                        $('input', this).on('keyup change', function() {
+                            if (tableExpectedAttendances.column(i).search() !== this.value) {
+                                tableExpectedAttendances
+                                    .column(i)
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
 
-                    // var delayInMilliseconds = 5000; //5 second
-
-                    // setTimeout(function() {
-                    //     //your code to be executed after 5 second
-                    //     $('#studentWithoutKolej').DataTable().ajax.reload();
-                    // }, delayInMilliseconds);
-
-                }
-            })
-        });
-
-        // all no payment yet
-        $(document).ready(function() {
-            $("#check-all-no-payment-yet").click(function() {
-                $("input[type=checkbox]").prop("checked", $(this).prop("checked"));
-            });
-
-            $("input[type=checkbox]").click(function() {
-                if (!$(this).prop("checked")) {
-                    $('#check-all-no-payment-yet').prop("checked", false);
-                }
-            });
-        })
-
-        var tableAllNoPaymentYet = $('#table-all-no-payment-yet').DataTable({
-            columnDefs: [{
-                targets: [2],
-                render: function(data, type, row) {
-                    return !data ? 'N/A' : data;
-                }
-            }],
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: "/event/" + event_id + "/events-participants/data-no-payment-yet",
-                type: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            },
-            columns: [{
-                    data: 'checkNoPaymentYet',
-                    name: 'checkNoPaymentYet',
-                    orderable: false,
-                    searchable: false
-                }, {
-                    className: 'text-center',
-                    data: 'id',
-                    name: 'id',
-                },
-                {
-                    className: 'text-center',
-                    data: 'organisationsString',
-                    name: 'organisationsString'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.name',
-                    name: 'participant.name'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.phone',
-                    name: 'participant.phone'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.email',
-                    name: 'participant.email'
-                },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.name',
-                //     name: 'organization_representative.participant.name'
-                // },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.phone',
-                //     name: 'organization_representative.participant.phone'
-                // },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.email',
-                //     name: 'organization_representative.participant.email'
-                // },
-                {
-                    className: 'text-center',
-                    data: 'created_at_diffForHumans',
-                    name: 'created_at_diffForHumans',
-                },
-                {
-                    className: 'text-center',
-                    data: 'action',
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
-                }
-            ],
-            orderCellsTop: true,
-            "order": [
-                [1, "desc"]
-            ],
-            "initComplete": function(settings, json) {}
-        });
-
-        $('#table-all-no-payment-yet thead tr .hasinput').each(function(i) {
-            $('input', this).on('keyup change', function() {
-                if (tableAllNoPaymentYet.column(i).search() !== this.value) {
-                    tableAllNoPaymentYet
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-
-            $('select', this).on('keyup change', function() {
-                if (tableAllNoPaymentYet.column(i).search() !== this.value) {
-                    tableAllNoPaymentYet
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
-
-        $('#table-all-no-payment-yet').on('click', '.btn-delete[data-remote]', function(e) {
-            e.preventDefault();
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            var url = $(this).data('remote');
-
-            Swal.fire({
-                title: 'Disqualify this applicant?',
-                text: "This applicant will be disqualified!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, disqualify this applicant!',
-                cancelButtonText: 'No'
-            }).then((result) => {
-                if (result.value) {
-                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-                    $.ajax({
-                        url: url,
-                        type: 'POST',
-                        dataType: 'json',
-                        data: {
-                            method: 'POST',
-                            submit: true
-                        }
-                    }).always(function(data) {
-                        $('#table-all-no-payment-yet').DataTable().draw(false);
+                        $('select', this).on('keyup change', function() {
+                            if (tableExpectedAttendances.column(i).search() !== this.value) {
+                                tableExpectedAttendances
+                                    .column(i)
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
                     });
 
+                    $('#table-expected-attendances').on('click', '.btn-delete[data-remote]', function(e) {
+                        e.preventDefault();
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                        var url = $(this).data('remote');
 
-                    // var delayInMilliseconds = 5000; //5 second
+                        Swal.fire({
+                            title: 'Verify attendance for this attendant?',
+                            text: "This attendant attendance will be verified!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, this attendant attand this event!',
+                            cancelButtonText: 'No'
+                        }).then((result) => {
+                            if (result.value) {
+                                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                                $.ajax({
+                                    url: url,
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    data: {
+                                        method: 'POST',
+                                        submit: true
+                                    }
+                                }).always(function(data) {
+                                    $('#table-expected-attendances').DataTable().draw(false);
+                                });
 
-                    // setTimeout(function() {
-                    //     //your code to be executed after 5 second
-                    //     $('#studentWithoutKolej').DataTable().ajax.reload();
-                    // }, delayInMilliseconds);
 
+                                // var delayInMilliseconds = 5000; //5 second
+
+                                // setTimeout(function() {
+                                //     //your code to be executed after 5 second
+                                //     $('#studentWithoutKolej').DataTable().ajax.reload();
+                                // }, delayInMilliseconds);
+
+                            }
+                        })
+                    });
                 }
-            })
-        });
 
-        // all payment waiting for verification
-        $(document).ready(function() {
-            $("#check-payment-wait-for-verification").click(function() {
-                $("input[type=checkbox]").prop("checked", $(this).prop("checked"));
-            });
-
-            $("input[type=checkbox]").click(function() {
-                if (!$(this).prop("checked")) {
-                    $('#check-payment-wait-for-verification').prop("checked", false);
-                }
-            });
-        })
-
-        var tablePaymentWaitForVerification = $('#table-payment-wait-for-verification').DataTable({
-            columnDefs: [{
-                targets: [2],
-                render: function(data, type, row) {
-                    return !data ? 'N/A' : data;
-                }
-            }],
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: "/event/" + event_id + "/events-participants/data-payment-wait-for-verification",
-                type: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            },
-            columns: [{
-                    data: 'checkPaymentWaitForVerification',
-                    name: 'checkPaymentWaitForVerification',
-                    orderable: false,
-                    searchable: false
-                }, {
-                    className: 'text-center',
-                    data: 'id',
-                    name: 'id',
-                },
+                // all attended participant
                 {
-                    className: 'text-center',
-                    data: 'organisationsString',
-                    name: 'organisationsString'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.name',
-                    name: 'participant.name'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.phone',
-                    name: 'participant.phone'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.email',
-                    name: 'participant.email'
-                },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.name',
-                //     name: 'organization_representative.participant.name'
-                // },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.phone',
-                //     name: 'organization_representative.participant.phone'
-                // },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.email',
-                //     name: 'organization_representative.participant.email'
-                // },
-                {
-                    className: 'text-center',
-                    data: 'created_at_diffForHumans',
-                    name: 'created_at_diffForHumans',
-                },
-                {
-                    className: 'text-center',
-                    data: 'action',
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
-                }
-            ],
-            orderCellsTop: true,
-            "order": [
-                [1, "desc"]
-            ],
-            "initComplete": function(settings, json) {}
-        });
-
-        $('#table-payment-wait-for-verification thead tr .hasinput').each(function(i) {
-            $('input', this).on('keyup change', function() {
-                if (tablePaymentWaitForVerification.column(i).search() !== this.value) {
-                    tablePaymentWaitForVerification
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-
-            $('select', this).on('keyup change', function() {
-                if (tablePaymentWaitForVerification.column(i).search() !== this.value) {
-                    tablePaymentWaitForVerification
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
-
-        $('#table-payment-wait-for-verification').on('click', '.btn-delete[data-remote]', function(e) {
-            e.preventDefault();
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            var url = $(this).data('remote');
-
-            Swal.fire({
-                title: 'Verify this payment?',
-                text: "This payment will be verified!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, verify this payment!',
-                cancelButtonText: 'No'
-            }).then((result) => {
-                if (result.value) {
-                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-                    $.ajax({
-                        url: url,
-                        type: 'POST',
-                        dataType: 'json',
-                        data: {
-                            method: 'POST',
-                            submit: true
-                        }
-                    }).always(function(data) {
-                        $('#table-payment-wait-for-verification').DataTable().draw(false);
+                    var tableAttendedParticipants = $('#table-attended-participants').DataTable({
+                        columnDefs: [{
+                            targets: [2],
+                            render: function(data, type, row) {
+                                return !data ? 'N/A' : data;
+                            }
+                        }],
+                        processing: true,
+                        serverSide: true,
+                        ajax: {
+                            url: "/event/" + event_id + "/events-participants/data-attended-participants",
+                            type: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        },
+                        columns: [
+                            // {
+                            //     data: 'checkAttendedParticipants',
+                            //     name: 'checkAttendedParticipants',
+                            //     orderable: false,
+                            //     searchable: false
+                            // },
+                            {
+                                className: 'text-center',
+                                data: 'id',
+                                name: 'id',
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'organisationsString',
+                                name: 'organisationsString'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.name',
+                                name: 'participant.name'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.phone',
+                                name: 'participant.phone'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.email',
+                                name: 'participant.email'
+                            },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.name',
+                            //     name: 'organization_representative.participant.name'
+                            // },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.phone',
+                            //     name: 'organization_representative.participant.phone'
+                            // },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.email',
+                            //     name: 'organization_representative.participant.email'
+                            // },
+                            {
+                                className: 'text-center',
+                                data: 'created_at_diffForHumans',
+                                name: 'created_at_diffForHumans',
+                            },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'action',
+                            //     name: 'action',
+                            //     orderable: false,
+                            //     searchable: false
+                            // }
+                        ],
+                        orderCellsTop: true,
+                        "order": [
+                            [0, "desc"]
+                        ],
+                        "initComplete": function(settings, json) {}
                     });
 
+                    $('#table-attended-participants thead tr .hasinput').each(function(i) {
+                        $('input', this).on('keyup change', function() {
+                            if (tableAttendedParticipants.column(i).search() !== this.value) {
+                                tableAttendedParticipants
+                                    .column(i)
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
 
-                    // var delayInMilliseconds = 5000; //5 second
+                        $('select', this).on('keyup change', function() {
+                            if (tableAttendedParticipants.column(i).search() !== this.value) {
+                                tableAttendedParticipants
+                                    .column(i)
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+                    });
+                }
 
-                    // setTimeout(function() {
-                    //     //your code to be executed after 5 second
-                    //     $('#studentWithoutKolej').DataTable().ajax.reload();
-                    // }, delayInMilliseconds);
-
-                }
-            })
-        });
-
-        // all ready for event
-        var tableReadyForEvent = $('#table-ready-for-event').DataTable({
-            columnDefs: [{
-                targets: [2],
-                render: function(data, type, row) {
-                    return !data ? 'N/A' : data;
-                }
-            }],
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: "/event/" + event_id + "/events-participants/data-ready-for-event",
-                type: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            },
-            columns: [
-                // {
-                //     data: 'checkReadyForEvent',
-                //     name: 'checkReadyForEvent',
-                //     orderable: false,
-                //     searchable: false
-                // },
+                // all not attended participant
                 {
-                    className: 'text-center',
-                    data: 'id',
-                    name: 'id',
-                },
-                {
-                    className: 'text-center',
-                    data: 'organisationsString',
-                    name: 'organisationsString'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.name',
-                    name: 'participant.name'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.phone',
-                    name: 'participant.phone'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.email',
-                    name: 'participant.email'
-                },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.name',
-                //     name: 'organization_representative.participant.name'
-                // },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.phone',
-                //     name: 'organization_representative.participant.phone'
-                // },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.email',
-                //     name: 'organization_representative.participant.email'
-                // },
-                {
-                    className: 'text-center',
-                    data: 'created_at_diffForHumans',
-                    name: 'created_at_diffForHumans',
-                },
-                // {
-                //     className: 'text-center',
-                //     data: 'action',
-                //     name: 'action',
-                //     orderable: false,
-                //     searchable: false
-                // }
-            ],
-            orderCellsTop: true,
-            "order": [
-                [0, "desc"]
-            ],
-            "initComplete": function(settings, json) {}
-        });
-
-        $('#table-ready-for-event thead tr .hasinput').each(function(i) {
-            $('input', this).on('keyup change', function() {
-                if (tableReadyForEvent.column(i).search() !== this.value) {
-                    tableReadyForEvent
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-
-            $('select', this).on('keyup change', function() {
-                if (tableReadyForEvent.column(i).search() !== this.value) {
-                    tableReadyForEvent
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
-
-        // all disqualified
-        var tableDisqualified = $('#table-disqualified').DataTable({
-            columnDefs: [{
-                targets: [2],
-                render: function(data, type, row) {
-                    return !data ? 'N/A' : data;
-                }
-            }],
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: "/event/" + event_id + "/events-participants/data-disqualified",
-                type: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            },
-            columns: [
-                // {
-                //     data: 'checkDisqualified',
-                //     name: 'checkDisqualified',
-                //     orderable: false,
-                //     searchable: false
-                // },
-                {
-                    className: 'text-center',
-                    data: 'id',
-                    name: 'id',
-                },
-                {
-                    className: 'text-center',
-                    data: 'organisationsString',
-                    name: 'organisationsString'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.name',
-                    name: 'participant.name'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.phone',
-                    name: 'participant.phone'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.email',
-                    name: 'participant.email'
-                },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.name',
-                //     name: 'organization_representative.participant.name'
-                // },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.phone',
-                //     name: 'organization_representative.participant.phone'
-                // },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.email',
-                //     name: 'organization_representative.participant.email'
-                // },
-                {
-                    className: 'text-center',
-                    data: 'created_at_diffForHumans',
-                    name: 'created_at_diffForHumans',
-                },
-                // {
-                //     className: 'text-center',
-                //     data: 'action',
-                //     name: 'action',
-                //     orderable: false,
-                //     searchable: false
-                // }
-            ],
-            orderCellsTop: true,
-            "order": [
-                [0, "desc"]
-            ],
-            "initComplete": function(settings, json) {}
-        });
-
-        $('#table-disqualified thead tr .hasinput').each(function(i) {
-            $('input', this).on('keyup change', function() {
-                if (tableDisqualified.column(i).search() !== this.value) {
-                    tableDisqualified
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-
-            $('select', this).on('keyup change', function() {
-                if (tableDisqualified.column(i).search() !== this.value) {
-                    tableDisqualified
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
-
-        // all expected attendances
-        $(document).ready(function() {
-            $("#check-all-expected-attendances").click(function() {
-                $("input[type=checkbox]").prop("checked", $(this).prop("checked"));
-            });
-
-            $("input[type=checkbox]").click(function() {
-                if (!$(this).prop("checked")) {
-                    $('#check-all-expected-attendances').prop("checked", false);
-                }
-            });
-        })
-
-        var tableExpectedAttendances = $('#table-expected-attendances').DataTable({
-            columnDefs: [{
-                targets: [2],
-                render: function(data, type, row) {
-                    return !data ? 'N/A' : data;
-                }
-            }],
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: "/event/" + event_id + "/events-participants/data-expected-attendances",
-                type: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            },
-            columns: [{
-                    data: 'checkExpectedAttendace',
-                    name: 'checkExpectedAttendace',
-                    orderable: false,
-                    searchable: false
-                }, {
-                    className: 'text-center',
-                    data: 'id',
-                    name: 'id',
-                },
-                {
-                    className: 'text-center',
-                    data: 'organisationsString',
-                    name: 'organisationsString'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.name',
-                    name: 'participant.name'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.phone',
-                    name: 'participant.phone'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.email',
-                    name: 'participant.email'
-                },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.name',
-                //     name: 'organization_representative.participant.name'
-                // },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.phone',
-                //     name: 'organization_representative.participant.phone'
-                // },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.email',
-                //     name: 'organization_representative.participant.email'
-                // },
-                {
-                    className: 'text-center',
-                    data: 'created_at_diffForHumans',
-                    name: 'created_at_diffForHumans',
-                },
-                {
-                    className: 'text-center',
-                    data: 'action',
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
-                }
-            ],
-            orderCellsTop: true,
-            "order": [
-                [1, "desc"]
-            ],
-            "initComplete": function(settings, json) {}
-        });
-
-        $('#table-expected-attendances thead tr .hasinput').each(function(i) {
-            $('input', this).on('keyup change', function() {
-                if (tableExpectedAttendances.column(i).search() !== this.value) {
-                    tableExpectedAttendances
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-
-            $('select', this).on('keyup change', function() {
-                if (tableExpectedAttendances.column(i).search() !== this.value) {
-                    tableExpectedAttendances
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
-
-        $('#table-expected-attendances').on('click', '.btn-delete[data-remote]', function(e) {
-            e.preventDefault();
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            var url = $(this).data('remote');
-
-            Swal.fire({
-                title: 'Verify attendance for this attendant?',
-                text: "This attendant attendance will be verified!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, this attendant attand this event!',
-                cancelButtonText: 'No'
-            }).then((result) => {
-                if (result.value) {
-                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-                    $.ajax({
-                        url: url,
-                        type: 'POST',
-                        dataType: 'json',
-                        data: {
-                            method: 'POST',
-                            submit: true
-                        }
-                    }).always(function(data) {
-                        $('#table-expected-attendances').DataTable().draw(false);
+                    var tableNotAttendedParticipants = $('#table-not-attended-participants').DataTable({
+                        columnDefs: [{
+                            targets: [2],
+                            render: function(data, type, row) {
+                                return !data ? 'N/A' : data;
+                            }
+                        }],
+                        processing: true,
+                        serverSide: true,
+                        ajax: {
+                            url: "/event/" + event_id + "/events-participants/data-not-attended-participants",
+                            type: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        },
+                        columns: [
+                            // {
+                            //     data: 'checkAttendedParticipants',
+                            //     name: 'checkAttendedParticipants',
+                            //     orderable: false,
+                            //     searchable: false
+                            // },
+                            {
+                                className: 'text-center',
+                                data: 'id',
+                                name: 'id',
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'organisationsString',
+                                name: 'organisationsString'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.name',
+                                name: 'participant.name'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.phone',
+                                name: 'participant.phone'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.email',
+                                name: 'participant.email'
+                            },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.name',
+                            //     name: 'organization_representative.participant.name'
+                            // },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.phone',
+                            //     name: 'organization_representative.participant.phone'
+                            // },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.email',
+                            //     name: 'organization_representative.participant.email'
+                            // },
+                            {
+                                className: 'text-center',
+                                data: 'created_at_diffForHumans',
+                                name: 'created_at_diffForHumans',
+                            },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'action',
+                            //     name: 'action',
+                            //     orderable: false,
+                            //     searchable: false
+                            // }
+                        ],
+                        orderCellsTop: true,
+                        "order": [
+                            [0, "desc"]
+                        ],
+                        "initComplete": function(settings, json) {}
                     });
 
+                    $('#table-not-attended-participants thead tr .hasinput').each(function(i) {
+                        $('input', this).on('keyup change', function() {
+                            if (tableNotAttendedParticipants.column(i).search() !== this.value) {
+                                tableNotAttendedParticipants
+                                    .column(i)
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
 
-                    // var delayInMilliseconds = 5000; //5 second
+                        $('select', this).on('keyup change', function() {
+                            if (tableNotAttendedParticipants.column(i).search() !== this.value) {
+                                tableNotAttendedParticipants
+                                    .column(i)
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+                    });
+                }
+            }
 
-                    // setTimeout(function() {
-                    //     //your code to be executed after 5 second
-                    //     $('#studentWithoutKolej').DataTable().ajax.reload();
-                    // }, delayInMilliseconds);
+            // Post-Event
+            { // all participants post event
+                {
+                    $(document).ready(function() {
+                        $("#check-all-participants-post-event").click(function() {
+                            $("input[type=checkbox]").prop("checked", $(this).prop("checked"));
+                        });
 
-                }
-            })
-        });
+                        $("input[type=checkbox]").click(function() {
+                            if (!$(this).prop("checked")) {
+                                $('#check-all-participants-post-event').prop("checked", false);
+                            }
+                        });
+                    })
 
-        // all attended participant
-        var tableAttendedParticipants = $('#table-attended-participants').DataTable({
-            columnDefs: [{
-                targets: [2],
-                render: function(data, type, row) {
-                    return !data ? 'N/A' : data;
-                }
-            }],
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: "/event/" + event_id + "/events-participants/data-attended-participants",
-                type: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            },
-            columns: [
-                // {
-                //     data: 'checkAttendedParticipants',
-                //     name: 'checkAttendedParticipants',
-                //     orderable: false,
-                //     searchable: false
-                // },
-                {
-                    className: 'text-center',
-                    data: 'id',
-                    name: 'id',
-                },
-                {
-                    className: 'text-center',
-                    data: 'organisationsString',
-                    name: 'organisationsString'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.name',
-                    name: 'participant.name'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.phone',
-                    name: 'participant.phone'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.email',
-                    name: 'participant.email'
-                },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.name',
-                //     name: 'organization_representative.participant.name'
-                // },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.phone',
-                //     name: 'organization_representative.participant.phone'
-                // },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.email',
-                //     name: 'organization_representative.participant.email'
-                // },
-                {
-                    className: 'text-center',
-                    data: 'created_at_diffForHumans',
-                    name: 'created_at_diffForHumans',
-                },
-                // {
-                //     className: 'text-center',
-                //     data: 'action',
-                //     name: 'action',
-                //     orderable: false,
-                //     searchable: false
-                // }
-            ],
-            orderCellsTop: true,
-            "order": [
-                [0, "desc"]
-            ],
-            "initComplete": function(settings, json) {}
-        });
-
-        $('#table-attended-participants thead tr .hasinput').each(function(i) {
-            $('input', this).on('keyup change', function() {
-                if (tableAttendedParticipants.column(i).search() !== this.value) {
-                    tableAttendedParticipants
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-
-            $('select', this).on('keyup change', function() {
-                if (tableAttendedParticipants.column(i).search() !== this.value) {
-                    tableAttendedParticipants
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
-
-        // all not attended participant
-        var tableNotAttendedParticipants = $('#table-not-attended-participants').DataTable({
-            columnDefs: [{
-                targets: [2],
-                render: function(data, type, row) {
-                    return !data ? 'N/A' : data;
-                }
-            }],
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: "/event/" + event_id + "/events-participants/data-not-attended-participants",
-                type: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            },
-            columns: [
-                // {
-                //     data: 'checkAttendedParticipants',
-                //     name: 'checkAttendedParticipants',
-                //     orderable: false,
-                //     searchable: false
-                // },
-                {
-                    className: 'text-center',
-                    data: 'id',
-                    name: 'id',
-                },
-                {
-                    className: 'text-center',
-                    data: 'organisationsString',
-                    name: 'organisationsString'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.name',
-                    name: 'participant.name'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.phone',
-                    name: 'participant.phone'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.email',
-                    name: 'participant.email'
-                },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.name',
-                //     name: 'organization_representative.participant.name'
-                // },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.phone',
-                //     name: 'organization_representative.participant.phone'
-                // },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.email',
-                //     name: 'organization_representative.participant.email'
-                // },
-                {
-                    className: 'text-center',
-                    data: 'created_at_diffForHumans',
-                    name: 'created_at_diffForHumans',
-                },
-                // {
-                //     className: 'text-center',
-                //     data: 'action',
-                //     name: 'action',
-                //     orderable: false,
-                //     searchable: false
-                // }
-            ],
-            orderCellsTop: true,
-            "order": [
-                [0, "desc"]
-            ],
-            "initComplete": function(settings, json) {}
-        });
-
-        $('#table-not-attended-participants thead tr .hasinput').each(function(i) {
-            $('input', this).on('keyup change', function() {
-                if (tableNotAttendedParticipants.column(i).search() !== this.value) {
-                    tableNotAttendedParticipants
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-
-            $('select', this).on('keyup change', function() {
-                if (tableNotAttendedParticipants.column(i).search() !== this.value) {
-                    tableNotAttendedParticipants
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
-
-        // all participants post event
-        $(document).ready(function() {
-            $("#check-all-participants-post-event").click(function() {
-                $("input[type=checkbox]").prop("checked", $(this).prop("checked"));
-            });
-
-            $("input[type=checkbox]").click(function() {
-                if (!$(this).prop("checked")) {
-                    $('#check-all-participants-post-event').prop("checked", false);
-                }
-            });
-        })
-
-        var tableParticipantPostEvent = $('#table-participant-post-event').DataTable({
-            columnDefs: [{
-                targets: [2],
-                render: function(data, type, row) {
-                    return !data ? 'N/A' : data;
-                }
-            }],
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: "/event/" + event_id + "/events-participants/data-participant-post-event",
-                type: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            },
-            columns: [{
-                    data: 'checkParticipantPostEvent',
-                    name: 'checkParticipantPostEvent',
-                    orderable: false,
-                    searchable: false
-                }, {
-                    className: 'text-center',
-                    data: 'id',
-                    name: 'id',
-                },
-                {
-                    className: 'text-center',
-                    data: 'organisationsString',
-                    name: 'organisationsString'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.name',
-                    name: 'participant.name'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.phone',
-                    name: 'participant.phone'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.email',
-                    name: 'participant.email'
-                },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.name',
-                //     name: 'organization_representative.participant.name'
-                // },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.phone',
-                //     name: 'organization_representative.participant.phone'
-                // },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.email',
-                //     name: 'organization_representative.participant.email'
-                // },
-                {
-                    className: 'text-center',
-                    data: 'created_at_diffForHumans',
-                    name: 'created_at_diffForHumans',
-                },
-                {
-                    className: 'text-center',
-                    data: 'action',
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
-                }
-            ],
-            orderCellsTop: true,
-            "order": [
-                [1, "desc"]
-            ],
-            "initComplete": function(settings, json) {}
-        });
-
-        $('#table-participant-post-event thead tr .hasinput').each(function(i) {
-            $('input', this).on('keyup change', function() {
-                if (tableParticipantPostEvent.column(i).search() !== this.value) {
-                    tableParticipantPostEvent
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-
-            $('select', this).on('keyup change', function() {
-                if (tableParticipantPostEvent.column(i).search() !== this.value) {
-                    tableParticipantPostEvent
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
-
-        $('#table-participant-post-event').on('click', '.btn-delete[data-remote]', function(e) {
-            e.preventDefault();
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            var url = $(this).data('remote');
-
-            Swal.fire({
-                title: 'Verify attendance for this attendant?',
-                text: "This attendant attendance will be verified!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, this attendant attand this event!',
-                cancelButtonText: 'No'
-            }).then((result) => {
-                if (result.value) {
-                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-                    $.ajax({
-                        url: url,
-                        type: 'POST',
-                        dataType: 'json',
-                        data: {
-                            method: 'POST',
-                            submit: true
-                        }
-                    }).always(function(data) {
-                        $('#table-participant-post-event').DataTable().draw(false);
+                    var tableParticipantPostEvent = $('#table-participant-post-event').DataTable({
+                        columnDefs: [{
+                            targets: [2],
+                            render: function(data, type, row) {
+                                return !data ? 'N/A' : data;
+                            }
+                        }],
+                        processing: true,
+                        serverSide: true,
+                        ajax: {
+                            url: "/event/" + event_id + "/events-participants/data-participant-post-event",
+                            type: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        },
+                        columns: [{
+                                data: 'checkParticipantPostEvent',
+                                name: 'checkParticipantPostEvent',
+                                orderable: false,
+                                searchable: false
+                            }, {
+                                className: 'text-center',
+                                data: 'id',
+                                name: 'id',
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'organisationsString',
+                                name: 'organisationsString'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.name',
+                                name: 'participant.name'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.phone',
+                                name: 'participant.phone'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.email',
+                                name: 'participant.email'
+                            },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.name',
+                            //     name: 'organization_representative.participant.name'
+                            // },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.phone',
+                            //     name: 'organization_representative.participant.phone'
+                            // },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.email',
+                            //     name: 'organization_representative.participant.email'
+                            // },
+                            {
+                                className: 'text-center',
+                                data: 'created_at_diffForHumans',
+                                name: 'created_at_diffForHumans',
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'action',
+                                name: 'action',
+                                orderable: false,
+                                searchable: false
+                            }
+                        ],
+                        orderCellsTop: true,
+                        "order": [
+                            [1, "desc"]
+                        ],
+                        "initComplete": function(settings, json) {}
                     });
 
+                    $('#table-participant-post-event thead tr .hasinput').each(function(i) {
+                        $('input', this).on('keyup change', function() {
+                            if (tableParticipantPostEvent.column(i).search() !== this.value) {
+                                tableParticipantPostEvent
+                                    .column(i)
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
 
-                    // var delayInMilliseconds = 5000; //5 second
+                        $('select', this).on('keyup change', function() {
+                            if (tableParticipantPostEvent.column(i).search() !== this.value) {
+                                tableParticipantPostEvent
+                                    .column(i)
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+                    });
 
-                    // setTimeout(function() {
-                    //     //your code to be executed after 5 second
-                    //     $('#studentWithoutKolej').DataTable().ajax.reload();
-                    // }, delayInMilliseconds);
+                    $('#table-participant-post-event').on('click', '.btn-delete[data-remote]', function(e) {
+                        e.preventDefault();
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                        var url = $(this).data('remote');
 
-                }
-            })
-        });
+                        Swal.fire({
+                            title: 'Verify attendance for this attendant?',
+                            text: "This attendant attendance will be verified!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, this attendant attand this event!',
+                            cancelButtonText: 'No'
+                        }).then((result) => {
+                            if (result.value) {
+                                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                                $.ajax({
+                                    url: url,
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    data: {
+                                        method: 'POST',
+                                        submit: true
+                                    }
+                                }).always(function(data) {
+                                    $('#table-participant-post-event').DataTable().draw(false);
+                                });
 
-       // all completed participation process
-        var tableCompletedParticipationProcess = $('#table-completed-participation-process').DataTable({
-            columnDefs: [{
-                targets: [2],
-                render: function(data, type, row) {
-                    return !data ? 'N/A' : data;
-                }
-            }],
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: "/event/" + event_id + "/events-participants/data-completed-participation-process",
-                type: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            },
-            columns: [
-                // {
-                //     data: 'checkCompletedParticipationProcess',
-                //     name: 'checkCompletedParticipationProcess',
-                //     orderable: false,
-                //     searchable: false
-                // },
-                {
-                    className: 'text-center',
-                    data: 'id',
-                    name: 'id',
-                },
-                {
-                    className: 'text-center',
-                    data: 'organisationsString',
-                    name: 'organisationsString'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.name',
-                    name: 'participant.name'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.phone',
-                    name: 'participant.phone'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.email',
-                    name: 'participant.email'
-                },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.name',
-                //     name: 'organization_representative.participant.name'
-                // },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.phone',
-                //     name: 'organization_representative.participant.phone'
-                // },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.email',
-                //     name: 'organization_representative.participant.email'
-                // },
-                {
-                    className: 'text-center',
-                    data: 'created_at_diffForHumans',
-                    name: 'created_at_diffForHumans',
-                },
-                // {
-                //     className: 'text-center',
-                //     data: 'action',
-                //     name: 'action',
-                //     orderable: false,
-                //     searchable: false
-                // }
-            ],
-            orderCellsTop: true,
-            "order": [
-                [0, "desc"]
-            ],
-            "initComplete": function(settings, json) {}
-        });
 
-        $('#table-completed-participation-process thead tr .hasinput').each(function(i) {
-            $('input', this).on('keyup change', function() {
-                if (tableCompletedParticipationProcess.column(i).search() !== this.value) {
-                    tableCompletedParticipationProcess
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
+                                // var delayInMilliseconds = 5000; //5 second
 
-            $('select', this).on('keyup change', function() {
-                if (tableCompletedParticipationProcess.column(i).search() !== this.value) {
-                    tableCompletedParticipationProcess
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
+                                // setTimeout(function() {
+                                //     //your code to be executed after 5 second
+                                //     $('#studentWithoutKolej').DataTable().ajax.reload();
+                                // }, delayInMilliseconds);
 
-        // all not completed participation process
-        var tableNotCompletedParticipationProcess = $('#table-not-completed-participation-process').DataTable({
-            columnDefs: [{
-                targets: [2],
-                render: function(data, type, row) {
-                    return !data ? 'N/A' : data;
+                            }
+                        })
+                    });
                 }
-            }],
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: "/event/" + event_id + "/events-participants/data-not-completed-participation-process",
-                type: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            },
-            columns: [
-                // {
-                //     data: 'checkCompletedParticipationProcess',
-                //     name: 'checkCompletedParticipationProcess',
-                //     orderable: false,
-                //     searchable: false
-                // },
-                {
-                    className: 'text-center',
-                    data: 'id',
-                    name: 'id',
-                },
-                {
-                    className: 'text-center',
-                    data: 'organisationsString',
-                    name: 'organisationsString'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.name',
-                    name: 'participant.name'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.phone',
-                    name: 'participant.phone'
-                },
-                {
-                    className: 'text-center',
-                    data: 'participant.email',
-                    name: 'participant.email'
-                },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.name',
-                //     name: 'organization_representative.participant.name'
-                // },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.phone',
-                //     name: 'organization_representative.participant.phone'
-                // },
-                // {
-                //     className: 'text-center',
-                //     data: 'organization_representative.participant.email',
-                //     name: 'organization_representative.participant.email'
-                // },
-                {
-                    className: 'text-center',
-                    data: 'created_at_diffForHumans',
-                    name: 'created_at_diffForHumans',
-                },
-                // {
-                //     className: 'text-center',
-                //     data: 'action',
-                //     name: 'action',
-                //     orderable: false,
-                //     searchable: false
-                // }
-            ],
-            orderCellsTop: true,
-            "order": [
-                [0, "desc"]
-            ],
-            "initComplete": function(settings, json) {}
-        });
 
-        $('#table-not-completed-participation-process thead tr .hasinput').each(function(i) {
-            $('input', this).on('keyup change', function() {
-                if (tableNotCompletedParticipationProcess.column(i).search() !== this.value) {
-                    tableNotCompletedParticipationProcess
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
+                // all completed participation process
+                {
+                    var tableCompletedParticipationProcess = $('#table-completed-participation-process').DataTable({
+                        columnDefs: [{
+                            targets: [2],
+                            render: function(data, type, row) {
+                                return !data ? 'N/A' : data;
+                            }
+                        }],
+                        processing: true,
+                        serverSide: true,
+                        ajax: {
+                            url: "/event/" + event_id + "/events-participants/data-completed-participation-process",
+                            type: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        },
+                        columns: [
+                            // {
+                            //     data: 'checkCompletedParticipationProcess',
+                            //     name: 'checkCompletedParticipationProcess',
+                            //     orderable: false,
+                            //     searchable: false
+                            // },
+                            {
+                                className: 'text-center',
+                                data: 'id',
+                                name: 'id',
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'organisationsString',
+                                name: 'organisationsString'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.name',
+                                name: 'participant.name'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.phone',
+                                name: 'participant.phone'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.email',
+                                name: 'participant.email'
+                            },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.name',
+                            //     name: 'organization_representative.participant.name'
+                            // },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.phone',
+                            //     name: 'organization_representative.participant.phone'
+                            // },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.email',
+                            //     name: 'organization_representative.participant.email'
+                            // },
+                            {
+                                className: 'text-center',
+                                data: 'created_at_diffForHumans',
+                                name: 'created_at_diffForHumans',
+                            },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'action',
+                            //     name: 'action',
+                            //     orderable: false,
+                            //     searchable: false
+                            // }
+                        ],
+                        orderCellsTop: true,
+                        "order": [
+                            [0, "desc"]
+                        ],
+                        "initComplete": function(settings, json) {}
+                    });
 
-            $('select', this).on('keyup change', function() {
-                if (tableNotCompletedParticipationProcess.column(i).search() !== this.value) {
-                    tableNotCompletedParticipationProcess
-                        .column(i)
-                        .search(this.value)
-                        .draw();
+                    $('#table-completed-participation-process thead tr .hasinput').each(function(i) {
+                        $('input', this).on('keyup change', function() {
+                            if (tableCompletedParticipationProcess.column(i).search() !== this.value) {
+                                tableCompletedParticipationProcess
+                                    .column(i)
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+
+                        $('select', this).on('keyup change', function() {
+                            if (tableCompletedParticipationProcess.column(i).search() !== this.value) {
+                                tableCompletedParticipationProcess
+                                    .column(i)
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+                    });
                 }
-            });
-        });
+
+                // all not completed participation process
+                {
+                    var tableNotCompletedParticipationProcess = $('#table-not-completed-participation-process').DataTable({
+                        columnDefs: [{
+                            targets: [2],
+                            render: function(data, type, row) {
+                                return !data ? 'N/A' : data;
+                            }
+                        }],
+                        processing: true,
+                        serverSide: true,
+                        ajax: {
+                            url: "/event/" + event_id +
+                                "/events-participants/data-not-completed-participation-process",
+                            type: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        },
+                        columns: [
+                            // {
+                            //     data: 'checkCompletedParticipationProcess',
+                            //     name: 'checkCompletedParticipationProcess',
+                            //     orderable: false,
+                            //     searchable: false
+                            // },
+                            {
+                                className: 'text-center',
+                                data: 'id',
+                                name: 'id',
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'organisationsString',
+                                name: 'organisationsString'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.name',
+                                name: 'participant.name'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.phone',
+                                name: 'participant.phone'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.email',
+                                name: 'participant.email'
+                            },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.name',
+                            //     name: 'organization_representative.participant.name'
+                            // },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.phone',
+                            //     name: 'organization_representative.participant.phone'
+                            // },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'organization_representative.participant.email',
+                            //     name: 'organization_representative.participant.email'
+                            // },
+                            {
+                                className: 'text-center',
+                                data: 'created_at_diffForHumans',
+                                name: 'created_at_diffForHumans',
+                            },
+                            // {
+                            //     className: 'text-center',
+                            //     data: 'action',
+                            //     name: 'action',
+                            //     orderable: false,
+                            //     searchable: false
+                            // }
+                        ],
+                        orderCellsTop: true,
+                        "order": [
+                            [0, "desc"]
+                        ],
+                        "initComplete": function(settings, json) {}
+                    });
+
+                    $('#table-not-completed-participation-process thead tr .hasinput').each(function(i) {
+                        $('input', this).on('keyup change', function() {
+                            if (tableNotCompletedParticipationProcess.column(i).search() !== this.value) {
+                                tableNotCompletedParticipationProcess
+                                    .column(i)
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+
+                        $('select', this).on('keyup change', function() {
+                            if (tableNotCompletedParticipationProcess.column(i).search() !== this.value) {
+                                tableNotCompletedParticipationProcess
+                                    .column(i)
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+                    });
+                }
+            }
+        }
     </script>
 @endsection
