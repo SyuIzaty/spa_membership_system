@@ -24,8 +24,7 @@
         "simplesoftwareio/simple-qrcode": "^4.1",
         "spatie/laravel-activitylog": "^3.14",
         "spatie/laravel-permission": "^3.15",
-        "yajra/laravel-datatables-oracle": "^9.9",
-        "yajra/laravel-oci8": "^7.0"
+        "yajra/laravel-datatables-oracle": "^9.9"
     },
     "require-dev": {
         "facade/ignition": "^2.0",
