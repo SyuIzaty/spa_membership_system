@@ -265,7 +265,6 @@ class EventParticipantController extends Controller
                 'organization_representative',
                 'participant.organisations_participants.organisation'
             ]);
-
         $index = 0;
         foreach ($eventsParticipants as $eventParticipant) {
             // $eventsParticipants[$index]->organisations = array();
