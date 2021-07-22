@@ -8,6 +8,7 @@ use App\Models\ShortCourseManagement\Event;
 use App\Models\ShortCourseManagement\Venue;
 use App\Models\ShortCourseManagement\ShortCourse;
 use App\User;
+use File;
 
 class EventController extends Controller
 {
@@ -115,5 +116,52 @@ class EventController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    //Public View
+
+    public function indexPublicView()
+    {
+        $events = Event::all()->load(['events_participants', 'venue']);
+        $index=0;
+        foreach($events as $event){
+            $events[$index]->created_at_diffForHumans=$events[$index]->created_at->diffForHumans();
+            $index++;
+
+        }
+        return view('short-course-management.public-view.main.index', compact('events'));
+
+        // return view('short-course-management.event-management.index');
+    }
+
+    public function getFile($file)
+    {
+        // $path = storage_path().'/'.'app'.'/'.'shortcourse'.'/'.'system'.'/'.$file;
+        $path = asset('/'.'storage'.'/'.'app'.'/'.'shortcourse'.'/'.'system'.'/'.$file) ;
+
+        // dd($path);
+
+        $file = File::get($path);
+        $filetype = File::mimeType($path);
+
+        $response = Response::make($file, 200);
+        $response->header("Content-Type", $filetype);
+
+        return $response;
+    }
+
+    function showPublicView($id)
+    {
+
+        $event = Event::find($id)->load([
+            'events_participants',
+            'venue',
+            'events_shortcourses.shortcourse',
+            'events_trainers.trainer',
+            'fees'
+        ]);
+
+        //
+        return view('short-course-management.public-view.main.show', compact('event'));
     }
 }

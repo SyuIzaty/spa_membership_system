@@ -279,3 +279,9 @@ Route::get('/participant/search-by-ic/{ic}','ShortCourseManagement\People\Partic
 Route::get('/participant/search-by-representative-ic/{ic}','ShortCourseManagement\People\Participant\ParticipantController@searchByRepresentativeIc');
 
 
+//Public View
+Route::get('/event/public-view/{id}', 'ShortCourseManagement\EventManagement\EventController@showPublicView');
+Route::get('/events/public-view', 'ShortCourseManagement\EventManagement\EventController@indexPublicView');
+Route::get('/get-file-event/{filename}','ShortCourseManagement\EventManagement\EventController@getFile');
+
+

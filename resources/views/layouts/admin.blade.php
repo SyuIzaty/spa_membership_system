@@ -225,7 +225,7 @@
                             </li>
 
                             <li>
-                                <a href="#" title="Public View" data-filter-tags="public-view">
+                                <a href="/events/public-view" title="Public View" data-filter-tags="public-view">
                                     <i class="fal fa-users"></i>
                                     <span class="nav-link-text" data-i18n="nav.public-view">Public View</span>
                                 </a>
