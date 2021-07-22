@@ -244,6 +244,14 @@ Route::get('/geolocation','GeolocationController@index');
 
 //Short Course Management
 //Event Management
+
+//Trainer
+Route::get('/trainer/search-by-user_id/{user_id}','ShortCourseManagement\People\Trainer\TrainerController@searchByUserId');
+
+//Shortcourse
+Route::get('/shortcourse/search-by-id/{id}','ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@searchById');
+
+
 //EventParticipant
 Route::post('/event/{id}/events-participants/data-applicants','ShortCourseManagement\EventManagement\EventParticipantController@dataApplicants');
 Route::post('/event/{id}/events-participants/data-no-payment-yet','ShortCourseManagement\EventManagement\EventParticipantController@dataNoPaymentYet');

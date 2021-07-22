@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ShortCourseManagement\Event;
 use App\Models\ShortCourseManagement\Venue;
+use App\Models\ShortCourseManagement\ShortCourse;
 use App\User;
 
 class EventController extends Controller
@@ -73,12 +74,14 @@ class EventController extends Controller
 
         $venues = Venue::all();
 
+        $shortcourses = ShortCourse::all();
+
         $trainers = array();
         foreach ($event->events_trainers as $event_trainer){
             array_push($trainers, User::find($event_trainer->trainer->user_id));
         }
         //
-        return view('short-course-management.event-management.show', compact('event','trainers', 'venues'));
+        return view('short-course-management.event-management.show', compact('event','trainers', 'venues','shortcourses'));
     }
     public function edit($id)
     {

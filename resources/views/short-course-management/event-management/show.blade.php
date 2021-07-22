@@ -250,7 +250,7 @@
                                                                         <div class="form-group">
                                                                             <label class="form-label" for="name"><span
                                                                                     class="text-danger">*</span>name</label>
-                                                                            <input class="form-control" id="name"
+                                                                            <input class="form-control" id="name-fee-add"
                                                                                 name="name">
                                                                             @error('name')
                                                                                 <p style="color: red">
@@ -305,8 +305,8 @@
                                                                             <label class="form-label" for="promo_code"><span
                                                                                     class="text-danger">*</span>Promo
                                                                                 Code</label>
-                                                                            <input class="form-control" id="promo_code"
-                                                                                name="promo_code">
+                                                                            <input class="form-control" id="promo_code-add"
+                                                                                name="promo_code-add">
                                                                             @error('promo_code')
                                                                                 <p style="color: red">
                                                                                     <strong> *
@@ -353,8 +353,8 @@
                                                                     <div class="form-group">
                                                                         <label class="form-label" for="name"><span
                                                                                 class="text-danger">*</span>name</label>
-                                                                        <input type="text" class="form-control" id="name"
-                                                                            name="name">
+                                                                        <input type="text" class="form-control"
+                                                                            id="name-fee-edit" name="name-fee-edit">
                                                                         {{-- <div class="form-group">
                                                                             <input id="name" name="name" type="text"
                                                                                 value="{{ $event->name }}"
@@ -413,7 +413,7 @@
                                                                         style="display: none">
                                                                         <label class="form-label" for="promo_code"><span
                                                                                 class="text-danger">*</span>promo_code</label>
-                                                                        <input class="form-control" id="promo_code"
+                                                                        <input class="form-control" id="promo_code-edit"
                                                                             name="promo_code">
                                                                         @error('promo_code')
                                                                             <p style="color: red">
@@ -461,7 +461,7 @@
                                                                 <td><b>{{ $trainer->name }}</b></td>
                                                                 <td><a href="#"
                                                                         class="btn btn-sm btn-danger float-right mr-2">
-                                                                        <i class="ni ni-trash"></i>
+                                                                        <i class="ni ni-close"></i>
                                                                     </a></td>
                                                             </tr>
                                                         @endforeach
@@ -469,7 +469,7 @@
                                                 </table>
                                                 <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
                                                     style="content-align:right">
-                                                    <a href="javascript:;" data-toggle="modal" id="new-trainer"
+                                                    <a href="javascript:;" data-toggle="modal" id="add-trainer"
                                                         class="btn btn-primary ml-auto mt-2 mr-2 waves-effect waves-themed"><i
                                                             class="ni ni-plus"> </i> Add Trainer</a>
                                                     <div class="modal fade" id="crud-modal-add-trainer" aria-hidden="true">
@@ -485,13 +485,14 @@
                                                                         Vital Information</p>
                                                                     <hr class="mt-1 mb-2">
                                                                     <div class="form-group">
-                                                                        <label for="user_id"><span class="text-danger">*</span>
-                                                                            User ID</label>
+                                                                        <label for="user_id"><span
+                                                                                class="text-danger">*</span>
+                                                                            Trainer's User ID</label>
                                                                         <div class="form-inline" style="width:100%">
                                                                             <div class="form-group mr-2 mb-2"
                                                                                 style="width:85%">
-                                                                                <input class="form-control w-100" id="user_id"
-                                                                                    name="user_id">
+                                                                                <input class="form-control w-100"
+                                                                                    id="user_id" name="user_id">
                                                                             </div>
                                                                             <a href="javascript:;" data-toggle="#"
                                                                                 id="search-by-user_id"
@@ -512,8 +513,8 @@
                                                                         <div class="form-group">
                                                                             <label class="form-label" for="fullname"><span
                                                                                     class="text-danger">*</span>Fullname</label>
-                                                                            <input class="form-control-plaintext" id="fullname"
-                                                                                name="fullname" disabled>
+                                                                            <input class="form-control-plaintext"
+                                                                                id="fullname" name="fullname" disabled>
                                                                             @error('name')
                                                                                 <p style="color: red">
                                                                                     <strong> *
@@ -593,7 +594,7 @@
                                                                 </td>
                                                                 <td><a href="#"
                                                                         class="btn btn-sm btn-danger float-right mr-2">
-                                                                        <i class="ni ni-trash"></i>
+                                                                        <i class="ni ni-close"></i>
                                                                     </a></td>
                                                             </tr>
                                                         @endforeach
@@ -602,9 +603,111 @@
 
                                                 <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
                                                     style="content-align:right">
-                                                    <a href="javascript:;" data-toggle="modal" id="new-fee"
+                                                    <a href="javascript:;" data-toggle="modal" id="add-shortcourse"
                                                         class="btn btn-primary ml-auto mt-2 mr-2 waves-effect waves-themed"><i
                                                             class="ni ni-plus"> </i> Add Short Course</a>
+
+                                                    <div class="modal fade" id="crud-modal-add-shortcourse"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="card-header">
+                                                                    <h5 class="card-title w-150">Add Short Course</h5>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <input type="hidden" name="id" id="id">
+                                                                    <p><span class="text-danger">*</span>
+                                                                        Vital Information</p>
+                                                                    <hr class="mt-1 mb-2">
+                                                                    <div class="form-group">
+                                                                        <label for="user_id"><span
+                                                                                class="text-danger">*</span>
+                                                                            Short Course Name</label>
+                                                                        <div class="form-inline" style="width:100%">
+                                                                            <div class="form-group mr-2 mb-2"
+                                                                                style="width:85%">
+                                                                                <div class="form-group">
+                                                                                    <select
+                                                                                        class="form-control shortcourse font-weight-bold"
+                                                                                        name="shortcourse_name"
+                                                                                        id="shortcourse_name"
+                                                                                        data-select2-id="shortcourse_name"
+                                                                                        tabindex="-1" aria-hidden="true">
+                                                                                        <option value=''>Choose a Short
+                                                                                            Course
+                                                                                        </option>
+                                                                                        @foreach ($shortcourses as $shortcourse)
+                                                                                            <option
+                                                                                                value="{{ $shortcourse->id }}"
+                                                                                                data-select2-id="{{ $shortcourse->id }}">
+                                                                                                {{ $shortcourse->name }}
+                                                                                            </option>
+                                                                                        @endforeach
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        @error('shortcourse_name')
+                                                                            <p style="color: red">
+                                                                                <strong> *
+                                                                                    {{ $message }}
+                                                                                </strong>
+                                                                            </p>
+                                                                        @enderror
+                                                                    </div>
+                                                                    <hr class="mt-1 mb-2">
+                                                                    <div id="form-add-shortcourse-second-part"
+                                                                        style="display: none">
+                                                                        <div class="form-group">
+                                                                            <label class="form-label" for="objective"><span
+                                                                                    class="text-danger">*</span>Objective</label>
+                                                                            <textarea class="form-control-plaintext"
+                                                                                rows="5" id="objective" name="objective"
+                                                                                disabled>
+                                                                                        </textarea>
+                                                                            @error('objective')
+                                                                                <p style="color: red">
+                                                                                    <strong> *
+                                                                                        {{ $message }}
+                                                                                    </strong>
+                                                                                </p>
+                                                                            @enderror
+                                                                        </div>
+
+                                                                        <div class="form-group">
+                                                                            <label class="form-label"
+                                                                                for="description"><span
+                                                                                    class="text-danger">*</span>Description</label>
+                                                                            <textarea class="form-control-plaintext"
+                                                                                rows="5" id="description" name="description"
+                                                                                disabled>
+                                                                                            </textarea>
+                                                                            @error('description')
+                                                                                <p style="color: red">
+                                                                                    <strong> *
+                                                                                        {{ $message }}
+                                                                                    </strong>
+                                                                                </p>
+                                                                            @enderror
+                                                                        </div>
+                                                                    </div>
+                                                                    <hr class="mt-1 mb-2">
+                                                                    <div class="footer">
+                                                                        <button type="button"
+                                                                            class="btn btn-success ml-auto float-right mr-2"
+                                                                            data-dismiss="modal" id="close-add-trainer"><i
+                                                                                class="fal fa-window-close"></i>
+                                                                            Close</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary ml-auto float-right mr-2"><i
+                                                                                class="ni ni-plus"></i>
+                                                                            Add</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                                 <hr class="mt-2 mb-3">
 
@@ -661,8 +764,8 @@
                                                                 <th colspan="5"><b>Post-Event</b></th>
                                                             </tr>
                                                             <tr style="background-color:plum">
-                                                                <th>Not Done Feedback</th>
-                                                                <th>Done Feedback</th>
+                                                                <th>Not Completed Participation Process</th>
+                                                                <th>Completed Participation Process</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -1881,10 +1984,10 @@
                         var promo_code = null;
 
                         $('.modal-body #id').val(id);
-                        $('.modal-body #name').val(name);
+                        $('.modal-body #name-fee-add').val(name);
                         $('.modal-body #amount').val(amount);
                         $('.modal-body #is_base_fee').val(is_base_fee);
-                        $('.modal-body #promo_code').val(promo_code);
+                        $('.modal-body #promo_code-add').val(promo_code);
                         $('#crud-modal-new-fee').modal('show');
                     });
 
@@ -1925,10 +2028,10 @@
                     }
 
                     $('.modal-body #id').val(id);
-                    $('.modal-body #name').val(name);
+                    $('.modal-body #name-fee-edit').val(name);
                     $('.modal-body #amount').val(amount);
                     $('.modal-body #is_base_fee').val(is_base_fee);
-                    $('.modal-body #promo_code').val(promo_code);
+                    $('.modal-body #promo_code-edit').val(promo_code);
                 });
 
                 // fee type modification
@@ -1962,42 +2065,91 @@
             {
                 // Add trainer
                 // crud-modal-add-trainer
-                $('#new-trainer').click(function() {
-                        var id = null;
-                        var user_id = null;
-                        $('.modal-body #id').val(id);
-                        $('.modal-body #user_id').val(user_id);
-                        $('#crud-modal-add-trainer').modal('show');
-                    });
+                $('#add-trainer').click(function() {
+                    var id = null;
+                    var user_id = null;
+                    $('.modal-body #id').val(id);
+                    $('.modal-body #user_id').val(user_id);
+                    $('.modal-body #fullname').val(null);
+                    $('.modal-body #phone').val(null);
+                    $('.modal-body #email').val(null);
+                    $('#crud-modal-add-trainer').modal('show');
+                    $("div[id=form-add-trainer-second-part]").hide();
+                });
 
-                    $('#crud-modal-add-trainer').on('show.bs.modal', function(event) {
-                        var button = $(event.relatedTarget)
-                        var id = button.data('id');
-                        var user_id = button.data('user_id');
+                $('#crud-modal-add-trainer').on('show.bs.modal', function(event) {
+                    var button = $(event.relatedTarget)
+                    var id = button.data('id');
+                    var user_id = button.data('user_id');
 
-                        $('.modal-body #id').val(id);
-                        $('.modal-body #user_id').val(user_id);
-                    });
+                    $('.modal-body #id').val(id);
+                    $('.modal-body #user_id').val(user_id);
+                });
 
-                    $('#search-by-user_id').click(function() {
-                        var ic = $('.modal-body #ic').val();
-                        $.get("/participant/search-by-user_id/" + ic, function(data) {
-                            $('.modal-body #fullname').val(data.name);
-                            $('.modal-body #phone').val(data.phone);
-                            $('.modal-body #email').val(data.email);
+                // search by trainer user_id
+                $('#search-by-user_id').click(function() {
+                    var user_id = $('.modal-body #user_id').val();
+                    $.get("/trainer/search-by-user_id/" + user_id, function(data) {
+                        $('.modal-body #fullname').val(data.name);
+                        $('.modal-body #phone').val(data.trainer.phone);
+                        $('.modal-body #email').val(data.email);
 
-                        }).fail(
-                            function() {
-                                $('.modal-body #fullname').val(null);
-                                $('.modal-body #phone').val(null);
-                                $('.modal-body #email').val(null);
-                            }).always(
-                            function() {
-                                $("div[id=form-add-trainer-second-part]").show();
-                            });
+                    }).fail(
+                        function() {
+                            $('.modal-body #fullname').val(null);
+                            $('.modal-body #phone').val(null);
+                            $('.modal-body #email').val(null);
+                        }).always(
+                        function() {
+                            $("div[id=form-add-trainer-second-part]").show();
+                        });
 
-                    });
+                });
             }
+        }
+
+
+        // List of Shortcourses
+        {
+            // Add shortcourse
+            // crud-modal-add-shortcourse
+            $('#add-shortcourse').click(function() {
+                var id = null;
+                var shortcourse_name = null;
+                $('.modal-body #id').val(id);
+                $('.modal-body #shortcourse_name').val(shortcourse_name);
+                $('.modal-body #objective').val(null);
+                $('.modal-body #description').val(null);
+                $("div[id=form-add-shortcourse-second-part]").hide();
+                $('#crud-modal-add-shortcourse').modal('show');
+            });
+
+            $('#crud-modal-add-shortcourse').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget)
+                var id = button.data('id');
+                var shortcourse_name = button.data('shortcourse_name');
+
+                $('.modal-body #id').val(id);
+                $('.modal-body #shortcourse_name').val(shortcourse_name);
+            });
+
+            // search by id
+            $('#shortcourse_name').change(function() {
+                var id = $('.modal-body #shortcourse_name').val();
+                $.get("/shortcourse/search-by-id/" + id, function(data) {
+                    $('.modal-body #objective').val(data.objective);
+                    $('.modal-body #description').val(data.description);
+
+                }).fail(
+                    function() {
+                        $('.modal-body #objective').val(null);
+                        $('.modal-body #description').val(null);
+                    }).always(
+                    function() {
+                        $("div[id=form-add-shortcourse-second-part]").show();
+                    });
+
+            });
         }
 
         // Processes
