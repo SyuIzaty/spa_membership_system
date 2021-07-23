@@ -26,6 +26,13 @@
                     </div>
 
                     <div class="panel-container show">
+
+                        <div class="hidden-sm hidden-xs">
+                            <div style="position:relative;background-color:#67338f;height:100%;max-height:108px;width:50%;">
+                            </div>
+                            <img src="https://iceps-apps.uitm.edu.my/img/banner-iceps.png"
+                                style="position:relative;width:100%;">
+                        </div>
                         <div class="panel-content">
                             <center><img src="{{ asset('img/intec_logo.png') }}" style="height: 120px; width: 270px;">
                             </center>
@@ -60,6 +67,58 @@
                                             <div class="card">
                                                 <div class="card-header">General Information</div>
                                                 <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <b>Cost</b>
+                                                        </div>
+                                                        <div class="col">
+                                                            @php($index = 0)
+                                                            |
+                                                            @foreach ($event->fees as $fee)
+                                                                @if ($fee->is_base_fee == 1)
+                                                                    RM{{ $fee->amount }}/person ({{ $fee->name }}) |
+                                                                @endif
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                    <hr class="mt-1 mb-1">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <b>Seat Availability</b>
+                                                        </div>
+                                                        <div class="col">
+                                                            {{ $event->max_participant }} Seats
+                                                        </div>
+                                                    </div>
+                                                    <hr class="mt-1 mb-1">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <b>Event Date Start</b>
+                                                        </div>
+                                                        <div class="col">
+                                                            {{ $event->datetime_start }}
+                                                        </div>
+                                                    </div>
+                                                    <hr class="mt-1 mb-1">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <b>Event Date End</b>
+                                                        </div>
+                                                        <div class="col">
+                                                            {{ $event->datetime_end }}
+                                                        </div>
+                                                    </div>
+                                                    <hr class="mt-1 mb-1">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <b>Venue</b>
+                                                        </div>
+                                                        <div class="col">
+                                                            {{ $event->venue->name }}
+                                                        </div>
+                                                    </div>
+                                                    <hr class="mt-1 mb-1">
+                                                    <a href="#" class="btn btn-sm btn-primary btn btn-block">Register</a>
 
                                                 </div>
                                             </div>
@@ -79,6 +138,8 @@
                                                                     <h5 class="heading text-iceps-blue">
                                                                         Description
                                                                     </h5>
+
+                                                                    {{ $event->description }}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -88,6 +149,7 @@
                                                                     <h5 class="heading text-iceps-blue">
                                                                         Who should attend?
                                                                     </h5>
+                                                                    {{ $event->target_audience }}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -100,6 +162,7 @@
                                                                 <li class="nav-item">
                                                                     <a data-toggle="tab" class="nav-link active"
                                                                         href="#objective" role="tab">Objective</a>
+
                                                                 </li>
                                                                 <li class="nav-item">
                                                                     <a data-toggle="tab" class="nav-link" href="#outline"
@@ -112,7 +175,7 @@
                                                             </ul>
                                                             <div class="tab-content col-md-12 mt-3">
                                                                 <div class="tab-pane active" id="objective" role="tabpanel">
-                                                                    Objective
+                                                                    {{ $event->objective }}
                                                                 </div>
                                                                 <div class="tab-pane" id="outline" role="tabpanel">
                                                                     Outline

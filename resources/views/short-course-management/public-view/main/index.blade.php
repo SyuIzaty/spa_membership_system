@@ -27,6 +27,13 @@
 
                 </div>
                 <div class="panel-container show">
+
+
+                        <div class="hidden-sm hidden-xs">
+                            <div style="position:relative;background-color:#67338f;height:100%;max-height:108px;width:50%;"></div>
+                            <img src="https://iceps-apps.uitm.edu.my/img/banner-iceps.png" style="position:relative;width:100%;">
+                        </div>
+
                     <div class="panel-content">
                         <hr class="mt-2 mb-3">
                         <h1 class="text-center heading text-iceps-blue">

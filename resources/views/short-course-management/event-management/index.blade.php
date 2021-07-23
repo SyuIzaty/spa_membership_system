@@ -30,29 +30,32 @@
                                     {{ session()->get('message') }}
                                 </div>
                             @endif
-                            <table class="table table-bordered" id="event">
-                                <thead>
-                                    <tr class="bg-primary-50 text-center">
-                                        <th>ID</th>
-                                        <th>NAME</th>
-                                        <th>DATES</th>
-                                        <th>PARTICIPANT</th>
-                                        <th>MANAGE. DETAILS</th>
-                                        <th>ACTION</th>
-                                    </tr>
-                                    {{-- <tr>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover table-striped w-100" id="event">
+                                    <thead>
+                                        <tr class="bg-primary-50 text-center">
+                                            <th>ID</th>
+                                            <th>NAME</th>
+                                            <th>DATES</th>
+                                            <th>PARTICIPANT</th>
+                                            <th>MANAGE. DETAILS</th>
+                                            <th>ACTION</th>
+                                        </tr>
+                                        {{-- <tr>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Name"></td> --}}
-                                    {{-- <td class="hasinput"><input type="text" class="form-control" placeholder="Search Dates"></td> --}}
-                                    {{-- <td></td>
+                                        {{-- <td class="hasinput"><input type="text" class="form-control" placeholder="Search Dates"></td> --}}
+                                        {{-- <td></td>
                                     </tr> --}}
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
                             <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
                                 style="content-align:right">
-                                <a href="/event/create" class="btn btn-primary ml-auto mt-2 mr-2 waves-effect waves-themed"><i
+                                <a href="/event/create"
+                                    class="btn btn-primary ml-auto mt-2 mr-2 waves-effect waves-themed"><i
                                         class="ni ni-plus"> </i> Create New Event</a>
                             </div>
                         </div>
