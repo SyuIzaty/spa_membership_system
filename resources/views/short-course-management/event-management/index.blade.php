@@ -50,7 +50,6 @@
                                 <tbody>
                                 </tbody>
                             </table>
-
                             <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
                                 style="content-align:right">
                                 <a href="/event/create" class="btn btn-primary ml-auto mt-2 mr-2 waves-effect waves-themed"><i

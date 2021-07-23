@@ -253,6 +253,7 @@ Route::get('/shortcourse/search-by-id/{id}','ShortCourseManagement\Catalogues\Sh
 
 
 //EventParticipant
+Route::get('/event/{id}/events-participants/show', 'ShortCourseManagement\EventManagement\EventParticipantController@show');
 Route::post('/event/{id}/events-participants/data-applicants','ShortCourseManagement\EventManagement\EventParticipantController@dataApplicants');
 Route::post('/event/{id}/events-participants/data-no-payment-yet','ShortCourseManagement\EventManagement\EventParticipantController@dataNoPaymentYet');
 Route::post('/event/{id}/events-participants/data-payment-wait-for-verification','ShortCourseManagement\EventManagement\EventParticipantController@dataPaymentWaitForVerification');

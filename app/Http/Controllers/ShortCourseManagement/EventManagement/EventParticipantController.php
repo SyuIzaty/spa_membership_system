@@ -5,13 +5,22 @@ namespace App\Http\Controllers\ShortCourseManagement\EventManagement;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ShortCourseManagement\EventParticipant;
+use App\Models\ShortCourseManagement\Event;
 
 class EventParticipantController extends Controller
 {
-    public function index()
+    public function show($id)
     {
+        //eventParticipantIndex
+
+        $event = Event::find($id);
+
+
         //
+        return view('short-course-management.event-management.event-participant-show', compact('event'));
+
     }
+
     public function dataApplicants($id)
     {
         $eventsParticipants = EventParticipant::where([
@@ -456,12 +465,6 @@ class EventParticipantController extends Controller
     {
         //
     }
-
-    public function show($id)
-    {
-        //
-    }
-
     public function edit($id)
     {
         //

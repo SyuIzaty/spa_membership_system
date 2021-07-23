@@ -47,7 +47,9 @@ class EventController extends Controller
                 return 'Created By: ' . $events->created_by . '<br> Created At: ' . $events->created_at;
             })
             ->addColumn('action', function ($events) {
-                return '<a href="/event/' . $events->id . '" class="btn btn-sm btn-primary">Detail</a>';
+                return '
+                <a href="/event/' . $events->id . '/events-participants/show" class="btn btn-sm btn-primary">Participants</a>
+                <a href="/event/' . $events->id . '" class="btn btn-sm btn-primary">Settings</a>';
             })
             ->rawColumns(['action', 'management_details', 'participant', 'dates'])
             ->make(true);
