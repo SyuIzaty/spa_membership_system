@@ -5,36 +5,65 @@
     <main id="js-page-content" role="main" class="page-content">
         <div class="subheader">
             <h1 class="subheader-title">
-                <i class='subheader-icon fal fa-table'></i> Open View
+                <i class='subheader-icon fal fa-table'></i> Public View
             </h1>
         </div>
-        <h1 class="text-center heading text-iceps-blue">
+        {{-- <h1 class="text-center heading text-iceps-blue">
             <b class="semi-bold">Featured</b> Short Courses
-        </h1>
-        <hr class="mt-2 mb-3">
-        <div class="row">
-            @foreach ($events as $event)
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                    <div class="card mb-3" style="max-width: 540px;">
-                        <div class="row no-gutters">
-                            <div class="col-md-4">
-                                <img src="/get-file-event/intec_poster.jpg" class="card-img" alt="..."
-                                    style="width:137px;height:194px;">
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title"><b>{{ $event->name }}</b></h5>
-                                    <p class="card-text"><small
-                                            class="text-muted">Published: {{ $event->created_at_diffForHumans }}</small>
-                                    </p>
-                                    <a href="/event/public-view/{{$event->id}}" class="btn btn-sm btn-primary btn btn-block">Detail</a>
+        </h1> --}}
+        <div class="col-xl-12">
+            <div id="panel-1" class="panel">
+                <div class="panel-hdr" style="background-color:rgb(97 63 115)">
+                    <h2>
+                    </h2>
+                    <div class="panel-toolbar">
+                        <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10"
+                            data-original-title="Collapse"></button>
+                        <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip"
+                            data-offset="0,10" data-original-title="Fullscreen"></button>
+                        <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10"
+                            data-original-title="Close"></button>
+                    </div>
+
+                </div>
+                <div class="panel-container show">
+                    <div class="panel-content">
+                        <hr class="mt-2 mb-3">
+                        <h1 class="text-center heading text-iceps-blue">
+                            <b class="semi-bold">Published</b> Short Courses
+                        </h1>
+                        <hr class="mt-2 mb-3">
+                        <div class="row">
+                            @foreach ($events as $event)
+                                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                    <div class="card mb-3" style="max-width: 540px;">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4">
+                                                <img src="/get-file-event/intec_poster.jpg" class="card-img" alt="..."
+                                                    style="width:137px;height:194px;">
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="card-body">
+                                                    <h5 class="card-title"><b>{{ $event->name }}</b></h5>
+                                                    <p class="card-text"><small class="text-muted">Published:
+                                                            {{ $event->created_at_diffForHumans }}</small>
+                                                    </p>
+                                                    <a href="/event/public-view/{{ $event->id }}"
+                                                        class="btn btn-sm btn-primary btn btn-block">Detail</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            @endforeach
                         </div>
+
                     </div>
                 </div>
-            @endforeach
+
+            </div>
         </div>
+
     </main>
 
 @endsection
