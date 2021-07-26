@@ -29,15 +29,17 @@
                 <div class="panel-container show">
 
 
-                        <div class="hidden-sm hidden-xs">
-                            <div style="position:relative;background-color:#67338f;height:100%;max-height:108px;width:50%;"></div>
-                            <img src="https://iceps-apps.uitm.edu.my/img/banner-iceps.png" style="position:relative;width:100%;">
+                    <div class="hidden-sm hidden-xs">
+                        <div style="position:relative;background-color:#67338f;height:100%;max-height:108px;width:50%;">
                         </div>
+                        <img src="https://iceps-apps.uitm.edu.my/img/banner-iceps.png"
+                            style="position:relative;width:100%;">
+                    </div>
 
                     <div class="panel-content">
                         <hr class="mt-2 mb-3">
-                        <h1 class="text-center heading text-iceps-blue">
-                            <b class="semi-bold">Published</b> Short Courses
+                        <h1 class="text-center heading">
+                            <b class="semi-bold text-primary">Latest</b> Short Courses
                         </h1>
                         <hr class="mt-2 mb-3">
                         <div class="row">
@@ -65,6 +67,44 @@
                             @endforeach
                         </div>
 
+
+                        <hr class="mt-2 mb-3">
+                        <h1 class="text-center heading">
+                            <b class="semi-bold text-primary">Upcoming</b> Short Courses
+                        </h1>
+                        <hr class="mt-2 mb-3">
+                        <div class="row justify-content-md-center">
+                            <div class="col">
+                                <div class="panel-content">
+                                    <span id="intake_fail"></span>
+                                    @csrf
+                                    @if (session()->has('message'))
+                                        <div class="alert alert-success">
+                                            {{ session()->get('message') }}
+                                        </div>
+                                    @endif
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover table-striped w-100" id="event">
+                                            <thead>
+                                                <tr class="bg-primary-50 text-center">
+                                                    <th>ID</th>
+                                                    <th>NAME</th>
+                                                    <th>DATES</th>
+                                                </tr>
+                                                {{-- <tr>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Name"></td> --}}
+                                                {{-- <td class="hasinput"><input type="text" class="form-control" placeholder="Search Dates"></td> --}}
+                                                {{-- <td></td>
+                                    </tr> --}}
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -73,4 +113,65 @@
 
     </main>
 
+@endsection
+@section('script')
+    <script>
+        $(document).ready(function() {
+
+            $('#event thead tr .hasinput').each(function(i) {
+                $('input', this).on('keyup change', function() {
+                    if (table.column(i).search() !== this.value) {
+                        table
+                            .column(i)
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+
+                $('select', this).on('keyup change', function() {
+                    if (table.column(i).search() !== this.value) {
+                        table
+                            .column(i)
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+            });
+
+
+            var table = $('#event').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "/events/data/public-view",
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                },
+                columns: [{
+                        data: 'id',
+                        name: 'id'
+                    },
+                    {
+                        data: 'name-with-href',
+                        name: 'name-with-href'
+                    },
+                    {
+                        data: 'dates',
+                        name: 'dates'
+                    }
+                ],
+                orderCellsTop: true,
+                "order": [
+                    [2, "desc"]
+                ],
+                "initComplete": function(settings, json) {
+
+
+                }
+            });
+
+        });
+    </script>
 @endsection

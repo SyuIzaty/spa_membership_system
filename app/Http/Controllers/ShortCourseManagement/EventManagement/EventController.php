@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\ShortCourseManagement\Event;
 use App\Models\ShortCourseManagement\Venue;
 use App\Models\ShortCourseManagement\ShortCourse;
+use App\Models\ShortCourseManagement\Trainer;
 use App\User;
 use File;
 
@@ -17,7 +18,7 @@ class EventController extends Controller
         return view('short-course-management.event-management.index');
     }
 
-    public function data()
+    public function dataEventManagement()
     {
         $events = Event::all()->load(['events_participants', 'venue']);
         $index = 0;
@@ -57,7 +58,14 @@ class EventController extends Controller
     public function create()
     {
         //
-        return view('short-course-management.event-management.create');
+
+
+        $venues = Venue::all();
+
+        $shortcourses = ShortCourse::all();
+
+
+        return view('short-course-management.event-management.create', compact('venues','shortcourses'));
     }
     public function store(Request $request)
     {
@@ -165,5 +173,36 @@ class EventController extends Controller
 
         //
         return view('short-course-management.public-view.main.show', compact('event'));
+    }
+
+    public function dataPublicView()
+    {
+        $events = Event::all()->load(['events_participants', 'venue']);
+        $index = 0;
+        foreach ($events as $event) {
+            if (isset($event->events_participants)) {
+                $totalValidParticipants = $event->events_participants->where('is_approved', 1)->count();
+                $totalParticipantsNotApprovedYet = $event->events_participants->where('is_approved', 0)->where('is_done_email_cancellation_disqualified', 0)->count();
+                $totalRejected = $event->events_participants->where('is_done_email_cancellation_disqualified', 1)->count();
+            } else {
+                $totalValidParticipants = 0;
+                $totalParticipantsNotApprovedYet = 0;
+                $totalRejected = 0;
+            }
+            $events[$index]->totalValidParticipants = $totalValidParticipants;
+            $events[$index]->totalParticipantsNotApprovedYet = $totalParticipantsNotApprovedYet;
+            $events[$index]->totalRejected = $totalRejected;
+            $index++;
+        }
+        return datatables()::of($events)
+            ->addColumn('name-with-href', function ($events) {
+                return '
+                <a href="/event/public-view/'. $events->id .'" class="text-primary">'.$events->name.'</a>';
+            })
+            ->addColumn('dates', function ($events) {
+                return 'Date Start: ' . $events->datetime_start . '<br> Date End:' . $events->datetime_end;
+            })
+            ->rawColumns(['name-with-href', 'dates'])
+            ->make(true);
     }
 }

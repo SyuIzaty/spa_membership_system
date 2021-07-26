@@ -41,7 +41,7 @@
                                                 <form action="{{ url('/events/update/' . $event->id) }}" method="post"
                                                     name="form">
                                                     @csrf
-                                                    <table class="table">
+                                                    <table class="table table-bordered table-hover table-striped">
                                                         <thead class="thead bg-primary-50">
                                                             <tr>
                                                                 <th><b>Basic Information</b></th>
@@ -264,21 +264,21 @@
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label class="form-label"
-                                                                                for="is_base_fee"><span
+                                                                                for="is_base_fee_select_add"><span
                                                                                     class="text-danger">*</span>Fee
                                                                                 Type</label>
-                                                                            {{-- <input class="form-control" id="is_base_fee"
-                                                                                name="is_base_fee"> --}}
+                                                                            {{-- <input class="form-control" id="is_base_fee_select_add"
+                                                                                name="is_base_fee_select_add"> --}}
                                                                             <select
-                                                                                class="form-control venue  font-weight-bold"
+                                                                                class="form-control is_base_fee_select_add font-weight-bold"
                                                                                 name="is_base_fee_select_add"
                                                                                 id="is_base_fee_select_add"
-                                                                                data-select2-id="is_base_fee" tabindex="-1"
-                                                                                aria-hidden="true">
+                                                                                data-select2-id="is_base_fee_select_add"
+                                                                                tabindex="-1" aria-hidden="true">
                                                                                 <option value=1>Basic Fee</option>
                                                                                 <option value=0>Non-Basic Fee</option>
                                                                             </select>
-                                                                            @error('is_base_fee')
+                                                                            @error('is_base_fee_select_add')
                                                                                 <p style="color: red">
                                                                                     <strong> *
                                                                                         {{ $message }}
@@ -377,18 +377,20 @@
                                                                         @enderror
                                                                     </div>
                                                                     <div class="form-group">
-                                                                        <label class="form-label" for="is_base_fee"><span
+                                                                        <label class="form-label"
+                                                                            for="is_base_fee_select_edit"><span
                                                                                 class="text-danger">*</span>Fee
                                                                             Type</label>
-                                                                        <select class="form-control venue  font-weight-bold"
+                                                                        <select
+                                                                            class="form-control is_base_fee_select_edit font-weight-bold"
                                                                             name="is_base_fee_select_edit"
                                                                             id="is_base_fee_select_edit"
-                                                                            data-select2-id="is_base_fee" tabindex="-1"
-                                                                            aria-hidden="true">
+                                                                            data-select2-id="is_base_fee_select_edit"
+                                                                            tabindex="-1" aria-hidden="true">
                                                                             <option value=1>Basic Fee</option>
                                                                             <option value=0>Non-Basic Fee</option>
                                                                         </select>
-                                                                        @error('is_base_fee')
+                                                                        @error('is_base_fee_select_edit')
                                                                             <p style="color: red">
                                                                                 <strong> *
                                                                                     {{ $message }}
@@ -652,7 +654,7 @@
                                                                             <textarea class="form-control-plaintext"
                                                                                 rows="5" id="objective" name="objective"
                                                                                 disabled>
-                                                                                        </textarea>
+                                                                                                        </textarea>
                                                                             @error('objective')
                                                                                 <p style="color: red">
                                                                                     <strong> *
@@ -669,7 +671,7 @@
                                                                             <textarea class="form-control-plaintext"
                                                                                 rows="5" id="description" name="description"
                                                                                 disabled>
-                                                                                            </textarea>
+                                                                                                            </textarea>
                                                                             @error('description')
                                                                                 <p style="color: red">
                                                                                     <strong> *
@@ -771,6 +773,7 @@
                     </div>
                 </div>
             </div>
+        </div>
     </main>
 @endsection
 @section('script')
@@ -819,6 +822,8 @@
                     $("#save-basic").hide();
                     $("#edit-basic-close").hide();
                 });
+
+
             }
 
             // List of fees
@@ -955,6 +960,13 @@
 
                 });
             }
+
+            $(document).ready(function() {
+                // $('.venue, .is_base_fee_select_add, .is_base_fee_select_edit').select2();
+
+                $('.venue').select2();
+            });
+
         }
 
 

@@ -94,7 +94,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "/events/data",
+                    url: "/events/data/event-management",
                     type: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

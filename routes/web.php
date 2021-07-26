@@ -267,7 +267,7 @@ Route::post('/event/{id}/events-participants/data-completed-participation-proces
 Route::post('/event/{id}/events-participants/data-not-completed-participation-process','ShortCourseManagement\EventManagement\EventParticipantController@dataNotCompletedParticipationProcess');
 
 //Event
-Route::post('/events/data','ShortCourseManagement\EventManagement\EventController@data');
+Route::post('/events/data/event-management','ShortCourseManagement\EventManagement\EventController@dataEventManagement');
 Route::post('/events/update/{id}','ShortCourseManagement\EventManagement\EventController@update');
 Route::get('/event/create','ShortCourseManagement\EventManagement\EventController@create');
 Route::get('/events', 'ShortCourseManagement\EventManagement\EventController@index');
@@ -281,6 +281,8 @@ Route::get('/participant/search-by-representative-ic/{ic}','ShortCourseManagemen
 
 
 //Public View
+
+Route::post('/events/data/public-view','ShortCourseManagement\EventManagement\EventController@dataPublicView');
 Route::get('/event/public-view/{id}', 'ShortCourseManagement\EventManagement\EventController@showPublicView');
 Route::get('/events/public-view', 'ShortCourseManagement\EventManagement\EventController@indexPublicView');
 Route::get('/get-file-event/{filename}','ShortCourseManagement\EventManagement\EventController@getFile');
