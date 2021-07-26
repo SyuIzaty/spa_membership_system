@@ -240,14 +240,14 @@
                                                                             </p>
                                                                         @enderror
                                                                     </div>
-                                                                    <div class="form-group" id="form_group-promo_code-add"
-                                                                        name="form_group-promo_code-add"
+                                                                    <div class="form-group" id="form_group-promo_code_add"
+                                                                        name="form_group-promo_code_add"
                                                                         style="display: none">
                                                                         <label class="form-label" for="promo_code"><span
                                                                                 class="text-danger">*</span>Promo
                                                                             Code</label>
-                                                                        <input class="form-control" id="promo_code-add"
-                                                                            name="promo_code-add">
+                                                                        <input class="form-control" id="promo_code_add"
+                                                                            name="promo_code_add">
                                                                         @error('promo_code')
                                                                             <p style="color: red">
                                                                                 <strong> *
@@ -295,7 +295,7 @@
                                                                     <label class="form-label" for="name"><span
                                                                             class="text-danger">*</span>name</label>
                                                                     <input type="text" class="form-control"
-                                                                        id="name-fee-edit" name="name-fee-edit">
+                                                                        id="name_fee_edit" name="name_fee_edit">
                                                                     {{-- <div class="form-group">
                                                                             <input id="name" name="name" type="text"
                                                                                 value="{{ $event->name }}"
@@ -685,7 +685,7 @@
                         $('.modal-body #name-fee-add').val(name);
                         $('.modal-body #amount').val(amount);
                         $('.modal-body #is_base_fee').val(is_base_fee);
-                        $('.modal-body #promo_code-add').val(promo_code);
+                        $('.modal-body #promo_code_add').val(promo_code);
                         $('#crud-modal-new-fee').modal('show');
                     });
 
@@ -726,7 +726,7 @@
                     }
 
                     $('.modal-body #id').val(id);
-                    $('.modal-body #name-fee-edit').val(name);
+                    $('.modal-body #name_fee_edit').val(name);
                     $('.modal-body #amount').val(amount);
                     $('.modal-body #is_base_fee').val(is_base_fee);
                     $('.modal-body #promo_code-edit').val(promo_code);
@@ -737,9 +737,9 @@
                     $("select[name=is_base_fee_select_add]").change(function(event) {
                         var is_base_fee = $("#is_base_fee_select_add option:selected").val();
                         if (is_base_fee == 0) {
-                            $("div[name=form_group-promo_code-add]").show();
+                            $("div[name=form_group-promo_code_add]").show();
                         } else {
-                            $("div[name=form_group-promo_code-add]").hide();
+                            $("div[name=form_group-promo_code_add]").hide();
                             // $('.modal-body #hasKolejNew').val(false);
                         }
                     });
