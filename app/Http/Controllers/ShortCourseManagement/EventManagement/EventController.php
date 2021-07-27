@@ -11,6 +11,7 @@ use App\Models\ShortCourseManagement\Trainer;
 use App\Models\ShortCourseManagement\Fee;
 use App\Models\ShortCourseManagement\EventTrainer;
 use App\Models\ShortCourseManagement\EventShortCourse;
+use App\Models\ShortCourseManagement\Topic;
 use App\User;
 use Auth;
 use File;
@@ -68,10 +69,12 @@ class EventController extends Controller
 
         $shortcourses = ShortCourse::all();
 
+        $topics = Topic::all();
 
-        return view('short-course-management.event-management.create', compact('venues','shortcourses'));
+
+        return view('short-course-management.event-management.create', compact('venues','shortcourses', 'topics'));
     }
-    public function store(Request $request)
+    public function storeNew(Request $request)
     {
         //
     }
@@ -198,6 +201,8 @@ class EventController extends Controller
         return Redirect()->back()->with('messageEventBasicDetails', 'Basic Details Update Successfully');
     }
 
+
+
     public function deleteFee($fee_id)
     {
 
@@ -252,6 +257,7 @@ class EventController extends Controller
             'created_by' =>Auth::user()->id,
             'is_active' => 1,
         ]);
+
 
         return Redirect()->back()->with('messageEventBasicDetails', 'Basic Details Update Successfully');
     }

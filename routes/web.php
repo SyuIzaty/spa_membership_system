@@ -267,6 +267,7 @@ Route::post('/event/{id}/events-participants/data-completed-participation-proces
 Route::post('/event/{id}/events-participants/data-not-completed-participation-process','ShortCourseManagement\EventManagement\EventParticipantController@dataNotCompletedParticipationProcess');
 
 //Event
+Route::post('/event/store-new','ShortCourseManagement\EventManagement\EventController@storeNew');
 Route::post('/events/data/event-management','ShortCourseManagement\EventManagement\EventController@dataEventManagement');
 Route::post('/events/update/{id}','ShortCourseManagement\EventManagement\EventController@update');
 Route::post('/events/fee/update/{id}','ShortCourseManagement\EventManagement\EventController@updateFee');
@@ -281,6 +282,8 @@ Route::get('/events', 'ShortCourseManagement\EventManagement\EventController@ind
 Route::post('/event','ShortCourseManagement\EventManagement\EventController@addEvent');
 Route::get('/event/{id}', 'ShortCourseManagement\EventManagement\EventController@show');
 Route::delete('/event/{id}', 'ShortCourseManagement\EventManagement\EventController@deleteEvent');
+
+
 
 //Participant
 Route::get('/participant/search-by-ic/{ic}','ShortCourseManagement\People\Participant\ParticipantController@searchByIc');
