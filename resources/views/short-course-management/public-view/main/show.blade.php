@@ -1,13 +1,13 @@
-@extends('layouts.admin')
+@extends('layouts.shortcourse_portal')
 
 @section('content')
 
     <main id="js-page-content" role="main" class="page-content">
-        <div class="subheader">
+        {{-- <div class="subheader">
             <h1 class="subheader-title">
                 <i class='subheader-icon fal fa-table'></i> Public View (Details)
             </h1>
-        </div>
+        </div> --}}
         <div class="row">
             <div class="col-xl-12">
                 <div id="panel-1" class="panel">

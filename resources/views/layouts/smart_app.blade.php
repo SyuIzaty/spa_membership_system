@@ -33,12 +33,14 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
 </head>
 
 <body>
+    <div class="container">
     @yield('content')
     <!-- color-profile -->
     @include('layouts/partials/color-profile')
     <script src="{{ URL::asset('js/vendors.bundle.js') }}"></script>
     <script src="{{ URL::asset('js/app.bundle.js') }}"></script>
     @yield('footerScript')
+</div>
 </body>
 
 </html>
