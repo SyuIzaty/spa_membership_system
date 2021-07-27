@@ -48,5 +48,13 @@ class TrainerController extends Controller
         return $user;
     }
 
+    public function searchByTrainerIc($trainer_ic)
+    {
+        //
+        $trainer=Trainer::where('ic', $trainer_ic)->first();
+        $user=User::where('id', $trainer->user_id)->first()->load(['trainer']);
+        return $user;
+    }
+
 
 }

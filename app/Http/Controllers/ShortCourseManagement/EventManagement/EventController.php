@@ -241,7 +241,6 @@ class EventController extends Controller
 
     public function storeTrainer(Request $request, $id)
     {
-        // dd($request);
         // //
         $validated = $request->validate([
             'trainer_id' => 'required',

@@ -60,37 +60,65 @@
                                                         <select class="form-control shortcourse" name="shortcourse_id"
                                                             id="shortcourse_id">
                                                             <option disabled selected>Select Short Course</option>
-                                                            <option value="-1">Others</option>
+                                                            <option value="-1" name="Others">Others</option>
                                                             @foreach ($shortcourses as $shortcourse)
-                                                                <option value="{{ $shortcourse->id }}">
+                                                                <option value="{{ $shortcourse->id }}"
+                                                                    name="{{ $shortcourse->name }}">
                                                                     {{ $shortcourse->id }} -
                                                                     {{ $shortcourse->name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </td>
                                                 </tr>
-                                                <tr>
+                                                <tr id="form-add-shortcourse-second-part" style="display: none">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Short Course Name **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::text('shortcourse_name', '', ['class' => 'form-control', 'placeholder' => 'Short Course Name']) }}
+                                                        {{ Form::text('shortcourse_name', '', ['class' => 'form-control', 'placeholder' => 'Short Course Name', 'id' => 'shortcourse_name']) }}
                                                     </td>
                                                 </tr>
-                                                <tr>
+                                                <tr id="form-add-shortcourse-second-part" style="display: none">
                                                     <td class="col col-lg-2 px-4">
-                                                        {{ Form::label('title', 'Description **', ['style' => 'font-weight:bold']) }}
+                                                        {{ Form::label('title', 'Short Course Description **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::textarea('shortcourse_description', '', ['class' => 'form-control', 'placeholder' => 'Short Course Description']) }}
+                                                        {{ Form::textarea('shortcourse_description', '', ['class' => 'form-control', 'placeholder' => 'Short Course Description', 'id' => 'shortcourse_description']) }}
                                                     </td>
                                                 </tr>
-                                                <tr>
+                                                <tr id="form-add-shortcourse-second-part" style="display: none">
                                                     <td class="col col-lg-2 px-4">
-                                                        {{ Form::label('title', 'Objective **', ['style' => 'font-weight:bold']) }}
+                                                        {{ Form::label('title', 'Short Course Objective **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::textarea('shortcourse_objective', '', ['class' => 'form-control', 'placeholder' => 'Short Course Objective']) }}
+                                                        {{ Form::textarea('shortcourse_objective', '', ['class' => 'form-control', 'placeholder' => 'Short Course Objective', 'id' => 'shortcourse_objective']) }}
+                                                    </td>
+                                                </tr>
+
+                                                <tr id="form-add-shortcourse-second-part" style="display: none">
+                                                    <td class="col col-lg-2 px-4">
+                                                        {{ Form::label('title', "Short Course's Topic **", ['style' => 'font-weight:bold']) }}
+                                                    </td>
+                                                    <td>
+                                                        <table class="table table-bordered" id="topic_field">
+                                                            <tr>
+                                                                <td class="col">
+                                                                    <select class="form-control topic" name="topic[]"
+                                                                        id="add_topic">
+                                                                        <option value="-1" disabled selected>Select Topic
+                                                                        </option>
+                                                                        @foreach ($topics as $topic)
+                                                                            <option value="{{ $topic->id }}">
+                                                                                {{ $topic->id }} -
+                                                                                {{ $topic->name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                        <a href="javascript:;" name="addTopic" id="addTopic"
+                                                            class="btn btn-success btn-sm ml-auto float-right">Add
+                                                            More Topic</a>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -118,7 +146,8 @@
                                                             <option disabled selected>Select Venue</option>
                                                             <option value="-1">Others</option>
                                                             @foreach ($venues as $venue)
-                                                                <option value="{{ $venue->id }}">
+                                                                <option value="{{ $venue->id }}"
+                                                                    name="{{ $venue->name }}">
                                                                     {{ $venue->id }} -
                                                                     {{ $venue->name }}</option>
                                                             @endforeach
@@ -126,12 +155,12 @@
                                                     </td>
                                                 </tr>
 
-                                                <tr>
+                                                <tr id="form-add-venue-second-part" style="display: none">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Venue Name **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::text('venue_name', '', ['class' => 'form-control', 'placeholder' => 'Venue Name']) }}
+                                                        {{ Form::text('venue_name', '', ['class' => 'form-control', 'placeholder' => 'Venue Name', 'id' => 'venue_name']) }}
                                                     </td>
                                                 </tr>
 
@@ -153,16 +182,15 @@
 
 
                                                     <td class="col px-4">
-                                                        <select class="form-control venue" name="venue_id" id="venue_id"
-                                                            disabled>
-                                                            <option disabled>Select Venue</option>
+                                                        <select class="form-control fee" name="fee_id" id="fee_id" disabled>
+                                                            <option disabled>Select Fee</option>
                                                             <option value="1" selected>Basic Fee</option>
                                                         </select>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="col col-lg-2 px-4">
-                                                        {{ Form::label('title', 'Fee Amount **', ['style' => 'font-weight:bold']) }}
+                                                        {{ Form::label('title', 'Fee Amount (RM) **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
                                                         {{ Form::number('fee_amount', '0.00', ['class' => 'form-control', 'placeholder' => 'Fee Amount']) }}
@@ -173,62 +201,40 @@
                                                         {{ Form::label('title', "Trainer's IC ** e.g.:700423102003", ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::text('trainer_ic', '', ['class' => 'form-control', 'placeholder' => "Trainer's IC"]) }}
+                                                        {{ Form::text('trainer_ic', '', ['class' => 'form-control search-by-trainer_ic', 'placeholder' => "Trainer's IC", 'id' => 'search-by-trainer_ic_input']) }}
+                                                        <a href="javascript:;" data-toggle="#" id="search-by-trainer_ic"
+                                                            class="btn btn-primary btn-sm ml-auto float-right my-2">
+                                                            Search</a>
                                                     </td>
                                                 </tr>
-
-                                                <tr>
+                                                <tr id="form-add-trainer-second-part" style="display: none">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', "Trainer's Fullname **", ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::text('trainer_fullname', '', ['class' => 'form-control', 'placeholder' => "Trainer's Fullname"]) }}
+                                                        {{ Form::text('trainer_fullname', '', ['class' => 'form-control', 'placeholder' => "Trainer's Fullname", 'id' => 'trainer_fullname']) }}
                                                     </td>
                                                 </tr>
-                                                <tr>
+                                                <tr id="form-add-trainer-second-part" style="display: none">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', "Trainer's Phone ** e.g.:0132345678", ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::text('trainer_phone', '', ['class' => 'form-control', 'placeholder' => "Trainer's Phone"]) }}
+                                                        {{ Form::text('trainer_phone', '', ['class' => 'form-control', 'placeholder' => "Trainer's Phone", 'id' => 'trainer_phone']) }}
                                                     </td>
                                                 </tr>
 
-                                                <tr>
+                                                <tr id="form-add-trainer-second-part" style="display: none">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', "Trainer's Email **", ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::text('trainer_email', '', ['class' => 'form-control', 'placeholder' => "Trainer's Email"]) }}
+                                                        {{ Form::text('trainer_email', '', ['class' => 'form-control', 'placeholder' => "Trainer's Email", 'id' => 'trainer_email']) }}
                                                     </td>
                                                 </tr>
 
-                                                <tr>
-                                                    <td class="col col-lg-2 px-4">
-                                                        {{ Form::label('title', "Event's Topic **", ['style' => 'font-weight:bold']) }}
-                                                    </td>
-                                                    <td>
-                                                        <table class="table table-bordered" id="topic_field">
-                                                            <tr>
-                                                                <td class="col">
-                                                                    <select class="form-control topic" name="topic[]"
-                                                                        id="add_topic">
-                                                                        <option value="-1" disabled selected>Select Topic
-                                                                        </option>
-                                                                        @foreach ($topics as $topic)
-                                                                            <option value="{{ $topic->id }}">
-                                                                                {{ $topic->id }} -
-                                                                                {{ $topic->name }}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                        <a href="javascript:;" name="addTopic" id="addTopic" class="btn btn-success btn-sm ml-auto float-right">Add
-                                                            More Topic</a>
-                                                    </td>
+
                                             </table>
-                                            </tr>
                                             {{-- <button class="btn btn-success btn-sm ml-auto float-right mb-5">Submit</button> --}}
 
 
@@ -257,16 +263,70 @@
 @endsection
 @section('script')
     <script>
+        $('#search-by-trainer_ic').click(function() {
+            var trainer_ic = $('#search-by-trainer_ic_input').val();
+            $.get("/trainer/search-by-trainer_ic/" + trainer_ic, function(data) {
+                $('#trainer_fullname').val(data.name);
+                $('#trainer_phone').val(data.trainer.phone);
+                $('#trainer_email').val(data.email);
+
+            }).fail(
+                function() {
+                    $('#trainer_ic').val(null);
+                    $('#trainer_fullname').val(null);
+                    $('#trainer_phone').val(null);
+                    $('#trainer_email').val(null);
+                }).always(
+                function() {
+                    $("tr[id=form-add-trainer-second-part]").show();
+                });
+
+        });
+        $('#shortcourse_id').change(function(event) {
+            var shortcourse_name = $('#shortcourse_id').find(":selected").attr('name');
+            var shortcourse_id = $('#shortcourse_id').find(":selected").val();
+
+            var shortcourses = @json($shortcourses);
+
+            var selected_shortcourse = shortcourses.find((x)=>{return x.id==shortcourse_id});
+            if (shortcourse_id) {
+                $('#shortcourse_name').val(selected_shortcourse.name);
+                $('#shortcourse_description').val(selected_shortcourse.description);
+                $('#shortcourse_objective').val(selected_shortcourse.objective);
+                $("tr[id=form-add-shortcourse-second-part]").show();
+            } else {
+                $('#shortcourse_name').val(null);
+                $('#shortcourse_description').val(null);
+                $('#shortcourse_objective').val(null);
+                $("tr[id=form-add-shortcourse-second-part]").hide();
+            }
+        });
+        $('#venue_id').change(function(event) {
+            var venue_name = $('#venue_id').find(":selected").attr('name');
+            var venue_id = $('#venue_id').find(":selected").val();
+
+
+            // var venue_name = $('#venue_id').prop("tagName");
+            if (venue_id == -1) {
+                $('#venue_name').val(venue_name);
+                $("tr[id=form-add-venue-second-part]").show();
+            } else {
+                $('#venue_name').val(null);
+                $("tr[id=form-add-venue-second-part]").hide();
+
+            }
+        });
+
         $(document).ready(function() {
             // $('.venue, .is_base_fee_select_add, .is_base_fee_select_edit').select2();
 
-            var i=1;
+            var i = 1;
             $('#addTopic').click(function() {
                 i++;
                 $('#topic_field').append(`
                     <tr id="row${i}" class="topic-added">
                             <td class="col">
-                                <select class="form-control topic" name="topic[]"
+                                <select class="form-control topic${i}" name="topic[]"
                                 id="add_topic">
                                     <option value="-1" disabled selected>Select Topic
                                     </option>
@@ -280,15 +340,16 @@
                             <td class="col col-sm-1"><button type="button" name="remove" id="${i}" class="btn btn-danger btn_remove">X</button></td>
                     </tr>
             `);
+                $(`.topic${i}`).select2();
             });
 
             $('.shortcourse, .venue, .topic').select2();
 
 
-        $(document).on('click', '.btn_remove', function(){
-            var button_id = $(this).attr("id");
-            $('#row'+button_id+'').remove();
-        });
+            $(document).on('click', '.btn_remove', function() {
+                var button_id = $(this).attr("id");
+                $('#row' + button_id + '').remove();
+            });
 
 
             // <tr id="row${i}" class="role-added">

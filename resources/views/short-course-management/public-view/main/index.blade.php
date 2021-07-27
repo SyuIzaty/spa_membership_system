@@ -117,7 +117,6 @@
 @section('script')
     <script>
         $(document).ready(function() {
-
             $('#event thead tr .hasinput').each(function(i) {
                 $('input', this).on('keyup change', function() {
                     if (table.column(i).search() !== this.value) {

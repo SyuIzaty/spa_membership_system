@@ -247,6 +247,7 @@ Route::get('/geolocation','GeolocationController@index');
 
 //Trainer
 Route::get('/trainer/search-by-user_id/{user_id}','ShortCourseManagement\People\Trainer\TrainerController@searchByUserId');
+Route::get('/trainer/search-by-trainer_ic/{trainer_ic}','ShortCourseManagement\People\Trainer\TrainerController@searchByTrainerIc');
 
 //Shortcourse
 Route::get('/shortcourse/search-by-id/{id}','ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@searchById');
