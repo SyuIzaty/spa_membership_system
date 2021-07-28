@@ -68,6 +68,9 @@
                                                                     {{ $shortcourse->name }}</option>
                                                             @endforeach
                                                         </select>
+                                                        @error('shortcourse_id')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
                                                     </td>
                                                 </tr>
                                                 <tr id="form-add-shortcourse-second-part" style="display: none">
@@ -76,6 +79,10 @@
                                                     </td>
                                                     <td class="col px-4">
                                                         {{ Form::text('shortcourse_name', '', ['class' => 'form-control', 'placeholder' => 'Short Course Name', 'id' => 'shortcourse_name']) }}
+
+                                                        @error('shortcourse_name')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
                                                     </td>
                                                 </tr>
                                                 <tr id="form-add-shortcourse-second-part" style="display: none">
@@ -84,6 +91,9 @@
                                                     </td>
                                                     <td class="col px-4">
                                                         {{ Form::textarea('shortcourse_description', '', ['class' => 'form-control', 'placeholder' => 'Short Course Description', 'id' => 'shortcourse_description']) }}
+                                                        @error('shortcourse_description')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
                                                     </td>
                                                 </tr>
                                                 <tr id="form-add-shortcourse-second-part" style="display: none">
@@ -92,6 +102,9 @@
                                                     </td>
                                                     <td class="col px-4">
                                                         {{ Form::textarea('shortcourse_objective', '', ['class' => 'form-control', 'placeholder' => 'Short Course Objective', 'id' => 'shortcourse_objective']) }}
+                                                        @error('shortcourse_objective')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
                                                     </td>
                                                 </tr>
 
@@ -103,8 +116,8 @@
                                                         <table class="table table-bordered" id="topic_field">
                                                             <tr>
                                                                 <td class="col">
-                                                                    <select class="form-control topic" name="topic[]"
-                                                                        id="add_topic">
+                                                                    <select class="form-control topic"
+                                                                        name="shortcourse_topic[]" id="add_topic">
                                                                         <option value="-1" disabled selected>Select Topic
                                                                         </option>
                                                                         @foreach ($topics as $topic)
@@ -116,6 +129,9 @@
                                                                 </td>
                                                             </tr>
                                                         </table>
+                                                        @error('shortcourse_topic')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
                                                         <a href="javascript:;" name="addTopic" id="addTopic"
                                                             class="btn btn-success btn-sm ml-auto float-right">Add
                                                             More Topic</a>
@@ -126,7 +142,11 @@
                                                         {{ Form::label('title', 'Event Date and Time (Start) **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::input('dateTime-local', 'startDate', date('Y-m-d H:i:s'), ['class' => 'form-control', 'placeholder' => 'StartDate']) }}
+                                                        {{ Form::input('dateTime-local', 'datetime_start', date('Y-m-d H:i:s'), ['class' => 'form-control', 'placeholder' => 'Datetime_start']) }}
+
+                                                        @error('datetime_start')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -134,7 +154,10 @@
                                                         {{ Form::label('title', 'Event Date and Time (End) **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::input('dateTime-local', 'endDate', date('Y-m-d H:i:s'), ['class' => 'form-control', 'placeholder' => 'EndDate']) }}
+                                                        {{ Form::input('dateTime-local', 'datetime_end', date('Y-m-d H:i:s'), ['class' => 'form-control', 'placeholder' => 'Datetime_end']) }}
+                                                        @error('datetime_end')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -152,6 +175,9 @@
                                                                     {{ $venue->name }}</option>
                                                             @endforeach
                                                         </select>
+                                                        @error('venue_id')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
                                                     </td>
                                                 </tr>
 
@@ -161,6 +187,10 @@
                                                     </td>
                                                     <td class="col px-4">
                                                         {{ Form::text('venue_name', '', ['class' => 'form-control', 'placeholder' => 'Venue Name', 'id' => 'venue_name']) }}
+
+                                                        @error('venue_name')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
                                                     </td>
                                                 </tr>
 
@@ -169,7 +199,10 @@
                                                         {{ Form::label('title', 'Fee Name **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::text('fee_name', 'Regular Price', ['class' => 'form-control', 'placeholder' => 'Fee Name', 'disabled']) }}
+                                                        {{ Form::text('fee_name', 'Regular Price', ['class' => 'form-control', 'placeholder' => 'Fee Name', 'readonly', 'id' => 'fee_name']) }}
+                                                        @error('fee_name')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -177,15 +210,20 @@
                                                         {{ Form::label('title', 'Fee Type **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     {{-- <td class="col px-4">
-                                                        {{ Form::text('fee_type', 'Basic Fee', ['class' => 'form-control', 'placeholder' => 'Fee Type', 'disabled']) }}
+                                                        {{ Form::text('fee_type', 'Basic Fee', ['class' => 'form-control', 'placeholder' => 'Fee Type', 'readonly']) }}
                                                     </td> --}}
 
 
                                                     <td class="col px-4">
+                                                        <input type="hidden" id="fee_id" name="fee_id" value="1" />
                                                         <select class="form-control fee" name="fee_id" id="fee_id" disabled>
                                                             <option disabled>Select Fee</option>
                                                             <option value="1" selected>Basic Fee</option>
+                                                            <option value="0">Non-Basic Fee</option>
                                                         </select>
+                                                        @error('fee_id')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -193,7 +231,11 @@
                                                         {{ Form::label('title', 'Fee Amount (RM) **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::number('fee_amount', '0.00', ['class' => 'form-control', 'placeholder' => 'Fee Amount']) }}
+                                                        {{ Form::number('fee_amount', '0.00', ['class' => 'form-control', 'placeholder' => 'Fee Amount', 'step' => '5.00']) }}
+
+                                                        @error('fee_amount')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -202,9 +244,34 @@
                                                     </td>
                                                     <td class="col px-4">
                                                         {{ Form::text('trainer_ic', '', ['class' => 'form-control search-by-trainer_ic', 'placeholder' => "Trainer's IC", 'id' => 'search-by-trainer_ic_input']) }}
+                                                        @error('trainer_ic')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
                                                         <a href="javascript:;" data-toggle="#" id="search-by-trainer_ic"
                                                             class="btn btn-primary btn-sm ml-auto float-right my-2">
                                                             Search</a>
+                                                    </td>
+                                                </tr>
+                                                <tr id="form-add-trainer-second-part" style="display: none">
+                                                    <td class="col col-lg-2 px-4">
+                                                        {{ Form::label('title', "Trainer's User ID **", ['style' => 'font-weight:bold']) }}
+                                                    </td>
+                                                    <td class="col px-4">
+                                                        {{ Form::text('trainer_user_id_text', '', ['class' => 'form-control', 'placeholder' => "Trainer's User ID", 'id' => 'trainer_user_id_text', 'disabled', 'style' => 'display:none', 'readonly']) }}
+                                                        <select class="form-control user" name="trainer_user_id"
+                                                            id="trainer_user_id" disabled style="display:none">
+                                                            <option disabled>Select User ID</option>
+                                                            <option value='-1' name="create_new">Create New</option>
+                                                            @foreach ($users as $user)
+                                                                <option value='{{ $user->id }}'
+                                                                    name="{{ $user->name }}">
+                                                                    {{ $user->id }} -
+                                                                    {{ $user->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        @error('trainer_user_id')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
                                                     </td>
                                                 </tr>
                                                 <tr id="form-add-trainer-second-part" style="display: none">
@@ -213,6 +280,9 @@
                                                     </td>
                                                     <td class="col px-4">
                                                         {{ Form::text('trainer_fullname', '', ['class' => 'form-control', 'placeholder' => "Trainer's Fullname", 'id' => 'trainer_fullname']) }}
+                                                        @error('trainer_fullname')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
                                                     </td>
                                                 </tr>
                                                 <tr id="form-add-trainer-second-part" style="display: none">
@@ -221,6 +291,9 @@
                                                     </td>
                                                     <td class="col px-4">
                                                         {{ Form::text('trainer_phone', '', ['class' => 'form-control', 'placeholder' => "Trainer's Phone", 'id' => 'trainer_phone']) }}
+                                                        @error('trainer_phone')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
                                                     </td>
                                                 </tr>
 
@@ -230,6 +303,9 @@
                                                     </td>
                                                     <td class="col px-4">
                                                         {{ Form::text('trainer_email', '', ['class' => 'form-control', 'placeholder' => "Trainer's Email", 'id' => 'trainer_email']) }}
+                                                        @error('trainer_email')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
                                                     </td>
                                                 </tr>
 
@@ -266,13 +342,33 @@
         $('#search-by-trainer_ic').click(function() {
             var trainer_ic = $('#search-by-trainer_ic_input').val();
             $.get("/trainer/search-by-trainer_ic/" + trainer_ic, function(data) {
+                console.log(data.id);
+                $("#trainer_user_id option[value='" + data.id + "']").attr("selected", "true");
+                $("#trainer_user_id_text").show();
+                $("#trainer_user_id_text").removeAttr('disabled');
+
+                $("#trainer_user_id").hide();
+                $("#trainer_user_id").attr('style', 'display: none');
+                $("#trainer_user_id").removeClass('user');
+
+                $("#trainer_user_id_text").val(data.id);
                 $('#trainer_fullname').val(data.name);
-                $('#trainer_phone').val(data.trainer.phone);
+                $(
+                    '#trainer_phone').val(data.trainer.phone);
                 $('#trainer_email').val(data.email);
+
 
             }).fail(
                 function() {
                     $('#trainer_ic').val(null);
+                    $("#trainer_user_id_text").hide();
+                    $("#trainer_user_id_text").attr('disabled');
+
+                    $("#trainer_user_id").show();
+                    $("#trainer_user_id").removeAttr('disabled');
+                    $("#trainer_user_id").addClass('user');
+
+                    $("#trainer_user_id option[value='-1']").attr("selected", "true");
                     $('#trainer_fullname').val(null);
                     $('#trainer_phone').val(null);
                     $('#trainer_email').val(null);
@@ -282,13 +378,32 @@
                 });
 
         });
+        $('#trainer_user_id').change(function(event) {
+            var trainer_fullname = $('#trainer_user_id').find(":selected").attr('name');
+            var trainer_user_id = $('#trainer_user_id').find(":selected").val();
+
+            var users = @json($users);
+
+            var selected_user = users.find((x) => {
+                return x.id == trainer_user_id;
+            });
+            if (selected_user) {
+                $('#trainer_fullname').val(selected_user.name);
+                $('#trainer_email').val(selected_user.email);
+            } else {
+                $('#trainer_fullname').val(null);
+                $('#trainer_email').val(null);
+            }
+        });
         $('#shortcourse_id').change(function(event) {
             var shortcourse_name = $('#shortcourse_id').find(":selected").attr('name');
             var shortcourse_id = $('#shortcourse_id').find(":selected").val();
 
             var shortcourses = @json($shortcourses);
 
-            var selected_shortcourse = shortcourses.find((x)=>{return x.id==shortcourse_id});
+            var selected_shortcourse = shortcourses.find((x) => {
+                return x.id == shortcourse_id
+            });
             if (shortcourse_id) {
                 $('#shortcourse_name').val(selected_shortcourse.name);
                 $('#shortcourse_description').val(selected_shortcourse.description);
@@ -305,13 +420,15 @@
             var venue_name = $('#venue_id').find(":selected").attr('name');
             var venue_id = $('#venue_id').find(":selected").val();
 
+            $('#venue_name').val(venue_name);
+
 
             // var venue_name = $('#venue_id').prop("tagName");
             if (venue_id == -1) {
                 $('#venue_name').val(venue_name);
                 $("tr[id=form-add-venue-second-part]").show();
             } else {
-                $('#venue_name').val(null);
+                $('#venue_name').val(venue_name);
                 $("tr[id=form-add-venue-second-part]").hide();
 
             }
@@ -326,7 +443,7 @@
                 $('#topic_field').append(`
                     <tr id="row${i}" class="topic-added">
                             <td class="col">
-                                <select class="form-control topic${i}" name="topic[]"
+                                <select class="form-control topic${i}" name="shortcourse_topic[]"
                                 id="add_topic">
                                     <option value="-1" disabled selected>Select Topic
                                     </option>
@@ -343,7 +460,7 @@
                 $(`.topic${i}`).select2();
             });
 
-            $('.shortcourse, .venue, .topic').select2();
+            $('.shortcourse, .venue, .topic, .fee').select2();
 
 
             $(document).on('click', '.btn_remove', function() {

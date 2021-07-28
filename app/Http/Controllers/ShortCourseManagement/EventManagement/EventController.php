@@ -11,10 +11,12 @@ use App\Models\ShortCourseManagement\Trainer;
 use App\Models\ShortCourseManagement\Fee;
 use App\Models\ShortCourseManagement\EventTrainer;
 use App\Models\ShortCourseManagement\EventShortCourse;
+use App\Models\ShortCourseManagement\TopicShortCourse;
 use App\Models\ShortCourseManagement\Topic;
 use App\User;
 use Auth;
 use File;
+use Validator;
 
 class EventController extends Controller
 {
@@ -25,7 +27,7 @@ class EventController extends Controller
 
     public function dataEventManagement()
     {
-        $events = Event::all()->load(['events_participants', 'venue']);
+        $events = Event::orderByDesc('id')->get()->load(['events_participants', 'venue']);
         $index = 0;
         foreach ($events as $event) {
             if (isset($event->events_participants)) {
@@ -71,13 +73,175 @@ class EventController extends Controller
 
         $topics = Topic::all();
 
+        $users = User::all();
 
-        return view('short-course-management.event-management.create', compact('venues','shortcourses', 'topics'));
+
+        return view('short-course-management.event-management.create', compact('venues','shortcourses', 'topics', 'users'));
     }
     public function storeNew(Request $request)
     {
         //
+
+
+        Validator::extend('check_array', function ($attribute, $value, $parameters, $validator) {
+            return count($value) >= 1;
+        });
+
+        // dd($request);
+
+        $validated = $request->validate([
+            'shortcourse_id' => 'required',
+            'shortcourse_name' => 'required|min:3',
+            'shortcourse_description' => 'required|min:3',
+            'shortcourse_objective' => 'required|min:3',
+            'shortcourse_topic'  => 'check_array',
+            'datetime_start' => 'required',
+            'datetime_end' => 'required',
+            'venue_id' => 'required',
+            'venue_name' => 'required|min:3',
+            'fee_name' => 'required|min:3',
+            'fee_id' => 'required',
+            'fee_amount' => 'required|numeric',
+            'trainer_ic' => 'required',
+            'trainer_fullname' => 'required|min:3',
+            'trainer_phone' => 'required|min:10',
+            'trainer_email' => 'required|email:rfc',
+
+        ], [
+            'shortcourse_id.required' => 'Please choose short course of the event',
+            'shortcourse_name.required' => 'Please insert short course name',
+            'shortcourse_name.min' => 'The name should have at least 3 characters',
+            'shortcourse_description.required' => 'Please insert short course description',
+            'shortcourse_description.min' => 'The description should have at least 3 characters',
+            'shortcourse_objective.required' => 'Please insert short course objective',
+            'shortcourse_objective.min' => 'The objective should have at least 3 characters',
+            'shortcourse_topic.check_array' => 'Please insert at least one topic',
+            'datetime_start.required' => 'Please insert event datetime start',
+            'datetime_end.required' => 'Please insert event datetime end',
+            'venue_id.required' => 'Please choose event venue',
+            'venue_name.required' => 'Please insert venue name',
+            'venue_name.min' => 'The name should have at least 3 characters',
+            'fee_name.required' => 'Please insert fee name',
+            'fee_name.min' => 'The name should have at least 3 characters',
+            'fee_id.required' => 'Please insert fee id',
+            'fee_amount.required' => 'Please insert fee amount',
+            'fee_amount.numeric' => 'Please insert number only',
+            'trainer_ic.required' => 'Please insert trainer IC',
+            'trainer_fullname.required' => "Please insert trainer's fullname",
+            'trainer_fullname.min' => "The trainer's fullname should have at least 3 characters",
+            'trainer_phone.required' => "Please insert trainer's phone number",
+            'trainer_phone.min' => "The trainer's phone number should have at least 10 numbers",
+            'trainer_email.required' => "Please insert trainer's email",
+
+        ]);
+
+        $updateShortCourse = ShortCourse::find($request->shortcourse_id)->update([
+            'name' => $request->shortcourse_name,
+            'shortcourse_description' => $request->shortcourse_description,
+            'shortcourse_objective' => $request->shortcourse_objective,
+            'updated_by' => Auth::user()->id,
+        ]);
+
+        if(isset($request->shortcourse_topic)){
+            foreach ($request->shortcourse_topic as $shortcourse_topic){
+                $exist=TopicShortCourse::where([
+                    ['shortcourse_id','=',$request->shortcourse_id],
+                    ['topic_id', '=', $shortcourse_topic],
+                ])->get();
+
+                if(!$exist){
+                    $createTopicShortCourse = TopicShortCourse::create([
+                        'topic_id' => $shortcourse_topic,
+                        'shortcourse_id' => $request->shortcourse_id,
+                        'created_by' => Auth::user()->id,
+                    ]);
+                }
+            }
+        }
+
+
+
+        $updateVenue = Venue::find($request->venue_id)->update([
+            'name' => $request->venue_name,
+            'updated_by' => Auth::user()->id,
+        ]);
+
+        $createEvent = Event::create([
+            'name' => $request->shortcourse_name,
+            'description' => $request->shortcourse_description,
+            'objective' => $request->shortcourse_objective,
+            'datetime_start' => $request->datetime_start,
+            'datetime_end' => $request->datetime_end,
+            'registration_due_date' => $request->datetime_start,
+            'venue_id' => $request->venue_id,
+            'created_by' => Auth::user()->id,
+        ]);
+
+        $createEventShortCourse = EventShortCourse::create([
+            'event_id' => $createEvent->id,
+            'shortcourse_id' => $request->shortcourse_id,
+            'created_by' => Auth::user()->id,
+        ]);
+
+
+        $createFee = Fee::create([
+            'is_base_fee' => $request->fee_id,
+            'name' => $request->fee_name,
+            'amount' => $request->fee_amount,
+            'event_id' => $createEvent->id,
+            'created_by' => Auth::user()->id,
+        ]);
+
+
+        $existTrainer=Trainer::where('ic', '=', $request->trainer_ic)->firstOrFail();
+
+        if(!$existTrainer){
+            $existUser=User::find($request->trainer_user_id)->firstOrFail();
+            if(!$existUser){
+                //CreateUser
+            }
+            $existTrainer = Trainer::create([
+                'user_id' => $existUser->id,
+                'ic' => $request->trainer_ic,
+                'phone' => $request->trainer_phone,
+                'created_by' => Auth::user()->id,
+            ]);
+        }
+
+        $createEventTrainer = EventTrainer::create([
+            'event_id' => $createEvent->id,
+            'trainer_id' => $existTrainer->id,
+            'trainer_representative_id' => $existTrainer->id,
+            'phone' => $request->trainer_phone,
+            'created_by' => Auth::user()->id,
+        ]);
+
+        // Redirect to show
+        $event = Event::find($createEvent->id)->load([
+            'events_participants',
+            'venue',
+            'events_shortcourses.shortcourse',
+            'events_trainers.trainer',
+            'fees'
+        ]);
+
+
+        $venues = Venue::all();
+
+        $shortcourses = ShortCourse::all();
+
+        // $trainers = array();
+        foreach ($event->events_trainers as $event_trainer){
+            $event_trainer->trainer->user=User::find($event_trainer->trainer->user_id);
+        }
+        // dd($event);
+        //
+        // return view('short-course-management.event-management.show', compact('event','venues','shortcourses'));
+
+        return Redirect('/event/'.$event->id)->with(compact('event','venues','shortcourses'));
+
     }
+
     function show($id)
     {
 
