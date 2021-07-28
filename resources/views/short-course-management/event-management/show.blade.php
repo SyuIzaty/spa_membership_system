@@ -642,7 +642,7 @@
                                                                     </a> --}}
 
                                                                     <form method="post"
-                                                                        action="/event/shortcourse/detached/{{ $events_shortcourses->shortcourse->id }}">
+                                                                        action="/event/shortcourse/detached/{{ $events_shortcourses->id }}">
                                                                         @csrf
                                                                         <button type="submit"
                                                                             class="btn btn-sm btn-danger float-right mr-2">

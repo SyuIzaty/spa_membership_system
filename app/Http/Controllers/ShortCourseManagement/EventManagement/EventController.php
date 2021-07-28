@@ -193,10 +193,10 @@ class EventController extends Controller
         ]);
 
 
-        $existTrainer=Trainer::where('ic', '=', $request->trainer_ic)->firstOrFail();
+        $existTrainer=Trainer::where('ic', '=', $request->trainer_ic)->first();
 
         if(!$existTrainer){
-            $existUser=User::find($request->trainer_user_id)->firstOrFail();
+            $existUser=User::find($request->trainer_user_id)->first();
             if(!$existUser){
                 //CreateUser
             }

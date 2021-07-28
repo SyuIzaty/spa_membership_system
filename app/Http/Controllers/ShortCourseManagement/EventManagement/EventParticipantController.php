@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ShortCourseManagement\EventParticipant;
 use App\Models\ShortCourseManagement\Event;
+use App\Models\ShortCourseManagement\Participant;
+use Auth;
 
 class EventParticipantController extends Controller
 {
@@ -461,9 +463,70 @@ class EventParticipantController extends Controller
         //
     }
 
-    public function store(Request $request)
+    public function store(Request $request, $event_id)
     {
+        $validated = $request->validate([
+            'ic_input' => 'required',
+            'fullname' => 'required|min:3',
+            'phone' => 'required|min:10',
+            'email' => 'required|email:rfc',
+            'fee_id' => 'required',
+            'representative_ic_input'  => 'required',
+            'representative_fullname' => 'required',
+
+        ], [
+            'ic_input.required' => 'Please insert IC of the participant',
+            'fullname.required' => 'Please insert fullname of the participant',
+            'fullname.min' => 'The fullname should have at least 3 characters',
+            'phone.required' => 'Please insert phone number of the participant',
+            'phone.min' => 'The phone number should have at least 10 characters',
+            'email.required' => "Please insert email address of the participant",
+            'fee_id.required' => 'Please choose the fee applicable for the participant',
+            'representative_fullname.required' => 'Please insert the representative fullname of the participant',
+            'representative_ic_input.required' => "Please insert the representative's IC of the participant",
+            'representative_fullname.min' => "The representative's fullname should have at least 3 characters",
+        ]);
+
+        // dd($request);
         //
+        $existParticipant = Participant::where([
+            ['ic', '=', $request->ic_input],
+        ])->first();
+        if(!$existParticipant){
+            $existParticipant = Participant::create([
+                'name' => $request->fullname,
+                'ic' => $request->ic_input,
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'created_by' => Auth::user()->id,
+            ]);
+        } else{
+            $existParticipant->name = $request->fullname;
+            $existParticipant->ic =$request->ic_input;
+            $existParticipant->phone = $request->phone;
+            $existParticipant->email = $request->email;
+            $existParticipant->updated_by = Auth::user()->id;
+            $existParticipant->save();
+        }
+
+
+        $existEventParticipant = EventParticipant::where([
+            ['event_id','=',$event_id],
+            ['participant_id', '=', $existParticipant->id],
+        ])->first();
+
+        if(!$existEventParticipant){
+            $existEventParticipant = EventParticipant::create([
+                'event_id' => $event_id,
+                'participant_id' => $existParticipant->id,
+                'fee_id' => $request->fee_id,
+                'participant_representative_id' => $existParticipant->id,
+                'created_by' => Auth::user()->id,
+            ]);
+        }else{
+            return Redirect()->back()->with('messageAlreadyApplied', 'The participant have been applied');
+        }
+        return Redirect()->back()->with('messageNewApplication', 'New participant applied successfully');
     }
     public function edit($id)
     {
