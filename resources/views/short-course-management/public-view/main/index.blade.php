@@ -163,7 +163,7 @@
                 ],
                 orderCellsTop: true,
                 "order": [
-                    [2, "desc"]
+                    [0, "desc"]
                 ],
                 "initComplete": function(settings, json) {
 

@@ -72,20 +72,20 @@
                                         <div class="row">
 
                                             <div class="col-md-12 grid-margin">
-                                            @if (Session::has('messageNewApplication'))
-                                                <div class="alert alert-success"
-                                                    style="color: #3b6324; background-color: #d3fabc;width:100%;">
-                                                    <i class="icon fal fa-check-circle"></i>
-                                                    {{ Session::get('messageNewApplication') }}
-                                                </div>
-                                            @endif
-                                            @if (Session::has('messageAlreadyApplied'))
-                                                <div class="alert alert-danger  text-white"
-                                                    style="color:rgb(105, 0, 0); background-color: rgb(255, 51, 51);width:100%;">
-                                                    <i class="icon fal fa-check-circle" style="color:white"></i>
-                                                    {{ Session::get('messageAlreadyApplied') }}
-                                                </div>
-                                            @endif
+                                                @if (Session::has('messageNewApplication'))
+                                                    <div class="alert alert-success"
+                                                        style="color: #3b6324; background-color: #d3fabc;width:100%;">
+                                                        <i class="icon fal fa-check-circle"></i>
+                                                        {{ Session::get('messageNewApplication') }}
+                                                    </div>
+                                                @endif
+                                                @if (Session::has('messageAlreadyApplied'))
+                                                    <div class="alert alert-danger  text-white"
+                                                        style="color:rgb(105, 0, 0); background-color: rgb(255, 51, 51);width:100%;">
+                                                        <i class="icon fal fa-check-circle" style="color:white"></i>
+                                                        {{ Session::get('messageAlreadyApplied') }}
+                                                    </div>
+                                                @endif
                                             </div>
                                             <div class="col-md-12 grid-margin stretch-card">
                                                 <div class="row">
@@ -235,8 +235,7 @@
                                                                                             <div class="form-group">
                                                                                                 <label class="form-label"
                                                                                                     for="is_base_fee_select_add"><span
-                                                                                                        class="text-danger">*</span>Fee
-                                                                                                    Applied</label>
+                                                                                                        class="text-danger">*</span>Fee</label>
                                                                                                 {{-- <input class="form-control" id="is_base_fee_select_add"
                                                                                                 name="is_base_fee_select_add"> --}}
                                                                                                 <select
@@ -258,6 +257,32 @@
                                                                                                         </option>
                                                                                                     @endforeach
                                                                                                 </select>
+                                                                                                <div class="input-group flex-nowrap"
+                                                                                                    id="fee_id_show"
+                                                                                                    name="fee_id_show"
+                                                                                                    style="display:none; width:auto">
+                                                                                                    <div
+                                                                                                        class="input-group-prepend">
+                                                                                                        <span
+                                                                                                            class="input-group-text"
+                                                                                                            style="background-color:white; border-style: none;"
+                                                                                                            id="addon-wrapping">RM</span>
+                                                                                                    </div>
+                                                                                                    <div class="col">
+                                                                                                        <input
+                                                                                                            class="form-control-plaintext"
+                                                                                                            id="fee_id_input"
+                                                                                                            name="fee_id_input"
+                                                                                                            readonly>
+                                                                                                    </div>
+                                                                                                    <div
+                                                                                                        class="input-group-append">
+                                                                                                        <span
+                                                                                                            style="background-color:white; border-style: none;"
+                                                                                                            class="input-group-text">/
+                                                                                                            person</span>
+                                                                                                    </div>
+                                                                                                </div>
                                                                                                 @error('fee_id')
                                                                                                     <p style="color: red">
                                                                                                         <strong> *
@@ -1196,14 +1221,25 @@
 
                     $('#search-by-ic').click(function() {
                         var ic = $('.modal-body #ic_input').val();
-                        $.get("/participant/search-by-ic/" + ic, function(data) {
-                            $('.modal-body #fullname').val(data.name);
-                            $('.modal-body #phone').val(data.phone);
-                            $('.modal-body #email').val(data.email);
+                        $.get("/participant/search-by-ic/" + ic + "/event/" + event_id, function(data) {
+                            $('.modal-body #fullname').val(data.participant.name);
+                            $('.modal-body #phone').val(data.participant.phone);
+                            $('.modal-body #email').val(data.participant.email);
+
+                            if (data.fee_id) {
+                                $("input[id=fee_id_input]").val(data.fee.amount);
+                                $("select[id=fee_id]").hide();
+                                $("div[id=fee_id_show]").show();
+
+                            } else {
+                                $("select[id=fee_id]").show();
+                                $("div[id=fee_id_show]").hide();
+                            }
                             if ($('#represent-by-himself:checked').length > 0) {
                                 $('.modal-body #representative_ic_input').val(ic);
-                                $('.modal-body #representative_fullname').val(data.name);
+                                $('.modal-body #representative_fullname').val(data.participant.name);
                             }
+
                         }).fail(
                             function() {
                                 $('.modal-body #fullname').val(null);

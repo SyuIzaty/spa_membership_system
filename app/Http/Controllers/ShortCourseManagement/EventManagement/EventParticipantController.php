@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\ShortCourseManagement\EventParticipant;
 use App\Models\ShortCourseManagement\Event;
 use App\Models\ShortCourseManagement\Participant;
+use App\Models\ShortCourseManagement\Fee;
 use Auth;
 
 class EventParticipantController extends Controller
@@ -524,7 +525,10 @@ class EventParticipantController extends Controller
                 'created_by' => Auth::user()->id,
             ]);
         }else{
-            return Redirect()->back()->with('messageAlreadyApplied', 'The participant have been applied');
+            $existEventParticipant->fee_id = $request->fee_id;
+            $existEventParticipant->updated_by = Auth::user()->id;
+            $existEventParticipant->save();
+            return Redirect()->back()->with('messageAlreadyApplied', 'The participant have been applied.');
         }
         return Redirect()->back()->with('messageNewApplication', 'New participant applied successfully');
     }
@@ -541,5 +545,24 @@ class EventParticipantController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function applyPromoCode($event_id, $promo_code)
+    {
+        //
+        $existFee=Fee::where([
+            ['event_id','=',$event_id],
+            ['promo_code', '=', $promo_code],
+        ])->first();
+
+        $fee=null;
+
+        if($existFee){
+            $fee['fee_id']=$existFee->id;
+            $fee['fee']=$existFee;
+
+        }
+
+        return $fee;
     }
 }

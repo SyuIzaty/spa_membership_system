@@ -125,112 +125,56 @@
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
                                                                 <div class="card-header">
-                                                                    <h5 class="card-title w-150">Register</h5>
+                                                                    <h5 class="card-title w-150">Add New
+                                                                        Applicant</h5>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    {{-- {!! Form::open(['action' => 'EventParticipantController@store', 'method' => 'POST']) !!} --}}
-                                                                    <input type="hidden" name="id" id="id">
-                                                                    <p><span class="text-danger">*</span>
-                                                                        Vital Information</p>
-                                                                    <hr class="mt-1 mb-2">
-                                                                    <div class="form-group">
-                                                                        <label for="ic"><span class="text-danger">*</span>
-                                                                            IC</label>
-                                                                        <div class="form-inline" style="width:100%">
-                                                                            <div class="form-group mr-2 mb-2"
-                                                                                style="width:85%">
-                                                                                <input class="form-control w-100" id="ic"
-                                                                                    name="ic">
-                                                                            </div>
-                                                                            <a href="javascript:;" data-toggle="#"
-                                                                                id="search-by-ic"
-                                                                                class="btn btn-primary mb-2"><i
-                                                                                    class="ni ni-magnifier"></i></a>
-                                                                        </div>
-                                                                        @error('ic')
-                                                                            <p style="color: red">
-                                                                                <strong> *
-                                                                                    {{ $message }}
-                                                                                </strong>
-                                                                            </p>
-                                                                        @enderror
-                                                                    </div>
-                                                                    <hr class="mt-1 mb-2">
-                                                                    <div id="form-application-second-part"
-                                                                        style="display: none">
-                                                                        <div class="form-group">
-                                                                            <label class="form-label" for="fullname"><span
-                                                                                    class="text-danger">*</span>Fullname</label>
-                                                                            <input class="form-control" id="fullname"
-                                                                                name="fullname">
-                                                                            @error('name')
-                                                                                <p style="color: red">
-                                                                                    <strong> *
-                                                                                        {{ $message }}
-                                                                                    </strong>
-                                                                                </p>
-                                                                            @enderror
-                                                                        </div>
+                                                                    <form
+                                                                        action="{{ url('/event/' . $event->id . '/events-participants/store') }}"
+                                                                        method="post">
+                                                                        @csrf
+                                                                        {{-- {!! Form::open(['action' => 'ShortCourseManagement\EventManagement\EventParticipantController@store', 'method' => 'POST']) !!} --}}
+                                                                        {{-- <input type="hidden" name="id"
+                                                                                id="id"> --}}
+                                                                        <p><span class="text-danger">*</span>
+                                                                            Vital Information</p>
                                                                         <hr class="mt-1 mb-2">
                                                                         <div class="form-group">
-                                                                            <label class="form-label" for="phone"><span
-                                                                                    class="text-danger">*</span>Phone</label>
-                                                                            <input class="form-control" id="phone"
-                                                                                name="phone">
-                                                                            @error('phone')
-                                                                                <p style="color: red">
-                                                                                    <strong> *
-                                                                                        {{ $message }}
-                                                                                    </strong>
-                                                                                </p>
-                                                                            @enderror
-                                                                        </div>
-
-                                                                        <hr class="mt-1 mb-2">
-                                                                        <div class="form-group">
-                                                                            <label class="form-label" for="email"><span
-                                                                                    class="text-danger">*</span>Email</label>
-                                                                            <input class="form-control" id="email"
-                                                                                name="email">
-                                                                            @error('email')
-                                                                                <p style="color: red">
-                                                                                    <strong> *
-                                                                                        {{ $message }}
-                                                                                    </strong>
-                                                                                </p>
-                                                                            @enderror
-                                                                        </div>
-
-                                                                        <hr class="mt-1 mb-2">
-                                                                        <div class="custom-control custom-checkbox">
-                                                                            <input type="checkbox"
-                                                                                class="custom-control-input"
-                                                                                id="represent-by-himself" checked disabled>
-                                                                            <label class="custom-control-label"
-                                                                                for="represent-by-himself">Represent
-                                                                                By Yourself</label>
-                                                                        </div>
-                                                                        <hr class="mt-1 mb-2">
-                                                                        <div id="representative"
-                                                                            style="display:none;">
-                                                                            <div class="form-group">
-                                                                                <label for="representative-ic"><span
-                                                                                        class="text-danger">*</span>
-                                                                                    Representative
-                                                                                    IC</label>
-                                                                                <div class="form-inline" style="width:100%">
-                                                                                    <div class="form-group mr-2 mb-2"
-                                                                                        style="width:85%">
-                                                                                        <input class="form-control w-100"
-                                                                                            id="representative-ic"
-                                                                                            name="representative-ic">
-                                                                                    </div>
+                                                                            <label for="ic"><span
+                                                                                    class="text-danger">*</span>
+                                                                                IC</label>
+                                                                            <div class="row">
+                                                                                <div class="col">
+                                                                                    <input class="form-control"
+                                                                                        id="ic_input" name="ic_input">
+                                                                                </div>
+                                                                                <td class="col col-sm-1">
                                                                                     <a href="javascript:;" data-toggle="#"
-                                                                                        id="search-by-representative-ic"
+                                                                                        id="search-by-ic"
                                                                                         class="btn btn-primary mb-2"><i
                                                                                             class="ni ni-magnifier"></i></a>
-                                                                                </div>
-                                                                                @error('representative-ic')
+
+                                                                                </td>
+                                                                            </div>
+                                                                            @error('ic_input')
+                                                                                <p style="color: red">
+                                                                                    <strong> *
+                                                                                        {{ $message }}
+                                                                                    </strong>
+                                                                                </p>
+                                                                            @enderror
+                                                                        </div>
+                                                                        <div id="form-application-second-part"
+                                                                            style="display: none">
+
+                                                                            <hr class="mt-1 mb-2">
+                                                                            <div class="form-group">
+                                                                                <label class="form-label"
+                                                                                    for="fullname"><span
+                                                                                        class="text-danger">*</span>Fullname</label>
+                                                                                <input class="form-control" id="fullname"
+                                                                                    name="fullname">
+                                                                                @error('fullname')
                                                                                     <p style="color: red">
                                                                                         <strong> *
                                                                                             {{ $message }}
@@ -238,31 +182,161 @@
                                                                                     </p>
                                                                                 @enderror
                                                                             </div>
-                                                                            <p id="representative-doesnt-exist"
-                                                                                style="color: red; display:none;">
-                                                                                <strong> * The
-                                                                                    representative doesn't
-                                                                                    exist
-                                                                                </strong>
-                                                                            </p>
-                                                                            <p id="representative-doesnt-valid"
-                                                                                style="color: red; display:none;">
-                                                                                <strong> * The choosen
-                                                                                    participant is not valid
-                                                                                    to represent others
-                                                                                </strong>
-                                                                            </p>
-                                                                            <div id="form-application-third-part"
-                                                                                style="display: none">
+                                                                            <hr class="mt-1 mb-2">
+                                                                            <div class="form-group">
+                                                                                <label class="form-label" for="phone"><span
+                                                                                        class="text-danger">*</span>Phone</label>
+                                                                                <input class="form-control" id="phone"
+                                                                                    name="phone">
+                                                                                @error('phone')
+                                                                                    <p style="color: red">
+                                                                                        <strong> *
+                                                                                            {{ $message }}
+                                                                                        </strong>
+                                                                                    </p>
+                                                                                @enderror
+                                                                            </div>
+
+                                                                            <hr class="mt-1 mb-2">
+                                                                            <div class="form-group">
+                                                                                <label class="form-label" for="email"><span
+                                                                                        class="text-danger">*</span>Email</label>
+                                                                                <input class="form-control" id="email"
+                                                                                    name="email">
+                                                                                @error('email')
+                                                                                    <p style="color: red">
+                                                                                        <strong> *
+                                                                                            {{ $message }}
+                                                                                        </strong>
+                                                                                    </p>
+                                                                                @enderror
+                                                                            </div>
+                                                                            <hr class="mt-1 mb-2">
+                                                                            <div class="form-group">
+                                                                                <label class="form-label"
+                                                                                    for="is_base_fee_select_add"><span
+                                                                                        class="text-danger">*</span>Fee</label>
+                                                                                {{-- <input class="form-control" id="is_base_fee_select_add"
+                                                                                    name="is_base_fee_select_add"> --}}
+                                                                                <select
+                                                                                    class="form-control fee_id font-weight-bold"
+                                                                                    name="fee_id" id="fee_id" tabindex="-1"
+                                                                                    aria-hidden="true">
+                                                                                    <option disabled selected>Select Fee
+                                                                                        Applied</option>
+                                                                                    @foreach ($event->fees as $fee)
+                                                                                        <option
+                                                                                            value="{{ $fee->id }}">
+                                                                                            {{ $fee->is_base_fee }}
+                                                                                            -
+                                                                                            {{ $fee->name }}
+                                                                                            (RM{{ $fee->amount }})
+                                                                                        </option>
+                                                                                    @endforeach
+                                                                                </select>
+                                                                                <div class="row">
+                                                                                    <div class="col-sm-5">
+                                                                                        <div class="input-group flex-nowrap"
+                                                                                            id="fee_id_show"
+                                                                                            name="fee_id_show"
+                                                                                            style="display:none; width:auto">
+                                                                                            <div
+                                                                                                class="input-group-prepend">
+                                                                                                <span
+                                                                                                    class="input-group-text"
+                                                                                                    style="background-color:white; border-style: none;"
+                                                                                                    id="addon-wrapping">RM</span>
+                                                                                            </div>
+                                                                                            <input
+                                                                                                class="form-control-plaintext"
+                                                                                                id="fee_id_input"
+                                                                                                name="fee_id_input"
+                                                                                                readonly>
+                                                                                            <div class="input-group-append">
+                                                                                                <span
+                                                                                                    style="background-color:white; border-style: none;"
+                                                                                                    class="input-group-text">/
+                                                                                                    person</span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-sm-7">
+                                                                                        <div class="row">
+                                                                                            <div class="col">
+                                                                                                <input class="form-control"
+                                                                                                    id="promo_code"
+                                                                                                    name="promo_code"
+                                                                                                    placeholder="Promo Code (Only if applicable)">
+                                                                                            </div>
+                                                                                            <td class="col col-sm-1">
+                                                                                                <button type="button"
+                                                                                                    name="remove"
+                                                                                                    id="promo_code_edit_remove"
+                                                                                                    class="btn btn-danger btn_remove"
+                                                                                                    style="display:none">
+                                                                                                    <i
+                                                                                                        class="ni ni-close"></i>
+                                                                                                </button>
+                                                                                                <button type="button"
+                                                                                                    name="add"
+                                                                                                    id="promo_code_edit_add"
+                                                                                                    class="btn btn-primary btn_add">
+                                                                                                    <i
+                                                                                                        class="ni ni-check"></i>
+                                                                                                </button>
+                                                                                            </td>
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                @error('fee_id')
+                                                                                    <p style="color: red">
+                                                                                        <strong> *
+                                                                                            {{ $message }}
+                                                                                        </strong>
+                                                                                    </p>
+                                                                                @enderror
+                                                                            </div>
+                                                                            {{-- <hr class="mt-1 mb-2"> --}}
+                                                                            <div class="custom-control custom-checkbox">
+                                                                                {{-- <input type="checkbox"
+                                                                                        class="custom-control-input"
+                                                                                        id="represent-by-himself_show"
+                                                                                        checked="checked"
+                                                                                        disabled> --}}
+                                                                                <input type="checkbox"
+                                                                                    class="custom-control-input"
+                                                                                    id="represent-by-himself"
+                                                                                    checked="checked" type="hidden">
+                                                                                {{-- <label
+                                                                                        class="custom-control-label"
+                                                                                        for="represent-by-himself">Represent
+                                                                                        By Himself</label> --}}
+                                                                            </div>
+                                                                            <div id="representative" style="display:none">
+                                                                                <hr class="mt-1 mb-2">
                                                                                 <div class="form-group">
-                                                                                    <label class="form-label"
-                                                                                        for="representative-fullname"><span
-                                                                                            class="text-danger">*</span>Representative
-                                                                                        Fullname</label>
-                                                                                    <input id="representative-fullname"
-                                                                                        name="representative-fullname"
-                                                                                        class="form-control" readonly>
-                                                                                    @error('representative-name')
+                                                                                    <label for="representative-ic"><span
+                                                                                            class="text-danger">*</span>
+                                                                                        Representative
+                                                                                        IC</label>
+                                                                                    <div class="form-inline"
+                                                                                        style="width:100%">
+                                                                                        <div class="form-group mr-2 mb-2"
+                                                                                            style="width:85%">
+                                                                                            <input
+                                                                                                class="form-control w-100"
+                                                                                                id="representative_ic_input"
+                                                                                                name="representative_ic_input">
+                                                                                        </div>
+                                                                                        <a href="javascript:;"
+                                                                                            data-toggle="#"
+                                                                                            id="search-by-representative-ic"
+                                                                                            class="btn btn-primary mb-2"><i
+                                                                                                class="ni ni-magnifier"></i></a>
+                                                                                    </div>
+                                                                                    @error('representative_ic_input')
                                                                                         <p style="color: red">
                                                                                             <strong> *
                                                                                                 {{ $message }}
@@ -270,22 +344,58 @@
                                                                                         </p>
                                                                                     @enderror
                                                                                 </div>
+                                                                                <p id="representative-doesnt-exist"
+                                                                                    style="color: red; display:none;">
+                                                                                    <strong> * The
+                                                                                        representative
+                                                                                        doesn't
+                                                                                        exist
+                                                                                    </strong>
+                                                                                </p>
+                                                                                <p id="representative-doesnt-valid"
+                                                                                    style="color: red; display:none;">
+                                                                                    <strong> * The choosen
+                                                                                        participant is not
+                                                                                        valid
+                                                                                        to represent others
+                                                                                    </strong>
+                                                                                </p>
+                                                                                <div id="form-application-third-part"
+                                                                                    style="display: none">
+                                                                                    <div class="form-group">
+                                                                                        <label class="form-label"
+                                                                                            for="representative_fullname"><span
+                                                                                                class="text-danger">*</span>Representative
+                                                                                            Fullname</label>
+                                                                                        <input id="representative_fullname"
+                                                                                            name="representative_fullname"
+                                                                                            class="form-control" readonly>
+                                                                                        @error('representative_fullname')
+                                                                                            <p style="color: red">
+                                                                                                <strong> *
+                                                                                                    {{ $message }}
+                                                                                                </strong>
+                                                                                            </p>
+                                                                                        @enderror
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                    <hr class="mt-1 mb-2">
-                                                                    <div class="footer">
-                                                                        <button type="button"
-                                                                            class="btn btn-success ml-auto float-right mr-2"
-                                                                            data-dismiss="modal"
-                                                                            id="close-new-application"><i
-                                                                                class="fal fa-window-close"></i>
-                                                                            Close</button>
-                                                                        <button type="submit"
-                                                                            class="btn btn-primary ml-auto float-right mr-2"><i
-                                                                                class="ni ni-plus"></i>
-                                                                            Apply</button>
-                                                                    </div>
+                                                                        <hr class="mt-1 mb-2">
+                                                                        <div class="footer" id="new_application_footer"
+                                                                            style="display:none">
+                                                                            <button type="button"
+                                                                                class="btn btn-danger ml-auto float-right mr-2"
+                                                                                data-dismiss="modal"
+                                                                                id="close-new-application"><i
+                                                                                    class="fal fa-window-close"></i>
+                                                                                Close</button>
+                                                                            <button type="submit"
+                                                                                class="btn btn-success ml-auto float-right mr-2"><i
+                                                                                    class="ni ni-plus"></i>
+                                                                                Apply</button>
+                                                                        </div>
+                                                                    </form>
 
                                                                     {{-- {!! Form::close() !!} --}}
                                                                 </div>
@@ -380,42 +490,110 @@
 
 @section('script')
     <script>
-        var event_id = '<?php echo $event->id; ?>';
-        // new application
-        {
+        var event_id = '<?php echo $event->id; ?>'; {
             $('#new-application').click(function() {
-                var id = null;
+                // var id = null;
                 var ic = null;
-                $('.modal-body #id').val(id);
-                $('.modal-body #ic').val(ic);
+                // $('.modal-body #id').val(id);
+                $('.modal-body #ic_input').val(ic);
+
+                $("div[id=form-application-second-part]").hide();
                 $('#crud-modal-new-application').modal('show');
             });
 
             $('#crud-modal-new-application').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget)
-                var id = button.data('id');
+                // var id = button.data('id');
                 var ic = button.data('ic');
 
-                $('.modal-body #id').val(id);
-                $('.modal-body #ic').val(ic);
+                // $('.modal-body #id').val(id);
+                $('.modal-body #ic_input').val(ic);
             });
 
             $('#search-by-ic').click(function() {
-                var ic = $('.modal-body #ic').val();
-                $.get("/participant/search-by-ic/" + ic, function(data) {
-                    $('.modal-body #fullname').val(data.name);
-                    $('.modal-body #phone').val(data.phone);
-                    $('.modal-body #email').val(data.email);
+                var ic = $('.modal-body #ic_input').val();
+                $.get("/participant/search-by-ic/" + ic + "/event/" + event_id, function(data) {
+                    $('.modal-body #fullname').val(data.participant.name);
+                    $('.modal-body #phone').val(data.participant.phone);
+                    $('.modal-body #email').val(data.participant.email);
+                    if (data.fee_id) {
+                        $("select[id=fee_id]").val(data.fee_id);
+                        $('.modal-body #promo_code').val(data.fee.promo_code);
+                        $("input[id=fee_id_input]").val(data.fee.amount);
+                        $("select[id=fee_id]").hide();
+                        $("div[id=fee_id_show]").show();
+                        if (data.fee.promo_code) {
+                            $('.modal-body #promo_code').attr('readonly');
+                            $('#promo_code_edit_add').hide();
+                            $('#promo_code_edit_remove').show();
+                        }
 
+                    } else {
+                        $("select[id=fee_id]").show();
+                        $("div[id=fee_id_show]").hide();
+                    }
+                    if ($('#represent-by-himself:checked').length > 0) {
+                        $('.modal-body #representative_ic_input').val(ic);
+                        $('.modal-body #representative_fullname').val(data.participant.name);
+                    }
                 }).fail(
                     function() {
                         $('.modal-body #fullname').val(null);
                         $('.modal-body #phone').val(null);
                         $('.modal-body #email').val(null);
+
+                        if ($('#represent-by-himself:checked').length > 0) {
+                            $('.modal-body #representative_ic_input').val(ic);
+                            $('.modal-body #representative_fullname').val(null);
+                        }
                     }).always(
                     function() {
                         $("div[id=form-application-second-part]").show();
+                        $("#new_application_footer").show();
+
                     });
+            });
+
+            // promo_code_edit_add
+            $('#promo_code_edit_add').click(function() {
+                var promo_code = $('.modal-body #promo_code').val();
+                $.get("/event/" + event_id + "/promo-code/" + promo_code + "/participant", function(data) {
+                    if (data.fee_id) {
+                        $("input[id=fee_id_input]").val(data.fee.amount);
+                        $("select[id=fee_id]").hide();
+                        $("div[id=fee_id_show]").show();
+                        $('#promo_code_edit_add').hide();
+                        $('#promo_code_edit_remove').show();
+                        $('.modal-body #promo_code').attr('readonly');
+                        $("select[id=fee_id]").val(data.fee_id);
+
+                    } else {
+                        $('.modal-body #promo_code').val(null);
+                    }
+                }).fail(
+                    function() {
+                        // TODO: The code is not valid
+                    });
+
+            });
+
+            $('#ic_input').change(function() {
+                // var id = null;
+                var ic_input = $('.modal-body #ic_input').val();
+                $('.modal-body #fullname').val(null);
+                $('.modal-body #phone').val(null);
+                $('.modal-body #email').val(null);
+                $('.modal-body #representative_ic_input').val(ic_input);
+                $('.modal-body #representative_fullname').val(null);
+                $("div[id=form-application-second-part]").hide();
+                $("#new_application_footer").hide();
+
+            });
+
+            $('.modal-body #fullname').change(function() {
+                // var id = null;
+                var fullname = $('.modal-body #fullname').val();
+                $('.modal-body #representative_fullname').val(fullname);
 
             });
 
@@ -433,6 +611,30 @@
                 } else {
                     $("div[id=representative]").show();
                 }
+            });
+        }
+
+        // search-by-representative-ic
+        {
+            $('#search-by-representative-ic').click(function() {
+                var representativeIc = $('.modal-body #representative-ic').val();
+                $.get("/participant/search-by-representative-ic/" + representativeIc, function(data) {
+                    $('.modal-body #representative_fullname').val(data.name);
+                }).fail(
+                    function() {
+                        $("p[id=representative-doesnt-exist]").show();
+                    }).done(
+                    function() {
+                        $("div[id=form-application-third-part]").show();
+                    });
+
+            });
+
+            $('#close-new-application').click(function() {
+                $('.modal-body #ic').val(null);
+                $('.modal-body #fullname').val(null);
+                $('.modal-body #phone').val(null);
+                $('.modal-body #email').val(null);
             });
         }
     </script>

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\ShortCourseManagement\People\Participant;
 
 use App\Models\ShortCourseManagement\Participant;
+use App\Models\ShortCourseManagement\EventParticipant;
+use App\Models\ShortCourseManagement\Fee;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -41,11 +43,34 @@ class ParticipantController extends Controller
         //
     }
 
-    public function searchByIc($ic)
+    public function searchByIc($ic, $event_id)
     {
         //
-        $participant=Participant::where('ic',$ic)->first()->load(['organisations_participants.organisation']);
-        return $participant;
+        $existParticipant=Participant::where('ic',$ic)->first()->load(['organisations_participants.organisation']);
+        if($existParticipant){
+            $eventParticipant=EventParticipant::where([
+                ['event_id','=',$event_id],
+                ['participant_id', '=', $existParticipant->id],
+            ])->first();
+            if($eventParticipant){
+                $eventParticipant=EventParticipant::where([
+                    ['event_id','=',$event_id],
+                    ['participant_id', '=', $existParticipant->id],
+                ])->first()->load(['participant.organisations_participants.organisation','fee']);
+            }
+            else{
+                $fee=Fee::where([
+                    ['event_id', '=', $event_id],
+                    ['is_base_fee', '=', 1]
+                ])->orderBy('amount', 'desc')->orderBy('created_at', 'desc')->first();
+                $eventParticipant['participant']=$existParticipant;
+                $eventParticipant['fee_id']=$fee->id;
+                $eventParticipant['fee']=$fee;
+            }
+        }else{
+            $eventParticipant=null;
+        }
+        return $eventParticipant;
     }
     public function searchByRepresentativeIc($ic)
     {
