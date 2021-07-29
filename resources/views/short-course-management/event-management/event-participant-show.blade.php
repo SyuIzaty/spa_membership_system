@@ -149,7 +149,7 @@
                                                                                         @csrf
                                                                                         {{-- {!! Form::open(['action' => 'ShortCourseManagement\EventManagement\EventParticipantController@store', 'method' => 'POST']) !!} --}}
                                                                                         {{-- <input type="hidden" name="id"
-                                                                                            id="id"> --}}
+                                                                                                id="id"> --}}
                                                                                         <p><span
                                                                                                 class="text-danger">*</span>
                                                                                             Vital Information</p>
@@ -158,20 +158,21 @@
                                                                                             <label for="ic"><span
                                                                                                     class="text-danger">*</span>
                                                                                                 IC</label>
-                                                                                            <div class="form-inline"
-                                                                                                style="width:100%">
-                                                                                                <div class="form-group mr-2 mb-2"
-                                                                                                    style="width:85%">
+                                                                                            <div class="row">
+                                                                                                <div class="col">
                                                                                                     <input
-                                                                                                        class="form-control w-100"
+                                                                                                        class="form-control"
                                                                                                         id="ic_input"
                                                                                                         name="ic_input">
                                                                                                 </div>
-                                                                                                <a href="javascript:;"
-                                                                                                    data-toggle="#"
-                                                                                                    id="search-by-ic"
-                                                                                                    class="btn btn-primary mb-2"><i
-                                                                                                        class="ni ni-magnifier"></i></a>
+                                                                                                <td class="col col-sm-1">
+                                                                                                    <a href="javascript:;"
+                                                                                                        data-toggle="#"
+                                                                                                        id="search-by-ic"
+                                                                                                        class="btn btn-primary mb-2"><i
+                                                                                                            class="ni ni-magnifier"></i></a>
+
+                                                                                                </td>
                                                                                             </div>
                                                                                             @error('ic_input')
                                                                                                 <p style="color: red">
@@ -237,7 +238,7 @@
                                                                                                     for="is_base_fee_select_add"><span
                                                                                                         class="text-danger">*</span>Fee</label>
                                                                                                 {{-- <input class="form-control" id="is_base_fee_select_add"
-                                                                                                name="is_base_fee_select_add"> --}}
+                                                                                                    name="is_base_fee_select_add"> --}}
                                                                                                 <select
                                                                                                     class="form-control fee_id font-weight-bold"
                                                                                                     name="fee_id"
@@ -257,32 +258,68 @@
                                                                                                         </option>
                                                                                                     @endforeach
                                                                                                 </select>
-                                                                                                <div class="input-group flex-nowrap"
-                                                                                                    id="fee_id_show"
-                                                                                                    name="fee_id_show"
-                                                                                                    style="display:none; width:auto">
-                                                                                                    <div
-                                                                                                        class="input-group-prepend">
-                                                                                                        <span
-                                                                                                            class="input-group-text"
-                                                                                                            style="background-color:white; border-style: none;"
-                                                                                                            id="addon-wrapping">RM</span>
+                                                                                                <div class="row">
+                                                                                                    <div class="col-sm-5">
+                                                                                                        <div class="input-group flex-nowrap"
+                                                                                                            id="fee_id_show"
+                                                                                                            name="fee_id_show"
+                                                                                                            style="display:none; width:auto">
+                                                                                                            <div
+                                                                                                                class="input-group-prepend">
+                                                                                                                <span
+                                                                                                                    class="input-group-text"
+                                                                                                                    style="background-color:white; border-style: none;"
+                                                                                                                    id="addon-wrapping">RM</span>
+                                                                                                            </div>
+                                                                                                            <input
+                                                                                                                class="form-control-plaintext"
+                                                                                                                id="fee_id_input"
+                                                                                                                name="fee_id_input"
+                                                                                                                readonly>
+                                                                                                            <div
+                                                                                                                class="input-group-append">
+                                                                                                                <span
+                                                                                                                    style="background-color:white; border-style: none;"
+                                                                                                                    class="input-group-text">/
+                                                                                                                    person</span>
+                                                                                                            </div>
+                                                                                                        </div>
                                                                                                     </div>
-                                                                                                    <div class="col">
-                                                                                                        <input
-                                                                                                            class="form-control-plaintext"
-                                                                                                            id="fee_id_input"
-                                                                                                            name="fee_id_input"
-                                                                                                            readonly>
-                                                                                                    </div>
-                                                                                                    <div
-                                                                                                        class="input-group-append">
-                                                                                                        <span
-                                                                                                            style="background-color:white; border-style: none;"
-                                                                                                            class="input-group-text">/
-                                                                                                            person</span>
+                                                                                                    <div class="col-sm-7">
+                                                                                                        <div class="row">
+                                                                                                            <div
+                                                                                                                class="col">
+                                                                                                                <input
+                                                                                                                    class="form-control"
+                                                                                                                    id="promo_code"
+                                                                                                                    name="promo_code"
+                                                                                                                    placeholder="Promo Code (Only if applicable)">
+                                                                                                            </div>
+                                                                                                            <td
+                                                                                                                class="col col-sm-1">
+                                                                                                                <button
+                                                                                                                    type="button"
+                                                                                                                    name="remove"
+                                                                                                                    id="promo_code_edit_remove"
+                                                                                                                    class="btn btn-danger btn_remove"
+                                                                                                                    style="display:none">
+                                                                                                                    <i
+                                                                                                                        class="ni ni-close"></i>
+                                                                                                                </button>
+                                                                                                                <button
+                                                                                                                    type="button"
+                                                                                                                    name="add"
+                                                                                                                    id="promo_code_edit_add"
+                                                                                                                    class="btn btn-primary btn_add">
+                                                                                                                    <i
+                                                                                                                        class="ni ni-check"></i>
+                                                                                                                </button>
+                                                                                                            </td>
+
+                                                                                                        </div>
                                                                                                     </div>
                                                                                                 </div>
+
                                                                                                 @error('fee_id')
                                                                                                     <p style="color: red">
                                                                                                         <strong> *
@@ -295,19 +332,19 @@
                                                                                             <div
                                                                                                 class="custom-control custom-checkbox">
                                                                                                 {{-- <input type="checkbox"
-                                                                                                    class="custom-control-input"
-                                                                                                    id="represent-by-himself_show"
-                                                                                                    checked="checked"
-                                                                                                    disabled> --}}
+                                                                                                        class="custom-control-input"
+                                                                                                        id="represent-by-himself_show"
+                                                                                                        checked="checked"
+                                                                                                        disabled> --}}
                                                                                                 <input type="checkbox"
                                                                                                     class="custom-control-input"
                                                                                                     id="represent-by-himself"
                                                                                                     checked="checked"
                                                                                                     type="hidden">
                                                                                                 {{-- <label
-                                                                                                    class="custom-control-label"
-                                                                                                    for="represent-by-himself">Represent
-                                                                                                    By Himself</label> --}}
+                                                                                                        class="custom-control-label"
+                                                                                                        for="represent-by-himself">Represent
+                                                                                                        By Himself</label> --}}
                                                                                             </div>
                                                                                             <div id="representative"
                                                                                                 style="display:none">
@@ -387,13 +424,13 @@
                                                                                             id="new_application_footer"
                                                                                             style="display:none">
                                                                                             <button type="button"
-                                                                                                class="btn btn-success ml-auto float-right mr-2"
+                                                                                                class="btn btn-danger ml-auto float-right mr-2"
                                                                                                 data-dismiss="modal"
                                                                                                 id="close-new-application"><i
                                                                                                     class="fal fa-window-close"></i>
                                                                                                 Close</button>
                                                                                             <button type="submit"
-                                                                                                class="btn btn-primary ml-auto float-right mr-2"><i
+                                                                                                class="btn btn-success ml-auto float-right mr-2"><i
                                                                                                     class="ni ni-plus"></i>
                                                                                                 Apply</button>
                                                                                         </div>
@@ -1040,6 +1077,7 @@
                                                             <div class="panel-hdr">
                                                                 <h2>
                                                                     <span class="fw-300">Succeed Participants - </span>
+                                                                    (Done Feedback)
                                                                     Completed
                                                                     Participation Process
                                                                 </h2>
@@ -1110,9 +1148,10 @@
                                                         <div id="panel-1" class="panel">
                                                             <div class="panel-hdr">
                                                                 <h2>
-                                                                    <span class="fw-300">Failed Participants - </span> Not
+                                                                    <span class="fw-300">Failed Participants - </span> (Not
+                                                                    Returned Feedback Yet) Not
                                                                     Completed
-                                                                    Participation Process
+                                                                    Participation Process Yet
                                                                 </h2>
                                                                 <div class="panel-toolbar">
                                                                     <button class="btn btn-panel"
@@ -1198,12 +1237,11 @@
 
         // Processes
         { // Pre-Event
-            { // new application
+            {
+                //New Application
                 {
                     $('#new-application').click(function() {
-                        // var id = null;
                         var ic = null;
-                        // $('.modal-body #id').val(id);
                         $('.modal-body #ic_input').val(ic);
 
                         $("div[id=form-application-second-part]").hide();
@@ -1212,10 +1250,8 @@
 
                     $('#crud-modal-new-application').on('show.bs.modal', function(event) {
                         var button = $(event.relatedTarget)
-                        // var id = button.data('id');
                         var ic = button.data('ic');
 
-                        // $('.modal-body #id').val(id);
                         $('.modal-body #ic_input').val(ic);
                     });
 
@@ -1225,11 +1261,17 @@
                             $('.modal-body #fullname').val(data.participant.name);
                             $('.modal-body #phone').val(data.participant.phone);
                             $('.modal-body #email').val(data.participant.email);
-
                             if (data.fee_id) {
+                                $("select[id=fee_id]").val(data.fee_id);
+                                $('.modal-body #promo_code').val(data.fee.promo_code);
                                 $("input[id=fee_id_input]").val(data.fee.amount);
                                 $("select[id=fee_id]").hide();
                                 $("div[id=fee_id_show]").show();
+                                if (data.fee.promo_code) {
+                                    $('.modal-body #promo_code').attr('readonly', true);
+                                    $('#promo_code_edit_add').hide();
+                                    $('#promo_code_edit_remove').show();
+                                }
 
                             } else {
                                 $("select[id=fee_id]").show();
@@ -1239,7 +1281,6 @@
                                 $('.modal-body #representative_ic_input').val(ic);
                                 $('.modal-body #representative_fullname').val(data.participant.name);
                             }
-
                         }).fail(
                             function() {
                                 $('.modal-body #fullname').val(null);
@@ -1256,6 +1297,47 @@
                                 $("#new_application_footer").show();
 
                             });
+                    });
+
+                    // promo_code_edit_add
+                    $('#promo_code_edit_add').click(function() {
+                        var promo_code = $('.modal-body #promo_code').val();
+                        $.get("/event/" + event_id + "/promo-code/" + promo_code + "/participant", function(data) {
+                            if (data.fee_id) {
+                                $("input[id=fee_id_input]").val(data.fee.amount);
+                                $("select[id=fee_id]").hide();
+                                $("div[id=fee_id_show]").show();
+                                $('#promo_code_edit_add').hide();
+                                $('#promo_code_edit_remove').show();
+                                $('.modal-body #promo_code').attr('readonly', true);
+                                $("select[id=fee_id]").val(data.fee_id);
+
+                            } else {
+                                $('.modal-body #promo_code').val(null);
+                            }
+                        }).fail(
+                            function() {
+                                // TODO: The code is not valid
+                            });
+
+                    });
+
+                    // promo_code_edit_remove
+                    $('#promo_code_edit_remove').click(function() {
+                        $.get("/event/" + event_id + "/base-fee", function(data) {
+                            var promo_code = $('.modal-body #promo_code').val(null);
+                            if (data.fee_id) {
+                                $("input[id=fee_id_input]").val(data.fee.amount);
+                                $("select[id=fee_id]").hide();
+                                $("div[id=fee_id_show]").show();
+                                $('#promo_code_edit_add').show();
+                                $('#promo_code_edit_remove').hide();
+                                $('.modal-body #promo_code').removeAttr('readonly');
+                                $("select[id=fee_id]").val(data.fee_id);
+
+                            }
+                        });
+
                     });
 
                     $('#ic_input').change(function() {
@@ -2773,6 +2855,52 @@
                         });
                     });
                 }
+            }
+
+            // Update Progress
+            {
+                $('#table-applicants').on('click', '.btn-update-progress[data-remote]', function(e) {
+                    e.preventDefault();
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    var url = $(this).data('remote');
+
+                    Swal.fire({
+                        title: 'Approved this application?',
+                        text: "This applicant will be asked to pay for the participation fee!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, approve this application!',
+                        cancelButtonText: 'Not Yet'
+                    }).then((result) => {
+                        if (result.value) {
+                            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                            $.ajax({
+                                url: url,
+                                type: 'POST',
+                                dataType: 'json',
+                                data: {
+                                    method: 'POST',
+                                    submit: true
+                                }
+                            }).always(function(data) {
+                                $('#table-applicants').DataTable().draw(false);
+                            });
+                            var delayInMilliseconds = 10000; //10 second
+
+                            setTimeout(function() {
+                                //your code to be executed after 10 second
+                                $('#table-all-no-payment-yet').DataTable().ajax.reload();
+                            }, delayInMilliseconds);
+
+                        }
+                    })
+                });
             }
         }
     </script>

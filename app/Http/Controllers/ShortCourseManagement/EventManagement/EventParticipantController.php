@@ -9,6 +9,7 @@ use App\Models\ShortCourseManagement\Event;
 use App\Models\ShortCourseManagement\Participant;
 use App\Models\ShortCourseManagement\Fee;
 use Auth;
+use Carbon\Carbon;
 
 class EventParticipantController extends Controller
 {
@@ -60,8 +61,8 @@ class EventParticipantController extends Controller
             ->addColumn('action', function ($eventsParticipants) {
                 // return '<a href="/event/' . $eventsParticipants->id . '" class="btn btn-sm btn-success">Approved</a>
                 //         <a href="/event/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger">Reject</a>';
-                return '<a href="#" class="btn btn-sm btn-success">Approve</a>
-                        <a href="#" class="btn btn-sm btn-danger">Reject</a>';
+                return '<a href="javascript:;" id="approve-application" data-remote="/update-progress/approve-application/' . $eventsParticipants->id . '" class="btn btn-sm btn-success btn-update-progress">Approve</a>
+                        <a href="javascript:;" id="reject-application" data-remote="/update-progress/reject-application/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger btn-update-progress">Reject</a>';
             })
             ->rawColumns(['action', 'checkApplicant'])
             ->make(true);
@@ -103,7 +104,7 @@ class EventParticipantController extends Controller
                     '" class="noPaymentYet_checkbox">';
             })
             ->addColumn('action', function ($eventsParticipants) {
-                return '<a href="#" class="btn btn-sm btn-danger">Disqualified</a>';
+                return '<a href="javascript:;" id="disqualified-application-no-payment" data-remote="/update-progress/disqualified-application-no-payment/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger btn-update-progress">Disqualified</a>';
             })
             ->rawColumns(['action', 'checkNoPaymentYet'])
             ->make(true);
@@ -147,8 +148,8 @@ class EventParticipantController extends Controller
             })
             ->addColumn('action', function ($eventsParticipants) {
                 return '
-                <a href="#" class="btn btn-sm btn-success">Verify</a>
-                <a href="#" class="btn btn-sm btn-danger">Reject</a>';
+                <a href="javascript:;" id="verify-payment-proof" data-remote="/update-progress/verify-payment-proof/' . $eventsParticipants->id . '" class="btn btn-sm btn-success btn-update-progress">Verify</a>
+                <a href="javascript:;" id="reject-payment-proof" data-remote="/update-progress/reject-payment-proof/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger btn-update-progress">Reject</a>';
             })
             ->rawColumns(['action', 'checkPaymentWaitForVerification'])
             ->make(true);
@@ -257,8 +258,8 @@ class EventParticipantController extends Controller
         ->addColumn('action', function ($eventsParticipants) {
             // return '<a href="/event/' . $eventsParticipants->id . '" class="btn btn-sm btn-success">Approved</a>
             //         <a href="/event/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger">Reject</a>';
-            return '<a href="#" class="btn btn-sm btn-success">Approve</a>
-                    <a href="#" class="btn btn-sm btn-danger">Reject</a>';
+            return '<a href="javascript:;" id="verify-attendance-attend" data-remote="/update-progress/verify-attendance-attend/' . $eventsParticipants->id . '" class="btn btn-sm btn-success btn-update-progress">Attend</a>
+                    <a href="javascript:;" id="verify-attendance-not-attend" data-remote="/update-progress/verify-attendance-not-attend/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger btn-update-progress">Not Attend</a>';
         })
         ->rawColumns(['action', 'checkExpectedAttendace'])->make(true);
     }
@@ -371,8 +372,7 @@ class EventParticipantController extends Controller
         ->addColumn('action', function ($eventsParticipants) {
             // return '<a href="/event/' . $eventsParticipants->id . '" class="btn btn-sm btn-success">Approved</a>
             //         <a href="/event/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger">Reject</a>';
-            return '<a href="#" class="btn btn-sm btn-success">Send Questionaire</a>
-                    <a href="#" class="btn btn-sm btn-danger">Ignore Giving Questionaire</a>';
+            return '<a href="javascript:;" id="send-question" data-remote="/update-progress/send-question/' . $eventsParticipants->id . '" class="btn btn-sm btn-success btn-update-progress">Send Questionaire</a>';
         })
         ->rawColumns(['action', 'checkParticipantPostEvent'])->make(true);
     }
@@ -410,19 +410,7 @@ class EventParticipantController extends Controller
             $index++;
         }
 
-        return datatables()::of($eventsParticipants)
-        ->addColumn('checkExpectedAttendace', function ($eventsParticipants) {
-            return '<input type="checkbox" name="expected_attendances_checkbox[]" value="' .
-                $eventsParticipants->id .
-                '" class="expected_attendances_checkbox">';
-        })
-        ->addColumn('action', function ($eventsParticipants) {
-            // return '<a href="/event/' . $eventsParticipants->id . '" class="btn btn-sm btn-success">Approved</a>
-            //         <a href="/event/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger">Reject</a>';
-            return '<a href="#" class="btn btn-sm btn-success">Approve</a>
-                    <a href="#" class="btn btn-sm btn-danger">Reject</a>';
-        })
-        ->rawColumns(['action', 'checkExpectedAttendace'])->make(true);
+        return datatables()::of($eventsParticipants)->make(true);
     }
     public function dataNotCompletedParticipationProcess($id)
     {
@@ -550,19 +538,43 @@ class EventParticipantController extends Controller
     public function applyPromoCode($event_id, $promo_code)
     {
         //
-        $existFee=Fee::where([
-            ['event_id','=',$event_id],
-            ['promo_code', '=', $promo_code],
-        ])->first();
+        $existFee=null;
+        if($promo_code!=null && $promo_code!=''){
+            $existFee=Fee::where([
+                ['event_id','=',$event_id],
+                ['promo_code', '=', $promo_code],
+            ])->first();
 
-        $fee=null;
+            $fee=null;
 
-        if($existFee){
-            $fee['fee_id']=$existFee->id;
-            $fee['fee']=$existFee;
+            if($existFee){
+                $fee['fee_id']=$existFee->id;
+                $fee['fee']=$existFee;
 
+            }
         }
 
         return $fee;
+    }
+    public function baseFee($event_id)
+    {
+        //
+        $existFee=Fee::where([
+            ['event_id', '=', $event_id],
+            ['is_base_fee', '=', 1]
+        ])->orderBy('amount', 'desc')->orderBy('created_at', 'desc')->first();
+        $fee['fee_id']=$existFee->id;
+        $fee['fee']=$existFee;
+        return $fee;
+    }
+
+    public function updateProgress($progress_name, $eventsParticipants_id){
+        if($progress_name=='approve-application'){
+            $update = EventParticipant::find($eventsParticipants_id)->update([
+                'is_approved_application' => 1,
+                'approved_application_datetime' => Carbon::now(),
+            ]);
+
+        }
     }
 }

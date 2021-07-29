@@ -125,8 +125,7 @@
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
                                                                 <div class="card-header">
-                                                                    <h5 class="card-title w-150">Add New
-                                                                        Applicant</h5>
+                                                                    <h5 class="card-title w-150">Register</h5>
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <form
@@ -490,11 +489,12 @@
 
 @section('script')
     <script>
-        var event_id = '<?php echo $event->id; ?>'; {
+        var event_id = '<?php echo $event->id; ?>';
+
+        //New Application
+        {
             $('#new-application').click(function() {
-                // var id = null;
                 var ic = null;
-                // $('.modal-body #id').val(id);
                 $('.modal-body #ic_input').val(ic);
 
                 $("div[id=form-application-second-part]").hide();
@@ -503,10 +503,8 @@
 
             $('#crud-modal-new-application').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget)
-                // var id = button.data('id');
                 var ic = button.data('ic');
 
-                // $('.modal-body #id').val(id);
                 $('.modal-body #ic_input').val(ic);
             });
 
@@ -523,7 +521,7 @@
                         $("select[id=fee_id]").hide();
                         $("div[id=fee_id_show]").show();
                         if (data.fee.promo_code) {
-                            $('.modal-body #promo_code').attr('readonly');
+                            $('.modal-body #promo_code').attr('readonly', true);
                             $('#promo_code_edit_add').hide();
                             $('#promo_code_edit_remove').show();
                         }
@@ -564,7 +562,7 @@
                         $("div[id=fee_id_show]").show();
                         $('#promo_code_edit_add').hide();
                         $('#promo_code_edit_remove').show();
-                        $('.modal-body #promo_code').attr('readonly');
+                        $('.modal-body #promo_code').attr('readonly', true);
                         $("select[id=fee_id]").val(data.fee_id);
 
                     } else {
@@ -574,6 +572,24 @@
                     function() {
                         // TODO: The code is not valid
                     });
+
+            });
+
+            // promo_code_edit_remove
+            $('#promo_code_edit_remove').click(function() {
+                $.get("/event/" + event_id + "/base-fee", function(data) {
+                    var promo_code = $('.modal-body #promo_code').val(null);
+                    if (data.fee_id) {
+                        $("input[id=fee_id_input]").val(data.fee.amount);
+                        $("select[id=fee_id]").hide();
+                        $("div[id=fee_id_show]").show();
+                        $('#promo_code_edit_add').show();
+                        $('#promo_code_edit_remove').hide();
+                        $('.modal-body #promo_code').removeAttr('readonly');
+                        $("select[id=fee_id]").val(data.fee_id);
+
+                    }
+                });
 
             });
 
