@@ -66,7 +66,6 @@ class EventController extends Controller
     {
         //
 
-
         $venues = Venue::all();
 
         $shortcourses = ShortCourse::all();
@@ -76,7 +75,7 @@ class EventController extends Controller
         $users = User::all();
 
 
-        return view('short-course-management.event-management.create', compact('venues','shortcourses', 'topics', 'users'));
+        return view('short-course-management.event-management.create', compact('venues', 'shortcourses', 'topics', 'users'));
     }
     public function storeNew(Request $request)
     {
@@ -142,14 +141,14 @@ class EventController extends Controller
             'updated_by' => Auth::user()->id,
         ]);
 
-        if(isset($request->shortcourse_topic)){
-            foreach ($request->shortcourse_topic as $shortcourse_topic){
-                $exist=TopicShortCourse::where([
-                    ['shortcourse_id','=',$request->shortcourse_id],
+        if (isset($request->shortcourse_topic)) {
+            foreach ($request->shortcourse_topic as $shortcourse_topic) {
+                $exist = TopicShortCourse::where([
+                    ['shortcourse_id', '=', $request->shortcourse_id],
                     ['topic_id', '=', $shortcourse_topic],
                 ])->get();
 
-                if(!$exist){
+                if (!$exist) {
                     $createTopicShortCourse = TopicShortCourse::create([
                         'topic_id' => $shortcourse_topic,
                         'shortcourse_id' => $request->shortcourse_id,
@@ -193,11 +192,11 @@ class EventController extends Controller
         ]);
 
 
-        $existTrainer=Trainer::where('ic', '=', $request->trainer_ic)->first();
+        $existTrainer = Trainer::where('ic', '=', $request->trainer_ic)->first();
 
-        if(!$existTrainer){
-            $existUser=User::find($request->trainer_user_id)->first();
-            if(!$existUser){
+        if (!$existTrainer) {
+            $existUser = User::find($request->trainer_user_id)->first();
+            if (!$existUser) {
                 //CreateUser
             }
             $existTrainer = Trainer::create([
@@ -231,15 +230,14 @@ class EventController extends Controller
         $shortcourses = ShortCourse::all();
 
         // $trainers = array();
-        foreach ($event->events_trainers as $event_trainer){
-            $event_trainer->trainer->user=User::find($event_trainer->trainer->user_id);
+        foreach ($event->events_trainers as $event_trainer) {
+            $event_trainer->trainer->user = User::find($event_trainer->trainer->user_id);
         }
         // dd($event);
         //
         // return view('short-course-management.event-management.show', compact('event','venues','shortcourses'));
 
-        return Redirect('/event/'.$event->id)->with(compact('event','venues','shortcourses'));
-
+        return Redirect('/event/' . $event->id)->with(compact('event', 'venues', 'shortcourses'));
     }
 
     function show($id)
@@ -259,12 +257,12 @@ class EventController extends Controller
         $shortcourses = ShortCourse::all();
 
         // $trainers = array();
-        foreach ($event->events_trainers as $event_trainer){
-            $event_trainer->trainer->user=User::find($event_trainer->trainer->user_id);
+        foreach ($event->events_trainers as $event_trainer) {
+            $event_trainer->trainer->user = User::find($event_trainer->trainer->user_id);
         }
         // dd($event);
         //
-        return view('short-course-management.event-management.show', compact('event','venues','shortcourses'));
+        return view('short-course-management.event-management.show', compact('event', 'venues', 'shortcourses'));
     }
     public function edit($id)
     {
@@ -310,20 +308,20 @@ class EventController extends Controller
             'is_base_fee_select_edit.required' => 'Please insert fee type',
         ]);
 
-        if($request->is_base_fee_select_edit==0){
-            $promo_code=$request->promo_code;
-        }else{
-            $promo_code=null;
+        if ($request->is_base_fee_select_edit == 0) {
+            $promo_code = $request->promo_code;
+        } else {
+            $promo_code = null;
         }
 
         $update = Fee::find($request->id)->update([
             'is_base_fee' => $request->is_base_fee_select_edit,
-            'promo_code' =>$promo_code,
-            'promo_end_datetime'=>null,
+            'promo_code' => $promo_code,
+            'promo_end_datetime' => null,
             'name' => $request->name_fee_edit,
             'event_id' => $id,
             'amount' => $request->amount,
-            'updated_by' =>Auth::user()->id,
+            'updated_by' => Auth::user()->id,
             'is_active' => 1,
         ]);
 
@@ -345,20 +343,20 @@ class EventController extends Controller
             'is_base_fee_select_add.required' => 'Please insert fee type',
         ]);
 
-        if($request->is_base_fee_select_add==0){
-            $promo_code=$request->promo_code_add;
-        }else{
-            $promo_code=null;
+        if ($request->is_base_fee_select_add == 0) {
+            $promo_code = $request->promo_code_add;
+        } else {
+            $promo_code = null;
         }
 
         $create = Fee::create([
             'is_base_fee' => $request->is_base_fee_select_add,
-            'promo_code' =>$promo_code,
-            'promo_end_datetime'=>null,
+            'promo_code' => $promo_code,
+            'promo_end_datetime' => null,
             'name' => $request->name,
             'event_id' => $id,
             'amount' => $request->amount,
-            'created_by' =>Auth::user()->id,
+            'created_by' => Auth::user()->id,
             'is_active' => 1,
         ]);
 
@@ -417,7 +415,7 @@ class EventController extends Controller
             'trainer_id' => $request->trainer_id,
             'is_done_paid' => 0,
             'trainer_representative_id' => $request->trainer_id,
-            'created_by' =>Auth::user()->id,
+            'created_by' => Auth::user()->id,
             'is_active' => 1,
         ]);
 
@@ -437,7 +435,7 @@ class EventController extends Controller
         $create = EventShortCourse::create([
             'event_id' => $id,
             'shortcourse_id' => $request->shortcourse_id,
-            'created_by' =>Auth::user()->id,
+            'created_by' => Auth::user()->id,
             'is_active' => 1,
         ]);
 
@@ -453,11 +451,10 @@ class EventController extends Controller
     public function indexPublicView()
     {
         $events = Event::all()->load(['events_participants', 'venue', 'fees']);
-        $index=0;
-        foreach($events as $event){
-            $events[$index]->created_at_diffForHumans=$events[$index]->created_at->diffForHumans();
+        $index = 0;
+        foreach ($events as $event) {
+            $events[$index]->created_at_diffForHumans = $events[$index]->created_at->diffForHumans();
             $index++;
-
         }
         return view('short-course-management.public-view.main.index', compact('events'));
 
@@ -467,7 +464,7 @@ class EventController extends Controller
     public function getFile($file)
     {
         // $path = storage_path().'/'.'app'.'/'.'shortcourse'.'/'.'system'.'/'.$file;
-        $path = asset('/'.'storage'.'/'.'app'.'/'.'shortcourse'.'/'.'system'.'/'.$file) ;
+        $path = asset('/' . 'storage' . '/' . 'app' . '/' . 'shortcourse' . '/' . 'system' . '/' . $file);
 
         // dd($path);
 
@@ -517,7 +514,7 @@ class EventController extends Controller
         return datatables()::of($events)
             ->addColumn('name-with-href', function ($events) {
                 return '
-                <a href="/event/public-view/'. $events->id .'" class="text-primary">'.$events->name.'</a>';
+                <a href="/event/public-view/' . $events->id . '" class="text-primary">' . $events->name . '</a>';
             })
             ->addColumn('dates', function ($events) {
                 return 'Date Start: ' . $events->datetime_start . '<br> Date End:' . $events->datetime_end;

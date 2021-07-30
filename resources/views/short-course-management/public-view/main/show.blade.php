@@ -511,9 +511,11 @@
             $('#search-by-ic').click(function() {
                 var ic = $('.modal-body #ic_input').val();
                 $.get("/participant/search-by-ic/" + ic + "/event/" + event_id, function(data) {
-                    $('.modal-body #fullname').val(data.participant.name);
-                    $('.modal-body #phone').val(data.participant.phone);
-                    $('.modal-body #email').val(data.participant.email);
+                    if (data.participant) {
+                        $('.modal-body #fullname').val(data.participant.name);
+                        $('.modal-body #phone').val(data.participant.phone);
+                        $('.modal-body #email').val(data.participant.email);
+                    }
                     if (data.fee_id) {
                         $("select[id=fee_id]").val(data.fee_id);
                         $('.modal-body #promo_code').val(data.fee.promo_code);
@@ -527,18 +529,22 @@
                         }
 
                     } else {
-                        $("select[id=fee_id]").show();
-                        $("div[id=fee_id_show]").hide();
+                        $("select[id=fee_id]").hide();
+                        $("div[id=fee_id_show]").show();
                     }
                     if ($('#represent-by-himself:checked').length > 0) {
                         $('.modal-body #representative_ic_input').val(ic);
-                        $('.modal-body #representative_fullname').val(data.participant.name);
+                        if (data.participant) {
+                            $('.modal-body #representative_fullname').val(data.participant.name);
+                        }
                     }
                 }).fail(
                     function() {
                         $('.modal-body #fullname').val(null);
                         $('.modal-body #phone').val(null);
                         $('.modal-body #email').val(null);
+                        $("select[id=fee_id]").hide();
+                        $("div[id=fee_id_show]").show();
 
                         if ($('#represent-by-himself:checked').length > 0) {
                             $('.modal-body #representative_ic_input').val(ic);
