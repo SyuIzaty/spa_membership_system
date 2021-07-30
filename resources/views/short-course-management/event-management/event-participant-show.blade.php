@@ -496,6 +496,7 @@
 
                                                                         <div class="table-responsive">
                                                                             <table id="table-applicants"
+                                                                                name="table-update-progress-1"
                                                                                 class="table table-bordered table-hover table-striped w-100">
                                                                                 <thead>
                                                                                     <tr class="bg-primary-50 text-center">
@@ -589,6 +590,7 @@
 
                                                                         <div class="table-responsive">
                                                                             <table id="table-all-no-payment-yet"
+                                                                                name="table-update-progress-2"
                                                                                 class="table table-bordered table-hover table-striped w-100">
                                                                                 <thead>
                                                                                     <tr class="bg-primary-50 text-center">
@@ -678,6 +680,7 @@
 
                                                                         <div class="table-responsive">
                                                                             <table id="table-payment-wait-for-verification"
+                                                                                name="table-update-progress-3"
                                                                                 class="table table-bordered table-hover table-striped w-100">
                                                                                 <thead>
                                                                                     <tr class="bg-primary-50 text-center">
@@ -770,6 +773,7 @@
 
                                                                         <div class="table-responsive">
                                                                             <table id="table-expected-attendances"
+                                                                                name="table-update-progress-4"
                                                                                 class="table table-bordered table-hover table-striped w-100">
                                                                                 <thead>
                                                                                     <tr class="bg-primary-50 text-center">
@@ -859,6 +863,7 @@
 
                                                                         <div class="table-responsive">
                                                                             <table id="table-disqualified"
+                                                                                name="table-update-progress-5"
                                                                                 class="table table-bordered table-hover table-striped w-100">
                                                                                 <thead>
                                                                                     <tr class="bg-primary-50 text-center">
@@ -952,6 +957,7 @@
 
                                                                         <div class="table-responsive">
                                                                             <table id="table-participant-post-event"
+                                                                                name="table-update-progress-6"
                                                                                 class="table table-bordered table-hover table-striped w-100">
                                                                                 <thead>
                                                                                     <tr class="bg-primary-50 text-center">
@@ -1042,6 +1048,7 @@
 
                                                                         <div class="table-responsive">
                                                                             <table id="table-not-attended-participants"
+                                                                                name="table-update-progress-7"
                                                                                 class="table table-bordered table-hover table-striped w-100">
                                                                                 <thead>
                                                                                     <tr class="bg-primary-50 text-center">
@@ -1119,6 +1126,7 @@
                                                                         <div class="table-responsive">
                                                                             <table
                                                                                 id="table-completed-participation-process"
+                                                                                name="table-update-progress-8"
                                                                                 class="table table-bordered table-hover table-striped w-100">
                                                                                 <thead>
                                                                                     <tr class="bg-primary-50 text-center">
@@ -1191,6 +1199,7 @@
                                                                         <div class="table-responsive">
                                                                             <table
                                                                                 id="table-not-completed-participation-process"
+                                                                                name="table-update-progress-9"
                                                                                 class="table table-bordered table-hover table-striped w-100">
                                                                                 <thead>
                                                                                     <tr class="bg-primary-50 text-center">
@@ -2868,24 +2877,102 @@
 
             // Update Progress
             {
-                $('#table-applicants').on('click', '.btn-update-progress[data-remote]', function(e) {
+                $('table[name*="table-update-progress"]').on('click', '.btn-update-progress[data-remote]', function(e) {
+
+                    var tag = $(e.currentTarget);
+
+                    var title = null;
+                    var text = null;
+                    var confirmButtonText = null;
+                    var cancelButtonText = null;
+                    var currentTableId = null;
+                    var nextTableId = null;
+
+                    switch (tag[0].id) {
+                        case 'approve-application':
+                            title = 'Approved this application?';
+                            text = "This applicant will be asked to pay for the participation fee!";
+                            confirmButtonText = 'Yes, approve this application!';
+                            cancelButtonText = 'Not Yet';
+                            currentTableId = '#table-applicants';
+                            nextTableId = '#table-all-no-payment-yet';
+                            break;
+                        case ('reject-application'):
+                            title = 'Reject this application?';
+                            text = "This applicant will be rejected (deleted)!";
+                            confirmButtonText = 'Yes, reject this application!';
+                            cancelButtonText = 'No';
+                            currentTableId = '#table-applicants';
+                            nextTableId = '#table-disqualified';
+                            break;
+                        case ('disqualified-application-no-payment'):
+                            title = 'Disqualify this application?';
+                            text = "This applicant will be disqualified!";
+                            confirmButtonText = 'Yes, disqualify this application!';
+                            cancelButtonText = 'No';
+                            currentTableId = '#table-all-no-payment-yet';
+                            nextTableId = '#table-disqualified';
+                            break;
+                        case 'verify-payment-proof':
+                            title = 'Verify this payment proof?';
+                            text = "This payment will be verified!";
+                            confirmButtonText = 'Yes, verify this payment!';
+                            cancelButtonText = 'No';
+                            currentTableId = '#table-payment-wait-for-verification';
+                            nextTableId = '#table-expected-attendances';
+                            break;
+                        case 'reject-payment-proof':
+                            title = 'Reject this payment proof?';
+                            text = "This payment will be rejected! The participant will be asked to insert other proof";
+                            confirmButtonText = 'Yes, reject this payment!';
+                            cancelButtonText = 'No';
+                            currentTableId = '#table-expected-attendances';
+                            nextTableId = '#table-payment-wait-for-verification';
+                            break;
+                        case 'verify-attendance-attend':
+                            title = 'This participant attend the event?';
+                            text = "This participant attendance will be verified!";
+                            confirmButtonText = 'Yes, the participant attend the event!';
+                            cancelButtonText = 'No';
+                            currentTableId = '#table-expected-attendances';
+                            nextTableId = '#table-participant-post-event';
+                            break;
+                        case 'verify-attendance-not-attend':
+                            title = 'This participant not attend the event?';
+                            text = "This participant will be verified to not attend the event!";
+                            confirmButtonText = 'Yes, the participant not attend the event!';
+                            cancelButtonText = 'No';
+                            currentTableId = '#table-expected-attendances';
+                            nextTableId = '#table-not-attended-participants';
+                            break;
+                        case 'send-question':
+                            title = 'Send feedback form to these participants?';
+                            text = "This participant will be sended a feedback form!";
+                            confirmButtonText = 'Yes, send the feedback form!';
+                            cancelButtonText = 'No';
+                            currentTableId = '#table-participant-post-event';
+                            nextTableId = '#table-not-completed-participation-process';
+                            break;
+                        default:
+                            break;
+                    }
                     e.preventDefault();
                     $.ajaxSetup({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
                     });
+                    console.log();
                     var url = $(this).data('remote');
-
                     Swal.fire({
-                        title: 'Approved this application?',
-                        text: "This applicant will be asked to pay for the participation fee!",
+                        title: title,
+                        text: text,
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, approve this application!',
-                        cancelButtonText: 'Not Yet'
+                        confirmButtonText: confirmButtonText,
+                        cancelButtonText: cancelButtonText
                     }).then((result) => {
                         if (result.value) {
                             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
@@ -2898,13 +2985,13 @@
                                     submit: true
                                 }
                             }).always(function(data) {
-                                $('#table-applicants').DataTable().draw(false);
+                                $(currentTableId).DataTable().draw(false);
                             });
                             var delayInMilliseconds = 10000; //10 second
 
                             setTimeout(function() {
                                 //your code to be executed after 10 second
-                                $('#table-all-no-payment-yet').DataTable().ajax.reload();
+                                $(nextTableId).DataTable().ajax.reload();
                             }, delayInMilliseconds);
 
                         }
