@@ -99,7 +99,8 @@ class VaccineController extends Controller
 
     public function data_vaccine()
     {
-        $vaccine = Vaccine::select('cdd_vaccine.*');
+        // $vaccine = Vaccine::with(['reasons','staffs','childs'])->select('cdd_vaccine.*');
+        $vaccine = Vaccine::all();
 
         return datatables()::of($vaccine)
         ->addColumn('action', function ($vaccine) {
