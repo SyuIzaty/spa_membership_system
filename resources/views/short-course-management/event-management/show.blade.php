@@ -43,9 +43,9 @@
                                                     @csrf
                                                     <table class="table table-bordered table-hover table-striped">
                                                         <thead class="thead bg-primary-50">
-                                                            <tr>
-                                                                <th><b>Basic Information</b></th>
-                                                                <th>
+                                                            <tr class=" bg-primary-50" scope="row">
+                                                                <th colspan="2">
+                                                                    <b>Basic Information</b>
                                                                     <a href="#" class="btn btn-sm btn-info float-right mr-2"
                                                                         name="edit-basic" id="edit-basic">
                                                                         <i class="fal fa-pencil"></i>
@@ -67,15 +67,15 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr>
-                                                                <th style="background-color:plum">Name</th>
+                                                                <td style="background-color:plum">Name</td>
                                                                 <td name="name_show" id="name_show">
-                                                                    <b>{{ $event->name }}</b>
+                                                                    {{ $event->name }}
                                                                 </td>
                                                                 <td name="name_edit" id="name_edit" style="display: none">
                                                                     <div class="form-group">
                                                                         <input id="name" name="name" type="text"
                                                                             value="{{ $event->name }}"
-                                                                            class="form-control font-weight-bold">
+                                                                            class="form-control">
                                                                         @error('name')
                                                                             <p style="color: red">
                                                                                 <strong> *
@@ -87,9 +87,9 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <th style="background-color:plum">Date Start</th>
+                                                                <td style="background-color:plum">Date Start</td>
                                                                 <td name="datetime_start_show" id="datetime_start_show">
-                                                                    <b>{{ date('d/m/Y h:i A', strtotime($event->datetime_start)) }}</b>
+                                                                    {{ date('d/m/Y h:i A', strtotime($event->datetime_start)) }}
                                                                 </td>
                                                                 {{-- <input class="form-control" type="datetime-local" value="2023-07-23T11:25:00" id="example-datetime-local-input"> --}}
                                                                 <td name="datetime_start_edit" id="datetime_start_edit"
@@ -98,7 +98,7 @@
                                                                         <input id="datetime_start" name="datetime_start"
                                                                             type="datetime-local"
                                                                             value="{{ substr(date('c', strtotime($event->datetime_start)), 0, -6) }}"
-                                                                            class="form-control font-weight-bold">
+                                                                            class="form-control">
                                                                         @error('datetime_start')>
                                                                             <p style="color: red">
                                                                                 <strong> *
@@ -110,9 +110,9 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <th style="background-color:plum">Date End</th>
+                                                                <td style="background-color:plum">Date End</td>
                                                                 <td name="datetime_end_show" id="datetime_end_show">
-                                                                    <b>{{ date('d/m/Y h:i A', strtotime($event->datetime_end)) }}</b>
+                                                                    {{ date('d/m/Y h:i A', strtotime($event->datetime_end)) }}
                                                                 </td>
                                                                 <td name="datetime_end_edit" id="datetime_end_edit"
                                                                     style="display: none">
@@ -120,7 +120,7 @@
                                                                         <input id="datetime_end" name="datetime_end"
                                                                             type="datetime-local"
                                                                             value="{{ substr(date('c', strtotime($event->datetime_end)), 0, -6) }}"
-                                                                            class="form-control font-weight-bold">
+                                                                            class="form-control">
                                                                         @error('datetime_end')>
                                                                             <p style="color: red">
                                                                                 <strong> *
@@ -132,15 +132,15 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <th style="background-color:plum">Venue</th>
+                                                                <td style="background-color:plum">Venue</td>
                                                                 <td name="venue_show" id="venue_show">
-                                                                    <b>{{ $event->venue->name }}</b>
+                                                                    {{ $event->venue->name }}
                                                                 </td>
                                                                 <td name="venue_edit" id="venue_edit" style="display: none">
                                                                     {{-- <div class="form-group">
                                                                         <input id="venue.name" name="venue.name"
                                                                             value="{{$event->venue->name}}"
-                                                                            class="form-control font-weight-bold">
+                                                                            class="form-control">
                                                                         @error('venue.name')>
                                                                             <p style="color: red">
                                                                                 <strong> *
@@ -150,9 +150,9 @@
                                                                         @enderror
                                                                     </div> --}}
                                                                     <div class="form-group">
-                                                                        <select class="form-control venue  font-weight-bold"
-                                                                            name="venue" id="venue" data-select2-id="venue"
-                                                                            tabindex="-1" aria-hidden="true">
+                                                                        <select class="form-control venue " name="venue"
+                                                                            id="venue" data-select2-id="venue" tabindex="-1"
+                                                                            aria-hidden="true">
                                                                             <option
                                                                                 value={{ $event->venue ? $event->venue->id : '' }}
                                                                                 data-select2-id={{ $event->venue ? $event->venue->id : '' }}>
@@ -191,11 +191,11 @@
                                                         @foreach ($event->fees as $fee)
                                                             <tr scope="row">
                                                                 <td>
-                                                                    <b>{{ $fee->name }}</b>
+                                                                    {{ $fee->name }}
                                                                 </td>
-                                                                <td><b>{{ $fee->amount }}</b></td>
-                                                                <td><b>{{ $fee->is_base_fee }}</b></td>
-                                                                <td><b>{{ $fee->promo_code }}</b></td>
+                                                                <td>{{ $fee->amount }}</td>
+                                                                <td>{{ $fee->is_base_fee }}</td>
+                                                                <td>{{ $fee->promo_code }}</td>
                                                                 <td>
                                                                     <form method="post"
                                                                         action="/event/fee/delete/{{ $fee->id }}">
@@ -238,7 +238,7 @@
                                                                         action="{{ url('/event/fee/create/' . $event->id) }}"
                                                                         method="post" name="form">
                                                                         @csrf
-                                                                        <input type="hidden" name="id" id="id">
+                                                                        <input type="hidden" name="id_1" id="id_1">
                                                                         <p><span class="text-danger">*</span>
                                                                             Vital Information</p>
                                                                         <hr class="mt-1 mb-2">
@@ -260,7 +260,7 @@
                                                                                 <label class="form-label" for="amount"><span
                                                                                         class="text-danger">*</span>amount</label>
                                                                                 <input type="number" step=".01"
-                                                                                    class="form-control" id="amount"
+                                                                                    class="form-control" id="new_amount"
                                                                                     name="amount">
                                                                                 @error('amount')
                                                                                     <p style="color: red">
@@ -278,7 +278,7 @@
                                                                                 {{-- <input class="form-control" id="is_base_fee_select_add"
                                                                                 name="is_base_fee_select_add"> --}}
                                                                                 <select
-                                                                                    class="form-control is_base_fee_select_add font-weight-bold"
+                                                                                    class="form-control is_base_fee_select_add"
                                                                                     name="is_base_fee_select_add"
                                                                                     id="is_base_fee_select_add"
                                                                                     data-select2-id="is_base_fee_select_add"
@@ -346,12 +346,12 @@
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     {{-- {!! Form::open(['action' => 'EventParticipantController@store', 'method' => 'POST']) !!} --}}
-                                                                    <input type="hidden" name="id" id="id">
+                                                                    <input type="hidden" name="id_2" id="id_2">
                                                                     <p><span class="text-danger">*</span>
                                                                         Vital Information</p>
                                                                     <hr class="mt-1 mb-2">
                                                                     <div id="form-fee">
-                                                                        <input type="hidden" name="id" id="id">
+                                                                        <input type="hidden" name="id_3" id="id_3">
                                                                         <div class="form-group">
                                                                             <label class="form-label" for="name"><span
                                                                                     class="text-danger">*</span>name</label>
@@ -360,7 +360,7 @@
                                                                             {{-- <div class="form-group">
                                                                             <input id="name" name="name" type="text"
                                                                                 value="{{ $event->name }}"
-                                                                                class="form-control font-weight-bold">
+                                                                                class="form-control">
                                                                             @error('name')
                                                                                 <p style="color: red">
                                                                                     <strong> *
@@ -381,7 +381,7 @@
                                                                             <label class="form-label" for="amount"><span
                                                                                     class="text-danger">*</span>amount</label>
                                                                             <input type="number" step=".01"
-                                                                                class="form-control" id="amount"
+                                                                                class="form-control" id="edit_amount"
                                                                                 name="amount">
                                                                             @error('amount')
                                                                                 <p style="color: red">
@@ -397,7 +397,7 @@
                                                                                     class="text-danger">*</span>Fee
                                                                                 Type</label>
                                                                             <select
-                                                                                class="form-control is_base_fee_select_edit font-weight-bold"
+                                                                                class="form-control is_base_fee_select_edit"
                                                                                 name="is_base_fee_select_edit"
                                                                                 id="is_base_fee_select_edit"
                                                                                 data-select2-id="is_base_fee_select_edit"
@@ -434,7 +434,7 @@
                                                                     <div class="footer">
                                                                         <button type="button"
                                                                             class="btn btn-success ml-auto float-right mr-2"
-                                                                            data-dismiss="modal" id="close-new-fee"><i
+                                                                            data-dismiss="modal" id="close-edit-fee"><i
                                                                                 class="fal fa-window-close"></i>
                                                                             Close</button>
                                                                         <button type="submit"
@@ -485,8 +485,8 @@
 
                                                         @foreach ($event->events_trainers as $event_trainer)
                                                             <tr>
-                                                                <td><b>{{ $event_trainer->trainer->user->id }}</b></td>
-                                                                <td><b>{{ $event_trainer->trainer->user->name }}</b></td>
+                                                                <td>{{ $event_trainer->trainer->user->id }}</td>
+                                                                <td>{{ $event_trainer->trainer->user->name }}</td>
                                                                 <td>
                                                                     <form method="post"
                                                                         action="/event/trainer/detached/{{ $event_trainer->id }}">
@@ -518,26 +518,27 @@
                                                                         method="post" name="form">
                                                                         @csrf
                                                                         {{-- {!! Form::open(['action' => 'ShortCourseManagement\EventManagement\EventController@storeTrainer\ '.$event->id, 'method' => 'POST']) !!} --}}
-                                                                        <input type="hidden" name="id" id="id">
+                                                                        <input type="hidden" name="id_4" id="id_4">
                                                                         <p><span class="text-danger">*</span>
                                                                             Vital Information</p>
                                                                         <hr class="mt-1 mb-2">
                                                                         <div class="form-group">
-                                                                            <label for="user_id"><span
+                                                                            <label for="trainer_ic"><span
                                                                                     class="text-danger">*</span>
-                                                                                Trainer's User ID</label>
+                                                                                Trainer's IC</label>
                                                                             <div class="form-inline" style="width:100%">
                                                                                 <div class="form-group mr-2 mb-2"
                                                                                     style="width:85%">
                                                                                     <input class="form-control w-100"
-                                                                                        id="user_id" name="user_id">
+                                                                                        id="trainer_ic_input"
+                                                                                        name="trainer_ic_input">
                                                                                 </div>
                                                                                 <a href="javascript:;" data-toggle="#"
-                                                                                    id="search-by-user_id"
+                                                                                    id="search-by-trainer_ic"
                                                                                     class="btn btn-primary mb-2"><i
                                                                                         class="ni ni-magnifier"></i></a>
                                                                             </div>
-                                                                            @error('user_id')
+                                                                            @error('trainer_ic_input')
                                                                                 <p style="color: red">
                                                                                     <strong> *
                                                                                         {{ $message }}
@@ -549,15 +550,66 @@
                                                                         <div id="form-add-trainer-second-part"
                                                                             style="display: none">
 
+                                                                            {{-- <div class="form-group">
+                                                                                <label for="user_id"><span
+                                                                                        class="text-danger">*</span>
+                                                                                    Trainer's User ID</label>
+                                                                                <div class="form-inline" style="width:100%">
+                                                                                    <div class="form-group mr-2 mb-2"
+                                                                                        style="width:85%">
+                                                                                        <input class="form-control w-100"
+                                                                                            id="user_id" name="user_id">
+                                                                                    </div>
+                                                                                    <a href="javascript:;" data-toggle="#"
+                                                                                        id="search-by-user_id"
+                                                                                        class="btn btn-primary mb-2"><i
+                                                                                            class="ni ni-magnifier"></i></a>
+                                                                                </div>
+                                                                                @error('user_id')
+                                                                                    <p style="color: red">
+                                                                                        <strong> *
+                                                                                            {{ $message }}
+                                                                                        </strong>
+                                                                                    </p>
+                                                                                @enderror
+                                                                            </div> --}}
+                                                                            <div class="form-group">
+                                                                                <label for="user_id"><span
+                                                                                        class="text-danger">*</span>
+                                                                                    Trainer's User ID</label>
+                                                                                {{ Form::text('trainer_user_id_text', '', ['class' => 'form-control', 'placeholder' => "Trainer's User ID", 'id' => 'trainer_user_id_text', 'disabled', 'style' => 'display:none', 'readonly']) }}
+                                                                                <select class="form-control user"
+                                                                                    name="trainer_user_id"
+                                                                                    id="trainer_user_id" disabled
+                                                                                    style="display:none">
+                                                                                    <option disabled>Select User ID</option>
+                                                                                    <option value='-1' name="create_new">
+                                                                                        Create
+                                                                                        New</option>
+                                                                                    @foreach ($users as $user)
+                                                                                        <option value='{{ $user->id }}'
+                                                                                            name="{{ $user->name }}">
+                                                                                            {{ $user->id }} -
+                                                                                            {{ $user->name }}</option>
+                                                                                    @endforeach
+                                                                                </select>
+                                                                                @error('trainer_user_id')
+                                                                                    <p style="color: red">{{ $message }}
+                                                                                    </p>
+                                                                                @enderror
+                                                                            </div>
+                                                                            <hr class="mt-1 mb-2">
+
                                                                             <input class="form-control-plaintext"
                                                                                 id="trainer_id" name="trainer_id" hidden>
                                                                             <div class="form-group">
                                                                                 <label class="form-label"
-                                                                                    for="fullname"><span
+                                                                                    for="trainer_fullname"><span
                                                                                         class="text-danger">*</span>Fullname</label>
                                                                                 <input class="form-control-plaintext"
-                                                                                    id="fullname" name="fullname" disabled>
-                                                                                @error('name')
+                                                                                    id="trainer_fullname"
+                                                                                    name="trainer_fullname" disabled>
+                                                                                @error('trainer_fullname')
                                                                                     <p style="color: red">
                                                                                         <strong> *
                                                                                             {{ $message }}
@@ -567,11 +619,13 @@
                                                                             </div>
                                                                             <hr class="mt-1 mb-2">
                                                                             <div class="form-group">
-                                                                                <label class="form-label" for="phone"><span
+                                                                                <label class="form-label"
+                                                                                    for="trainer_phone"><span
                                                                                         class="text-danger">*</span>Phone</label>
                                                                                 <input class="form-control-plaintext"
-                                                                                    id="phone" name="phone" disabled>
-                                                                                @error('phone')
+                                                                                    id="trainer_phone" name="trainer_phone"
+                                                                                    disabled>
+                                                                                @error('trainer_phone')
                                                                                     <p style="color: red">
                                                                                         <strong> *
                                                                                             {{ $message }}
@@ -582,11 +636,13 @@
 
                                                                             <hr class="mt-1 mb-2">
                                                                             <div class="form-group">
-                                                                                <label class="form-label" for="email"><span
+                                                                                <label class="form-label"
+                                                                                    for="trainer_email"><span
                                                                                         class="text-danger">*</span>Email</label>
                                                                                 <input class="form-control-plaintext"
-                                                                                    id="email" name="email" disabled>
-                                                                                @error('email')
+                                                                                    id="trainer_email" name="trainer_email"
+                                                                                    disabled>
+                                                                                @error('trainer_email')
                                                                                     <p style="color: red">
                                                                                         <strong> *
                                                                                             {{ $message }}
@@ -609,7 +665,7 @@
                                                                                 Add</button>
                                                                         </div>
 
-                                                                        {!! Form::close() !!}
+                                                                        {{-- {!! Form::close() !!} --}}
                                                                     </form>
                                                                 </div>
                                                             </div>
@@ -631,9 +687,9 @@
                                                     <tbody>
                                                         @foreach ($event->events_shortcourses as $events_shortcourses)
                                                             <tr>
-                                                                <td><b>{{ $events_shortcourses->shortcourse->id }}</b>
+                                                                <td>{{ $events_shortcourses->shortcourse->id }}
                                                                 </td>
-                                                                <td><b>{{ $events_shortcourses->shortcourse->name }}</b>
+                                                                <td>{{ $events_shortcourses->shortcourse->name }}
                                                                 </td>
                                                                 <td>
                                                                     {{-- <a href="#"
@@ -674,7 +730,7 @@
                                                                         action="{{ url('/event/shortcourse/attached/' . $event->id) }}"
                                                                         method="post" name="form">
                                                                         @csrf
-                                                                        <input type="hidden" name="id" id="id">
+                                                                        <input type="hidden" name="id_5" id="id_5">
                                                                         <p><span class="text-danger">*</span>
                                                                             Vital Information</p>
                                                                         <hr class="mt-1 mb-2">
@@ -687,7 +743,7 @@
                                                                                     style="width:85%">
                                                                                     <div class="form-group">
                                                                                         <select
-                                                                                            class="form-control shortcourse font-weight-bold"
+                                                                                            class="form-control shortcourse"
                                                                                             name="shortcourse_id"
                                                                                             id="shortcourse_id"
                                                                                             data-select2-id="shortcourse_id"
@@ -725,7 +781,7 @@
                                                                                 <textarea class="form-control-plaintext"
                                                                                     rows="5" id="objective" name="objective"
                                                                                     disabled>
-                                                                                                                                                    </textarea>
+                                                                                                                            </textarea>
                                                                                 @error('objective')
                                                                                     <p style="color: red">
                                                                                         <strong> *
@@ -742,7 +798,7 @@
                                                                                 <textarea class="form-control-plaintext"
                                                                                     rows="5" id="description"
                                                                                     name="description" disabled>
-                                                                                                                                                        </textarea>
+                                                                                                                            </textarea>
                                                                                 @error('description')
                                                                                     <p style="color: red">
                                                                                         <strong> *
@@ -757,7 +813,7 @@
                                                                             <button type="button"
                                                                                 class="btn btn-success ml-auto float-right mr-2"
                                                                                 data-dismiss="modal"
-                                                                                id="close-add-trainer"><i
+                                                                                id="close-add-shortcourse"><i
                                                                                     class="fal fa-window-close"></i>
                                                                                 Close</button>
                                                                             <button type="submit"
@@ -778,8 +834,7 @@
                                         <div class="card">
                                             <div class="card-header bg-primary-50"><b>Participation Statistics</b></div>
                                             <div class="card-body">
-                                                <div class="row">
-                                                    <table class="table table-striped table-bordered m-0">
+                                                {{-- <table class="table table-striped table-bordered m-0">
                                                         <thead class="thead">
                                                             <tr class=" bg-primary-50">
                                                                 <th colspan="5"><b>Pre-Event</b></th>
@@ -799,42 +854,131 @@
                                                             <td><b>0</b></td>
                                                             <td><b>0</b></td>
                                                         </tbody>
-                                                    </table>
-                                                    <hr class="mt-2 mb-3">
-                                                    <table class="table table-striped table-bordered m-0">
-                                                        <thead class="thead">
-                                                            <tr class=" bg-primary-50">
-                                                                <th colspan="5"><b>During Event</b></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <th style="background-color:plum; width:50%">Attend</th>
-                                                                <td style="width:50%"><b>0</b></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th style="background-color:plum; width:50%">Not Attend</th>
-                                                                <td style="width:50%"><b>0</b></td>
-                                                            </tr>
-                                                        <tbody>
-                                                    </table>
-                                                    <hr class="mt-2 mb-3">
-                                                    <table class="table table-striped table-bordered m-0">
-                                                        <thead class="thead">
-                                                            <tr class=" bg-primary-50">
-                                                                <th colspan="5"><b>Post-Event</b></th>
-                                                            </tr>
-                                                            <tr style="background-color:plum">
-                                                                <th>Not Completed Participation Process</th>
-                                                                <th>Completed Participation Process</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <td><b>0</b></td>
-                                                            <td><b>0</b></td>
-                                                        </tbody>
-                                                    </table>
+                                                    </table> --}}
+                                                <div class="row d-flex align-items-center justify-content-center">
+                                                    <div class="col-sm-6 col-xl-3">
+                                                        <div
+                                                            class="p-3 bg-primary-500 rounded overflow-hidden position-relative text-white mb-g">
+                                                            <div class="">
+                                                                <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                                                    0
+                                                                    <small class="m-0 l-h-n">Wait for Applic.
+                                                                        Approv.</small>
+                                                                </h3>
+                                                            </div>
+                                                            <i class="fal fa-users position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1"
+                                                                style="font-size:6rem"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6 col-xl-3">
+                                                        <div
+                                                            class="p-3 bg-warning-500 rounded overflow-hidden position-relative text-white mb-g">
+                                                            <div class="">
+                                                                <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                                                    0
+                                                                    <small class="m-0 l-h-n">In progress of Make.
+                                                                        Pay.</small>
+                                                                </h3>
+                                                            </div>
+                                                            <i class="fal fa-briefcase position-absolute pos-right pos-bottom opacity-15  mb-n1 mr-n4"
+                                                                style="font-size: 6rem;"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6 col-xl-3">
+                                                        <div
+                                                            class="p-3 bg-success-500 rounded overflow-hidden position-relative text-white mb-g">
+                                                            <div class="">
+                                                                <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                                                    0
+                                                                    <small class="m-0 l-h-n">Wait for Pay. Confirm.</small>
+                                                                </h3>
+                                                            </div>
+                                                            <i class="ni ni-doc position-absolute pos-right pos-bottom opacity-15 mb-n5 mr-n6"
+                                                                style="font-size: 8rem;"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6 col-xl-3">
+                                                        <div
+                                                            class="p-3 bg-info-500 rounded overflow-hidden position-relative text-white mb-g">
+                                                            <div class="">
+                                                                <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                                                    0
+                                                                    <small class="m-0 l-h-n">Ready for Event</small>
+                                                                </h3>
+                                                            </div>
+                                                            <i class="fal fa-calendar position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n4"
+                                                                style="font-size: 6rem;"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6 col-xl-3">
+                                                        <div
+                                                            class="p-3 bg-primary-500 rounded overflow-hidden position-relative text-white mb-g">
+                                                            <div class="">
+                                                                <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                                                    0
+                                                                    <small class="m-0 l-h-n">Attend</small>
+                                                                </h3>
+                                                            </div>
+                                                            <i class="fal fa-check position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n4"
+                                                                style="font-size: 6rem;"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6 col-xl-3">
+                                                        <div
+                                                            class="p-3 bg-danger-500 rounded overflow-hidden position-relative text-white mb-g">
+                                                            <div class="">
+                                                                <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                                                    0
+                                                                    <small class="m-0 l-h-n">Not Attend</small>
+                                                                </h3>
+                                                            </div>
+                                                            <i class="fal fa-times position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n4"
+                                                                style="font-size: 6rem;"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6 col-xl-3">
+                                                        <div
+                                                            class="p-3 bg-danger-500 rounded overflow-hidden position-relative text-white mb-g">
+                                                            <div class="">
+                                                                <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                                                    0
+                                                                    <small class="m-0 l-h-n">Cancelled Applic.</small>
+                                                                </h3>
+                                                            </div>
+                                                            <i class="fal fa-ban position-absolute pos-right pos-bottom opacity-15  mb-n1 mr-n4"
+                                                                style="font-size: 6rem;"></i>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-6 col-xl-3">
+                                                        <div
+                                                            class="p-3 bg-danger-500 rounded overflow-hidden position-relative text-white mb-g">
+                                                            <div class="">
+                                                                <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                                                    0
+                                                                    <small class="m-0 l-h-n">Not Completed Feedback</small>
+                                                                </h3>
+                                                            </div>
+                                                            <i class="fal fa-clock position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n4"
+                                                                style="font-size: 6rem;"></i>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-6 col-xl-3">
+                                                        <div
+                                                            class="p-3 bg-primary-500 rounded overflow-hidden position-relative text-white mb-g">
+                                                            <div class="">
+                                                                <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                                                    0
+                                                                    <small class="m-0 l-h-n">Completed</small>
+                                                                </h3>
+                                                            </div>
+                                                            <i class="fal fa-globe position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n4"
+                                                                style="font-size: 6rem;"></i>
+                                                        </div>
+                                                    </div>
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -1008,6 +1152,65 @@
 
                     $('.modal-body #id').val(id);
                     $('.modal-body #user_id').val(user_id);
+                });
+
+                // search by trainer ic
+                $('#search-by-trainer_ic').click(function() {
+                    var trainer_ic = $('#trainer_ic_input').val();
+                    $.get("/trainer/search-by-trainer_ic/" + trainer_ic, function(data) {
+                        console.log(data.id);
+                        $("#trainer_user_id option[value='" + data.id + "']").attr("selected", "true");
+                        $("#trainer_user_id_text").show();
+                        $("#trainer_user_id_text").removeAttr('disabled');
+
+                        $("#trainer_user_id").hide();
+                        $("#trainer_user_id").attr('style', 'display: none');
+                        $("#trainer_user_id").removeClass('user');
+
+                        $("#trainer_user_id_text").val(data.id);
+                        $('#trainer_fullname').val(data.name);
+                        $('#trainer_phone').val(data.trainer.phone);
+                        $('#trainer_email').val(data.email);
+
+
+                    }).fail(
+                        function() {
+                            $('#trainer_ic').val(null);
+                            $("#trainer_user_id_text").hide();
+                            $("#trainer_user_id_text").attr('disabled');
+
+                            $("#trainer_user_id").show();
+                            $("#trainer_user_id").removeAttr('disabled');
+                            $("#trainer_user_id").addClass('user');
+
+                            $("#trainer_user_id option[value='-1']").attr("selected", "true");
+                            $('#trainer_fullname').val(null);
+                            $('#trainer_phone').val(null);
+                            $('#trainer_email').val(null);
+                        }).always(
+                        function() {
+                            $("div[id=form-add-trainer-second-part]").show();
+                        });
+
+                });
+
+                // User_ID information
+                $('#trainer_user_id').change(function(event) {
+                    var trainer_fullname = $('#trainer_user_id').find(":selected").attr('name');
+                    var trainer_user_id = $('#trainer_user_id').find(":selected").val();
+
+                    var users = @json($users);
+
+                    var selected_user = users.find((x) => {
+                        return x.id == trainer_user_id;
+                    });
+                    if (selected_user) {
+                        $('#trainer_fullname').val(selected_user.name);
+                        $('#trainer_email').val(selected_user.email);
+                    } else {
+                        $('#trainer_fullname').val(null);
+                        $('#trainer_email').val(null);
+                    }
                 });
 
                 // search by trainer user_id

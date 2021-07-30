@@ -82,7 +82,7 @@
                                                 @if (Session::has('messageAlreadyApplied'))
                                                     <div class="alert alert-danger  text-white"
                                                         style="color:rgb(105, 0, 0); background-color: rgb(255, 51, 51);width:100%;">
-                                                        <i class="icon fal fa-check-circle" style="color:white"></i>
+                                                        <i class="icon fal fa-times-circle" style="color:white"></i>
                                                         {{ Session::get('messageAlreadyApplied') }}
                                                     </div>
                                                 @endif

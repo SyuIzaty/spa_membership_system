@@ -519,7 +519,7 @@ class EventParticipantController extends Controller
             $existEventParticipant->fee_id = $request->fee_id;
             $existEventParticipant->updated_by = Auth::user()->id;
             $existEventParticipant->save();
-            return Redirect()->back()->with('messageAlreadyApplied', 'The participant have been applied.');
+            return Redirect()->back()->with('messageAlreadyApplied', 'The participant have already been applied before.');
         }
         return Redirect()->back()->with('messageNewApplication', 'New participant applied successfully');
     }

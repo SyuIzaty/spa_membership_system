@@ -83,7 +83,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                 </div>
                 {{-- <div class="d-flex flex-1" style="background: url({{asset('img/svg/pattern-1.svg')}} no-repeat center bottom fixed; background-size: cover;"> --}}
                 <div
-                    class="container py-4 py-lg-5 px-4 px-sm-0 text-white d-flex align-items-center justify-content-center">
+                    class="container text-white d-flex align-items-center justify-content-center">
                     @yield('content')
                     <div class="position-absolute pos-bottom pos-left pos-right p-3 text-center text-white">
                         2021 © INTEC Education College&nbsp;|&nbsp;<a href='https://intec.edu.my'

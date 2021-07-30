@@ -256,13 +256,15 @@ class EventController extends Controller
 
         $shortcourses = ShortCourse::all();
 
+        $users = User::all();
+
         // $trainers = array();
         foreach ($event->events_trainers as $event_trainer) {
             $event_trainer->trainer->user = User::find($event_trainer->trainer->user_id);
         }
         // dd($event);
         //
-        return view('short-course-management.event-management.show', compact('event', 'venues', 'shortcourses'));
+        return view('short-course-management.event-management.show', compact('event', 'venues', 'shortcourses', 'users'));
     }
     public function edit($id)
     {
@@ -405,16 +407,17 @@ class EventController extends Controller
     {
         // //
         $validated = $request->validate([
-            'trainer_id' => 'required',
+            'trainer_ic_input' => 'required',
         ], [
-            'trainer_id.required' => 'Please insert user id of the trainer',
+            'trainer_ic_input.required' => 'Please insert trainer ic of the trainer',
         ]);
+        $existTrainer=Trainer::where('ic', $request->trainer_ic_input)->first();
 
         $create = EventTrainer::create([
             'event_id' => $id,
-            'trainer_id' => $request->trainer_id,
+            'trainer_id' => $existTrainer->id,
             'is_done_paid' => 0,
-            'trainer_representative_id' => $request->trainer_id,
+            'trainer_representative_id' => $existTrainer->id,
             'created_by' => Auth::user()->id,
             'is_active' => 1,
         ]);
