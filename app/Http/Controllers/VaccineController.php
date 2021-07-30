@@ -9,6 +9,7 @@ use App\Staff;
 use App\User;
 use App\Vaccine;
 use App\VaccineReason;
+use App\VaccineChild;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\VaccineExport;
@@ -98,7 +99,7 @@ class VaccineController extends Controller
 
     public function data_vaccine()
     {
-        $vaccine = Vaccine::all();
+        $vaccine = Vaccine::select('cdd_vaccine.*');
 
         return datatables()::of($vaccine)
         ->addColumn('action', function ($vaccine) {
@@ -119,17 +120,17 @@ class VaccineController extends Controller
 
         ->editColumn('user_name', function ($vaccine) {
 
-            return strtoupper($vaccine->staffs->staff_name) ?? '<div style="color:red;" > -- </div>';
+            return isset($vaccine->staffs->staff_name) ? strtoupper($vaccine->staffs->staff_name) : '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('user_position', function ($vaccine) {
 
-            return strtoupper($vaccine->staffs->staff_position) ?? '<div style="color:red;" > -- </div>';
+            return isset($vaccine->staffs->staff_position) ? strtoupper($vaccine->staffs->staff_position) : '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('user_depart', function ($vaccine) {
 
-            return strtoupper($vaccine->staffs->staff_dept) ?? '<div style="color:red;" > -- </div>';
+            return isset($vaccine->staffs->staff_dept) ? strtoupper($vaccine->staffs->staff_dept) : '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('q1', function ($vaccine) {
@@ -176,8 +177,8 @@ class VaccineController extends Controller
             }
         })
         
-        ->rawColumns(['action', 'q1', 'q2', 'q3', 'q3_effect', 'q4', 'q4_effect', 'created_at', 'updated_at', 'status', 'user_position', 'user_depart'])
-        ->addIndexColumn()
+        ->rawColumns(['action', 'q1', 'q2', 'q3', 'q3_effect', 'q4', 'q4_effect', 'created_at', 'updated_at', 'status', 'user_position', 'user_depart', 'user_name'])
+        // ->addIndexColumn()
         ->make(true);
     }
 
@@ -189,8 +190,9 @@ class VaccineController extends Controller
     public function vaccineDetail($id)
     {
         $vaccine = Vaccine::where('id', $id)->first();
+        $dependent = VaccineChild::where('user_id', Auth::user()->id)->get();
         
-        return view('vaccine.details', compact('vaccine'));
+        return view('vaccine.details', compact('vaccine', 'dependent'));
     }
 
     public function vaccineUpdate(Request $request)
@@ -336,6 +338,217 @@ class VaccineController extends Controller
         $exist->delete();
 
         return redirect('/vaccineIndex');
+    }
+
+    public function dependentForm()
+    {
+        $vaccine = Vaccine::where('user_id', Auth::user()->id)->first();
+        $dependent = VaccineChild::where('user_id', Auth::user()->id)->get();
+        
+        return view('vaccine.dependent-form', compact('vaccine', 'dependent'));
+    }
+
+    public function dependentStore(Request $request)
+    {
+        $id = Auth::user();
+
+        $validate = [
+            'q5'              => 'required',
+        ];
+
+        if($request->q5 == 'Y') 
+        {
+            $validate['q5_appt'] = 'required'; 
+            $validate['q5_name'] = 'required'; 
+            $validate['q6'] = 'required'; 
+        } 
+
+        if($request->q6 == 'Y') 
+        {
+            $validate['child_name'] = 'required'; 
+            $validate['child_appt'] = 'required'; 
+        } 
+        
+        $request->validate($validate);
+
+        $vaccine = Vaccine::where('user_id', $id->id)->first();
+
+        $vaccine->update([
+            'q5'                => $request->q5,
+            'q5_appt'           => $request->q5_appt,
+            'q5_name'           => $request->q5_name, 
+            'q5_first_dose'     => $request->q5_first_dose, 
+            'q5_second_dose'    => $request->q5_second_dose,
+            'q6'                => $request->q6,
+        ]);
+
+        if($request->q6 == 'Y') {
+            foreach($request->input('child_name') as $key => $value) {
+                VaccineChild::create([
+                    'user_id'           => $id->id,
+                    'child_appt'        => $request->child_appt[$key],
+                    'child_name'        => $value,
+                    'first_dose_date'   => $request->first_dose_date[$key],
+                    'second_dose_date'  => $request->second_dose_date[$key],
+                ]);
+            }
+        }
+            
+       Session::flash('message', 'Your Dependent Vaccine Detail Successfully Recorded');
+       return redirect('/dependentForm');
+    }
+
+    public function deleteChild($id)
+    {
+        $childs = VaccineChild::where('id', $id)->first();
+
+        $exist = VaccineChild::find($id);
+        $exist->delete();
+
+        return redirect('dependentForm');
+    }
+
+    public function dependentUpdate(Request $request)
+    {
+        $id = Auth::user();
+
+        $vaccine = Vaccine::where('id', $request->id)->first();
+        $dependent = VaccineChild::where('id', $request->ids)->first();
+
+        $exist = VaccineChild::where('user_id', $id->id)->first();
+
+        // radiobtn validation
+        $validate = [
+            'q5s'              => 'required',
+        ];
+
+        if($request->q5s == 'Y') 
+        {
+            $validate['q5_appts'] = 'required'; 
+            $validate['q5_names'] = 'required'; 
+            $validate['q6s'] = 'required'; 
+        } 
+
+        
+        $request->validate($validate);
+       
+        // onchange null
+        if($request->q5s == 'Y')
+        {
+            if($request->q5_appts == 'Y')
+            {
+                if($request->q6s == 'Y')
+                {
+                    $vaccine->update([
+                        'q5'                => $request->q5s, 
+                        'q5_appt'           => $request->q5_appts, 
+                        'q5_name'           => $request->q5_names,
+                        'q5_first_dose'     => $request->q5_first_doses, 
+                        'q5_second_dose'    => $request->q5_second_doses, 
+                        'q6'                => $request->q6s, 
+                    ]);
+
+                    if($request->child_namess != ''){
+                        foreach($request->input('child_namess') as $key => $value) {
+                            if(isset($value)){
+                                VaccineChild::create([
+                                    'user_id'           => $id->id,
+                                    'child_appt'        => $request->child_apptss[$key],
+                                    'child_name'        => $value,
+                                    'first_dose_date'   => $request->first_dose_datess[$key],
+                                    'second_dose_date'  => $request->second_dose_datess[$key],
+                                ]);
+                            }
+                        }
+                    }
+                   
+                    if($request->child_namesss) {  
+                        foreach($request->input('ids') as $key => $value) {
+                            VaccineChild::where('id', $value)->update([
+                                'child_appt'        => $request->child_apptsss[$key],
+                                'child_name'        => $request->child_namesss[$key],
+                                'first_dose_date'   => $request->first_dose_datesss[$key],
+                                'second_dose_date'  => $request->second_dose_datesss[$key],
+                            ]);
+                        }
+                    }
+                }
+                else
+                {
+                    $vaccine->update([
+                        'q5'                => $request->q5s, 
+                        'q5_appt'           => $request->q5_appts, 
+                        'q5_name'           => $request->q5_names,
+                        'q5_first_dose'     => $request->q5_first_doses, 
+                        'q5_second_dose'    => $request->q5_second_doses, 
+                        'q6'                => $request->q6s, 
+                    ]);
+
+                    $child = VaccineChild::where('user_id', $id->id)->delete();
+                }
+            }
+            else
+            {
+                $vaccine->update([
+                    'q5'                => $request->q5s, 
+                    'q5_appt'           => $request->q5_appts, 
+                    'q5_name'           => $request->q5_names,
+                    'q5_first_dose'     => null, 
+                    'q5_second_dose'    => null, 
+                    'q6'                => $request->q6s, 
+                ]);
+
+                if($request->q6 == 'Y')
+                {
+                   
+                    if($request->child_namess != ''){
+                        foreach($request->input('child_namess') as $key => $value) {
+                            if(isset($value)){
+                                VaccineChild::create([
+                                    'user_id'           => $id->id,
+                                    'child_appt'        => $request->child_apptss[$key],
+                                    'child_name'        => $value,
+                                    'first_dose_date'   => $request->first_dose_datess[$key],
+                                    'second_dose_date'  => $request->second_dose_datess[$key],
+                                ]);
+                            }
+                        }
+                    }
+                   
+                    if($request->child_namesss) {  
+                        foreach($request->input('ids') as $key => $value) {
+                            VaccineChild::where('id', $value)->update([
+                                'child_appt'        => $request->child_apptsss[$key],
+                                'child_name'        => $request->child_namesss[$key],
+                                'first_dose_date'   => $request->first_dose_datesss[$key],
+                                'second_dose_date'  => $request->second_dose_datesss[$key],
+                            ]);
+                        }
+                    }
+
+                }
+                else
+                {
+                    $child = VaccineChild::where('user_id', Auth::user()->id)->delete();
+                }
+            }
+        }
+        else
+        {
+            $vaccine->update([
+                'q5'                => $request->q5s, 
+                'q5_appt'           => null, 
+                'q5_name'           => null,
+                'q5_first_dose'     => null, 
+                'q5_second_dose'    => null, 
+                'q6'                => null, 
+            ]);
+
+            $child = VaccineChild::where('user_id', Auth::user()->id)->delete();
+        }
+
+       Session::flash('messages', 'Your Dependent Vaccine Detail Successfully Recorded');
+       return redirect('/dependentForm');
     }
 
     /**

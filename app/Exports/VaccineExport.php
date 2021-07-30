@@ -28,11 +28,11 @@ class VaccineExport implements FromCollection, WithHeadings, WithMapping, WithEv
         
         return [
             $vaccine->user_id,
-            $vaccine->staffs->staff_name,
-            $vaccine->staffs->staff_position,
-            $vaccine->staffs->staff_dept,
-            $vaccine->staffs->staff_email,
-            $vaccine->staffs->staff_phone,
+            $vaccine->staffs->staff_name ?? '--',
+            $vaccine->staffs->staff_position ?? '--',
+            $vaccine->staffs->staff_dept ?? '--',
+            $vaccine->staffs->staff_email ?? '--',
+            $vaccine->staffs->staff_phone ?? '--',
             $vaccine->q1 ?? '--',
             $vaccine->q1_reason ?? '--',
             $vaccine->q1_other_reason ?? '--',
@@ -47,6 +47,12 @@ class VaccineExport implements FromCollection, WithHeadings, WithMapping, WithEv
             $vaccine->q4_reason ?? '--',
             $vaccine->q4_effect ?? '--',
             $vaccine->q4_effect_remark ?? '--',
+            $vaccine->q5 ?? '--',
+            $vaccine->q5_appt ?? '--',
+            $vaccine->q5_name ?? '--',
+            date(' d/m/Y | h:i:s A', strtotime($vaccine->q5_first_dose) ) ?? '--',
+            date(' d/m/Y | h:i:s A', strtotime($vaccine->q5_second_dose) ) ?? '--',
+            $vaccine->q6 ?? '--',
             date(' d/m/Y | h:i:s A', strtotime($vaccine->created_at) ) ?? '--',
             date(' d/m/Y | h:i:s A', strtotime($vaccine->updated_at) ) ?? '--',
         ];
@@ -75,6 +81,12 @@ class VaccineExport implements FromCollection, WithHeadings, WithMapping, WithEv
             'if NO',
             'Do you receive side effects from second dose vaccine injection ?',
             'Second dose side effects',
+            'Do you have a spouse ?',
+            'Has your spouse received a vaccination appointment ?',
+            'Spouse name',
+            'Spouse first dose appointment date',
+            'Spouse second dose appointment date',
+            'Do you have children 18 years and above ?',
             'Created Date',
             'Updated Date',
         ];
@@ -85,8 +97,8 @@ class VaccineExport implements FromCollection, WithHeadings, WithMapping, WithEv
         return [
             AfterSheet::class => function(AfterSheet $event) {
                 $all = Vaccine::get()->count() + 1;
-                $cellRange = 'A1:V'.$all.'';
-                $head_title = 'A1:V1';
+                $cellRange = 'A1:AB'.$all.'';
+                $head_title = 'A1:AB1';
                 $event->sheet->getDelegate()->getStyle($head_title)->getFont()->setBold(true)->setName('Arial');
                 $event->sheet->getDelegate()->getStyle($head_title)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('F7E7E4');
                 $event->sheet->getStyle($cellRange)->applyFromArray([

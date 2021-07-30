@@ -501,6 +501,12 @@
                                 </a>
                             </li>
                             <li class="open">
+                                <a href="/dependentForm" title="Vaccine" data-filter-tags="vaccine">
+                                    <i class="fal fa-pills"></i>
+                                    <span class="nav-link-text" data-i18n="nav.vaccine">Dependent Vaccination</span>
+                                </a>
+                                </li>
+                                <li class="open">
                                 <a href="/selfHistory/{{ Auth::user()->id }}" title="History" data-filter-tags="history">
                                     <i class="fal fa-clock"></i>
                                     <span class="nav-link-text" data-i18n="nav.history">Self History</span>
