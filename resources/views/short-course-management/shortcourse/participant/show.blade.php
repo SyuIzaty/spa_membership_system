@@ -91,6 +91,61 @@
                                 <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
                                     style="content-align:right">
                                 </div>
+                                <div class="modal fade" id="crud-modals" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="card-header">
+                                                <h5 class="card-title w-100">Payment Proof</h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group col">
+                                                    <div class="custom-file">
+                                                        <input type="file" class="custom-file-input"
+                                                            id="validatedCustomFile" required>
+                                                        <label class="custom-file-label" for="validatedCustomFile">Choose
+                                                            file...</label>
+                                                    </div>
+                                                </div>
+                                                <hr class="mt-1 mb-1">
+                                                <div class="form-group col">
+                                                    <label class="form-label" for="fullname">Status</label>
+                                                    {{-- <input class="form-control-plaintext" id="status" name="status"
+                                                        disabled> --}}
+                                                    <div class="row">
+                                                        <div class="col d-flex justify-content-start">
+                                                            <input class="form-control-plaintext" id="is_verified_payment_proof" name="is_verified_payment_proof"
+                                                                disabled>
+                                                        </div>
+                                                        <div class="col d-flex justify-content-end" >
+                                                            <div class="row d-flex justify-content-end">
+                                                                <td class="col col-sm-1">
+                                                                    <button type="button" name="request_verification" id="request_verification"
+                                                                        class="btn btn-primary btn_add">
+                                                                        Request Verification
+                                                                    </button>
+                                                                </td>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr class="mt-1 mb-1">
+
+
+                                                {{-- <div class="invalid-feedback">Example invalid custom file feedback</div> --}}
+
+                                                <div class="footer">
+                                                    <button type="submit" class="btn btn-primary ml-auto float-right"><i
+                                                            class="fal fa-save"></i>
+                                                        Save</button>
+                                                    <button type="button" class="btn btn-danger ml-auto float-right mr-2"
+                                                        data-dismiss="modal"><i class="fal fa-window-close"></i>
+                                                        Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -130,7 +185,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "/events/data/event-management/public-view/event-participant/"+participant_id,
+                    url: "/events/data/event-management/shortcourse/event-participant/" + participant_id,
                     type: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -172,6 +227,27 @@
 
                 }
             });
+
+            //New Application
+            {
+
+                $('#crud-modals').on('show.bs.modal', function(event) {
+                    var button = $(event.relatedTarget)
+                    var is_verified_payment_proof = button.data('is_verified_payment_proof');
+                    console.log()
+                    var stringStatus;
+                    if(is_verified_payment_proof==null){
+                        stringStatus="Not making any request yet"
+                    }else if(is_verified_payment_proof==0){
+                        stringStatus="In verification Process"
+                        $("#request_verification").attr("disabled", "true");
+                    }else if(is_verified_payment_proof==1){
+                        stringStatus="Verified!"
+                        $("#request_verification").attr("disabled", "true");
+                    }
+                    $('.modal-body #is_verified_payment_proof').val(stringStatus);
+                });
+            }
 
         });
     </script>

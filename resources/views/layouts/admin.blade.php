@@ -225,9 +225,9 @@
                             </li>
 
                             <li>
-                                <a href="/events/public-view" title="Public View" data-filter-tags="public-view">
+                                <a href="/shortcourse" title="Public View" data-filter-tags="shortcourse">
                                     <i class="fal fa-users"></i>
-                                    <span class="nav-link-text" data-i18n="nav.public-view">Public View</span>
+                                    <span class="nav-link-text" data-i18n="nav.shortcourse">Public View</span>
                                 </a>
                             </li>
                         @endcan

@@ -31,7 +31,7 @@
                                         <p class="card-text"><small class="text-muted">Published:
                                                 {{ $event->created_at_diffForHumans }}</small>
                                         </p>
-                                        <a href="/event/public-view/{{ $event->id }}"
+                                        <a href="/shortcourse/{{ $event->id }}"
                                             class="btn btn-sm btn-primary btn btn-block">Detail</a>
                                     </div>
                                 </div>
@@ -116,7 +116,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "/events/data/public-view",
+                    url: "/events/data/shortcourse",
                     type: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

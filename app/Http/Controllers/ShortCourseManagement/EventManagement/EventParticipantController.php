@@ -9,6 +9,7 @@ use App\Models\ShortCourseManagement\Event;
 use App\Models\ShortCourseManagement\Participant;
 use App\Models\ShortCourseManagement\Fee;
 use Auth;
+use DateTime;
 use Carbon\Carbon;
 
 class EventParticipantController extends Controller
@@ -668,10 +669,16 @@ class EventParticipantController extends Controller
     public function dataEventParticipantList($participant_id)
     {
         // $events = Event::orderByDesc('id')->get()->load(['events_participants', 'venue']);
-        $eventsParticipants = EventParticipant::where('participant_id', $participant_id)->get()->load(['event']);
+        $eventsParticipants = EventParticipant::where('participant_id', $participant_id)->get()->load(['event', 'fee']);
         $events = [];
+        $indexEvent = 0;
         foreach ($eventsParticipants as $eventParticipant) {
+            // $event = Event::find($eventParticipant->event_id)->load(['events_participants', 'venue']);
+            // array_push($events, $event);
             array_push($events, $eventParticipant->event);
+            $eventParticipant->event = null;
+            $events[$indexEvent]['is_verified_payment_proof'] = $eventParticipant->is_verified_payment_proof;
+            $indexEvent += 1;
         }
         $index = 0;
         foreach ($events as $event) {
@@ -687,11 +694,16 @@ class EventParticipantController extends Controller
             $events[$index]->totalValidParticipants = $totalValidParticipants;
             $events[$index]->totalParticipantsNotApprovedYet = $totalParticipantsNotApprovedYet;
             $events[$index]->totalRejected = $totalRejected;
+
+            $datetime_start=new DateTime($events[$index]->datetime_start);
+            $datetime_end=new DateTime($events[$index]->datetime_end);
+            $events[$index]['datetime_start_toDayDateTimeString'] = date_format($datetime_start, 'g:ia \o\n l jS F Y');
+            $events[$index]['datetime_end_toDayDateTimeString'] = date_format($datetime_end, 'g:ia \o\n l jS F Y');
             $index++;
         }
         return datatables()::of($events)
             ->addColumn('dates', function ($events) {
-                return 'Date Start: ' . $events->datetime_start . '<br> Date End:' . $events->datetime_end;
+                return 'Date Start: <br>' . $events->datetime_start_toDayDateTimeString . '<br><br> Date End: <br>' . $events->datetime_end_toDayDateTimeString;
             })
             ->addColumn('participant', function ($events) {
                 return 'Total Valid: ' . $events->totalValidParticipants . '<br> Total Not Approved Yet:' . $events->totalParticipantsNotApprovedYet . '<br> Total Reject:' . $events->totalRejected;
@@ -701,8 +713,12 @@ class EventParticipantController extends Controller
             })
             ->addColumn('action', function ($events) {
                 return '
-                <a href="/event/' . $events->id . '/events-participants/show" class="btn btn-sm btn-primary">Cancel Application</a>';
+                <a href="#" data-target="#crud-modals" data-toggle="modal" data-is_verified_payment_proof="' . $events->is_verified_payment_proof . '" class="btn btn-sm btn-primary">View Payment Proof</a>
+                <a href="#" class="btn btn-sm btn-danger">Cancel Application</a>';
             })
+
+            // <a href="" data-target="#crud-modals" data-toggle="modal" data-id="' . $kolejs->id . '" data-name="' . $kolejs->name . '" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i> Sunting</a>
+            // <button class="btn btn-sm btn-danger btn-delete" data-remote="/senarai_kolej/softDelete/' . $kolejs->id . '"><i class="fal fa-trash"></i>  Padam</button>
             ->rawColumns(['action', 'management_details', 'participant', 'dates'])
             ->make(true);
     }

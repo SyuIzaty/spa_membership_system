@@ -58,7 +58,7 @@
                                                 <b>From</b>
                                             </div>
                                             <div class="col">
-                                                {{ $event->datetime_start }}
+                                                {{ Carbon\Carbon::parse($event->datetime_start)->toDayDateTimeString() }}
                                             </div>
                                         </div>
                                         <hr class="mt-1 mb-1">
@@ -67,7 +67,7 @@
                                                 <b>To</b>
                                             </div>
                                             <div class="col">
-                                                {{ $event->datetime_end }}
+                                                {{ Carbon\Carbon::parse($event->datetime_end)->toDayDateTimeString() }}
                                             </div>
                                         </div>
                                         <hr class="mt-1 mb-1">

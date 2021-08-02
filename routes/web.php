@@ -254,7 +254,7 @@ Route::get('/trainer/search-by-user_id/{user_id}', 'ShortCourseManagement\People
 Route::get('/trainer/search-by-trainer_ic/{trainer_ic}', 'ShortCourseManagement\People\Trainer\TrainerController@searchByTrainerIc');
 
 //Shortcourse
-Route::get('/shortcourse/search-by-id/{id}', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@searchById');
+Route::get('event/shortcourse/search-by-id/{id}', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@searchById');
 
 
 //EventParticipant
@@ -277,7 +277,7 @@ Route::get('/event/{event_id}/base-fee', 'ShortCourseManagement\EventManagement\
 //EventParticipant - Update Progress
 Route::post('/update-progress/{progress_name}/{eventsParticipants_id}', 'ShortCourseManagement\EventManagement\EventParticipantController@updateProgress');
 
-Route::post('/events/data/event-management/public-view/event-participant/{participant_id}', 'ShortCourseManagement\EventManagement\EventParticipantController@dataEventParticipantList');
+Route::post('/events/data/event-management/shortcourse/event-participant/{participant_id}', 'ShortCourseManagement\EventManagement\EventParticipantController@dataEventParticipantList');
 
 //Event
 Route::post('/event/store-new', 'ShortCourseManagement\EventManagement\EventController@storeNew');
@@ -306,7 +306,7 @@ Route::get('/participant/search-by-representative-ic/{ic}', 'ShortCourseManageme
 
 //Public View
 
-Route::post('/events/data/public-view', 'ShortCourseManagement\EventManagement\EventController@dataPublicView');
-Route::get('/event/public-view/{id}', 'ShortCourseManagement\EventManagement\EventController@showPublicView');
-Route::get('/events/public-view', 'ShortCourseManagement\EventManagement\EventController@indexPublicView');
+Route::post('/events/data/shortcourse', 'ShortCourseManagement\EventManagement\EventController@dataPublicView');
+Route::get('/shortcourse/{id}', 'ShortCourseManagement\EventManagement\EventController@showPublicView');
+Route::get('/shortcourse', 'ShortCourseManagement\EventManagement\EventController@indexPublicView');
 Route::get('/get-file-event/{filename}', 'ShortCourseManagement\EventManagement\EventController@getFile');

@@ -54,7 +54,7 @@ class ParticipantController extends Controller
         //
         $participant = Participant::where('ic', $ic)->first();
 
-        return view('short-course-management.public-view.participant.show', compact('participant'));
+        return view('short-course-management.shortcourse.participant.show', compact('participant'));
     }
     public function searchByIc($ic, $event_id)
     {

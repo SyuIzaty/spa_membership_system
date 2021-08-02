@@ -1272,7 +1272,7 @@
             // search by id
             $('#shortcourse_id').change(function() {
                 var id = $('.modal-body #shortcourse_id').val();
-                $.get("/shortcourse/search-by-id/" + id, function(data) {
+                $.get("event/shortcourse/search-by-id/" + id, function(data) {
                     $('.modal-body #objective').val(data.objective);
                     $('.modal-body #description').val(data.description);
 

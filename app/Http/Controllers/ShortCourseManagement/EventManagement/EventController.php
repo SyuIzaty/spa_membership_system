@@ -16,6 +16,7 @@ use App\Models\ShortCourseManagement\Topic;
 use App\User;
 use Auth;
 use File;
+use DateTime;
 use Validator;
 
 class EventController extends Controller
@@ -459,7 +460,7 @@ class EventController extends Controller
             $events[$index]->created_at_diffForHumans = $events[$index]->created_at->diffForHumans();
             $index++;
         }
-        return view('short-course-management.public-view.event.index', compact('events'));
+        return view('short-course-management.shortcourse.event.index', compact('events'));
 
         // return view('short-course-management.event-management.index');
     }
@@ -492,7 +493,7 @@ class EventController extends Controller
         ]);
 
         //
-        return view('short-course-management.public-view.event.show', compact('event'));
+        return view('short-course-management.shortcourse.event.show', compact('event'));
     }
 
     public function dataPublicView()
@@ -512,15 +513,22 @@ class EventController extends Controller
             $events[$index]->totalValidParticipants = $totalValidParticipants;
             $events[$index]->totalParticipantsNotApprovedYet = $totalParticipantsNotApprovedYet;
             $events[$index]->totalRejected = $totalRejected;
+
+
+            $datetime_start=new DateTime($events[$index]->datetime_start);
+            $datetime_end=new DateTime($events[$index]->datetime_end);
+            $events[$index]['datetime_start_toDayDateTimeString'] = date_format($datetime_start, 'g:ia \o\n l jS F Y');
+            $events[$index]['datetime_end_toDayDateTimeString'] = date_format($datetime_end, 'g:ia \o\n l jS F Y');
+
             $index++;
         }
         return datatables()::of($events)
             ->addColumn('name-with-href', function ($events) {
                 return '
-                <a href="/event/public-view/' . $events->id . '" class="text-primary">' . $events->name . '</a>';
+                <a href="/shortcourse/' . $events->id . '" class="text-primary">' . $events->name . '</a>';
             })
             ->addColumn('dates', function ($events) {
-                return 'Date Start: ' . $events->datetime_start . '<br> Date End:' . $events->datetime_end;
+                return 'Date Start: <br>' . $events->datetime_start_toDayDateTimeString . '<br><br> Date End: <br>' . $events->datetime_end_toDayDateTimeString;
             })
             ->rawColumns(['name-with-href', 'dates'])
             ->make(true);
