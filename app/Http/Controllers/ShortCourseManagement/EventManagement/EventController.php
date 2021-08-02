@@ -459,7 +459,7 @@ class EventController extends Controller
             $events[$index]->created_at_diffForHumans = $events[$index]->created_at->diffForHumans();
             $index++;
         }
-        return view('short-course-management.public-view.main.index', compact('events'));
+        return view('short-course-management.public-view.event.index', compact('events'));
 
         // return view('short-course-management.event-management.index');
     }
@@ -492,7 +492,7 @@ class EventController extends Controller
         ]);
 
         //
-        return view('short-course-management.public-view.main.show', compact('event'));
+        return view('short-course-management.public-view.event.show', compact('event'));
     }
 
     public function dataPublicView()

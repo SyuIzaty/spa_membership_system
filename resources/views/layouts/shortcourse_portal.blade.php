@@ -72,18 +72,39 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
         <div class="page-inner">
             <div class="page-content-wrapper bg-transparent m-0">
                 <div class="height-10 w-100 shadow-sm px-4">
-                    <div class="d-flex align-items-center container p-0">
+                    <div class="d-flex align-items-center justify-content-between container p-0">
                         <div
                             class="logo width-mobile-auto m-0 align-items-center justify-content-center p-0 bg-transparent bg-img-none shadow-0 height-9">
                             <img src="{{ asset('img/intec_logo.png') }}" alt="SmartAdmin WebApp"
                                 aria-roledescription="logo">
                             {{-- <span class="page-logo-text mr-1">INTEC Education College</span> --}}
                         </div>
+
+                        <form class="form-inline">
+                            <input class="form-control mr-sm-2" type="search" placeholder="IC No." id="ic_input_general"
+                                name="ic_input_general" aria-label="Search">
+                            <a href="javascript:;" data-toggle="#" id="search-by-ic-general"
+                                class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search/Pay</a>
+                        </form>
+                    </div>
+
+                </div>
+
+                <div class="card text-center" id="applicant-basic-details" style="display:none;">
+                    <div class="card-header">
+                        Result
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title" id="applicant-basic-details-name"><span class="content"></span></h5>
+                        <p class="card-text" id="applicant-basic-details-ic"><span class="content"></span></p>
+                        <a href="#" class="btn btn-primary" id="ic_details_view" style="display:none;">View</a>
+                    </div>
+                    <div class="card-footer text-muted">
+                        2 days ago
                     </div>
                 </div>
                 {{-- <div class="d-flex flex-1" style="background: url({{asset('img/svg/pattern-1.svg')}} no-repeat center bottom fixed; background-size: cover;"> --}}
-                <div
-                    class="container text-white d-flex align-items-center justify-content-center">
+                <div class="container text-white d-flex align-items-center justify-content-center">
                     @yield('content')
                     <div class="position-absolute pos-bottom pos-left pos-right p-3 text-center text-white">
                         2021 © INTEC Education College&nbsp;|&nbsp;<a href='https://intec.edu.my'
@@ -110,6 +131,43 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
     <script src="{{ asset('js/formplugins/select2/select2.bundle.js') }}"></script>
     <script src="{{ asset('js/jquery.tabledit.min.js') }}"></script>
     <script src="{{ asset('js/jquery.fancybox.js') }}"></script>
+    <script>
+        $('#search-by-ic-general').click(function() {
+            var ic = $('#ic_input_general').val();
+            $.get("/participant/search-by-ic-general/" + ic, function(data) {
+                console.log(data);
+                if (data) {
+                    $("#applicant-basic-details").show();
+                    $("#applicant-basic-details-name .content").replaceWith("<span class='content'>" + data
+                        .name + "</span>");
+                    $("#applicant-basic-details-ic .content").replaceWith("<span class='content'>" + ic +
+                        "</span>");
+                    $('#ic_details_view').show();
+                    console.log("Has Data");
+                } else {
+                    $("#applicant-basic-details").show();
+                    $("#applicant-basic-details-name .content").replaceWith(
+                        "<span class='content'>No Data Available</span>");
+                    $("#applicant-basic-details-ic .content").replaceWith("<span class='content'>" + ic +
+                        "</span>");
+                    $('#ic_details_view').hide();
+                    // $("#applicant-basic-details-ic").append(data.ic);
+                }
+
+            }).done(
+                function() {
+
+                }).fail(
+                function() {
+                    console.log("Fail");
+                });
+        });
+
+        $('#ic_details_view').click(function() {
+            var ic = $('#ic_input_general').val();
+            window.location.href = '/participant/search-by-ic-general/'+ic+'/show';
+        })
+    </script>
 
 </body>
 

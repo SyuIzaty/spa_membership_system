@@ -42,7 +42,20 @@ class ParticipantController extends Controller
     {
         //
     }
+    public function searchByIcGeneral($ic)
+    {
+        //
+        $existParticipant = Participant::where('ic', $ic)->first();
 
+        return $existParticipant;
+    }
+    public function searchByIcGeneralShow($ic)
+    {
+        //
+        $participant = Participant::where('ic', $ic)->first();
+
+        return view('short-course-management.public-view.participant.show', compact('participant'));
+    }
     public function searchByIc($ic, $event_id)
     {
         //

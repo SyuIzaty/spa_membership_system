@@ -665,4 +665,45 @@ class EventParticipantController extends Controller
                 break;
         }
     }
+    public function dataEventParticipantList($participant_id)
+    {
+        // $events = Event::orderByDesc('id')->get()->load(['events_participants', 'venue']);
+        $eventsParticipants = EventParticipant::where('participant_id', $participant_id)->get()->load(['event']);
+        $events = [];
+        foreach ($eventsParticipants as $eventParticipant) {
+            array_push($events, $eventParticipant->event);
+        }
+        $index = 0;
+        foreach ($events as $event) {
+            if (isset($event->events_participants)) {
+                $totalValidParticipants = $event->events_participants->where('is_approved', 1)->count();
+                $totalParticipantsNotApprovedYet = $event->events_participants->where('is_approved', 0)->where('is_done_email_cancellation_disqualified', 0)->count();
+                $totalRejected = $event->events_participants->where('is_done_email_cancellation_disqualified', 1)->count();
+            } else {
+                $totalValidParticipants = 0;
+                $totalParticipantsNotApprovedYet = 0;
+                $totalRejected = 0;
+            }
+            $events[$index]->totalValidParticipants = $totalValidParticipants;
+            $events[$index]->totalParticipantsNotApprovedYet = $totalParticipantsNotApprovedYet;
+            $events[$index]->totalRejected = $totalRejected;
+            $index++;
+        }
+        return datatables()::of($events)
+            ->addColumn('dates', function ($events) {
+                return 'Date Start: ' . $events->datetime_start . '<br> Date End:' . $events->datetime_end;
+            })
+            ->addColumn('participant', function ($events) {
+                return 'Total Valid: ' . $events->totalValidParticipants . '<br> Total Not Approved Yet:' . $events->totalParticipantsNotApprovedYet . '<br> Total Reject:' . $events->totalRejected;
+            })
+            ->addColumn('management_details', function ($events) {
+                return 'Created By: ' . $events->created_by . '<br> Created At: ' . $events->created_at;
+            })
+            ->addColumn('action', function ($events) {
+                return '
+                <a href="/event/' . $events->id . '/events-participants/show" class="btn btn-sm btn-primary">Cancel Application</a>';
+            })
+            ->rawColumns(['action', 'management_details', 'participant', 'dates'])
+            ->make(true);
+    }
 }

@@ -12,7 +12,6 @@
             <b class="semi-bold">Featured</b> Short Courses
         </h1> --}}
         <div class="col-xl-12">
-            <hr class="mt-2 mb-3">
             <h1 class="text-center heading">
                 <b class="semi-bold text-primary">Latest</b> Short Courses
             </h1>
