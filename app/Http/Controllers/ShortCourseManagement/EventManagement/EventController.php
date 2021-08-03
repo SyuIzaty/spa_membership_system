@@ -32,9 +32,23 @@ class EventController extends Controller
         $index = 0;
         foreach ($events as $event) {
             if (isset($event->events_participants)) {
-                $totalValidParticipants = $event->events_participants->where('is_approved', 1)->count();
-                $totalParticipantsNotApprovedYet = $event->events_participants->where('is_approved', 0)->where('is_done_email_cancellation_disqualified', 0)->count();
-                $totalRejected = $event->events_participants->where('is_done_email_cancellation_disqualified', 1)->count();
+                $totalValidParticipants = $event->events_participants
+                    ->where('event_id', $event->id)
+                    ->where('is_approved_application', 1)
+                    ->where('is_verified_payment_proof', 1)
+                    ->where('is_verified_payment_proof', 1)
+                    ->where('is_verified_approved_participation', 1)
+                    ->where('is_disqualified', 0)
+                    ->count();
+                $totalParticipantsNotApprovedYet = $event->events_participants
+                    ->where('event_id', $event->id)
+                    ->where('is_approved_application', 0)
+                    ->where('is_disqualified', 0)
+                    ->count();
+                $totalRejected = $event->events_participants
+                    ->where('event_id', $event->id)
+                    ->where('is_disqualified', 1)
+                    ->count();
             } else {
                 $totalValidParticipants = 0;
                 $totalParticipantsNotApprovedYet = 0;
@@ -252,6 +266,80 @@ class EventController extends Controller
             'fees'
         ]);
 
+        // $totalParticipantsNotApprovedYet = $event->events_participants->where('is_approved', 0)->where('is_done_email_cancellation_disqualified', 0)->count();
+
+        $statistics['wait_for_application_approval'] = $event->events_participants
+            ->where('event_id', $id)
+            ->where('is_approved_application', 0)
+            ->where('is_disqualified', 0)
+            ->count();
+
+        $statistics['wait_for_applicant_making_payment'] = $event->events_participants
+            ->where('event_id', $id)
+            ->where('is_approved_application', 1)
+            ->where('is_verified_payment_proof', null)
+            ->where('is_disqualified', 0)
+            ->count();
+
+        $statistics['wait_for_payment_verification'] = $event->events_participants
+            ->where('event_id', $id)
+            ->where('is_approved_application', 1)
+            ->where('is_verified_payment_proof', 0)
+            ->where('is_verified_payment_proof', 0)
+            ->where('is_disqualified', 0)
+            ->count();
+
+        $statistics['ready_for_event'] = $event->events_participants
+            ->where('event_id', $id)
+            ->where('is_approved_application', 1)
+            ->where('is_verified_payment_proof', 1)
+            ->where('is_verified_payment_proof', 1)
+            ->where('is_verified_approved_participation', 1)
+            ->where('is_disqualified', 0)
+            ->count();
+
+        $statistics['attended_participant'] = $event->events_participants
+            ->where('event_id', $id)
+            ->where('is_approved_application', 1)
+            ->where('is_verified_payment_proof', 1)
+            ->where('is_verified_payment_proof', 1)
+            ->where('is_disqualified', 0)
+            ->where('is_not_attend', 0)
+            ->count();
+
+        $statistics['not_attended_participant'] = $event->events_participants
+            ->where('event_id', $id)
+            ->where('is_approved_application', 1)
+            ->where('is_verified_payment_proof', 1)
+            ->where('is_verified_payment_proof', 1)
+            ->where('is_disqualified', 0)
+            ->where('is_not_attend', 1)
+            ->count();
+
+        $statistics['cancelled_application'] = $event->events_participants
+            ->where('event_id', $id)->where('is_disqualified', 1)->count();
+
+        $statistics['not_completed_feedback'] = $event->events_participants
+            ->where('event_id', $id)
+            ->where('is_approved_application', 1)
+            ->where('is_verified_payment_proof', 1)
+            ->where('is_verified_payment_proof', 1)
+            ->where('is_disqualified', 0)
+            ->where('is_not_attend', 0)
+            ->where('is_question_sended', 1)
+            ->where('is_done_email_completed', 0)
+            ->count();
+
+        $statistics['completed_participation_process'] = $event->events_participants
+            ->where('event_id', $id)
+            ->where('is_approved_application', 1)
+            ->where('is_verified_payment_proof', 1)
+            ->where('is_verified_payment_proof', 1)
+            ->where('is_disqualified', 0)
+            ->where('is_not_attend', 0)
+            ->where('is_question_sended', 1)
+            ->where('is_done_email_completed', 1)
+            ->count();
 
         $venues = Venue::all();
 
@@ -265,7 +353,7 @@ class EventController extends Controller
         }
         // dd($event);
         //
-        return view('short-course-management.event-management.show', compact('event', 'venues', 'shortcourses', 'users'));
+        return view('short-course-management.event-management.show', compact('event', 'venues', 'shortcourses', 'users', 'statistics'));
     }
     public function edit($id)
     {
@@ -412,7 +500,7 @@ class EventController extends Controller
         ], [
             'trainer_ic_input.required' => 'Please insert trainer ic of the trainer',
         ]);
-        $existTrainer=Trainer::where('ic', $request->trainer_ic_input)->first();
+        $existTrainer = Trainer::where('ic', $request->trainer_ic_input)->first();
 
         $create = EventTrainer::create([
             'event_id' => $id,
@@ -515,8 +603,8 @@ class EventController extends Controller
             $events[$index]->totalRejected = $totalRejected;
 
 
-            $datetime_start=new DateTime($events[$index]->datetime_start);
-            $datetime_end=new DateTime($events[$index]->datetime_end);
+            $datetime_start = new DateTime($events[$index]->datetime_start);
+            $datetime_end = new DateTime($events[$index]->datetime_end);
             $events[$index]['datetime_start_toDayDateTimeString'] = date_format($datetime_start, 'g:ia \o\n l jS F Y');
             $events[$index]['datetime_end_toDayDateTimeString'] = date_format($datetime_end, 'g:ia \o\n l jS F Y');
 

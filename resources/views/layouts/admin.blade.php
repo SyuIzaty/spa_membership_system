@@ -165,7 +165,7 @@
                                 </a>
                             </li>
 
-                            <li>
+                            {{-- <li>
                                 <a href="#" title="Catalogues" data-filter-tags="catalogues">
                                     <i class="ni ni-list"></i>
                                     <span class="nav-link-text" data-i18n="nav.catalogues">Catalogues</span>
@@ -222,7 +222,7 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </li>
+                            </li> --}}
 
                             <li>
                                 <a href="/shortcourse" title="Public View" data-filter-tags="shortcourse">

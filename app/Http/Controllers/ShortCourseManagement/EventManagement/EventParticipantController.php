@@ -683,9 +683,23 @@ class EventParticipantController extends Controller
         $index = 0;
         foreach ($events as $event) {
             if (isset($event->events_participants)) {
-                $totalValidParticipants = $event->events_participants->where('is_approved', 1)->count();
-                $totalParticipantsNotApprovedYet = $event->events_participants->where('is_approved', 0)->where('is_done_email_cancellation_disqualified', 0)->count();
-                $totalRejected = $event->events_participants->where('is_done_email_cancellation_disqualified', 1)->count();
+                $totalValidParticipants = $event->events_participants
+                    ->where('event_id', $event->id)
+                    ->where('is_approved_application', 1)
+                    ->where('is_verified_payment_proof', 1)
+                    ->where('is_verified_payment_proof', 1)
+                    ->where('is_verified_approved_participation', 1)
+                    ->where('is_disqualified', 0)
+                    ->count();
+                $totalParticipantsNotApprovedYet = $event->events_participants
+                    ->where('event_id', $event->id)
+                    ->where('is_approved_application', 0)
+                    ->where('is_disqualified', 0)
+                    ->count();
+                $totalRejected = $event->events_participants
+                    ->where('event_id', $event->id)
+                    ->where('is_disqualified', 1)
+                    ->count();
             } else {
                 $totalValidParticipants = 0;
                 $totalParticipantsNotApprovedYet = 0;

@@ -18,14 +18,16 @@
             <hr class="mt-2 mb-3">
             <div class="row">
                 @foreach ($events as $event)
-                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" style="">
                         <div class="card mb-3" style="max-width: 540px;">
                             <div class="row no-gutters">
-                                <div class="col-md-4">
-                                    <img src="/get-file-event/intec_poster.jpg" class="card-img" alt="..."
+                                <div class="col-md-5 d-flex justify-content-center">
+                                    {{-- <img src="/get-file-event/intec_poster.jpg" class="card-img" alt="..."
+                                        style="width:137px;height:194px;"> --}}
+                                    <img src="{{ URL::to('/') }}/img/system/intec_poster.jpg" class="card-img" alt="..."
                                         style="width:137px;height:194px;">
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-7">
                                     <div class="card-body">
                                         <h5 class="card-title"><b>{{ $event->name }}</b></h5>
                                         <p class="card-text"><small class="text-muted">Published:

@@ -3,12 +3,12 @@
 {{-- The content template is taken from sims.resources.views.applicant.display --}}
 @section('content')
     <main id="js-page-content" role="main" class="page-content">
-        <div class="subheader">
+        {{-- <div class="subheader">
             <h1 class="subheader-title">
                 <i class='subheader-icon fal fa-table'></i>
                 ({{ $event->id }}) {{ $event->name }}
             </h1>
-        </div>
+        </div> --}}
         <div class="row">
             <div class="col-xl-12">
                 <div id="panel-1" class="panel">
@@ -30,6 +30,9 @@
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item active">
                                     <a data-toggle="tab" class="nav-link" href="#general" role="tab">General</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a data-toggle="tab" class="nav-link" href="#poster" role="tab">Poster</a>
                                 </li>
                             </ul>
                             <div class="row">
@@ -781,7 +784,7 @@
                                                                                 <textarea class="form-control-plaintext"
                                                                                     rows="5" id="objective" name="objective"
                                                                                     disabled>
-                                                                                                                            </textarea>
+                                                                                                                                                </textarea>
                                                                                 @error('objective')
                                                                                     <p style="color: red">
                                                                                         <strong> *
@@ -798,7 +801,7 @@
                                                                                 <textarea class="form-control-plaintext"
                                                                                     rows="5" id="description"
                                                                                     name="description" disabled>
-                                                                                                                            </textarea>
+                                                                                                                                                </textarea>
                                                                                 @error('description')
                                                                                     <p style="color: red">
                                                                                         <strong> *
@@ -861,7 +864,7 @@
                                                             class="p-3 bg-primary-500 rounded overflow-hidden position-relative text-white mb-g">
                                                             <div class="">
                                                                 <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                                                                    0
+                                                                    {{ $statistics['wait_for_application_approval'] }}
                                                                     <small class="m-0 l-h-n">Wait for Applic.
                                                                         Approv.</small>
                                                                 </h3>
@@ -875,7 +878,7 @@
                                                             class="p-3 bg-warning-500 rounded overflow-hidden position-relative text-white mb-g">
                                                             <div class="">
                                                                 <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                                                                    0
+                                                                    {{ $statistics['wait_for_applicant_making_payment'] }}
                                                                     <small class="m-0 l-h-n">In progress of Make.
                                                                         Pay.</small>
                                                                 </h3>
@@ -889,7 +892,8 @@
                                                             class="p-3 bg-success-500 rounded overflow-hidden position-relative text-white mb-g">
                                                             <div class="">
                                                                 <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                                                                    0
+
+                                                                    {{ $statistics['wait_for_payment_verification'] }}
                                                                     <small class="m-0 l-h-n">Wait for Pay. Confirm.</small>
                                                                 </h3>
                                                             </div>
@@ -902,7 +906,7 @@
                                                             class="p-3 bg-info-500 rounded overflow-hidden position-relative text-white mb-g">
                                                             <div class="">
                                                                 <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                                                                    0
+                                                                    {{ $statistics['ready_for_event'] }}
                                                                     <small class="m-0 l-h-n">Ready for Event</small>
                                                                 </h3>
                                                             </div>
@@ -915,7 +919,7 @@
                                                             class="p-3 bg-primary-500 rounded overflow-hidden position-relative text-white mb-g">
                                                             <div class="">
                                                                 <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                                                                    0
+                                                                    {{ $statistics['attended_participant'] }}
                                                                     <small class="m-0 l-h-n">Attend</small>
                                                                 </h3>
                                                             </div>
@@ -928,7 +932,7 @@
                                                             class="p-3 bg-danger-500 rounded overflow-hidden position-relative text-white mb-g">
                                                             <div class="">
                                                                 <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                                                                    0
+                                                                    {{ $statistics['not_attended_participant'] }}
                                                                     <small class="m-0 l-h-n">Not Attend</small>
                                                                 </h3>
                                                             </div>
@@ -941,7 +945,7 @@
                                                             class="p-3 bg-danger-500 rounded overflow-hidden position-relative text-white mb-g">
                                                             <div class="">
                                                                 <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                                                                    0
+                                                                    {{ $statistics['cancelled_application'] }}
                                                                     <small class="m-0 l-h-n">Cancelled Applic.</small>
                                                                 </h3>
                                                             </div>
@@ -955,7 +959,7 @@
                                                             class="p-3 bg-danger-500 rounded overflow-hidden position-relative text-white mb-g">
                                                             <div class="">
                                                                 <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                                                                    0
+                                                                    {{ $statistics['not_completed_feedback'] }}
                                                                     <small class="m-0 l-h-n">Not Completed Feedback</small>
                                                                 </h3>
                                                             </div>
@@ -969,7 +973,7 @@
                                                             class="p-3 bg-primary-500 rounded overflow-hidden position-relative text-white mb-g">
                                                             <div class="">
                                                                 <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                                                                    0
+                                                                    {{ $statistics['completed_participation_process'] }}
                                                                     <small class="m-0 l-h-n">Completed</small>
                                                                 </h3>
                                                             </div>
@@ -979,6 +983,53 @@
                                                     </div>
                                                 </div>
 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="poster" role="tabpanel">
+                                        <hr class="mt-2 mb-3">
+                                        <div class="row">
+                                            <div class="col-md-12 grid-margin stretch-card">
+
+                                                <div class="row row-md-12">
+                                                    <div class="col-sm-6">
+                                                        <div class="d-flex justify-content-center">
+                                                            {{-- <img src="/get-file-event/intec_poster.jpg" class="card-img" alt="..."
+                                            style="width:137px;height:194px;"> --}}
+                                                            <img src="{{ URL::to('/') }}/img/system/intec_poster.jpg"
+                                                                class="card-img" alt="..." style="object-fit: fill;">
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="card">
+                                                            <div class="card-body">
+
+                                                                <div class="row px-2 d-flex flex-column">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label mx-2"
+                                                                            for="inputGroupFile01">Upload New</label>
+                                                                        <div class="input-group">
+                                                                            <div class="custom-file">
+                                                                                <input type="file" class="custom-file-input"
+                                                                                    id="inputGroupFile02">
+                                                                                <label class="custom-file-label"
+                                                                                    for="inputGroupFile02"
+                                                                                    aria-describedby="inputGroupFileAddon02">Choose
+                                                                                    file</label>
+                                                                            </div>
+                                                                            <div class="input-group-append">
+                                                                                <span class="input-group-text"
+                                                                                    id="inputGroupFileAddon02">Upload</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

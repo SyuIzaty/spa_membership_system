@@ -13,14 +13,17 @@
                 {{-- Start Update Form --}}
                 <div class="panel-container show">
                     <div class="panel-content">
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                    </div>
+                        <div class="row row-md-12">
+                            <div class="col-sm-6">
+                                <div class="d-flex justify-content-center">
+                                    {{-- <img src="/get-file-event/intec_poster.jpg" class="card-img" alt="..."
+                                            style="width:137px;height:194px;"> --}}
+                                    <img src="{{ URL::to('/') }}/img/system/intec_poster.jpg" class="card-img" alt="..."
+                                        style="object-fit: fill;">
                                 </div>
+
                             </div>
-                            <div class="col-6">
+                            <div class="col-sm-6">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="row d-flex align-items-center justify-content-center">
@@ -345,6 +348,28 @@
 
                                     </div>
                                 </div>
+
+                                {{-- <div class="row">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="heading text-iceps-blue">
+                                                Description
+                                            </h5>
+
+                                            {{ $event->description }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="heading text-iceps-blue">
+                                                Who should attend?
+                                            </h5>
+                                            {{ $event->target_audience }}
+                                        </div>
+                                    </div>
+                                </div> --}}
                             </div>
 
                         </div>
