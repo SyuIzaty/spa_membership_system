@@ -295,6 +295,7 @@ Route::get('/events', 'ShortCourseManagement\EventManagement\EventController@ind
 Route::post('/event', 'ShortCourseManagement\EventManagement\EventController@addEvent');
 Route::get('/event/{id}', 'ShortCourseManagement\EventManagement\EventController@show');
 Route::delete('/event/{id}', 'ShortCourseManagement\EventManagement\EventController@deleteEvent');
+Route::post('/event/updatePoster', 'ShortCourseManagement\EventManagement\EventController@updatePoster')->name('store.poster');
 
 
 
@@ -310,3 +311,4 @@ Route::post('/events/data/shortcourse', 'ShortCourseManagement\EventManagement\E
 Route::get('/shortcourse/{id}', 'ShortCourseManagement\EventManagement\EventController@showPublicView');
 Route::get('/shortcourse', 'ShortCourseManagement\EventManagement\EventController@indexPublicView');
 Route::get('/get-file-event/{filename}', 'ShortCourseManagement\EventManagement\EventController@getFile');
+Route::post('/shortcourse/participant/save-payment-proof', 'ShortCourseManagement\EventManagement\EventParticipantController@updatePaymentProof')->name('store.payment_proof');

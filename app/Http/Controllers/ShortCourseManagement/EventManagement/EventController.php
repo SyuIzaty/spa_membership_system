@@ -14,6 +14,7 @@ use App\Models\ShortCourseManagement\EventShortCourse;
 use App\Models\ShortCourseManagement\TopicShortCourse;
 use App\Models\ShortCourseManagement\Topic;
 use App\User;
+use Carbon\Carbon;
 use Auth;
 use File;
 use DateTime;
@@ -620,5 +621,47 @@ class EventController extends Controller
             })
             ->rawColumns(['name-with-href', 'dates'])
             ->make(true);
+    }
+
+    public function updatePoster(Request $request)
+    {
+        $date=Carbon::today()->toDateString();
+        $year=substr($date,0,4);
+        $month=substr($date,5,2);
+        $day=substr($date,8,2);
+
+        $validated = $request->validate([
+            'poster_input' => 'required|mimes:jpg,jpeg,png',
+
+        ], [
+            'poster_input.required' => 'Poster is required',
+
+        ]);
+        $poster = $request->file('poster_input');
+
+
+        $name_gen = hexdec(uniqid());
+        $img_ext = strtolower($poster->getClientOriginalExtension());
+
+        $img_name = $year.$month.$day.'_id'.($request->event_id).'_'.$name_gen . '.' . $img_ext;
+
+        /* utk file upload, create folder shortcourse under storage/app.
+        so semua file upload berkaitan sistem shortcourse akan ada dalam storage/app/shortcourse.
+        kat dalam folder tu terpulang lah mcm mana nak susun.ikut kesesuaian data.
+        normally kalau data mcm shortcourse ni sy buat subfolder tahun/courseid */
+
+
+        $up_location = 'storage/shortcourse/poster/' . $year.'/';
+        $last_img = $up_location . $img_name;
+
+        $poster->move($up_location, $img_name);
+
+        Event::find($request->event_id)->update([
+            'thumbnail_path' => $last_img,
+            'updated_by' => Auth::user()->id,
+            'updated_at' => Carbon::now()
+        ]);
+
+        return Redirect()->back()->with('success', 'Poster Updated Successfully');
     }
 }

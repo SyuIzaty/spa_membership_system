@@ -97,52 +97,74 @@
                                             <div class="card-header">
                                                 <h5 class="card-title w-100">Payment Proof</h5>
                                             </div>
-                                            <div class="modal-body">
-                                                <div class="form-group col">
-                                                    <div class="custom-file">
+                                            <form action="{{ route('store.payment_proof') }}" method="POST"
+                                                enctype="multipart/form-data">
+                                                @csrf
+                                                <div class="modal-body">
+                                                    <div class="form-group col">
+                                                        {{-- <div class="custom-file">
                                                         <input type="file" class="custom-file-input"
                                                             id="validatedCustomFile" required>
                                                         <label class="custom-file-label" for="validatedCustomFile">Choose
                                                             file...</label>
-                                                    </div>
-                                                </div>
-                                                <hr class="mt-1 mb-1">
-                                                <div class="form-group col">
-                                                    <label class="form-label" for="fullname">Status</label>
-                                                    {{-- <input class="form-control-plaintext" id="status" name="status"
-                                                        disabled> --}}
-                                                    <div class="row">
-                                                        <div class="col d-flex justify-content-start">
-                                                            <input class="form-control-plaintext" id="is_verified_payment_proof" name="is_verified_payment_proof"
-                                                                disabled>
-                                                        </div>
-                                                        <div class="col d-flex justify-content-end" >
-                                                            <div class="row d-flex justify-content-end">
-                                                                <td class="col col-sm-1">
-                                                                    <button type="button" name="request_verification" id="request_verification"
-                                                                        class="btn btn-primary btn_add">
-                                                                        Request Verification
-                                                                    </button>
-                                                                </td>
+                                                    </div> --}}
+                                                        <label class="form-label" for="fullname">Receipt Image</label>
+                                                        {{-- @if ($eventParticipant->payment_proof_path) --}}
+                                                        <img style="display:none" id="payment_proof_path"
+                                                            name="payment_proof_path" class="card-img" alt="...">
+                                                        {{-- @endif --}}
 
+                                                    <hr class="mt-2 mb-2">
+                                                        <div class="custom-file">
+                                                            <input type="file" class="custom-file-label"
+                                                                name="payment_proof_input" accept="image/png, image/jpeg" />
+                                                        </div>
+                                                    </div>
+                                                    <hr class="mt-1 mb-1">
+                                                    <div class="form-group col">
+                                                        <label class="form-label" for="fullname">Status</label>
+                                                        {{-- <input class="form-control-plaintext" id="status" name="status"
+                                                        disabled> --}}
+                                                        <div class="row">
+
+                                                            <input type="number" name="event_id" value=0 id="event_id" hidden />
+                                                            <input type="number" value={{ $participant->id }}
+                                                                name="participant_id" id="participant_id" hidden />
+                                                            <div class="col d-flex justify-content-start">
+                                                                <input class="form-control-plaintext"
+                                                                    id="is_verified_payment_proof"
+                                                                    name="is_verified_payment_proof" disabled>
+                                                            </div>
+                                                            <div class="col d-flex justify-content-end">
+                                                                <div class="row d-flex justify-content-end">
+                                                                    <td class="col col-sm-1">
+                                                                        <button type="button" name="request_verification"
+                                                                            id="request_verification"
+                                                                            class="btn btn-primary btn_add">
+                                                                            Request Verification
+                                                                        </button>
+                                                                    </td>
+
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <hr class="mt-1 mb-1">
+
+
+                                                    {{-- <div class="invalid-feedback">Example invalid custom file feedback</div> --}}
+
+                                                    <div class="footer">
+                                                        <button type="submit" class="btn btn-primary ml-auto float-right"><i
+                                                                class="fal fa-save"></i>
+                                                            Save</button>
+                                                        <button type="button"
+                                                            class="btn btn-danger ml-auto float-right mr-2"
+                                                            data-dismiss="modal"><i class="fal fa-window-close"></i>
+                                                            Close</button>
+                                                    </div>
                                                 </div>
-                                                <hr class="mt-1 mb-1">
-
-
-                                                {{-- <div class="invalid-feedback">Example invalid custom file feedback</div> --}}
-
-                                                <div class="footer">
-                                                    <button type="submit" class="btn btn-primary ml-auto float-right"><i
-                                                            class="fal fa-save"></i>
-                                                        Save</button>
-                                                    <button type="button" class="btn btn-danger ml-auto float-right mr-2"
-                                                        data-dismiss="modal"><i class="fal fa-window-close"></i>
-                                                        Close</button>
-                                                </div>
-                                            </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -234,16 +256,28 @@
                 $('#crud-modals').on('show.bs.modal', function(event) {
                     var button = $(event.relatedTarget)
                     var is_verified_payment_proof = button.data('is_verified_payment_proof');
-                    console.log()
+                    var payment_proof_path = button.data('payment_proof_path');
+                    var event_id = button.data('event_id');
+                    $("#event_id").val(event_id);
                     var stringStatus;
-                    if(is_verified_payment_proof==null){
-                        stringStatus="Not making any request yet"
-                    }else if(is_verified_payment_proof==0){
-                        stringStatus="In verification Process"
+                    if (is_verified_payment_proof == null) {
+                        stringStatus = "Not making any request yet"
+                    } else if (is_verified_payment_proof == 0) {
+                        stringStatus = "In verification Process"
                         $("#request_verification").attr("disabled", "true");
-                    }else if(is_verified_payment_proof==1){
-                        stringStatus="Verified!"
+                    } else if (is_verified_payment_proof == 1) {
+                        stringStatus = "Verified!"
                         $("#request_verification").attr("disabled", "true");
+                    }
+                    if (!payment_proof_path) {
+                        $("#payment_proof_path").hide();
+                    } else {
+                        $("#payment_proof_path").show();
+                        var src = `{{asset('${payment_proof_path}')}}`;
+                        // console.log(`{{asset('${payment_proof_path}')}}`);
+
+                        // src="http://iids.test/+payment_proof_path+"
+                        $("#payment_proof_path").attr("src", src);
                     }
                     $('.modal-body #is_verified_payment_proof').val(stringStatus);
                 });

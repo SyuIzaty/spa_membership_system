@@ -784,7 +784,7 @@
                                                                                 <textarea class="form-control-plaintext"
                                                                                     rows="5" id="objective" name="objective"
                                                                                     disabled>
-                                                                                                                                                </textarea>
+                                                                                                                                                                            </textarea>
                                                                                 @error('objective')
                                                                                     <p style="color: red">
                                                                                         <strong> *
@@ -801,7 +801,7 @@
                                                                                 <textarea class="form-control-plaintext"
                                                                                     rows="5" id="description"
                                                                                     name="description" disabled>
-                                                                                                                                                </textarea>
+                                                                                                                                                                            </textarea>
                                                                                 @error('description')
                                                                                     <p style="color: red">
                                                                                         <strong> *
@@ -991,13 +991,25 @@
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
 
+                                                @if (Session::has('success'))
+                                                    <div class="alert alert-success"
+                                                        style="color: #3b6324; background-color: #d3fabc;">
+                                                        <i class="icon fal fa-check-circle"></i>
+                                                        {{ Session::get('success') }}
+                                                    </div>
+                                                @endif
                                                 <div class="row row-md-12">
                                                     <div class="col-sm-6">
                                                         <div class="d-flex justify-content-center">
                                                             {{-- <img src="/get-file-event/intec_poster.jpg" class="card-img" alt="..."
                                             style="width:137px;height:194px;"> --}}
-                                                            <img src="{{ URL::to('/') }}/img/system/intec_poster.jpg"
-                                                                class="card-img" alt="..." style="object-fit: fill;">
+                                                            @if (!$event->thumbnail_path)
+                                                                <img src="{{asset('storage/shortcourse/poster/default/intec_poster.jpg')}}"
+                                                                    class="card-img" alt="..." style="object-fit: fill;">
+                                                            @else
+                                                                <img src="{{ asset($event->thumbnail_path) }}"
+                                                                    class="card-img" alt="..." style="object-fit: fill;">
+                                                            @endif
                                                         </div>
 
                                                     </div>
@@ -1006,24 +1018,46 @@
                                                             <div class="card-body">
 
                                                                 <div class="row px-2 d-flex flex-column">
-                                                                    <div class="form-group">
-                                                                        <label class="form-label mx-2"
-                                                                            for="inputGroupFile01">Upload New</label>
-                                                                        <div class="input-group">
-                                                                            <div class="custom-file">
-                                                                                <input type="file" class="custom-file-input"
-                                                                                    id="inputGroupFile02">
-                                                                                <label class="custom-file-label"
-                                                                                    for="inputGroupFile02"
-                                                                                    aria-describedby="inputGroupFileAddon02">Choose
-                                                                                    file</label>
-                                                                            </div>
-                                                                            <div class="input-group-append">
-                                                                                <span class="input-group-text"
-                                                                                    id="inputGroupFileAddon02">Upload</span>
-                                                                            </div>
+                                                                    @if (session()->has('message'))
+                                                                        <div class="alert alert-success">
+                                                                            {{ session()->get('message') }}
                                                                         </div>
-                                                                    </div>
+                                                                    @endif
+                                                                    {{-- {!! Form::open(['action' => ['ShortCourseManagement\EventManagement\EventController@updatePoster'], 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!} --}}
+                                                                    <form action="{{ route('store.poster') }}"
+                                                                        method="POST" enctype="multipart/form-data">
+                                                                        @csrf
+                                                                        <input type="number" value={{ $event->id }}
+                                                                            name="event_id" id="event_id" hidden />
+                                                                        <div class="form-group">
+                                                                            <label class="form-label mx-2"
+                                                                                for="inputGroupFile01">Upload New</label>
+                                                                            <div class="input-group">
+                                                                                {{-- <div class="custom-file">
+                                                                                    <input type="file"
+                                                                                        class="custom-file-input"
+                                                                                        id="poster_input">
+                                                                                    <label class="custom-file-label"
+                                                                                        for="inputGroupFile02"
+                                                                                        aria-describedby="inputGroupFileAddon02">Choose
+                                                                                        file</label>
+                                                                                </div> --}}
+                                                                                <div class="custom-file">
+                                                                                    <input type="file"
+                                                                                        class="custom-file-label"
+                                                                                        name="poster_input"
+                                                                                        accept="image/png, image/jpeg" />
+                                                                                </div>
+                                                                            </div>
+                                                                            @error('poster_input')
+                                                                                <p style="color: red">{{ $message }}</p>
+                                                                            @enderror
+
+                                                                            <button type="submit"
+                                                                                class="btn btn-primary ml-auto mt-2 mr-2 waves-effect waves-themed">Upload</button>
+                                                                        </div>
+                                                                    </form>
+                                                                    {{-- {!! Form::close() !!} --}}
                                                                 </div>
                                                             </div>
                                                         </div>
