@@ -23,10 +23,10 @@ class ShortCourse extends Model
         'deleted_at'
     ];
 
-    public function topic()
+    public function topics_shortcourses()
     {
-        return $this->belongsTo('App\Models\ShortCourseManagement\Topic',
-         'topic_id',
+        return $this->HasMany('App\Models\ShortCourseManagement\TopicShortCourse',
+         'shortcourse_id',
          'id');
     }
     public function materials()

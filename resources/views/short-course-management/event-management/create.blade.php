@@ -114,9 +114,9 @@
                                                     </td>
                                                     <td>
                                                         <table class="table table-bordered" id="topic_field">
-                                                            <tr>
+                                                            <tr id="row1" class="topic-added">
                                                                 <td class="col">
-                                                                    <select class="form-control topic"
+                                                                    <select class="form-control topic1"
                                                                         name="shortcourse_topic[]" id="add_topic">
                                                                         <option value="-1" disabled selected>Select Topic
                                                                         </option>
@@ -231,7 +231,7 @@
                                                         {{ Form::label('title', 'Fee Amount (RM) **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::number('fee_amount', '0.00', ['class' => 'form-control', 'placeholder' => 'Fee Amount', 'step' => '5.00']) }}
+                                                        {{ Form::number('fee_amount', '0.00', ['class' => 'form-control', 'placeholder' => 'Fee Amount']) }}
 
                                                         @error('fee_amount')
                                                             <p style="color: red">{{ $message }}</p>
@@ -322,7 +322,7 @@
 
                             <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
                                 style="content-align:right">
-                                <button type="submit"
+                                <button type="submit" id="submit" style="display:none"
                                     class="btn btn-danger ml-auto mr-2 waves-effect waves-themed font-weight-bold"><i
                                         class="ni ni-check"></i> Register</button>
                             </div>
@@ -342,20 +342,23 @@
         $('#search-by-trainer_ic').click(function() {
             var trainer_ic = $('#search-by-trainer_ic_input').val();
             $.get("/trainer/search-by-trainer_ic/" + trainer_ic, function(data) {
-                console.log(data.id);
-                $("#trainer_user_id option[value='" + data.id + "']").attr("selected", "true");
-                $("#trainer_user_id_text").show();
-                $("#trainer_user_id_text").removeAttr('disabled');
 
-                $("#trainer_user_id").hide();
-                $("#trainer_user_id").attr('style', 'display: none');
-                $("#trainer_user_id").removeClass('user');
+                console.log(data.id);
+                // $("#trainer_user_id option[value='" + data.id + "']").attr("selected", "true");
+
+                $("#trainer_user_id").select2().val(data.id).trigger("change");
+                $("#trainer_user_id_text").hide();
+                $("#trainer_user_id_text").attr('disabled');
+
+                // $("#trainer_user_id").hide();
+                // $("#trainer_user_id").attr('style', 'display: none');
+                // $("#trainer_user_id").removeClass('user');
 
                 $("#trainer_user_id_text").val(data.id);
                 $('#trainer_fullname').val(data.name);
-                $(
-                    '#trainer_phone').val(data.trainer.phone);
+                $('#trainer_phone').val(data.trainer.phone);
                 $('#trainer_email').val(data.email);
+
 
 
             }).fail(
@@ -375,6 +378,8 @@
                 }).always(
                 function() {
                     $("tr[id=form-add-trainer-second-part]").show();
+
+                    $('#submit').show();
                 });
 
         });
@@ -395,25 +400,102 @@
                 $('#trainer_email').val(null);
             }
         });
+
+        $('#search-by-trainer_ic_input').change(function() {
+
+            $("#trainer_user_id").select2().val(-1).trigger("change");
+            $("#trainer_user_id_text").hide();
+            $("#trainer_user_id_text").attr('disabled');
+
+            $("#trainer_user_id_text").val(null);
+            $('#trainer_fullname').val(null);
+            $('#trainer_phone').val(null);
+            $('#trainer_email').val(null);
+
+            $('#submit').hide();
+
+            $("tr[id=form-add-trainer-second-part]").hide();
+
+
+        });
+
         $('#shortcourse_id').change(function(event) {
             var shortcourse_name = $('#shortcourse_id').find(":selected").attr('name');
             var shortcourse_id = $('#shortcourse_id').find(":selected").val();
 
             var shortcourses = @json($shortcourses);
+            if (shortcourse_id == -1) {
 
-            var selected_shortcourse = shortcourses.find((x) => {
-                return x.id == shortcourse_id
-            });
-            if (shortcourse_id) {
-                $('#shortcourse_name').val(selected_shortcourse.name);
-                $('#shortcourse_description').val(selected_shortcourse.description);
-                $('#shortcourse_objective').val(selected_shortcourse.objective);
-                $("tr[id=form-add-shortcourse-second-part]").show();
-            } else {
                 $('#shortcourse_name').val(null);
                 $('#shortcourse_description').val(null);
                 $('#shortcourse_objective').val(null);
-                $("tr[id=form-add-shortcourse-second-part]").hide();
+                $('#shortcourse_topic').val(null);
+
+                var rowCount = $('#topic_field tr').length;
+                while (rowCount > 1) {
+
+
+                    $(`#row${rowCount}`).remove();
+                    rowCount -= 1;
+                }
+                $(".topic1").select2().val(-1).trigger("change");
+
+                $("tr[id=form-add-shortcourse-second-part]").show();
+            } else {
+
+                var selected_shortcourse = shortcourses.find((x) => {
+                    return x.id == shortcourse_id
+                });
+
+
+                $("topic_field").find("tr:gt(0)").remove();
+
+                if (shortcourse_id) {
+                    $('#shortcourse_name').val(selected_shortcourse.name);
+                    $('#shortcourse_description').val(selected_shortcourse.description);
+                    $('#shortcourse_objective').val(selected_shortcourse.objective);
+                    $('#shortcourse_topic').val(selected_shortcourse.topics);
+                    $("tr[id=form-add-shortcourse-second-part]").show();
+
+                    var i = 1;
+                    selected_shortcourse.topics.forEach((x) => {
+                        if (i > 1) {
+                            $(`#row${i}`).remove();
+                            $('#topic_field tr:last').after(`
+                            <tr id="row${i}" class="topic-added">
+                                    <td class="col">
+                                        <select class="form-control topic${i}" name="shortcourse_topic[]"
+                                        id="add_topic">
+                                            <option value="-1" disabled selected>Select Topic
+                                            </option>
+                                            @foreach ($topics as $topic)
+                                                <option value="{{ $topic->id }}">
+                                                    {{ $topic->id }} -
+                                                    {{ $topic->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td class="col col-sm-1"><button type="button" name="remove" id="${i}" class="btn btn-danger btn_remove">X</button></td>
+                            </tr> `);
+                            $(`.topic${i}`).select2();
+
+                        }
+                        $(".topic" + i).select2().val(x.id).trigger("change");
+                        i += 1;
+                    });
+
+                    var rowCount = $('#topic_field tr').length;
+                    while (rowCount > selected_shortcourse.topics.length) {
+                        $(`#row${rowCount}`).remove();
+                        rowCount -= 1;
+                    }
+
+                } else {
+                    $('#shortcourse_name').val(null);
+                    $('#shortcourse_description').val(null);
+                    $('#shortcourse_objective').val(null);
+                    $("tr[id=form-add-shortcourse-second-part]").hide();
+                }
             }
         });
         $('#venue_id').change(function(event) {
@@ -435,12 +517,11 @@
         });
 
         $(document).ready(function() {
-            // $('.venue, .is_base_fee_select_add, .is_base_fee_select_edit').select2();
 
             var i = 1;
             $('#addTopic').click(function() {
                 i++;
-                $('#topic_field').append(`
+                $('#topic_field tr:last').after(`
                     <tr id="row${i}" class="topic-added">
                             <td class="col">
                                 <select class="form-control topic${i}" name="shortcourse_topic[]"
@@ -460,7 +541,7 @@
                 $(`.topic${i}`).select2();
             });
 
-            $('.shortcourse, .venue, .topic, .fee').select2();
+            $('.shortcourse, .user, .venue, .topic1, .fee').select2();
 
 
             $(document).on('click', '.btn_remove', function() {

@@ -84,7 +84,17 @@ class EventController extends Controller
 
         $venues = Venue::all();
 
-        $shortcourses = ShortCourse::all();
+        $shortcourses = ShortCourse::all()->load(['topics_shortcourses.topic']);
+
+        $index = 0;
+        foreach ($shortcourses as $shortcourse) {
+            $topics = [];
+            foreach ($shortcourse->topics_shortcourses as $topic_shortcourse) {
+                array_push($topics, $topic_shortcourse->topic);
+            }
+            $shortcourses[$index]['topics'] = $topics;
+            $index += 1;
+        }
 
         $topics = Topic::all();
 
@@ -150,36 +160,67 @@ class EventController extends Controller
 
         ]);
 
-        $updateShortCourse = ShortCourse::find($request->shortcourse_id)->update([
-            'name' => $request->shortcourse_name,
-            'shortcourse_description' => $request->shortcourse_description,
-            'shortcourse_objective' => $request->shortcourse_objective,
-            'updated_by' => Auth::user()->id,
-        ]);
+        if ($request->shortcourse_id == -1) {
+            //TODO: Create new shortcourse
 
-        if (isset($request->shortcourse_topic)) {
-            foreach ($request->shortcourse_topic as $shortcourse_topic) {
-                $exist = TopicShortCourse::where([
-                    ['shortcourse_id', '=', $request->shortcourse_id],
-                    ['topic_id', '=', $shortcourse_topic],
-                ])->get();
 
-                if (!$exist) {
+            $createShortCourse = ShortCourse::create([
+                'name' => $request->shortcourse_name,
+                'shortcourse_description' => $request->shortcourse_description,
+                'shortcourse_objective' => $request->shortcourse_objective,
+                'created_by' => Auth::user()->id,
+            ]);
+            if (isset($request->shortcourse_topic)) {
+                foreach ($request->shortcourse_topic as $shortcourse_topic) {
+
                     $createTopicShortCourse = TopicShortCourse::create([
                         'topic_id' => $shortcourse_topic,
-                        'shortcourse_id' => $request->shortcourse_id,
+                        'shortcourse_id' => $createShortCourse->id,
                         'created_by' => Auth::user()->id,
                     ]);
+                }
+            }
+        } else {
+            $updateShortCourse = ShortCourse::find($request->shortcourse_id)->update([
+                'name' => $request->shortcourse_name,
+                'shortcourse_description' => $request->shortcourse_description,
+                'shortcourse_objective' => $request->shortcourse_objective,
+                'updated_by' => Auth::user()->id,
+            ]);
+
+            if (isset($request->shortcourse_topic)) {
+                foreach ($request->shortcourse_topic as $shortcourse_topic) {
+                    $exist = TopicShortCourse::where([
+                        ['shortcourse_id', '=', $request->shortcourse_id],
+                        ['topic_id', '=', $shortcourse_topic],
+                    ])->get();
+
+                    if (!$exist) {
+                        $createTopicShortCourse = TopicShortCourse::create([
+                            'topic_id' => $shortcourse_topic,
+                            'shortcourse_id' => $request->shortcourse_id,
+                            'created_by' => Auth::user()->id,
+                        ]);
+                    }
                 }
             }
         }
 
 
 
-        $updateVenue = Venue::find($request->venue_id)->update([
-            'name' => $request->venue_name,
-            'updated_by' => Auth::user()->id,
-        ]);
+        // $updateVenue = Venue::find($request->venue_id)->update([
+        //     'name' => $request->venue_name,
+        //     'updated_by' => Auth::user()->id,
+        // ]);
+
+        if ($request->venue_id == -1) {
+            $createVenue = Venue::create([
+                'name' => $request->venue_name,
+                'created_by' => Auth::user()->id,
+            ]);
+        } else {
+            // TODO: Update Venue Name
+        }
 
         $createEvent = Event::create([
             'name' => $request->shortcourse_name,
@@ -188,13 +229,13 @@ class EventController extends Controller
             'datetime_start' => $request->datetime_start,
             'datetime_end' => $request->datetime_end,
             'registration_due_date' => $request->datetime_start,
-            'venue_id' => $request->venue_id,
+            'venue_id' => $request->venue_id == -1 ? $createVenue->id : $request->venue_id,
             'created_by' => Auth::user()->id,
         ]);
 
         $createEventShortCourse = EventShortCourse::create([
             'event_id' => $createEvent->id,
-            'shortcourse_id' => $request->shortcourse_id,
+            'shortcourse_id' => $request->shortcourse_id == -1 ? $createShortCourse->id : $request->shortcourse_id,
             'created_by' => Auth::user()->id,
         ]);
 
@@ -211,16 +252,17 @@ class EventController extends Controller
         $existTrainer = Trainer::where('ic', '=', $request->trainer_ic)->first();
 
         if (!$existTrainer) {
-            $existUser = User::find($request->trainer_user_id)->first();
+            $existUser = User::where('id', $request->trainer_user_id)->first();
             if (!$existUser) {
-                //CreateUser
+                // TODO: Create User
+            } else {
+                $existTrainer = Trainer::create([
+                    'user_id' => $existUser->id,
+                    'ic' => $request->trainer_ic,
+                    'phone' => $request->trainer_phone,
+                    'created_by' => Auth::user()->id,
+                ]);
             }
-            $existTrainer = Trainer::create([
-                'user_id' => $existUser->id,
-                'ic' => $request->trainer_ic,
-                'phone' => $request->trainer_phone,
-                'created_by' => Auth::user()->id,
-            ]);
         }
 
         $createEventTrainer = EventTrainer::create([
@@ -625,10 +667,10 @@ class EventController extends Controller
 
     public function updatePoster(Request $request)
     {
-        $date=Carbon::today()->toDateString();
-        $year=substr($date,0,4);
-        $month=substr($date,5,2);
-        $day=substr($date,8,2);
+        $date = Carbon::today()->toDateString();
+        $year = substr($date, 0, 4);
+        $month = substr($date, 5, 2);
+        $day = substr($date, 8, 2);
 
         $validated = $request->validate([
             'poster_input' => 'required|mimes:jpg,jpeg,png',
@@ -643,7 +685,7 @@ class EventController extends Controller
         $name_gen = hexdec(uniqid());
         $img_ext = strtolower($poster->getClientOriginalExtension());
 
-        $img_name = $year.$month.$day.'_id'.($request->event_id).'_'.$name_gen . '.' . $img_ext;
+        $img_name = $year . $month . $day . '_id' . ($request->event_id) . '_' . $name_gen . '.' . $img_ext;
 
         /* utk file upload, create folder shortcourse under storage/app.
         so semua file upload berkaitan sistem shortcourse akan ada dalam storage/app/shortcourse.
@@ -651,7 +693,7 @@ class EventController extends Controller
         normally kalau data mcm shortcourse ni sy buat subfolder tahun/courseid */
 
 
-        $up_location = 'storage/shortcourse/poster/' . $year.'/';
+        $up_location = 'storage/shortcourse/poster/' . $year . '/';
         $last_img = $up_location . $img_name;
 
         $poster->move($up_location, $img_name);

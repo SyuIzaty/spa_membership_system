@@ -28,9 +28,9 @@ class Topic extends Model
         'id');
     }
 
-    public function shortcourses()
+    public function topics_shortcourses()
     {
-        return $this->hasMany('App\Models\ShortCourseManagement\ShortCourse',
+        return $this->hasMany('App\Models\ShortCourseManagement\TopicShortCourse',
         'topic_id',
         'id');
     }
