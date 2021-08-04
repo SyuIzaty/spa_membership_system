@@ -622,6 +622,104 @@
                                                                             Ticked</button>
                                                                     </div>
                                                                 </form>
+                                                                <div class="modal fade" id="crud-modals" aria-hidden="true">
+                                                                    <div class="modal-dialog">
+                                                                        <div class="modal-content">
+                                                                            <div class="card-header">
+                                                                                <h5 class="card-title w-100">Payment Proof
+                                                                                </h5>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <form
+                                                                                    action="{{ route('store.payment_proof') }}"
+                                                                                    method="POST"
+                                                                                    enctype="multipart/form-data">
+                                                                                    @csrf
+                                                                                    <div class="form-group col">
+                                                                                        <label class="form-label"
+                                                                                            for="fullname">Receipt
+                                                                                            Image</label>
+                                                                                        {{-- @if ($eventParticipant->payment_proof_path) --}}
+                                                                                        <img style="display:none"
+                                                                                            id="payment_proof_path"
+                                                                                            name="payment_proof_path"
+                                                                                            class="card-img" alt="...">
+                                                                                        {{-- @endif --}}
+
+                                                                                        <hr class="mt-2 mb-2">
+                                                                                        <div class="custom-file">
+                                                                                            <input type="file"
+                                                                                                class="custom-file-label"
+                                                                                                name="payment_proof_input"
+                                                                                                accept="image/png, image/jpeg" />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <hr class="mt-1 mb-1">
+                                                                                    <div class="form-group col">
+                                                                                        <label class="form-label"
+                                                                                            for="fullname">Status</label>
+                                                                                        <div class="row">
+
+                                                                                            <input type="number"
+                                                                                                name="event_id" value=0
+                                                                                                id="event_id" hidden />
+                                                                                            <input type="number" value=0
+                                                                                                name="participant_id"
+                                                                                                id="participant_id"
+                                                                                                hidden />
+                                                                                            <input
+                                                                                                class="form-control-plaintext"
+                                                                                                id="is_verified_payment_proof_id"
+                                                                                                name="is_verified_payment_proof_id"
+                                                                                                hidden>
+                                                                                            <div
+                                                                                                class="col d-flex justify-content-start">
+                                                                                                <input
+                                                                                                    class="form-control-plaintext"
+                                                                                                    id="is_verified_payment_proof"
+                                                                                                    name="is_verified_payment_proof"
+                                                                                                    disabled>
+                                                                                            </div>
+                                                                                            <div
+                                                                                                class="col d-flex justify-content-end">
+                                                                                                <div
+                                                                                                    class="row d-flex justify-content-end">
+                                                                                                    <td
+                                                                                                        class="col col-sm-1">
+                                                                                                        <button
+                                                                                                            type="button"
+                                                                                                            name="request_verification"
+                                                                                                            id="request_verification"
+                                                                                                            class="btn btn-primary btn_add">
+                                                                                                            Request
+                                                                                                            Verification
+                                                                                                        </button>
+                                                                                                    </td>
+
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <hr class="mt-1 mb-1">
+
+
+                                                                                    {{-- <div class="invalid-feedback">Example invalid custom file feedback</div> --}}
+                                                                                    <div class="footer">
+                                                                                        <button type="submit"
+                                                                                            class="btn btn-primary ml-auto float-right"><i
+                                                                                                class="fal fa-save"></i>
+                                                                                            Save</button>
+                                                                                        <button type="button"
+                                                                                            class="btn btn-danger ml-auto float-right mr-2"
+                                                                                            data-dismiss="modal"><i
+                                                                                                class="fal fa-window-close"></i>
+                                                                                            Close</button>
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1695,50 +1793,89 @@
                         });
                     });
 
-                    $('#table-all-no-payment-yet').on('click', '.btn-delete[data-remote]', function(e) {
-                        e.preventDefault();
-                        $.ajaxSetup({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        });
-                        var url = $(this).data('remote');
-
-                        Swal.fire({
-                            title: 'Disqualify this applicant?',
-                            text: "This applicant will be disqualified!",
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
-                            confirmButtonText: 'Yes, disqualify this applicant!',
-                            cancelButtonText: 'No'
-                        }).then((result) => {
-                            if (result.value) {
-                                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-                                $.ajax({
-                                    url: url,
-                                    type: 'POST',
-                                    dataType: 'json',
-                                    data: {
-                                        method: 'POST',
-                                        submit: true
+                    // request_verification
+                    $('#request_verification').click(function() {
+                        var is_verified_payment_proof = $("#is_verified_payment_proof_id").val();
+                        var event_id = $("#event_id").val();
+                        var participant_id = $("#participant_id").val();
+                        if (!is_verified_payment_proof) {
+                            $.get("/shortcourse/participant/request-verification/event/" + event_id +
+                                "/participant_id/" + participant_id,
+                                function(data) {
+                                    var stringStatus = '';
+                                    if (typeof(data.is_verified_payment_proof) !== "number") {
+                                        stringStatus = "Not making any request yet"
+                                        $("#request_verification").attr("disabled", "false");
+                                        style = 'text-danger';
+                                    } else if (data.is_verified_payment_proof == 0) {
+                                        stringStatus = "In verification Process"
+                                        $("#request_verification").attr("disabled", "true");
+                                        style = 'text-primary';
+                                    } else if (data.is_verified_payment_proof == 1) {
+                                        stringStatus = "Verified!"
+                                        $("#request_verification").attr("disabled", "true");
+                                        style = 'text-success';
                                     }
-                                }).always(function(data) {
-                                    $('#table-all-no-payment-yet').DataTable().draw(false);
+                                    $("#is_verified_payment_proof_id").val(data.is_verified_payment_proof);
+                                    $('.modal-body #is_verified_payment_proof').val(stringStatus);
+                                    $('.modal-body #is_verified_payment_proof').addClass(style);
+                                    console.log('masuk');
+                                    setTimeout(function() {
+                                        //your code to be executed after 10 second
+                                        tableAllNoPaymentYet.ajax.reload();
+                                    }, 5000);
+                                    setTimeout(function() {
+                                        //your code to be executed after 10 second
+                                        tablePaymentWaitForVerification.ajax.reload();
+                                    }, 10000);
+                                }).fail(
+                                function() {
+                                    // TODO: The code is not valid
                                 });
-
-
-                                // var delayInMilliseconds = 5000; //5 second
-
-                                // setTimeout(function() {
-                                //     //your code to be executed after 5 second
-                                //     $('#studentWithoutKolej').DataTable().ajax.reload();
-                                // }, delayInMilliseconds);
-
-                            }
-                        })
+                        }
                     });
+
+                    //Update Payment Proof
+                    {
+
+                        $('#crud-modals').on('show.bs.modal', function(event) {
+                            var button = $(event.relatedTarget)
+                            var is_verified_payment_proof_id = button.data('is_verified_payment_proof');
+                            $("#is_verified_payment_proof_id").val(is_verified_payment_proof_id);
+                            var payment_proof_path = button.data('payment_proof_path');
+                            var event_id = button.data('event_id');
+                            $("#event_id").val(event_id);
+                            var participant_id = button.data('participant_id');
+                            $("#participant_id").val(participant_id);
+                            var stringStatus;
+                            var style;
+                            if (typeof(is_verified_payment_proof_id) !== "number") {
+                                stringStatus = "Not making any request yet"
+                                style = 'text-danger';
+                                // $("#request_verification").attr("disabled", "false");
+                            } else if (is_verified_payment_proof_id == 0) {
+                                stringStatus = "In verification Process"
+                                $("#request_verification").attr("disabled", "true");
+                                style = 'text-primary';
+                            } else if (is_verified_payment_proof_id == 1) {
+                                stringStatus = "Verified!"
+                                $("#request_verification").attr("disabled", "true");
+                                style = 'text-success';
+                            }
+                            if (!payment_proof_path) {
+                                $("#payment_proof_path").hide();
+                            } else {
+                                $("#payment_proof_path").show();
+                                var src = `{{ asset('${payment_proof_path}') }}`;
+                                // console.log(`{{ asset('${payment_proof_path}') }}`);
+
+                                // src="http://iids.test/+payment_proof_path+"
+                                $("#payment_proof_path").attr("src", src);
+                            }
+                            $('.modal-body #is_verified_payment_proof').val(stringStatus);
+                            $('.modal-body #is_verified_payment_proof').addClass(style);
+                        });
+                    }
                 }
 
                 // all payment waiting for verification
@@ -2923,11 +3060,12 @@
                             break;
                         case 'reject-payment-proof':
                             title = 'Reject this payment proof?';
-                            text = "This payment will be rejected! The participant will be asked to insert other proof";
+                            text =
+                                "This payment will be rejected! The participant will be asked to insert other proof";
                             confirmButtonText = 'Yes, reject this payment!';
                             cancelButtonText = 'No';
-                            currentTableId = '#table-expected-attendances';
-                            nextTableId = '#table-payment-wait-for-verification';
+                            currentTableId = '#table-payment-wait-for-verification';
+                            nextTableId = '#table-all-no-payment-yet';
                             break;
                         case 'verify-attendance-attend':
                             title = 'This participant attend the event?';

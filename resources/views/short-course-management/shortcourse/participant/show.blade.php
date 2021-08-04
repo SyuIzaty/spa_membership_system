@@ -61,9 +61,9 @@
                             <div class="panel-content">
                                 <span id="intake_fail"></span>
                                 @csrf
-                                @if (session()->has('message'))
+                                @if (session()->has('success'))
                                     <div class="alert alert-success">
-                                        {{ session()->get('message') }}
+                                        {{ session()->get('success') }}
                                     </div>
                                 @endif
                                 <div class="table-responsive">
@@ -97,10 +97,10 @@
                                             <div class="card-header">
                                                 <h5 class="card-title w-100">Payment Proof</h5>
                                             </div>
-                                            <form action="{{ route('store.payment_proof') }}" method="POST"
-                                                enctype="multipart/form-data">
-                                                @csrf
-                                                <div class="modal-body">
+                                            <div class="modal-body">
+                                                <form action="{{ route('store.payment_proof') }}" method="POST"
+                                                    enctype="multipart/form-data">
+                                                    @csrf
                                                     <div class="form-group col">
                                                         {{-- <div class="custom-file">
                                                         <input type="file" class="custom-file-input"
@@ -114,7 +114,7 @@
                                                             name="payment_proof_path" class="card-img" alt="...">
                                                         {{-- @endif --}}
 
-                                                    <hr class="mt-2 mb-2">
+                                                        <hr class="mt-2 mb-2">
                                                         <div class="custom-file">
                                                             <input type="file" class="custom-file-label"
                                                                 name="payment_proof_input" accept="image/png, image/jpeg" />
@@ -127,9 +127,13 @@
                                                         disabled> --}}
                                                         <div class="row">
 
-                                                            <input type="number" name="event_id" value=0 id="event_id" hidden />
+                                                            <input type="number" name="event_id" value=0 id="event_id"
+                                                                hidden />
                                                             <input type="number" value={{ $participant->id }}
                                                                 name="participant_id" id="participant_id" hidden />
+                                                            <input class="form-control-plaintext"
+                                                                id="is_verified_payment_proof_id"
+                                                                name="is_verified_payment_proof_id" hidden>
                                                             <div class="col d-flex justify-content-start">
                                                                 <input class="form-control-plaintext"
                                                                     id="is_verified_payment_proof"
@@ -153,7 +157,6 @@
 
 
                                                     {{-- <div class="invalid-feedback">Example invalid custom file feedback</div> --}}
-
                                                     <div class="footer">
                                                         <button type="submit" class="btn btn-primary ml-auto float-right"><i
                                                                 class="fal fa-save"></i>
@@ -163,8 +166,8 @@
                                                             data-dismiss="modal"><i class="fal fa-window-close"></i>
                                                             Close</button>
                                                     </div>
-                                                </div>
-                                            </form>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -250,36 +253,76 @@
                 }
             });
 
-            //New Application
+            // request_verification
+            $('#request_verification').click(function() {
+                var is_verified_payment_proof = $("#is_verified_payment_proof_id").val();
+                var event_id = $("#event_id").val();
+                var participant_id = $("#participant_id").val();
+                if (!is_verified_payment_proof) {
+                    $.get("/shortcourse/participant/request-verification/event/" + event_id +
+                        "/participant_id/" + participant_id,
+                        function(data) {
+                            var stringStatus = '';
+                            if (typeof(data.is_verified_payment_proof) !== "number") {
+                                stringStatus = "Not making any request yet"
+                                $("#request_verification").attr("disabled", "false");
+                        style='text-danger';
+                            } else if (data.is_verified_payment_proof == 0) {
+                                stringStatus = "In verification Process"
+                                $("#request_verification").attr("disabled", "true");
+                        style='text-primary';
+                            } else if (data.is_verified_payment_proof == 1) {
+                                stringStatus = "Verified!"
+                                $("#request_verification").attr("disabled", "true");
+                        style='text-success';
+                            }
+                            $("#is_verified_payment_proof_id").val(data.is_verified_payment_proof);
+                            $('.modal-body #is_verified_payment_proof').val(stringStatus);
+                    $('.modal-body #is_verified_payment_proof').addClass(style);
+                        }).fail(
+                        function() {
+                            // TODO: The code is not valid
+                        });
+                }
+            });
+
+            //Update Payment Proof
             {
 
                 $('#crud-modals').on('show.bs.modal', function(event) {
                     var button = $(event.relatedTarget)
-                    var is_verified_payment_proof = button.data('is_verified_payment_proof');
+                    var is_verified_payment_proof_id = button.data('is_verified_payment_proof');
+                    $("#is_verified_payment_proof_id").val(is_verified_payment_proof_id);
                     var payment_proof_path = button.data('payment_proof_path');
                     var event_id = button.data('event_id');
                     $("#event_id").val(event_id);
                     var stringStatus;
-                    if (is_verified_payment_proof == null) {
+                    var style;
+                    if (typeof(is_verified_payment_proof_id) !== "number") {
                         stringStatus = "Not making any request yet"
-                    } else if (is_verified_payment_proof == 0) {
+                        style='text-danger';
+                        // $("#request_verification").attr("disabled", "false");
+                    } else if (is_verified_payment_proof_id == 0) {
                         stringStatus = "In verification Process"
                         $("#request_verification").attr("disabled", "true");
-                    } else if (is_verified_payment_proof == 1) {
+                        style='text-primary';
+                    } else if (is_verified_payment_proof_id == 1) {
                         stringStatus = "Verified!"
                         $("#request_verification").attr("disabled", "true");
+                        style='text-success';
                     }
                     if (!payment_proof_path) {
                         $("#payment_proof_path").hide();
                     } else {
                         $("#payment_proof_path").show();
-                        var src = `{{asset('${payment_proof_path}')}}`;
-                        // console.log(`{{asset('${payment_proof_path}')}}`);
+                        var src = `{{ asset('${payment_proof_path}') }}`;
+                        // console.log(`{{ asset('${payment_proof_path}') }}`);
 
                         // src="http://iids.test/+payment_proof_path+"
                         $("#payment_proof_path").attr("src", src);
                     }
                     $('.modal-body #is_verified_payment_proof').val(stringStatus);
+                    $('.modal-body #is_verified_payment_proof').addClass(style);
                 });
             }
 

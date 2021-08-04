@@ -104,7 +104,9 @@ class EventParticipantController extends Controller
                     '" class="noPaymentYet_checkbox">';
             })
             ->addColumn('action', function ($eventsParticipants) {
-                return '<a href="javascript:;" id="disqualified-application-no-payment" data-remote="/update-progress/disqualified-application-no-payment/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger btn-update-progress">Disqualified</a>';
+                return '
+                <a href="#" data-target="#crud-modals" data-toggle="modal" data-event_id="' . $eventsParticipants->event_id . '" data-participant_id="' . $eventsParticipants->participant_id . '" data-payment_proof_path="' . $eventsParticipants->payment_proof_path . '" data-is_verified_payment_proof="' . $eventsParticipants->is_verified_payment_proof . '" class="btn btn-sm btn-primary">Update Payment Proof</a>
+                <a href="javascript:;" id="disqualified-application-no-payment" data-remote="/update-progress/disqualified-application-no-payment/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger btn-update-progress">Disqualified</a>';
             })
             ->rawColumns(['action', 'checkNoPaymentYet'])
             ->make(true);
@@ -675,11 +677,13 @@ class EventParticipantController extends Controller
         foreach ($eventsParticipants as $eventParticipant) {
             // $event = Event::find($eventParticipant->event_id)->load(['events_participants', 'venue']);
             // array_push($events, $event);
-            array_push($events, $eventParticipant->event);
-            $eventParticipant->event = null;
-            $events[$indexEvent]['is_verified_payment_proof'] = $eventParticipant->is_verified_payment_proof;
-            $events[$indexEvent]['payment_proof_path'] = $eventParticipant->payment_proof_path;
-            $indexEvent += 1;
+            if($eventParticipant->event){
+                array_push($events, $eventParticipant->event);
+                $eventParticipant->event = null;
+                $events[$indexEvent]['is_verified_payment_proof'] = $eventParticipant->is_verified_payment_proof;
+                $events[$indexEvent]['payment_proof_path'] = $eventParticipant->payment_proof_path;
+                $indexEvent += 1;
+            }
         }
         $index = 0;
         foreach ($events as $event) {
@@ -728,7 +732,7 @@ class EventParticipantController extends Controller
             })
             ->addColumn('action', function ($events) {
                 return '
-                <a href="#" data-target="#crud-modals" data-toggle="modal" data-event_id="' . $events->id . '" data-payment_proof_path="' . $events->payment_proof_path . '" data-is_verified_payment_proof="' . $events->is_verified_payment_proof . '" class="btn btn-sm btn-primary">View Payment Proof</a>
+                <a href="#" data-target="#crud-modals" data-toggle="modal" data-event_id="' . $events->id . '" data-payment_proof_path="' . $events->payment_proof_path . '" data-is_verified_payment_proof="' . $events->is_verified_payment_proof . '" class="btn btn-sm btn-primary">Update Payment Proof</a>
                 <a href="#" class="btn btn-sm btn-danger">Cancel Application</a>';
             })
 
@@ -740,43 +744,58 @@ class EventParticipantController extends Controller
 
     public function updatePaymentProof(Request $request)
     {
-        $date = Carbon::today()->toDateString();
-        $year = substr($date, 0, 4);
-        $month = substr($date, 5, 2);
-        $day = substr($date, 8, 2);
+        if ($request->file('payment_proof_input')) {
+            $date = Carbon::today()->toDateString();
+            $year = substr($date, 0, 4);
+            $month = substr($date, 5, 2);
+            $day = substr($date, 8, 2);
 
-        // $validated = $request->validate([
-        //     'payment_proof_input' => 'required|mimes:jpg,jpeg,png',
+            // $validated = $request->validate([
+            //     'payment_proof_input' => 'required|mimes:jpg,jpeg,png',
 
-        // ], [
-        //     'payment_proof_input.required' => 'Poster is required',
+            // ], [
+            //     'payment_proof_input.required' => 'Poster is required',
 
-        // ]);
-        $poster = $request->file('payment_proof_input');
+            // ]);
+            $poster = $request->file('payment_proof_input');
+
+            $name_gen = hexdec(uniqid());
+            $img_ext = strtolower($poster->getClientOriginalExtension());
+
+            $img_name = $year . $month . $day . '_id' . ($request->event_id) . '_' . $name_gen . '.' . $img_ext;
+
+            /* utk file upload, create folder shortcourse under storage/app.
+            so semua file upload berkaitan sistem shortcourse akan ada dalam storage/app/shortcourse.
+            kat dalam folder tu terpulang lah mcm mana nak susun.ikut kesesuaian data.
+            normally kalau data mcm shortcourse ni sy buat subfolder tahun/courseid */
 
 
-        $name_gen = hexdec(uniqid());
-        $img_ext = strtolower($poster->getClientOriginalExtension());
+            $up_location = 'storage/shortcourse/payment_proof_input/' . $year . '/';
+            $last_img = $up_location . $img_name;
 
-        $img_name = $year . $month . $day . '_id' . ($request->event_id) . '_' . $name_gen . '.' . $img_ext;
+            $poster->move($up_location, $img_name);
+            // where('event_id', $request->event_id)->where('participant_id', $request->participant_id)
+            EventParticipant::where([['event_id', '=', $request->event_id], ['participant_id', '=', $request->participant_id]])->update([
+                'payment_proof_path' => $last_img,
+                'updated_by' => 'public_user',
+                'updated_at' => Carbon::now()
+            ]);
 
-        /* utk file upload, create folder shortcourse under storage/app.
-        so semua file upload berkaitan sistem shortcourse akan ada dalam storage/app/shortcourse.
-        kat dalam folder tu terpulang lah mcm mana nak susun.ikut kesesuaian data.
-        normally kalau data mcm shortcourse ni sy buat subfolder tahun/courseid */
+            return Redirect()->back()->with('success', 'Payment proof updated successfully');
+        }
+        return Redirect()->back();
+    }
 
-
-        $up_location = 'storage/shortcourse/payment_proof_input/' . $year . '/';
-        $last_img = $up_location . $img_name;
-
-        $poster->move($up_location, $img_name);
-        // where('event_id', $request->event_id)->where('participant_id', $request->participant_id)
-        EventParticipant::where([['event_id', '=', $request->event_id], ['participant_id', '=', $request->participant_id]])->update([
-            'payment_proof_path' => $last_img,
+    public function requestVerification($event_id, $participant_id)
+    {
+        // dd('Event_id:'.$event_id.',Participant_id:'.$participant_id);
+        $update=EventParticipant::where([['event_id', '=', $event_id], ['participant_id', '=', $participant_id]])->update([
+            'is_verified_payment_proof' => 0,
             'updated_by' => 'public_user',
             'updated_at' => Carbon::now()
         ]);
 
-        return Redirect()->back()->with('success', 'Payment proof Updated Successfully');
+        $update=EventParticipant::where([['event_id', '=', $event_id], ['participant_id', '=', $participant_id]])->first();
+        return $update;
     }
 }

@@ -312,3 +312,5 @@ Route::get('/shortcourse/{id}', 'ShortCourseManagement\EventManagement\EventCont
 Route::get('/shortcourse', 'ShortCourseManagement\EventManagement\EventController@indexPublicView');
 Route::get('/get-file-event/{filename}', 'ShortCourseManagement\EventManagement\EventController@getFile');
 Route::post('/shortcourse/participant/save-payment-proof', 'ShortCourseManagement\EventManagement\EventParticipantController@updatePaymentProof')->name('store.payment_proof');
+
+Route::get('/shortcourse/participant/request-verification/event/{event_id}/participant_id/{participant_id}', 'ShortCourseManagement\EventManagement\EventParticipantController@requestVerification')->name('store.request_verification');
