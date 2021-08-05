@@ -39,6 +39,7 @@
                                             <th>DATES</th>
                                             <th>PARTICIPANT</th>
                                             <th>MANAGE. DETAILS</th>
+                                            <th>STATUS</th>
                                             <th>ACTION</th>
                                         </tr>
                                         {{-- <tr>
@@ -119,6 +120,10 @@
                     {
                         data: 'management_details',
                         name: 'management_details'
+                    },
+                    {
+                        data: 'event_status_category.name',
+                        name: 'event_status_category.name'
                     },
                     {
                         data: 'action',

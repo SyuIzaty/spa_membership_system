@@ -13,7 +13,9 @@ use App\Models\ShortCourseManagement\EventTrainer;
 use App\Models\ShortCourseManagement\EventShortCourse;
 use App\Models\ShortCourseManagement\TopicShortCourse;
 use App\Models\ShortCourseManagement\Topic;
+use App\Models\ShortCourseManagement\EventStatusCategory;
 use App\User;
+use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use Auth;
 use File;
@@ -29,7 +31,7 @@ class EventController extends Controller
 
     public function dataEventManagement()
     {
-        $events = Event::orderByDesc('id')->get()->load(['events_participants', 'venue']);
+        $events = Event::orderByDesc('id')->get()->load(['events_participants', 'venue', 'event_status_category']);
         $index = 0;
         foreach ($events as $event) {
             if (isset($event->events_participants)) {
@@ -258,7 +260,17 @@ class EventController extends Controller
             $existUser = User::where('id', $request->trainer_user_id)->first();
             if (!$existUser) {
                 // TODO: Create User
-            } else {
+                $existUser = User::create([
+                    'id' => $request->trainer_ic,
+                    'name' => $request->trainer_fullname,
+                    'username' => $request->trainer_ic,
+                    'email' => $request->trainer_email,
+                    'active' => 'Y',
+                    'category' => 'EXT',
+                    'password' => Hash::make($request->trainer_ic),
+                ]);
+            }
+            if ($existUser) {
                 $existTrainer = Trainer::create([
                     'user_id' => $existUser->id,
                     'ic' => $request->trainer_ic,
@@ -309,7 +321,8 @@ class EventController extends Controller
             'venue',
             'events_shortcourses.shortcourse',
             'events_trainers.trainer',
-            'fees'
+            'fees',
+            'event_status_category'
         ]);
 
         // $totalParticipantsNotApprovedYet = $event->events_participants->where('is_approved', 0)->where('is_done_email_cancellation_disqualified', 0)->count();
@@ -391,6 +404,7 @@ class EventController extends Controller
         $shortcourses = ShortCourse::all();
 
         $users = User::all();
+        $eventStatusCategories = EventStatusCategory::all();
 
         // $trainers = array();
         foreach ($event->events_trainers as $event_trainer) {
@@ -398,7 +412,7 @@ class EventController extends Controller
         }
         // dd($event);
         //
-        return view('short-course-management.event-management.show', compact('event', 'venues', 'shortcourses', 'users', 'statistics'));
+        return view('short-course-management.event-management.show', compact('event', 'venues', 'shortcourses', 'users', 'statistics', 'eventStatusCategories'));
     }
     public function edit($id)
     {
@@ -587,7 +601,7 @@ class EventController extends Controller
 
     public function indexPublicView()
     {
-        $events = Event::all()->load(['events_participants', 'venue', 'fees']);
+        $events = Event::where('event_status_category_id', 2)->get()->load(['events_participants', 'venue', 'fees']);
         $index = 0;
         foreach ($events as $event) {
             $events[$index]->created_at_diffForHumans = $events[$index]->created_at->diffForHumans();
@@ -631,7 +645,7 @@ class EventController extends Controller
 
     public function dataPublicView()
     {
-        $events = Event::all()->load(['events_participants', 'venue']);
+        $events = Event::where('event_status_category_id', 2)->get()->load(['events_participants', 'venue']);
         $index = 0;
         foreach ($events as $event) {
             if (isset($event->events_participants)) {
@@ -707,5 +721,18 @@ class EventController extends Controller
         ]);
 
         return Redirect()->back()->with('success', 'Poster Updated Successfully');
+    }
+
+    public function updateEventStatus($event_id, $event_status_category_id)
+    {
+        Event::find($event_id)->update([
+            'event_status_category_id' => $event_status_category_id,
+            'updated_by' => Auth::user()->id,
+            'updated_at' => Carbon::now()
+        ]);
+
+        // $update=Event::find($event_id)->load(['event_status_category']);
+
+        return Redirect()->back()->with('success', 'Event Status Updated Successfully');
     }
 }

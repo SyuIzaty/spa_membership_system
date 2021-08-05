@@ -5,15 +5,13 @@ namespace App\Models\ShortCourseManagement;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class EventStatus extends Model
+class EventStatusCategory extends Model
 {
     use SoftDeletes;
-    protected $table = 'scm_event_status';
+    protected $table = 'scm_event_status_category';
     protected $primaryKey = 'id';
     protected $fillable = [
         'name',
-        'category',
-        'stage',
         'created_by',
         'created_at',
         'updated_by',
@@ -22,15 +20,14 @@ class EventStatus extends Model
         'deleted_at'
     ];
 
-    // public function events()
+    // public function event_statuses()
     // {
-    //     return $this->hasMany('App\Models\ShortCourseManagement\Event',
-    //     'event_status_id', 'id');
-    // }
-
-    // public function eventStatusCategory()
-    // {
-    //     return $this->belongsTo('App\Models\ShortCourseManagement\EventStatusCategory',
+    //     return $this->hasMany('App\Models\ShortCourseManagement\EventStatus',
     //     'category', 'id');
     // }
+    public function events()
+    {
+        return $this->hasMany('App\Models\ShortCourseManagement\Event',
+        'event_status_category_id', 'id');
+    }
 }

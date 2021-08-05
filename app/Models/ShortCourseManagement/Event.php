@@ -28,9 +28,11 @@ class Event extends Model
         'address',
         'registration_due_date',
         'venue_id',
-        'event_status_id',
+        'event_status_category_id',
         'is_cancelled',
         'cancellation_remark',
+        'is_closed_registration',
+        'closed_registration_datetime',
         'created_by',
         'created_at',
         'updated_by',
@@ -44,9 +46,9 @@ class Event extends Model
         return $this->belongsTo('App\Models\ShortCourseManagement\Venue', 'venue_id', 'id');
     }
 
-    public function event_status()
+    public function event_status_category()
     {
-        return $this->belongsTo('App\Models\ShortCourseManagement\EventStatus', 'event_status_id', 'id');
+        return $this->belongsTo('App\Models\ShortCourseManagement\EventStatusCategory', 'event_status_category_id', 'id');
     }
 
     public function events_shortcourses()

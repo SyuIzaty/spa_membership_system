@@ -34,6 +34,9 @@
                                 <li class="nav-item">
                                     <a data-toggle="tab" class="nav-link" href="#poster" role="tab">Poster</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a data-toggle="tab" class="nav-link" href="#setting" role="tab">Setting</a>
+                                </li>
                             </ul>
                             <div class="row">
                                 <div class="tab-content col-md-12">
@@ -782,7 +785,7 @@
                                                                                 <textarea class="form-control-plaintext"
                                                                                     rows="5" id="objective" name="objective"
                                                                                     disabled>
-                                                                                                                                                                            </textarea>
+                                                                                                                                                                                                                                        </textarea>
                                                                                 @error('objective')
                                                                                     <p style="color: red">
                                                                                         <strong> *
@@ -799,7 +802,7 @@
                                                                                 <textarea class="form-control-plaintext"
                                                                                     rows="5" id="description"
                                                                                     name="description" disabled>
-                                                                                                                                                                            </textarea>
+                                                                                                                                                                                                                                        </textarea>
                                                                                 @error('description')
                                                                                     <p style="color: red">
                                                                                         <strong> *
@@ -1002,7 +1005,7 @@
                                                             {{-- <img src="/get-file-event/intec_poster.jpg" class="card-img" alt="..."
                                             style="width:137px;height:194px;"> --}}
                                                             @if (!$event->thumbnail_path)
-                                                                <img src="{{asset('storage/shortcourse/poster/default/intec_poster.jpg')}}"
+                                                                <img src="{{ asset('storage/shortcourse/poster/default/intec_poster.jpg') }}"
                                                                     class="card-img" alt="..." style="object-fit: fill;">
                                                             @else
                                                                 <img src="{{ asset($event->thumbnail_path) }}"
@@ -1065,6 +1068,66 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="tab-pane active" id="setting" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-md-12 grid-margin stretch-card">
+
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <table class="table table-striped table-bordered">
+                                                            <thead class="table-primary">
+                                                                <tr>
+                                                                    <th class="text-center" scope="col">
+                                                                        <h3>Title</h3>
+                                                                    </th>
+                                                                    <th class="text-center" scope="col">
+                                                                        <h3>Value</h3>
+                                                                    </th>
+                                                                    <th class="text-center" scope="col">
+                                                                        <h3>Action</h3>
+
+                                                                    </th>
+                                                                </tr>
+
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="text-center">Status</td>
+                                                                    <td class="text-center" id="event_status_category_name"
+                                                                        name="event_status_category_name">
+                                                                        {{ $event->event_status_category->name }}</td>
+                                                                    <td class="text-center">
+
+
+                                                                        <a id="status_move_forward"
+                                                                            name="status_move_forward" href="javascript:;"
+                                                                            @php
+                                                                                if ($event->event_status_category->id === 2 || $event->event_status_category->id === 3) {
+                                                                                    echo "style='display: none'";
+                                                                                }
+                                                                            @endphp
+                                                                            class="btn btn-primary mr-auto ml-2 waves-effect waves-themed font-weight-bold">{{ isset($eventStatusCategories->where('id', $event->event_status_category->id + 1)->first()->name) ? $eventStatusCategories->where('id', $event->event_status_category->id + 1)->first()->name : 'ERROR' }}</a>
+
+                                                                        <a id="status_move_backward"
+                                                                            name="status_move_backward" href="javascript:;"
+                                                                            @php
+                                                                                if ($event->event_status_category->id === 1) {
+                                                                                    echo "style='display: none'";
+                                                                                }
+                                                                            @endphp
+                                                                            class="btn btn-danger mr-auto ml-2 waves-effect waves-themed font-weight-bold">
+                                                                            {{ isset($eventStatusCategories->where('id', $event->event_status_category->id - 1)->first()->name) ? $eventStatusCategories->where('id', $event->event_status_category->id - 1)->first()->name : 'ERROR' }}</a>
+
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1076,8 +1139,9 @@
 @section('script')
     <script>
         var event_id = '<?php echo $event->id; ?>';
+        var event_status_category_id = '<?php echo $event->event_status_category_id; ?>';
 
-        // Editor
+        // General
         {
             // Basic Information
             {
@@ -1120,6 +1184,12 @@
                     $("#edit-basic-close").hide();
                 });
 
+                $(document).ready(function() {
+                    // $('.venue, .is_base_fee_select_add, .is_base_fee_select_edit').select2();
+
+                    $('.venue').select2();
+
+                });
 
             }
 
@@ -1319,57 +1389,76 @@
                 });
             }
 
-            $(document).ready(function() {
-                // $('.venue, .is_base_fee_select_add, .is_base_fee_select_edit').select2();
+            // List of Shortcourses
+            {
+                // Add shortcourse
+                // crud-modal-add-shortcourse
+                $('#add-shortcourse').click(function() {
+                    var id = null;
+                    var shortcourse_id = null;
+                    $('.modal-body #id').val(id);
+                    $('.modal-body #shortcourse_id').val(shortcourse_id);
+                    $('.modal-body #objective').val(null);
+                    $('.modal-body #description').val(null);
+                    $("div[id=form-add-shortcourse-second-part]").hide();
+                    $('#crud-modal-add-shortcourse').modal('show');
+                });
 
-                $('.venue').select2();
+                $('#crud-modal-add-shortcourse').on('show.bs.modal', function(event) {
+                    var button = $(event.relatedTarget)
+                    var id = button.data('id');
+                    var shortcourse_id = button.data('shortcourse_id');
 
-            });
+                    $('.modal-body #id').val(id);
+                    $('.modal-body #shortcourse_id').val(shortcourse_id);
+                });
+
+                // search by id
+                $('#shortcourse_id').change(function() {
+                    var id = $('.modal-body #shortcourse_id').val();
+                    $.get("event/shortcourse/search-by-id/" + id, function(data) {
+                        $('.modal-body #objective').val(data.objective);
+                        $('.modal-body #description').val(data.description);
+
+                    }).fail(
+                        function() {
+                            $('.modal-body #objective').val(null);
+                            $('.modal-body #description').val(null);
+                        }).always(
+                        function() {
+                            $("div[id=form-add-shortcourse-second-part]").show();
+                        });
+
+                });
+            }
 
         }
 
-
-        // List of Shortcourses
+        // Setting
         {
-            // Add shortcourse
-            // crud-modal-add-shortcourse
-            $('#add-shortcourse').click(function() {
-                var id = null;
-                var shortcourse_id = null;
-                $('.modal-body #id').val(id);
-                $('.modal-body #shortcourse_id').val(shortcourse_id);
-                $('.modal-body #objective').val(null);
-                $('.modal-body #description').val(null);
-                $("div[id=form-add-shortcourse-second-part]").hide();
-                $('#crud-modal-add-shortcourse').modal('show');
-            });
-
-            $('#crud-modal-add-shortcourse').on('show.bs.modal', function(event) {
-                var button = $(event.relatedTarget)
-                var id = button.data('id');
-                var shortcourse_id = button.data('shortcourse_id');
-
-                $('.modal-body #id').val(id);
-                $('.modal-body #shortcourse_id').val(shortcourse_id);
-            });
-
-            // search by id
-            $('#shortcourse_id').change(function() {
-                var id = $('.modal-body #shortcourse_id').val();
-                $.get("event/shortcourse/search-by-id/" + id, function(data) {
-                    $('.modal-body #objective').val(data.objective);
-                    $('.modal-body #description').val(data.description);
-
-                }).fail(
+            $('#status_move_forward').click(function() {
+                $.get("/event/" + event_id + "/update-event-status-category/" + (parseInt(event_status_category_id) + 1),
+                    function(data) {
+                        window.location.reload()
+                    }).fail(
                     function() {
-                        $('.modal-body #objective').val(null);
-                        $('.modal-body #description').val(null);
-                    }).always(
-                    function() {
-                        $("div[id=form-add-shortcourse-second-part]").show();
+                        // TODO: Notify Users
+                        console.log('fail');
                     });
-
             });
+
+            $('#status_move_backward').click(function() {
+                $.get("/event/" + event_id + "/update-event-status-category/" + (parseInt(event_status_category_id) - 1),
+                    function(data) {
+                        window.location.reload()
+
+                    }).fail(
+                    function() {
+                        // TODO: Notify Users
+                        console.log('fail');
+                    });
+            });
+
         }
     </script>
 @endsection
