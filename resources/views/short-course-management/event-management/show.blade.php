@@ -321,7 +321,7 @@
                                                                         <hr class="mt-1 mb-2">
                                                                         <div class="footer">
                                                                             <button type="button"
-                                                                                class="btn btn-success ml-auto float-right mr-2"
+                                                                                class="btn btn-danger ml-auto float-right mr-2"
                                                                                 data-dismiss="modal" id="close-new-fee"><i
                                                                                     class="fal fa-window-close"></i>
                                                                                 Close</button>
@@ -437,7 +437,7 @@
                                                                     <hr class="mt-1 mb-2">
                                                                     <div class="footer">
                                                                         <button type="button"
-                                                                            class="btn btn-success ml-auto float-right mr-2"
+                                                                            class="btn btn-danger ml-auto float-right mr-2"
                                                                             data-dismiss="modal" id="close-edit-fee"><i
                                                                                 class="fal fa-window-close"></i>
                                                                             Close</button>
@@ -658,7 +658,7 @@
                                                                         <hr class="mt-1 mb-2">
                                                                         <div class="footer">
                                                                             <button type="button"
-                                                                                class="btn btn-success ml-auto float-right mr-2"
+                                                                                class="btn btn-danger ml-auto float-right mr-2"
                                                                                 data-dismiss="modal"
                                                                                 id="close-add-trainer"><i
                                                                                     class="fal fa-window-close"></i>
@@ -785,7 +785,7 @@
                                                                                 <textarea class="form-control-plaintext"
                                                                                     rows="5" id="objective" name="objective"
                                                                                     disabled>
-                                                                                                                                                                                                                                        </textarea>
+                                                                                                                                                                                                                                            </textarea>
                                                                                 @error('objective')
                                                                                     <p style="color: red">
                                                                                         <strong> *
@@ -802,7 +802,7 @@
                                                                                 <textarea class="form-control-plaintext"
                                                                                     rows="5" id="description"
                                                                                     name="description" disabled>
-                                                                                                                                                                                                                                        </textarea>
+                                                                                                                                                                                                                                            </textarea>
                                                                                 @error('description')
                                                                                     <p style="color: red">
                                                                                         <strong> *
@@ -1033,7 +1033,7 @@
                                                                         <div class="form-group">
                                                                             <label class="form-label mx-2"
                                                                                 for="inputGroupFile01">Upload New</label>
-                                                                            <div class="input-group">
+                                                                            <div class="input-group" style="width:100%">
                                                                                 {{-- <div class="custom-file">
                                                                                     <input type="file"
                                                                                         class="custom-file-input"
@@ -1047,15 +1047,21 @@
                                                                                     <input type="file"
                                                                                         class="custom-file-label"
                                                                                         name="poster_input"
-                                                                                        accept="image/png, image/jpeg" />
+                                                                                        accept="image/png, image/jpeg"
+                                                                                        style="width:100%" />
                                                                                 </div>
                                                                             </div>
                                                                             @error('poster_input')
                                                                                 <p style="color: red">{{ $message }}</p>
                                                                             @enderror
-
-                                                                            <button type="submit"
-                                                                                class="btn btn-primary ml-auto mt-2 mr-2 waves-effect waves-themed">Upload</button>
+                                                                            <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
+                                                                                style="content-align:right">
+                                                                                {{-- <a href="javascript:;" data-toggle="modal" id="add-shortcourse"
+                                                                                class="btn btn-primary ml-auto mt-2 mr-2 waves-effect waves-themed"><i
+                                                                                    class="ni ni-plus"> </i> Add Short Course</a> --}}
+                                                                                <button type="submit"
+                                                                                    class="btn btn-primary ml-auto mt-2 mr-2 waves-effect waves-themed">Upload</button>
+                                                                            </div>
                                                                         </div>
                                                                     </form>
                                                                     {{-- {!! Form::close() !!} --}}
@@ -1069,7 +1075,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="tab-pane active" id="setting" role="tabpanel">
+                                    <div class="tab-pane" id="setting" role="tabpanel">
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
 
@@ -1078,13 +1084,13 @@
                                                         <table class="table table-striped table-bordered">
                                                             <thead class="table-primary">
                                                                 <tr>
-                                                                    <th class="text-center" scope="col">
+                                                                    <th class="text-center" scope="col" style="width:20%">
                                                                         <h3>Title</h3>
                                                                     </th>
                                                                     <th class="text-center" scope="col">
                                                                         <h3>Value</h3>
                                                                     </th>
-                                                                    <th class="text-center" scope="col">
+                                                                    <th class="text-center" scope="col" style="width:20%">
                                                                         <h3>Action</h3>
 
                                                                     </th>
@@ -1118,6 +1124,17 @@
                                                                             @endphp
                                                                             class="btn btn-danger mr-auto ml-2 waves-effect waves-themed font-weight-bold">
                                                                             {{ isset($eventStatusCategories->where('id', $event->event_status_category->id - 1)->first()->name) ? $eventStatusCategories->where('id', $event->event_status_category->id - 1)->first()->name : 'ERROR' }}</a>
+
+                                                                        {{-- <a id="status_cancel"
+                                                                            name="status_move_backward" href="javascript:;"
+                                                                            @php
+                                                                                if ($event->event_status_category->id === 3) {
+                                                                                    echo "style='display: none'";
+                                                                                }
+                                                                            @endphp
+                                                                            class="btn btn-danger mr-auto ml-2 waves-effect waves-themed font-weight-bold">
+                                                                            {{ isset($eventStatusCategories->where('id', 3)->first()->name) ? $eventStatusCategories->where('id', 3)->first()->name : 'ERROR' }}</a> --}}
+
 
                                                                     </td>
                                                                 </tr>
@@ -1437,7 +1454,8 @@
         // Setting
         {
             $('#status_move_forward').click(function() {
-                $.get("/event/" + event_id + "/update-event-status-category/" + (parseInt(event_status_category_id) + 1),
+                $.get("/event/" + event_id + "/update-event-status-category/" + (parseInt(
+                        event_status_category_id) + 1),
                     function(data) {
                         window.location.reload()
                     }).fail(
@@ -1448,7 +1466,8 @@
             });
 
             $('#status_move_backward').click(function() {
-                $.get("/event/" + event_id + "/update-event-status-category/" + (parseInt(event_status_category_id) - 1),
+                $.get("/event/" + event_id + "/update-event-status-category/" + (parseInt(
+                        event_status_category_id) - 1),
                     function(data) {
                         window.location.reload()
 
@@ -1458,6 +1477,18 @@
                         console.log('fail');
                     });
             });
+
+            // $('#status_cancel').click(function() {
+            //     $.get("/event/" + event_id + "/update-event-status-category/" + 3,
+            //         function(data) {
+            //             window.location.reload()
+
+            //         }).fail(
+            //         function() {
+            //             // TODO: Notify Users
+            //             console.log('fail');
+            //         });
+            // });
 
         }
     </script>
