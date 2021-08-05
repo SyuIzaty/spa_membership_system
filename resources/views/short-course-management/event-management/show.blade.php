@@ -157,14 +157,12 @@
                                                                             id="venue" data-select2-id="venue" tabindex="-1"
                                                                             aria-hidden="true">
                                                                             <option
-                                                                                value={{ $event->venue ? $event->venue->id : '' }}
-                                                                                data-select2-id={{ $event->venue ? $event->venue->id : '' }}>
+                                                                                value={{ $event->venue ? $event->venue->id : '' }}>
                                                                                 {{ $event->venue ? $event->venue->name : 'Choose a venue' }}
                                                                             </option>
                                                                             @foreach ($venues as $venue)
-                                                                                @if ($event->venue ? $venue->id != $event->venue->id : true)
-                                                                                    <option value="{{ $venue->id }}"
-                                                                                        data-select2-id="{{ $venue->id }}">
+                                                                                @if ($event->venue ? $venue->id != $event->venue->id : false)
+                                                                                    <option value="{{ $venue->id }}">
                                                                                         {{ $venue->name }}
                                                                                     </option>
                                                                                 @endif
@@ -1325,6 +1323,7 @@
                 // $('.venue, .is_base_fee_select_add, .is_base_fee_select_edit').select2();
 
                 $('.venue').select2();
+
             });
 
         }

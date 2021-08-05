@@ -456,7 +456,7 @@
                                                             <div class="panel-hdr">
                                                                 <h2>
                                                                     <span class="fw-300">Step 2 (Pre-Event) - </span>
-                                                                    Approved
+                                                                    (List of New Applicants) Approve
                                                                     Application from this List of Applications
                                                                 </h2>
                                                                 <div class="panel-toolbar">
@@ -549,7 +549,7 @@
                                                         <div id="panel-1" class="panel">
                                                             <div class="panel-hdr">
                                                                 <h2>
-                                                                    <span class="fw-300">Step 3 (Pre-Event) - </span> Wait
+                                                                    <span class="fw-300">Step 3 (Pre-Event) - </span> (Not Make Payment Yet) Wait
                                                                     for this List
                                                                     of Applicant to Make Payments
                                                                 </h2>
@@ -737,7 +737,7 @@
                                                         <div id="panel-1" class="panel">
                                                             <div class="panel-hdr">
                                                                 <h2>
-                                                                    <span class="fw-300">Step 4 (Pre-Event) - </span> Verify
+                                                                    <span class="fw-300">Step 4 (Pre-Event) - </span> (Already Make Payment, Need Verification) Verify
                                                                     Payment
                                                                     from this List of Applicants
                                                                 </h2>

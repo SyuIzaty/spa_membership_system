@@ -725,7 +725,7 @@ class EventParticipantController extends Controller
                 return 'Date Start: <br>' . $events->datetime_start_toDayDateTimeString . '<br><br> Date End: <br>' . $events->datetime_end_toDayDateTimeString;
             })
             ->addColumn('participant', function ($events) {
-                return 'Total Valid: ' . $events->totalValidParticipants . '<br> Total Not Approved Yet:' . $events->totalParticipantsNotApprovedYet . '<br> Total Reject:' . $events->totalRejected;
+                return 'Total Valid: ' . $events->totalValidParticipants . '<br><br> Total Not Approved Yet: ' . $events->totalParticipantsNotApprovedYet . '<br><br> Total Reject: ' . $events->totalRejected;
             })
             ->addColumn('management_details', function ($events) {
                 return 'Created By: ' . $events->created_by . '<br> Created At: ' . $events->created_at;
