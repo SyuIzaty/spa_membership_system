@@ -445,32 +445,32 @@ class EventController extends Controller
     }
     public function updateFee(Request $request, $id)
     {
-        // dd($request);
         // //
         $validated = $request->validate([
             'name_fee_edit' => 'required|max:255',
-            'amount' => 'required',
-            'is_base_fee_select_edit' => 'required',
+            'amount_edit' => 'required',
+            'is_base_fee_select_edit_input' => 'required',
         ], [
             'name_fee_edit.required' => 'Please insert fee name',
             'name_fee_edit.max' => 'Name exceed maximum length',
-            'amount.required' => 'Please insert fee amount',
-            'is_base_fee_select_edit.required' => 'Please insert fee type',
+            'amount_edit.required' => 'Please insert fee amount',
+            'is_base_fee_select_edit_input.required' => 'Please insert fee type',
         ]);
 
-        if ($request->is_base_fee_select_edit == 0) {
+
+        if ($request->is_base_fee_select_edit_input == 0) {
             $promo_code = $request->promo_code;
         } else {
             $promo_code = null;
         }
 
-        $update = Fee::find($request->id)->update([
-            'is_base_fee' => $request->is_base_fee_select_edit,
+        $update = Fee::find($request->fee_id)->update([
+            'is_base_fee' => $request->is_base_fee_select_edit_input,
             'promo_code' => $promo_code,
             'promo_end_datetime' => null,
             'name' => $request->name_fee_edit,
             'event_id' => $id,
-            'amount' => $request->amount,
+            'amount' => $request->amount_edit,
             'updated_by' => Auth::user()->id,
             'is_active' => 1,
         ]);
@@ -484,28 +484,28 @@ class EventController extends Controller
         // //
         $validated = $request->validate([
             'name' => 'required|max:255',
-            'amount' => 'required',
-            'is_base_fee_select_add' => 'required',
+            'amount_add' => 'required',
+            'is_base_fee_select_add_input' => 'required',
         ], [
             'name.required' => 'Please insert fee name',
             'name.max' => 'Name exceed maximum length',
-            'amount.required' => 'Please insert fee amount',
-            'is_base_fee_select_add.required' => 'Please insert fee type',
+            'amount_add.required' => 'Please insert fee amount',
+            'is_base_fee_select_add_input.required' => 'Please insert fee type',
         ]);
 
-        if ($request->is_base_fee_select_add == 0) {
+        if ($request->is_base_fee_select_add_input == 0) {
             $promo_code = $request->promo_code_add;
         } else {
             $promo_code = null;
         }
 
         $create = Fee::create([
-            'is_base_fee' => $request->is_base_fee_select_add,
+            'is_base_fee' => $request->is_base_fee_select_add_input,
             'promo_code' => $promo_code,
             'promo_end_datetime' => null,
             'name' => $request->name,
             'event_id' => $id,
-            'amount' => $request->amount,
+            'amount' => $request->amount_add,
             'created_by' => Auth::user()->id,
             'is_active' => 1,
         ]);
@@ -721,6 +721,21 @@ class EventController extends Controller
         ]);
 
         return Redirect()->back()->with('success', 'Poster Updated Successfully');
+    }
+
+    public function updateSpecificEditor(Request $request)
+    {
+        // dd($request);
+        Event::find($request->event_id)->update([
+            'outline' => $request->editor_outline,
+            'tentative' => $request->editor_tentative,
+            'objective' => $request->editor_objective,
+            'updated_by' => Auth::user()->id,
+            'updated_at' => Carbon::now()
+        ]);
+
+        return Redirect()->back()->with('success', 'Event Objective, Outline and Tentative  Updated Successfully');
+
     }
 
     public function updateEventStatus($event_id, $event_status_category_id)

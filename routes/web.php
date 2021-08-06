@@ -297,6 +297,7 @@ Route::get('/event/{id}', 'ShortCourseManagement\EventManagement\EventController
 Route::delete('/event/{id}', 'ShortCourseManagement\EventManagement\EventController@deleteEvent');
 Route::get('/event/{event_id}/update-event-status-category/{event_status_category_id}', 'ShortCourseManagement\EventManagement\EventController@updateEventStatus');
 Route::post('/event/updatePoster', 'ShortCourseManagement\EventManagement\EventController@updatePoster')->name('store.poster');
+Route::post('/event/updateSpecificEditor', 'ShortCourseManagement\EventManagement\EventController@updateSpecificEditor')->name('store.specific.editors');
 
 
 

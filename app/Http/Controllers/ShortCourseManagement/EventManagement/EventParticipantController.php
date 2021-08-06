@@ -228,7 +228,7 @@ class EventParticipantController extends Controller
             ['is_verified_payment_proof', '=', 1],
             ['is_verified_payment_proof', '=', 1],
             ['is_disqualified', '=', 0],
-            ['is_not_attend', '=', null]
+            // ['is_not_attend', '=', null]
         ])->get()
             ->load([
                 'event',
@@ -249,9 +249,13 @@ class EventParticipantController extends Controller
                     ($organisation_participant->organisation->name) .
                     '.';
             }
+            // dd($eventParticipant->is_not_attend);
+            $eventParticipant['attendance_status'] = (is_null($eventParticipant->is_not_attend) ? "No Status Yet" : ($eventParticipant->is_not_attend === 0 ? 'Attend' : 'Not Attend'));
+
+            $eventParticipant['send_question'] = (is_null($eventParticipant->is_question_sended) ? "Not Send Yet" : ($eventParticipant->is_question_sended === 0 ? 'Not Send Yet' : 'Sended'));
+
             $index++;
         }
-
         return datatables()::of($eventsParticipants)
             ->addColumn('checkExpectedAttendace', function ($eventsParticipants) {
                 return '<input type="checkbox" name="expected_attendances_checkbox[]" value="' .
@@ -261,8 +265,21 @@ class EventParticipantController extends Controller
             ->addColumn('action', function ($eventsParticipants) {
                 // return '<a href="/event/' . $eventsParticipants->id . '" class="btn btn-sm btn-success">Approved</a>
                 //         <a href="/event/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger">Reject</a>';
-                return '<a href="javascript:;" id="verify-attendance-attend" data-remote="/update-progress/verify-attendance-attend/' . $eventsParticipants->id . '" class="btn btn-sm btn-success btn-update-progress">Attend</a>
-                    <a href="javascript:;" id="verify-attendance-not-attend" data-remote="/update-progress/verify-attendance-not-attend/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger btn-update-progress">Not Attend</a>';
+                $buttonString = '';
+
+                if (is_null($eventsParticipants->is_not_attend)) {
+                    $buttonString .= '<a href="javascript:;" id="verify-attendance-attend" data-remote="/update-progress/verify-attendance-attend/' . $eventsParticipants->id . '" class="btn btn-sm btn-success btn-update-progress">Attend</a>
+                        <a href="javascript:;" id="verify-attendance-not-attend" data-remote="/update-progress/verify-attendance-not-attend/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger btn-update-progress">Not Attend</a>';
+                } else if ($eventsParticipants->is_not_attend === 0) {
+                    $buttonString .= '<a href="javascript:;" id="verify-attendance-not-attend" data-remote="/update-progress/verify-attendance-not-attend/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger btn-update-progress">Not Attend</a>';
+
+                    if (is_null($eventsParticipants->is_question_sended)) {
+                        $buttonString .= ' <a href="javascript:;" id="send-question" data-remote="/update-progress/send-question/' . $eventsParticipants->id . '" class="btn btn-sm btn-success btn-update-progress">Send Questionaire</a>';
+                    }
+                } else if ($eventsParticipants->is_not_attend === 1) {
+                    $buttonString .= '<a href="javascript:;" id="verify-attendance-attend" data-remote="/update-progress/verify-attendance-attend/' . $eventsParticipants->id . '" class="btn btn-sm btn-success btn-update-progress">Attend</a>';
+                }
+                return $buttonString;
             })
             ->rawColumns(['action', 'checkExpectedAttendace'])->make(true);
     }
@@ -516,6 +533,7 @@ class EventParticipantController extends Controller
                 'participant_id' => $existParticipant->id,
                 'fee_id' => $request->fee_id,
                 'participant_representative_id' => $existParticipant->id,
+                'is_approved_application' => 1,
                 'created_by' => Auth::user()->id,
             ]);
         } else {
@@ -677,7 +695,7 @@ class EventParticipantController extends Controller
         foreach ($eventsParticipants as $eventParticipant) {
             // $event = Event::find($eventParticipant->event_id)->load(['events_participants', 'venue']);
             // array_push($events, $event);
-            if($eventParticipant->event){
+            if ($eventParticipant->event) {
                 array_push($events, $eventParticipant->event);
                 $eventParticipant->event = null;
                 $events[$indexEvent]['is_verified_payment_proof'] = $eventParticipant->is_verified_payment_proof;
@@ -789,13 +807,13 @@ class EventParticipantController extends Controller
     public function requestVerification($event_id, $participant_id)
     {
         // dd('Event_id:'.$event_id.',Participant_id:'.$participant_id);
-        $update=EventParticipant::where([['event_id', '=', $event_id], ['participant_id', '=', $participant_id]])->update([
+        $update = EventParticipant::where([['event_id', '=', $event_id], ['participant_id', '=', $participant_id]])->update([
             'is_verified_payment_proof' => 0,
             'updated_by' => 'public_user',
             'updated_at' => Carbon::now()
         ]);
 
-        $update=EventParticipant::where([['event_id', '=', $event_id], ['participant_id', '=', $participant_id]])->first();
+        $update = EventParticipant::where([['event_id', '=', $event_id], ['participant_id', '=', $participant_id]])->first();
         return $update;
     }
 }

@@ -78,7 +78,7 @@
                                                         {{ Form::label('title', 'Short Course Name **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::text('shortcourse_name', '', ['class' => 'form-control', 'placeholder' => 'Short Course Name', 'id' => 'shortcourse_name']) }}
+                                                        {{ Form::text('shortcourse_name', '', ['class' => 'form-control', 'placeholder' => 'Short Course Name', 'id' => 'shortcourse_name', 'readonly'=>'readonly']) }}
 
                                                         @error('shortcourse_name')
                                                             <p style="color: red">{{ $message }}</p>
@@ -90,7 +90,7 @@
                                                         {{ Form::label('title', 'Short Course Description **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::textarea('shortcourse_description', '', ['class' => 'form-control', 'placeholder' => 'Short Course Description', 'id' => 'shortcourse_description']) }}
+                                                        {{ Form::textarea('shortcourse_description', '', ['class' => 'form-control', 'placeholder' => 'Short Course Description', 'id' => 'shortcourse_description', 'readonly'=>'readonly']) }}
                                                         @error('shortcourse_description')
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror
@@ -101,7 +101,7 @@
                                                         {{ Form::label('title', 'Short Course Objective **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::textarea('shortcourse_objective', '', ['class' => 'form-control', 'placeholder' => 'Short Course Objective', 'id' => 'shortcourse_objective']) }}
+                                                        {{ Form::textarea('shortcourse_objective', '', ['class' => 'form-control', 'placeholder' => 'Short Course Objective', 'id' => 'shortcourse_objective', 'readonly'=>'readonly']) }}
                                                         @error('shortcourse_objective')
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror
@@ -210,7 +210,7 @@
                                                         {{ Form::label('title', 'Fee Type **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     {{-- <td class="col px-4">
-                                                        {{ Form::text('fee_type', 'Basic Fee', ['class' => 'form-control', 'placeholder' => 'Fee Type', 'readonly']) }}
+                                                        {{ Form::text('fee_type', 'Normal Price', ['class' => 'form-control', 'placeholder' => 'Fee Type', 'readonly']) }}
                                                     </td> --}}
 
 
@@ -218,8 +218,8 @@
                                                         <input type="hidden" id="fee_id" name="fee_id" value="1" />
                                                         <select class="form-control fee" name="fee_id" id="fee_id" disabled>
                                                             <option disabled>Select Fee</option>
-                                                            <option value="1" selected>Basic Fee</option>
-                                                            <option value="0">Non-Basic Fee</option>
+                                                            <option value="1" selected>Normal Price</option>
+                                                            <option value="0">Discounted Price</option>
                                                         </select>
                                                         @error('fee_id')
                                                             <p style="color: red">{{ $message }}</p>

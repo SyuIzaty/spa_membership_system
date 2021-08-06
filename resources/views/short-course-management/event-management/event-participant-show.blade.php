@@ -29,22 +29,10 @@
                         <div class="panel-content">
                             <ul class="nav nav-tabs" role="tablist">
                                 {{-- <li class="nav-item active">
-                                    <a data-toggle="tab" class="nav-link" href="#participant-pre-event"
-                                        role="tab">Participants (Pre-Event)</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a data-toggle="tab" class="nav-link" href="#participant-during-event"
-                                        role="tab">Participants (During Event)</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a data-toggle="tab" class="nav-link" href="#participant-post-event"
-                                        role="tab">Participants (Post-Event)</a>
-                                </li> --}}
-                                <li class="nav-item active">
                                     <a data-toggle="tab" class="nav-link" href="#applications" role="tab">Verify
                                         Applications</a>
-                                </li>
-                                <li class="nav-item">
+                                </li> --}}
+                                <li class="nav-item active">
                                     <a data-toggle="tab" class="nav-link" href="#pending-payments" role="tab">Pending
                                         Payments</a>
                                 </li>
@@ -56,10 +44,10 @@
                                     <a data-toggle="tab" class="nav-link" href="#application-status" role="tab">Application
                                         Status</a>
                                 </li>
-                                <li class="nav-item">
+                                {{-- <li class="nav-item">
                                     <a data-toggle="tab" class="nav-link" href="#attendance-status" role="tab">Attendance
                                         Status</a>
-                                </li>
+                                </li> --}}
                                 <li class="nav-item">
                                     <a data-toggle="tab" class="nav-link" href="#feedback-status" role="tab">Feedback
                                         Status</a>
@@ -67,7 +55,7 @@
                             </ul>
                             <div class="row">
                                 <div class="tab-content col-md-12">
-                                    <div class="tab-pane active" id="applications" role="tabpanel">
+                                    <div class="tab-pane" id="applications" role="tabpanel" hidden>
                                         <hr class="mt-2 mb-3">
                                         <div class="row">
 
@@ -130,11 +118,11 @@
                                                                             class="btn btn-primary px-5 mx-5 waves-effect waves-themed">Apply
                                                                             by
                                                                             INTEC</button> --}}
-                                                                    <a href="javascript:;" data-toggle="modal"
+                                                                    {{-- <a href="javascript:;" data-toggle="modal"
                                                                         id="new-application"
                                                                         class="btn btn-primary px-5 mx-5 waves-effect waves-themed align-middle">
-                                                                        Apply by INTEC</a>
-                                                                    <div class="modal fade" id="crud-modal-new-application"
+                                                                        Apply by INTEC</a> --}}
+                                                                    {{-- <div class="modal fade" id="crud-modal-new-application"
                                                                         aria-hidden="true">
                                                                         <div class="modal-dialog">
                                                                             <div class="modal-content">
@@ -147,9 +135,6 @@
                                                                                         action="{{ url('/event/' . $event->id . '/events-participants/store') }}"
                                                                                         method="post">
                                                                                         @csrf
-                                                                                        {{-- {!! Form::open(['action' => 'ShortCourseManagement\EventManagement\EventParticipantController@store', 'method' => 'POST']) !!} --}}
-                                                                                        {{-- <input type="hidden" name="id"
-                                                                                                id="id"> --}}
                                                                                         <p><span
                                                                                                 class="text-danger">*</span>
                                                                                             Vital Information</p>
@@ -237,8 +222,6 @@
                                                                                                 <label class="form-label"
                                                                                                     for="is_base_fee_select_add"><span
                                                                                                         class="text-danger">*</span>Fee</label>
-                                                                                                {{-- <input class="form-control" id="is_base_fee_select_add"
-                                                                                                    name="is_base_fee_select_add"> --}}
                                                                                                 <select
                                                                                                     class="form-control fee_id font-weight-bold"
                                                                                                     name="fee_id"
@@ -328,23 +311,14 @@
                                                                                                     </p>
                                                                                                 @enderror
                                                                                             </div>
-                                                                                            {{-- <hr class="mt-1 mb-2"> --}}
                                                                                             <div
                                                                                                 class="custom-control custom-checkbox">
-                                                                                                {{-- <input type="checkbox"
-                                                                                                        class="custom-control-input"
-                                                                                                        id="represent-by-himself_show"
-                                                                                                        checked="checked"
-                                                                                                        disabled> --}}
+
                                                                                                 <input type="checkbox"
                                                                                                     class="custom-control-input"
                                                                                                     id="represent-by-himself"
                                                                                                     checked="checked"
                                                                                                     type="hidden">
-                                                                                                {{-- <label
-                                                                                                        class="custom-control-label"
-                                                                                                        for="represent-by-himself">Represent
-                                                                                                        By Himself</label> --}}
                                                                                             </div>
                                                                                             <div id="representative"
                                                                                                 style="display:none">
@@ -436,14 +410,11 @@
                                                                                         </div>
                                                                                     </form>
 
-                                                                                    {{-- {!! Form::close() !!} --}}
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
+                                                                    </div> --}}
                                                                 </div>
-                                                                {{-- <button type="button" class="btn btn-success ml-auto mr-2 waves-effect waves-themed" onclick="window.location='http://sims.test/checkrequirements'"><i class="fal fa-check-circle"></i> Run All</button> --}}
-                                                                {{-- </form> --}}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -540,7 +511,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane" id="pending-payments" role="tabpanel">
+                                    <div class="tab-pane active" id="pending-payments" role="tabpanel">
                                         <hr class="mt-2 mb-3">
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
@@ -549,9 +520,8 @@
                                                         <div id="panel-1" class="panel">
                                                             <div class="panel-hdr">
                                                                 <h2>
-                                                                    <span class="fw-300">Step 3 (Pre-Event) - </span> (Not Make Payment Yet) Wait
-                                                                    for this List
-                                                                    of Applicant to Make Payments
+                                                                    <span class="fw-300"></span> List of Not Make Payment
+                                                                    Yet
                                                                 </h2>
                                                                 <div class="panel-toolbar">
                                                                     <button class="btn btn-panel"
@@ -570,8 +540,6 @@
                                                             <div class="panel-container show">
                                                                 {{-- <form action="{{ url('/senarai_kolej/student/bundle/into/' . $event->id) }}" method="post"
                                                                     name="form"> --}}
-                                                                <form name="form">
-                                                                    @csrf
                                                                     <div class="panel-content">
                                                                         @if (Session::has('messageAllNoPaymentYet'))
                                                                             <div class="alert alert-success"
@@ -620,8 +588,339 @@
                                                                             class="btn btn-danger ml-auto mr-2 waves-effect waves-themed"><i
                                                                                 class="ni ni-close"></i> Disqualified All
                                                                             Ticked</button>
+                                                                        <a href="javascript:;" data-toggle="modal"
+                                                                            id="new-application"
+                                                                            class="btn btn-primary px-5 mx-5 waves-effect waves-themed align-middle">
+                                                                            <i class="ni ni-check"></i> New Application</a>
+                                                                        <div class="modal fade"
+                                                                            id="crud-modal-new-application"
+                                                                            aria-hidden="true">
+                                                                            <div class="modal-dialog">
+                                                                                <div class="modal-content">
+                                                                                    <div class="card-header">
+                                                                                        <h5 class="card-title w-150">Add New
+                                                                                            Applicant</h5>
+                                                                                    </div>
+                                                                                    <div class="modal-body">
+                                                                                        <form
+                                                                                            action="{{ url('/event/' . $event->id . '/events-participants/store') }}"
+                                                                                            method="post">
+                                                                                            @csrf
+                                                                                            {{-- {!! Form::open(['action' => 'ShortCourseManagement\EventManagement\EventParticipantController@store', 'method' => 'POST']) !!} --}}
+                                                                                            {{-- <input type="hidden" name="id"
+                                                                                                    id="id"> --}}
+                                                                                            <p><span
+                                                                                                    class="text-danger">*</span>
+                                                                                                Vital Information</p>
+                                                                                            <hr class="mt-1 mb-2">
+                                                                                            <div class="form-group">
+                                                                                                <label for="ic"><span
+                                                                                                        class="text-danger">*</span>
+                                                                                                    IC</label>
+                                                                                                <div class="row">
+                                                                                                    <div class="col">
+                                                                                                        <input
+                                                                                                            class="form-control"
+                                                                                                            id="ic_input"
+                                                                                                            name="ic_input">
+                                                                                                    </div>
+                                                                                                    <td
+                                                                                                        class="col col-sm-1">
+                                                                                                        <a href="javascript:;"
+                                                                                                            data-toggle="#"
+                                                                                                            id="search-by-ic"
+                                                                                                            class="btn btn-primary mb-2"><i
+                                                                                                                class="ni ni-magnifier"></i></a>
+
+                                                                                                    </td>
+                                                                                                </div>
+                                                                                                @error('ic_input')
+                                                                                                    <p style="color: red">
+                                                                                                        <strong> *
+                                                                                                            {{ $message }}
+                                                                                                        </strong>
+                                                                                                    </p>
+                                                                                                @enderror
+                                                                                            </div>
+                                                                                            <div id="form-application-second-part"
+                                                                                                style="display: none">
+
+                                                                                                <hr class="mt-1 mb-2">
+                                                                                                <div class="form-group">
+                                                                                                    <label
+                                                                                                        class="form-label"
+                                                                                                        for="fullname"><span
+                                                                                                            class="text-danger">*</span>Fullname</label>
+                                                                                                    <input
+                                                                                                        class="form-control"
+                                                                                                        id="fullname"
+                                                                                                        name="fullname">
+                                                                                                    @error('fullname')
+                                                                                                        <p style="color: red">
+                                                                                                            <strong> *
+                                                                                                                {{ $message }}
+                                                                                                            </strong>
+                                                                                                        </p>
+                                                                                                    @enderror
+                                                                                                </div>
+                                                                                                <hr class="mt-1 mb-2">
+                                                                                                <div class="form-group">
+                                                                                                    <label
+                                                                                                        class="form-label"
+                                                                                                        for="phone"><span
+                                                                                                            class="text-danger">*</span>Phone</label>
+                                                                                                    <input
+                                                                                                        class="form-control"
+                                                                                                        id="phone"
+                                                                                                        name="phone">
+                                                                                                    @error('phone')
+                                                                                                        <p style="color: red">
+                                                                                                            <strong> *
+                                                                                                                {{ $message }}
+                                                                                                            </strong>
+                                                                                                        </p>
+                                                                                                    @enderror
+                                                                                                </div>
+
+                                                                                                <hr class="mt-1 mb-2">
+                                                                                                <div class="form-group">
+                                                                                                    <label
+                                                                                                        class="form-label"
+                                                                                                        for="email"><span
+                                                                                                            class="text-danger">*</span>Email</label>
+                                                                                                    <input
+                                                                                                        class="form-control"
+                                                                                                        id="email"
+                                                                                                        name="email">
+                                                                                                    @error('email')
+                                                                                                        <p style="color: red">
+                                                                                                            <strong> *
+                                                                                                                {{ $message }}
+                                                                                                            </strong>
+                                                                                                        </p>
+                                                                                                    @enderror
+                                                                                                </div>
+                                                                                                <hr class="mt-1 mb-2">
+                                                                                                <div class="form-group">
+                                                                                                    <label
+                                                                                                        class="form-label"
+                                                                                                        for="is_base_fee_select_add"><span
+                                                                                                            class="text-danger">*</span>Fee</label>
+                                                                                                    {{-- <input class="form-control" id="is_base_fee_select_add"
+                                                                                                        name="is_base_fee_select_add"> --}}
+                                                                                                    <select
+                                                                                                        class="form-control fee_id font-weight-bold"
+                                                                                                        name="fee_id"
+                                                                                                        id="fee_id"
+                                                                                                        tabindex="-1"
+                                                                                                        aria-hidden="true">
+                                                                                                        <option disabled
+                                                                                                            selected>Select
+                                                                                                            Fee
+                                                                                                            Applied</option>
+                                                                                                        @foreach ($event->fees as $fee)
+                                                                                                            <option
+                                                                                                                value="{{ $fee->id }}">
+                                                                                                                {{ $fee->is_base_fee }}
+                                                                                                                -
+                                                                                                                {{ $fee->name }}
+                                                                                                                (RM{{ $fee->amount }})
+                                                                                                            </option>
+                                                                                                        @endforeach
+                                                                                                    </select>
+                                                                                                    <div class="row">
+                                                                                                        <div
+                                                                                                            class="col-sm-5">
+                                                                                                            <div class="input-group flex-nowrap"
+                                                                                                                id="fee_id_show"
+                                                                                                                name="fee_id_show"
+                                                                                                                style="display:none; width:auto">
+                                                                                                                <div
+                                                                                                                    class="input-group-prepend">
+                                                                                                                    <span
+                                                                                                                        class="input-group-text"
+                                                                                                                        style="background-color:white; border-style: none;"
+                                                                                                                        id="addon-wrapping">RM</span>
+                                                                                                                </div>
+                                                                                                                <input
+                                                                                                                    class="form-control-plaintext"
+                                                                                                                    id="fee_id_input"
+                                                                                                                    name="fee_id_input"
+                                                                                                                    readonly>
+                                                                                                                <div
+                                                                                                                    class="input-group-append">
+                                                                                                                    <span
+                                                                                                                        style="background-color:white; border-style: none;"
+                                                                                                                        class="input-group-text">/
+                                                                                                                        person</span>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        <div
+                                                                                                            class="col-sm-7">
+                                                                                                            <div
+                                                                                                                class="row">
+                                                                                                                <div
+                                                                                                                    class="col">
+                                                                                                                    <input
+                                                                                                                        class="form-control"
+                                                                                                                        id="promo_code"
+                                                                                                                        name="promo_code"
+                                                                                                                        placeholder="Promo Code (Only if applicable)">
+                                                                                                                </div>
+                                                                                                                <td
+                                                                                                                    class="col col-sm-1">
+                                                                                                                    <button
+                                                                                                                        type="button"
+                                                                                                                        name="remove"
+                                                                                                                        id="promo_code_edit_remove"
+                                                                                                                        class="btn btn-danger btn_remove"
+                                                                                                                        style="display:none">
+                                                                                                                        <i
+                                                                                                                            class="ni ni-close"></i>
+                                                                                                                    </button>
+                                                                                                                    <button
+                                                                                                                        type="button"
+                                                                                                                        name="add"
+                                                                                                                        id="promo_code_edit_add"
+                                                                                                                        class="btn btn-primary btn_add">
+                                                                                                                        <i
+                                                                                                                            class="ni ni-check"></i>
+                                                                                                                    </button>
+                                                                                                                </td>
+
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+
+                                                                                                    @error('fee_id')
+                                                                                                        <p style="color: red">
+                                                                                                            <strong> *
+                                                                                                                {{ $message }}
+                                                                                                            </strong>
+                                                                                                        </p>
+                                                                                                    @enderror
+                                                                                                </div>
+                                                                                                {{-- <hr class="mt-1 mb-2"> --}}
+                                                                                                <div
+                                                                                                    class="custom-control custom-checkbox">
+                                                                                                    {{-- <input type="checkbox"
+                                                                                                            class="custom-control-input"
+                                                                                                            id="represent-by-himself_show"
+                                                                                                            checked="checked"
+                                                                                                            disabled> --}}
+                                                                                                    <input type="checkbox"
+                                                                                                        class="custom-control-input"
+                                                                                                        id="represent-by-himself"
+                                                                                                        checked="checked"
+                                                                                                        type="hidden">
+                                                                                                    {{-- <label
+                                                                                                            class="custom-control-label"
+                                                                                                            for="represent-by-himself">Represent
+                                                                                                            By Himself</label> --}}
+                                                                                                </div>
+                                                                                                <div id="representative"
+                                                                                                    style="display:none">
+                                                                                                    <hr class="mt-1 mb-2">
+                                                                                                    <div class="form-group">
+                                                                                                        <label
+                                                                                                            for="representative-ic"><span
+                                                                                                                class="text-danger">*</span>
+                                                                                                            Representative
+                                                                                                            IC</label>
+                                                                                                        <div class="form-inline"
+                                                                                                            style="width:100%">
+                                                                                                            <div class="form-group mr-2 mb-2"
+                                                                                                                style="width:85%">
+                                                                                                                <input
+                                                                                                                    class="form-control w-100"
+                                                                                                                    id="representative_ic_input"
+                                                                                                                    name="representative_ic_input">
+                                                                                                            </div>
+                                                                                                            <a href="javascript:;"
+                                                                                                                data-toggle="#"
+                                                                                                                id="search-by-representative-ic"
+                                                                                                                class="btn btn-primary mb-2"><i
+                                                                                                                    class="ni ni-magnifier"></i></a>
+                                                                                                        </div>
+                                                                                                        @error('representative_ic_input')
+                                                                                                            <p
+                                                                                                                style="color: red">
+                                                                                                                <strong> *
+                                                                                                                    {{ $message }}
+                                                                                                                </strong>
+                                                                                                            </p>
+                                                                                                        @enderror
+                                                                                                    </div>
+                                                                                                    <p id="representative-doesnt-exist"
+                                                                                                        style="color: red; display:none;">
+                                                                                                        <strong> * The
+                                                                                                            representative
+                                                                                                            doesn't
+                                                                                                            exist
+                                                                                                        </strong>
+                                                                                                    </p>
+                                                                                                    <p id="representative-doesnt-valid"
+                                                                                                        style="color: red; display:none;">
+                                                                                                        <strong> * The
+                                                                                                            choosen
+                                                                                                            participant is
+                                                                                                            not
+                                                                                                            valid
+                                                                                                            to represent
+                                                                                                            others
+                                                                                                        </strong>
+                                                                                                    </p>
+                                                                                                    <div id="form-application-third-part"
+                                                                                                        style="display: none">
+                                                                                                        <div
+                                                                                                            class="form-group">
+                                                                                                            <label
+                                                                                                                class="form-label"
+                                                                                                                for="representative_fullname"><span
+                                                                                                                    class="text-danger">*</span>Representative
+                                                                                                                Fullname</label>
+                                                                                                            <input
+                                                                                                                id="representative_fullname"
+                                                                                                                name="representative_fullname"
+                                                                                                                class="form-control"
+                                                                                                                readonly>
+                                                                                                            @error('representative_fullname')
+                                                                                                                <p
+                                                                                                                    style="color: red">
+                                                                                                                    <strong> *
+                                                                                                                        {{ $message }}
+                                                                                                                    </strong>
+                                                                                                                </p>
+                                                                                                            @enderror
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <hr class="mt-1 mb-2">
+                                                                                            <div class="footer"
+                                                                                                id="new_application_footer"
+                                                                                                style="display:none">
+                                                                                                <button type="button"
+                                                                                                    class="btn btn-danger ml-auto float-right mr-2"
+                                                                                                    data-dismiss="modal"
+                                                                                                    id="close-new-application"><i
+                                                                                                        class="fal fa-window-close"></i>
+                                                                                                    Close</button>
+                                                                                                <button type="submit"
+                                                                                                    class="btn btn-success ml-auto float-right mr-2"><i
+                                                                                                        class="ni ni-plus"></i>
+                                                                                                    Apply</button>
+                                                                                            </div>
+                                                                                        </form>
+
+                                                                                        {{-- {!! Form::close() !!} --}}
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
                                                                     </div>
-                                                                </form>
                                                                 <div class="modal fade" id="crud-modals" aria-hidden="true">
                                                                     <div class="modal-dialog">
                                                                         <div class="modal-content">
@@ -737,9 +1036,7 @@
                                                         <div id="panel-1" class="panel">
                                                             <div class="panel-hdr">
                                                                 <h2>
-                                                                    <span class="fw-300">Step 4 (Pre-Event) - </span> (Already Make Payment, Need Verification) Verify
-                                                                    Payment
-                                                                    from this List of Applicants
+                                                                    <span class="fw-300"></span> Already Make Payment, Need Verification
                                                                 </h2>
                                                                 <div class="panel-toolbar">
                                                                     <button class="btn btn-panel"
@@ -806,7 +1103,7 @@
                                                                         style="content-align:right">
                                                                         <button type="submit"
                                                                             class="btn btn-success ml-auto mr-2 waves-effect waves-themed"><i
-                                                                                class="ni ni-close"></i> Verify All
+                                                                                class="ni ni-check"></i> Verify All
                                                                             Ticked</button>
                                                                         <button type="submit"
                                                                             class="btn btn-danger float-right mr-2 waves-effect waves-themed"><i
@@ -830,9 +1127,8 @@
                                                         <div id="panel-1" class="panel">
                                                             <div class="panel-hdr">
                                                                 <h2>
-                                                                    <span class="fw-300">Succeed Application - </span>
-                                                                    (Ready for Event) Verify Attendance
-                                                                    from this List of Expected Attendances
+                                                                    <span class="fw-300"></span>
+                                                                    List of Ready for Event
                                                                 </h2>
                                                                 <div class="panel-toolbar">
                                                                     <button class="btn btn-panel"
@@ -887,6 +1183,9 @@
                                                                                         {{-- <th>Representative Name</th>
                                                                                         <th>Representative Phone</th>
                                                                                         <th>Representative Email</th> --}}
+
+                                                                                        <th>Attendance Status</th>
+                                                                                        <th>Feedback Status</th>
                                                                                         <th>Date Apply</th>
                                                                                         <th>Action</th>
                                                                                     </tr>
@@ -914,15 +1213,14 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-12 grid-margin stretch-card">
+                                            {{-- <div class="col-md-12 grid-margin stretch-card">
                                                 <div class="row">
                                                     <div class="col-xl-12">
                                                         <div id="panel-1" class="panel">
                                                             <div class="panel-hdr">
                                                                 <h2>
-                                                                    <span class="fw-300">Failed Application - </span>
-                                                                    (Disqualified
-                                                                    Application)
+                                                                    <span class="fw-300"></span> List of Disqualified
+                                                                    Application
                                                                 </h2>
                                                                 <div class="panel-toolbar">
                                                                     <button class="btn btn-panel"
@@ -939,8 +1237,6 @@
                                                                 </div>
                                                             </div>
                                                             <div class="panel-container show">
-                                                                {{-- <form action="{{ url('/senarai_kolej/student/bundle/into/' . $event->id) }}" method="post"
-                                                                    name="form"> --}}
                                                                 <form name="form">
                                                                     @csrf
                                                                     <div class="panel-content">
@@ -965,20 +1261,13 @@
                                                                                 class="table table-bordered table-hover table-striped w-100">
                                                                                 <thead>
                                                                                     <tr class="bg-primary-50 text-center">
-                                                                                        {{-- <th style="width:10px"><input
-                                                                                                type="checkbox"
-                                                                                                id="check-disqualified">
-                                                                                        </th> --}}
+
                                                                                         <th style="width:30px">Id</th>
                                                                                         <th>Organisation</th>
                                                                                         <th>Name</th>
                                                                                         <th>Phone</th>
                                                                                         <th>Email</th>
-                                                                                        {{-- <th>Representative Name</th>
-                                                                                        <th>Representative Phone</th>
-                                                                                        <th>Representative Email</th> --}}
                                                                                         <th>Date Apply</th>
-                                                                                        {{-- <th>Action</th> --}}
                                                                                     </tr>
                                                                                 </thead>
                                                                             </table>
@@ -987,25 +1276,17 @@
                                                                     </div>
                                                                     <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
                                                                         style="content-align:right">
-                                                                        {{-- <button type="submit"
-                                                                            class="btn btn-success ml-auto mr-2 waves-effect waves-themed"><i
-                                                                                class="ni ni-close"></i> Verify All
-                                                                            Ticked</button>
-                                                                        <button type="submit"
-                                                                            class="btn btn-danger float-right mr-2 waves-effect waves-themed"><i
-                                                                                class="ni ni-close"></i> Reject All
-                                                                            Ticked</button> --}}
                                                                     </div>
                                                                 </form>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                         </div>
                                     </div>
 
-                                    <div class="tab-pane" id="attendance-status" role="tabpanel">
+                                    <div class="tab-pane" id="attendance-status" role="tabpanel" hidden>
                                         <hr class="mt-2 mb-3">
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
@@ -1033,8 +1314,6 @@
                                                                 </div>
                                                             </div>
                                                             <div class="panel-container show">
-                                                                {{-- <form action="{{ url('/senarai_kolej/student/bundle/into/' . $event->id) }}" method="post"
-                                                                    name="form"> --}}
                                                                 <form name="form">
                                                                     @csrf
                                                                     <div class="panel-content">
@@ -1068,9 +1347,6 @@
                                                                                         <th>Name</th>
                                                                                         <th>Phone</th>
                                                                                         <th>Email</th>
-                                                                                        {{-- <th>Representative Name</th>
-                                                                                        <th>Representative Phone</th>
-                                                                                        <th>Representative Email</th> --}}
                                                                                         <th>Date Apply</th>
                                                                                         <th>Action</th>
                                                                                     </tr>
@@ -1092,7 +1368,6 @@
                                                                             to All
                                                                             Ticked</button>
                                                                     </div>
-                                                                    {{-- <button type="button" class="btn btn-success ml-auto mr-2 waves-effect waves-themed" onclick="window.location='http://sims.test/checkrequirements'"><i class="fal fa-check-circle"></i> Run All</button> --}}
                                                                 </form>
                                                             </div>
                                                         </div>
@@ -1124,8 +1399,6 @@
                                                                 </div>
                                                             </div>
                                                             <div class="panel-container show">
-                                                                {{-- <form action="{{ url('/senarai_kolej/student/bundle/into/' . $event->id) }}" method="post"
-                                                                    name="form"> --}}
                                                                 <form name="form">
                                                                     @csrf
                                                                     <div class="panel-content">
@@ -1155,9 +1428,6 @@
                                                                                         <th>Name</th>
                                                                                         <th>Phone</th>
                                                                                         <th>Email</th>
-                                                                                        {{-- <th>Representative Name</th>
-                                                                                        <th>Representative Phone</th>
-                                                                                        <th>Representative Email</th> --}}
                                                                                         <th>Date Apply</th>
                                                                                     </tr>
                                                                                 </thead>
@@ -1201,8 +1471,6 @@
                                                                 </div>
                                                             </div>
                                                             <div class="panel-container show">
-                                                                {{-- <form action="{{ url('/senarai_kolej/student/bundle/into/' . $event->id) }}" method="post"
-                                                                    name="form"> --}}
                                                                 <form name="form">
                                                                     @csrf
                                                                     <div class="panel-content">
@@ -1233,9 +1501,6 @@
                                                                                         <th>Name</th>
                                                                                         <th>Phone</th>
                                                                                         <th>Email</th>
-                                                                                        {{-- <th>Representative Name</th>
-                                                                                        <th>Representative Phone</th>
-                                                                                        <th>Representative Email</th> --}}
                                                                                         <th>Date Apply</th>
                                                                                     </tr>
                                                                                 </thead>
@@ -1274,8 +1539,6 @@
                                                                 </div>
                                                             </div>
                                                             <div class="panel-container show">
-                                                                {{-- <form action="{{ url('/senarai_kolej/student/bundle/into/' . $event->id) }}" method="post"
-                                                                    name="form"> --}}
                                                                 <form name="form">
                                                                     @csrf
                                                                     <div class="panel-content">
@@ -1306,9 +1569,6 @@
                                                                                         <th>Name</th>
                                                                                         <th>Phone</th>
                                                                                         <th>Email</th>
-                                                                                        {{-- <th>Representative Name</th>
-                                                                                        <th>Representative Phone</th>
-                                                                                        <th>Representative Email</th> --}}
                                                                                         <th>Date Apply</th>
                                                                                     </tr>
                                                                                 </thead>
@@ -2329,6 +2589,17 @@
                             //     data: 'organization_representative.participant.email',
                             //     name: 'organization_representative.participant.email'
                             // },
+                            {
+                                className: 'text-center',
+                                data: 'attendance_status',
+                                name: 'attendance_status',
+                            },
+
+                            {
+                                className: 'text-center',
+                                data: 'send_question',
+                                name: 'send_question',
+                            },
                             {
                                 className: 'text-center',
                                 data: 'created_at_diffForHumans',

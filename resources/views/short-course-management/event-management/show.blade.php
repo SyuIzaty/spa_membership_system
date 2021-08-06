@@ -32,7 +32,7 @@
                                     <a data-toggle="tab" class="nav-link" href="#general" role="tab">General</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a data-toggle="tab" class="nav-link" href="#poster" role="tab">Poster</a>
+                                    <a data-toggle="tab" class="nav-link" href="#specific" role="tab">Specific</a>
                                 </li>
                                 <li class="nav-item">
                                     <a data-toggle="tab" class="nav-link" href="#setting" role="tab">Setting</a>
@@ -199,10 +199,16 @@
                                                                 </td>
                                                                 <td>{{ $fee->amount }}</td>
                                                                 <td>{{ $fee->is_base_fee }}</td>
-                                                                <td>{{ $fee->promo_code }}</td>
+                                                                <td>{{ $fee->promo_code ? $fee->promo_code : 'N\A' }}
+                                                                </td>
                                                                 <td>
                                                                     <form method="post"
-                                                                        action="/event/fee/delete/{{ $fee->id }}">
+                                                                        action="/event/fee/delete/{{ $fee->id }}"
+                                                                        @php
+                                                                            if ($fee->is_base_fee === 1) {
+                                                                                echo 'disabled hidden';
+                                                                            }
+                                                                        @endphp>
                                                                         @csrf
                                                                         <button type="submit"
                                                                             class="btn btn-sm btn-danger float-right mr-2">
@@ -242,7 +248,6 @@
                                                                         action="{{ url('/event/fee/create/' . $event->id) }}"
                                                                         method="post" name="form">
                                                                         @csrf
-                                                                        <input type="hidden" name="id_1" id="id_1">
                                                                         <p><span class="text-danger">*</span>
                                                                             Vital Information</p>
                                                                         <hr class="mt-1 mb-2">
@@ -264,9 +269,9 @@
                                                                                 <label class="form-label" for="amount"><span
                                                                                         class="text-danger">*</span>amount</label>
                                                                                 <input type="number" step=".01"
-                                                                                    class="form-control" id="new_amount"
-                                                                                    name="amount">
-                                                                                @error('amount')
+                                                                                    class="form-control" id="amount_add"
+                                                                                    name="amount_add">
+                                                                                @error('amount_add')
                                                                                     <p style="color: red">
                                                                                         <strong> *
                                                                                             {{ $message }}
@@ -281,14 +286,20 @@
                                                                                     Type</label>
                                                                                 {{-- <input class="form-control" id="is_base_fee_select_add"
                                                                                 name="is_base_fee_select_add"> --}}
+                                                                                <input type="hidden"
+                                                                                    name="is_base_fee_select_add_input"
+                                                                                    id="is_base_fee_select_add_input"
+                                                                                    value=0>
                                                                                 <select
                                                                                     class="form-control is_base_fee_select_add"
                                                                                     name="is_base_fee_select_add"
                                                                                     id="is_base_fee_select_add"
-                                                                                    data-select2-id="is_base_fee_select_add"
-                                                                                    tabindex="-1" aria-hidden="true">
-                                                                                    <option value=1>Basic Fee</option>
-                                                                                    <option value=0>Non-Basic Fee</option>
+                                                                                    tabindex="-1" aria-hidden="true"
+                                                                                    disabled>
+                                                                                    <option value=1>Normal Price</option>
+                                                                                    <option value=0 selected>Discounted
+                                                                                        Price
+                                                                                    </option>
                                                                                 </select>
                                                                                 @error('is_base_fee_select_add')
                                                                                     <p style="color: red">
@@ -300,8 +311,7 @@
                                                                             </div>
                                                                             <div class="form-group"
                                                                                 id="form_group-promo_code_add"
-                                                                                name="form_group-promo_code_add"
-                                                                                style="display: none">
+                                                                                name="form_group-promo_code_add">
                                                                                 <label class="form-label"
                                                                                     for="promo_code"><span
                                                                                         class="text-danger">*</span>Promo
@@ -340,22 +350,24 @@
                                                 <div class="modal fade" id="edit-fee-modal" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
-
-                                                            <form action="{{ url('/events/fee/update/' . $event->id) }}"
-                                                                method="post" name="form">
-                                                                @csrf
-                                                                <div class="card-header">
-                                                                    <h5 class="card-title w-150">Edit Current
-                                                                        Fee</h5>
-                                                                </div>
-                                                                <div class="modal-body">
+                                                            <div class="card-header">
+                                                                <h5 class="card-title w-150">Edit Current
+                                                                    Fee</h5>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form
+                                                                    action="{{ url('/events/fee/update/' . $event->id) }}"
+                                                                    method="post" name="form">
+                                                                    @csrf
                                                                     {{-- {!! Form::open(['action' => 'EventParticipantController@store', 'method' => 'POST']) !!} --}}
-                                                                    <input type="hidden" name="id_2" id="id_2">
+
                                                                     <p><span class="text-danger">*</span>
                                                                         Vital Information</p>
                                                                     <hr class="mt-1 mb-2">
                                                                     <div id="form-fee">
-                                                                        <input type="hidden" name="id_3" id="id_3">
+
+                                                                        <input type="number" name="fee_id" id="fee_id"
+                                                                            style="display:none">
                                                                         <div class="form-group">
                                                                             <label class="form-label" for="name"><span
                                                                                     class="text-danger">*</span>name</label>
@@ -385,9 +397,9 @@
                                                                             <label class="form-label" for="amount"><span
                                                                                     class="text-danger">*</span>amount</label>
                                                                             <input type="number" step=".01"
-                                                                                class="form-control" id="edit_amount"
-                                                                                name="amount">
-                                                                            @error('amount')
+                                                                                class="form-control" id="amount_edit"
+                                                                                name="amount_edit">
+                                                                            @error('amount_edit')
                                                                                 <p style="color: red">
                                                                                     <strong> *
                                                                                         {{ $message }}
@@ -400,14 +412,20 @@
                                                                                 for="is_base_fee_select_edit"><span
                                                                                     class="text-danger">*</span>Fee
                                                                                 Type</label>
+                                                                            <input type="number"
+                                                                                name="is_base_fee_select_edit_input"
+                                                                                id="is_base_fee_select_edit_input"
+                                                                                style="display:none">
+
                                                                             <select
                                                                                 class="form-control is_base_fee_select_edit"
                                                                                 name="is_base_fee_select_edit"
                                                                                 id="is_base_fee_select_edit"
                                                                                 data-select2-id="is_base_fee_select_edit"
-                                                                                tabindex="-1" aria-hidden="true">
-                                                                                <option value=1>Basic Fee</option>
-                                                                                <option value=0>Non-Basic Fee</option>
+                                                                                tabindex="-1" aria-hidden="true"
+                                                                                disabled="true">
+                                                                                <option value=1>Normal Price</option>
+                                                                                <option value=0>Discounted Price</option>
                                                                             </select>
                                                                             @error('is_base_fee_select_edit')
                                                                                 <p style="color: red">
@@ -448,8 +466,8 @@
                                                                     </div>
 
                                                                     {{-- {!! Form::close() !!} --}}
-                                                                </div>
-                                                            </form>
+                                                                </form>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -785,7 +803,7 @@
                                                                                 <textarea class="form-control-plaintext"
                                                                                     rows="5" id="objective" name="objective"
                                                                                     disabled>
-                                                                                                                                                                                                                                            </textarea>
+                                                                                                                                                                                                                                                                                                                    </textarea>
                                                                                 @error('objective')
                                                                                     <p style="color: red">
                                                                                         <strong> *
@@ -802,7 +820,7 @@
                                                                                 <textarea class="form-control-plaintext"
                                                                                     rows="5" id="description"
                                                                                     name="description" disabled>
-                                                                                                                                                                                                                                            </textarea>
+                                                                                                                                                                                                                                                                                                                    </textarea>
                                                                                 @error('description')
                                                                                     <p style="color: red">
                                                                                         <strong> *
@@ -987,7 +1005,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane" id="poster" role="tabpanel">
+                                    <div class="tab-pane" id="specific" role="tabpanel">
                                         <hr class="mt-2 mb-3">
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
@@ -1002,8 +1020,6 @@
                                                 <div class="row row-md-12">
                                                     <div class="col-sm-6">
                                                         <div class="d-flex justify-content-center">
-                                                            {{-- <img src="/get-file-event/intec_poster.jpg" class="card-img" alt="..."
-                                            style="width:137px;height:194px;"> --}}
                                                             @if (!$event->thumbnail_path)
                                                                 <img src="{{ asset('storage/shortcourse/poster/default/intec_poster.jpg') }}"
                                                                     class="card-img" alt="..." style="object-fit: fill;">
@@ -1070,6 +1086,67 @@
                                                         </div>
                                                     </div>
 
+                                                </div>
+                                                <hr class="mt-2 mb-2">
+                                                <div class="panel-container show">
+                                                    <div class="panel-content">
+                                                        <ul class="nav nav-pills" role="tablist">
+                                                            <li class="nav-item active">
+                                                                <a data-toggle="tab" class="nav-link"
+                                                                    href="#objective_specific_tab" role="tab">Objective</a>
+
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a data-toggle="tab" class="nav-link"
+                                                                    href="#outline_specific_tab" role="tab">Outline</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a data-toggle="tab" class="nav-link"
+                                                                    href="#tentative_specific_tab" role="tab">Tentative</a>
+                                                            </li>
+                                                        </ul>
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <form action="{{ route('store.specific.editors') }}"
+                                                                    method="POST">
+                                                                    @csrf
+                                                                    <input type="number" name="event_id"
+                                                                        value="{{ $event->id }}" hidden />
+                                                                    <div class="tab-content col-md-12">
+                                                                        <div class="tab-pane active"
+                                                                            id="objective_specific_tab" role="tabpanel">
+                                                                            <textarea id="editor_objective"
+                                                                                name="editor_objective">
+                                                                                                    {{ $event->objective }}
+                                                                                                </textarea>
+                                                                        </div>
+                                                                        <div class="tab-pane" id="outline_specific_tab"
+                                                                            role="tabpanel">
+                                                                            <textarea id="editor_outline"
+                                                                                name="editor_outline">
+                                                                                    {{ $event->outline }}
+                                                                                                </textarea>
+                                                                        </div>
+                                                                        <div class="tab-pane" id="tentative_specific_tab"
+                                                                            role="tabpanel">
+                                                                            <textarea id="editor_tentative"
+                                                                                name="editor_tentative">
+                                                                                    {{ $event->tentative }}
+                                                                                                </textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="card-footer text-muted">
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary ml-auto float-right mr-2"><i
+                                                                                class="fal fa-save"></i>
+                                                                            Save</button>
+                                                                    </div>
+
+                                                                </form>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1223,7 +1300,7 @@
 
                         $('.modal-body #id').val(id);
                         $('.modal-body #name-fee-add').val(name);
-                        $('.modal-body #amount').val(amount);
+                        $('.modal-body #amount_add').val(amount);
                         $('.modal-body #is_base_fee').val(is_base_fee);
                         $('.modal-body #promo_code_add').val(promo_code);
                         $('#crud-modal-new-fee').modal('show');
@@ -1249,13 +1326,14 @@
                 // edit fee
                 $('#edit-fee-modal').on('show.bs.modal', function(event) {
                     var button = $(event.relatedTarget)
-                    var id = button.data('id');
+                    var fee_id = button.data('id');
                     var name = button.data('name');
                     var amount = button.data('amount');
                     var is_base_fee = button.data('is_base_fee');
                     var promo_code = button.data('promo_code');
 
                     var selected = $("select[name=is_base_fee_select_edit]").val(is_base_fee);
+                    $('#is_base_fee_select_edit_input').val(is_base_fee);
                     selected.prop('selected', true);
 
                     if (is_base_fee === 0) {
@@ -1265,9 +1343,9 @@
                         $("#form_group-promo_code-edit").hide();
                     }
 
-                    $('.modal-body #id').val(id);
+                    $('.modal-body #fee_id').val(fee_id);
                     $('.modal-body #name_fee_edit').val(name);
-                    $('.modal-body #amount').val(amount);
+                    $('.modal-body #amount_edit').val(amount);
                     $('.modal-body #is_base_fee').val(is_base_fee);
                     $('.modal-body #promo_code-edit').val(promo_code);
                 });
@@ -1276,6 +1354,7 @@
                 $(function() {
                     $("select[name=is_base_fee_select_add]").change(function(event) {
                         var is_base_fee = $("#is_base_fee_select_add option:selected").val();
+                        $('#is_base_fee_select_add_input').val(is_base_fee);
                         if (is_base_fee == 0) {
                             $("div[name=form_group-promo_code_add]").show();
                         } else {
@@ -1286,7 +1365,7 @@
 
                     $("select[name=is_base_fee_select_edit]").change(function(event) {
                         var is_base_fee = $("#is_base_fee_select_edit option:selected").val();
-                        console.log(is_base_fee);
+                        $('is_base_fee_select_edit_input').val(is_base_fee);
                         if (is_base_fee == 0) {
                             $("div[name=form_group-promo_code-edit]").show();
 
@@ -1448,6 +1527,31 @@
 
                 });
             }
+
+        }
+
+        // Specific
+        {
+
+            ClassicEditor
+                .create(document.querySelector('#editor_objective'))
+                .catch(error => {
+                    console.error(error);
+                });
+
+            ClassicEditor
+                .create(document.querySelector('#editor_outline'))
+                .catch(error => {
+                    console.error(error);
+                });
+
+            ClassicEditor
+                .create(document.querySelector('#editor_tentative'))
+                .catch(error => {
+                    console.error(error);
+                });
+
+            var desc = CKEDITOR.instances['DSC'].getData();
 
         }
 
