@@ -22,9 +22,9 @@
                                         style="object-fit: fill;"> --}}
                                     @if (!$event->thumbnail_path)
                                         <img src="{{ asset('storage/shortcourse/poster/default/intec_poster.jpg') }}"
-                                            class="card-img" alt="..." style="object-fit: fill;">
+                                            class="card-img" style="object-fit: fill;">
                                     @else
-                                        <img src="{{ asset($event->thumbnail_path) }}" class="card-img" alt="..."
+                                        <img src="{{ asset($event->thumbnail_path) }}" class="card-img"
                                             style="object-fit: fill;">
                                     @endif
                                 </div>

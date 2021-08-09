@@ -98,74 +98,86 @@
                                                 <h5 class="card-title w-100">Payment Proof</h5>
                                             </div>
                                             <div class="modal-body">
-                                                <form action="{{ route('store.payment_proof') }}" method="POST"
-                                                    enctype="multipart/form-data">
-                                                    @csrf
-                                                    <div class="form-group col">
-                                                        {{-- <div class="custom-file">
-                                                        <input type="file" class="custom-file-input"
-                                                            id="validatedCustomFile" required>
-                                                        <label class="custom-file-label" for="validatedCustomFile">Choose
-                                                            file...</label>
-                                                    </div> --}}
-                                                        <label class="form-label" for="fullname">Receipt Image</label>
-                                                        {{-- @if ($eventParticipant->payment_proof_path) --}}
-                                                        <img style="display:none" id="payment_proof_path"
-                                                            name="payment_proof_path" class="card-img" alt="...">
-                                                        {{-- @endif --}}
+                                                <div class="form-group col" id="carousel" style="display:none">
 
-                                                        <hr class="mt-2 mb-2">
-                                                        <div class="custom-file">
+                                                    <!--Carousel Wrapper-->
+                                                    <div id="multi-item-example" class="carousel slide carousel-multi-item"
+                                                        data-ride="carousel">
+
+                                                        <!--Controls-->
+                                                        <div class="controls-top">
+                                                            <a class="btn-floating" href="#multi-item-example"
+                                                                data-slide="prev"><i class="ni ni-arrow-left"></i></a>
+
+                                                            <a class="btn-floating" href="#multi-item-example"
+                                                                data-slide="next"><i class="ni ni-arrow-right"></i></a>
+                                                        </div>
+                                                        <!--/.Controls-->
+
+                                                        <!--Indicators-->
+                                                        <ol class="carousel-indicators mb-0" id="carousel-indicators">
+                                                        </ol>
+                                                        <!--/.Indicators-->
+
+                                                        <!--Slides-->
+                                                        <div class="carousel-inner" role="listbox" id="carousel-slides">
+                                                        </div>
+                                                        <!--/.Slides-->
+
+                                                    </div>
+                                                    <!--/.Carousel Wrapper-->
+                                                    <form action="{{ route('store.payment_proof') }}" method="POST"
+                                                        enctype="multipart/form-data">
+                                                        @csrf
+                                                        <div class="custom-file px-2 d-flex flex-column">
                                                             <input type="file" class="custom-file-label"
-                                                                name="payment_proof_input" accept="image/png, image/jpeg" />
+                                                                name="payment_proof_input[]" accept="image/png, image/jpeg"
+                                                                multiple="" />
                                                         </div>
-                                                    </div>
-                                                    <hr class="mt-1 mb-1">
-                                                    <div class="form-group col">
-                                                        <label class="form-label" for="fullname">Status</label>
-                                                        {{-- <input class="form-control-plaintext" id="status" name="status"
-                                                        disabled> --}}
-                                                        <div class="row">
-
-                                                            <input type="number" name="event_id" value=0 id="event_id"
-                                                                hidden />
-                                                            <input type="number" value={{ $participant->id }}
-                                                                name="participant_id" id="participant_id" hidden />
+                                                </div>
+                                                <hr class="mt-1 mb-1">
+                                                <div class="form-group col">
+                                                    <label class="form-label" for="fullname">Status</label>
+                                                    <div class="row">
+                                                        <input type="number" name="event_participant_id" value=0
+                                                            id="event_participant_id" hidden />
+                                                        <input type="number" name="event_id" value=0 id="event_id" hidden />
+                                                        <input type="number" value={{ $participant->id }}
+                                                            name="participant_id" id="participant_id" hidden />
+                                                        <input class="form-control-plaintext"
+                                                            id="is_verified_payment_proof_id"
+                                                            name="is_verified_payment_proof_id" hidden>
+                                                        <div class="col d-flex justify-content-start">
                                                             <input class="form-control-plaintext"
-                                                                id="is_verified_payment_proof_id"
-                                                                name="is_verified_payment_proof_id" hidden>
-                                                            <div class="col d-flex justify-content-start">
-                                                                <input class="form-control-plaintext"
-                                                                    id="is_verified_payment_proof"
-                                                                    name="is_verified_payment_proof" disabled>
-                                                            </div>
-                                                            <div class="col d-flex justify-content-end">
-                                                                <div class="row d-flex justify-content-end">
-                                                                    <td class="col col-sm-1">
-                                                                        <button type="button" name="request_verification"
-                                                                            id="request_verification"
-                                                                            class="btn btn-primary btn_add">
-                                                                            Request Verification
-                                                                        </button>
-                                                                    </td>
+                                                                id="is_verified_payment_proof"
+                                                                name="is_verified_payment_proof" disabled>
+                                                        </div>
+                                                        <div class="col d-flex justify-content-end">
+                                                            <div class="row d-flex justify-content-end">
+                                                                <td class="col col-sm-1">
+                                                                    <button type="button" name="request_verification"
+                                                                        id="request_verification"
+                                                                        class="btn btn-primary btn_add">
+                                                                        Request Verification
+                                                                    </button>
+                                                                </td>
 
-                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <hr class="mt-1 mb-1">
+                                                </div>
+                                                <hr class="mt-1 mb-1">
 
 
-                                                    {{-- <div class="invalid-feedback">Example invalid custom file feedback</div> --}}
-                                                    <div class="footer">
-                                                        <button type="submit" class="btn btn-primary ml-auto float-right"><i
-                                                                class="fal fa-save"></i>
-                                                            Save</button>
-                                                        <button type="button"
-                                                            class="btn btn-danger ml-auto float-right mr-2"
-                                                            data-dismiss="modal"><i class="fal fa-window-close"></i>
-                                                            Close</button>
-                                                    </div>
+                                                {{-- <div class="invalid-feedback">Example invalid custom file feedback</div> --}}
+                                                <div class="footer">
+                                                    <button type="submit" class="btn btn-primary ml-auto float-right"><i
+                                                            class="fal fa-save"></i>
+                                                        Save</button>
+                                                    <button type="button" class="btn btn-danger ml-auto float-right mr-2"
+                                                        data-dismiss="modal"><i class="fal fa-window-close"></i>
+                                                        Close</button>
+                                                </div>
                                                 </form>
                                             </div>
                                         </div>
@@ -266,19 +278,19 @@
                             if (typeof(data.is_verified_payment_proof) !== "number") {
                                 stringStatus = "Not making any request yet"
                                 $("#request_verification").attr("disabled", "false");
-                        style='text-danger';
+                                style = 'text-danger';
                             } else if (data.is_verified_payment_proof == 0) {
                                 stringStatus = "In verification Process"
                                 $("#request_verification").attr("disabled", "true");
-                        style='text-primary';
+                                style = 'text-primary';
                             } else if (data.is_verified_payment_proof == 1) {
                                 stringStatus = "Verified!"
                                 $("#request_verification").attr("disabled", "true");
-                        style='text-success';
+                                style = 'text-success';
                             }
                             $("#is_verified_payment_proof_id").val(data.is_verified_payment_proof);
                             $('.modal-body #is_verified_payment_proof').val(stringStatus);
-                    $('.modal-body #is_verified_payment_proof').addClass(style);
+                            $('.modal-body #is_verified_payment_proof').addClass(style);
                         }).fail(
                         function() {
                             // TODO: The code is not valid
@@ -293,34 +305,73 @@
                     var button = $(event.relatedTarget)
                     var is_verified_payment_proof_id = button.data('is_verified_payment_proof');
                     $("#is_verified_payment_proof_id").val(is_verified_payment_proof_id);
-                    var payment_proof_path = button.data('payment_proof_path');
                     var event_id = button.data('event_id');
                     $("#event_id").val(event_id);
+                    var event_participant_id = button.data('event_participant_id');
+                    $("#event_participant_id").val(event_participant_id);
                     var stringStatus;
                     var style;
                     if (typeof(is_verified_payment_proof_id) !== "number") {
                         stringStatus = "Not making any request yet"
-                        style='text-danger';
+                        style = 'text-danger';
                         // $("#request_verification").attr("disabled", "false");
                     } else if (is_verified_payment_proof_id == 0) {
                         stringStatus = "In verification Process"
                         $("#request_verification").attr("disabled", "true");
-                        style='text-primary';
+                        style = 'text-primary';
                     } else if (is_verified_payment_proof_id == 1) {
                         stringStatus = "Verified!"
                         $("#request_verification").attr("disabled", "true");
-                        style='text-success';
+                        style = 'text-success';
                     }
-                    if (!payment_proof_path) {
-                        $("#payment_proof_path").hide();
-                    } else {
-                        $("#payment_proof_path").show();
-                        var src = `{{ asset('${payment_proof_path}') }}`;
-                        // console.log(`{{ asset('${payment_proof_path}') }}`);
+                    // var payment_proof_path = button.data('payment_proof_path');
+                    // if (!payment_proof_path) {
+                    //     $("#payment_proof_path").hide();
+                    // } else {
+                    //     $("#payment_proof_path").show();
+                    //     var src = `{{ asset('${payment_proof_path}') }}`;
+                    //     $("#payment_proof_path").attr("src", src);
+                    // }
 
-                        // src="http://iids.test/+payment_proof_path+"
-                        $("#payment_proof_path").attr("src", src);
-                    }
+                    $('#carousel').hide();
+
+                    $.get("/event-participant/" + event_participant_id + "/payment_proof",
+                        function(data) {
+                            // TODO: Insert result into couresol
+
+                            data.forEach(function(img, index) {
+                                var src = `{{ asset('${img.payment_proof_path}') }}`;
+                                $('#carousel-indicators').append(
+                                    `<li data-target="#multi-item-example" data-slide-to="${index}" ${index==0?"class='active'":null}></li>`
+                                );
+
+                                $('#carousel-slides').append(
+                                    `<div class="carousel-item ${index==0?"active":null}">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="card mb-5">
+                                                    <img class="card-img-top"
+                                                        src="${src}"
+                                                        alt="Card image cap">
+                                                    <div
+                                                        class="card-body d-flex justify-content-between">
+                                                        <h4 class="card-title">${img.created_at}</h4>
+                                                        <a class="btn btn-danger btn_remove"><span
+                                                                class="text-white">X</span></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>`);
+                            });
+
+                            $('#carousel').show();
+                        }).fail(
+                        function() {
+                            // TODO: Notify Users
+                            console.log('fail');
+                        });
+
                     $('.modal-body #is_verified_payment_proof').val(stringStatus);
                     $('.modal-body #is_verified_payment_proof').addClass(style);
                 });

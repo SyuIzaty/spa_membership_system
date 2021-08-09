@@ -28,9 +28,9 @@
                                         style="width:137px;height:194px;"> --}}
                                     @if (!$event->thumbnail_path)
                                         <img src="{{ asset('storage/shortcourse/poster/default/intec_poster.jpg') }}"
-                                            class="card-img" alt="..." style="width:137px;height:194px;">
+                                            class="card-img" style="width:137px;height:194px;">
                                     @else
-                                        <img src="{{ asset($event->thumbnail_path) }}" class="card-img" alt="..."
+                                        <img src="{{ asset($event->thumbnail_path) }}" class="card-img"
                                             style="width:137px;height:194px;">
                                     @endif
                                 </div>

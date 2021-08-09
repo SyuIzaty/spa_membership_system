@@ -273,6 +273,7 @@ Route::post('/event/{id}/events-participants/data-completed-participation-proces
 Route::post('/event/{id}/events-participants/data-not-completed-participation-process', 'ShortCourseManagement\EventManagement\EventParticipantController@dataNotCompletedParticipationProcess');
 Route::get('/event/{event_id}/promo-code/{promo_code}/participant', 'ShortCourseManagement\EventManagement\EventParticipantController@applyPromoCode');
 Route::get('/event/{event_id}/base-fee', 'ShortCourseManagement\EventManagement\EventParticipantController@baseFee');
+Route::get('/event-participant/{event_participant_id}/payment_proof', 'ShortCourseManagement\EventManagement\EventParticipantController@showPaymentProof');
 
 //EventParticipant - Update Progress
 Route::post('/update-progress/{progress_name}/{eventsParticipants_id}', 'ShortCourseManagement\EventManagement\EventParticipantController@updateProgress');
