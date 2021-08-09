@@ -550,14 +550,16 @@
                                                                                 Trainer's IC</label>
                                                                             <div class="form-inline" style="width:100%">
                                                                                 <div class="form-group mr-2 mb-2"
-                                                                                    style="width:85%">
+                                                                                    style="width:85%"
+                                                                                    id="search-by-trainer_ic-div">
                                                                                     <input class="form-control w-100"
                                                                                         id="trainer_ic_input"
                                                                                         name="trainer_ic_input">
                                                                                 </div>
                                                                                 <a href="javascript:;" data-toggle="#"
                                                                                     id="search-by-trainer_ic"
-                                                                                    class="btn btn-primary mb-2"><i
+                                                                                    class="btn btn-primary mb-2"
+                                                                                    style="width:10%"><i
                                                                                         class="ni ni-magnifier"></i></a>
                                                                             </div>
                                                                             @error('trainer_ic_input')
@@ -628,9 +630,9 @@
                                                                                 <label class="form-label"
                                                                                     for="trainer_fullname"><span
                                                                                         class="text-danger">*</span>Fullname</label>
-                                                                                <input class="form-control-plaintext"
+                                                                                <input class="form-control"
                                                                                     id="trainer_fullname"
-                                                                                    name="trainer_fullname" disabled>
+                                                                                    name="trainer_fullname">
                                                                                 @error('trainer_fullname')
                                                                                     <p style="color: red">
                                                                                         <strong> *
@@ -644,9 +646,8 @@
                                                                                 <label class="form-label"
                                                                                     for="trainer_phone"><span
                                                                                         class="text-danger">*</span>Phone</label>
-                                                                                <input class="form-control-plaintext"
-                                                                                    id="trainer_phone" name="trainer_phone"
-                                                                                    disabled>
+                                                                                <input class="form-control"
+                                                                                    id="trainer_phone" name="trainer_phone">
                                                                                 @error('trainer_phone')
                                                                                     <p style="color: red">
                                                                                         <strong> *
@@ -661,9 +662,8 @@
                                                                                 <label class="form-label"
                                                                                     for="trainer_email"><span
                                                                                         class="text-danger">*</span>Email</label>
-                                                                                <input class="form-control-plaintext"
-                                                                                    id="trainer_email" name="trainer_email"
-                                                                                    disabled>
+                                                                                <input class="form-control"
+                                                                                    id="trainer_email" name="trainer_email">
                                                                                 @error('trainer_email')
                                                                                     <p style="color: red">
                                                                                         <strong> *
@@ -674,7 +674,8 @@
                                                                             </div>
                                                                         </div>
                                                                         <hr class="mt-1 mb-2">
-                                                                        <div class="footer">
+                                                                        <div class="footer" id="add_trainer_footer"
+                                                                            style="display:none">
                                                                             <button type="button"
                                                                                 class="btn btn-danger ml-auto float-right mr-2"
                                                                                 data-dismiss="modal"
@@ -803,7 +804,7 @@
                                                                                 <textarea class="form-control-plaintext"
                                                                                     rows="5" id="objective" name="objective"
                                                                                     disabled>
-                                                                                                                                                                                                                                                                                                                    </textarea>
+                                                                                                                                                                                                                                                                                                                                </textarea>
                                                                                 @error('objective')
                                                                                     <p style="color: red">
                                                                                         <strong> *
@@ -820,7 +821,7 @@
                                                                                 <textarea class="form-control-plaintext"
                                                                                     rows="5" id="description"
                                                                                     name="description" disabled>
-                                                                                                                                                                                                                                                                                                                    </textarea>
+                                                                                                                                                                                                                                                                                                                                </textarea>
                                                                                 @error('description')
                                                                                     <p style="color: red">
                                                                                         <strong> *
@@ -1006,7 +1007,7 @@
                                         </div>
                                     </div>
                                     <div class="tab-pane" id="specific" role="tabpanel">
-                                        <hr class="mt-2 mb-3">
+                                        <hr class="mt-2 mb-2">
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
 
@@ -1017,6 +1018,68 @@
                                                         {{ Session::get('success') }}
                                                     </div>
                                                 @endif
+
+                                                <div class="panel-container show">
+                                                    <div class="panel-content">
+                                                        <ul class="nav nav-pills" role="tablist">
+                                                            <li class="nav-item active">
+                                                                <a data-toggle="tab" class="nav-link"
+                                                                    href="#objective_specific_tab" role="tab">Objective</a>
+
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a data-toggle="tab" class="nav-link"
+                                                                    href="#outline_specific_tab" role="tab">Outline</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a data-toggle="tab" class="nav-link"
+                                                                    href="#tentative_specific_tab" role="tab">Tentative</a>
+                                                            </li>
+                                                        </ul>
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <form action="{{ route('store.specific.editors') }}"
+                                                                    method="POST">
+                                                                    @csrf
+                                                                    <input type="number" name="event_id"
+                                                                        value="{{ $event->id }}" hidden />
+                                                                    <div class="tab-content col-md-12">
+                                                                        <div class="tab-pane active"
+                                                                            id="objective_specific_tab" role="tabpanel">
+                                                                            <textarea id="editor_objective"
+                                                                                name="editor_objective">
+                                                                                                                {{ $event->objective }}
+                                                                                                            </textarea>
+                                                                        </div>
+                                                                        <div class="tab-pane" id="outline_specific_tab"
+                                                                            role="tabpanel">
+                                                                            <textarea id="editor_outline"
+                                                                                name="editor_outline">
+                                                                                                {{ $event->outline }}
+                                                                                                            </textarea>
+                                                                        </div>
+                                                                        <div class="tab-pane" id="tentative_specific_tab"
+                                                                            role="tabpanel">
+                                                                            <textarea id="editor_tentative"
+                                                                                name="editor_tentative">
+                                                                                                {{ $event->tentative }}
+                                                                                                            </textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="card-footer text-muted">
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary ml-auto float-right mr-2"><i
+                                                                                class="fal fa-save"></i>
+                                                                            Save</button>
+                                                                    </div>
+
+                                                                </form>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr class="mt-2 mb-2">
                                                 <div class="row row-md-12">
                                                     <div class="col-sm-6">
                                                         <div class="d-flex justify-content-center">
@@ -1086,67 +1149,6 @@
                                                         </div>
                                                     </div>
 
-                                                </div>
-                                                <hr class="mt-2 mb-2">
-                                                <div class="panel-container show">
-                                                    <div class="panel-content">
-                                                        <ul class="nav nav-pills" role="tablist">
-                                                            <li class="nav-item active">
-                                                                <a data-toggle="tab" class="nav-link"
-                                                                    href="#objective_specific_tab" role="tab">Objective</a>
-
-                                                            </li>
-                                                            <li class="nav-item">
-                                                                <a data-toggle="tab" class="nav-link"
-                                                                    href="#outline_specific_tab" role="tab">Outline</a>
-                                                            </li>
-                                                            <li class="nav-item">
-                                                                <a data-toggle="tab" class="nav-link"
-                                                                    href="#tentative_specific_tab" role="tab">Tentative</a>
-                                                            </li>
-                                                        </ul>
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <form action="{{ route('store.specific.editors') }}"
-                                                                    method="POST">
-                                                                    @csrf
-                                                                    <input type="number" name="event_id"
-                                                                        value="{{ $event->id }}" hidden />
-                                                                    <div class="tab-content col-md-12">
-                                                                        <div class="tab-pane active"
-                                                                            id="objective_specific_tab" role="tabpanel">
-                                                                            <textarea id="editor_objective"
-                                                                                name="editor_objective">
-                                                                                                    {{ $event->objective }}
-                                                                                                </textarea>
-                                                                        </div>
-                                                                        <div class="tab-pane" id="outline_specific_tab"
-                                                                            role="tabpanel">
-                                                                            <textarea id="editor_outline"
-                                                                                name="editor_outline">
-                                                                                    {{ $event->outline }}
-                                                                                                </textarea>
-                                                                        </div>
-                                                                        <div class="tab-pane" id="tentative_specific_tab"
-                                                                            role="tabpanel">
-                                                                            <textarea id="editor_tentative"
-                                                                                name="editor_tentative">
-                                                                                    {{ $event->tentative }}
-                                                                                                </textarea>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="card-footer text-muted">
-                                                                        <button type="submit"
-                                                                            class="btn btn-primary ml-auto float-right mr-2"><i
-                                                                                class="fal fa-save"></i>
-                                                                            Save</button>
-                                                                    </div>
-
-                                                                </form>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1383,10 +1385,8 @@
                 // Add trainer
                 // crud-modal-add-trainer
                 $('#add-trainer').click(function() {
-                    var id = null;
-                    var user_id = null;
-                    $('.modal-body #id').val(id);
-                    $('.modal-body #user_id').val(user_id);
+                    $('.modal-body #id').val(null);
+                    $('.modal-body #user_id').val(null);
                     $('.modal-body #fullname').val(null);
                     $('.modal-body #phone').val(null);
                     $('.modal-body #email').val(null);
@@ -1395,19 +1395,26 @@
                 });
 
                 $('#crud-modal-add-trainer').on('show.bs.modal', function(event) {
-                    var button = $(event.relatedTarget)
-                    var id = button.data('id');
-                    var user_id = button.data('user_id');
+                    // var button = $(event.relatedTarget)
+                    // var id = button.data('id');
+                    // var user_id = button.data('user_id');
 
-                    $('.modal-body #id').val(id);
-                    $('.modal-body #user_id').val(user_id);
+                    $('.modal-body #id').val(null);
+                    $('.modal-body #user_id').val(null);
+
+
+                    $("div[id=form-add-trainer-second-part]").hide();
+                    $('#add_trainer_footer').hide();
+                    $("#search-by-trainer_ic-div").css({
+                        "width": "85%"
+                    });
+                    $('#search-by-trainer_ic').show();
                 });
 
                 // search by trainer ic
                 $('#search-by-trainer_ic').click(function() {
                     var trainer_ic = $('#trainer_ic_input').val();
                     $.get("/trainer/search-by-trainer_ic/" + trainer_ic, function(data) {
-                        console.log(data.id);
                         $("#trainer_user_id option[value='" + data.id + "']").attr("selected", "true");
                         $("#trainer_user_id_text").show();
                         $("#trainer_user_id_text").removeAttr('disabled');
@@ -1439,7 +1446,31 @@
                         }).always(
                         function() {
                             $("div[id=form-add-trainer-second-part]").show();
+                            $('#add_trainer_footer').show();
+                            // $('#search-by-trainer_ic').hide();
+                            // $("#search-by-trainer_ic-div").css({
+                            //     "width": "100%"
+                            // });
                         });
+
+                });
+
+                $('#trainer_ic_input').change(function() {
+
+                    // $("#trainer_user_id").select2().val(-1).trigger("change");
+                    $("#trainer_user_id_text").hide();
+                    $("#trainer_user_id_text").attr('disabled');
+
+                    $("#trainer_user_id_text").val(null);
+                    $('#trainer_fullname').val(null);
+                    $('#trainer_phone').val(null);
+                    $('#trainer_email').val(null);
+
+                    $('#add_trainer_footer').hide();
+
+                    $("div[id=form-add-trainer-second-part]").hide();
+                    $('#search-by-trainer_ic').trigger("click");
+
 
                 });
 
@@ -1512,7 +1543,7 @@
                 // search by id
                 $('#shortcourse_id').change(function() {
                     var id = $('.modal-body #shortcourse_id').val();
-                    $.get("event/shortcourse/search-by-id/" + id, function(data) {
+                    $.get("/event/shortcourse/search-by-id/" + id, function(data) {
                         $('.modal-body #objective').val(data.objective);
                         $('.modal-body #description').val(data.description);
 

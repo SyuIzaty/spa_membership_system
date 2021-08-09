@@ -98,7 +98,7 @@
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="card-header">
-                                                        <h5 class="card-title w-150">Register</h5>
+                                                        <h5 class="card-title w-150">Application</h5>
                                                     </div>
                                                     <div class="modal-body">
                                                         <form
@@ -107,7 +107,7 @@
                                                             @csrf
                                                             {{-- {!! Form::open(['action' => 'ShortCourseManagement\EventManagement\EventParticipantController@store', 'method' => 'POST']) !!} --}}
                                                             {{-- <input type="hidden" name="id"
-                                                                                id="id"> --}}
+                                                                    id="id"> --}}
                                                             <p><span class="text-danger">*</span>
                                                                 Vital Information</p>
                                                             <hr class="mt-1 mb-2">
@@ -136,6 +136,12 @@
                                                                 @enderror
                                                             </div>
                                                             <div id="form-application-second-part" style="display: none">
+
+                                                                <div class="alert alert-primary d-flex justify-content-center"
+                                                                    style="color: #ffffff; background-color: #2c0549;width:100%;"
+                                                                    id="application_message">
+
+                                                                </div>
 
                                                                 <hr class="mt-1 mb-2">
                                                                 <div class="form-group">
@@ -184,11 +190,12 @@
                                                                         for="is_base_fee_select_add"><span
                                                                             class="text-danger">*</span>Fee</label>
                                                                     {{-- <input class="form-control" id="is_base_fee_select_add"
-                                                                                    name="is_base_fee_select_add"> --}}
+                                                                        name="is_base_fee_select_add"> --}}
                                                                     <select class="form-control fee_id font-weight-bold"
                                                                         name="fee_id" id="fee_id" tabindex="-1"
                                                                         aria-hidden="true">
-                                                                        <option disabled selected>Select Fee
+                                                                        <option disabled selected>Select
+                                                                            Fee
                                                                             Applied</option>
                                                                         @foreach ($event->fees as $fee)
                                                                             <option value="{{ $fee->id }}">
@@ -220,7 +227,8 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col-sm-7">
+                                                                        <div class="col-sm-7" id="promo_code_col"
+                                                                            style="display:none">
                                                                             <div class="row">
                                                                                 <div class="col">
                                                                                     <input class="form-control"
@@ -256,17 +264,17 @@
                                                                 {{-- <hr class="mt-1 mb-2"> --}}
                                                                 <div class="custom-control custom-checkbox">
                                                                     {{-- <input type="checkbox"
-                                                                                        class="custom-control-input"
-                                                                                        id="represent-by-himself_show"
-                                                                                        checked="checked"
-                                                                                        disabled> --}}
+                                                                            class="custom-control-input"
+                                                                            id="represent-by-himself_show"
+                                                                            checked="checked"
+                                                                            disabled> --}}
                                                                     <input type="checkbox" class="custom-control-input"
                                                                         id="represent-by-himself" checked="checked"
                                                                         type="hidden">
                                                                     {{-- <label
-                                                                                        class="custom-control-label"
-                                                                                        for="represent-by-himself">Represent
-                                                                                        By Himself</label> --}}
+                                                                            class="custom-control-label"
+                                                                            for="represent-by-himself">Represent
+                                                                            By Himself</label> --}}
                                                                 </div>
                                                                 <div id="representative" style="display:none">
                                                                     <hr class="mt-1 mb-2">
@@ -305,10 +313,13 @@
                                                                     </p>
                                                                     <p id="representative-doesnt-valid"
                                                                         style="color: red; display:none;">
-                                                                        <strong> * The choosen
-                                                                            participant is not
+                                                                        <strong> * The
+                                                                            choosen
+                                                                            participant is
+                                                                            not
                                                                             valid
-                                                                            to represent others
+                                                                            to represent
+                                                                            others
                                                                         </strong>
                                                                     </p>
                                                                     <div id="form-application-third-part"
@@ -341,9 +352,8 @@
                                                                         class="fal fa-window-close"></i>
                                                                     Close</button>
                                                                 <button type="submit"
-                                                                    class="btn btn-success ml-auto float-right mr-2"><i
-                                                                        class="ni ni-plus"></i>
-                                                                    Apply</button>
+                                                                    class="btn btn-success ml-auto float-right mr-2"
+                                                                    id="application_update_submit"></button>
                                                             </div>
                                                         </form>
 
@@ -479,10 +489,47 @@
             $('#search-by-ic').click(function() {
                 var ic = $('.modal-body #ic_input').val();
                 $.get("/participant/search-by-ic/" + ic + "/event/" + event_id, function(data) {
+                    $('.modal-body #application_update_submit').empty();
+                    $('.modal-body #application_message').empty();
+                    if (data.id) {
+                        // TODO: Already Applied
+                        $('.modal-body #fullname').attr('readonly', true);
+                        $('.modal-body #phone').attr('readonly', true);
+                        $('.modal-body #email').attr('readonly', true);
+
+                        $('.modal-body #application_update_submit').append(
+                            '<i class = "fal fa-save"></i> Update');
+
+                        $('.modal-body #application_message').append(
+                            'Already Apply - Update Application');
+
+                    } else {
+                        // TODO: Not Apply Yet
+
+                        $('.modal-body #fullname').removeAttr('readonly', true);
+                        $('.modal-body #phone').removeAttr('readonly', true);
+                        $('.modal-body #email').removeAttr('readonly', true);
+                        $('.modal-body #application_update_submit').append(
+                            '<i class = "ni ni-plus"></i> Apply');
+                        $('.modal-body #application_message').append(
+                            'Make New Application');
+                    }
+
                     if (data.participant) {
                         $('.modal-body #fullname').val(data.participant.name);
                         $('.modal-body #phone').val(data.participant.phone);
                         $('.modal-body #email').val(data.participant.email);
+                    } else {
+                        $('.modal-body #fullname').val(null);
+                        $('.modal-body #phone').val(null);
+                        $('.modal-body #email').val(null);
+
+                    }
+                    var fees = @json($event->fees);
+                    if (fees.length > 1) {
+                        $('#promo_code_col').show();
+                    } else {
+                        $('#promo_code_col').hide();
                     }
                     if (data.fee_id) {
                         $("select[id=fee_id]").val(data.fee_id);
@@ -497,6 +544,9 @@
                         }
 
                     } else {
+                        $("select[id=fee_id]").val(null);
+                        $('.modal-body #promo_code').val(null);
+                        $("input[id=fee_id_input]").val(0);
                         $("select[id=fee_id]").hide();
                         $("div[id=fee_id_show]").show();
                     }
@@ -506,11 +556,14 @@
                             $('.modal-body #representative_fullname').val(data.participant.name);
                         }
                     }
+
                 }).fail(
                     function() {
                         $('.modal-body #fullname').val(null);
                         $('.modal-body #phone').val(null);
                         $('.modal-body #email').val(null);
+
+
                         $("select[id=fee_id]").hide();
                         $("div[id=fee_id_show]").show();
 
@@ -577,6 +630,8 @@
                 $('.modal-body #representative_fullname').val(null);
                 $("div[id=form-application-second-part]").hide();
                 $("#new_application_footer").hide();
+
+                $('#search-by-ic').trigger("click");
 
             });
 

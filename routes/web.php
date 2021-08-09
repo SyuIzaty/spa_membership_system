@@ -288,7 +288,7 @@ Route::post('/event/fee/create/{id}', 'ShortCourseManagement\EventManagement\Eve
 Route::post('/event/fee/delete/{id}', 'ShortCourseManagement\EventManagement\EventController@deleteFee');
 Route::post('/event/trainer/detached/{id}', 'ShortCourseManagement\EventManagement\EventController@detachedTrainer');
 Route::post('/event/shortcourse/detached/{id}', 'ShortCourseManagement\EventManagement\EventController@detachedShortCourse');
-Route::post('/event/trainer/attached/{id}', 'ShortCourseManagement\EventManagement\EventController@storeTrainer');
+Route::post('/event/trainer/attached/{event_id}', 'ShortCourseManagement\EventManagement\EventController@storeTrainer');
 Route::post('/event/shortcourse/attached/{id}', 'ShortCourseManagement\EventManagement\EventController@storeShortCourse');
 Route::get('/event/create', 'ShortCourseManagement\EventManagement\EventController@create');
 Route::get('/events', 'ShortCourseManagement\EventManagement\EventController@index');

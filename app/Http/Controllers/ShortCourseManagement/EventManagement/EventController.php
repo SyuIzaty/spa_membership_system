@@ -280,12 +280,14 @@ class EventController extends Controller
             }
         }
 
-        $createEventTrainer = EventTrainer::create([
+        $create = EventTrainer::create([
             'event_id' => $createEvent->id,
             'trainer_id' => $existTrainer->id,
+            'is_done_paid' => 0,
             'trainer_representative_id' => $existTrainer->id,
             'phone' => $request->trainer_phone,
             'created_by' => Auth::user()->id,
+            'is_active' => 1,
         ]);
 
         // Redirect to show
@@ -551,24 +553,65 @@ class EventController extends Controller
         return Redirect()->back()->with('messageEventBasicDetails', 'Basic Details Update Successfully');
     }
 
-    public function storeTrainer(Request $request, $id)
+    public function storeTrainer(Request $request, $event_id)
     {
         // //
+        // dd($request);
         $validated = $request->validate([
             'trainer_ic_input' => 'required',
-        ], [
-            'trainer_ic_input.required' => 'Please insert trainer ic of the trainer',
+            'trainer_user_id' => 'required',
+            'trainer_fullname' => 'required',
+            'trainer_phone' => 'required',
+            'trainer_email' => 'required',
         ]);
-        $existTrainer = Trainer::where('ic', $request->trainer_ic_input)->first();
 
-        $create = EventTrainer::create([
-            'event_id' => $id,
+        $existTrainer = Trainer::where('ic', '=', $request->trainer_ic_input)->first();
+
+        if (!$existTrainer) {
+            $existUser = User::where('id', $request->trainer_user_id)->first();
+            if (!$existUser) {
+                // TODO: Create User
+                $existUser = User::create([
+                    'id' => $request->trainer_ic_input,
+                    'name' => $request->trainer_fullname,
+                    'username' => $request->trainer_ic_input,
+                    'email' => $request->trainer_email,
+                    'active' => 'Y',
+                    'category' => 'EXT',
+                    'password' => Hash::make($request->trainer_ic_input),
+                ]);
+            }
+            if ($existUser) {
+                $existTrainer = Trainer::create([
+                    'user_id' => $existUser->id,
+                    'ic' => $request->trainer_ic_input,
+                    'phone' => $request->trainer_phone,
+                    'created_by' => Auth::user()->id,
+                ]);
+            }
+        }
+
+        $createEventTrainer = EventTrainer::create([
+            'event_id' => $event_id,
             'trainer_id' => $existTrainer->id,
             'is_done_paid' => 0,
             'trainer_representative_id' => $existTrainer->id,
+            'phone' => $request->trainer_phone,
             'created_by' => Auth::user()->id,
             'is_active' => 1,
         ]);
+
+        // $existTrainer = Trainer::where('ic', $request->trainer_ic_input)->first();
+
+        // $create = EventTrainer::create([
+        //     'event_id' => $event_id,
+        //     'trainer_id' => $existTrainer->id,
+        //     'is_done_paid' => 0,
+        //     'trainer_representative_id' => $existTrainer->id,
+        //     'phone' => $request->trainer_phone,
+        //     'created_by' => Auth::user()->id,
+        //     'is_active' => 1,
+        // ]);
 
 
         return Redirect()->back()->with('messageEventBasicDetails', 'Basic Details Update Successfully');

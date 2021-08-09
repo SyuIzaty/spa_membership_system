@@ -380,6 +380,7 @@
                     $("tr[id=form-add-trainer-second-part]").show();
 
                     $('#submit').show();
+                    // $('#search-by-trainer_ic').hide();
                 });
 
         });
@@ -415,6 +416,7 @@
             $('#submit').hide();
 
             $("tr[id=form-add-trainer-second-part]").hide();
+            $( '#search-by-trainer_ic' ).trigger( "click" );
 
 
         });
