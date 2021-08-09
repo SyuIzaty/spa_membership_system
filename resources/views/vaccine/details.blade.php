@@ -135,7 +135,7 @@
                                                     <tr class="q3">
                                                         <div class="form-group">
                                                             <td style="text-align: center" width="4%"><label for="q3">3.</label></td>
-                                                            <td><label for="q3">Have You Finished Receiving Your Second Dose Vaccine ?</label></td>
+                                                            <td><label for="q3">Have You Finished Receiving Your First Dose Vaccine ?</label></td>
                                                             <td style="text-align: center">
                                                                 @if ($vaccine->q3 == 'Y') YES @endif
                                                                 @if ($vaccine->q3 == 'N') NO @endif
