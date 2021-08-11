@@ -60,6 +60,10 @@ class Event extends Model
     {
         return $this->hasMany('App\Models\ShortCourseManagement\EventTrainer', 'event_id', 'id');
     }
+    public function events_contact_persons()
+    {
+        return $this->hasMany('App\Models\ShortCourseManagement\EventContactPerson', 'event_id', 'id');
+    }
     public function events_participants()
     {
         return $this->hasMany('App\Models\ShortCourseManagement\EventParticipant', 'event_id', 'id');

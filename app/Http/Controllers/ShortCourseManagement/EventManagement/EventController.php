@@ -8,6 +8,8 @@ use App\Models\ShortCourseManagement\Event;
 use App\Models\ShortCourseManagement\Venue;
 use App\Models\ShortCourseManagement\ShortCourse;
 use App\Models\ShortCourseManagement\Trainer;
+use App\Models\ShortCourseManagement\ContactPerson;
+use App\Models\ShortCourseManagement\EventContactPerson;
 use App\Models\ShortCourseManagement\Fee;
 use App\Models\ShortCourseManagement\EventTrainer;
 use App\Models\ShortCourseManagement\EventShortCourse;
@@ -324,7 +326,8 @@ class EventController extends Controller
             'events_shortcourses.shortcourse',
             'events_trainers.trainer',
             'fees',
-            'event_status_category'
+            'event_status_category',
+            'events_contact_persons.contact_person'
         ]);
 
         // $totalParticipantsNotApprovedYet = $event->events_participants->where('is_approved', 0)->where('is_done_email_cancellation_disqualified', 0)->count();
@@ -411,6 +414,11 @@ class EventController extends Controller
         // $trainers = array();
         foreach ($event->events_trainers as $event_trainer) {
             $event_trainer->trainer->user = User::find($event_trainer->trainer->user_id);
+        }
+
+
+        foreach ($event->events_contact_persons as $event_contact_person) {
+            $event_contact_person->contact_person->user = User::find($event_contact_person->contact_person->user_id);
         }
         // dd($event);
         //
@@ -541,6 +549,20 @@ class EventController extends Controller
         return Redirect()->back()->with('messageEventBasicDetails', 'Basic Details Update Successfully');
     }
 
+    public function detachedContactPerson($event_contact_person_id)
+    {
+
+        $exist = EventContactPerson::find($event_contact_person_id);
+        $exist->updated_by = Auth::user()->id;
+        $exist->deleted_by = Auth::user()->id;
+        $exist->save();
+        $exist->delete();
+
+        return Redirect()->back()->with('messageEventBasicDetails', 'Basic Details Update Successfully');
+    }
+
+
+
     public function detachedShortCourse($EventShortCourse_id)
     {
 
@@ -612,6 +634,57 @@ class EventController extends Controller
         //     'created_by' => Auth::user()->id,
         //     'is_active' => 1,
         // ]);
+
+
+        return Redirect()->back()->with('messageEventBasicDetails', 'Basic Details Update Successfully');
+    }
+
+    public function storeContactPerson(Request $request, $event_id)
+    {
+        // //
+        // dd($request);
+        $validated = $request->validate([
+            'contact_person_ic_input' => 'required',
+            'contact_person_user_id' => 'required',
+            'contact_person_fullname' => 'required',
+            'contact_person_phone' => 'required',
+            'contact_person_email' => 'required',
+        ]);
+
+        $existContactPerson = ContactPerson::where('ic', '=', $request->contact_person_ic_input)->first();
+
+        // dd($existContactPerson);
+        if (!$existContactPerson) {
+            $existUser = User::where('id', $request->contact_person_user_id)->first();
+            if (!$existUser) {
+                // TODO: Create User
+                $existUser = User::create([
+                    'id' => $request->contact_person_ic_input,
+                    'name' => $request->contact_person_fullname,
+                    'username' => $request->contact_person_ic_input,
+                    'email' => $request->contact_person_email,
+                    'active' => 'Y',
+                    'category' => 'EXT',
+                    'password' => Hash::make($request->contact_person_ic_input),
+                ]);
+            }
+            if ($existUser) {
+                $existContactPerson = ContactPerson::create([
+                    'user_id' => $existUser->id,
+                    'ic' => $request->contact_person_ic_input,
+                    'phone' => $request->contact_person_phone,
+                    'created_by' => Auth::user()->id,
+                ]);
+            }
+        }
+
+        $createEventContactPerson = EventContactPerson::create([
+            'event_id' => $event_id,
+            'contact_person_id' => $existContactPerson->id,
+            'phone' => $request->contact_person_phone,
+            'created_by' => Auth::user()->id,
+            'is_active' => 1,
+        ]);
 
 
         return Redirect()->back()->with('messageEventBasicDetails', 'Basic Details Update Successfully');

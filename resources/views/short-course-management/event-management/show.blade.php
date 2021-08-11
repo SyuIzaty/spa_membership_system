@@ -540,7 +540,7 @@
                                                                         method="post" name="form">
                                                                         @csrf
                                                                         {{-- {!! Form::open(['action' => 'ShortCourseManagement\EventManagement\EventController@storeTrainer\ '.$event->id, 'method' => 'POST']) !!} --}}
-                                                                        <input type="hidden" name="id_4" id="id_4">
+
                                                                         <p><span class="text-danger">*</span>
                                                                             Vital Information</p>
                                                                         <hr class="mt-1 mb-2">
@@ -699,6 +699,215 @@
                                                 <table class="table table-striped table-bordered m-0">
                                                     <thead class="thead">
                                                         <tr class=" bg-primary-50">
+                                                            <th colspan="3"><b>List of Contact Persons</b></th>
+                                                        </tr>
+                                                        <tr style="background-color:plum">
+                                                            <th>ID</th>
+                                                            <th>Name</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($event->events_contact_persons as $event_contact_person)
+                                                            <tr>
+                                                                <td>{{ $event_contact_person->contact_person->user->id }}
+                                                                </td>
+                                                                <td>{{ $event_contact_person->contact_person->user->name }}
+                                                                </td>
+                                                                <td>
+                                                                    <form method="post"
+                                                                        action="/event/contact_person/detached/{{ $event_contact_person->id }}">
+                                                                        @csrf
+                                                                        <button type="submit"
+                                                                            class="btn btn-sm btn-danger float-right mr-2">
+                                                                            <i class="ni ni-close"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                                <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
+                                                    style="content-align:right">
+                                                    <a href="javascript:;" data-toggle="modal" id="add-contact_person"
+                                                        class="btn btn-primary ml-auto mt-2 mr-2 waves-effect waves-themed"><i
+                                                            class="ni ni-plus"> </i> Add Contact Person</a>
+                                                    <div class="modal fade" id="crud-modal-add-contact_person"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="card-header">
+                                                                    <h5 class="card-title w-150">Add Contact Person</h5>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <form
+                                                                        action="{{ url('/event/contact_person/attached/' . $event->id) }}"
+                                                                        method="post" name="form">
+                                                                        @csrf
+                                                                        {{-- {!! Form::open(['action' => 'ShortCourseManagement\EventManagement\EventController@storeContactPerson\ '.$event->id, 'method' => 'POST']) !!} --}}
+
+                                                                        <p><span class="text-danger">*</span>
+                                                                            Vital Information</p>
+                                                                        <hr class="mt-1 mb-2">
+                                                                        <div class="form-group">
+                                                                            <label for="contact_person_ic"><span
+                                                                                    class="text-danger">*</span>
+                                                                                Contact Person's IC</label>
+                                                                            <div class="form-inline" style="width:100%">
+                                                                                <div class="form-group mr-2 mb-2"
+                                                                                    style="width:85%"
+                                                                                    id="search-by-contact_person_ic-div">
+                                                                                    <input class="form-control w-100"
+                                                                                        id="contact_person_ic_input"
+                                                                                        name="contact_person_ic_input">
+                                                                                </div>
+                                                                                <a href="javascript:;" data-toggle="#"
+                                                                                    id="search-by-contact_person_ic"
+                                                                                    class="btn btn-primary mb-2"
+                                                                                    style="width:10%"><i
+                                                                                        class="ni ni-magnifier"></i></a>
+                                                                            </div>
+                                                                            @error('contact_person_ic_input')
+                                                                                <p style="color: red">
+                                                                                    <strong> *
+                                                                                        {{ $message }}
+                                                                                    </strong>
+                                                                                </p>
+                                                                            @enderror
+                                                                        </div>
+                                                                        <hr class="mt-1 mb-2">
+                                                                        <div id="form-add-contact_person-second-part"
+                                                                            style="display: none">
+
+                                                                            {{-- <div class="form-group">
+                                                                                <label for="user_id"><span
+                                                                                        class="text-danger">*</span>
+                                                                                    ContactPerson's User ID</label>
+                                                                                <div class="form-inline" style="width:100%">
+                                                                                    <div class="form-group mr-2 mb-2"
+                                                                                        style="width:85%">
+                                                                                        <input class="form-control w-100"
+                                                                                            id="user_id" name="user_id">
+                                                                                    </div>
+                                                                                    <a href="javascript:;" data-toggle="#"
+                                                                                        id="search-by-user_id"
+                                                                                        class="btn btn-primary mb-2"><i
+                                                                                            class="ni ni-magnifier"></i></a>
+                                                                                </div>
+                                                                                @error('user_id')
+                                                                                    <p style="color: red">
+                                                                                        <strong> *
+                                                                                            {{ $message }}
+                                                                                        </strong>
+                                                                                    </p>
+                                                                                @enderror
+                                                                            </div> --}}
+                                                                            <div class="form-group">
+                                                                                <label for="user_id"><span
+                                                                                        class="text-danger">*</span>
+                                                                                    Contact Person's User ID</label>
+                                                                                {{ Form::text('contact_person_user_id_text', '', ['class' => 'form-control', 'placeholder' => "ContactPerson's User ID", 'id' => 'contact_person_user_id_text', 'disabled', 'style' => 'display:none', 'readonly']) }}
+                                                                                <select class="form-control user"
+                                                                                    name="contact_person_user_id"
+                                                                                    id="contact_person_user_id" disabled
+                                                                                    style="display:none">
+                                                                                    <option disabled>Select User ID</option>
+                                                                                    <option value='-1' name="create_new">
+                                                                                        Create
+                                                                                        New</option>
+                                                                                    @foreach ($users as $user)
+                                                                                        <option value='{{ $user->id }}'
+                                                                                            name="{{ $user->name }}">
+                                                                                            {{ $user->id }} -
+                                                                                            {{ $user->name }}</option>
+                                                                                    @endforeach
+                                                                                </select>
+                                                                                @error('contact_person_user_id')
+                                                                                    <p style="color: red">{{ $message }}
+                                                                                    </p>
+                                                                                @enderror
+                                                                            </div>
+                                                                            <hr class="mt-1 mb-2">
+
+                                                                            <input class="form-control-plaintext"
+                                                                                id="contact_person_id"
+                                                                                name="contact_person_id" hidden>
+                                                                            <div class="form-group">
+                                                                                <label class="form-label"
+                                                                                    for="contact_person_fullname"><span
+                                                                                        class="text-danger">*</span>Fullname</label>
+                                                                                <input class="form-control"
+                                                                                    id="contact_person_fullname"
+                                                                                    name="contact_person_fullname">
+                                                                                @error('contact_person_fullname')
+                                                                                    <p style="color: red">
+                                                                                        <strong> *
+                                                                                            {{ $message }}
+                                                                                        </strong>
+                                                                                    </p>
+                                                                                @enderror
+                                                                            </div>
+                                                                            <hr class="mt-1 mb-2">
+                                                                            <div class="form-group">
+                                                                                <label class="form-label"
+                                                                                    for="contact_person_phone"><span
+                                                                                        class="text-danger">*</span>Phone</label>
+                                                                                <input class="form-control"
+                                                                                    id="contact_person_phone"
+                                                                                    name="contact_person_phone">
+                                                                                @error('contact_person_phone')
+                                                                                    <p style="color: red">
+                                                                                        <strong> *
+                                                                                            {{ $message }}
+                                                                                        </strong>
+                                                                                    </p>
+                                                                                @enderror
+                                                                            </div>
+
+                                                                            <hr class="mt-1 mb-2">
+                                                                            <div class="form-group">
+                                                                                <label class="form-label"
+                                                                                    for="contact_person_email"><span
+                                                                                        class="text-danger">*</span>Email</label>
+                                                                                <input class="form-control"
+                                                                                    id="contact_person_email"
+                                                                                    name="contact_person_email">
+                                                                                @error('contact_person_email')
+                                                                                    <p style="color: red">
+                                                                                        <strong> *
+                                                                                            {{ $message }}
+                                                                                        </strong>
+                                                                                    </p>
+                                                                                @enderror
+                                                                            </div>
+                                                                        </div>
+                                                                        <hr class="mt-1 mb-2">
+                                                                        <div class="footer" id="add_contact_person_footer"
+                                                                            style="display:none">
+                                                                            <button type="button"
+                                                                                class="btn btn-danger ml-auto float-right mr-2"
+                                                                                data-dismiss="modal"
+                                                                                id="close-add-contact_person"><i
+                                                                                    class="fal fa-window-close"></i>
+                                                                                Close</button>
+                                                                            <button type="submit"
+                                                                                class="btn btn-primary ml-auto float-right mr-2"><i
+                                                                                    class="ni ni-plus"></i>
+                                                                                Add</button>
+                                                                        </div>
+
+                                                                        {{-- {!! Form::close() !!} --}}
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr class="mt-2 mb-3">
+                                                <table class="table table-striped table-bordered m-0">
+                                                    <thead class="thead">
+                                                        <tr class=" bg-primary-50">
                                                             <th colspan="3"><b>List of Short Courses</b></th>
                                                         </tr>
                                                         <tr style="background-color:plum">
@@ -804,7 +1013,7 @@
                                                                                 <textarea class="form-control-plaintext"
                                                                                     rows="5" id="objective" name="objective"
                                                                                     disabled>
-                                                                                                                                                                                                                                                                                                                                </textarea>
+                                                                                                                                                                                                                                                                                                                                    </textarea>
                                                                                 @error('objective')
                                                                                     <p style="color: red">
                                                                                         <strong> *
@@ -821,7 +1030,7 @@
                                                                                 <textarea class="form-control-plaintext"
                                                                                     rows="5" id="description"
                                                                                     name="description" disabled>
-                                                                                                                                                                                                                                                                                                                                </textarea>
+                                                                                                                                                                                                                                                                                                                                    </textarea>
                                                                                 @error('description')
                                                                                     <p style="color: red">
                                                                                         <strong> *
@@ -1048,22 +1257,22 @@
                                                                             id="objective_specific_tab" role="tabpanel">
                                                                             <textarea id="editor_objective"
                                                                                 name="editor_objective">
-                                                                                                                {{ $event->objective }}
-                                                                                                            </textarea>
+                                                                                                                    {{ $event->objective }}
+                                                                                                                </textarea>
                                                                         </div>
                                                                         <div class="tab-pane" id="outline_specific_tab"
                                                                             role="tabpanel">
                                                                             <textarea id="editor_outline"
                                                                                 name="editor_outline">
-                                                                                                {{ $event->outline }}
-                                                                                                            </textarea>
+                                                                                                    {{ $event->outline }}
+                                                                                                                </textarea>
                                                                         </div>
                                                                         <div class="tab-pane" id="tentative_specific_tab"
                                                                             role="tabpanel">
                                                                             <textarea id="editor_tentative"
                                                                                 name="editor_tentative">
-                                                                                                {{ $event->tentative }}
-                                                                                                            </textarea>
+                                                                                                    {{ $event->tentative }}
+                                                                                                                </textarea>
                                                                         </div>
                                                                     </div>
                                                                     <div class="card-footer text-muted">
@@ -1418,6 +1627,7 @@
                         $("#trainer_user_id option[value='" + data.id + "']").attr("selected", "true");
                         $("#trainer_user_id_text").show();
                         $("#trainer_user_id_text").removeAttr('disabled');
+                        $("#trainer_user_id").removeAttr('disabled');
 
                         $("#trainer_user_id").hide();
                         $("#trainer_user_id").attr('style', 'display: none');
@@ -1425,12 +1635,18 @@
 
                         $("#trainer_user_id_text").val(data.id);
                         $('#trainer_fullname').val(data.name);
-                        $('#trainer_phone').val(data.trainer.phone);
+
+                        if (data.trainer) {
+                            $('#trainer_phone').val(data.trainer.phone);
+                        } else {
+                            $('#trainer_phone').val(data.contact_person.phone);
+                        }
                         $('#trainer_email').val(data.email);
 
 
                     }).fail(
                         function() {
+                            console.log('fail');
                             $('#trainer_ic').val(null);
                             $("#trainer_user_id_text").hide();
                             $("#trainer_user_id_text").attr('disabled');
@@ -1554,6 +1770,151 @@
                         }).always(
                         function() {
                             $("div[id=form-add-shortcourse-second-part]").show();
+                        });
+
+                });
+            }
+
+            // List of Contact Persons
+            {
+                // Add contact_person
+                // crud-modal-add-contact_person
+                $('#add-contact_person').click(function() {
+                    $('.modal-body #id').val(null);
+                    $('.modal-body #user_id').val(null);
+                    $('.modal-body #fullname').val(null);
+                    $('.modal-body #phone').val(null);
+                    $('.modal-body #email').val(null);
+                    $('#crud-modal-add-contact_person').modal('show');
+                    $("div[id=form-add-contact_person-second-part]").hide();
+                });
+
+                $('#crud-modal-add-contact_person').on('show.bs.modal', function(event) {
+                    // var button = $(event.relatedTarget)
+                    // var id = button.data('id');
+                    // var user_id = button.data('user_id');
+
+                    $('.modal-body #id').val(null);
+                    $('.modal-body #user_id').val(null);
+
+
+                    $("div[id=form-add-contact_person-second-part]").hide();
+                    $('#add_contact_person_footer').hide();
+                    $("#search-by-contact_person_ic-div").css({
+                        "width": "85%"
+                    });
+                    $('#search-by-contact_person_ic').show();
+                });
+
+                // search by contact_person ic
+                $('#search-by-contact_person_ic').click(function() {
+                    var contact_person_ic = $('#contact_person_ic_input').val();
+                    $.get("/contact_person/search-by-contact_person_ic/" + contact_person_ic, function(data) {
+                        $("#contact_person_user_id option[value='" + data.id + "']").attr("selected",
+                            "true");
+
+                        $("#contact_person_user_id_text").show();
+                        $("#contact_person_user_id_text").removeAttr('disabled');
+                        $("#contact_person_user_id").removeAttr('disabled');
+
+                        $("#contact_person_user_id").hide();
+                        $("#contact_person_user_id").attr('style', 'display: none');
+                        $("#contact_person_user_id").removeClass('user');
+
+                        $("#contact_person_user_id_text").val(data.id);
+                        $('#contact_person_fullname').val(data.name);
+
+                        if (data.contact_person) {
+                            $('#contact_person_phone').val(data.contact_person.phone);
+                        } else {
+                            $('#contact_person_phone').val(data.trainer.phone);
+                        }
+                        $('#contact_person_email').val(data.email);
+
+
+                    }).fail(
+                        function() {
+                            console.log('fail');
+                            $('#contact_person_ic').val(null);
+                            $("#contact_person_user_id_text").hide();
+                            $("#contact_person_user_id_text").attr('disabled');
+
+                            $("#contact_person_user_id").show();
+                            $("#contact_person_user_id").removeAttr('disabled');
+                            $("#contact_person_user_id").addClass('user');
+
+                            $("#contact_person_user_id option[value='-1']").attr("selected", "true");
+                            $('#contact_person_fullname').val(null);
+                            $('#contact_person_phone').val(null);
+                            $('#contact_person_email').val(null);
+                        }).always(
+                        function() {
+                            $("div[id=form-add-contact_person-second-part]").show();
+                            $('#add_contact_person_footer').show();
+                            // $('#search-by-contact_person_ic').hide();
+                            // $("#search-by-contact_person_ic-div").css({
+                            //     "width": "100%"
+                            // });
+                        });
+
+                });
+
+                $('#contact_person_ic_input').change(function() {
+
+                    // $("#contact_person_user_id").select2().val(-1).trigger("change");
+                    $("#contact_person_user_id_text").hide();
+                    $("#contact_person_user_id_text").attr('disabled');
+
+                    $("#contact_person_user_id_text").val(null);
+                    $('#contact_person_fullname').val(null);
+                    $('#contact_person_phone').val(null);
+                    $('#contact_person_email').val(null);
+
+                    $('#add_contact_person_footer').hide();
+
+                    $("div[id=form-add-contact_person-second-part]").hide();
+                    $('#search-by-contact_person_ic').trigger("click");
+
+
+                });
+
+                // User_ID information
+                $('#contact_person_user_id').change(function(event) {
+                    var contact_person_fullname = $('#contact_person_user_id').find(":selected").attr('name');
+                    var contact_person_user_id = $('#contact_person_user_id').find(":selected").val();
+
+                    var users = @json($users);
+
+                    var selected_user = users.find((x) => {
+                        return x.id == contact_person_user_id;
+                    });
+                    if (selected_user) {
+                        $('#contact_person_fullname').val(selected_user.name);
+                        $('#contact_person_email').val(selected_user.email);
+                    } else {
+                        $('#contact_person_fullname').val(null);
+                        $('#contact_person_email').val(null);
+                    }
+                });
+
+                // search by contact_person user_id
+                $('#search-by-user_id').click(function() {
+                    var user_id = $('.modal-body #user_id').val();
+                    $.get("/contact_person/search-by-user_id/" + user_id, function(data) {
+                        $('.modal-body #contact_person_id').val(data.contact_person.id);
+                        $('.modal-body #fullname').val(data.name);
+                        $('.modal-body #phone').val(data.contact_person.phone);
+                        $('.modal-body #email').val(data.email);
+
+                    }).fail(
+                        function() {
+                            $('.modal-body #contact_person_id').val(null);
+                            $('.modal-body #fullname').val(null);
+                            $('.modal-body #phone').val(null);
+                            $('.modal-body #email').val(null);
+                        }).always(
+                        function() {
+                            $("div[id=form-add-contact_person-second-part]").show();
                         });
 
                 });

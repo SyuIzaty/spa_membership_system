@@ -301,7 +301,7 @@
                         function(data) {
                             var stringStatus = '';
                             if (typeof(data.is_verified_payment_proof) !== "number") {
-                                stringStatus = "Not making any request yet"
+                                stringStatus = "No request for verification yet"
                                 $("#request_verification").attr("disabled", "false");
                                 style = 'text-danger';
                             } else if (data.is_verified_payment_proof == 0) {
@@ -339,7 +339,7 @@
                     var stringStatus;
                     var style;
                     if (typeof(is_verified_payment_proof_id) !== "number") {
-                        stringStatus = "Not making any request yet"
+                        stringStatus = "No request for verification yet"
                         style = 'text-danger';
                         // $("#request_verification").attr("disabled", "false");
                     } else if (is_verified_payment_proof_id == 0) {

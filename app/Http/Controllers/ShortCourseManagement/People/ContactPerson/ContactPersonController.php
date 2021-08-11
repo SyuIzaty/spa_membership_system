@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\ShortCourseManagement\People\Trainer;
+namespace App\Http\Controllers\ShortCourseManagement\People\ContactPerson;
 use App\User;
-use App\Models\ShortCourseManagement\Trainer;
 use App\Models\ShortCourseManagement\ContactPerson;
+use App\Models\ShortCourseManagement\Trainer;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class TrainerController extends Controller
+class ContactPersonController extends Controller
 {
     public function index()
     {
@@ -45,23 +45,20 @@ class TrainerController extends Controller
     public function searchByUserId($user_id)
     {
         //
-        $user=User::where('id', $user_id)->first()->load(['trainer']);
+        $user=User::where('id', $user_id)->first()->load(['contact_person']);
         return $user;
     }
 
-    public function searchByTrainerIc($trainer_ic)
+    public function searchByContactPersonIc($contact_person_ic)
     {
         //
-
-
-        $trainer=Trainer::where('ic', $trainer_ic)->first();
-        if($trainer){
-            $user=User::where('id', $trainer->user_id)->first()->load(['trainer']);
-        }else{
-            $contact_person=ContactPerson::where('ic', $trainer_ic)->first();
+        $contact_person=ContactPerson::where('ic', $contact_person_ic)->first();
+        if($contact_person){
             $user=User::where('id', $contact_person->user_id)->first()->load(['contact_person']);
+        }else{
+            $trainer=Trainer::where('ic', $contact_person_ic)->first();
+            $user=User::where('id', $trainer->user_id)->first()->load(['trainer']);
         }
-
         return $user;
     }
 

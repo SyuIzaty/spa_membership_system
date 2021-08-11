@@ -246,18 +246,20 @@ Route::post('update-password', 'ChangePasswordController@store')->name('change.p
 //Geolocation
 Route::get('/geolocation', 'GeolocationController@index');
 
-//Short Course Management
-//Event Management
 
-//Trainer
+//SCM - Trainer
 Route::get('/trainer/search-by-user_id/{user_id}', 'ShortCourseManagement\People\Trainer\TrainerController@searchByUserId');
 Route::get('/trainer/search-by-trainer_ic/{trainer_ic}', 'ShortCourseManagement\People\Trainer\TrainerController@searchByTrainerIc');
 
-//Shortcourse
+//SCM - Contact Person
+Route::get('/contact_person/search-by-user_id/{user_id}', 'ShortCourseManagement\People\ContactPerson\ContactPersonController@searchByUserId');
+Route::get('/contact_person/search-by-contact_person_ic/{contact_person_ic}', 'ShortCourseManagement\People\ContactPerson\ContactPersonController@searchByContactPersonIc');
+
+//SCM - Shortcourse
 Route::get('event/shortcourse/search-by-id/{id}', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@searchById');
 
 
-//EventParticipant
+//SCM - EventParticipant
 Route::get('/event/{id}/events-participants/show', 'ShortCourseManagement\EventManagement\EventParticipantController@show');
 Route::post('/event/{event_id}/events-participants/store', 'ShortCourseManagement\EventManagement\EventParticipantController@store');
 Route::post('/event/{id}/events-participants/data-applicants', 'ShortCourseManagement\EventManagement\EventParticipantController@dataApplicants');
@@ -276,12 +278,11 @@ Route::get('/event/{event_id}/base-fee', 'ShortCourseManagement\EventManagement\
 Route::get('/event-participant/{event_participant_id}/payment_proof', 'ShortCourseManagement\EventManagement\EventParticipantController@showPaymentProof');
 Route::post('/event-participant-payment_proof/delete/{payment_proof_id}', 'ShortCourseManagement\EventManagement\EventParticipantController@removePaymentProof');
 
-//EventParticipant - Update Progress
+//SCM - EventParticipant - Update Progress
 Route::post('/update-progress/{progress_name}/{eventsParticipants_id}', 'ShortCourseManagement\EventManagement\EventParticipantController@updateProgress');
-
 Route::post('/events/data/event-management/shortcourse/event-participant/{participant_id}', 'ShortCourseManagement\EventManagement\EventParticipantController@dataEventParticipantList');
 
-//Event
+//SCM - Event
 Route::post('/event/store-new', 'ShortCourseManagement\EventManagement\EventController@storeNew');
 Route::post('/events/data/event-management', 'ShortCourseManagement\EventManagement\EventController@dataEventManagement');
 Route::post('/events/update/{id}', 'ShortCourseManagement\EventManagement\EventController@update');
@@ -290,6 +291,8 @@ Route::post('/event/fee/create/{id}', 'ShortCourseManagement\EventManagement\Eve
 Route::post('/event/fee/delete/{id}', 'ShortCourseManagement\EventManagement\EventController@deleteFee');
 Route::post('/event/trainer/detached/{id}', 'ShortCourseManagement\EventManagement\EventController@detachedTrainer');
 Route::post('/event/shortcourse/detached/{id}', 'ShortCourseManagement\EventManagement\EventController@detachedShortCourse');
+Route::post('/event/contact_person/attached/{event_id}', 'ShortCourseManagement\EventManagement\EventController@storeContactPerson');
+Route::post('/event/contact_person/detached/{id}', 'ShortCourseManagement\EventManagement\EventController@detachedContactPerson');
 Route::post('/event/trainer/attached/{event_id}', 'ShortCourseManagement\EventManagement\EventController@storeTrainer');
 Route::post('/event/shortcourse/attached/{id}', 'ShortCourseManagement\EventManagement\EventController@storeShortCourse');
 Route::get('/event/create', 'ShortCourseManagement\EventManagement\EventController@create');
@@ -301,20 +304,16 @@ Route::get('/event/{event_id}/update-event-status-category/{event_status_categor
 Route::post('/event/updatePoster', 'ShortCourseManagement\EventManagement\EventController@updatePoster')->name('store.poster');
 Route::post('/event/updateSpecificEditor', 'ShortCourseManagement\EventManagement\EventController@updateSpecificEditor')->name('store.specific.editors');
 
-
-
-//Participant
+//SCM - Participant
 Route::get('/participant/search-by-ic-general/{ic}', 'ShortCourseManagement\People\Participant\ParticipantController@searchByIcGeneral');
 Route::get('/participant/search-by-ic-general/{ic}/show', 'ShortCourseManagement\People\Participant\ParticipantController@searchByIcGeneralShow');
 Route::get('/participant/search-by-ic/{ic}/event/{event_id}', 'ShortCourseManagement\People\Participant\ParticipantController@searchByIc');
 Route::get('/participant/search-by-representative-ic/{ic}', 'ShortCourseManagement\People\Participant\ParticipantController@searchByRepresentativeIc');
 
-//Public View
-
+//SCM - Public View
 Route::post('/events/data/shortcourse', 'ShortCourseManagement\EventManagement\EventController@dataPublicView');
 Route::get('/shortcourse/{id}', 'ShortCourseManagement\EventManagement\EventController@showPublicView');
 Route::get('/shortcourse', 'ShortCourseManagement\EventManagement\EventController@indexPublicView');
 Route::get('/get-file-event/{filename}', 'ShortCourseManagement\EventManagement\EventController@getFile');
 Route::post('/shortcourse/participant/save-payment-proof', 'ShortCourseManagement\EventManagement\EventParticipantController@updatePaymentProof')->name('store.payment_proof');
-
 Route::get('/shortcourse/participant/request-verification/event/{event_id}/participant_id/{participant_id}', 'ShortCourseManagement\EventManagement\EventParticipantController@requestVerification')->name('store.request_verification');

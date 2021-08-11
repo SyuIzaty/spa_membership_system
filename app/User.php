@@ -69,4 +69,9 @@ class User extends Authenticatable
         return $this->setConnection('mysql')->HasOne('App\Models\ShortCourseManagement\Trainer','user_id','id');
     }
 
+    public function contact_person()
+    {
+        return $this->setConnection('mysql')->HasOne('App\Models\ShortCourseManagement\ContactPerson','user_id','id');
+    }
+
 }
