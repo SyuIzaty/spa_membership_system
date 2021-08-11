@@ -79,7 +79,8 @@ class EventParticipantController extends Controller
             ->load([
                 'event',
                 'organization_representative',
-                'participant.organisations_participants.organisation'
+                'participant.organisations_participants.organisation',
+                'fee'
             ]);
 
         $index = 0;
@@ -106,7 +107,7 @@ class EventParticipantController extends Controller
             })
             ->addColumn('action', function ($eventsParticipants) {
                 return '
-                <a href="#" data-target="#crud-modals" data-toggle="modal" data-event_id="' . $eventsParticipants->event_id . '" data-participant_id="' . $eventsParticipants->participant_id . '" data-payment_proof_path="' . $eventsParticipants->payment_proof_path . '" data-is_verified_payment_proof="' . $eventsParticipants->is_verified_payment_proof . '" class="btn btn-sm btn-primary">Update Payment Proof</a>
+                <a href="#" data-target="#crud-modals" data-toggle="modal" data-event_id="' . $eventsParticipants->event_id . '" data-event_participant_id="' . $eventsParticipants->id . '" data-participant_id="' . $eventsParticipants->participant_id . '" data-is_verified_payment_proof="' . $eventsParticipants->is_verified_payment_proof . '" data-amount="' . $eventsParticipants->fee->amount. '" class="btn btn-sm btn-primary">Update Payment Proof</a>
                 <a href="javascript:;" id="disqualified-application-no-payment" data-remote="/update-progress/disqualified-application-no-payment/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger btn-update-progress">Disqualified</a>';
             })
             ->rawColumns(['action', 'checkNoPaymentYet'])
@@ -124,7 +125,8 @@ class EventParticipantController extends Controller
             ->load([
                 'event',
                 'organization_representative',
-                'participant.organisations_participants.organisation'
+                'participant.organisations_participants.organisation',
+                'fee'
             ]);
 
         $index = 0;
@@ -149,12 +151,16 @@ class EventParticipantController extends Controller
                     $eventsParticipants->id .
                     '" class="paymentWaitForVerification_checkbox">';
             })
+            ->addColumn('proof', function ($eventsParticipants) {
+                return '
+                <a href="#" data-target="#crud-modals-view-proof" data-toggle="modal" data-event_id="' . $eventsParticipants->event_id . '" data-event_participant_id="' . $eventsParticipants->id . '" data-participant_id="' . $eventsParticipants->participant_id . '" data-amount="' . $eventsParticipants->fee->amount .'" class="btn btn-sm btn-primary">View</a>';
+            })
             ->addColumn('action', function ($eventsParticipants) {
                 return '
                 <a href="javascript:;" id="verify-payment-proof" data-remote="/update-progress/verify-payment-proof/' . $eventsParticipants->id . '" class="btn btn-sm btn-success btn-update-progress">Verify</a>
                 <a href="javascript:;" id="reject-payment-proof" data-remote="/update-progress/reject-payment-proof/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger btn-update-progress">Reject</a>';
             })
-            ->rawColumns(['action', 'checkPaymentWaitForVerification'])
+            ->rawColumns(['action', 'proof','checkPaymentWaitForVerification'])
             ->make(true);
     }
     public function dataReadyForEvent($id)
@@ -702,6 +708,7 @@ class EventParticipantController extends Controller
                 $events[$indexEvent]['event_participant_id'] = $eventParticipant->id;
                 $events[$indexEvent]['is_verified_payment_proof'] = $eventParticipant->is_verified_payment_proof;
                 $events[$indexEvent]['payment_proof_path'] = $eventParticipant->payment_proof_path;
+                $events[$indexEvent]['amount'] = $eventParticipant->fee->amount;
                 $indexEvent += 1;
             }
         }
@@ -752,7 +759,7 @@ class EventParticipantController extends Controller
             })
             ->addColumn('action', function ($events) {
                 return '
-                <a href="#" data-target="#crud-modals" data-toggle="modal" data-event_id="' . $events->id . '" data-event_participant_id="' . $events->event_participant_id . '" data-is_verified_payment_proof="' . $events->is_verified_payment_proof . '" class="btn btn-sm btn-primary">Update Payment Proof</a>
+                <a href="#" data-target="#crud-modals" data-toggle="modal" data-event_id="' . $events->id . '" data-event_participant_id="' . $events->event_participant_id . '" data-is_verified_payment_proof="' . $events->is_verified_payment_proof . '" data-amount="' . $events->amount .'" class="btn btn-sm btn-primary">Update Payment Proof</a>
                 <a href="#" class="btn btn-sm btn-danger">Cancel Application</a>';
             })
 
@@ -769,6 +776,25 @@ class EventParticipantController extends Controller
 
         return $eventParticipantPaymentProofs;
     }
+    public function removePaymentProof(Request $request, $payment_proof_id)
+    {
+
+
+        $exist = EventParticipantPaymentProof::find($payment_proof_id);
+        if (Auth::user()->id) {
+            $exist->updated_by = Auth::user()->id;
+            $exist->deleted_by = Auth::user()->id;
+        } else {
+            $exist->updated_by = "public_user";
+            $exist->deleted_by = "public_user";
+        }
+        $exist->save();
+        $exist->delete();
+
+        return Redirect()->back()->with('messageEventParticipantPaymentProof', 'A Payment Proof Deleted Successfully');
+    }
+
+
 
     public function updatePaymentProof(Request $request)
     {
@@ -801,20 +827,38 @@ class EventParticipantController extends Controller
                 $poster->move($up_location, $img_name);
                 // where('event_id', $request->event_id)->where('participant_id', $request->participant_id)
                 EventParticipantPaymentProof::create([
-                    'event_participant_id'=>$request->event_participant_id,
+                    'event_participant_id' => $request->event_participant_id,
                     'payment_proof_path' => $last_img,
                     'created_by' => 'public_user',
                 ]);
             }
 
+            $eventParticipantPaymentProof = EventParticipantPaymentProof::where([['event_participant_id', '=', $request->event_participant_id]])->get();
+            $eventParticipant = EventParticipant::find($request->event_participant_id);
+            if (count($eventParticipantPaymentProof) > 0 && $eventParticipant->is_verified_payment_proof != 1) {
+                $update = EventParticipant::where([['id', '=', $request->event_participant_id]])->update([
+                    'is_verified_payment_proof' => 0,
+                    'updated_by' => 'public_user',
+                    'updated_at' => Carbon::now()
+                ]);
+            }
+
             return Redirect()->back()->with('success', 'Payment proof updated successfully');
+        }
+        $eventParticipantPaymentProof = EventParticipantPaymentProof::where([['event_participant_id', '=', $request->event_participant_id]])->get();
+        $eventParticipant = EventParticipant::find($request->event_participant_id);
+        if (count($eventParticipantPaymentProof) > 0 && $eventParticipant->is_verified_payment_proof != 1) {
+            $update = EventParticipant::where([['id', '=', $request->event_participant_id]])->update([
+                'is_verified_payment_proof' => 0,
+                'updated_by' => 'public_user',
+                'updated_at' => Carbon::now()
+            ]);
         }
         return Redirect()->back();
     }
 
     public function requestVerification($event_id, $participant_id)
     {
-        // dd('Event_id:'.$event_id.',Participant_id:'.$participant_id);
         $update = EventParticipant::where([['event_id', '=', $event_id], ['participant_id', '=', $participant_id]])->update([
             'is_verified_payment_proof' => 0,
             'updated_by' => 'public_user',

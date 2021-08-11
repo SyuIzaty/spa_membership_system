@@ -98,86 +98,111 @@
                                                 <h5 class="card-title w-100">Payment Proof</h5>
                                             </div>
                                             <div class="modal-body">
-                                                <div class="form-group col" id="carousel" style="display:none">
+                                                <form action="{{ route('store.payment_proof') }}" method="POST"
+                                                    enctype="multipart/form-data">
+                                                    @csrf
 
-                                                    <!--Carousel Wrapper-->
-                                                    <div id="multi-item-example" class="carousel slide carousel-multi-item"
-                                                        data-ride="carousel">
+                                                    <div class="form-group col" id="carousel" style="display:none">
 
-                                                        <!--Controls-->
-                                                        <div class="controls-top">
-                                                            <a class="btn-floating" href="#multi-item-example"
-                                                                data-slide="prev"><i class="ni ni-arrow-left"></i></a>
+                                                        <!--Carousel Wrapper-->
+                                                        <div id="multi-item-example"
+                                                            class="carousel slide carousel-multi-item" data-ride="carousel">
 
-                                                            <a class="btn-floating" href="#multi-item-example"
-                                                                data-slide="next"><i class="ni ni-arrow-right"></i></a>
+                                                            <!--Controls-->
+                                                            <div class="controls-top">
+                                                                <a class="btn-floating" href="#multi-item-example"
+                                                                    data-slide="prev"><i class="ni ni-arrow-left"></i></a>
+
+                                                                <a class="btn-floating" href="#multi-item-example"
+                                                                    data-slide="next"><i class="ni ni-arrow-right"></i></a>
+                                                            </div>
+                                                            <!--/.Controls-->
+
+                                                            <!--Indicators-->
+                                                            <ol class="carousel-indicators mb-0" id="carousel-indicators">
+                                                            </ol>
+                                                            <!--/.Indicators-->
+
+                                                            <!--Slides-->
+                                                            <div class="carousel-inner" role="listbox" id="carousel-slides">
+                                                            </div>
+                                                            <!--/.Slides-->
+
                                                         </div>
-                                                        <!--/.Controls-->
-
-                                                        <!--Indicators-->
-                                                        <ol class="carousel-indicators mb-0" id="carousel-indicators">
-                                                        </ol>
-                                                        <!--/.Indicators-->
-
-                                                        <!--Slides-->
-                                                        <div class="carousel-inner" role="listbox" id="carousel-slides">
-                                                        </div>
-                                                        <!--/.Slides-->
-
+                                                        <!--/.Carousel Wrapper-->
                                                     </div>
-                                                    <!--/.Carousel Wrapper-->
-                                                    <form action="{{ route('store.payment_proof') }}" method="POST"
-                                                        enctype="multipart/form-data">
-                                                        @csrf
-                                                        <div class="custom-file px-2 d-flex flex-column">
-                                                            <input type="file" class="custom-file-label"
-                                                                name="payment_proof_input[]" accept="image/png, image/jpeg"
-                                                                multiple="" />
-                                                        </div>
-                                                </div>
-                                                <hr class="mt-1 mb-1">
-                                                <div class="form-group col">
-                                                    <label class="form-label" for="fullname">Status</label>
-                                                    <div class="row">
-                                                        <input type="number" name="event_participant_id" value=0
-                                                            id="event_participant_id" hidden />
-                                                        <input type="number" name="event_id" value=0 id="event_id" hidden />
-                                                        <input type="number" value={{ $participant->id }}
-                                                            name="participant_id" id="participant_id" hidden />
-                                                        <input class="form-control-plaintext"
-                                                            id="is_verified_payment_proof_id"
-                                                            name="is_verified_payment_proof_id" hidden>
-                                                        <div class="col d-flex justify-content-start">
-                                                            <input class="form-control-plaintext"
-                                                                id="is_verified_payment_proof"
-                                                                name="is_verified_payment_proof" disabled>
-                                                        </div>
-                                                        <div class="col d-flex justify-content-end">
-                                                            <div class="row d-flex justify-content-end">
-                                                                <td class="col col-sm-1">
-                                                                    <button type="button" name="request_verification"
-                                                                        id="request_verification"
-                                                                        class="btn btn-primary btn_add">
-                                                                        Request Verification
-                                                                    </button>
-                                                                </td>
-
+                                                    <hr class="mt-1 mb-1">
+                                                    <div class="custom-file px-2 d-flex flex-column">
+                                                        <input type="file" class="custom-file-label"
+                                                            name="payment_proof_input[]" accept="image/png, image/jpeg"
+                                                            multiple="" />
+                                                    </div>
+                                                    <hr class="mt-1 mb-1">
+                                                    <div class="form-group col col-sm-5">
+                                                        <label class="form-label" for="amount">Fee Amount</label>
+                                                        <div class="input-group flex-nowrap" id="fee_id_show"
+                                                            name="fee_id_show" style="width:auto">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text"
+                                                                    style="background-color:white; border-style: none;"
+                                                                    id="addon-wrapping">RM</span>
+                                                            </div>
+                                                            <input class="form-control-plaintext" id="amount" name="amount"
+                                                                readonly>
+                                                            <div class="input-group-append">
+                                                                <span style="background-color:white; border-style: none;"
+                                                                    class="input-group-text">/
+                                                                    person</span>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <hr class="mt-1 mb-1">
 
 
-                                                {{-- <div class="invalid-feedback">Example invalid custom file feedback</div> --}}
-                                                <div class="footer">
-                                                    <button type="submit" class="btn btn-primary ml-auto float-right"><i
-                                                            class="fal fa-save"></i>
-                                                        Save</button>
-                                                    <button type="button" class="btn btn-danger ml-auto float-right mr-2"
-                                                        data-dismiss="modal"><i class="fal fa-window-close"></i>
-                                                        Close</button>
-                                                </div>
+                                                    <hr class="mt-1 mb-1">
+                                                    <div class="form-group col">
+                                                        <label class="form-label" for="fullname">Status</label>
+                                                        <div class="row">
+                                                            <input type="number" name="event_participant_id" value=0
+                                                                id="event_participant_id" hidden />
+                                                            <input type="number" name="event_id" value=0 id="event_id"
+                                                                hidden />
+                                                            <input type="number" value={{ $participant->id }}
+                                                                name="participant_id" id="participant_id" hidden />
+                                                            <input class="form-control-plaintext"
+                                                                id="is_verified_payment_proof_id"
+                                                                name="is_verified_payment_proof_id" hidden>
+                                                            <div class="col d-flex justify-content-start">
+                                                                <input class="form-control-plaintext"
+                                                                    id="is_verified_payment_proof"
+                                                                    name="is_verified_payment_proof" disabled>
+                                                            </div>
+                                                            <div class="col d-flex justify-content-end">
+                                                                <div class="row d-flex justify-content-end">
+                                                                    <td class="col col-sm-1">
+                                                                        <button type="button" name="request_verification"
+                                                                            id="request_verification"
+                                                                            class="btn btn-primary btn_add"
+                                                                            style="display:none">
+                                                                            Request Verification
+                                                                        </button>
+                                                                    </td>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <hr class="mt-1 mb-1">
+
+
+                                                    {{-- <div class="invalid-feedback">Example invalid custom file feedback</div> --}}
+                                                    <div class="footer">
+                                                        <button type="submit" class="btn btn-primary ml-auto float-right"
+                                                            id="submit_payment_proof"><i class="fal fa-save"></i>
+                                                            Save & Request Verification</button>
+                                                        <button type="button"
+                                                            class="btn btn-danger ml-auto float-right mr-2"
+                                                            data-dismiss="modal"><i class="fal fa-window-close"></i>
+                                                            Close</button>
+                                                    </div>
                                                 </form>
                                             </div>
                                         </div>
@@ -309,6 +334,8 @@
                     $("#event_id").val(event_id);
                     var event_participant_id = button.data('event_participant_id');
                     $("#event_participant_id").val(event_participant_id);
+                    var amount = button.data('amount');
+                    $("#amount").val(amount);
                     var stringStatus;
                     var style;
                     if (typeof(is_verified_payment_proof_id) !== "number") {
@@ -323,6 +350,7 @@
                         stringStatus = "Verified!"
                         $("#request_verification").attr("disabled", "true");
                         style = 'text-success';
+                        $("#submit_payment_proof").attr("disabled", "true");
                     }
                     // var payment_proof_path = button.data('payment_proof_path');
                     // if (!payment_proof_path) {
@@ -356,16 +384,25 @@
                                                     <div
                                                         class="card-body d-flex justify-content-between">
                                                         <h4 class="card-title">${img.created_at}</h4>
-                                                        <a class="btn btn-danger btn_remove"><span
-                                                                class="text-white">X</span></a>
+                                                            <form method="post"
+                                                                action="/event-participant-payment_proof/delete/${img.id}">
+                                                                @csrf
+                                                                <button type="submit"
+                                                                    class="btn btn-sm btn-danger float-right mr-2" ${is_verified_payment_proof_id==1?'disabled':null}>
+                                                                    <i class="ni ni-close"></i>
+                                                                </button>
+                                                            </form>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>`);
                             });
-
-                            $('#carousel').show();
+                            if (data.length > 0) {
+                                $('#carousel').show();
+                            } else {
+                                $('#carousel').hide();
+                            }
                         }).fail(
                         function() {
                             // TODO: Notify Users
