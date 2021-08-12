@@ -26,12 +26,14 @@
                                         style="width:137px;height:194px;"> --}}
                                     {{-- <img src="{{ URL::to('/') }}/img/system/intec_poster.jpg" class="card-img" alt="..."
                                         style="width:137px;height:194px;"> --}}
-                                    @if (!$event->thumbnail_path)
+                                    @if (!isset($event->thumbnail_path))
                                         <img src="{{ asset('storage/shortcourse/poster/default/intec_poster.jpg') }}"
                                             class="card-img" style="width:137px;height:194px;">
                                     @else
-                                        <img src="{{ asset($event->thumbnail_path) }}" class="card-img"
-                                            style="width:137px;height:194px;">
+                                        <img src="{{ asset($event->thumbnail_path) }}" class="card-img" style="width:137px;height:194px;
+                                                        background-image:url('{{ asset('storage /shortcourse/poster/default/intec_poster.jpg') }}');
+                                                        background-repeat: no-repeat;
+                                                        background-size: 137px 194px;">
                                     @endif
                                 </div>
                                 <div class="col-md-7">
@@ -40,9 +42,12 @@
                                         <p class="card-text"><small class="text-muted">Published:
                                                 {{ $event->created_at_diffForHumans }}</small>
                                         </p>
+                                    </div>
+                                    <div class="card-footer">
                                         <a href="/shortcourse/{{ $event->id }}"
                                             class="btn btn-sm btn-primary btn btn-block">Detail</a>
                                     </div>
+
                                 </div>
                             </div>
                         </div>

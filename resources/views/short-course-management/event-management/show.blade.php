@@ -174,6 +174,26 @@
                                                                     </div>
                                                                 </td>
                                                             </tr>
+                                                            <tr>
+                                                                <td style="background-color:plum">Total Seat Available</td>
+                                                                <td name="max_participant_show" id="max_participant_show">
+                                                                    {{ $event->max_participant }}
+                                                                </td>
+                                                                <td name="max_participant_edit" id="max_participant_edit" style="display: none">
+                                                                    <div class="form-group">
+                                                                        <input id="max_participant" name="max_participant" type="number"
+                                                                            value="{{ $event->max_participant }}"
+                                                                            class="form-control">
+                                                                        @error('max_participant')
+                                                                            <p style="color: red">
+                                                                                <strong> *
+                                                                                    {{ $message }}
+                                                                                </strong>
+                                                                            </p>
+                                                                        @enderror
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
                                                         <tbody>
                                                     </table>
                                                 </form>
@@ -1232,9 +1252,16 @@
                                                     <div class="panel-content">
                                                         <ul class="nav nav-pills" role="tablist">
                                                             <li class="nav-item active">
+                                                                <a data-toggle="tab" class="nav-link active"
+                                                                    href="#description_specific_tab" role="tab">Description</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a data-toggle="tab" class="nav-link"
+                                                                    href="#editor_target_audience_specific_tab" role="tab">Target Audience</a>
+                                                            </li>
+                                                            <li class="nav-item">
                                                                 <a data-toggle="tab" class="nav-link"
                                                                     href="#objective_specific_tab" role="tab">Objective</a>
-
                                                             </li>
                                                             <li class="nav-item">
                                                                 <a data-toggle="tab" class="nav-link"
@@ -1254,25 +1281,30 @@
                                                                         value="{{ $event->id }}" hidden />
                                                                     <div class="tab-content col-md-12">
                                                                         <div class="tab-pane active"
+                                                                            id="description_specific_tab" role="tabpanel">
+                                                                            <textarea id="editor_description"
+                                                                                name="editor_description"> {{ $event->description }} </textarea>
+                                                                        </div>
+
+                                                                        <div class="tab-pane"
+                                                                            id="editor_target_audience_specific_tab" role="tabpanel">
+                                                                            <textarea id="editor_target_audience"
+                                                                                name="editor_target_audience"> {{ $event->target_audience }} </textarea>
+                                                                        </div>
+                                                                        <div class="tab-pane"
                                                                             id="objective_specific_tab" role="tabpanel">
                                                                             <textarea id="editor_objective"
-                                                                                name="editor_objective">
-                                                                                                                    {{ $event->objective }}
-                                                                                                                </textarea>
+                                                                                name="editor_objective"> {{ $event->objective }} </textarea>
                                                                         </div>
                                                                         <div class="tab-pane" id="outline_specific_tab"
                                                                             role="tabpanel">
                                                                             <textarea id="editor_outline"
-                                                                                name="editor_outline">
-                                                                                                    {{ $event->outline }}
-                                                                                                                </textarea>
+                                                                                name="editor_outline">{{ $event->outline }}</textarea>
                                                                         </div>
                                                                         <div class="tab-pane" id="tentative_specific_tab"
                                                                             role="tabpanel">
                                                                             <textarea id="editor_tentative"
-                                                                                name="editor_tentative">
-                                                                                                    {{ $event->tentative }}
-                                                                                                                </textarea>
+                                                                                name="editor_tentative">{{ $event->tentative }}</textarea>
                                                                         </div>
                                                                     </div>
                                                                     <div class="card-footer text-muted">
@@ -1292,7 +1324,7 @@
                                                 <div class="row row-md-12">
                                                     <div class="col-sm-6">
                                                         <div class="d-flex justify-content-center">
-                                                            @if (!$event->thumbnail_path)
+                                                            @if (!isset($event->thumbnail_path))
                                                                 <img src="{{ asset('storage/shortcourse/poster/default/intec_poster.jpg') }}"
                                                                     class="card-img" style="object-fit: fill;">
                                                             @else
@@ -1465,6 +1497,10 @@
                     $("#venue_edit").show();
 
 
+                    $("#max_participant_show").hide();
+                    $("#max_participant_edit").show();
+
+
                     $("#edit-basic").hide();
                     $("#save-basic").show();
                     $("#edit-basic-close").show();
@@ -1473,6 +1509,9 @@
                 $("#edit-basic-close").click(function(e) {
                     $("#name_show").show();
                     $("#name_edit").hide();
+
+                    $("#max_participant_show").show();
+                    $("#max_participant_edit").hide();
 
                     $("#datetime_start_show").show();
                     $("#datetime_start_edit").hide();
@@ -1924,6 +1963,17 @@
 
         // Specific
         {
+            ClassicEditor
+                .create(document.querySelector('#editor_description'))
+                .catch(error => {
+                    console.error(error);
+                });
+
+                ClassicEditor
+                .create(document.querySelector('#editor_target_audience'))
+                .catch(error => {
+                    console.error(error);
+                });
 
             ClassicEditor
                 .create(document.querySelector('#editor_objective'))
@@ -1943,7 +1993,7 @@
                     console.error(error);
                 });
 
-            var desc = CKEDITOR.instances['DSC'].getData();
+            // var desc = CKEDITOR.instances['DSC'].getData();
 
         }
 

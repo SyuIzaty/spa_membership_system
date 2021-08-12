@@ -436,12 +436,13 @@ class EventController extends Controller
             'datetime_start' => 'required',
             'datetime_end' => 'required',
             'venue' => 'required',
+            'max_participant' => 'required',
         ], [
             'name.required' => 'Please insert event name',
             'name.max' => 'Name exceed maximum length',
             'datetime_start.required' => 'Please insert event datetime start',
             'datetime_end.required' => 'Please insert event datetime end',
-            'venue.required' => 'Please insert event venue',
+            'max_participant.required' => 'Please insert total seat of the event',
         ]);
 
         $update = Event::find($id)->update([
@@ -449,6 +450,7 @@ class EventController extends Controller
             'datetime_start' => $request->datetime_start,
             'datetime_end' => $request->datetime_end,
             'venue_id' => $request->venue,
+            'max_participant' => $request->max_participant,
         ]);
 
         return Redirect()->back()->with('messageEventBasicDetails', 'Basic Details Update Successfully');
@@ -752,8 +754,22 @@ class EventController extends Controller
             'venue',
             'events_shortcourses.shortcourse',
             'events_trainers.trainer',
-            'fees'
+            'fees',
+            'events_contact_persons.contact_person'
         ]);
+
+        $index=0;
+        foreach ($event->events_contact_persons as $event_contact_person) {
+            $user = User::find($event_contact_person->contact_person->user_id);
+            $event->events_contact_persons[$index]->contact_person['user'] = $user;
+            $index+=1;
+        }
+        $currentApplicants = $event->events_participants
+        ->where('is_approved_application', 1)
+        ->count();
+
+        $event->total_seat_available = $event->max_participant - $currentApplicants;
+
 
         //
         return view('short-course-management.shortcourse.event.show', compact('event'));
@@ -843,6 +859,8 @@ class EventController extends Controller
     {
         // dd($request);
         Event::find($request->event_id)->update([
+            'description' => $request->editor_description,
+            'target_audience' => $request->editor_target_audience,
             'outline' => $request->editor_outline,
             'tentative' => $request->editor_tentative,
             'objective' => $request->editor_objective,

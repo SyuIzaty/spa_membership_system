@@ -20,7 +20,7 @@
                                             style="width:137px;height:194px;"> --}}
                                     {{-- <img src="{{ URL::to('/') }}/img/system/intec_poster.jpg" class="card-img" alt="..."
                                         style="object-fit: fill;"> --}}
-                                    @if (!$event->thumbnail_path)
+                                    @if (!isset($event->thumbnail_path))
                                         <img src="{{ asset('storage/shortcourse/poster/default/intec_poster.jpg') }}"
                                             class="card-img" style="object-fit: fill;">
                                     @else
@@ -59,7 +59,8 @@
                                                 <b>Seat Availability</b>
                                             </div>
                                             <div class="col">
-                                                {{ $event->max_participant }} Seats
+                                                {{ $event->total_seat_available }} over {{ $event->max_participant }}
+                                                Seats
                                             </div>
                                         </div>
                                         <hr class="mt-1 mb-1">
@@ -91,8 +92,9 @@
                                         </div>
                                         <hr class="mt-1 mb-2">
                                         <div class="row d-flex align-items-center justify-content-center">
-                                            <a href="javascript:;" id="new-application"
-                                                class="btn btn-sm btn-primary btn btn-block call-to-action">Apply now!</a>
+                                            <button href="javascript:;" id="new-application"
+                                                class="btn btn-sm btn-primary btn btn-block call-to-action"
+                                                {{ $event->total_seat_available == 0 ? 'disabled' : null }}>Apply now!</button>
                                         </div>
                                         <div class="modal fade" id="crud-modal-new-application" aria-hidden="true">
                                             <div class="modal-dialog">
@@ -365,6 +367,50 @@
 
                                     </div>
                                 </div>
+                                <hr class="mt-2 mb-2">
+                                <span><em>For any inquries, please contact :-</em></span>
+                                <div class="row">
+                                    @foreach ($event->events_contact_persons as $event_contact_person)
+                                        <div class="col-sm-6 my-2">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <b>{{ $event_contact_person->contact_person->user->name }}</b>
+                                                    <hr class="mt-1 mb-1">
+                                                    <table class="table table-borderless table-hover"
+                                                        style="margin-bottom: 0rem">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td><i class="ni ni-call-end"></i></td>
+                                                                <td>{{ $event_contact_person->contact_person->phone }}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><i class="ni ni-envelope"></i></td>
+                                                                <td>{{ $event_contact_person->contact_person->user->email }}
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    {{-- <div class="row">
+                                                        <div class="col-sm-2"><i class="ni ni-call-end"></i>
+                                                        </div>
+                                                        <div class="col-sm-10">
+                                                            {{ $event_contact_person->contact_person->phone }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-2"><i class="ni ni-envelope"></i>
+                                                        </div>
+                                                        <div class="col-sm-10">
+                                                            {{ $event_contact_person->contact_person->user->email }}
+                                                        </div>
+                                                    </div> --}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <hr class="mt-2 mb-2">
 
                                 {{-- <div class="row">
                                     <div class="card">
@@ -399,7 +445,7 @@
                                             Description
                                         </h5>
 
-                                        {{ $event->description }}
+                                        {!! $event->description !!}
                                     </div>
                                 </div>
                             </div>
@@ -409,7 +455,7 @@
                                         <h5 class="heading text-iceps-blue">
                                             Who should attend?
                                         </h5>
-                                        {{ $event->target_audience }}
+                                        {!! $event->target_audience !!}
                                     </div>
                                 </div>
                             </div>
@@ -422,7 +468,6 @@
                                     <li class="nav-item">
                                         <a data-toggle="tab" class="nav-link active" href="#objective"
                                             role="tab">Objective</a>
-
                                     </li>
                                     <li class="nav-item">
                                         <a data-toggle="tab" class="nav-link" href="#outline" role="tab">Outline</a>
@@ -435,13 +480,13 @@
                                     <div class="card-body">
                                         <div class="tab-content col-md-12">
                                             <div class="tab-pane active" id="objective" role="tabpanel">
-                                                {{ $event->objective }}
+                                                {!! $event->objective !!}
                                             </div>
                                             <div class="tab-pane" id="outline" role="tabpanel">
-                                                Outline
+                                                {!! $event->outline !!}
                                             </div>
                                             <div class="tab-pane" id="tentative" role="tabpanel">
-                                                Tentative
+                                                {!! $event->tentative !!}
                                             </div>
                                         </div>
                                     </div>
@@ -497,11 +542,15 @@
                         $('.modal-body #phone').attr('readonly', true);
                         $('.modal-body #email').attr('readonly', true);
 
-                        $('.modal-body #application_update_submit').append(
-                            '<i class = "fal fa-save"></i> Update');
+                        $('.modal-body #promo_code').attr('readonly', true);
+
+                        $('#promo_code_edit_add').hide();
+                        $('#promo_code_edit_remove').hide();
+
+                        $('.modal-body #application_update_submit').hide();
 
                         $('.modal-body #application_message').append(
-                            'Already Apply - Update Application');
+                            'Already Apply');
 
                     } else {
                         // TODO: Not Apply Yet

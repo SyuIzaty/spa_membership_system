@@ -678,7 +678,7 @@
 
     @yield('script')
     <script>
-        // var ckeditor = require('@ckeditor/ckeditor5-build-[name]');
+        // var CKEDITOR = require('@ckeditor/ckeditor5-build-[name]');
         // $('.collapsable-list li a').on('click', function() {
         //     $('.collapsable-list').find('a').next().collapse('hide');
         //     $(this).next().collapse('toggle');
