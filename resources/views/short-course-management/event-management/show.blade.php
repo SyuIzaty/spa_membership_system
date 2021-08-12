@@ -1510,8 +1510,6 @@
                     $("#name_show").show();
                     $("#name_edit").hide();
 
-                    $("#max_participant_show").show();
-                    $("#max_participant_edit").hide();
 
                     $("#datetime_start_show").show();
                     $("#datetime_start_edit").hide();
@@ -1521,6 +1519,9 @@
 
                     $("#venue_show").show();
                     $("#venue_edit").hide();
+
+                    $("#max_participant_show").show();
+                    $("#max_participant_edit").hide();
 
 
                     $("#edit-basic").show();

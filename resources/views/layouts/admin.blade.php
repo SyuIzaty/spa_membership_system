@@ -165,14 +165,14 @@
                                 </a>
                             </li>
 
-                            {{-- <li>
+                            <li>
                                 <a href="#" title="Catalogues" data-filter-tags="catalogues">
                                     <i class="ni ni-list"></i>
                                     <span class="nav-link-text" data-i18n="nav.catalogues">Catalogues</span>
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="#" title="Course Catalogue" data-filter-tags="course-catalogue">
+                                        <a href="/shortcourses" title="Course Catalogue" data-filter-tags="course-catalogue">
                                             <i class="ni ni-book-open"></i>
                                             <span class="nav-link-text" data-i18n="nav.course-catalogue">Course
                                                 Catalogue</span>
@@ -222,7 +222,7 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </li> --}}
+                            </li>
 
                             <li>
                                 <a href="/shortcourse" title="Public View" data-filter-tags="shortcourse">

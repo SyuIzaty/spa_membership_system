@@ -71,10 +71,8 @@
                                         <thead>
                                             <tr class="bg-primary-50 text-center">
                                                 <th>ID</th>
-                                                <th>NAME</th>
-                                                <th>DATES</th>
-                                                <th>PARTICIPANT</th>
-                                                <th>MANAGE. DETAILS</th>
+                                                <th style="width:30%">NAME</th>
+                                                <th style="width:30%">DATES</th>
                                                 <th>ACTION</th>
                                             </tr>
                                             {{-- <tr>
@@ -264,14 +262,6 @@
                     {
                         data: 'dates',
                         name: 'dates'
-                    },
-                    {
-                        data: 'participant',
-                        name: 'participant'
-                    },
-                    {
-                        data: 'management_details',
-                        name: 'management_details'
                     },
                     {
                         data: 'action',

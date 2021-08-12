@@ -719,8 +719,6 @@ class EventParticipantController extends Controller
                     ->where('event_id', $event->id)
                     ->where('is_approved_application', 1)
                     ->where('is_verified_payment_proof', 1)
-                    ->where('is_verified_payment_proof', 1)
-                    ->where('is_verified_approved_participation', 1)
                     ->where('is_disqualified', 0)
                     ->count();
                 $totalParticipantsNotApprovedYet = $event->events_participants

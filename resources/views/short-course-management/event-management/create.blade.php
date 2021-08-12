@@ -520,7 +520,7 @@
 
         $(document).ready(function() {
 
-            var i = 1;
+            var i = 101;
             $('#addTopic').click(function() {
                 i++;
                 $('#topic_field tr:last').after(`
@@ -550,20 +550,6 @@
                 var button_id = $(this).attr("id");
                 $('#row' + button_id + '').remove();
             });
-
-
-            // <tr id="row${i}" class="role-added">
-            // <input type="hidden" name="type" value="C">
-            // <td><input type="text" name="role[]" placeholder="Role" class="form-control role" id="add_role"></td>
-            // <td><button type="button" name="remove" id="${i}" class="btn btn-danger btn_remove">X</button></td>
-            // </tr>
-
-
-            // <tr>
-            //     <input type="hidden" name="type" value="C">
-            //     <td><input type="text" name="role[]" placeholder="Role" class="form-control head" id="add_role"></td>
-            //     <td><button type="button" name="addrole" id="addrole" class="btn btn-info btn-sm">Add More</button></td>
-            // </tr>
         });
     </script>
 @endsection
