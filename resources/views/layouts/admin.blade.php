@@ -179,7 +179,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" title="Venue Catalogue" data-filter-tags="venue-catalogue">
+                                        <a href="/venues" title="Venue Catalogue" data-filter-tags="venue-catalogue">
                                             <i class="ni ni-globe"></i>
                                             <span class="nav-link-text" data-i18n="nav.venue-catalogue">Venue
                                                 Catalogue</span>

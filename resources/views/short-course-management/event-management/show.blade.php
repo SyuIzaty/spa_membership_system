@@ -175,7 +175,7 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td style="background-color:plum">Total Seat Available</td>
+                                                                <td style="background-color:plum">Total Seat Open</td>
                                                                 <td name="max_participant_show" id="max_participant_show">
                                                                     {{ $event->max_participant }}
                                                                 </td>

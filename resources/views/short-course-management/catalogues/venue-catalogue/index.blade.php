@@ -4,14 +4,14 @@
     <main id="js-page-content" role="main" class="page-content">
         <div class="subheader">
             <h1 class="subheader-title">
-                <i class='subheader-icon fal fa-table'></i> Short Course
+                <i class='subheader-icon fal fa-table'></i> Venue
             </h1>
         </div>
         <div class="row">
             <div class="col-xl-12">
                 <div id="panel-1" class="panel">
                     <div class="panel-hdr">
-                        <h2>Short Courses</h2>
+                        <h2>Venues</h2>
                         <div class="panel-toolbar">
                             <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip"
                                 data-offset="0,10" data-original-title="Collapse"></button>
@@ -31,7 +31,7 @@
                                 </div>
                             @endif
                             <div class="table-responsive">
-                                <table class="table table-bordered table-hover table-striped w-100" id="shortcourse">
+                                <table class="table table-bordered table-hover table-striped w-100" id="venue">
                                     <thead>
                                         <tr class="bg-primary-50 text-center">
                                             <th>ID</th>
@@ -56,28 +56,28 @@
                                 style="content-align:right">
                                 <a href="javascript:;" id="create"
                                     class="btn btn-primary ml-auto mt-2 mr-2 waves-effect waves-themed"><i
-                                        class="ni ni-plus"> </i> Create New Shortcourse</a>
+                                        class="ni ni-plus"> </i> Create New Venue</a>
 
                                 <div class="modal fade" id="crud-modal" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="card-header">
-                                                <h5 class="card-title w-150">Add Shortcourse</h5>
+                                                <h5 class="card-title w-150">Add Venue</h5>
                                             </div>
                                             <div class="modal-body">
-                                                <form action="{{ url('/shortcourse') }}"
+                                                <form action="{{ url('/venue') }}"
                                                     method="post" name="form">
                                                     @csrf
-                                                    {{-- {!! Form::open(['action' => 'ShortCourseManagement\EventManagement\EventController@storeContactPerson\ '.$shortcourse->id, 'method' => 'POST']) !!} --}}
+                                                    {{-- {!! Form::open(['action' => 'ShortCourseManagement\EventManagement\EventController@storeContactPerson\ '.$venue->id, 'method' => 'POST']) !!} --}}
 
                                                     <p><span class="text-danger">*</span>
                                                         Vital Information</p>
                                                     <hr class="mt-1 mb-2">
                                                     <div class="form-group">
                                                         <label for="user_id"><span class="text-danger">*</span>
-                                                            Short Course Name</label>
-                                                        {{ Form::text('shortcourse_name', '', ['class' => 'form-control', 'placeholder' => "Short Course Name", 'id' => 'shortcourse_name']) }}
-                                                        @error('shortcourse_name')
+                                                            Venue Name</label>
+                                                        {{ Form::text('venue_name', '', ['class' => 'form-control', 'placeholder' => "Venue Name", 'id' => 'venue_name']) }}
+                                                        @error('venue_name')
                                                             <p style="color: red">{{ $message }}
                                                             </p>
                                                         @enderror
@@ -111,7 +111,7 @@
     <script>
         $(document).ready(function() {
 
-            $('#shortcourse thead tr .hasinput').each(function(i) {
+            $('#venue thead tr .hasinput').each(function(i) {
                 $('input', this).on('keyup change', function() {
                     if (table.column(i).search() !== this.value) {
                         table
@@ -132,11 +132,11 @@
             });
 
 
-            var table = $('#shortcourse').DataTable({
+            var table = $('#venue').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "/shortcourses/data",
+                    url: "/venues/data",
                     type: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -181,12 +181,12 @@
 
             // crud-modal-add-contact_person
             $('#create').click(function() {
-                    $('.modal-body #shortcourse_name').val(null);
+                    $('.modal-body #venue_name').val(null);
                     $('#crud-modal').modal('show');
                 });
 
                 $('#crud-modal').on('show.bs.modal', function(event) {
-                    $('.modal-body #shortcourse_name').val(null);
+                    $('.modal-body #venue_name').val(null);
                 });
         });
     </script>

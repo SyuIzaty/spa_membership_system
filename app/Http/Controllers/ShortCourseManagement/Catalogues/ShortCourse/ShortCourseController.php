@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ShortCourseManagement\Catalogues\ShortCourse;
 use App\Models\ShortCourseManagement\ShortCourse;
 use App\Models\ShortCourseManagement\Topic;
+use App\Models\ShortCourseManagement\TopicShortCourse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DateTime;
@@ -61,19 +62,75 @@ class ShortCourseController extends Controller
     public function store(Request $request)
     {
         //
+        $validated = $request->validate([
+            'shortcourse_name' => 'required',
+        ], [
+            'shortcourse_name.required' => 'Please insert a name',
+        ]);
+
+        $create = ShortCourse::create([
+            'name' => $request->shortcourse_name,
+            'description' => "No Description",
+            'objective' => "No Objective",
+            'created_by' => Auth::user()->id,
+        ]);
+
+        $shortcourse = ShortCourse::find($create->id)->load([
+            'topics_shortcourses.topic',
+            'events_shortcourses'
+        ]);
+
+
+        if (isset($shortcourse->events_shortcourses)) {
+            $totalEvents = $shortcourse->events_shortcourses->count();
+            // dd($totalEvents);
+        } else {
+            $totalEvents = 0;
+        }
+        $shortcourse->totalEvents = $totalEvents;
+
+
+        $topics=Topic::all();
+
+        return view('short-course-management.catalogues.course-catalogue.show', compact('shortcourse','topics',));
     }
     public function show($id)
     {
 
         $shortcourse = ShortCourse::find($id)->load([
             'topics_shortcourses.topic',
+            'events_shortcourses'
         ]);
+
+
+        if (isset($shortcourse->events_shortcourses)) {
+            $totalEvents = $shortcourse->events_shortcourses->count();
+            // dd($totalEvents);
+        } else {
+            $totalEvents = 0;
+        }
+        $shortcourse->totalEvents = $totalEvents;
 
 
         $topics=Topic::all();
 
         return view('short-course-management.catalogues.course-catalogue.show', compact('shortcourse','topics',));
 
+    }
+
+    public function delete(Request $request, $id){
+
+        $exist = ShortCourse::find($id);
+        if (Auth::user()->id) {
+            $exist->updated_by = Auth::user()->id;
+            $exist->deleted_by = Auth::user()->id;
+        } else {
+            $exist->updated_by = "public_user";
+            $exist->deleted_by = "public_user";
+        }
+        $exist->save();
+        $exist->delete();
+        return $exist;
     }
 
     public function edit($id)
@@ -115,6 +172,43 @@ class ShortCourseController extends Controller
         //
         $shortcourse=ShortCourse::where('id', $id)->first();
         return $shortcourse;
+    }
+
+    public function storeTopicShortCourse(Request $request, $id)
+    {
+        // dd($request);
+        // //
+        $validated = $request->validate([
+            'shortcourse_topic' => 'required',
+        ], [
+            'shortcourse_topic.required' => 'Please insert atleast a topic',
+        ]);
+
+        $create = TopicShortCourse::create([
+            'topic_id' => $request->shortcourse_topic,
+            'shortcourse_id' => $id,
+            'created_by' => Auth::user()->id,
+            'is_active' => 1,
+        ]);
+
+        return $create;
+    }
+
+    public function removeTopicShortCourse(Request $request, $id)
+    {
+
+        $exist = TopicShortCourse::find($id);
+        if (Auth::user()->id) {
+            $exist->updated_by = Auth::user()->id;
+            $exist->deleted_by = Auth::user()->id;
+        } else {
+            $exist->updated_by = "public_user";
+            $exist->deleted_by = "public_user";
+        }
+        $exist->save();
+        $exist->delete();
+
+        return Redirect()->back()->with('messageShortCourseBasicDetails', 'Remove a topic Successfully');
     }
 
 
