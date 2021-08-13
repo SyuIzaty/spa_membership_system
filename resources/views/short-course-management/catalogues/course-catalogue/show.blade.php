@@ -138,7 +138,7 @@
                                                 <table class="table table-striped table-bordered m-0" id="topic_field">
                                                     <thead class="thead">
                                                         <tr class=" bg-primary-50">
-                                                            <th colspan="3"><b>List of Short Courses</b></th>
+                                                            <th colspan="3"><b>List of Topics</b></th>
                                                         </tr>
                                                         <tr style="background-color:plum">
                                                             <th>Name</th>
@@ -350,7 +350,7 @@
                 });
 
 
-                // Update Progress
+                // Delete Shortcourse
                 {
                     $('#delete_shortcourse').on('click',
                         function(e) {

@@ -70,51 +70,41 @@ class VenueController extends Controller
 
         $create = Venue::create([
             'name' => $request->venue_name,
-            'description' => "No Description",
-            'objective' => "No Objective",
             'created_by' => Auth::user()->id,
         ]);
 
         $venue = Venue::find($create->id)->load([
-            'topics_venues.topic',
-            'events_venues'
+            'events',
         ]);
 
 
-        if (isset($venue->events_venues)) {
-            $totalEvents = $venue->events_venues->count();
+        if (isset($venue->events)) {
+            $totalEvents = $venue->events->count();
             // dd($totalEvents);
         } else {
             $totalEvents = 0;
         }
         $venue->totalEvents = $totalEvents;
 
-
-        $topics=Topic::all();
-
-        return view('short-course-management.catalogues.course-catalogue.show', compact('venue','topics',));
+        return view('short-course-management.catalogues.venue-catalogue.show', compact('venue',));
     }
     public function show($id)
     {
 
         $venue = Venue::find($id)->load([
-            'topics_venues.topic',
-            'events_venues'
+            'events',
         ]);
 
 
-        if (isset($venue->events_venues)) {
-            $totalEvents = $venue->events_venues->count();
+        if (isset($venue->events)) {
+            $totalEvents = $venue->events->count();
             // dd($totalEvents);
         } else {
             $totalEvents = 0;
         }
         $venue->totalEvents = $totalEvents;
 
-
-        $topics=Topic::all();
-
-        return view('short-course-management.catalogues.course-catalogue.show', compact('venue','topics',));
+        return view('short-course-management.catalogues.venue-catalogue.show', compact('venue',));
 
     }
 
@@ -143,19 +133,13 @@ class VenueController extends Controller
         //
         $validated = $request->validate([
             'name' => 'required|max:255',
-            'description' => 'required',
-            'objective' => 'required',
         ], [
             'name.required' => 'Please insert event name',
             'name.max' => 'Name exceed maximum length',
-            'description.required' => 'Please insert short course description',
-            'objective.required' => 'Please insert short course objective',
         ]);
 
         $update = Venue::find($id)->update([
             'name' => $request->name,
-            'description' => $request->description,
-            'objective' => $request->objective,
             'updated_by' => Auth::user()->id,
         ]);
 

@@ -327,5 +327,8 @@ Route::get('/shortcourse/participant/request-verification/event/{event_id}/parti
 
 //SCM - Venue
 Route::get('/venues', 'ShortCourseManagement\Catalogues\Venue\VenueController@index');
-
+Route::get('/venues/{id}', 'ShortCourseManagement\Catalogues\Venue\VenueController@show');
 Route::post('/venues/data', 'ShortCourseManagement\Catalogues\Venue\VenueController@dataVenues');
+Route::post('/venues/update/{id}', 'ShortCourseManagement\Catalogues\Venue\VenueController@update');
+Route::post('/venue', 'ShortCourseManagement\Catalogues\Venue\VenueController@store');
+Route::post('/venue/delete/{id}', 'ShortCourseManagement\Catalogues\Venue\VenueController@delete');
