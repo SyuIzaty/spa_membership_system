@@ -251,6 +251,14 @@ Route::get('/geolocation', 'GeolocationController@index');
 Route::get('/trainer/search-by-user_id/{user_id}', 'ShortCourseManagement\People\Trainer\TrainerController@searchByUserId');
 Route::get('/trainer/search-by-trainer_ic/{trainer_ic}', 'ShortCourseManagement\People\Trainer\TrainerController@searchByTrainerIc');
 
+Route::get('/trainers', 'ShortCourseManagement\people\Trainer\TrainerController@index');
+Route::get('/trainers/{id}', 'ShortCourseManagement\people\Trainer\TrainerController@show');
+Route::post('/trainers/data', 'ShortCourseManagement\people\Trainer\TrainerController@dataTrainers');
+Route::post('/trainers/update/{id}', 'ShortCourseManagement\people\Trainer\TrainerController@update');
+Route::post('/trainer', 'ShortCourseManagement\people\Trainer\TrainerController@store');
+Route::post('/trainer/delete/{id}', 'ShortCourseManagement\people\Trainer\TrainerController@delete');
+
+
 //SCM - Contact Person
 Route::get('/contact_person/search-by-user_id/{user_id}', 'ShortCourseManagement\People\ContactPerson\ContactPersonController@searchByUserId');
 Route::get('/contact_person/search-by-contact_person_ic/{contact_person_ic}', 'ShortCourseManagement\People\ContactPerson\ContactPersonController@searchByContactPersonIc');

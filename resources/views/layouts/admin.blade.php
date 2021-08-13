@@ -194,14 +194,14 @@
                                     <span class="nav-link-text" data-i18n="nav.people">People</span>
                                 </a>
                                 <ul>
-                                    <li>
+                                    {{-- <li>
                                         <a href="#" title="Participant" data-filter-tags="participant">
                                             <i class="ni ni-users"></i>
                                             <span class="nav-link-text" data-i18n="nav.participant">Participant</span>
                                         </a>
-                                    </li>
+                                    </li> --}}
                                     <li>
-                                        <a href="#" title="Trainer" data-filter-tags="trainer">
+                                        <a href="/trainers" title="Trainer" data-filter-tags="trainer">
                                             <i class="ni ni-earphones-alt"></i>
                                             <span class="nav-link-text" data-i18n="nav.trainer">Trainer</span>
                                         </a>
@@ -209,7 +209,7 @@
 
                                 </ul>
                             </li>
-                            <li>
+                            {{-- <li>
                                 <a href="#" title="Application" data-filter-tags="application">
                                     <i class="ni ni-list"></i>
                                     <span class="nav-link-text" data-i18n="nav.application">Application</span>
@@ -222,7 +222,7 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </li>
+                            </li> --}}
 
                             <li>
                                 <a href="/shortcourse" title="Public View" data-filter-tags="shortcourse">

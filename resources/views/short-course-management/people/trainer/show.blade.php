@@ -6,7 +6,7 @@
         {{-- <div class="subheader">
             <h1 class="subheader-title">
                 <i class='subheader-icon fal fa-table'></i>
-                ({{ $venue->id }}) {{ $venue->name }}
+                ({{ $trainer->id }}) {{ $trainer->user->name }}
             </h1>
         </div> --}}
         <div class="row">
@@ -41,7 +41,7 @@
                                         <hr class="mt-2 mb-3">
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
-                                                <form action="{{ url('/venues/update/' . $venue->id) }}" method="post"
+                                                <form action="{{ url('/trainers/update/' . $trainer->id) }}" method="post"
                                                     name="form">
                                                     @csrf
                                                     <table class="table table-bordered table-hover table-striped">
@@ -72,14 +72,74 @@
                                                             <tr>
                                                                 <td style="background-color:plum">Name</td>
                                                                 <td name="name_show" id="name_show">
-                                                                    {{ $venue->name }}
+                                                                    {{ $trainer->user->name }}
                                                                 </td>
                                                                 <td name="name_edit" id="name_edit" style="display: none">
                                                                     <div class="form-group">
                                                                         <input id="name" name="name" type="text"
-                                                                            value="{{ $venue->name }}"
+                                                                            value="{{ $trainer->user->name }}"
                                                                             class="form-control">
                                                                         @error('name')
+                                                                            <p style="color: red">
+                                                                                <strong> *
+                                                                                    {{ $message }}
+                                                                                </strong>
+                                                                            </p>
+                                                                        @enderror
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="background-color:plum">Email</td>
+                                                                <td name="email_show" id="email_show">
+                                                                    {{ $trainer->user->email }}
+                                                                </td>
+                                                                <td name="email_edit" id="email_edit" style="display: none">
+                                                                    <div class="form-group">
+                                                                        <input id="email" name="email" type="text"
+                                                                            value="{{ $trainer->user->email }}"
+                                                                            class="form-control">
+                                                                        @error('email')
+                                                                            <p style="color: red">
+                                                                                <strong> *
+                                                                                    {{ $message }}
+                                                                                </strong>
+                                                                            </p>
+                                                                        @enderror
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="background-color:plum">IC</td>
+                                                                <td name="ic_show" id="ic_show">
+                                                                    {{ $trainer->ic }}
+                                                                </td>
+                                                                <td name="ic_edit" id="ic_edit" style="display: none">
+                                                                    <div class="form-group">
+                                                                        <input id="ic" name="ic" type="text"
+                                                                            value="{{ $trainer->ic }}"
+                                                                            class="form-control">
+                                                                        @error('ic')
+                                                                            <p style="color: red">
+                                                                                <strong> *
+                                                                                    {{ $message }}
+                                                                                </strong>
+                                                                            </p>
+                                                                        @enderror
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="background-color:plum">Phone</td>
+                                                                <td name="phone_show" id="phone_show">
+                                                                    {{ $trainer->phone }}
+                                                                </td>
+                                                                <td name="phone_edit" id="phone_edit" style="display: none">
+                                                                    <div class="form-group">
+                                                                        <input id="phone" name="phone" type="text"
+                                                                            value="{{ $trainer->phone }}"
+                                                                            class="form-control">
+                                                                        @error('phone')
                                                                             <p style="color: red">
                                                                                 <strong> *
                                                                                     {{ $message }}
@@ -123,14 +183,15 @@
                                                             <tbody>
                                                                 <tr>
                                                                     <td class="text-center">Status</td>
-                                                                    <td class="text-center" id="venue_status_category_name"
-                                                                        name="venue_status_category_name">
+                                                                    <td class="text-center"
+                                                                        id="trainer_status_category_name"
+                                                                        name="trainer_status_category_name">
                                                                         Active
                                                                     </td>
                                                                     <td class="text-center">
                                                                         <button
-                                                                            {{ $venue->totalEvents == 0 ? null : 'disabled' }}
-                                                                            href="javascript:;" id="delete_venue"
+                                                                            {{ $trainer->totalEvents == 0 ? null : 'disabled' }}
+                                                                            href="javascript:;" id="delete_trainer"
                                                                             class="btn btn-danger mr-auto ml-2 waves-effect waves-themed font-weight-bold">DELETE</button>
                                                                     </td>
                                                                 </tr>
@@ -151,8 +212,8 @@
 @endsection
 @section('script')
     <script>
-        var venue_id = '<?php echo $venue->id; ?>';
-        var venue_name = '<?php echo $venue->name; ?>';
+        var trainer_id = '<?php echo $trainer->id; ?>';
+        var trainer_name = '<?php echo $trainer->user->name; ?>';
 
         // General
         {
@@ -161,6 +222,19 @@
                 $("#edit-basic").click(function(e) {
                     $("#name_show").hide();
                     $("#name_edit").show();
+
+
+                    $("#email_show").hide();
+                    $("#email_edit").show();
+
+
+                    $("#ic_show").hide();
+                    $("#ic_edit").show();
+
+
+                    $("#phone_show").hide();
+                    $("#phone_edit").show();
+
 
                     $("#edit-basic").hide();
                     $("#save-basic").show();
@@ -172,6 +246,17 @@
                     $("#name_show").show();
                     $("#name_edit").hide();
 
+                    $("#email_show").show();
+                    $("#email_edit").hide();
+
+
+                    $("#ic_show").show();
+                    $("#ic_edit").hide();
+
+
+                    $("#phone_show").show();
+                    $("#phone_edit").hide();
+
                     $("#edit-basic").show();
                     $("#save-basic").hide();
 
@@ -182,17 +267,17 @@
 
             // Delete Venue
             {
-                $('#delete_venue').on('click',
+                $('#delete_trainer').on('click',
                     function(e) {
 
                         const tag = $(e.currentTarget);
 
                         const title = "Delete Venue";
-                        const text = `Are you sure you want to delete '${venue_name}'?`;
+                        const text = `Are you sure you want to delete '${trainer_name}' from trainer list?`;
                         const confirmButtonText = "Delete";
                         const cancelButtonText = "Cancel";
-                        const url = "/venue/delete/" + venue_id;
-                        const urlRedirect = "/venues";
+                        const url = "/trainer/delete/" + trainer_id;
+                        const urlRedirect = "/trainers";
 
                         e.preventDefault();
                         $.ajaxSetup({
