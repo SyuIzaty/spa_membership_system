@@ -442,7 +442,7 @@
                                                 @enderror
                                         </div>
                                         <div class="form-group">
-                                            <td width="15%"><label class="form-label" for="reason"> Reason :</label></td>
+                                            <td width="15%"><label class="form-label" for="reason"><span class="text-danger">*</span> Reason :</label></td>
                                             <td colspan="7">
                                                 <textarea rows="5" class="form-control" id="reason" name="reason">{{ old('reason') }}</textarea>
                                                 @error('reason')
