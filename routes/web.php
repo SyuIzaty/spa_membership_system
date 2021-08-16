@@ -306,6 +306,7 @@ Route::post('/event-participant-payment_proof/delete/{payment_proof_id}', 'Short
 //SCM - EventParticipant - Update Progress
 Route::post('/update-progress/{progress_name}/{eventParticipant_id}', 'ShortCourseManagement\EventManagement\EventParticipantController@updateProgress');
 Route::post('/events/data/event-management/shortcourse/event-participant/{participant_id}', 'ShortCourseManagement\EventManagement\EventParticipantController@dataEventParticipantList');
+Route::post('/update-progress/bundle', 'ShortCourseManagement\EventManagement\EventParticipantController@updateProgressBundle');
 
 //SCM - Event
 Route::post('/event/store-new', 'ShortCourseManagement\EventManagement\EventController@storeNew');

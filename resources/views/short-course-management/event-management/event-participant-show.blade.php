@@ -538,8 +538,6 @@
                                                                 </div>
                                                             </div>
                                                             <div class="panel-container show">
-                                                                {{-- <form action="{{ url('/senarai_kolej/student/bundle/into/' . $event->id) }}" method="post"
-                                                                    name="form"> --}}
                                                                 <div class="panel-content">
                                                                     @if (Session::has('messageAllNoPaymentYet'))
                                                                         <div class="alert alert-success"
@@ -556,48 +554,58 @@
                                                                         </div>
                                                                     @endif
 
-                                                                    <div class="table-responsive">
-                                                                        <table id="table-all-no-payment-yet"
-                                                                            name="table-update-progress-2"
-                                                                            class="table table-bordered table-hover table-striped w-100">
-                                                                            <thead>
-                                                                                <tr class="bg-primary-50 text-center">
-                                                                                    <th style="width:10px"><input
-                                                                                            type="checkbox"
-                                                                                            id="check-all-no-payment-yet">
-                                                                                    </th>
-                                                                                    <th style="width:30px">Id</th>
-                                                                                    <th>Organisation</th>
-                                                                                    <th>Name</th>
-                                                                                    <th>Phone</th>
-                                                                                    <th>Email</th>
-                                                                                    {{-- <th>Representative Name</th>
+                                                                    <form
+                                                                        action="{{ url('/update-progress/bundle') }}"
+                                                                        method="post" name="form">
+                                                                        @csrf
+                                                                        <div class="table-responsive">
+                                                                            <table id="table-all-no-payment-yet"
+                                                                                name="table-update-progress-2"
+                                                                                class="table table-bordered table-hover table-striped w-100">
+                                                                                <thead>
+                                                                                    <tr class="bg-primary-50 text-center">
+                                                                                        <th style="width:10px"><input
+                                                                                                type="checkbox"
+                                                                                                id="check-all-no-payment-yet">
+                                                                                        </th>
+                                                                                        <th style="width:30px">Id</th>
+                                                                                        <th>Organisation</th>
+                                                                                        <th>Name</th>
+                                                                                        <th>Phone</th>
+                                                                                        <th>Email</th>
+                                                                                        {{-- <th>Representative Name</th>
                                                                                         <th>Representative Phone</th>
                                                                                         <th>Representative Email</th> --}}
-                                                                                    <th>Date Apply</th>
-                                                                                    <th>Action</th>
-                                                                                </tr>
-                                                                            </thead>
-                                                                        </table>
-                                                                    </div>
-
+                                                                                        <th>Date Apply</th>
+                                                                                        <th>Action</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                            </table>
+                                                                        </div>
+                                                                        <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
+                                                                            style="content-align:right">
+                                                                            <button type="submit" name="update-progress" value="disqualified-application-no-payment"
+                                                                                class="btn btn-danger ml-auto mr-2 waves-effect waves-themed"><i
+                                                                                    class="ni ni-close"></i> Disqualified
+                                                                                All
+                                                                                Ticked</button>
+                                                                            <a href="javascript:;" data-toggle="modal"
+                                                                                id="new-application"
+                                                                                class="btn btn-primary px-5 mx-5 waves-effect waves-themed align-middle">
+                                                                                <i class="ni ni-check"></i> New
+                                                                                Application</a>
+                                                                        </div>
+                                                                    </form>
                                                                 </div>
                                                                 <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
                                                                     style="content-align:right">
-                                                                    <button type="submit"
-                                                                        class="btn btn-danger ml-auto mr-2 waves-effect waves-themed"><i
-                                                                            class="ni ni-close"></i> Disqualified All
-                                                                        Ticked</button>
-                                                                    <a href="javascript:;" data-toggle="modal"
-                                                                        id="new-application"
-                                                                        class="btn btn-primary px-5 mx-5 waves-effect waves-themed align-middle">
-                                                                        <i class="ni ni-check"></i> New Application</a>
                                                                     <div class="modal fade" id="crud-modal-new-application"
                                                                         aria-hidden="true">
                                                                         <div class="modal-dialog">
                                                                             <div class="modal-content">
                                                                                 <div class="card-header">
-                                                                                    <h5 class="card-title w-150">Application
+                                                                                    <h5 class="card-title w-150">
+                                                                                        Application
                                                                                     </h5>
                                                                                 </div>
                                                                                 <div class="modal-body">
@@ -912,6 +920,7 @@
                                                                     </div>
 
                                                                 </div>
+                                                                </form>
 
                                                                 <div class="modal fade" id="crud-modals" aria-hidden="true">
                                                                     <div class="modal-dialog">
@@ -1219,7 +1228,7 @@
                                                                                         <div
                                                                                             class="form-group col col-sm-5">
                                                                                             <label class="form-label"
-                                                                                            for="amount_to_be_verified">Fee
+                                                                                                for="amount_to_be_verified">Fee
                                                                                                 Amount</label>
                                                                                             <div class="input-group flex-nowrap"
                                                                                                 id="fee_id_show_to_be_verified"
@@ -1235,7 +1244,8 @@
                                                                                                 <input
                                                                                                     class="form-control-plaintext"
                                                                                                     id="amount_to_be_verified"
-                                                                                                    name="amount_to_be_verified" readonly>
+                                                                                                    name="amount_to_be_verified"
+                                                                                                    readonly>
                                                                                                 <div
                                                                                                     class="input-group-append">
                                                                                                     <span
