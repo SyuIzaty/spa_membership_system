@@ -6,7 +6,7 @@
         {{-- <div class="subheader">
             <h1 class="subheader-title">
                 <i class='subheader-icon fal fa-table'></i>
-                ({{ $trainer->id }}) {{ $trainer->user->name }}
+                ({{ $participant->id }}) {{ $participant->name }}
             </h1>
         </div> --}}
         <div class="row">
@@ -14,7 +14,7 @@
                 <div id="panel-1" class="panel">
                     <div class="panel-hdr">
                         <h2>
-                            Trainer Information
+                            Participant Information
                         </h2>
                         <div class="panel-toolbar">
                             <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip"
@@ -41,7 +41,7 @@
                                         <hr class="mt-2 mb-3">
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
-                                                <form action="{{ url('/trainers/update/' . $trainer->id) }}" method="post"
+                                                <form action="{{ url('/participants/update/' . $participant->id) }}" method="post"
                                                     name="form">
                                                     @csrf
                                                     <table class="table table-bordered table-hover table-striped">
@@ -72,12 +72,12 @@
                                                             <tr>
                                                                 <td style="background-color:plum">Name</td>
                                                                 <td name="name_show" id="name_show">
-                                                                    {{ $trainer->user->name }}
+                                                                    {{ $participant->name }}
                                                                 </td>
                                                                 <td name="name_edit" id="name_edit" style="display: none">
                                                                     <div class="form-group">
                                                                         <input id="name" name="name" type="text"
-                                                                            value="{{ $trainer->user->name }}"
+                                                                            value="{{ $participant->name }}"
                                                                             class="form-control">
                                                                         @error('name')
                                                                             <p style="color: red">
@@ -92,12 +92,12 @@
                                                             <tr>
                                                                 <td style="background-color:plum">Email</td>
                                                                 <td name="email_show" id="email_show">
-                                                                    {{ $trainer->user->email }}
+                                                                    {{ $participant->email }}
                                                                 </td>
                                                                 <td name="email_edit" id="email_edit" style="display: none">
                                                                     <div class="form-group">
                                                                         <input id="email" name="email" type="text"
-                                                                            value="{{ $trainer->user->email }}"
+                                                                            value="{{ $participant->email }}"
                                                                             class="form-control">
                                                                         @error('email')
                                                                             <p style="color: red">
@@ -112,12 +112,12 @@
                                                             <tr>
                                                                 <td style="background-color:plum">IC</td>
                                                                 <td name="ic_show" id="ic_show">
-                                                                    {{ $trainer->ic }}
+                                                                    {{ $participant->ic }}
                                                                 </td>
                                                                 <td name="ic_edit" id="ic_edit" style="display: none">
                                                                     <div class="form-group">
                                                                         <input id="ic" name="ic" type="text"
-                                                                            value="{{ $trainer->ic }}"
+                                                                            value="{{ $participant->ic }}"
                                                                             class="form-control">
                                                                         @error('ic')
                                                                             <p style="color: red">
@@ -132,12 +132,12 @@
                                                             <tr>
                                                                 <td style="background-color:plum">Phone</td>
                                                                 <td name="phone_show" id="phone_show">
-                                                                    {{ $trainer->phone }}
+                                                                    {{ $participant->phone }}
                                                                 </td>
                                                                 <td name="phone_edit" id="phone_edit" style="display: none">
                                                                     <div class="form-group">
                                                                         <input id="phone" name="phone" type="text"
-                                                                            value="{{ $trainer->phone }}"
+                                                                            value="{{ $participant->phone }}"
                                                                             class="form-control">
                                                                         @error('phone')
                                                                             <p style="color: red">
@@ -184,14 +184,14 @@
                                                                 <tr>
                                                                     <td class="text-center">Status</td>
                                                                     <td class="text-center"
-                                                                        id="trainer_status_category_name"
-                                                                        name="trainer_status_category_name">
+                                                                        id="participant_status_category_name"
+                                                                        name="participant_status_category_name">
                                                                         Active
                                                                     </td>
                                                                     <td class="text-center">
                                                                         <button
-                                                                            {{ $trainer->totalEvents == 0 ? null : 'disabled' }}
-                                                                            href="javascript:;" id="delete_trainer"
+                                                                            {{ $participant->totalEvents == 0 ? null : 'disabled' }}
+                                                                            href="javascript:;" id="delete_participant"
                                                                             class="btn btn-danger mr-auto ml-2 waves-effect waves-themed font-weight-bold">DELETE</button>
                                                                     </td>
                                                                 </tr>
@@ -212,8 +212,8 @@
 @endsection
 @section('script')
     <script>
-        var trainer_id = '<?php echo $trainer->id; ?>';
-        var trainer_name = '<?php echo $trainer->user->name; ?>';
+        var participant_id = '<?php echo $participant->id; ?>';
+        var participant_name = '<?php echo $participant->name; ?>';
 
         // General
         {
@@ -267,17 +267,17 @@
 
             // Delete Venue
             {
-                $('#delete_trainer').on('click',
+                $('#delete_participant').on('click',
                     function(e) {
 
                         const tag = $(e.currentTarget);
 
-                        const title = "Delete Trainer";
-                        const text = `Are you sure you want to delete '${trainer_name}' from trainer list?`;
+                        const title = "Delete Participant";
+                        const text = `Are you sure you want to delete '${participant_name}' from participant list?`;
                         const confirmButtonText = "Delete";
                         const cancelButtonText = "Cancel";
-                        const url = "/trainer/delete/" + trainer_id;
-                        const urlRedirect = "/trainers";
+                        const url = "/participant/delete/" + participant_id;
+                        const urlRedirect = "/participants";
 
                         e.preventDefault();
                         $.ajaxSetup({

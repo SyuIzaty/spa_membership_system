@@ -7,12 +7,54 @@ use App\Models\ShortCourseManagement\EventParticipant;
 use App\Models\ShortCourseManagement\Fee;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use DateTime;
+use Auth;
 
 class ParticipantController extends Controller
 {
     public function index()
     {
         //
+        $participants = Participant::all();
+        return view('short-course-management.people.participant.index', compact('participants'));
+    }
+
+    public function dataParticipants()
+    {
+        $participants = Participant::orderByDesc('id')->get()->load(['events_participants']);
+        $index=0;
+        foreach($participants as $participant){
+
+            if (isset($participant->events_participants)) {
+                $totalEvents = $participant->events_participants->count();
+                // dd($totalEvents);
+            } else {
+                $totalEvents = 0;
+            }
+            $participants[$index]->totalEvents = $totalEvents;
+            $participants[$index]['created_at_toDayDateTimeString'] = date_format(new DateTime($participants[$index]->created_at), 'g:ia \o\n l jS F Y');
+            $participants[$index]['updated_at_toDayDateTimeString'] = date_format(new DateTime($participants[$index]->updated_at), 'g:ia \o\n l jS F Y');
+            $index+=1;
+        }
+
+
+        return datatables()::of($participants)
+            ->addColumn('dates', function ($participants) {
+                return 'Created At:<br>' . $participants->created_at_toDayDateTimeString . '<br><br> Last Update:<br>' . $participants->updated_at_toDayDateTimeString;
+            })
+            ->addColumn('events_participants', function ($participants) {
+                return 'Total Events: ' . $participants->totalEvents ;
+            })
+            ->addColumn('management_details', function ($participants) {
+                return 'Created By: ' . $participants->created_by . '<br> Created At: ' . $participants->created_at;
+            })
+            ->addColumn('action', function ($participants) {
+                return '
+                <a href="/participants/' . $participants->id . '" class="btn btn-sm btn-primary">Settings</a>';
+            })
+            ->rawColumns(['action', 'management_details', 'events_participants', 'dates'])
+            ->make(true);
+
     }
 
     public function create()
@@ -21,11 +63,65 @@ class ParticipantController extends Controller
     }
     public function store(Request $request)
     {
+        // dd($request);
+        $validated = $request->validate([
+            'participant_ic_input' => 'required',
+            'participant_fullname' => 'required|min:3',
+            'participant_phone' => 'required|min:10',
+            'participant_email' => 'required|email:rfc'
+
+        ], [
+            'participant_ic_input.required' => 'Please insert IC of the participant',
+            'participant_fullname.required' => 'Please insert participant fullname of the participant',
+            'participant_fullname.min' => 'The participant fullname should have at least 3 characters',
+            'participant_phone.required' => 'Please insert participant phone number of the participant',
+            'participant_phone.min' => 'The participant phone number should have at least 10 characters',
+            'participant_email.required' => "Please insert email address of the participant"
+        ]);
+
+        // dd($request);
         //
+        $existParticipant = Participant::where([
+            ['ic', '=', $request->participant_ic_input],
+        ])->first();
+        if (!$existParticipant) {
+            $existParticipant = Participant::create([
+                'name' => $request->participant_fullname,
+                'ic' => $request->participant_ic_input,
+                'phone' => $request->participant_phone,
+                'email' => $request->participant_email,
+                'created_by' => Auth::user()->id,
+            ]);
+        } else {
+            $existParticipant->name = $request->participant_fullname;
+            $existParticipant->ic = $request->participant_ic_input;
+            $existParticipant->phone = $request->participant_phone;
+            $existParticipant->email = $request->participant_email;
+            $existParticipant->updated_by = Auth::user()->id;
+            $existParticipant->save();
+            return Redirect()->back()->with('messageAlreadyApplied', 'The participant detail have been updated before.');
+        }
+
+        return Redirect()->back()->with('messageNewApplication', 'New participant created successfully');
     }
     public function show($id)
     {
-        //
+
+        $participant = Participant::find($id)->load([
+            'events_participants',
+        ]);
+
+
+        if (isset($participant->events_participants)) {
+            $totalEvents = $participant->events_participants->count();
+            // dd($totalEvents);
+        } else {
+            $totalEvents = 0;
+        }
+        $participant->totalEvents = $totalEvents;
+
+        return view('short-course-management.people.participant.show', compact('participant',));
+
     }
 
     public function edit($id)
@@ -36,6 +132,30 @@ class ParticipantController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validated = $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required',
+            'ic' => 'required',
+            'phone' => 'required',
+        ], [
+            'name.required' => 'Please insert event name',
+            'name.max' => 'Name exceed maximum length',
+            'email.required' => 'Please insert event email',
+            'ic.required' => 'Please insert event ic',
+            'phone.required' => 'Please insert event phone',
+        ]);
+
+
+        //return true or false
+        $updateParticipant = Participant::find($id)->update([
+            'ic' => $request->ic,
+            'phone' => $request->phone,
+            'name' => $request->name,
+            'email' => $request->email,
+            'updated_by' => Auth::user()->id,
+        ]);
+
+        return Redirect()->back()->with('messageParticipantBasicDetails', 'Basic Details Update Successfully');
     }
 
     public function destroy($id)
@@ -93,10 +213,33 @@ class ParticipantController extends Controller
         }
         return $eventParticipant;
     }
+
+    public function searchByParticipantIc($ic)
+    {
+        //
+        $existParticipant = Participant::where('ic', $ic)->first();
+
+        return $existParticipant;
+    }
     public function searchByRepresentativeIc($ic)
     {
         //
         $participant = Participant::where('ic', $ic)->first()->load(['organisations_participants.organisation']);
         return $participant;
+    }
+
+    public function delete(Request $request, $id){
+
+        $exist = Participant::find($id);
+        if (Auth::user()->id) {
+            $exist->updated_by = Auth::user()->id;
+            $exist->deleted_by = Auth::user()->id;
+        } else {
+            $exist->updated_by = "public_user";
+            $exist->deleted_by = "public_user";
+        }
+        $exist->save();
+        $exist->delete();
+        return $exist;
     }
 }
