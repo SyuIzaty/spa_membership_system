@@ -11,6 +11,7 @@ use App\Models\ShortCourseManagement\Fee;
 use App\Models\ShortCourseManagement\EventParticipantPaymentProof;
 use Auth;
 use DateTime;
+use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 
 class EventParticipantController extends Controller
@@ -52,6 +53,7 @@ class EventParticipantController extends Controller
             }
             $index++;
         }
+
 
         return datatables()::of($eventsParticipants)
             ->addColumn('checkApplicant', function ($eventsParticipants) {
@@ -107,7 +109,7 @@ class EventParticipantController extends Controller
             })
             ->addColumn('action', function ($eventsParticipants) {
                 return '
-                <a href="#" data-target="#crud-modals" data-toggle="modal" data-event_id="' . $eventsParticipants->event_id . '" data-event_participant_id="' . $eventsParticipants->id . '" data-participant_id="' . $eventsParticipants->participant_id . '" data-is_verified_payment_proof="' . $eventsParticipants->is_verified_payment_proof . '" data-amount="' . $eventsParticipants->fee->amount. '" class="btn btn-sm btn-primary">Update Payment Proof</a>
+                <a href="#" data-target="#crud-modals" data-toggle="modal" data-event_id="' . $eventsParticipants->event_id . '" data-event_participant_id="' . $eventsParticipants->id . '" data-participant_id="' . $eventsParticipants->participant_id . '" data-is_verified_payment_proof="' . $eventsParticipants->is_verified_payment_proof . '" data-amount="' . $eventsParticipants->fee->amount . '" class="btn btn-sm btn-primary">Update Payment Proof</a>
                 <a href="javascript:;" id="disqualified-application-no-payment" data-remote="/update-progress/disqualified-application-no-payment/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger btn-update-progress">Disqualified</a>';
             })
             ->rawColumns(['action', 'checkNoPaymentYet'])
@@ -153,14 +155,14 @@ class EventParticipantController extends Controller
             })
             ->addColumn('proof', function ($eventsParticipants) {
                 return '
-                <a href="#" data-target="#crud-modals-view-proof" data-toggle="modal" data-event_id="' . $eventsParticipants->event_id . '" data-event_participant_id="' . $eventsParticipants->id . '" data-participant_id="' . $eventsParticipants->participant_id . '" data-amount="' . $eventsParticipants->fee->amount .'" class="btn btn-sm btn-primary">View</a>';
+                <a href="#" data-target="#crud-modals-view-proof" data-toggle="modal" data-event_id="' . $eventsParticipants->event_id . '" data-event_participant_id="' . $eventsParticipants->id . '" data-participant_id="' . $eventsParticipants->participant_id . '" data-amount="' . $eventsParticipants->fee->amount . '" class="btn btn-sm btn-primary">View</a>';
             })
             ->addColumn('action', function ($eventsParticipants) {
                 return '
                 <a href="javascript:;" id="verify-payment-proof" data-remote="/update-progress/verify-payment-proof/' . $eventsParticipants->id . '" class="btn btn-sm btn-success btn-update-progress">Verify</a>
                 <a href="javascript:;" id="reject-payment-proof" data-remote="/update-progress/reject-payment-proof/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger btn-update-progress">Reject</a>';
             })
-            ->rawColumns(['action', 'proof','checkPaymentWaitForVerification'])
+            ->rawColumns(['action', 'proof', 'checkPaymentWaitForVerification'])
             ->make(true);
     }
     public function dataReadyForEvent($id)
@@ -549,6 +551,27 @@ class EventParticipantController extends Controller
             $existEventParticipant->save();
             return Redirect()->back()->with('messageAlreadyApplied', 'The participant have already been applied before.');
         }
+        $existEvent = Event::where('id', $event_id)->first()->load(['venue']);
+        $existFee = Fee::where('id', $request->fee_id)->first();
+
+
+        $message =  [
+            'opening' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . ($existParticipant->name),
+            'introduction' => 'Pendaftaran anda <b>TELAH DISAHKAN BERJAYA</b> oleh pihak INTEC bagi program, ',
+            'detail' => 'Program: ' . ($existEvent->name)
+                . '<br/>Tarikh: ' . ($existEvent->datetime_start) . ' sehingga ' . ($existEvent->datetime_end)
+                . '<br/>Tempat: ' . ($existEvent->venue->name)
+                . '<br/> <br/>Sila buat pembayaran yuran sebanyak <b>RM'
+                . ($existFee->amount) . ' (' . ($existFee->name)
+                . ')</b>, kemudian tekan butang di bawah untuk ke sesawang profil bagi mengemaskini status pembayaran untuk disahkan.',
+            'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
+        ];
+
+        Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($request) {
+            $message->subject('Pengesahan Pendaftaran (Berjaya)');
+            $message->from(Auth::user()->email);
+            $message->to($request->email);
+        });
         return Redirect()->back()->with('messageNewApplication', 'New participant applied successfully');
     }
     public function edit($id)
@@ -598,92 +621,175 @@ class EventParticipantController extends Controller
         return $fee;
     }
 
-    public function updateProgress($progress_name, $eventsParticipants_id)
+    public function updateProgress($progress_name, $eventParticipant_id)
     {
-        // if ($progress_name == 'approve-application') {
-        //     $update = EventParticipant::find($eventsParticipants_id)->update([
-        //         'is_approved_application' => 1,
-        //         'approved_application_datetime' => Carbon::now(),
-        //     ]);
-        // }else if ($progress_name == 'reject-application'
-        // || $progress_name == 'disqualified-application-no-payment') {
-        //     $update = EventParticipant::find($eventsParticipants_id)->update([
-        //         'is_disqualified' => 1,
-        //         'disqualified_datetime' => Carbon::now(),
-        //     ]);
-        // }else if ($progress_name == 'verify-payment-proof') {
-        //     $update = EventParticipant::find($eventsParticipants_id)->update([
-        //         'is_verified_payment_proof' => 1,
-        //         'is_verified_approved_participation' => 1,
-        //         'approved_participation_datetime' => Carbon::now(),
-        //         'verified_payment_proof_datetime' => Carbon::now(),
-        //     ]);
-        // }else if ($progress_name == 'reject-payment-proof') {
-        //     $update = EventParticipant::find($eventsParticipants_id)->update([
-        //         'is_verified_payment_proof' => null,
-        //         'verified_payment_proof_datetime' => null,
-        //     ]);
-        // }else if ($progress_name == 'verify-attendance-attend') {
-        //     $update = EventParticipant::find($eventsParticipants_id)->update([
-        //         'is_not_attend' => 0,
-        //     ]);
-        // }else if ($progress_name == 'verify-attendance-not-attend') {
-        //     $update = EventParticipant::find($eventsParticipants_id)->update([
-        //         'is_not_attend' => 1,
-        //     ]);
-        // }else if ($progress_name == 'send-question') {
-        //     $update = EventParticipant::find($eventsParticipants_id)->update([
-        //         'is_question_sended' => 1,
-        //         'question_sended_datetime' => Carbon::now(),
-        //         'is_done_email_completed' => 0,
-        //     ]);
-        // }
+        $eventParticipant = EventParticipant::where('id', $eventParticipant_id)->first()->load(['participant', 'event.venue', 'fee']);
+
         switch ($progress_name) {
             case 'approve-application':
-                $update = EventParticipant::find($eventsParticipants_id)->update([
+                $update = EventParticipant::find($eventParticipant_id)->update([
                     'is_approved_application' => 1,
                     'approved_application_datetime' => Carbon::now(),
                 ]);
+                $message =  [
+                    'opening' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . ($eventParticipant->participant->name),
+                    'introduction' => 'Pendaftaran anda <b>TELAH DISAHKAN BERJAYA</b> oleh pihak INTEC bagi program, ',
+                    'detail' => 'Program: ' . ($eventParticipant->event->name)
+                        . '<br/>Tarikh: ' . ($eventParticipant->event->datetime_start) . ' sehingga ' . ($eventParticipant->event->datetime_end)
+                        . '<br/>Tempat: ' . ($eventParticipant->event->venue->name)
+                        . '<br/> <br/>Sila buat pembayaran yuran sebanyak <b>RM'
+                        . ($eventParticipant->fee->amount) . ' (' . ($eventParticipant->fee->name)
+                        . ')</b>, kemudian tekan butang di bawah untuk ke sesawang profil bagi mengemaskini status pembayaran untuk disahkan.',
+                    'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
+                ];
+
+                Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($eventParticipant) {
+                    $message->subject('Pengesahan Pendaftaran (Berjaya)');
+                    $message->from(Auth::user()->email);
+                    $message->to($eventParticipant->participant->email);
+                });
                 break;
             case 'reject-application':
-                $exist = EventParticipant::find($eventsParticipants_id);
+                $exist = EventParticipant::find($eventParticipant_id);
                 $exist->updated_by = Auth::user()->id;
                 $exist->deleted_by = Auth::user()->id;
                 $exist->save();
                 $exist->delete();
+
+                $message =  [
+                    'opening' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . ($eventParticipant->participant->name),
+                    'introduction' => 'Sebagai makluman, pendaftaran anda <b>TELAH DITOLAK</b> oleh pihak INTEC bagi program, ',
+                    'detail' => 'Program: ' . ($eventParticipant->event->name)
+                        . '<br/>Tarikh: ' . ($eventParticipant->event->datetime_start) . ' sehingga ' . ($eventParticipant->event->datetime_end)
+                        . '<br/>Tempat: ' . ($eventParticipant->event->venue->name)
+                        . '<br/> <br/>Jika ini adalah suatu kesilapan, sila hubungi pihak kami semula.',
+                    'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
+                ];
+
+                Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($eventParticipant) {
+                    $message->subject('Pengesahan Pendaftaran (Tidak Berjaya)');
+                    $message->from(Auth::user()->email);
+                    $message->to($eventParticipant->participant->email);
+                });
                 break;
             case 'disqualified-application-no-payment':
-                $update = EventParticipant::find($eventsParticipants_id)->update([
+                $update = EventParticipant::find($eventParticipant_id)->update([
                     'is_disqualified' => 1,
                     'disqualified_datetime' => Carbon::now(),
                 ]);
+
+                $message =  [
+                    'opening' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . ($eventParticipant->participant->name),
+                    'introduction' => 'Sebagai makluman, pendaftaran anda <b>TELAH DITOLAK</b> oleh pihak INTEC bagi program, ',
+                    'detail' => 'Program: ' . ($eventParticipant->event->name)
+                        . '<br/>Tarikh: ' . ($eventParticipant->event->datetime_start) . ' sehingga ' . ($eventParticipant->event->datetime_end)
+                        . '<br/>Tempat: ' . ($eventParticipant->event->venue->name)
+                        . '<br/> <br/>Jika ini adalah suatu kesilapan, sila hubungi pihak kami semula.',
+                    'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
+                ];
+
+                Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($eventParticipant) {
+                    $message->subject('Pengesahan Pendaftaran (Tidak Berjaya)');
+                    $message->from(Auth::user()->email);
+                    $message->to($eventParticipant->participant->email);
+                });
                 break;
             case 'verify-payment-proof':
-                $update = EventParticipant::find($eventsParticipants_id)->update([
+                $update = EventParticipant::find($eventParticipant_id)->update([
                     'is_verified_payment_proof' => 1,
                     'is_verified_approved_participation' => 1,
                     'approved_participation_datetime' => Carbon::now(),
                     'verified_payment_proof_datetime' => Carbon::now(),
                 ]);
+
+                $message =  [
+                    'opening' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . ($eventParticipant->participant->name),
+                    'introduction' => 'Bukti pembayaran anda <b>TELAH DISAHKAN</b> oleh pihak INTEC bagi program, ',
+                    'detail' => 'Program: ' . ($eventParticipant->event->name)
+                        . '<br/>Tarikh: ' . ($eventParticipant->event->datetime_start) . ' sehingga ' . ($eventParticipant->event->datetime_end)
+                        . '<br/>Tempat: ' . ($eventParticipant->event->venue->name),
+                    'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
+                ];
+
+                Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($eventParticipant) {
+                    $message->subject('Pengesahan Bukti Pembayaran (Disahkan Berjaya)');
+                    $message->from(Auth::user()->email);
+                    $message->to($eventParticipant->participant->email);
+                });
                 break;
             case 'reject-payment-proof':
-                $update = EventParticipant::find($eventsParticipants_id)->update([
+                $update = EventParticipant::find($eventParticipant_id)->update([
                     'is_verified_payment_proof' => null,
                     'verified_payment_proof_datetime' => null,
                 ]);
+
+                $message =  [
+                    'opening' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . ($eventParticipant->participant->name),
+                    'introduction' => 'Sebagai makluman, bukti pembayaran anda <b>TELAH DITOLAK</b> oleh pihak INTEC bagi program, ',
+                    'detail' => 'Program: ' . ($eventParticipant->event->name)
+                        . '<br/>Tarikh: ' . ($eventParticipant->event->datetime_start) . ' sehingga ' . ($eventParticipant->event->datetime_end)
+                        . '<br/>Tempat: ' . ($eventParticipant->event->venue->name)
+                        . '<br/> <br/>Sila buat pembayaran yuran sebanyak <b>RM'
+                        . ($eventParticipant->fee->amount) . ' (' . ($eventParticipant->fee->name)
+                        . ')</b>, kemudian tekan butang di bawah untuk ke sesawang profil bagi memasukkan bukti pembayaran yang baharu untuk disahkan.',
+                    'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
+                ];
+
+                Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($eventParticipant) {
+                    $message->subject('Pengesahan Pembayaran (Tidak Berjaya)');
+                    $message->from(Auth::user()->email);
+                    $message->to($eventParticipant->participant->email);
+                });
                 break;
             case 'verify-attendance-attend':
-                $update = EventParticipant::find($eventsParticipants_id)->update([
+                $update = EventParticipant::find($eventParticipant_id)->update([
                     'is_not_attend' => 0,
                 ]);
+                // $message =  [
+                //     'opening' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik '+ ($eventParticipant->participant->name),
+                //     'content' => 'Tahniah! Anda telah disahkan sebagai hadir bagi program ' + ($eventParticipant->event->name)
+                //     + ' yang dianjurkan oleh INTEC pada ' + ($eventParticipant->event->datetime_start) + ' sehingga '+ ($eventParticipant->event->datetime_end)
+                //     + ' di ' + ($eventParticipant->event->venue->name) +'. Kami amat menghargai segala usaha anda. Semoga anda terus berjaya. Terima kasih.',
+                // ];
+                // dd($eventParticipant);
+
+                $message =  [
+                    'opening' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . ($eventParticipant->participant->name),
+                    'introduction' => 'Tahniah! Anda telah disahkan sebagai <b>HADIR</b> bagi program, ',
+                    'detail' => 'Program: ' . ($eventParticipant->event->name)
+                        . '<br/>Tarikh: ' . ($eventParticipant->event->datetime_start) . ' sehingga ' . ($eventParticipant->event->datetime_end)
+                        . '<br/>Tempat: ' . ($eventParticipant->event->venue->name),
+                    'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga anda terus berjaya. Terima kasih.',
+                ];
+
+                Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($eventParticipant) {
+                    $message->subject('Pengesahan Kehadiran (Hadir)');
+                    $message->from(Auth::user()->email);
+                    $message->to($eventParticipant->participant->email);
+                });
                 break;
             case 'verify-attendance-not-attend':
-                $update = EventParticipant::find($eventsParticipants_id)->update([
+                $update = EventParticipant::find($eventParticipant_id)->update([
                     'is_not_attend' => 1,
                 ]);
+
+                $message =  [
+                    'opening' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . ($eventParticipant->participant->name),
+                    'introduction' => 'Anda telah disahkan sebagai <b>TIDAK HADIR</b> bagi program, ',
+                    'detail' => 'Program: ' . ($eventParticipant->event->name)
+                        . '<br/>Tarikh: ' . ($eventParticipant->event->datetime_start) . ' sehingga ' . ($eventParticipant->event->datetime_end)
+                        . '<br/>Tempat: ' . ($eventParticipant->event->venue->name),
+                    'conclusion' => 'Sila maklumkan kepada kami sekiranya ini adalah suatu kesilapan. Terima kasih.',
+                ];
+
+                Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($eventParticipant) {
+                    $message->subject('Pengesahan Kehadiran (Tidak Hadir)');
+                    $message->from(Auth::user()->email);
+                    $message->to($eventParticipant->participant->email);
+                });
                 break;
             case 'send-question':
-                $update = EventParticipant::find($eventsParticipants_id)->update([
+                $update = EventParticipant::find($eventParticipant_id)->update([
                     'is_question_sended' => 1,
                     'question_sended_datetime' => Carbon::now(),
                     'is_done_email_completed' => 0,
@@ -757,7 +863,7 @@ class EventParticipantController extends Controller
             })
             ->addColumn('action', function ($events) {
                 return '
-                <a href="#" data-target="#crud-modals" data-toggle="modal" data-event_id="' . $events->id . '" data-event_participant_id="' . $events->event_participant_id . '" data-is_verified_payment_proof="' . $events->is_verified_payment_proof . '" data-amount="' . $events->amount .'" class="btn btn-sm btn-primary">Update Payment Proof</a>
+                <a href="#" data-target="#crud-modals" data-toggle="modal" data-event_id="' . $events->id . '" data-event_participant_id="' . $events->event_participant_id . '" data-is_verified_payment_proof="' . $events->is_verified_payment_proof . '" data-amount="' . $events->amount . '" class="btn btn-sm btn-primary">Update Payment Proof</a>
                 <a href="#" class="btn btn-sm btn-danger">Cancel Application</a>';
             })
 
