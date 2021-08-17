@@ -988,6 +988,10 @@ class EventParticipantController extends Controller
                     break;
             }
         }
+        $existEventParticipant=EventParticipant::find($eventParticipant_ids[0])->load(['event']);
+        $event=$existEventParticipant->event;
+        // return redirect("/event/' . $event->id . '/events-participants/show")->with( ['event' => $event] );
+        return view('short-course-management.event-management.event-participant-show', compact('event'));
     }
     public function dataEventParticipantList($participant_id)
     {

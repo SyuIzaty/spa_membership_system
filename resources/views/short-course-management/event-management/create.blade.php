@@ -60,10 +60,13 @@
                                                         <select class="form-control shortcourse" name="shortcourse_id"
                                                             id="shortcourse_id">
                                                             <option disabled selected>Select Short Course</option>
-                                                            <option value="-1" name="Others">Others</option>
+                                                            <option value="-1" name="Others"
+                                                                {{ old('shortcourse_id') == -1 ? 'selected' : null }}>Others
+                                                            </option>
                                                             @foreach ($shortcourses as $shortcourse)
                                                                 <option value="{{ $shortcourse->id }}"
-                                                                    name="{{ $shortcourse->name }}">
+                                                                    name="{{ $shortcourse->name }}"
+                                                                    {{ old('shortcourse_id') == $shortcourse->id ? 'selected' : null }}>
                                                                     {{ $shortcourse->id }} -
                                                                     {{ $shortcourse->name }}</option>
                                                             @endforeach
@@ -73,42 +76,49 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-                                                <tr id="form-add-shortcourse-second-part" style="display: none">
+                                                {{-- <tr id="form-add-shortcourse-second-part" style="display: none"> --}}
+                                                <tr id="form-add-shortcourse-second-part"
+                                                    {{ old('shortcourse_id') ? null : 'style=display:none' }}>
+
+
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Short Course Name **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::text('shortcourse_name', '', ['class' => 'form-control', 'placeholder' => 'Short Course Name', 'id' => 'shortcourse_name', 'readonly'=>'readonly']) }}
+                                                        {{ Form::text('shortcourse_name', old('shortcourse_name'), ['class' => 'form-control', 'placeholder' => 'Short Course Name', 'id' => 'shortcourse_name', 'readonly' => 'readonly']) }}
 
                                                         @error('shortcourse_name')
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror
                                                     </td>
                                                 </tr>
-                                                <tr id="form-add-shortcourse-second-part" style="display: none">
+                                                <tr id="form-add-shortcourse-second-part"
+                                                    {{ old('shortcourse_id') ? null : 'style=display:none' }}>
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Short Course Description **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::textarea('shortcourse_description', '', ['class' => 'form-control', 'placeholder' => 'Short Course Description', 'id' => 'shortcourse_description', 'readonly'=>'readonly']) }}
+                                                        {{ Form::textarea('shortcourse_description', old('shortcourse_description'), ['class' => 'form-control', 'placeholder' => 'Short Course Description', 'id' => 'shortcourse_description', 'readonly' => 'readonly']) }}
                                                         @error('shortcourse_description')
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror
                                                     </td>
                                                 </tr>
-                                                <tr id="form-add-shortcourse-second-part" style="display: none">
+                                                <tr id="form-add-shortcourse-second-part"
+                                                    {{ old('shortcourse_id') ? null : 'style=display:none' }}>
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Short Course Objective **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::textarea('shortcourse_objective', '', ['class' => 'form-control', 'placeholder' => 'Short Course Objective', 'id' => 'shortcourse_objective', 'readonly'=>'readonly']) }}
+                                                        {{ Form::textarea('shortcourse_objective', old('shortcourse_objective'), ['class' => 'form-control', 'placeholder' => 'Short Course Objective', 'id' => 'shortcourse_objective', 'readonly' => 'readonly']) }}
                                                         @error('shortcourse_objective')
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror
                                                     </td>
                                                 </tr>
 
-                                                <tr id="form-add-shortcourse-second-part" style="display: none">
+                                                <tr id="form-add-shortcourse-second-part"
+                                                    {{ old('shortcourse_id') ? null : 'style=display:none' }}>
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', "Short Course's Topic **", ['style' => 'font-weight:bold']) }}
                                                     </td>
@@ -118,10 +128,13 @@
                                                                 <td class="col">
                                                                     <select class="form-control topic1"
                                                                         name="shortcourse_topic[]" id="add_topic">
-                                                                        <option value="-1" disabled selected>Select Topic
+                                                                        <option value="-1" disabled
+                                                                            {{ old('shortcourse_topic') ? (old('shortcourse_topic')[0] == -1 ? 'selected' : null) : null }}>
+                                                                            Select Topic
                                                                         </option>
                                                                         @foreach ($topics as $topic)
-                                                                            <option value="{{ $topic->id }}">
+                                                                            <option value="{{ $topic->id }}"
+                                                                                {{ old('shortcourse_topic') ? (old('shortcourse_topic')[0] == $topic->id ? 'selected' : null) : null }}>
                                                                                 {{ $topic->id }} -
                                                                                 {{ $topic->name }}</option>
                                                                         @endforeach
@@ -142,7 +155,7 @@
                                                         {{ Form::label('title', 'Event Date and Time (Start) **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::input('dateTime-local', 'datetime_start', date('Y-m-d H:i:s'), ['class' => 'form-control', 'placeholder' => 'Datetime_start']) }}
+                                                        {{ Form::input('dateTime-local', 'datetime_start', old('datetime_start') ? old('datetime_start') : date('Y-m-d H:i:s'), ['class' => 'form-control', 'placeholder' => 'Datetime_start']) }}
 
                                                         @error('datetime_start')
                                                             <p style="color: red">{{ $message }}</p>
@@ -154,7 +167,7 @@
                                                         {{ Form::label('title', 'Event Date and Time (End) **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::input('dateTime-local', 'datetime_end', date('Y-m-d H:i:s'), ['class' => 'form-control', 'placeholder' => 'Datetime_end']) }}
+                                                        {{ Form::input('dateTime-local', 'datetime_end', old('datetime_end') ? old('datetime_end') : date('Y-m-d H:i:s'), ['class' => 'form-control', 'placeholder' => 'Datetime_end']) }}
                                                         @error('datetime_end')
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror
@@ -167,10 +180,12 @@
                                                     <td class="col px-4">
                                                         <select class="form-control venue" name="venue_id" id="venue_id">
                                                             <option disabled selected>Select Venue</option>
-                                                            <option value="-1">Others</option>
+                                                            <option value="-1" {{ old('venue_id') == -1 ? 'selected' : null }}>
+                                                                Others</option>
                                                             @foreach ($venues as $venue)
                                                                 <option value="{{ $venue->id }}"
-                                                                    name="{{ $venue->name }}">
+                                                                    name="{{ $venue->name }}"
+                                                                    {{ old('venue_id') == $venue->id ? 'selected' : null }}>
                                                                     {{ $venue->id }} -
                                                                     {{ $venue->name }}</option>
                                                             @endforeach
@@ -186,7 +201,7 @@
                                                         {{ Form::label('title', 'Venue Name **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::text('venue_name', '', ['class' => 'form-control', 'placeholder' => 'Venue Name', 'id' => 'venue_name']) }}
+                                                        {{ Form::text('venue_name', old('venue_name'), ['class' => 'form-control', 'placeholder' => 'Venue Name', 'id' => 'venue_name']) }}
 
                                                         @error('venue_name')
                                                             <p style="color: red">{{ $message }}</p>
@@ -216,7 +231,8 @@
 
                                                     <td class="col px-4">
                                                         <input type="hidden" id="fee_id" name="fee_id" value="1" />
-                                                        <select class="form-control fee" name="fee_id" id="fee_id" disabled>
+                                                        <select class="form-control fee" name="fee_id_select"
+                                                            id="fee_id_select" disabled>
                                                             <option disabled>Select Fee</option>
                                                             <option value="1" selected>Normal Price</option>
                                                             <option value="0">Discounted Price</option>
@@ -231,7 +247,7 @@
                                                         {{ Form::label('title', 'Fee Amount (RM) **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::number('fee_amount', '0.00', ['class' => 'form-control', 'placeholder' => 'Fee Amount']) }}
+                                                        {{ Form::number('fee_amount', old('fee_amount') ? old('fee_amount') : '0.00', ['class' => 'form-control', 'placeholder' => 'Fee Amount']) }}
 
                                                         @error('fee_amount')
                                                             <p style="color: red">{{ $message }}</p>
@@ -243,7 +259,7 @@
                                                         {{ Form::label('title', "Trainer's IC ** e.g.:700423102003", ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::text('trainer_ic', '', ['class' => 'form-control search-by-trainer_ic', 'placeholder' => "Trainer's IC", 'id' => 'search-by-trainer_ic_input']) }}
+                                                        {{ Form::text('trainer_ic', old('trainer_ic'), ['class' => 'form-control search-by-trainer_ic', 'placeholder' => "Trainer's IC", 'id' => 'search-by-trainer_ic_input']) }}
                                                         @error('trainer_ic')
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror
@@ -252,19 +268,26 @@
                                                             Search</a>
                                                     </td>
                                                 </tr>
-                                                <tr id="form-add-trainer-second-part" style="display: none">
+                                                <tr id="form-add-trainer-second-part"
+                                                    {{ old('trainer_ic') ? null : 'style=display:none' }}>
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', "Trainer's User ID **", ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
+                                                        <input type="number" name="trainer_user_id" hidden>
                                                         {{ Form::text('trainer_user_id_text', '', ['class' => 'form-control', 'placeholder' => "Trainer's User ID", 'id' => 'trainer_user_id_text', 'disabled', 'style' => 'display:none', 'readonly']) }}
                                                         <select class="form-control user" name="trainer_user_id"
-                                                            id="trainer_user_id" disabled style="display:none">
+                                                            id="trainer_user_id"
+                                                            {{ old('trainer_user_id') == -1 ? null : 'disabled' }}
+                                                            style="display:none">
                                                             <option disabled>Select User ID</option>
-                                                            <option value='-1' name="create_new">Create New</option>
+                                                            <option value='-1' name="create_new"
+                                                                {{ old('trainer_user_id') == -1 ? 'selected' : null }}>Create
+                                                                New</option>
                                                             @foreach ($users as $user)
                                                                 <option value='{{ $user->id }}'
-                                                                    name="{{ $user->name }}">
+                                                                    name="{{ $user->name }}"
+                                                                    {{ old('trainer_user_id') == $user->id ? 'selected' : null }}>
                                                                     {{ $user->id }} -
                                                                     {{ $user->name }}</option>
                                                             @endforeach
@@ -274,35 +297,37 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-                                                <tr id="form-add-trainer-second-part" style="display: none">
+                                                <tr id="form-add-trainer-second-part"
+                                                    {{ old('trainer_ic') ? null : 'style=display:none' }}>
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', "Trainer's Fullname **", ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::text('trainer_fullname', '', ['class' => 'form-control', 'placeholder' => "Trainer's Fullname", 'id' => 'trainer_fullname']) }}
+                                                        {{ Form::text('trainer_fullname', old('trainer_fullname'), ['class' => 'form-control', 'placeholder' => "Trainer's Fullname", 'id' => 'trainer_fullname']) }}
                                                         @error('trainer_fullname')
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror
                                                     </td>
                                                 </tr>
-                                                <tr id="form-add-trainer-second-part" style="display: none">
+                                                <tr id="form-add-trainer-second-part"
+                                                    {{ old('trainer_ic') ? null : 'style=display:none' }}>
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', "Trainer's Phone ** e.g.:0132345678", ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::text('trainer_phone', '', ['class' => 'form-control', 'placeholder' => "Trainer's Phone", 'id' => 'trainer_phone']) }}
+                                                        {{ Form::text('trainer_phone', old('trainer_phone'), ['class' => 'form-control', 'placeholder' => "Trainer's Phone", 'id' => 'trainer_phone']) }}
                                                         @error('trainer_phone')
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror
                                                     </td>
                                                 </tr>
-
-                                                <tr id="form-add-trainer-second-part" style="display: none">
+                                                <tr id="form-add-trainer-second-part"
+                                                    {{ old('trainer_ic') ? null : 'style=display:none' }}>
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', "Trainer's Email **", ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::text('trainer_email', '', ['class' => 'form-control', 'placeholder' => "Trainer's Email", 'id' => 'trainer_email']) }}
+                                                        {{ Form::text('trainer_email', old('trainer_email'), ['class' => 'form-control', 'placeholder' => "Trainer's Email", 'id' => 'trainer_email']) }}
                                                         @error('trainer_email')
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror
@@ -322,7 +347,7 @@
 
                             <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
                                 style="content-align:right">
-                                <button type="submit" id="submit" style="display:none"
+                                <button type="submit" id="submit" {{ old('trainer_ic') ? null : 'style=display:none' }}
                                     class="btn btn-danger ml-auto mr-2 waves-effect waves-themed font-weight-bold"><i
                                         class="ni ni-check"></i> Register</button>
                             </div>
@@ -340,6 +365,7 @@
 @section('script')
     <script>
         $('#search-by-trainer_ic').click(function() {
+
             var trainer_ic = $('#search-by-trainer_ic_input').val();
             $.get("/trainer/search-by-trainer_ic/" + trainer_ic, function(data) {
 
@@ -372,6 +398,7 @@
                     $("#trainer_user_id").addClass('user');
 
                     $("#trainer_user_id option[value='-1']").attr("selected", "true");
+                    $('input[name=trainer_user_id]').val(-1);
                     $('#trainer_fullname').val(null);
                     $('#trainer_phone').val(null);
                     $('#trainer_email').val(null);
@@ -387,6 +414,7 @@
         $('#trainer_user_id').change(function(event) {
             var trainer_fullname = $('#trainer_user_id').find(":selected").attr('name');
             var trainer_user_id = $('#trainer_user_id').find(":selected").val();
+            $('input[name=trainer_user_id]').val(trainer_user_id);
 
             var users = @json($users);
 
@@ -416,7 +444,7 @@
             $('#submit').hide();
 
             $("tr[id=form-add-trainer-second-part]").hide();
-            $( '#search-by-trainer_ic' ).trigger( "click" );
+            $('#search-by-trainer_ic').trigger("click");
 
 
         });
@@ -519,17 +547,16 @@
         });
 
         $(document).ready(function() {
-
             var i = 101;
+            var index =0;
             $('#addTopic').click(function() {
-                i++;
                 $('#topic_field tr:last').after(`
                     <tr id="row${i}" class="topic-added">
                             <td class="col">
                                 <select class="form-control topic${i}" name="shortcourse_topic[]"
                                 id="add_topic">
-                                    <option value="-1" disabled selected>Select Topic
-                                    </option>
+                                    <option value="-1" disabled  {{ old('shortcourse_topic') ? (old('shortcourse_topic')[${index}] == -1 ? 'selected' : null) : null }}>Select Topic
+                                    </option  {{ old('shortcourse_topic') ? (old('shortcourse_topic')[${index}] == $topic->id ? 'selected' : null) : null }}>
                                     @foreach ($topics as $topic)
                                         <option value="{{ $topic->id }}">
                                             {{ $topic->id }} -
@@ -541,6 +568,8 @@
                     </tr>
             `);
                 $(`.topic${i}`).select2();
+                i+=1;
+                index+=1;
             });
 
             $('.shortcourse, .user, .venue, .topic1, .fee').select2();

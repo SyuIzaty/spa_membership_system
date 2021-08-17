@@ -31,7 +31,7 @@
                                 <li class="nav-item active">
                                     <a data-toggle="tab" class="nav-link" href="#general" role="tab">General</a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item" style="display: none">
                                     <a data-toggle="tab" class="nav-link" href="#setting" role="tab">Setting</a>
                                 </li>
                             </ul>
@@ -41,8 +41,8 @@
                                         <hr class="mt-2 mb-3">
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
-                                                <form action="{{ url('/participants/update/' . $participant->id) }}" method="post"
-                                                    name="form">
+                                                <form action="{{ url('/participants/update/' . $participant->id) }}"
+                                                    method="post" name="form">
                                                     @csrf
                                                     <table class="table table-bordered table-hover table-striped">
                                                         <thead class="thead bg-primary-50">
@@ -153,12 +153,48 @@
                                                     </table>
                                                 </form>
                                                 <hr class="mt-2 mb-3">
+
+                                                <table class="table table-striped table-bordered">
+                                                    <thead class="table-primary">
+                                                        <tr class=" bg-primary-50">
+                                                            <th colspan="3"><b>Settings</b></th>
+                                                        </tr>
+                                                        <tr style="background-color:plum">
+                                                            <th class="text-center" scope="col" style="width:20%">
+                                                                Title
+                                                            </th>
+                                                            <th class="text-center" scope="col">
+                                                                Value
+                                                            </th>
+                                                            <th class="text-center" scope="col" style="width:20%">
+                                                                Action
+
+                                                            </th>
+                                                        </tr>
+
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-center">Status</td>
+                                                            <td class="text-center" id="participant_status_category_name"
+                                                                name="participant_status_category_name">
+                                                                Active
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <button
+                                                                    {{ $participant->totalEvents == 0 ? null : 'disabled' }}
+                                                                    href="javascript:;" id="delete_participant"
+                                                                    class="btn btn-danger mr-auto ml-2 waves-effect waves-themed font-weight-bold">DELETE</button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                         <hr class="mt-2 mb-3">
                                     </div>
 
-                                    <div class="tab-pane" id="setting" role="tabpanel">
+                                    <div class="tab-pane" id="setting" role="tabpanel" style="display: none">
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
 

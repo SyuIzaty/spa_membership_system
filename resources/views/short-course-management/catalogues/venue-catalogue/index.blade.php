@@ -65,8 +65,7 @@
                                                 <h5 class="card-title w-150">Add Venue</h5>
                                             </div>
                                             <div class="modal-body">
-                                                <form action="{{ url('/venue') }}"
-                                                    method="post" name="form">
+                                                <form action="{{ url('/venue') }}" method="post" name="form">
                                                     @csrf
                                                     {{-- {!! Form::open(['action' => 'ShortCourseManagement\EventManagement\EventController@storeContactPerson\ '.$venue->id, 'method' => 'POST']) !!} --}}
 
@@ -76,7 +75,7 @@
                                                     <div class="form-group">
                                                         <label for="user_id"><span class="text-danger">*</span>
                                                             Venue Name</label>
-                                                        {{ Form::text('venue_name', '', ['class' => 'form-control', 'placeholder' => "Venue Name", 'id' => 'venue_name']) }}
+                                                        {{ Form::text('venue_name', '', ['class' => 'form-control', 'placeholder' => 'Venue Name', 'id' => 'venue_name']) }}
                                                         @error('venue_name')
                                                             <p style="color: red">{{ $message }}
                                                             </p>
@@ -89,7 +88,7 @@
                                                             data-dismiss="modal" id="close-add-contact_person"><i
                                                                 class="fal fa-window-close"></i>
                                                             Close</button>
-                                                        <button type="submit"
+                                                        <button type="submit" id="submitVenue"
                                                             class="btn btn-primary ml-auto float-right mr-2"><i
                                                                 class="ni ni-plus"></i>
                                                             Add</button>
@@ -180,14 +179,21 @@
             });
 
             // crud-modal-add-contact_person
-            $('#create').click(function() {
-                    $('.modal-body #venue_name').val(null);
-                    $('#crud-modal').modal('show');
-                });
+            // $('#create').click(function() {
+            //     $('.modal-body #venue_name').val(null);
+            //     $('#crud-modal').modal('show');
+            // });
 
-                $('#crud-modal').on('show.bs.modal', function(event) {
-                    $('.modal-body #venue_name').val(null);
-                });
+            // $('#crud-modal').on('show.bs.modal', function(event) {
+            //     $('.modal-body #venue_name').val(null);
+            // });
+
+
+            $('#create').click(function() {
+                $('#venue_name').val('Unnamed Venue');
+
+                $("#submitVenue").trigger("click");
+            });
         });
     </script>
 @endsection

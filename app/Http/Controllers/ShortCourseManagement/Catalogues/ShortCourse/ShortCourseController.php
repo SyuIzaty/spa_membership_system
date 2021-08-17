@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\ShortCourseManagement\Catalogues\ShortCourse;
+
 use App\Models\ShortCourseManagement\ShortCourse;
 use App\Models\ShortCourseManagement\Topic;
 use App\Models\ShortCourseManagement\TopicShortCourse;
@@ -20,8 +21,8 @@ class ShortCourseController extends Controller
     public function dataShortCourses()
     {
         $shortcourses = ShortCourse::orderByDesc('id')->get()->load(['events_shortcourses', 'topics_shortcourses.topic']);
-        $index=0;
-        foreach($shortcourses as $shortcourse){
+        $index = 0;
+        foreach ($shortcourses as $shortcourse) {
 
             if (isset($shortcourse->events_shortcourses)) {
                 $totalEvents = $shortcourse->events_shortcourses->count();
@@ -32,7 +33,7 @@ class ShortCourseController extends Controller
             $shortcourses[$index]->totalEvents = $totalEvents;
             $shortcourses[$index]['created_at_toDayDateTimeString'] = date_format(new DateTime($shortcourses[$index]->created_at), 'g:ia \o\n l jS F Y');
             $shortcourses[$index]['updated_at_toDayDateTimeString'] = date_format(new DateTime($shortcourses[$index]->updated_at), 'g:ia \o\n l jS F Y');
-            $index+=1;
+            $index += 1;
         }
 
 
@@ -41,7 +42,7 @@ class ShortCourseController extends Controller
                 return 'Created At:<br>' . $shortcourses->created_at_toDayDateTimeString . '<br><br> Last Update:<br>' . $shortcourses->updated_at_toDayDateTimeString;
             })
             ->addColumn('events', function ($shortcourses) {
-                return 'Total Events: ' . $shortcourses->totalEvents ;
+                return 'Total Events: ' . $shortcourses->totalEvents;
             })
             ->addColumn('management_details', function ($shortcourses) {
                 return 'Created By: ' . $shortcourses->created_by . '<br> Created At: ' . $shortcourses->created_at;
@@ -52,7 +53,6 @@ class ShortCourseController extends Controller
             })
             ->rawColumns(['action', 'management_details', 'events', 'dates'])
             ->make(true);
-
     }
 
     public function create()
@@ -90,9 +90,10 @@ class ShortCourseController extends Controller
         $shortcourse->totalEvents = $totalEvents;
 
 
-        $topics=Topic::all();
+        $topics = Topic::all();
 
-        return view('short-course-management.catalogues.course-catalogue.show', compact('shortcourse','topics',));
+        // return view('short-course-management.catalogues.course-catalogue.show', compact('shortcourse','topics',));
+        return redirect('/shortcourses/' . $shortcourse->id)->with(compact('shortcourse', 'topics'));
     }
     public function show($id)
     {
@@ -112,13 +113,13 @@ class ShortCourseController extends Controller
         $shortcourse->totalEvents = $totalEvents;
 
 
-        $topics=Topic::all();
+        $topics = Topic::all();
 
-        return view('short-course-management.catalogues.course-catalogue.show', compact('shortcourse','topics',));
-
+        return view('short-course-management.catalogues.course-catalogue.show', compact('shortcourse', 'topics',));
     }
 
-    public function delete(Request $request, $id){
+    public function delete(Request $request, $id)
+    {
 
         $exist = ShortCourse::find($id);
         if (Auth::user()->id) {
@@ -170,7 +171,7 @@ class ShortCourseController extends Controller
     public function searchById($id)
     {
         //
-        $shortcourse=ShortCourse::where('id', $id)->first();
+        $shortcourse = ShortCourse::where('id', $id)->first();
         return $shortcourse;
     }
 
@@ -210,6 +211,4 @@ class ShortCourseController extends Controller
 
         return Redirect()->back()->with('messageShortCourseBasicDetails', 'Remove a topic Successfully');
     }
-
-
 }

@@ -86,7 +86,8 @@ class VenueController extends Controller
         }
         $venue->totalEvents = $totalEvents;
 
-        return view('short-course-management.catalogues.venue-catalogue.show', compact('venue',));
+        // return view('short-course-management.catalogues.venue-catalogue.show', compact('venue',));
+        return redirect('/venues/' . $venue->id)->with(compact('venue'));
     }
     public function show($id)
     {

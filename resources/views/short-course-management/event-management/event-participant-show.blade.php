@@ -554,8 +554,7 @@
                                                                         </div>
                                                                     @endif
 
-                                                                    <form
-                                                                        action="{{ url('/update-progress/bundle') }}"
+                                                                    <form action="{{ url('/update-progress/bundle') }}"
                                                                         method="post" name="form">
                                                                         @csrf
                                                                         <div class="table-responsive">
@@ -584,7 +583,8 @@
                                                                         </div>
                                                                         <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
                                                                             style="content-align:right">
-                                                                            <button type="submit" name="update-progress" value="disqualified-application-no-payment"
+                                                                            <button type="submit" name="update-progress"
+                                                                                value="disqualified-application-no-payment"
                                                                                 class="btn btn-danger ml-auto mr-2 waves-effect waves-themed"><i
                                                                                     class="ni ni-close"></i> Disqualified
                                                                                 All
@@ -1119,24 +1119,24 @@
                                                             <div class="panel-container show">
                                                                 {{-- <form action="{{ url('/senarai_kolej/student/bundle/into/' . $event->id) }}" method="post"
                                                                     name="form"> --}}
-                                                                <form name="form">
-                                                                    @csrf
-                                                                    <div class="panel-content">
-                                                                        @if (Session::has('messagePaymentWaitForVerification'))
-                                                                            <div class="alert alert-success"
-                                                                                style="color: #3b6324; background-color: #d3fabc;">
-                                                                                <i class="icon fal fa-check-circle"></i>
-                                                                                {{ Session::get('messagePaymentWaitForVerification') }}
-                                                                            </div>
-                                                                        @endif
-                                                                        @if (Session::has('notification'))
-                                                                            <div class="alert alert-success"
-                                                                                style="color: #3b6324; background-color: #d3fabc;">
-                                                                                <i class="icon fal fa-check-circle"></i>
-                                                                                {{ Session::get('notification') }}
-                                                                            </div>
-                                                                        @endif
-
+                                                                <div class="panel-content">
+                                                                    @if (Session::has('messagePaymentWaitForVerification'))
+                                                                        <div class="alert alert-success"
+                                                                            style="color: #3b6324; background-color: #d3fabc;">
+                                                                            <i class="icon fal fa-check-circle"></i>
+                                                                            {{ Session::get('messagePaymentWaitForVerification') }}
+                                                                        </div>
+                                                                    @endif
+                                                                    @if (Session::has('notification'))
+                                                                        <div class="alert alert-success"
+                                                                            style="color: #3b6324; background-color: #d3fabc;">
+                                                                            <i class="icon fal fa-check-circle"></i>
+                                                                            {{ Session::get('notification') }}
+                                                                        </div>
+                                                                    @endif
+                                                                    <form action="{{ url('/update-progress/bundle') }}"
+                                                                        method="post" name="form">
+                                                                        @csrf
                                                                         <div class="table-responsive">
                                                                             <table id="table-payment-wait-for-verification"
                                                                                 name="table-update-progress-3"
@@ -1163,116 +1163,121 @@
                                                                             </table>
                                                                         </div>
 
-                                                                    </div>
-                                                                    <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
-                                                                        style="content-align:right">
-                                                                        <button type="submit"
-                                                                            class="btn btn-success ml-auto mr-2 waves-effect waves-themed"><i
-                                                                                class="ni ni-check"></i> Verify All
-                                                                            Ticked</button>
-                                                                        <button type="submit"
-                                                                            class="btn btn-danger float-right mr-2 waves-effect waves-themed"><i
-                                                                                class="ni ni-close"></i> Reject All
-                                                                            Ticked</button>
+                                                                        <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
+                                                                            style="content-align:right">
+                                                                            <button type="submit"
+                                                                                class="btn btn-success ml-auto mr-2 waves-effect waves-themed"
+                                                                                name="update-progress"
+                                                                                value="verify-payment-proof"><i
+                                                                                    class="ni ni-check"></i> Verify All
+                                                                                Ticked</button>
+                                                                            <button type="submit" name="update-progress"
+                                                                                value="reject-payment-proof"
+                                                                                class="btn btn-danger float-right mr-2 waves-effect waves-themed"><i
+                                                                                    class="ni ni-close"></i> Reject All
+                                                                                Ticked</button>
 
-                                                                        <div class="modal fade" id="crud-modals-view-proof"
-                                                                            aria-hidden="true">
-                                                                            <div class="modal-dialog">
-                                                                                <div class="modal-content">
-                                                                                    <div class="card-header">
-                                                                                        <h5 class="card-title w-100">Payment
-                                                                                            Proof
-                                                                                        </h5>
-                                                                                    </div>
-                                                                                    <div class="modal-body">
-                                                                                        <div class="form-group col"
-                                                                                            id="carousel-view-proof"
-                                                                                            style="display:none">
+                                                                            <div class="modal fade"
+                                                                                id="crud-modals-view-proof"
+                                                                                aria-hidden="true">
+                                                                                <div class="modal-dialog">
+                                                                                    <div class="modal-content">
+                                                                                        <div class="card-header">
+                                                                                            <h5 class="card-title w-100">
+                                                                                                Payment
+                                                                                                Proof
+                                                                                            </h5>
+                                                                                        </div>
+                                                                                        <div class="modal-body">
+                                                                                            <div class="form-group col"
+                                                                                                id="carousel-view-proof"
+                                                                                                style="display:none">
 
-                                                                                            <!--Carousel Wrapper-->
-                                                                                            <div id="multi-item-example"
-                                                                                                class="carousel slide carousel-multi-item"
-                                                                                                data-ride="carousel">
+                                                                                                <!--Carousel Wrapper-->
+                                                                                                <div id="multi-item-example"
+                                                                                                    class="carousel slide carousel-multi-item"
+                                                                                                    data-ride="carousel">
 
-                                                                                                <!--Controls-->
-                                                                                                <div class="controls-top">
-                                                                                                    <a class="btn-floating"
-                                                                                                        href="#multi-item-example"
-                                                                                                        data-slide="prev"><i
-                                                                                                            class="ni ni-arrow-left"></i></a>
+                                                                                                    <!--Controls-->
+                                                                                                    <div
+                                                                                                        class="controls-top">
+                                                                                                        <a class="btn-floating"
+                                                                                                            href="#multi-item-example"
+                                                                                                            data-slide="prev"><i
+                                                                                                                class="ni ni-arrow-left"></i></a>
 
-                                                                                                    <a class="btn-floating"
-                                                                                                        href="#multi-item-example"
-                                                                                                        data-slide="next"><i
-                                                                                                            class="ni ni-arrow-right"></i></a>
+                                                                                                        <a class="btn-floating"
+                                                                                                            href="#multi-item-example"
+                                                                                                            data-slide="next"><i
+                                                                                                                class="ni ni-arrow-right"></i></a>
+                                                                                                    </div>
+                                                                                                    <!--/.Controls-->
+
+                                                                                                    <!--Indicators-->
+                                                                                                    <ol class="carousel-indicators mb-0"
+                                                                                                        id="carousel-indicators-view-proof">
+                                                                                                    </ol>
+                                                                                                    <!--/.Indicators-->
+
+                                                                                                    <!--Slides-->
+                                                                                                    <div class="carousel-inner"
+                                                                                                        role="listbox"
+                                                                                                        id="carousel-slides-view-proof">
+                                                                                                    </div>
+                                                                                                    <!--/.Slides-->
+
                                                                                                 </div>
-                                                                                                <!--/.Controls-->
-
-                                                                                                <!--Indicators-->
-                                                                                                <ol class="carousel-indicators mb-0"
-                                                                                                    id="carousel-indicators-view-proof">
-                                                                                                </ol>
-                                                                                                <!--/.Indicators-->
-
-                                                                                                <!--Slides-->
-                                                                                                <div class="carousel-inner"
-                                                                                                    role="listbox"
-                                                                                                    id="carousel-slides-view-proof">
-                                                                                                </div>
-                                                                                                <!--/.Slides-->
-
+                                                                                                <!--/.Carousel Wrapper-->
                                                                                             </div>
-                                                                                            <!--/.Carousel Wrapper-->
-                                                                                        </div>
-                                                                                        <hr class="mt-1 mb-1">
-                                                                                        <div
-                                                                                            class="form-group col col-sm-5">
-                                                                                            <label class="form-label"
-                                                                                                for="amount_to_be_verified">Fee
-                                                                                                Amount</label>
-                                                                                            <div class="input-group flex-nowrap"
-                                                                                                id="fee_id_show_to_be_verified"
-                                                                                                name="fee_id_show_to_be_verified"
-                                                                                                style="width:auto">
-                                                                                                <div
-                                                                                                    class="input-group-prepend">
-                                                                                                    <span
-                                                                                                        class="input-group-text"
-                                                                                                        style="background-color:white; border-style: none;"
-                                                                                                        id="addon-wrapping">RM</span>
-                                                                                                </div>
-                                                                                                <input
-                                                                                                    class="form-control-plaintext"
-                                                                                                    id="amount_to_be_verified"
-                                                                                                    name="amount_to_be_verified"
-                                                                                                    readonly>
-                                                                                                <div
-                                                                                                    class="input-group-append">
-                                                                                                    <span
-                                                                                                        style="background-color:white; border-style: none;"
-                                                                                                        class="input-group-text">/
-                                                                                                        person</span>
+                                                                                            <hr class="mt-1 mb-1">
+                                                                                            <div
+                                                                                                class="form-group col col-sm-5">
+                                                                                                <label class="form-label"
+                                                                                                    for="amount_to_be_verified">Fee
+                                                                                                    Amount</label>
+                                                                                                <div class="input-group flex-nowrap"
+                                                                                                    id="fee_id_show_to_be_verified"
+                                                                                                    name="fee_id_show_to_be_verified"
+                                                                                                    style="width:auto">
+                                                                                                    <div
+                                                                                                        class="input-group-prepend">
+                                                                                                        <span
+                                                                                                            class="input-group-text"
+                                                                                                            style="background-color:white; border-style: none;"
+                                                                                                            id="addon-wrapping">RM</span>
+                                                                                                    </div>
+                                                                                                    <input
+                                                                                                        class="form-control-plaintext"
+                                                                                                        id="amount_to_be_verified"
+                                                                                                        name="amount_to_be_verified"
+                                                                                                        readonly>
+                                                                                                    <div
+                                                                                                        class="input-group-append">
+                                                                                                        <span
+                                                                                                            style="background-color:white; border-style: none;"
+                                                                                                            class="input-group-text">/
+                                                                                                            person</span>
+                                                                                                    </div>
                                                                                                 </div>
                                                                                             </div>
+                                                                                            <hr class="mt-1 mb-1">
+                                                                                            {{-- <div class="invalid-feedback">Example invalid custom file feedback</div> --}}
+                                                                                            <div class="footer">
+                                                                                                <button type="button"
+                                                                                                    class="btn btn-danger ml-auto float-right mr-2"
+                                                                                                    data-dismiss="modal"><i
+                                                                                                        class="fal fa-window-close"></i>
+                                                                                                    Close</button>
+                                                                                            </div>
+
                                                                                         </div>
-                                                                                        <hr class="mt-1 mb-1">
-
-
-                                                                                        {{-- <div class="invalid-feedback">Example invalid custom file feedback</div> --}}
-                                                                                        <div class="footer">
-                                                                                            <button type="button"
-                                                                                                class="btn btn-danger ml-auto float-right mr-2"
-                                                                                                data-dismiss="modal"><i
-                                                                                                    class="fal fa-window-close"></i>
-                                                                                                Close</button>
-                                                                                        </div>
-
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                </form>
+                                                                    </form>
+
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1309,24 +1314,24 @@
                                                             <div class="panel-container show">
                                                                 {{-- <form action="{{ url('/senarai_kolej/student/bundle/into/' . $event->id) }}" method="post"
                                                                     name="form"> --}}
-                                                                <form name="form">
-                                                                    @csrf
-                                                                    <div class="panel-content">
-                                                                        @if (Session::has('messageAllExpectedAttendances'))
-                                                                            <div class="alert alert-success"
-                                                                                style="color: #3b6324; background-color: #d3fabc;">
-                                                                                <i class="icon fal fa-check-circle"></i>
-                                                                                {{ Session::get('messageAllExpectedAttendances') }}
-                                                                            </div>
-                                                                        @endif
-                                                                        @if (Session::has('notification'))
-                                                                            <div class="alert alert-success"
-                                                                                style="color: #3b6324; background-color: #d3fabc;">
-                                                                                <i class="icon fal fa-check-circle"></i>
-                                                                                {{ Session::get('notification') }}
-                                                                            </div>
-                                                                        @endif
-
+                                                                <div class="panel-content">
+                                                                    @if (Session::has('messageAllExpectedAttendances'))
+                                                                        <div class="alert alert-success"
+                                                                            style="color: #3b6324; background-color: #d3fabc;">
+                                                                            <i class="icon fal fa-check-circle"></i>
+                                                                            {{ Session::get('messageAllExpectedAttendances') }}
+                                                                        </div>
+                                                                    @endif
+                                                                    @if (Session::has('notification'))
+                                                                        <div class="alert alert-success"
+                                                                            style="color: #3b6324; background-color: #d3fabc;">
+                                                                            <i class="icon fal fa-check-circle"></i>
+                                                                            {{ Session::get('notification') }}
+                                                                        </div>
+                                                                    @endif
+                                                                    <form action="{{ url('/update-progress/bundle') }}"
+                                                                        method="post" name="form">
+                                                                        @csrf
                                                                         <div class="table-responsive">
                                                                             <table id="table-expected-attendances"
                                                                                 name="table-update-progress-4"
@@ -1355,20 +1360,24 @@
                                                                             </table>
                                                                         </div>
 
-                                                                    </div>
-                                                                    <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
-                                                                        style="content-align:right">
-                                                                        <button type="submit"
-                                                                            class="btn btn-success ml-auto mr-2 waves-effect waves-themed"><i
-                                                                                class="ni ni-check"></i> All
-                                                                            Ticked Are Attend</button>
-                                                                        <button type="submit"
-                                                                            class="btn btn-danger float-right mr-2 waves-effect waves-themed"><i
-                                                                                class="ni ni-close"></i> All
-                                                                            Ticked Are Not Attend</button>
-                                                                    </div>
-                                                                    {{-- <button type="button" class="btn btn-success ml-auto mr-2 waves-effect waves-themed" onclick="window.location='http://sims.test/checkrequirements'"><i class="fal fa-check-circle"></i> Run All</button> --}}
-                                                                </form>
+                                                                        <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
+                                                                            style="content-align:right">
+                                                                            <button type="submit" name="update-progress"
+                                                                                value="verify-attendance-attend"
+                                                                                class="btn btn-success ml-auto mr-2 waves-effect waves-themed"><i
+                                                                                    class="ni ni-check"></i> All
+                                                                                Ticked Are Attend</button>
+                                                                            <button type="submit" name="update-progress"
+                                                                                value="verify-attendance-not-attend"
+                                                                                class="btn btn-danger float-right mr-2 waves-effect waves-themed"><i
+                                                                                    class="ni ni-close"></i> All
+                                                                                Ticked Are Not Attend</button>
+                                                                        </div>
+                                                                    </form>
+
+                                                                </div>
+                                                                {{-- <button type="button" class="btn btn-success ml-auto mr-2 waves-effect waves-themed" onclick="window.location='http://sims.test/checkrequirements'"><i class="fal fa-check-circle"></i> Run All</button> --}}
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1476,25 +1485,27 @@
                                                                 </div>
                                                             </div>
                                                             <div class="panel-container show">
-                                                                <form name="form">
-                                                                    @csrf
-                                                                    <div class="panel-content">
-                                                                        @if (Session::has('messageAllPartcipantPostEvent'))
-                                                                            <div class="alert alert-success"
-                                                                                style="color: #3b6324; background-color: #d3fabc;">
-                                                                                <i class="icon fal fa-check-circle"></i>
-                                                                                {{ Session::get('messageAllPartcipantPostEvent') }}
-                                                                            </div>
-                                                                        @endif
-                                                                        @if (Session::has('notification'))
-                                                                            <div class="alert alert-success"
-                                                                                style="color: #3b6324; background-color: #d3fabc;">
-                                                                                <i class="icon fal fa-check-circle"></i>
-                                                                                {{ Session::get('notification') }}
-                                                                            </div>
-                                                                        @endif
+                                                                <div class="panel-content">
+                                                                    @if (Session::has('messageAllPartcipantPostEvent'))
+                                                                        <div class="alert alert-success"
+                                                                            style="color: #3b6324; background-color: #d3fabc;">
+                                                                            <i class="icon fal fa-check-circle"></i>
+                                                                            {{ Session::get('messageAllPartcipantPostEvent') }}
+                                                                        </div>
+                                                                    @endif
+                                                                    @if (Session::has('notification'))
+                                                                        <div class="alert alert-success"
+                                                                            style="color: #3b6324; background-color: #d3fabc;">
+                                                                            <i class="icon fal fa-check-circle"></i>
+                                                                            {{ Session::get('notification') }}
+                                                                        </div>
+                                                                    @endif
 
+                                                                    <form action="{{ url('/update-progress/bundle') }}"
+                                                                        method="post" name="form">
+                                                                        @csrf
                                                                         <div class="table-responsive">
+
                                                                             <table id="table-participant-post-event"
                                                                                 name="table-update-progress-6"
                                                                                 class="table table-bordered table-hover table-striped w-100">
@@ -1515,22 +1526,27 @@
                                                                                 </thead>
                                                                             </table>
                                                                         </div>
+                                                                        <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
+                                                                            style="content-align:right">
+                                                                            <button type="submit" name="update-progress"
+                                                                                value="send-question"
+                                                                                class="btn btn-success ml-auto mr-2 waves-effect waves-themed"><i
+                                                                                    class="ni ni-check"></i> Send
+                                                                                Questionaire
+                                                                                to All
+                                                                                Ticked</button>
+                                                                            <button type="submit" style="display:none"
+                                                                                class="btn btn-danger float-right mr-2 waves-effect waves-themed"><i
+                                                                                    class="ni ni-close"></i> Ignore
+                                                                                Questionaire
+                                                                                to All
+                                                                                Ticked</button>
+                                                                        </div>
+                                                                    </form>
 
-                                                                    </div>
-                                                                    <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
-                                                                        style="content-align:right">
-                                                                        <button type="submit"
-                                                                            class="btn btn-success ml-auto mr-2 waves-effect waves-themed"><i
-                                                                                class="ni ni-check"></i> Send Questionaire
-                                                                            to All
-                                                                            Ticked</button>
-                                                                        <button type="submit"
-                                                                            class="btn btn-danger float-right mr-2 waves-effect waves-themed"><i
-                                                                                class="ni ni-close"></i> Ignore Questionaire
-                                                                            to All
-                                                                            Ticked</button>
-                                                                    </div>
-                                                                </form>
+                                                                </div>
+
+
                                                             </div>
                                                         </div>
                                                     </div>

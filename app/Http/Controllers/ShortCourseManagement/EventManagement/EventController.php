@@ -111,8 +111,7 @@ class EventController extends Controller
     public function storeNew(Request $request)
     {
         //
-
-
+        // dd($request->shortcourse_topic[0]);
         Validator::extend('check_array', function ($attribute, $value, $parameters, $validator) {
             return count($value) >= 1;
         });

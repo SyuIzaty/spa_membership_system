@@ -65,8 +65,7 @@
                                                 <h5 class="card-title w-150">Add Shortcourse</h5>
                                             </div>
                                             <div class="modal-body">
-                                                <form action="{{ url('/shortcourse') }}"
-                                                    method="post" name="form">
+                                                <form action="{{ url('/shortcourse') }}" method="post" name="form">
                                                     @csrf
                                                     {{-- {!! Form::open(['action' => 'ShortCourseManagement\EventManagement\EventController@storeContactPerson\ '.$shortcourse->id, 'method' => 'POST']) !!} --}}
 
@@ -76,7 +75,7 @@
                                                     <div class="form-group">
                                                         <label for="user_id"><span class="text-danger">*</span>
                                                             Short Course Name</label>
-                                                        {{ Form::text('shortcourse_name', '', ['class' => 'form-control', 'placeholder' => "Short Course Name", 'id' => 'shortcourse_name']) }}
+                                                        {{ Form::text('shortcourse_name', '', ['class' => 'form-control', 'placeholder' => 'Short Course Name', 'id' => 'shortcourse_name']) }}
                                                         @error('shortcourse_name')
                                                             <p style="color: red">{{ $message }}
                                                             </p>
@@ -89,7 +88,7 @@
                                                             data-dismiss="modal" id="close-add-contact_person"><i
                                                                 class="fal fa-window-close"></i>
                                                             Close</button>
-                                                        <button type="submit"
+                                                        <button type="submit" id="submitShortCourse"
                                                             class="btn btn-primary ml-auto float-right mr-2"><i
                                                                 class="ni ni-plus"></i>
                                                             Add</button>
@@ -180,14 +179,20 @@
             });
 
             // crud-modal-add-contact_person
-            $('#create').click(function() {
-                    $('.modal-body #shortcourse_name').val(null);
-                    $('#crud-modal').modal('show');
-                });
+            // $('#create').click(function() {
+            //         $('.modal-body #shortcourse_name').val(null);
+            //         $('#crud-modal').modal('show');
+            //     });
 
-                $('#crud-modal').on('show.bs.modal', function(event) {
-                    $('.modal-body #shortcourse_name').val(null);
-                });
-        });
+            //     $('#crud-modal').on('show.bs.modal', function(event) {
+            //         $('.modal-body #shortcourse_name').val(null);
+            //     });
+            // crud-modal-add-contact_person
+            $('#create').click(function() {
+                $('#shortcourse_name').val('Unnamed Shortcourse');
+
+                $("#submitShortCourse").trigger("click");
+            });
+        })
     </script>
 @endsection
