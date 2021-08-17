@@ -549,6 +549,7 @@
         $(document).ready(function() {
             var i = 101;
             var index =0;
+            // TODO: Find the way to use old value and recursive this.
             $('#addTopic').click(function() {
                 $('#topic_field tr:last').after(`
                     <tr id="row${i}" class="topic-added">

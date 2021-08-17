@@ -72,4 +72,8 @@ class Event extends Model
     {
         return $this->hasMany('App\Models\ShortCourseManagement\Fee', 'event_id', 'id');
     }
+    public function event_feedback_set()
+    {
+        return $this->belongsTo('App\Models\ShortCourseManagement\EventFeedbackSet', 'event_feedback_set_id', 'id');
+    }
 }

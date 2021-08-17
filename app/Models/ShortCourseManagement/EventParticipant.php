@@ -79,5 +79,11 @@ class EventParticipant extends Model
     {
         return $this->hasMany('App\Models\ShortCourseManagement\EventParticipantPaymentProof', 'event_participant_id', 'id');
     }
+    public function events_participants_questions_answers()
+    {
+        return $this->hasMany('App\Models\ShortCourseManagement\EventParticipantQuestionAnswer',
+        'question_id',
+        'id');
+    }
     // $this->belongsTo(self::class, 'parent_id');
 }
