@@ -802,16 +802,16 @@ class EventParticipantController extends Controller
 
     public function updateProgressBundle(Request $request)
     {
-        $localRequest=$request->input();
-        $keys=array_keys($localRequest);
-        foreach ($keys as $key){
-            if(str_contains($key, 'checkbox')){
-                $checkbox_key=$key;
+        $localRequest = $request->input();
+        $keys = array_keys($localRequest);
+        foreach ($keys as $key) {
+            if (str_contains($key, 'checkbox')) {
+                $checkbox_key = $key;
                 break;
             }
         }
-        $eventParticipant_ids=$localRequest[$checkbox_key];
-        $progress_name=$request["update-progress"];
+        $eventParticipant_ids = $localRequest[$checkbox_key];
+        $progress_name = $request["update-progress"];
         foreach ($eventParticipant_ids as $eventParticipant_id) {
             $eventParticipant = EventParticipant::where('id', $eventParticipant_id)->first()->load(['participant', 'event.venue', 'fee']);
             switch ($progress_name) {
@@ -988,8 +988,8 @@ class EventParticipantController extends Controller
                     break;
             }
         }
-        $existEventParticipant=EventParticipant::find($eventParticipant_ids[0])->load(['event']);
-        $event=$existEventParticipant->event;
+        $existEventParticipant = EventParticipant::find($eventParticipant_ids[0])->load(['event']);
+        $event = $existEventParticipant->event;
         // return redirect("/event/' . $event->id . '/events-participants/show")->with( ['event' => $event] );
         return view('short-course-management.event-management.event-participant-show', compact('event'));
     }
@@ -1009,6 +1009,7 @@ class EventParticipantController extends Controller
                 $events[$indexEvent]['is_verified_payment_proof'] = $eventParticipant->is_verified_payment_proof;
                 $events[$indexEvent]['payment_proof_path'] = $eventParticipant->payment_proof_path;
                 $events[$indexEvent]['amount'] = $eventParticipant->fee->amount;
+                $events[$indexEvent]['fee_name'] = $eventParticipant->fee->name;
                 $indexEvent += 1;
             }
         }
@@ -1055,10 +1056,12 @@ class EventParticipantController extends Controller
             ->addColumn('management_details', function ($events) {
                 return 'Created By: ' . $events->created_by . '<br> Created At: ' . $events->created_at;
             })
+            ->addColumn('fee_amount', function ($events) {
+                return 'RM' . $events->amount.'/person ('.$events->fee_name.')' ;
+            })
             ->addColumn('action', function ($events) {
                 return '
-                <a href="#" data-target="#crud-modals" data-toggle="modal" data-event_id="' . $events->id . '" data-event_participant_id="' . $events->event_participant_id . '" data-is_verified_payment_proof="' . $events->is_verified_payment_proof . '" data-amount="' . $events->amount . '" class="btn btn-sm btn-primary">Update Payment Proof</a>
-                <a href="#" class="btn btn-sm btn-danger">Cancel Application</a>';
+                <a href="#" data-target="#crud-modals" data-toggle="modal" data-event_id="' . $events->id . '" data-event_participant_id="' . $events->event_participant_id . '" data-is_verified_payment_proof="' . $events->is_verified_payment_proof . '" data-amount="' . $events->amount . '" class="btn btn-sm btn-primary">Update Payment Proof</a>';
             })
 
             // <a href="" data-target="#crud-modals" data-toggle="modal" data-id="' . $kolejs->id . '" data-name="' . $kolejs->name . '" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i> Sunting</a>
@@ -1071,6 +1074,12 @@ class EventParticipantController extends Controller
         $eventParticipantPaymentProofs = EventParticipantPaymentProof::where([
             ['event_participant_id', '=', $event_participant_id]
         ])->get();
+
+        $index=0;
+        foreach ($eventParticipantPaymentProofs as $eventParticipantPaymentProof){
+            $eventParticipantPaymentProofs[$index]['created_at_diffForHumans']=$eventParticipantPaymentProof->created_at->diffForHumans();;
+            $index+=1;
+        }
 
         return $eventParticipantPaymentProofs;
     }

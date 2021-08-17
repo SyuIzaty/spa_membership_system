@@ -73,6 +73,7 @@
                                                 <th>ID</th>
                                                 <th style="width:30%">NAME</th>
                                                 <th style="width:30%">DATES</th>
+                                                <th style="width:25%">AMOUNTS</th>
                                                 <th>ACTION</th>
                                             </tr>
                                             {{-- <tr>
@@ -263,6 +264,11 @@
                         data: 'dates',
                         name: 'dates'
                     },
+
+                    {
+                        data: 'fee_amount',
+                        name: 'fee_amount'
+                    },
                     {
                         data: 'action',
                         name: 'action',
@@ -373,7 +379,7 @@
                                                         alt="Card image cap">
                                                     <div
                                                         class="card-body d-flex justify-content-between">
-                                                        <h4 class="card-title">${img.created_at}</h4>
+                                                        <h4 class="card-title">${img.created_at_diffForHumans}</h4>
                                                             <form method="post"
                                                                 action="/event-participant-payment_proof/delete/${img.id}">
                                                                 @csrf

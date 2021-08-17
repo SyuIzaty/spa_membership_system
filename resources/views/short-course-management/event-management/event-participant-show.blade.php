@@ -1814,8 +1814,10 @@
                                 $('.modal-body #application_update_submit').append(
                                     '<i class = "fal fa-save"></i> Update');
 
+                                $('.modal-body #application_update_submit').hide();
+
                                 $('.modal-body #application_message').append(
-                                    'Already Apply - Update Application');
+                                    'Already Apply');
 
                             } else {
                                 // TODO: Not Apply Yet
@@ -2377,7 +2379,7 @@
                                                                 alt="Card image cap">
                                                             <div
                                                                 class="card-body d-flex justify-content-between">
-                                                                <h4 class="card-title">${img.created_at}</h4>
+                                                                <h4 class="card-title">${img.created_at_diffForHumans}</h4>
                                                                     <form method="post"
                                                                         action="/event-participant-payment_proof/delete/${img.id}">
                                                                         @csrf
@@ -2470,7 +2472,7 @@
                                                                 alt="Card image cap">
                                                             <div
                                                                 class="card-body d-flex justify-content-between">
-                                                                <h4 class="card-title">${img.created_at}</h4>
+                                                                <h4 class="card-title">${img.created_at_diffForHumans}</h4>
                                                             </div>
                                                         </div>
                                                     </div>

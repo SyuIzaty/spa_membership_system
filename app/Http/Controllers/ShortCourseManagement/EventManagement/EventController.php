@@ -716,7 +716,7 @@ class EventController extends Controller
 
     public function indexPublicView()
     {
-        $events = Event::where('event_status_category_id', 2)->get()->load(['events_participants', 'venue', 'fees']);
+        $events = Event::where('event_status_category_id', 2)->orderByDesc('created_at')->get()->load(['events_participants', 'venue', 'fees']);
         $index = 0;
         foreach ($events as $event) {
             $events[$index]->created_at_diffForHumans = $events[$index]->created_at->diffForHumans();
