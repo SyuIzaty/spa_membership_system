@@ -436,66 +436,49 @@
                             </div>
 
                         </div>
-                        <hr class="mt-2 mb-2">
-                        <div class="row">
-                            <div class="col">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="heading text-iceps-blue">
-                                            Description
-                                        </h5>
+                        
+                        <div class="panel panel-default">
+                            <div class="row">
+                                <div class="col">
+                                        <div class="p-5">
+                                            <h1>Description</h1>
 
-                                        {!! $event->description !!}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="heading text-iceps-blue">
-                                            Who should attend?
-                                        </h5>
-                                        {!! $event->target_audience !!}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <hr class="mt-2 mb-2">
-                        <div class="panel-container show">
-                            <div class="panel-content">
-                                <ul class="nav nav-pills" role="tablist">
-                                    <li class="nav-item">
-                                        <a data-toggle="tab" class="nav-link active" href="#objective"
-                                            role="tab">Objective</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a data-toggle="tab" class="nav-link" href="#outline" role="tab">Outline</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a data-toggle="tab" class="nav-link" href="#tentative" role="tab">tentative</a>
-                                    </li>
-                                </ul>
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="tab-content col-md-12">
-                                            <div class="tab-pane active" id="objective" role="tabpanel">
-                                                {!! $event->objective !!}
-                                            </div>
-                                            <div class="tab-pane" id="outline" role="tabpanel">
-                                                {!! $event->outline !!}
-                                            </div>
-                                            <div class="tab-pane" id="tentative" role="tabpanel">
-                                                {!! $event->tentative !!}
-                                            </div>
+                                            {!! $event->description !!}
                                         </div>
-                                    </div>
+                                </div>
+                                <div class="col">
+                                        <div class="p-5">
+                                            <h1> Who should attend?</h1>
+                                            {!! $event->target_audience !!}
+                                        </div>
+                                </div>
+                            </div>
+
+                            <ul class="nav nav-tabs nav-tabs-clean" style="padding: 0 15px 0 15px;" role="tablist">
+                                <li class="nav-item">
+                                    <a data-toggle="tab" class="nav-link active" href="#objective"
+                                        role="tab">Objective</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a data-toggle="tab" class="nav-link" href="#outline" role="tab">Outline</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a data-toggle="tab" class="nav-link" href="#tentative" role="tab">Tentative</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content col-md-12 p-5">
+                                <div class="tab-pane active" id="objective" role="tabpanel">
+                                    {!! $event->objective !!}
+                                </div>
+                                <div class="tab-pane" id="outline" role="tabpanel">
+                                    {!! $event->outline !!}
+                                </div>
+                                <div class="tab-pane" id="tentative" role="tabpanel">
+                                    {!! $event->tentative !!}
                                 </div>
                             </div>
                         </div>
-
-
-
+                            
                     </div>
                 </div>
                 {{-- End Update Form --}}
