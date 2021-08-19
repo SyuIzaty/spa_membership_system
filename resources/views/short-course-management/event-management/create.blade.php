@@ -61,7 +61,8 @@
                                                             id="shortcourse_id">
                                                             <option disabled selected>Select Short Course</option>
                                                             <option value="-1" name="Others"
-                                                                {{ old('shortcourse_id') == -1 ? 'selected' : null }}>Others
+                                                                {{ old('shortcourse_id') == -1 ? 'selected' : null }}>
+                                                                Others
                                                             </option>
                                                             @foreach ($shortcourses as $shortcourse)
                                                                 <option value="{{ $shortcourse->id }}"
@@ -82,10 +83,10 @@
 
 
                                                     <td class="col col-lg-2 px-4">
-                                                        {{ Form::label('title', 'Short Course Name **', ['style' => 'font-weight:bold']) }}
+                                                        {{ Form::label('title', 'Event Name **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::text('shortcourse_name', old('shortcourse_name'), ['class' => 'form-control', 'placeholder' => 'Short Course Name', 'id' => 'shortcourse_name', 'readonly' => 'readonly']) }}
+                                                        {{ Form::text('shortcourse_name', old('shortcourse_name'), ['class' => 'form-control', 'placeholder' => 'Event Name', 'id' => 'shortcourse_name']) }}
 
                                                         @error('shortcourse_name')
                                                             <p style="color: red">{{ $message }}</p>
@@ -95,10 +96,10 @@
                                                 <tr id="form-add-shortcourse-second-part"
                                                     {{ old('shortcourse_id') ? null : 'style=display:none' }}>
                                                     <td class="col col-lg-2 px-4">
-                                                        {{ Form::label('title', 'Short Course Description **', ['style' => 'font-weight:bold']) }}
+                                                        {{ Form::label('title', 'Event Description **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::textarea('shortcourse_description', old('shortcourse_description'), ['class' => 'form-control', 'placeholder' => 'Short Course Description', 'id' => 'shortcourse_description', 'readonly' => 'readonly']) }}
+                                                        {{ Form::textarea('shortcourse_description', old('shortcourse_description'), ['class' => 'form-control', 'placeholder' => 'Event Description', 'id' => 'shortcourse_description']) }}
                                                         @error('shortcourse_description')
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror
@@ -107,17 +108,17 @@
                                                 <tr id="form-add-shortcourse-second-part"
                                                     {{ old('shortcourse_id') ? null : 'style=display:none' }}>
                                                     <td class="col col-lg-2 px-4">
-                                                        {{ Form::label('title', 'Short Course Objective **', ['style' => 'font-weight:bold']) }}
+                                                        {{ Form::label('title', 'Event Objective **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::textarea('shortcourse_objective', old('shortcourse_objective'), ['class' => 'form-control', 'placeholder' => 'Short Course Objective', 'id' => 'shortcourse_objective', 'readonly' => 'readonly']) }}
+                                                        {{ Form::textarea('shortcourse_objective', old('shortcourse_objective'), ['class' => 'form-control', 'placeholder' => 'Event Objective', 'id' => 'shortcourse_objective']) }}
                                                         @error('shortcourse_objective')
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror
                                                     </td>
                                                 </tr>
 
-                                                <tr id="form-add-shortcourse-second-part"
+                                                {{-- <tr id="form-add-shortcourse-second-part"
                                                     {{ old('shortcourse_id') ? null : 'style=display:none' }}>
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', "Short Course's Topic **", ['style' => 'font-weight:bold']) }}
@@ -149,7 +150,7 @@
                                                             class="btn btn-success btn-sm ml-auto float-right">Add
                                                             More Topic</a>
                                                     </td>
-                                                </tr>
+                                                </tr> --}}
                                                 <tr>
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Event Date and Time (Start) **', ['style' => 'font-weight:bold']) }}
@@ -180,11 +181,13 @@
                                                     <td class="col px-4">
                                                         <select class="form-control venue" name="venue_id" id="venue_id">
                                                             <option disabled selected>Select Venue</option>
-                                                            <option value="-1" {{ old('venue_id') == -1 ? 'selected' : null }}>
+                                                            <option value="-1"
+                                                                {{ old('venue_id') == -1 ? 'selected' : null }}>
                                                                 Others</option>
                                                             @foreach ($venues as $venue)
                                                                 <option value="{{ $venue->id }}"
                                                                     name="{{ $venue->name }}"
+                                                                    data-venue-type="{{ $venue->venue_type->id }}"
                                                                     {{ old('venue_id') == $venue->id ? 'selected' : null }}>
                                                                     {{ $venue->id }} -
                                                                     {{ $venue->name }}</option>
@@ -195,7 +198,27 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-
+                                                <tr id="form-add-venue-second-part" style="display: none">
+                                                    <td class="col col-lg-2 px-4">
+                                                        {{ Form::label('title', 'Venue Type **', ['style' => 'font-weight:bold']) }}
+                                                    </td>
+                                                    <td class="col px-4">
+                                                        <select class="form-control venue_type" name="venue_type_id"
+                                                            id="venue_type_id">
+                                                            <option disabled selected>Select Venue Type</option>
+                                                            @foreach ($venue_types as $venue_type)
+                                                                <option value="{{ $venue_type->id }}"
+                                                                    name="{{ $venue_type->name }}"
+                                                                    {{ old('venue_type_id') == $venue_type->id ? 'selected' : null }}>
+                                                                    {{ $venue_type->id }} -
+                                                                    {{ $venue_type->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        @error('venue_type_id')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
+                                                    </td>
+                                                </tr>
                                                 <tr id="form-add-venue-second-part" style="display: none">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Venue Name **', ['style' => 'font-weight:bold']) }}
@@ -204,6 +227,18 @@
                                                         {{ Form::text('venue_name', old('venue_name'), ['class' => 'form-control', 'placeholder' => 'Venue Name', 'id' => 'venue_name']) }}
 
                                                         @error('venue_name')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="col col-lg-2 px-4">
+                                                        {{ Form::label('title', 'Venue Description (Address/URL) **', ['style' => 'font-weight:bold']) }}
+                                                    </td>
+                                                    <td class="col px-4">
+                                                        {{ Form::textarea('venue_description', old('venue_description'), ['class' => 'form-control', 'placeholder' => 'Venue Description', 'id' => 'venue_description']) }}
+                                                        @error('venue_description')
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror
                                                     </td>
@@ -282,7 +317,8 @@
                                                             style="display:none">
                                                             <option disabled>Select User ID</option>
                                                             <option value='-1' name="create_new"
-                                                                {{ old('trainer_user_id') == -1 ? 'selected' : null }}>Create
+                                                                {{ old('trainer_user_id') == -1 ? 'selected' : null }}>
+                                                                Create
                                                                 New</option>
                                                             @foreach ($users as $user)
                                                                 <option value='{{ $user->id }}'
@@ -459,7 +495,7 @@
                 $('#shortcourse_name').val(null);
                 $('#shortcourse_description').val(null);
                 $('#shortcourse_objective').val(null);
-                $('#shortcourse_topic').val(null);
+                // $('#shortcourse_topic').val(null);
 
                 var rowCount = $('#topic_field tr').length;
                 while (rowCount > 1) {
@@ -468,7 +504,7 @@
                     $(`#row${rowCount}`).remove();
                     rowCount -= 1;
                 }
-                $(".topic1").select2().val(-1).trigger("change");
+                // $(".topic1").select2().val(-1).trigger("change");
 
                 $("tr[id=form-add-shortcourse-second-part]").show();
             } else {
@@ -478,47 +514,51 @@
                 });
 
 
-                $("topic_field").find("tr:gt(0)").remove();
+                // $("topic_field").find("tr:gt(0)").remove();
+                shortcourse_description = selected_shortcourse.description;
+                shortcourse_objective = selected_shortcourse.objective;
 
+          nodeNames = [];
+                console.log(shortcourse_description);
                 if (shortcourse_id) {
                     $('#shortcourse_name').val(selected_shortcourse.name);
-                    $('#shortcourse_description').val(selected_shortcourse.description);
-                    $('#shortcourse_objective').val(selected_shortcourse.objective);
-                    $('#shortcourse_topic').val(selected_shortcourse.topics);
+                    $('#shortcourse_description').val(shortcourse_description);
+                    $('#shortcourse_objective').val(shortcourse_objective);
+                    // $('#shortcourse_topic').val(selected_shortcourse.topics);
                     $("tr[id=form-add-shortcourse-second-part]").show();
 
                     var i = 1;
-                    selected_shortcourse.topics.forEach((x) => {
-                        if (i > 1) {
-                            $(`#row${i}`).remove();
-                            $('#topic_field tr:last').after(`
-                            <tr id="row${i}" class="topic-added">
-                                    <td class="col">
-                                        <select class="form-control topic${i}" name="shortcourse_topic[]"
-                                        id="add_topic">
-                                            <option value="-1" disabled selected>Select Topic
-                                            </option>
-                                            @foreach ($topics as $topic)
-                                                <option value="{{ $topic->id }}">
-                                                    {{ $topic->id }} -
-                                                    {{ $topic->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td class="col col-sm-1"><button type="button" name="remove" id="${i}" class="btn btn-danger btn_remove">X</button></td>
-                            </tr> `);
-                            $(`.topic${i}`).select2();
+                    // selected_shortcourse.topics.forEach((x) => {
+                    //     if (i > 1) {
+                    //         $(`#row${i}`).remove();
+                    //         $('#topic_field tr:last').after(`
+                //         <tr id="row${i}" class="topic-added">
+                //                 <td class="col">
+                //                     <select class="form-control topic${i}" name="shortcourse_topic[]"
+                //                     id="add_topic">
+                //                         <option value="-1" disabled selected>Select Topic
+                //                         </option>
+                @foreach ($topics as $topic)
+                    // <option value="{{ $topic->id }}">
+                        // {{ $topic->id }} -
+                        // {{ $topic->name }}</option>
+                    // @endforeach
+                //                     </select>
+                //                 </td>
+                //                 <td class="col col-sm-1"><button type="button" name="remove" id="${i}" class="btn btn-danger btn_remove">X</button></td>
+                //         </tr> `);
+                    //         $(`.topic${i}`).select2();
 
-                        }
-                        $(".topic" + i).select2().val(x.id).trigger("change");
-                        i += 1;
-                    });
+                    //     }
+                    //     $(".topic" + i).select2().val(x.id).trigger("change");
+                    //     i += 1;
+                    // });
 
-                    var rowCount = $('#topic_field tr').length;
-                    while (rowCount > selected_shortcourse.topics.length) {
-                        $(`#row${rowCount}`).remove();
-                        rowCount -= 1;
-                    }
+                    // var rowCount = $('#topic_field tr').length;
+                    // while (rowCount > selected_shortcourse.topics.length) {
+                    //     $(`#row${rowCount}`).remove();
+                    //     rowCount -= 1;
+                    // }
 
                 } else {
                     $('#shortcourse_name').val(null);
@@ -531,49 +571,51 @@
         $('#venue_id').change(function(event) {
             var venue_name = $('#venue_id').find(":selected").attr('name');
             var venue_id = $('#venue_id').find(":selected").val();
+            var venue_type_id = $('#venue_id').find(":selected").attr('data-venue-type');
 
             $('#venue_name').val(venue_name);
+            $('#venue_type_id').val(venue_type_id);
 
 
             // var venue_name = $('#venue_id').prop("tagName");
             if (venue_id == -1) {
-                $('#venue_name').val(venue_name);
+                // $('#venue_name').val(venue_name);
                 $("tr[id=form-add-venue-second-part]").show();
             } else {
-                $('#venue_name').val(venue_name);
+                // $('#venue_name').val(venue_name);
                 $("tr[id=form-add-venue-second-part]").hide();
 
             }
         });
 
         $(document).ready(function() {
-            var i = 101;
-            var index =0;
-            // TODO: Find the way to use old value and recursive this.
-            $('#addTopic').click(function() {
-                $('#topic_field tr:last').after(`
-                    <tr id="row${i}" class="topic-added">
-                            <td class="col">
-                                <select class="form-control topic${i}" name="shortcourse_topic[]"
-                                id="add_topic">
-                                    <option value="-1" disabled  {{ old('shortcourse_topic') ? (old('shortcourse_topic')[${index}] == -1 ? 'selected' : null) : null }}>Select Topic
-                                    </option  {{ old('shortcourse_topic') ? (old('shortcourse_topic')[${index}] == $topic->id ? 'selected' : null) : null }}>
-                                    @foreach ($topics as $topic)
-                                        <option value="{{ $topic->id }}">
-                                            {{ $topic->id }} -
-                                            {{ $topic->name }}</option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            <td class="col col-sm-1"><button type="button" name="remove" id="${i}" class="btn btn-danger btn_remove">X</button></td>
-                    </tr>
-            `);
-                $(`.topic${i}`).select2();
-                i+=1;
-                index+=1;
-            });
+            //     var i = 101;
+            //     var index =0;
+            //     // TODO: Find the way to use old value and recursive this.
+            //     $('#addTopic').click(function() {
+            //         $('#topic_field tr:last').after(`
+        //             <tr id="row${i}" class="topic-added">
+        //                     <td class="col">
+        //                         <select class="form-control topic${i}" name="shortcourse_topic[]"
+        //                         id="add_topic">
+        //                             <option value="-1" disabled  {{ old('shortcourse_topic') ? (old('shortcourse_topic')[${index}] == -1 ? 'selected' : null) : null }}>Select Topic
+        //                             </option  {{ old('shortcourse_topic') ? (old('shortcourse_topic')[${index}] == $topic->id ? 'selected' : null) : null }}>
+        @foreach ($topics as $topic)
+            // <option value="{{ $topic->id }}">
+                // {{ $topic->id }} -
+                // {{ $topic->name }}</option>
+            // @endforeach
+        //                         </select>
+        //                     </td>
+        //                     <td class="col col-sm-1"><button type="button" name="remove" id="${i}" class="btn btn-danger btn_remove">X</button></td>
+        //             </tr>
+        //     `);
+            //         $(`.topic${i}`).select2();
+            //         i+=1;
+            //         index+=1;
+            //     });
 
-            $('.shortcourse, .user, .venue, .topic1, .fee').select2();
+            $('.shortcourse, .user, .venue, .topic1, .fee, .venue_type').select2();
 
 
             $(document).on('click', '.btn_remove', function() {

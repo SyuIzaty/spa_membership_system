@@ -29,6 +29,8 @@ class Event extends Model
         'address',
         'registration_due_date',
         'venue_id',
+        'venue_description',
+        'event_feedback_set_id',
         'event_status_category_id',
         'is_cancelled',
         'cancellation_remark',

@@ -5,15 +5,13 @@ namespace App\Models\ShortCourseManagement;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Venue extends Model
+class VenueType extends Model
 {
     use SoftDeletes;
-    protected $table = 'scm_venue';
+    protected $table = 'scm_venue_type';
     protected $primaryKey = 'id';
     protected $fillable = [
         'name',
-        'venue_type_id',
-        'description',
         'created_by',
         'created_at',
         'updated_by',
@@ -24,13 +22,7 @@ class Venue extends Model
 
     public function events()
     {
-        return $this->hasMany('App\Models\ShortCourseManagement\Event',
-        'venue_id',
-        'id');
-    }
-    public function venue_type()
-    {
-        return $this->belongsTo('App\Models\ShortCourseManagement\VenueType',
+        return $this->hasMany('App\Models\ShortCourseManagement\Venue',
         'venue_type_id',
         'id');
     }

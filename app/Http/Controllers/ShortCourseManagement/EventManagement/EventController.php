@@ -16,6 +16,7 @@ use App\Models\ShortCourseManagement\EventShortCourse;
 use App\Models\ShortCourseManagement\TopicShortCourse;
 use App\Models\ShortCourseManagement\Topic;
 use App\Models\ShortCourseManagement\EventStatusCategory;
+use App\Models\ShortCourseManagement\VenueType;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
@@ -87,7 +88,7 @@ class EventController extends Controller
     {
         //
 
-        $venues = Venue::all();
+        $venues = Venue::all()->load(['venue_type']);
 
         $shortcourses = ShortCourse::all()->load(['topics_shortcourses.topic']);
 
@@ -105,16 +106,18 @@ class EventController extends Controller
 
         $users = User::all();
 
+        $venue_types = VenueType::all();
 
-        return view('short-course-management.event-management.create', compact('venues', 'shortcourses', 'topics', 'users'));
+
+        return view('short-course-management.event-management.create', compact('venues', 'shortcourses', 'topics', 'users', 'venue_types'));
     }
     public function storeNew(Request $request)
     {
         //
         // dd($request->shortcourse_topic[0]);
-        Validator::extend('check_array', function ($attribute, $value, $parameters, $validator) {
-            return count($value) >= 1;
-        });
+        // Validator::extend('check_array', function ($attribute, $value, $parameters, $validator) {
+        //     return count($value) >= 1;
+        // });
 
         // dd($request);
 
@@ -123,10 +126,11 @@ class EventController extends Controller
             'shortcourse_name' => 'required|min:3',
             'shortcourse_description' => 'required|min:3',
             'shortcourse_objective' => 'required|min:3',
-            'shortcourse_topic'  => 'check_array',
+            // 'shortcourse_topic'  => 'check_array',
             'datetime_start' => 'required',
             'datetime_end' => 'required',
             'venue_id' => 'required',
+            'venue_type_id' => 'required',
             'venue_name' => 'required|min:3',
             'fee_name' => 'required|min:3',
             'fee_id' => 'required',
@@ -138,16 +142,17 @@ class EventController extends Controller
 
         ], [
             'shortcourse_id.required' => 'Please choose short course of the event',
-            'shortcourse_name.required' => 'Please insert short course name',
+            'shortcourse_name.required' => 'Please insert event name',
             'shortcourse_name.min' => 'The name should have at least 3 characters',
-            'shortcourse_description.required' => 'Please insert short course description',
+            'shortcourse_description.required' => 'Please insert event description',
             'shortcourse_description.min' => 'The description should have at least 3 characters',
-            'shortcourse_objective.required' => 'Please insert short course objective',
+            'shortcourse_objective.required' => 'Please insert event objective',
             'shortcourse_objective.min' => 'The objective should have at least 3 characters',
-            'shortcourse_topic.check_array' => 'Please insert at least one topic',
+            // 'shortcourse_topic.check_array' => 'Please insert at least one topic',
             'datetime_start.required' => 'Please insert event datetime start',
             'datetime_end.required' => 'Please insert event datetime end',
             'venue_id.required' => 'Please choose event venue',
+            'venue_type_id.required' => 'Please insert venue type',
             'venue_name.required' => 'Please insert venue name',
             'venue_name.min' => 'The name should have at least 3 characters',
             'fee_name.required' => 'Please insert fee name',
@@ -166,8 +171,6 @@ class EventController extends Controller
 
         if ($request->shortcourse_id == -1) {
             //TODO: Create new shortcourse
-
-
             $createShortCourse = ShortCourse::create([
                 'name' => $request->shortcourse_name,
                 'shortcourse_description' => $request->shortcourse_description,
@@ -184,56 +187,61 @@ class EventController extends Controller
                     ]);
                 }
             }
-        } else {
-            $updateShortCourse = ShortCourse::find($request->shortcourse_id)->update([
-                'name' => $request->shortcourse_name,
-                'shortcourse_description' => $request->shortcourse_description,
-                'shortcourse_objective' => $request->shortcourse_objective,
-                'updated_by' => Auth::user()->id,
-            ]);
-
-            if (isset($request->shortcourse_topic)) {
-                foreach ($request->shortcourse_topic as $shortcourse_topic) {
-                    $exist = TopicShortCourse::where([
-                        ['shortcourse_id', '=', $request->shortcourse_id],
-                        ['topic_id', '=', $shortcourse_topic],
-                    ])->get();
-
-                    if (!$exist) {
-                        $createTopicShortCourse = TopicShortCourse::create([
-                            'topic_id' => $shortcourse_topic,
-                            'shortcourse_id' => $request->shortcourse_id,
-                            'created_by' => Auth::user()->id,
-                        ]);
-                    }
-                }
-            }
         }
+        // else {
+        //     $updateShortCourse = ShortCourse::find($request->shortcourse_id)->update([
+        //         'name' => $request->shortcourse_name,
+        //         'shortcourse_description' => $request->shortcourse_description,
+        //         'shortcourse_objective' => $request->shortcourse_objective,
+        //         'updated_by' => Auth::user()->id,
+        //     ]);
+
+        //     if (isset($request->shortcourse_topic)) {
+        //         foreach ($request->shortcourse_topic as $shortcourse_topic) {
+        //             $exist = TopicShortCourse::where([
+        //                 ['shortcourse_id', '=', $request->shortcourse_id],
+        //                 ['topic_id', '=', $shortcourse_topic],
+        //             ])->get();
+
+        //             if (!$exist) {
+        //                 $createTopicShortCourse = TopicShortCourse::create([
+        //                     'topic_id' => $shortcourse_topic,
+        //                     'shortcourse_id' => $request->shortcourse_id,
+        //                     'created_by' => Auth::user()->id,
+        //                 ]);
+        //             }
+        //         }
+        //     }
+        // }
 
 
 
-        // $updateVenue = Venue::find($request->venue_id)->update([
-        //     'name' => $request->venue_name,
-        //     'updated_by' => Auth::user()->id,
-        // ]);
+
 
         if ($request->venue_id == -1) {
             $createVenue = Venue::create([
                 'name' => $request->venue_name,
+                'venue_type_id' => $request->venue_type_id,
                 'created_by' => Auth::user()->id,
             ]);
         } else {
             // TODO: Update Venue Name
+            // $updateVenue = Venue::find($request->venue_id)->update([
+            //     'name' => $request->venue_name,
+            //     'updated_by' => Auth::user()->id,
+            // ]);
         }
 
         $createEvent = Event::create([
             'name' => $request->shortcourse_name,
             'description' => $request->shortcourse_description,
             'objective' => $request->shortcourse_objective,
+            'event_feedback_set_id' => 1,
             'datetime_start' => $request->datetime_start,
             'datetime_end' => $request->datetime_end,
             'registration_due_date' => $request->datetime_start,
             'venue_id' => $request->venue_id == -1 ? $createVenue->id : $request->venue_id,
+            'venue_description' => $request->venue_description,
             'created_by' => Auth::user()->id,
         ]);
 
@@ -447,6 +455,7 @@ class EventController extends Controller
             'datetime_start' => $request->datetime_start,
             'datetime_end' => $request->datetime_end,
             'venue_id' => $request->venue,
+            'venue_description' => $request->venue_description,
             'max_participant' => $request->max_participant,
         ]);
 
@@ -755,15 +764,15 @@ class EventController extends Controller
             'events_contact_persons.contact_person'
         ]);
 
-        $index=0;
+        $index = 0;
         foreach ($event->events_contact_persons as $event_contact_person) {
             $user = User::find($event_contact_person->contact_person->user_id);
             $event->events_contact_persons[$index]->contact_person['user'] = $user;
-            $index+=1;
+            $index += 1;
         }
         $currentApplicants = $event->events_participants
-        ->where('is_approved_application', 1)
-        ->count();
+            ->where('is_approved_application', 1)
+            ->count();
 
         $event->total_seat_available = $event->max_participant - $currentApplicants;
 
@@ -866,7 +875,6 @@ class EventController extends Controller
         ]);
 
         return Redirect()->back()->with('success', 'Event Objective, Outline and Tentative  Updated Successfully');
-
     }
 
     public function updateEventStatus($event_id, $event_status_category_id)

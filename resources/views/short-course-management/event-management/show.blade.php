@@ -175,6 +175,26 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
+                                                                <td style="background-color:plum">Venue Description</td>
+                                                                <td name="venue_description_show" id="venue_description_show">
+                                                                    {{ $event->venue->description }}
+                                                                </td>
+                                                                <td name="venue_description_edit" id="venue_description_edit" style="display: none">
+                                                                    <div class="form-group">
+                                                                        <input id="venue_description" name="venue_description" type="text"
+                                                                            value="{{ $event->venue_description }}"
+                                                                            class="form-control">
+                                                                        @error('venue_description')
+                                                                            <p style="color: red">
+                                                                                <strong> *
+                                                                                    {{ $message }}
+                                                                                </strong>
+                                                                            </p>
+                                                                        @enderror
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
                                                                 <td style="background-color:plum">Total Seat Open</td>
                                                                 <td name="max_participant_show" id="max_participant_show">
                                                                     {{ $event->max_participant }}
@@ -1493,6 +1513,10 @@
                     $("#datetime_end_show").hide();
                     $("#datetime_end_edit").show();
 
+                    $("#venue_description_show").hide();
+                    $("#venue_description_edit").show();
+
+
                     $("#venue_show").hide();
                     $("#venue_edit").show();
 
@@ -1516,6 +1540,9 @@
 
                     $("#datetime_end_show").show();
                     $("#datetime_end_edit").hide();
+
+                    $("#venue_description_show").show();
+                    $("#venue_description_edit").hide();
 
                     $("#venue_show").show();
                     $("#venue_edit").hide();
