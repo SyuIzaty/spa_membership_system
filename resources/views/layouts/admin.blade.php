@@ -206,7 +206,6 @@
                                             <span class="nav-link-text" data-i18n="nav.trainer">Trainer</span>
                                         </a>
                                     </li>
-
                                 </ul>
                             </li>
                             {{-- <li>
@@ -228,6 +227,13 @@
                                 <a href="/shortcourse" title="Public View" data-filter-tags="shortcourse">
                                     <i class="fal fa-users"></i>
                                     <span class="nav-link-text" data-i18n="nav.shortcourse">Public View</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="/feedback/form" title="Feedback" data-filter-tags="feedback">
+                                    <i class="ni ni-note"></i>
+                                    <span class="nav-link-text" data-i18n="nav.shortcourse">Feedback</span>
                                 </a>
                             </li>
                         @endcan

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Question extends Model
 {
     use SoftDeletes;
-    protected $table = 'scm_section';
+    protected $table = 'scm_question';
     protected $primaryKey = 'id';
     protected $fillable = [
         'question',

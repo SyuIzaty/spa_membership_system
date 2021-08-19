@@ -351,3 +351,6 @@ Route::post('/venues/data', 'ShortCourseManagement\Catalogues\Venue\VenueControl
 Route::post('/venues/update/{id}', 'ShortCourseManagement\Catalogues\Venue\VenueController@update');
 Route::post('/venue', 'ShortCourseManagement\Catalogues\Venue\VenueController@store');
 Route::post('/venue/delete/{id}', 'ShortCourseManagement\Catalogues\Venue\VenueController@delete');
+
+//SCM - Feedback
+Route::get('/feedback/form', 'ShortCourseManagement\Feedbacks\FeedbackController@form');
