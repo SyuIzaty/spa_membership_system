@@ -830,6 +830,7 @@ class EventParticipantController extends Controller
                             . ($eventParticipant->fee->amount) . ' (' . ($eventParticipant->fee->name)
                             . ')</b>, kemudian tekan butang di bawah untuk ke sesawang profil bagi mengemaskini status pembayaran untuk disahkan.',
                         'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
+                        'ic' => ($eventParticipant->participant->ic),
                     ];
 
                     Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($eventParticipant) {
@@ -853,6 +854,7 @@ class EventParticipantController extends Controller
                             . '<br/>Tempat: ' . ($eventParticipant->event->venue->name)
                             . '<br/> <br/>Jika ini adalah suatu kesilapan, sila hubungi pihak kami semula.',
                         'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
+                        'ic' => ($eventParticipant->participant->ic),
                     ];
 
                     Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($eventParticipant) {
@@ -875,6 +877,7 @@ class EventParticipantController extends Controller
                             . '<br/>Tempat: ' . ($eventParticipant->event->venue->name)
                             . '<br/> <br/>Jika ini adalah suatu kesilapan, sila hubungi pihak kami semula.',
                         'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
+                        'ic' => ($eventParticipant->participant->ic),
                     ];
 
                     Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($eventParticipant) {
@@ -889,6 +892,7 @@ class EventParticipantController extends Controller
                         'is_verified_approved_participation' => 1,
                         'approved_participation_datetime' => Carbon::now(),
                         'verified_payment_proof_datetime' => Carbon::now(),
+                        'ic' => ($eventParticipant->participant->ic),
                     ]);
 
                     $message =  [
@@ -898,6 +902,7 @@ class EventParticipantController extends Controller
                             . '<br/>Tarikh: ' . ($eventParticipant->event->datetime_start) . ' sehingga ' . ($eventParticipant->event->datetime_end)
                             . '<br/>Tempat: ' . ($eventParticipant->event->venue->name),
                         'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
+                        'ic' => ($eventParticipant->participant->ic),
                     ];
 
                     Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($eventParticipant) {
@@ -922,6 +927,7 @@ class EventParticipantController extends Controller
                             . ($eventParticipant->fee->amount) . ' (' . ($eventParticipant->fee->name)
                             . ')</b>, kemudian tekan butang di bawah untuk ke sesawang profil bagi memasukkan bukti pembayaran yang baharu untuk disahkan.',
                         'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
+                        'ic' => ($eventParticipant->participant->ic),
                     ];
 
                     Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($eventParticipant) {
@@ -949,6 +955,7 @@ class EventParticipantController extends Controller
                             . '<br/>Tarikh: ' . ($eventParticipant->event->datetime_start) . ' sehingga ' . ($eventParticipant->event->datetime_end)
                             . '<br/>Tempat: ' . ($eventParticipant->event->venue->name),
                         'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga anda terus berjaya. Terima kasih.',
+                        'ic' => ($eventParticipant->participant->ic),
                     ];
 
                     Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($eventParticipant) {
@@ -969,6 +976,7 @@ class EventParticipantController extends Controller
                             . '<br/>Tarikh: ' . ($eventParticipant->event->datetime_start) . ' sehingga ' . ($eventParticipant->event->datetime_end)
                             . '<br/>Tempat: ' . ($eventParticipant->event->venue->name),
                         'conclusion' => 'Sila maklumkan kepada kami sekiranya ini adalah suatu kesilapan. Terima kasih.',
+                        'ic' => ($eventParticipant->participant->ic),
                     ];
 
                     Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($eventParticipant) {
