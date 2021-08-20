@@ -432,9 +432,9 @@ class EventParticipantController extends Controller
             // $eventsParticipants[$index]->organization_representative=$organization_representative;
             $eventsParticipants[$index]->created_at_diffForHumans = $eventsParticipants[$index]->created_at->diffForHumans();
             $eventsParticipants[$index]->organisationsString = '';
-            if($eventsParticipants[$index]->is_done_email_completed==1){
+            if ($eventsParticipants[$index]->is_done_email_completed == 1) {
                 $eventsParticipants[$index]->done_email_completed_datetime_diffForHumans = $eventsParticipants[$index]->done_email_completed_datetime->diffForHumans();
-            }else{
+            } else {
                 $eventsParticipants[$index]->done_email_completed_datetime_diffForHumans = $eventsParticipants[$index]->done_email_completed_datetime;
             }
             foreach ($eventParticipant->participant->organisations_participants as $organisation_participant) {
@@ -774,6 +774,7 @@ class EventParticipantController extends Controller
                         . '<br/>Tempat: ' . ($eventParticipant->event->venue->name),
                     'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga anda terus berjaya. Terima kasih.',
                     'ic' => ($eventParticipant->participant->ic),
+                    'event_participant_id' => ($eventParticipant->id),
                 ];
 
                 Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($eventParticipant) {
@@ -974,6 +975,7 @@ class EventParticipantController extends Controller
                             . '<br/>Tempat: ' . ($eventParticipant->event->venue->name),
                         'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga anda terus berjaya. Terima kasih.',
                         'ic' => ($eventParticipant->participant->ic),
+                        'event_participant_id' => ($eventParticipant->id),
                     ];
 
                     Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($eventParticipant) {
@@ -1083,7 +1085,7 @@ class EventParticipantController extends Controller
                 return 'Created By: ' . $events->created_by . '<br> Created At: ' . $events->created_at;
             })
             ->addColumn('fee_amount', function ($events) {
-                return 'RM' . $events->amount.'/person ('.$events->fee_name.')' ;
+                return 'RM' . $events->amount . '/person (' . $events->fee_name . ')';
             })
             ->addColumn('action', function ($events) {
                 return '
@@ -1101,10 +1103,10 @@ class EventParticipantController extends Controller
             ['event_participant_id', '=', $event_participant_id]
         ])->get();
 
-        $index=0;
-        foreach ($eventParticipantPaymentProofs as $eventParticipantPaymentProof){
-            $eventParticipantPaymentProofs[$index]['created_at_diffForHumans']=$eventParticipantPaymentProof->created_at->diffForHumans();;
-            $index+=1;
+        $index = 0;
+        foreach ($eventParticipantPaymentProofs as $eventParticipantPaymentProof) {
+            $eventParticipantPaymentProofs[$index]['created_at_diffForHumans'] = $eventParticipantPaymentProof->created_at->diffForHumans();;
+            $index += 1;
         }
 
         return $eventParticipantPaymentProofs;

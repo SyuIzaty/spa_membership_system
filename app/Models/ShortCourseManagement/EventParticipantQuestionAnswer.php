@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class EventParticipantQuestionAnswer extends Model
 {
     use SoftDeletes;
-    protected $table = 'scm_section';
+    protected $table = 'scm_event_participant_question_answer';
     protected $primaryKey = 'id';
     protected $fillable = [
         'question_id',
