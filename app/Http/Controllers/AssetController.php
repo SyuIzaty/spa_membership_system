@@ -229,12 +229,12 @@ class AssetController extends Controller
 
         ->editColumn('availability', function ($asset) {
 
-            if($asset->availability=='2')
+            if($asset->availability=='1')
             {
                 $color = '#CC0000';
                 return '<div style="text-transform: uppercase; color:' . $color . '"><b>'.$asset->availabilities->name.'</b></div>';
             }
-            elseif($asset->availability=='1')
+            elseif($asset->availability=='2')
             {
                 $color = '#3CBC3C';
                 return '<div style="text-transform: uppercase; color:' . $color . '"><b>'.$asset->availabilities->name.'</b></div>';
