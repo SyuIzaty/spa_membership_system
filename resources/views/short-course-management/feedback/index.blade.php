@@ -98,46 +98,58 @@
                                             </tr>
                                             @foreach ($sections as $section)
                                                 <tr class="bg-primary text-white">
-                                                    <td colspan="7">{{$section->name}}</td>
+                                                    <td colspan="7">{{ $section->name }}</td>
                                                 </tr>
                                                 @foreach ($section->questions as $question)
                                                     <tr class="q1">
                                                         <div class="form-group">
                                                             <td style="text-align: center" width="4%"><label
-                                                                    for="q1">1.</label>
+                                                                    for="q1">{{ $loop->index + 1 }}.</label>
                                                             </td>
-                                                            <td width="80%;"><label for="q1">{{ $question->question }}
+                                                            <td width="60%;"><label for="q1">{{ $question->question }}
                                                                 </label>@error('q1')<b style="color: red"><strong> required
                                                                     </strong></b>@enderror
                                                             </td>
-                                                            <td style="text-align: center"><input type="radio" name="q1"
-                                                                    id="q1" value="1"
-                                                                    {{ old('q1') && old('q1') == '1' ? 'checked' : '' }}>
-                                                            </td>
-                                                            <td style="text-align: center"><input type="radio" name="q1"
-                                                                    id="q1" value="2"
-                                                                    {{ old('q1') && old('q1') == '2' ? 'checked' : '' }}>
-                                                            </td>
-                                                            <td style="text-align: center"><input type="radio" name="q1"
-                                                                    id="q1" value="3"
-                                                                    {{ old('q1') && old('q1') == '3' ? 'checked' : '' }}>
-                                                            </td>
-                                                            <td style="text-align: center"><input type="radio" name="q1"
-                                                                    id="q1" value="4"
-                                                                    {{ old('q1') && old('q1') == '4' ? 'checked' : '' }}>
-                                                            </td>
-                                                            <td style="text-align: center"><input type="radio" name="q1"
-                                                                    id="q1" value="5"
-                                                                    {{ old('q1') && old('q1') == '5' ? 'checked' : '' }}>
-                                                            </td>
+                                                            @if ($question->question_type == 'RATE')
+                                                                <td style="text-align: center"><input type="radio" name="q1"
+                                                                        id="q1" value="1"
+                                                                        {{ old('q1') && old('q1') == '1' ? 'checked' : '' }}>
+                                                                </td>
+                                                                <td style="text-align: center"><input type="radio" name="q1"
+                                                                        id="q1" value="2"
+                                                                        {{ old('q1') && old('q1') == '2' ? 'checked' : '' }}>
+                                                                </td>
+                                                                <td style="text-align: center"><input type="radio" name="q1"
+                                                                        id="q1" value="3"
+                                                                        {{ old('q1') && old('q1') == '3' ? 'checked' : '' }}>
+                                                                </td>
+                                                                <td style="text-align: center"><input type="radio" name="q1"
+                                                                        id="q1" value="4"
+                                                                        {{ old('q1') && old('q1') == '4' ? 'checked' : '' }}>
+                                                                </td>
+                                                                <td style="text-align: center"><input type="radio" name="q1"
+                                                                        id="q1" value="5"
+                                                                        {{ old('q1') && old('q1') == '5' ? 'checked' : '' }}>
+                                                                </td>
+                                                            @elseif($question->question_type == 'TEXT')
+                                                                <td colspan="6">{!! Form::textarea('description', old('description'), ['class' => 'form-control', 'placeholder' => 'Answer', 'id' => 'description']) !!}</td>
+                                                            @endif
                                                         </div>
                                                     </tr>
                                                 @endforeach
 
                                             @endforeach
+                                            {{-- <tr>
+                                                <div class="form-group">
+                                                    <td colspan="7"><label class="form-label" for="confirmation">
+                                                    <button style="margin-top: 5px;" class="btn btn-primary float-right" id="submit" name="submit" disabled><i class="fal fa-check"></i> Submit Feedback</button></td>
+                                                </div>
+                                            </tr> --}}
 
                                         </thead>
                                     </table>
+
+                                    <button style="margin-top: 5px;" class="btn btn-primary float-right mb-2 mr-2" id="submit" name="submit"><i class="fal fa-check"></i> Submit Feedback</button>
                                 </div>
 
                                 {!! Form::close() !!}

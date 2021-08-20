@@ -64,6 +64,7 @@ class EventController extends Controller
 
             $events[$index]['datetime_start_toDayDateTimeString'] = date_format(new DateTime($events[$index]->datetime_start), 'g:ia \o\n l jS F Y');
             $events[$index]['datetime_end_toDayDateTimeString'] = date_format(new DateTime($events[$index]->datetime_end), 'g:ia \o\n l jS F Y');
+            $events[$index]['created_at_toDayDateTimeString'] = date_format(new DateTime($events[$index]->created_at), 'g:ia \o\n l jS F Y');
             $index++;
         }
         return datatables()::of($events)
@@ -242,6 +243,7 @@ class EventController extends Controller
             'registration_due_date' => $request->datetime_start,
             'venue_id' => $request->venue_id == -1 ? $createVenue->id : $request->venue_id,
             'venue_description' => $request->venue_description,
+            // 'thumbnail_path' => 'storage/shortcourse/poster/default/intec_poster.jpg',
             'created_by' => Auth::user()->id,
         ]);
 
@@ -616,6 +618,7 @@ class EventController extends Controller
                     'user_id' => $existUser->id,
                     'ic' => $request->trainer_ic_input,
                     'phone' => $request->trainer_phone,
+                    'email' => $request->trainer_email,
                     'created_by' => Auth::user()->id,
                 ]);
             }
@@ -626,7 +629,6 @@ class EventController extends Controller
             'trainer_id' => $existTrainer->id,
             'is_done_paid' => 0,
             'trainer_representative_id' => $existTrainer->id,
-            'phone' => $request->trainer_phone,
             'created_by' => Auth::user()->id,
             'is_active' => 1,
         ]);
@@ -681,6 +683,7 @@ class EventController extends Controller
                     'user_id' => $existUser->id,
                     'ic' => $request->contact_person_ic_input,
                     'phone' => $request->contact_person_phone,
+                    'email' => $request->contact_person_email,
                     'created_by' => Auth::user()->id,
                 ]);
             }
@@ -689,7 +692,6 @@ class EventController extends Controller
         $createEventContactPerson = EventContactPerson::create([
             'event_id' => $event_id,
             'contact_person_id' => $existContactPerson->id,
-            'phone' => $request->contact_person_phone,
             'created_by' => Auth::user()->id,
             'is_active' => 1,
         ]);

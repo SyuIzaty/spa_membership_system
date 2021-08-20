@@ -32,7 +32,7 @@
                                     <a data-toggle="tab" class="nav-link" href="#general" role="tab">General</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a data-toggle="tab" class="nav-link" href="#specific" role="tab">Specific</a>
+                                    <a data-toggle="tab" class="nav-link" href="#specific" role="tab">Addtitional Info</a>
                                 </li>
                                 <li class="nav-item">
                                     <a data-toggle="tab" class="nav-link" href="#setting" role="tab">Setting</a>
@@ -176,12 +176,15 @@
                                                             </tr>
                                                             <tr>
                                                                 <td style="background-color:plum">Venue Description</td>
-                                                                <td name="venue_description_show" id="venue_description_show">
+                                                                <td name="venue_description_show"
+                                                                    id="venue_description_show">
                                                                     {{ $event->venue->description }}
                                                                 </td>
-                                                                <td name="venue_description_edit" id="venue_description_edit" style="display: none">
+                                                                <td name="venue_description_edit"
+                                                                    id="venue_description_edit" style="display: none">
                                                                     <div class="form-group">
-                                                                        <input id="venue_description" name="venue_description" type="text"
+                                                                        <input id="venue_description"
+                                                                            name="venue_description" type="text"
                                                                             value="{{ $event->venue_description }}"
                                                                             class="form-control">
                                                                         @error('venue_description')
@@ -199,9 +202,11 @@
                                                                 <td name="max_participant_show" id="max_participant_show">
                                                                     {{ $event->max_participant }}
                                                                 </td>
-                                                                <td name="max_participant_edit" id="max_participant_edit" style="display: none">
+                                                                <td name="max_participant_edit" id="max_participant_edit"
+                                                                    style="display: none">
                                                                     <div class="form-group">
-                                                                        <input id="max_participant" name="max_participant" type="number"
+                                                                        <input id="max_participant" name="max_participant"
+                                                                            type="number"
                                                                             value="{{ $event->max_participant }}"
                                                                             class="form-control">
                                                                         @error('max_participant')
@@ -588,20 +593,19 @@
                                                                             <label for="trainer_ic"><span
                                                                                     class="text-danger">*</span>
                                                                                 Trainer's IC</label>
-                                                                            <div class="form-inline" style="width:100%">
-                                                                                <div class="form-group mr-2 mb-2"
-                                                                                    style="width:85%"
-                                                                                    id="search-by-trainer_ic-div">
-                                                                                    <input class="form-control w-100"
-                                                                                        id="trainer_ic_input"
-                                                                                        name="trainer_ic_input">
-                                                                                </div>
-                                                                                <a href="javascript:;" data-toggle="#"
+                                                                            {{-- <div class="form-inline" style="width:100%"> --}}
+                                                                            <div class="form-group"
+                                                                                id="search-by-trainer_ic-div">
+                                                                                <input class="form-control"
+                                                                                    id="trainer_ic_input"
+                                                                                    name="trainer_ic_input">
+                                                                            </div>
+                                                                            <a href="javascript:;" data-toggle="#"
                                                                                     id="search-by-trainer_ic"
                                                                                     class="btn btn-primary mb-2"
-                                                                                    style="width:10%"><i
+                                                                                    hidden><i
                                                                                         class="ni ni-magnifier"></i></a>
-                                                                            </div>
+                                                                            {{-- </div> --}}
                                                                             @error('trainer_ic_input')
                                                                                 <p style="color: red">
                                                                                     <strong> *
@@ -611,8 +615,7 @@
                                                                             @enderror
                                                                         </div>
                                                                         <hr class="mt-1 mb-2">
-                                                                        <div id="form-add-trainer-second-part"
-                                                                            style="display: none">
+                                                                        <div id="form-add-trainer-second-part">
 
                                                                             {{-- <div class="form-group">
                                                                                 <label for="user_id"><span
@@ -641,7 +644,7 @@
                                                                                 <label for="user_id"><span
                                                                                         class="text-danger">*</span>
                                                                                     Trainer's User ID</label>
-                                                                                {{ Form::text('trainer_user_id_text', '', ['class' => 'form-control', 'placeholder' => "Trainer's User ID", 'id' => 'trainer_user_id_text', 'disabled', 'style' => 'display:none', 'readonly']) }}
+                                                                                {{ Form::text('trainer_user_id_text', '', ['class' => 'form-control', 'placeholder' => "Trainer's User ID", 'id' => 'trainer_user_id_text', 'disabled', 'readonly']) }}
                                                                                 <select class="form-control user"
                                                                                     name="trainer_user_id"
                                                                                     id="trainer_user_id" disabled
@@ -714,8 +717,7 @@
                                                                             </div>
                                                                         </div>
                                                                         <hr class="mt-1 mb-2">
-                                                                        <div class="footer" id="add_trainer_footer"
-                                                                            style="display:none">
+                                                                        <div class="footer" id="add_trainer_footer">
                                                                             <button type="button"
                                                                                 class="btn btn-danger ml-auto float-right mr-2"
                                                                                 data-dismiss="modal"
@@ -794,9 +796,8 @@
                                                                             <label for="contact_person_ic"><span
                                                                                     class="text-danger">*</span>
                                                                                 Contact Person's IC</label>
-                                                                            <div class="form-inline" style="width:100%">
-                                                                                <div class="form-group mr-2 mb-2"
-                                                                                    style="width:85%"
+                                                                            {{-- <div class="form-inline" style="width:100%"> --}}
+                                                                                <div class="form-group"
                                                                                     id="search-by-contact_person_ic-div">
                                                                                     <input class="form-control w-100"
                                                                                         id="contact_person_ic_input"
@@ -805,9 +806,9 @@
                                                                                 <a href="javascript:;" data-toggle="#"
                                                                                     id="search-by-contact_person_ic"
                                                                                     class="btn btn-primary mb-2"
-                                                                                    style="width:10%"><i
+                                                                                    style="width:10%" hidden><i
                                                                                         class="ni ni-magnifier"></i></a>
-                                                                            </div>
+                                                                            {{-- </div> --}}
                                                                             @error('contact_person_ic_input')
                                                                                 <p style="color: red">
                                                                                     <strong> *
@@ -817,8 +818,7 @@
                                                                             @enderror
                                                                         </div>
                                                                         <hr class="mt-1 mb-2">
-                                                                        <div id="form-add-contact_person-second-part"
-                                                                            style="display: none">
+                                                                        <div id="form-add-contact_person-second-part">
 
                                                                             {{-- <div class="form-group">
                                                                                 <label for="user_id"><span
@@ -847,7 +847,7 @@
                                                                                 <label for="user_id"><span
                                                                                         class="text-danger">*</span>
                                                                                     Contact Person's User ID</label>
-                                                                                {{ Form::text('contact_person_user_id_text', '', ['class' => 'form-control', 'placeholder' => "ContactPerson's User ID", 'id' => 'contact_person_user_id_text', 'disabled', 'style' => 'display:none', 'readonly']) }}
+                                                                                {{ Form::text('contact_person_user_id_text', '', ['class' => 'form-control', 'placeholder' => "Contact Person's User ID", 'id' => 'contact_person_user_id_text', 'disabled', 'readonly']) }}
                                                                                 <select class="form-control user"
                                                                                     name="contact_person_user_id"
                                                                                     id="contact_person_user_id" disabled
@@ -923,8 +923,7 @@
                                                                             </div>
                                                                         </div>
                                                                         <hr class="mt-1 mb-2">
-                                                                        <div class="footer" id="add_contact_person_footer"
-                                                                            style="display:none">
+                                                                        <div class="footer" id="add_contact_person_footer">
                                                                             <button type="button"
                                                                                 class="btn btn-danger ml-auto float-right mr-2"
                                                                                 data-dismiss="modal"
@@ -1053,7 +1052,7 @@
                                                                                 <textarea class="form-control-plaintext"
                                                                                     rows="5" id="objective" name="objective"
                                                                                     disabled>
-                                                                                                                                                                                                                                                                                                                                    </textarea>
+                                                                                                                                                                                                                                                                                                                                        </textarea>
                                                                                 @error('objective')
                                                                                     <p style="color: red">
                                                                                         <strong> *
@@ -1070,7 +1069,7 @@
                                                                                 <textarea class="form-control-plaintext"
                                                                                     rows="5" id="description"
                                                                                     name="description" disabled>
-                                                                                                                                                                                                                                                                                                                                    </textarea>
+                                                                                                                                                                                                                                                                                                                                        </textarea>
                                                                                 @error('description')
                                                                                     <p style="color: red">
                                                                                         <strong> *
@@ -1273,11 +1272,13 @@
                                                         <ul class="nav nav-pills" role="tablist">
                                                             <li class="nav-item active">
                                                                 <a data-toggle="tab" class="nav-link active"
-                                                                    href="#description_specific_tab" role="tab">Description</a>
+                                                                    href="#description_specific_tab"
+                                                                    role="tab">Description</a>
                                                             </li>
                                                             <li class="nav-item">
                                                                 <a data-toggle="tab" class="nav-link"
-                                                                    href="#editor_target_audience_specific_tab" role="tab">Target Audience</a>
+                                                                    href="#editor_target_audience_specific_tab"
+                                                                    role="tab">Target Audience</a>
                                                             </li>
                                                             <li class="nav-item">
                                                                 <a data-toggle="tab" class="nav-link"
@@ -1307,12 +1308,13 @@
                                                                         </div>
 
                                                                         <div class="tab-pane"
-                                                                            id="editor_target_audience_specific_tab" role="tabpanel">
+                                                                            id="editor_target_audience_specific_tab"
+                                                                            role="tabpanel">
                                                                             <textarea id="editor_target_audience"
                                                                                 name="editor_target_audience"> {{ $event->target_audience }} </textarea>
                                                                         </div>
-                                                                        <div class="tab-pane"
-                                                                            id="objective_specific_tab" role="tabpanel">
+                                                                        <div class="tab-pane" id="objective_specific_tab"
+                                                                            role="tabpanel">
                                                                             <textarea id="editor_objective"
                                                                                 name="editor_objective"> {{ $event->objective }} </textarea>
                                                                         </div>
@@ -1667,7 +1669,7 @@
                     $('.modal-body #phone').val(null);
                     $('.modal-body #email').val(null);
                     $('#crud-modal-add-trainer').modal('show');
-                    $("div[id=form-add-trainer-second-part]").hide();
+                    // $("div[id=form-add-trainer-second-part]").hide();
                 });
 
                 $('#crud-modal-add-trainer').on('show.bs.modal', function(event) {
@@ -1679,11 +1681,11 @@
                     $('.modal-body #user_id').val(null);
 
 
-                    $("div[id=form-add-trainer-second-part]").hide();
-                    $('#add_trainer_footer').hide();
-                    $("#search-by-trainer_ic-div").css({
-                        "width": "85%"
-                    });
+                    // $("div[id=form-add-trainer-second-part]").hide();
+                    // $('#add_trainer_footer').hide();
+                    // $("#search-by-trainer_ic-div").css({
+                    //     "width": "85%"
+                    // });
                     $('#search-by-trainer_ic').show();
                 });
 
@@ -1751,10 +1753,8 @@
 
                     $('#add_trainer_footer').hide();
 
-                    $("div[id=form-add-trainer-second-part]").hide();
+                    // $("div[id=form-add-trainer-second-part]").hide();
                     $('#search-by-trainer_ic').trigger("click");
-
-
                 });
 
                 // User_ID information
@@ -1853,7 +1853,7 @@
                     $('.modal-body #phone').val(null);
                     $('.modal-body #email').val(null);
                     $('#crud-modal-add-contact_person').modal('show');
-                    $("div[id=form-add-contact_person-second-part]").hide();
+                    // $("div[id=form-add-contact_person-second-part]").hide();
                 });
 
                 $('#crud-modal-add-contact_person').on('show.bs.modal', function(event) {
@@ -1865,11 +1865,11 @@
                     $('.modal-body #user_id').val(null);
 
 
-                    $("div[id=form-add-contact_person-second-part]").hide();
-                    $('#add_contact_person_footer').hide();
-                    $("#search-by-contact_person_ic-div").css({
-                        "width": "85%"
-                    });
+                    // $("div[id=form-add-contact_person-second-part]").hide();
+                    // $('#add_contact_person_footer').hide();
+                    // $("#search-by-contact_person_ic-div").css({
+                    //     "width": "85%"
+                    // });
                     $('#search-by-contact_person_ic').show();
                 });
 
@@ -1893,10 +1893,11 @@
 
                         if (data.contact_person) {
                             $('#contact_person_phone').val(data.contact_person.phone);
+                            $('#contact_person_email').val(data.contact_person.email);
                         } else {
                             $('#contact_person_phone').val(data.trainer.phone);
+                            $('#contact_person_email').val(data.trainer.email);
                         }
-                        $('#contact_person_email').val(data.email);
 
 
                     }).fail(
@@ -1939,7 +1940,7 @@
 
                     $('#add_contact_person_footer').hide();
 
-                    $("div[id=form-add-contact_person-second-part]").hide();
+                    // $("div[id=form-add-contact_person-second-part]").hide();
                     $('#search-by-contact_person_ic').trigger("click");
 
 
@@ -1989,7 +1990,7 @@
 
         }
 
-        // Specific
+        // Additional Info
         {
             ClassicEditor
                 .create(document.querySelector('#editor_description'))
@@ -1997,7 +1998,7 @@
                     console.error(error);
                 });
 
-                ClassicEditor
+            ClassicEditor
                 .create(document.querySelector('#editor_target_audience'))
                 .catch(error => {
                     console.error(error);

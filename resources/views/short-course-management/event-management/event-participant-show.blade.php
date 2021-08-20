@@ -1629,10 +1629,7 @@
                                                         <div id="panel-1" class="panel">
                                                             <div class="panel-hdr">
                                                                 <h2>
-                                                                    <span class="fw-300">Succeed Participants - </span>
-                                                                    (Done Feedback)
-                                                                    Completed
-                                                                    Participation Process
+                                                                    <span class="fw-300"></span>Feedback Status
                                                                 </h2>
                                                                 <div class="panel-toolbar">
                                                                     <button class="btn btn-panel"
@@ -1679,6 +1676,7 @@
                                                                                         <th>Name</th>
                                                                                         <th>Phone</th>
                                                                                         <th>Email</th>
+                                                                                        <th>Feedback Done Datetime</th>
                                                                                         <th>Date Apply</th>
                                                                                     </tr>
                                                                                 </thead>
@@ -1691,7 +1689,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-12 grid-margin stretch-card">
+                                            {{-- <div class="col-md-12 grid-margin stretch-card">
                                                 <div class="row">
                                                     <div class="col-xl-12">
                                                         <div id="panel-1" class="panel">
@@ -1758,7 +1756,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                         </div>
                                     </div>
                                 </div>
@@ -1814,7 +1812,7 @@
                                 $('.modal-body #application_update_submit').append(
                                     '<i class = "fal fa-save"></i> Update');
 
-                                $('.modal-body #application_update_submit').hide();
+                                // $('.modal-body #application_update_submit').hide();
 
                                 $('.modal-body #application_message').append(
                                     'Already Apply');
@@ -3434,7 +3432,12 @@
                 {
                     var tableCompletedParticipationProcess = $('#table-completed-participation-process').DataTable({
                         columnDefs: [{
-                            targets: [2],
+                            targets: [1],
+                            render: function(data, type, row) {
+                                return !data ? 'N/A' : data;
+                            }
+                        },{
+                            targets: [5],
                             render: function(data, type, row) {
                                 return !data ? 'N/A' : data;
                             }
@@ -3495,6 +3498,12 @@
                             //     data: 'organization_representative.participant.email',
                             //     name: 'organization_representative.participant.email'
                             // },
+
+                            {
+                                className: 'text-center',
+                                data: 'done_email_completed_datetime_diffForHumans',
+                                name: 'done_email_completed_datetime_diffForHumans',
+                            },
                             {
                                 className: 'text-center',
                                 data: 'created_at_diffForHumans',

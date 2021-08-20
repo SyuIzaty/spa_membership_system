@@ -36,6 +36,7 @@ class EventParticipant extends Model
         'is_done_email_event_reminder',
         'is_done_email_feedback_reminder',
         'is_done_email_completed',
+        'done_email_completed_datetime',
         'is_done_email_cancellation_disqualified',
         'is_disqualified',
         'disqualified_datetime',

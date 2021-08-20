@@ -13,6 +13,7 @@ class Section extends Model
     protected $fillable = [
         'section_number',
         'name',
+        'event_feedback_set_id'.
         'created_by',
         'created_at',
         'updated_by',
@@ -23,8 +24,15 @@ class Section extends Model
 
     public function questions()
     {
-        return $this->hasMany('App\Models\ShortCourseManagement\Question',
-        'section_id',
-        'id');
+        return $this->hasMany(
+            'App\Models\ShortCourseManagement\Question',
+            'section_id',
+            'id'
+        );
+    }
+
+    public function event_feedback_set()
+    {
+        return $this->belongsTo('App\Models\ShortCourseManagement\EventFeedbackSet', 'event_feedback_set_id', 'id');
     }
 }

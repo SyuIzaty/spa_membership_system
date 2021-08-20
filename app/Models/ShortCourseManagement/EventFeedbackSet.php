@@ -22,9 +22,9 @@ class EventFeedbackSet extends Model
         'deleted_at'
     ];
 
-    public function questions()
+    public function sections()
     {
-        return $this->hasMany('App\Models\ShortCourseManagement\Question',
+        return $this->hasMany('App\Models\ShortCourseManagement\Section',
         'event_feedback_set_id',
         'id');
     }

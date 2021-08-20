@@ -282,9 +282,9 @@ class EventParticipantController extends Controller
                 } else if ($eventsParticipants->is_not_attend === 0) {
                     $buttonString .= '<a href="javascript:;" id="verify-attendance-not-attend" data-remote="/update-progress/verify-attendance-not-attend/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger btn-update-progress">Not Attend</a>';
 
-                    if (is_null($eventsParticipants->is_question_sended)) {
-                        $buttonString .= ' <a href="javascript:;" id="send-question" data-remote="/update-progress/send-question/' . $eventsParticipants->id . '" class="btn btn-sm btn-success btn-update-progress">Send Questionaire</a>';
-                    }
+                    // if (is_null($eventsParticipants->is_question_sended)) {
+                    //     $buttonString .= ' <a href="javascript:;" id="send-question" data-remote="/update-progress/send-question/' . $eventsParticipants->id . '" class="btn btn-sm btn-success btn-update-progress">Send Questionaire</a>';
+                    // }
                 } else if ($eventsParticipants->is_not_attend === 1) {
                     $buttonString .= '<a href="javascript:;" id="verify-attendance-attend" data-remote="/update-progress/verify-attendance-attend/' . $eventsParticipants->id . '" class="btn btn-sm btn-success btn-update-progress">Attend</a>';
                 }
@@ -417,7 +417,7 @@ class EventParticipantController extends Controller
             ['is_disqualified', '=', 0],
             ['is_not_attend', '=', 0],
             ['is_question_sended', '=', 1],
-            ['is_done_email_completed', '=', 1]
+            // ['is_done_email_completed', '=', 1]
         ])->get()
             ->load([
                 'event',
@@ -432,6 +432,11 @@ class EventParticipantController extends Controller
             // $eventsParticipants[$index]->organization_representative=$organization_representative;
             $eventsParticipants[$index]->created_at_diffForHumans = $eventsParticipants[$index]->created_at->diffForHumans();
             $eventsParticipants[$index]->organisationsString = '';
+            if($eventsParticipants[$index]->is_done_email_completed==1){
+                $eventsParticipants[$index]->done_email_completed_datetime_diffForHumans = $eventsParticipants[$index]->done_email_completed_datetime->diffForHumans();
+            }else{
+                $eventsParticipants[$index]->done_email_completed_datetime_diffForHumans = $eventsParticipants[$index]->done_email_completed_datetime;
+            }
             foreach ($eventParticipant->participant->organisations_participants as $organisation_participant) {
                 // array_push($eventsParticipants[$index]->organisations, $organisation_participant->organisation->name);
                 $eventsParticipants[$index]->organisationsString = ($eventsParticipants[$index]->organisationsString) .
@@ -641,6 +646,7 @@ class EventParticipantController extends Controller
                         . ($eventParticipant->fee->amount) . ' (' . ($eventParticipant->fee->name)
                         . ')</b>, kemudian tekan butang di bawah untuk ke sesawang profil bagi mengemaskini status pembayaran untuk disahkan.',
                     'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
+                    'ic' => ($eventParticipant->participant->ic),
                 ];
 
                 Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($eventParticipant) {
@@ -664,6 +670,7 @@ class EventParticipantController extends Controller
                         . '<br/>Tempat: ' . ($eventParticipant->event->venue->name)
                         . '<br/> <br/>Jika ini adalah suatu kesilapan, sila hubungi pihak kami semula.',
                     'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
+                    'ic' => ($eventParticipant->participant->ic),
                 ];
 
                 Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($eventParticipant) {
@@ -686,6 +693,7 @@ class EventParticipantController extends Controller
                         . '<br/>Tempat: ' . ($eventParticipant->event->venue->name)
                         . '<br/> <br/>Jika ini adalah suatu kesilapan, sila hubungi pihak kami semula.',
                     'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
+                    'ic' => ($eventParticipant->participant->ic),
                 ];
 
                 Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($eventParticipant) {
@@ -709,6 +717,7 @@ class EventParticipantController extends Controller
                         . '<br/>Tarikh: ' . ($eventParticipant->event->datetime_start) . ' sehingga ' . ($eventParticipant->event->datetime_end)
                         . '<br/>Tempat: ' . ($eventParticipant->event->venue->name),
                     'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
+                    'ic' => ($eventParticipant->participant->ic),
                 ];
 
                 Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($eventParticipant) {
@@ -733,6 +742,7 @@ class EventParticipantController extends Controller
                         . ($eventParticipant->fee->amount) . ' (' . ($eventParticipant->fee->name)
                         . ')</b>, kemudian tekan butang di bawah untuk ke sesawang profil bagi memasukkan bukti pembayaran yang baharu untuk disahkan.',
                     'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
+                    'ic' => ($eventParticipant->participant->ic),
                 ];
 
                 Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($eventParticipant) {
@@ -744,6 +754,9 @@ class EventParticipantController extends Controller
             case 'verify-attendance-attend':
                 $update = EventParticipant::find($eventParticipant_id)->update([
                     'is_not_attend' => 0,
+                    'is_question_sended' => 1,
+                    'question_sended_datetime' => Carbon::now(),
+                    'is_done_email_completed' => 0,
                 ]);
                 // $message =  [
                 //     'opening' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik '+ ($eventParticipant->participant->name),
@@ -760,6 +773,7 @@ class EventParticipantController extends Controller
                         . '<br/>Tarikh: ' . ($eventParticipant->event->datetime_start) . ' sehingga ' . ($eventParticipant->event->datetime_end)
                         . '<br/>Tempat: ' . ($eventParticipant->event->venue->name),
                     'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga anda terus berjaya. Terima kasih.',
+                    'ic' => ($eventParticipant->participant->ic),
                 ];
 
                 Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($eventParticipant) {
@@ -780,6 +794,7 @@ class EventParticipantController extends Controller
                         . '<br/>Tarikh: ' . ($eventParticipant->event->datetime_start) . ' sehingga ' . ($eventParticipant->event->datetime_end)
                         . '<br/>Tempat: ' . ($eventParticipant->event->venue->name),
                     'conclusion' => 'Sila maklumkan kepada kami sekiranya ini adalah suatu kesilapan. Terima kasih.',
+                    'ic' => ($eventParticipant->participant->ic),
                 ];
 
                 Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($eventParticipant) {
@@ -939,6 +954,9 @@ class EventParticipantController extends Controller
                 case 'verify-attendance-attend':
                     $update = EventParticipant::find($eventParticipant_id)->update([
                         'is_not_attend' => 0,
+                        'is_question_sended' => 1,
+                        'question_sended_datetime' => Carbon::now(),
+                        'is_done_email_completed' => 0,
                     ]);
                     // $message =  [
                     //     'opening' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik '+ ($eventParticipant->participant->name),

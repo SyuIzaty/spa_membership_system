@@ -36,9 +36,11 @@
                                         <tr class="bg-primary-50 text-center">
                                             <th>ID</th>
                                             <th>NAME</th>
-                                            <th>DATES</th>
-                                            <th>PARTICIPANT</th>
-                                            <th>MANAGE. DETAILS</th>
+                                            <th>DATE START</th>
+                                            <th>DATE END</th>
+                                            <th>PARTICIPANT (VALID)</th>
+                                            <th>PARTICIPANT (NOT APPROVED YET)</th>
+                                            <th>CREATED DATE</th>
                                             <th>STATUS</th>
                                             <th>ACTION</th>
                                         </tr>
@@ -110,16 +112,25 @@
                         name: 'name'
                     },
                     {
-                        data: 'dates',
-                        name: 'dates'
+                        data: 'datetime_start_toDayDateTimeString',
+                        name: 'datetime_start_toDayDateTimeString'
+                    },
+
+                    {
+                        data: 'datetime_end_toDayDateTimeString',
+                        name: 'datetime_end_toDayDateTimeString'
                     },
                     {
-                        data: 'participant',
-                        name: 'participant'
+                        data: 'totalValidParticipants',
+                        name: 'totalValidParticipants'
                     },
                     {
-                        data: 'management_details',
-                        name: 'management_details'
+                        data: 'totalParticipantsNotApprovedYet',
+                        name: 'totalParticipantsNotApprovedYet'
+                    },
+                    {
+                        data: 'created_at_toDayDateTimeString',
+                        name: 'created_at_toDayDateTimeString'
                     },
                     {
                         data: 'event_status_category.name',
