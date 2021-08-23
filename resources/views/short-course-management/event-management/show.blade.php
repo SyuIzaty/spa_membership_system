@@ -73,7 +73,7 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr>
-                                                                <td style="background-color:plum">Name</td>
+                                                                <td>Name</td>
                                                                 <td name="name_show" id="name_show">
                                                                     {{ $event->name }}
                                                                 </td>
@@ -93,7 +93,7 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td style="background-color:plum">Date Start</td>
+                                                                <td>Date Start</td>
                                                                 <td name="datetime_start_show" id="datetime_start_show">
                                                                     {{ date('d/m/Y h:i A', strtotime($event->datetime_start)) }}
                                                                 </td>
@@ -116,7 +116,7 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td style="background-color:plum">Date End</td>
+                                                                <td>Date End</td>
                                                                 <td name="datetime_end_show" id="datetime_end_show">
                                                                     {{ date('d/m/Y h:i A', strtotime($event->datetime_end)) }}
                                                                 </td>
@@ -138,7 +138,7 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td style="background-color:plum">Venue</td>
+                                                                <td>Venue</td>
                                                                 <td name="venue_show" id="venue_show">
                                                                     {{ $event->venue->name }}
                                                                 </td>
@@ -175,7 +175,7 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td style="background-color:plum">Venue Description</td>
+                                                                <td>Venue Description</td>
                                                                 <td name="venue_description_show"
                                                                     id="venue_description_show">
                                                                     {{ $event->venue_description }}
@@ -198,7 +198,7 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td style="background-color:plum">Total Seat Open</td>
+                                                                <td>Total Seat Open</td>
                                                                 <td name="max_participant_show" id="max_participant_show">
                                                                     {{ $event->max_participant }}
                                                                 </td>
@@ -228,7 +228,7 @@
                                                         <tr class=" bg-primary-50" scope="row">
                                                             <th colspan="5"><b>List of Fees</b></th>
                                                         </tr>
-                                                        <tr style="background-color:plum" scope="row">
+                                                        <tr scope="row">
                                                             <th scope="col">Name</th>
                                                             <th scope="col">Amount</th>
                                                             <th scope="col">Fee Type</th>
@@ -522,7 +522,7 @@
                                                         <tr class=" bg-primary-50">
                                                             <th colspan="3"><b>List of Trainers</b></th>
                                                         </tr>
-                                                        <tr style="background-color:plum">
+                                                        <tr>
                                                             <th>ID</th>
                                                             <th>Name</th>
                                                             <th>Action</th>
@@ -743,7 +743,7 @@
                                                         <tr class=" bg-primary-50">
                                                             <th colspan="3"><b>List of Contact Persons</b></th>
                                                         </tr>
-                                                        <tr style="background-color:plum">
+                                                        <tr>
                                                             <th>ID</th>
                                                             <th>Name</th>
                                                             <th>Action</th>
@@ -949,7 +949,7 @@
                                                         <tr class=" bg-primary-50">
                                                             <th colspan="3"><b>List of Short Courses</b></th>
                                                         </tr>
-                                                        <tr style="background-color:plum">
+                                                        <tr>
                                                             <th>ID</th>
                                                             <th>Name</th>
                                                             <th>Action</th>
@@ -1110,7 +1110,7 @@
                                                             <tr class=" bg-primary-50">
                                                                 <th colspan="5"><b>Pre-Event</b></th>
                                                             </tr>
-                                                            <tr style="background-color:plum">
+                                                            <tr >
                                                                 <th>Wait for Applic. Approv.</th>
                                                                 <th>In progress of Make. Pay.</th>
                                                                 <th>Wait for Pay. Confirm.</th>

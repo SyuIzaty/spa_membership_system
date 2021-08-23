@@ -46,8 +46,8 @@ class EventController extends Controller
                     ->count();
                 $totalParticipantsNotApprovedYet = $event->events_participants
                     ->where('event_id', $event->id)
-                    ->where('is_approved_application', 0)
                     ->where('is_disqualified', 0)
+                    ->where('is_verified_payment_proof', 0)
                     ->count();
                 $totalRejected = $event->events_participants
                     ->where('event_id', $event->id)
@@ -415,7 +415,7 @@ class EventController extends Controller
         $venues = Venue::all();
         $shortcourses = ShortCourse::all();
 
-        $users = User::all();
+        $users = User::where('category', 'STF')->get();
         $eventStatusCategories = EventStatusCategory::all();
 
         // $trainers = array();
