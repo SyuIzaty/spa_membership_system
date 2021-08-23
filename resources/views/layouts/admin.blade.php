@@ -159,20 +159,14 @@
                         @can('Short Course Management - View All')
                             <li class="nav-title">Short Course Management</li>
                             <li>
-                                <a href="/events" title="Event Management" data-filter-tags="event-management">
-                                    <i class="ni ni-calendar-fine"></i>
-                                    <span class="nav-link-text" data-i18n="nav.event-management">Event Management</span>
-                                </a>
-                            </li>
-
-                            <li>
                                 <a href="#" title="Catalogues" data-filter-tags="catalogues">
                                     <i class="ni ni-list"></i>
                                     <span class="nav-link-text" data-i18n="nav.catalogues">Catalogues</span>
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="/shortcourses" title="Course Catalogue" data-filter-tags="course-catalogue">
+                                        <a href="/shortcourses" title="Course Catalogue"
+                                            data-filter-tags="course-catalogue">
                                             <i class="ni ni-book-open"></i>
                                             <span class="nav-link-text" data-i18n="nav.course-catalogue">Course
                                                 Catalogue</span>
@@ -185,8 +179,23 @@
                                                 Catalogue</span>
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="#" title="Feedback Set Catalogue" data-filter-tags="feedback-set-catalogue">
+                                            <i class="ni ni-globe"></i>
+                                            <span class="nav-link-text" data-i18n="nav.feedback-set-catalogue">Feedback Set
+                                                Catalogue</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
+                            <li>
+                                <a href="/events" title="Event Management" data-filter-tags="event-management">
+                                    <i class="ni ni-calendar-fine"></i>
+                                    <span class="nav-link-text" data-i18n="nav.event-management">Event Management</span>
+                                </a>
+                            </li>
+
+
 
                             <li>
                                 <a href="#" title="People" data-filter-tags="people">
@@ -737,8 +746,13 @@
             })
         });
     </script>
+    @yield('style')
     <style>
         /* For CKEditor */
+
+        .ck-editor__editable_inline {
+            min-height: 250px;
+        }
         .document-editor {
             border: 1px solid var(--ck-color-base-border);
             border-radius: var(--ck-border-radius);

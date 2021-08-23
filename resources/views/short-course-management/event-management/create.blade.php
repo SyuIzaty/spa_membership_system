@@ -102,7 +102,7 @@
                                                         {{-- {{ Form::textarea('shortcourse_description', old('shortcourse_description'), ['class' => 'form-control', 'placeholder' => 'Event Description', 'id' => 'shortcourse_description']) }} --}}
                                                         <textarea id="shortcourse_description"
                                                             name="shortcourse_description"
-                                                            class='form-control' rows="10">{{ old('shortcourse_description') }}  </textarea>
+                                                            class="form-control ck-editor__editable ck-editor__editable_inline" rows="10">{{ old('shortcourse_description') }}  </textarea>
                                                         @error('shortcourse_description')
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror
@@ -116,7 +116,7 @@
                                                     <td class="col px-4">
                                                         {{-- {{ Form::textarea('shortcourse_objective', old('shortcourse_objective'), ['class' => 'form-control', 'placeholder' => 'Event Objective', 'id' => 'shortcourse_objective']) }} --}}
                                                         <textarea id="shortcourse_objective" name="shortcourse_objective"
-                                                            class='form-control' rows="10">{{ old('shortcourse_objective') }}  </textarea>
+                                                            class="form-control ck-editor__editable ck-editor__editable_inline" rows="10">{{ old('shortcourse_objective') }}  </textarea>
                                                         @error('shortcourse_objective')
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror
@@ -304,12 +304,11 @@
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror
                                                         <a href="javascript:;" data-toggle="#" id="search-by-trainer_ic"
-                                                            class="btn btn-primary btn-sm ml-auto float-right my-2">
+                                                            class="btn btn-primary btn-sm ml-auto float-right my-2" hidden>
                                                             Search</a>
                                                     </td>
                                                 </tr>
-                                                <tr id="form-add-trainer-second-part"
-                                                    {{ old('trainer_ic') ? null : 'style=display:none' }}>
+                                                <tr id="form-add-trainer-second-part">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', "Trainer's User ID **", ['style' => 'font-weight:bold']) }}
                                                     </td>
@@ -338,8 +337,7 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-                                                <tr id="form-add-trainer-second-part"
-                                                    {{ old('trainer_ic') ? null : 'style=display:none' }}>
+                                                <tr id="form-add-trainer-second-part">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', "Trainer's Fullname **", ['style' => 'font-weight:bold']) }}
                                                     </td>
@@ -350,8 +348,7 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-                                                <tr id="form-add-trainer-second-part"
-                                                    {{ old('trainer_ic') ? null : 'style=display:none' }}>
+                                                <tr id="form-add-trainer-second-part">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', "Trainer's Phone ** e.g.:0132345678", ['style' => 'font-weight:bold']) }}
                                                     </td>
@@ -362,8 +359,7 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-                                                <tr id="form-add-trainer-second-part"
-                                                    {{ old('trainer_ic') ? null : 'style=display:none' }}>
+                                                <tr id="form-add-trainer-second-part">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', "Trainer's Email **", ['style' => 'font-weight:bold']) }}
                                                     </td>
@@ -503,7 +499,7 @@
 
             $('#submit').hide();
 
-            $("tr[id=form-add-trainer-second-part]").hide();
+            // $("tr[id=form-add-trainer-second-part]").hide();
             $('#search-by-trainer_ic').trigger("click");
 
 

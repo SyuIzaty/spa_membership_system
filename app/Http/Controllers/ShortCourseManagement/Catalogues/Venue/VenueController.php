@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ShortCourseManagement\Catalogues\Venue;
 use App\Models\ShortCourseManagement\Venue;
 use App\Models\ShortCourseManagement\Topic;
+use App\Models\ShortCourseManagement\VenueType;
 // use App\Models\ShortCourseManagement\TopicVenue;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -95,6 +96,7 @@ class VenueController extends Controller
         $venue = Venue::find($id)->load([
             'events',
         ]);
+        $venue_types = VenueType::all();
 
 
         if (isset($venue->events)) {
@@ -105,7 +107,7 @@ class VenueController extends Controller
         }
         $venue->totalEvents = $totalEvents;
 
-        return view('short-course-management.catalogues.venue-catalogue.show', compact('venue',));
+        return view('short-course-management.catalogues.venue-catalogue.show', compact('venue','venue_types'));
 
     }
 
@@ -132,8 +134,10 @@ class VenueController extends Controller
     public function update(Request $request, $id)
     {
         //
+        // dd($request);
         $validated = $request->validate([
             'name' => 'required|max:255',
+            'venue_type_id' => 'required',
         ], [
             'name.required' => 'Please insert event name',
             'name.max' => 'Name exceed maximum length',
@@ -141,6 +145,8 @@ class VenueController extends Controller
 
         $update = Venue::find($id)->update([
             'name' => $request->name,
+            'description' => $request->description,
+            'venue_type_id' => $request->venue_type_id,
             'updated_by' => Auth::user()->id,
         ]);
 

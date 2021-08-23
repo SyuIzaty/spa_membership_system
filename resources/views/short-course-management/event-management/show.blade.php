@@ -601,10 +601,9 @@
                                                                                     name="trainer_ic_input">
                                                                             </div>
                                                                             <a href="javascript:;" data-toggle="#"
-                                                                                    id="search-by-trainer_ic"
-                                                                                    class="btn btn-primary mb-2"
-                                                                                    hidden><i
-                                                                                        class="ni ni-magnifier"></i></a>
+                                                                                id="search-by-trainer_ic"
+                                                                                class="btn btn-primary mb-2" hidden><i
+                                                                                    class="ni ni-magnifier"></i></a>
                                                                             {{-- </div> --}}
                                                                             @error('trainer_ic_input')
                                                                                 <p style="color: red">
@@ -797,17 +796,17 @@
                                                                                     class="text-danger">*</span>
                                                                                 Contact Person's IC</label>
                                                                             {{-- <div class="form-inline" style="width:100%"> --}}
-                                                                                <div class="form-group"
-                                                                                    id="search-by-contact_person_ic-div">
-                                                                                    <input class="form-control w-100"
-                                                                                        id="contact_person_ic_input"
-                                                                                        name="contact_person_ic_input">
-                                                                                </div>
-                                                                                <a href="javascript:;" data-toggle="#"
-                                                                                    id="search-by-contact_person_ic"
-                                                                                    class="btn btn-primary mb-2"
-                                                                                    style="width:10%" hidden><i
-                                                                                        class="ni ni-magnifier"></i></a>
+                                                                            <div class="form-group"
+                                                                                id="search-by-contact_person_ic-div">
+                                                                                <input class="form-control w-100"
+                                                                                    id="contact_person_ic_input"
+                                                                                    name="contact_person_ic_input">
+                                                                            </div>
+                                                                            <a href="javascript:;" data-toggle="#"
+                                                                                id="search-by-contact_person_ic"
+                                                                                class="btn btn-primary mb-2"
+                                                                                style="width:10%" hidden><i
+                                                                                    class="ni ni-magnifier"></i></a>
                                                                             {{-- </div> --}}
                                                                             @error('contact_person_ic_input')
                                                                                 <p style="color: red">
@@ -1049,10 +1048,10 @@
                                                                                 <label class="form-label"
                                                                                     for="objective"><span
                                                                                         class="text-danger">*</span>Objective</label>
-                                                                                <textarea class="form-control-plaintext"
-                                                                                    rows="10" id="objective" name="objective"
-                                                                                    disabled>
-                                                                                                                                                                                                                                                                                                                                        </textarea>
+                                                                                <div class="form-control-plaintext"
+                                                                                    rows="10" id="objective"
+                                                                                    name="objective">
+                                                                                </div>
                                                                                 @error('objective')
                                                                                     <p style="color: red">
                                                                                         <strong> *
@@ -1066,10 +1065,9 @@
                                                                                 <label class="form-label"
                                                                                     for="description"><span
                                                                                         class="text-danger">*</span>Description</label>
-                                                                                <textarea class="form-control-plaintext"
+                                                                                <div class="form-control-plaintext"
                                                                                     rows="10" id="description"
-                                                                                    name="description" disabled>
-                                                                                                                                                                                                                                                                                                                                        </textarea>
+                                                                                    name="description"></div>
                                                                                 @error('description')
                                                                                     <p style="color: red">
                                                                                         <strong> *
@@ -1304,29 +1302,34 @@
                                                                         <div class="tab-pane active"
                                                                             id="description_specific_tab" role="tabpanel">
                                                                             <textarea id="editor_description"
-                                                                                name="editor_description" rows="10"> {{ $event->description }} </textarea>
+                                                                                name="editor_description" rows="10"
+                                                                                class="ck-editor__editable ck-editor__editable_inline"> {{ $event->description }} </textarea>
                                                                         </div>
 
                                                                         <div class="tab-pane"
                                                                             id="editor_target_audience_specific_tab"
                                                                             role="tabpanel">
                                                                             <textarea id="editor_target_audience"
-                                                                                name="editor_target_audience" rows="10"> {{ $event->target_audience }} </textarea>
+                                                                                name="editor_target_audience" rows="10"
+                                                                                class="ck-editor__editable ck-editor__editable_inline"> {{ $event->target_audience }} </textarea>
                                                                         </div>
                                                                         <div class="tab-pane" id="objective_specific_tab"
                                                                             role="tabpanel">
                                                                             <textarea id="editor_objective"
-                                                                                name="editor_objective" rows="10"> {{ $event->objective }} </textarea>
+                                                                                name="editor_objective" rows="10"
+                                                                                class="ck-editor__editable ck-editor__editable_inline"> {{ $event->objective }} </textarea>
                                                                         </div>
                                                                         <div class="tab-pane" id="outline_specific_tab"
                                                                             role="tabpanel">
                                                                             <textarea id="editor_outline"
-                                                                                name="editor_outline" rows="10">{{ $event->outline }}</textarea>
+                                                                                name="editor_outline" rows="10"
+                                                                                class="ck-editor__editable ck-editor__editable_inline">{{ $event->outline }}</textarea>
                                                                         </div>
                                                                         <div class="tab-pane" id="tentative_specific_tab"
                                                                             role="tabpanel">
                                                                             <textarea id="editor_tentative"
-                                                                                name="editor_tentative" rows="10">{{ $event->tentative }}</textarea>
+                                                                                name="editor_tentative" rows="10"
+                                                                                class="ck-editor__editable ck-editor__editable_inline">{{ $event->tentative }}</textarea>
                                                                         </div>
                                                                     </div>
                                                                     <div class="card-footer text-muted">
@@ -1808,8 +1811,8 @@
                     var shortcourse_id = null;
                     $('.modal-body #id').val(id);
                     $('.modal-body #shortcourse_id').val(shortcourse_id);
-                    $('.modal-body #objective').val(null);
-                    $('.modal-body #description').val(null);
+                    $('.modal-body #objective').empty();
+                    $('.modal-body #description').empty();
                     $("div[id=form-add-shortcourse-second-part]").hide();
                     $('#crud-modal-add-shortcourse').modal('show');
                 });
@@ -1827,13 +1830,13 @@
                 $('#shortcourse_id').change(function() {
                     var id = $('.modal-body #shortcourse_id').val();
                     $.get("/event/shortcourse/search-by-id/" + id, function(data) {
-                        $('.modal-body #objective').val(data.objective);
-                        $('.modal-body #description').val(data.description);
+                        $('.modal-body #objective').append(data.objective);
+                        $('.modal-body #description').append(data.description);
 
                     }).fail(
                         function() {
-                            $('.modal-body #objective').val(null);
-                            $('.modal-body #description').val(null);
+                            $('.modal-body #objective').empty();
+                            $('.modal-body #description').empty();
                         }).always(
                         function() {
                             $("div[id=form-add-shortcourse-second-part]").show();
@@ -2067,4 +2070,13 @@
 
         }
     </script>
+@endsection
+
+@section('style')
+    {{-- <style>
+        .ck-editor__editable_inline {
+            min-height: 250px;
+        }
+
+    </style> --}}
 @endsection

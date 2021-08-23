@@ -105,7 +105,7 @@ class EventController extends Controller
 
         $topics = Topic::all();
 
-        $users = User::all();
+        $users = User::where('category', 'STF')->orWhere('category', 'EXT')->get();
 
         $venue_types = VenueType::all();
 
@@ -223,6 +223,7 @@ class EventController extends Controller
             $createVenue = Venue::create([
                 'name' => $request->venue_name,
                 'venue_type_id' => $request->venue_type_id,
+                'description' => $request->venue_description,
                 'created_by' => Auth::user()->id,
             ]);
         } else {
@@ -284,6 +285,7 @@ class EventController extends Controller
                     'user_id' => $existUser->id,
                     'ic' => $request->trainer_ic,
                     'phone' => $request->trainer_phone,
+                    'email' => $request->trainer_email,
                     'created_by' => Auth::user()->id,
                 ]);
             }
@@ -415,7 +417,7 @@ class EventController extends Controller
         $venues = Venue::all();
         $shortcourses = ShortCourse::all();
 
-        $users = User::where('category', 'STF')->get();
+        $users = User::where('category', 'STF')->orWhere('category', 'EXT')->get();
         $eventStatusCategories = EventStatusCategory::all();
 
         // $trainers = array();

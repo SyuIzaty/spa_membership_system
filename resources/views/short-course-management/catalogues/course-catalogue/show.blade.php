@@ -98,8 +98,8 @@
                                                                     style="display: none">
                                                                     <div class="form-group">
                                                                         <textarea id="objective" name="objective"
-                                                                            type="text"
-                                                                            class="form-control">{{ $shortcourse->objective }}</textarea>
+                                                                            type="text" rows="10"
+                                                                            class="form-control ck-editor__editable ck-editor__editable_inline">{{ $shortcourse->objective }}</textarea>
                                                                         @error('objective')
                                                                             <p style="color: red">
                                                                                 <strong> *
@@ -120,8 +120,7 @@
                                                                     <div class="form-group">
                                                                         <textarea id="description" name="description"
                                                                             type="text"
-                                                                            class="form-control"
-                                                                            row="10">{{ $shortcourse->description }}</textarea>
+                                                                            rows="10" class="form-control ck-editor__editable ck-editor__editable_inline">{{ $shortcourse->description }}</textarea>
                                                                         @error('description')
                                                                             <p style="color: red">
                                                                                 <strong> *

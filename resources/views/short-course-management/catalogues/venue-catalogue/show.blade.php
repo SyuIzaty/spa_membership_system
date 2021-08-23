@@ -89,6 +89,54 @@
                                                                     </div>
                                                                 </td>
                                                             </tr>
+                                                            <tr>
+                                                                <td>Venue Type</td>
+                                                                <td name="venue_type_show" id="venue_type_show">
+                                                                    {{ $venue->venue_type->name }}
+                                                                </td>
+                                                                <td name="venue_type_edit" id="venue_type_edit" style="display: none">
+                                                                    <div class="form-group">
+                                                                        <select class="form-control venue_type " name="venue_type_id"
+                                                                            id="venue_type_id" data-select2-id="venue_type_id" tabindex="-1"
+                                                                            aria-hidden="true">
+                                                                            <option
+                                                                                value={{ $venue->venue_type ? $venue->venue_type->id : '' }}>
+                                                                                {{ $venue->venue_type ? $venue->venue_type->name : 'Choose a venue type' }}
+                                                                            </option>
+                                                                            @foreach ($venue_types as $venue_type)
+                                                                                @if ($venue->venue_type ? $venue_type->id != $venue->venue_type_id : false)
+                                                                                    <option value="{{ $venue_type->id }}">
+                                                                                        {{ $venue_type->name }}
+                                                                                    </option>
+                                                                                @endif
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Venue Description</td>
+                                                                <td name="description_show"
+                                                                    id="description_show">
+                                                                    {{ $venue->description }}
+                                                                </td>
+                                                                <td name="description_edit"
+                                                                    id="description_edit" style="display: none">
+                                                                    <div class="form-group">
+                                                                        <input id="description"
+                                                                            name="description" type="text"
+                                                                            value="{{ $venue->description }}"
+                                                                            class="form-control">
+                                                                        @error('description')
+                                                                            <p style="color: red">
+                                                                                <strong> *
+                                                                                    {{ $message }}
+                                                                                </strong>
+                                                                            </p>
+                                                                        @enderror
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
                                                         <tbody>
                                                     </table>
                                                 </form>
@@ -199,6 +247,13 @@
                     $("#name_show").hide();
                     $("#name_edit").show();
 
+
+                    $("#venue_type_show").hide();
+                    $("#venue_type_edit").show();
+
+                    $("#description_show").hide();
+                    $("#description_edit").show();
+
                     $("#edit-basic").hide();
                     $("#save-basic").show();
 
@@ -209,6 +264,13 @@
                     $("#name_show").show();
                     $("#name_edit").hide();
 
+
+                    $("#venue_type_edit").hide();
+                    $("#venue_type_show").show();
+
+                    $("#description_edit").hide();
+                    $("#description_show").show();
+
                     $("#edit-basic").show();
                     $("#save-basic").hide();
 
@@ -216,6 +278,8 @@
                 });
 
             }
+
+            $('.venue_type').select2();
 
             // Delete Venue
             {
