@@ -99,7 +99,10 @@
                                                         {{ Form::label('title', 'Event Description **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::textarea('shortcourse_description', old('shortcourse_description'), ['class' => 'form-control', 'placeholder' => 'Event Description', 'id' => 'shortcourse_description']) }}
+                                                        {{-- {{ Form::textarea('shortcourse_description', old('shortcourse_description'), ['class' => 'form-control', 'placeholder' => 'Event Description', 'id' => 'shortcourse_description']) }} --}}
+                                                        <textarea id="shortcourse_description"
+                                                            name="shortcourse_description"
+                                                            class='form-control'>{{ old('shortcourse_description') }}  </textarea>
                                                         @error('shortcourse_description')
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror
@@ -111,7 +114,9 @@
                                                         {{ Form::label('title', 'Event Objective **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{ Form::textarea('shortcourse_objective', old('shortcourse_objective'), ['class' => 'form-control', 'placeholder' => 'Event Objective', 'id' => 'shortcourse_objective']) }}
+                                                        {{-- {{ Form::textarea('shortcourse_objective', old('shortcourse_objective'), ['class' => 'form-control', 'placeholder' => 'Event Objective', 'id' => 'shortcourse_objective']) }} --}}
+                                                        <textarea id="shortcourse_objective" name="shortcourse_objective"
+                                                            class='form-control'>{{ old('shortcourse_objective') }}  </textarea>
                                                         @error('shortcourse_objective')
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror
@@ -400,6 +405,25 @@
 @endsection
 @section('script')
     <script>
+        let editor_shortcourse_description;
+        ClassicEditor
+            .create(document.querySelector('#shortcourse_description'))
+            .then(editor => {
+                editor_shortcourse_description = editor;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+        let editor_shortcourse_objective;
+        ClassicEditor
+            .create(document.querySelector('#shortcourse_objective'))
+            .then(editor => {
+                editor_shortcourse_objective = editor;
+            })
+            .catch(error => {
+                console.error(error);
+            });
         $('#search-by-trainer_ic').click(function() {
 
             var trainer_ic = $('#search-by-trainer_ic_input').val();
@@ -493,8 +517,11 @@
             if (shortcourse_id == -1) {
 
                 $('#shortcourse_name').val(null);
-                $('#shortcourse_description').val(null);
-                $('#shortcourse_objective').val(null);
+                // $('#shortcourse_description').val(null);
+                // console.log(shortcourse_description);
+                editor_shortcourse_description.setData('');
+                // $('#shortcourse_objective').val(null);
+                editor_shortcourse_objective.setData('');
                 // $('#shortcourse_topic').val(null);
 
                 var rowCount = $('#topic_field tr').length;
@@ -518,12 +545,15 @@
                 shortcourse_description = selected_shortcourse.description;
                 shortcourse_objective = selected_shortcourse.objective;
 
-          nodeNames = [];
-                console.log(shortcourse_description);
+                nodeNames = [];
                 if (shortcourse_id) {
                     $('#shortcourse_name').val(selected_shortcourse.name);
-                    $('#shortcourse_description').val(shortcourse_description);
-                    $('#shortcourse_objective').val(shortcourse_objective);
+                    // $('#shortcourse_description').val(shortcourse_description);
+
+                    editor_shortcourse_description.setData(shortcourse_description);
+                    // $('#shortcourse_objective').val(shortcourse_objective);
+                    editor_shortcourse_objective.setData(shortcourse_objective);
+
                     // $('#shortcourse_topic').val(selected_shortcourse.topics);
                     $("tr[id=form-add-shortcourse-second-part]").show();
 

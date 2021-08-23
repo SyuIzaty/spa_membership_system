@@ -570,6 +570,7 @@ class EventParticipantController extends Controller
                 . ($existFee->amount) . ' (' . ($existFee->name)
                 . ')</b>, kemudian tekan butang di bawah untuk ke sesawang profil bagi mengemaskini status pembayaran untuk disahkan.',
             'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
+            'ic' => ($existParticipant->ic),
         ];
 
         Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($request) {

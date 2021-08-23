@@ -178,7 +178,7 @@
                                                                 <td style="background-color:plum">Venue Description</td>
                                                                 <td name="venue_description_show"
                                                                     id="venue_description_show">
-                                                                    {{ $event->venue->description }}
+                                                                    {{ $event->venue_description }}
                                                                 </td>
                                                                 <td name="venue_description_edit"
                                                                     id="venue_description_edit" style="display: none">
