@@ -102,7 +102,7 @@
                                                         {{-- {{ Form::textarea('shortcourse_description', old('shortcourse_description'), ['class' => 'form-control', 'placeholder' => 'Event Description', 'id' => 'shortcourse_description']) }} --}}
                                                         <textarea id="shortcourse_description"
                                                             name="shortcourse_description"
-                                                            class='form-control'>{{ old('shortcourse_description') }}  </textarea>
+                                                            class='form-control' rows="10">{{ old('shortcourse_description') }}  </textarea>
                                                         @error('shortcourse_description')
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror
@@ -116,7 +116,7 @@
                                                     <td class="col px-4">
                                                         {{-- {{ Form::textarea('shortcourse_objective', old('shortcourse_objective'), ['class' => 'form-control', 'placeholder' => 'Event Objective', 'id' => 'shortcourse_objective']) }} --}}
                                                         <textarea id="shortcourse_objective" name="shortcourse_objective"
-                                                            class='form-control'>{{ old('shortcourse_objective') }}  </textarea>
+                                                            class='form-control' rows="10">{{ old('shortcourse_objective') }}  </textarea>
                                                         @error('shortcourse_objective')
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror

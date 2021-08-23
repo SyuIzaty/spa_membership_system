@@ -120,7 +120,8 @@
                                                                     <div class="form-group">
                                                                         <textarea id="description" name="description"
                                                                             type="text"
-                                                                            class="form-control">{{ $shortcourse->description }}</textarea>
+                                                                            class="form-control"
+                                                                            row="10">{{ $shortcourse->description }}</textarea>
                                                                         @error('description')
                                                                             <p style="color: red">
                                                                                 <strong> *

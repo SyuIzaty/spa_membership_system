@@ -1050,7 +1050,7 @@
                                                                                     for="objective"><span
                                                                                         class="text-danger">*</span>Objective</label>
                                                                                 <textarea class="form-control-plaintext"
-                                                                                    rows="5" id="objective" name="objective"
+                                                                                    rows="10" id="objective" name="objective"
                                                                                     disabled>
                                                                                                                                                                                                                                                                                                                                         </textarea>
                                                                                 @error('objective')
@@ -1067,7 +1067,7 @@
                                                                                     for="description"><span
                                                                                         class="text-danger">*</span>Description</label>
                                                                                 <textarea class="form-control-plaintext"
-                                                                                    rows="5" id="description"
+                                                                                    rows="10" id="description"
                                                                                     name="description" disabled>
                                                                                                                                                                                                                                                                                                                                         </textarea>
                                                                                 @error('description')
@@ -1304,29 +1304,29 @@
                                                                         <div class="tab-pane active"
                                                                             id="description_specific_tab" role="tabpanel">
                                                                             <textarea id="editor_description"
-                                                                                name="editor_description"> {{ $event->description }} </textarea>
+                                                                                name="editor_description" rows="10"> {{ $event->description }} </textarea>
                                                                         </div>
 
                                                                         <div class="tab-pane"
                                                                             id="editor_target_audience_specific_tab"
                                                                             role="tabpanel">
                                                                             <textarea id="editor_target_audience"
-                                                                                name="editor_target_audience"> {{ $event->target_audience }} </textarea>
+                                                                                name="editor_target_audience" rows="10"> {{ $event->target_audience }} </textarea>
                                                                         </div>
                                                                         <div class="tab-pane" id="objective_specific_tab"
                                                                             role="tabpanel">
                                                                             <textarea id="editor_objective"
-                                                                                name="editor_objective"> {{ $event->objective }} </textarea>
+                                                                                name="editor_objective" rows="10"> {{ $event->objective }} </textarea>
                                                                         </div>
                                                                         <div class="tab-pane" id="outline_specific_tab"
                                                                             role="tabpanel">
                                                                             <textarea id="editor_outline"
-                                                                                name="editor_outline">{{ $event->outline }}</textarea>
+                                                                                name="editor_outline" rows="10">{{ $event->outline }}</textarea>
                                                                         </div>
                                                                         <div class="tab-pane" id="tentative_specific_tab"
                                                                             role="tabpanel">
                                                                             <textarea id="editor_tentative"
-                                                                                name="editor_tentative">{{ $event->tentative }}</textarea>
+                                                                                name="editor_tentative" rows="10">{{ $event->tentative }}</textarea>
                                                                         </div>
                                                                     </div>
                                                                     <div class="card-footer text-muted">
