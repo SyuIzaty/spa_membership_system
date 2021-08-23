@@ -569,6 +569,7 @@
                                                                                         </th>
                                                                                         <th style="width:30px">Id</th>
                                                                                         <th>Organisation</th>
+                                                                                        <th>IC</th>
                                                                                         <th>Name</th>
                                                                                         <th>Phone</th>
                                                                                         <th>Email</th>
@@ -1149,6 +1150,7 @@
                                                                                         </th>
                                                                                         <th style="width:30px">Id</th>
                                                                                         <th>Organisation</th>
+                                                                                        <th>IC</th>
                                                                                         <th>Name</th>
                                                                                         <th>Phone</th>
                                                                                         <th>Email</th>
@@ -1344,6 +1346,7 @@
                                                                                         </th>
                                                                                         <th style="width:30px">Id</th>
                                                                                         <th>Organisation</th>
+                                                                                        <th>IC</th>
                                                                                         <th>Name</th>
                                                                                         <th>Phone</th>
                                                                                         <th>Email</th>
@@ -1673,6 +1676,7 @@
                                                                                     <tr class="bg-primary-50 text-center">
                                                                                         <th style="width:30px">Id</th>
                                                                                         <th>Organisation</th>
+                                                                                        <th>IC</th>
                                                                                         <th>Name</th>
                                                                                         <th>Phone</th>
                                                                                         <th>Email</th>
@@ -2205,6 +2209,11 @@
                             },
                             {
                                 className: 'text-center',
+                                data: 'participant.ic',
+                                name: 'participant.ic'
+                            },
+                            {
+                                className: 'text-center',
                                 data: 'participant.name',
                                 name: 'participant.name'
                             },
@@ -2535,6 +2544,11 @@
                                 className: 'text-center',
                                 data: 'organisationsString',
                                 name: 'organisationsString'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.ic',
+                                name: 'participant.ic'
                             },
                             {
                                 className: 'text-center',
@@ -2917,6 +2931,11 @@
                                 className: 'text-center',
                                 data: 'organisationsString',
                                 name: 'organisationsString'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.ic',
+                                name: 'participant.ic'
                             },
                             {
                                 className: 'text-center',
@@ -3437,7 +3456,7 @@
                                 return !data ? 'N/A' : data;
                             }
                         },{
-                            targets: [5],
+                            targets: [6],
                             render: function(data, type, row) {
                                 return !data ? 'N/A' : data;
                             }
@@ -3467,6 +3486,11 @@
                                 className: 'text-center',
                                 data: 'organisationsString',
                                 name: 'organisationsString'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.ic',
+                                name: 'participant.ic'
                             },
                             {
                                 className: 'text-center',
@@ -3726,7 +3750,7 @@
                             break;
                         case 'send-question':
                             title = 'Send feedback form to these participants?';
-                            text = "This participant will be sended a feedback form!";
+                            text = "This participant will be sent a feedback form!";
                             confirmButtonText = 'Yes, send the feedback form!';
                             cancelButtonText = 'No';
                             currentTableId = '#table-participant-post-event';

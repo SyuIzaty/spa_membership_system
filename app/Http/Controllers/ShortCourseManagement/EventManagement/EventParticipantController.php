@@ -261,7 +261,7 @@ class EventParticipantController extends Controller
             // dd($eventParticipant->is_not_attend);
             $eventParticipant['attendance_status'] = (is_null($eventParticipant->is_not_attend) ? "No Status Yet" : ($eventParticipant->is_not_attend === 0 ? 'Attend' : 'Not Attend'));
 
-            $eventParticipant['send_question'] = (is_null($eventParticipant->is_question_sended) ? "Not Send Yet" : ($eventParticipant->is_question_sended === 0 ? 'Not Send Yet' : 'Sended'));
+            $eventParticipant['send_question'] = (is_null($eventParticipant->is_question_sended) ? "Not Send Yet" : ($eventParticipant->is_question_sended === 0 ? 'Not Send Yet' : 'Sent'));
 
             $index++;
         }
@@ -1039,6 +1039,7 @@ class EventParticipantController extends Controller
                 $events[$indexEvent]['payment_proof_path'] = $eventParticipant->payment_proof_path;
                 $events[$indexEvent]['amount'] = $eventParticipant->fee->amount;
                 $events[$indexEvent]['fee_name'] = $eventParticipant->fee->name;
+                $events[$indexEvent]['is_question_sended'] = $eventParticipant->is_question_sended;
                 $indexEvent += 1;
             }
         }
@@ -1089,8 +1090,18 @@ class EventParticipantController extends Controller
                 return 'RM' . $events->amount . '/person (' . $events->fee_name . ')';
             })
             ->addColumn('action', function ($events) {
-                return '
-                <a href="#" data-target="#crud-modals" data-toggle="modal" data-event_id="' . $events->id . '" data-event_participant_id="' . $events->event_participant_id . '" data-is_verified_payment_proof="' . $events->is_verified_payment_proof . '" data-amount="' . $events->amount . '" class="btn btn-sm btn-primary">Update Payment Proof</a>';
+                if ($events->is_question_sended == 2) {
+                    return '
+                    <a href="#" data-target="#crud-modals" data-toggle="modal" data-event_id="' . $events->id . '" data-event_participant_id="' . $events->event_participant_id . '" data-is_verified_payment_proof="' . $events->is_verified_payment_proof . '" data-amount="' . $events->amount . '" class="btn btn-sm btn-primary">Update Payment Proof</a>
+                    <a target="_blank" rel="noopener noreferrer"
+                    href="/feedback/form/participant/"'.$events->event_participant_id.'"
+                    type="submit" class="button button-primary"
+                    style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; position: relative; -webkit-text-size-adjust: none; border-radius: 4px; color: #fff; display: inline-block; overflow: hidden; text-decoration: none; background-color: #2d3748; border-bottom: 8px solid #2d3748; border-left: 18px solid #2d3748; border-right: 18px solid #2d3748; border-top: 8px solid #2d3748;">Feedback
+                    Form</a>';
+
+                } else {
+                    return '<a href="#" data-target="#crud-modals" data-toggle="modal" data-event_id="' . $events->id . '" data-event_participant_id="' . $events->event_participant_id . '" data-is_verified_payment_proof="' . $events->is_verified_payment_proof . '" data-amount="' . $events->amount . '" class="btn btn-sm btn-primary">Update Payment Proof</a>';
+                }
             })
 
             // <a href="" data-target="#crud-modals" data-toggle="modal" data-id="' . $kolejs->id . '" data-name="' . $kolejs->name . '" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i> Sunting</a>

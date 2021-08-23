@@ -70,7 +70,7 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr>
-                                                                <td style="background-color:plum">Name</td>
+                                                                <td >Name</td>
                                                                 <td name="name_show" id="name_show">
                                                                     {{ $venue->name }}
                                                                 </td>
@@ -99,7 +99,7 @@
                                                         <tr class=" bg-primary-50">
                                                             <th colspan="3"><b>Settings</b></th>
                                                         </tr>
-                                                        <tr style="background-color:plum">
+                                                        <tr >
                                                         <tr>
                                                             <th class="text-center" scope="col" style="width:20%">
                                                                 Title

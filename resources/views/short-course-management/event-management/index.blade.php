@@ -39,7 +39,7 @@
                                             <th>DATE START</th>
                                             <th>DATE END</th>
                                             <th>PARTICIPANT (VALID)</th>
-                                            <th>PARTICIPANT (NOT APPROVED YET)</th>
+                                            <th>PARTICIPANT (NOT VALID YET)</th>
                                             <th>CREATED DATE</th>
                                             <th>STATUS</th>
                                             <th>ACTION</th>

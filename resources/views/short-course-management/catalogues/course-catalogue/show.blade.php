@@ -70,7 +70,7 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr>
-                                                                <td style="background-color:plum">Name</td>
+                                                                <td >Name</td>
                                                                 <td name="name_show" id="name_show">
                                                                     {{ $shortcourse->name }}
                                                                 </td>
@@ -90,7 +90,7 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td style="background-color:plum">Objective</td>
+                                                                <td >Objective</td>
                                                                 <td name="objective_show" id="objective_show">
                                                                     {!! $shortcourse->objective !!}
                                                                 </td>
@@ -111,7 +111,7 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td style="background-color:plum">Description</td>
+                                                                <td >Description</td>
                                                                 <td name="description_show" id="description_show">
                                                                     {!! $shortcourse->description !!}
                                                                 </td>
@@ -140,7 +140,7 @@
                                                         <tr class=" bg-primary-50">
                                                             <th colspan="3"><b>List of Topics</b></th>
                                                         </tr>
-                                                        <tr style="background-color:plum">
+                                                        <tr >
                                                             <th>Name</th>
                                                             <th>Action</th>
                                                         </tr>
@@ -174,7 +174,7 @@
                                                         <tr class=" bg-primary-50">
                                                             <th colspan="3"><b>Settings</b></th>
                                                         </tr>
-                                                        <tr style="background-color:plum">
+                                                        <tr >
                                                             <th class="text-center" scope="col" style="width:20%">
                                                                 Title
                                                             </th>

@@ -70,7 +70,7 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr>
-                                                                <td style="background-color:plum">Name</td>
+                                                                <td >Name</td>
                                                                 <td name="name_show" id="name_show">
                                                                     {{ $trainer->user->name }}
                                                                 </td>
@@ -90,7 +90,7 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td style="background-color:plum">Email</td>
+                                                                <td >Email</td>
                                                                 <td name="email_show" id="email_show">
                                                                     {{ $trainer->user->email }}
                                                                 </td>
@@ -110,7 +110,7 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td style="background-color:plum">IC</td>
+                                                                <td >IC</td>
                                                                 <td name="ic_show" id="ic_show">
                                                                     {{ $trainer->ic }}
                                                                 </td>
@@ -130,7 +130,7 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td style="background-color:plum">Phone</td>
+                                                                <td >Phone</td>
                                                                 <td name="phone_show" id="phone_show">
                                                                     {{ $trainer->phone }}
                                                                 </td>
@@ -158,7 +158,7 @@
                                                         <tr class=" bg-primary-50">
                                                             <th colspan="3"><b>Settings</b></th>
                                                         </tr>
-                                                        <tr style="background-color:plum">
+                                                        <tr >
                                                             <th class="text-center" scope="col" style="width:20%">
                                                                 Title
                                                             </th>
