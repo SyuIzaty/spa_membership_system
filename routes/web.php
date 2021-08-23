@@ -261,12 +261,12 @@ Route::post('/trainer/delete/{id}', 'ShortCourseManagement\people\Trainer\Traine
 //SCM - Participants
 Route::get('/participant/search-by-participant_ic/{participant_ic}', 'ShortCourseManagement\People\Participant\ParticipantController@searchByParticipantIc');
 
-Route::get('/participants', 'ShortCourseManagement\people\Participant\ParticipantController@index');
-Route::post('/participant', 'ShortCourseManagement\people\Participant\ParticipantController@store');
-Route::get('/participants/{id}', 'ShortCourseManagement\people\Participant\ParticipantController@show');
-Route::post('/participants/data', 'ShortCourseManagement\people\Participant\ParticipantController@dataParticipants');
-Route::post('/participants/update/{id}', 'ShortCourseManagement\people\Participant\ParticipantController@update');
-Route::post('/participant/delete/{id}', 'ShortCourseManagement\people\Participant\ParticipantController@delete');
+Route::get('/participants', 'ShortCourseManagement\People\Participant\ParticipantController@index');
+Route::post('/participant', 'ShortCourseManagement\People\Participant\ParticipantController@store');
+Route::get('/participants/{id}', 'ShortCourseManagement\People\Participant\ParticipantController@show');
+Route::post('/participants/data', 'ShortCourseManagement\People\Participant\ParticipantController@dataParticipants');
+Route::post('/participants/update/{id}', 'ShortCourseManagement\People\Participant\ParticipantController@update');
+Route::post('/participant/delete/{id}', 'ShortCourseManagement\People\Participant\ParticipantController@delete');
 
 
 //SCM - Contact Person
