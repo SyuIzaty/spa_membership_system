@@ -75,8 +75,8 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                     <div class="row row-xl-12 justify-content-between">
                         <div
                             class="col col-sm-6 d-flex align-items-center justify-content-center p-0 bg-transparent bg-img-none shadow-0 height-9 logo width-mobile-auto m-0">
-                            <img src="{{ asset('img/intec_logo.png') }}" alt="SmartAdmin WebApp"
-                                aria-roledescription="logo">
+                            <a href="shortcourse"><img src="{{ asset('img/intec_logo.png') }}" alt="INTEC Shourtcourse"
+                                aria-roledescription="logo"></a>
                             {{-- <span class="page-logo-text mr-1">INTEC Education College</span> --}}
                         </div>
                         <div class="col col-sm-6 d-flex align-items-center justify-content-center p-0 width-mobile-auto m-0">
