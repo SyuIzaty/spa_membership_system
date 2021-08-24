@@ -1354,7 +1354,10 @@
                                                                     class="card-img" style="object-fit: fill;">
                                                             @else
                                                                 <img src="{{ asset($event->thumbnail_path) }}"
-                                                                    class="card-img" style="object-fit: fill;">
+                                                                style="object-fit: fill;
+                                                                background-image:url('{{ asset('storage /shortcourse/poster/default/intec_poster.jpg') }}');
+                                                                background-repeat: no-repeat;
+                                                                background-size: 137px 194px;">
                                                             @endif
                                                         </div>
 

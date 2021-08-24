@@ -13,6 +13,7 @@ use Auth;
 use DateTime;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
 
 class EventParticipantController extends Controller
 {
@@ -491,6 +492,12 @@ class EventParticipantController extends Controller
 
     public function store(Request $request, $event_id)
     {
+        Validator::extend('check_array', function ($attribute, $value, $parameters, $validator) {
+            return count(array_filter($value, function ($var) use ($parameters) {
+                return ($var && $var >= $parameters[0]);
+            }));
+        });
+
         $validated = $request->validate([
             'ic_input' => 'required',
             'fullname' => 'required|min:3',
@@ -499,6 +506,7 @@ class EventParticipantController extends Controller
             'fee_id' => 'required',
             'representative_ic_input'  => 'required',
             'representative_fullname' => 'required',
+            'payment_proof_input' => 'check_array:1',
 
         ], [
             'ic_input.required' => 'Please insert IC of the participant',
@@ -513,72 +521,121 @@ class EventParticipantController extends Controller
             'representative_fullname.min' => "The representative's fullname should have at least 3 characters",
         ]);
 
-        // dd($request);
+        // dd($request->file('payment_proof_input'));
         //
-        $existParticipant = Participant::where([
-            ['ic', '=', $request->ic_input],
-        ])->first();
-        if (!$existParticipant) {
-            $existParticipant = Participant::create([
-                'name' => $request->fullname,
-                'ic' => $request->ic_input,
-                'phone' => $request->phone,
-                'email' => $request->email,
-                'created_by' => Auth::user()->id,
-            ]);
+        if ($request->file('payment_proof_input')) {
+
+            $existParticipant = Participant::where([
+                ['ic', '=', $request->ic_input],
+            ])->first();
+            if (!$existParticipant) {
+                $existParticipant = Participant::create([
+                    'name' => $request->fullname,
+                    'ic' => $request->ic_input,
+                    'phone' => $request->phone,
+                    'email' => $request->email,
+                    'created_by' => Auth::user()->id,
+                ]);
+            } else {
+                $existParticipant->name = $request->fullname;
+                $existParticipant->ic = $request->ic_input;
+                $existParticipant->phone = $request->phone;
+                $existParticipant->email = $request->email;
+                $existParticipant->updated_by = Auth::user()->id;
+                $existParticipant->save();
+            }
+
+
+            $existEventParticipant = EventParticipant::where([
+                ['event_id', '=', $event_id],
+                ['participant_id', '=', $existParticipant->id],
+            ])->first();
+
+            if (!$existEventParticipant) {
+                $existEventParticipant = EventParticipant::create([
+                    'event_id' => $event_id,
+                    'participant_id' => $existParticipant->id,
+                    'fee_id' => $request->fee_id,
+                    'participant_representative_id' => $existParticipant->id,
+                    'is_verified_payment_proof' => 0,
+                    'is_approved_application' => 1,
+                    'created_by' => Auth::user()->id,
+                ]);
+            } else {
+                $existEventParticipant->fee_id = $request->fee_id;
+                // $existEventParticipant->is_verified_payment_proof = 0;
+                $existEventParticipant->updated_by = Auth::user()->id;
+                $existEventParticipant->save();
+                return Redirect()->back()->with('messageAlreadyApplied', 'The participant have already been applied before.');
+            }
+
+            $existEvent = Event::where('id', $event_id)->first()->load(['venue']);
+            $existFee = Fee::where('id', $request->fee_id)->first();
+
+            // Start payment proof
+            $date = Carbon::today()->toDateString();
+            $year = substr($date, 0, 4);
+            $month = substr($date, 5, 2);
+            $day = substr($date, 8, 2);
+            $images = $request->file('payment_proof_input');
+
+            foreach ($images as $image) {
+                $name_gen = hexdec(uniqid());
+                $img_ext = strtolower($image->getClientOriginalExtension());
+
+                $img_name = $year . $month . $day . '_id' . ($request->event_id) . '_' . $name_gen . '.' . $img_ext;
+
+
+
+                $up_location = 'storage/shortcourse/payment_proof_input/' . $year . '/';
+                $last_img = $up_location . $img_name;
+
+                $image->move($up_location, $img_name);
+                // where('event_id', $request->event_id)->where('participant_id', $request->participant_id)
+                EventParticipantPaymentProof::create([
+                    'event_participant_id' => $existEventParticipant->id,
+                    'payment_proof_path' => $last_img,
+                    'created_by' => 'public_user',
+                ]);
+            }
+
+            $eventParticipantPaymentProof = EventParticipantPaymentProof::where([['event_participant_id', '=', $existEventParticipant->id]])->get();
+            $eventParticipant = EventParticipant::find($existEventParticipant->id);
+            // dd($eventParticipant->is_verified_payment_proof);
+            if (count($eventParticipantPaymentProof) > 0 && $eventParticipant->is_verified_payment_proof != 1) {
+                $update = EventParticipant::where([['id', '=', $request->event_participant_id]])->update([
+                    'is_verified_payment_proof' => 0,
+                    'updated_by' => 'public_user',
+                    'updated_at' => Carbon::now()
+                ]);
+            }
+            // End payment proof
+
+
+
+            $message =  [
+                'opening' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . ($existParticipant->name),
+                'introduction' => 'Pendaftaran anda <b>TELAH DISAHKAN BERJAYA</b> oleh pihak INTEC bagi program, ',
+                'detail' => 'Program: ' . ($existEvent->name)
+                    . '<br/>Tarikh: ' . ($existEvent->datetime_start) . ' sehingga ' . ($existEvent->datetime_end)
+                    . '<br/>Tempat: ' . ($existEvent->venue->name)
+                    . '<br/> <br/>Sila buat pembayaran yuran sebanyak <b>RM'
+                    . ($existFee->amount) . ' (' . ($existFee->name)
+                    . ')</b>, kemudian tekan butang di bawah untuk ke sesawang profil bagi mengemaskini status pembayaran untuk disahkan.',
+                'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
+                'ic' => ($existParticipant->ic),
+            ];
+
+            Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($request) {
+                $message->subject('Pengesahan Pendaftaran (Berjaya)');
+                $message->from(Auth::user()->email);
+                $message->to($request->email);
+            });
+
+            return Redirect()->back()->with('messageNewApplication', 'New participant applied successfully');
         } else {
-            $existParticipant->name = $request->fullname;
-            $existParticipant->ic = $request->ic_input;
-            $existParticipant->phone = $request->phone;
-            $existParticipant->email = $request->email;
-            $existParticipant->updated_by = Auth::user()->id;
-            $existParticipant->save();
+            return Redirect()->back()->with('messageNewApplication', 'New participant application fail. Please try again.');
         }
-
-
-        $existEventParticipant = EventParticipant::where([
-            ['event_id', '=', $event_id],
-            ['participant_id', '=', $existParticipant->id],
-        ])->first();
-
-        if (!$existEventParticipant) {
-            $existEventParticipant = EventParticipant::create([
-                'event_id' => $event_id,
-                'participant_id' => $existParticipant->id,
-                'fee_id' => $request->fee_id,
-                'participant_representative_id' => $existParticipant->id,
-                'is_approved_application' => 1,
-                'created_by' => Auth::user()->id,
-            ]);
-        } else {
-            $existEventParticipant->fee_id = $request->fee_id;
-            $existEventParticipant->updated_by = Auth::user()->id;
-            $existEventParticipant->save();
-            return Redirect()->back()->with('messageAlreadyApplied', 'The participant have already been applied before.');
-        }
-        $existEvent = Event::where('id', $event_id)->first()->load(['venue']);
-        $existFee = Fee::where('id', $request->fee_id)->first();
-
-
-        $message =  [
-            'opening' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . ($existParticipant->name),
-            'introduction' => 'Pendaftaran anda <b>TELAH DISAHKAN BERJAYA</b> oleh pihak INTEC bagi program, ',
-            'detail' => 'Program: ' . ($existEvent->name)
-                . '<br/>Tarikh: ' . ($existEvent->datetime_start) . ' sehingga ' . ($existEvent->datetime_end)
-                . '<br/>Tempat: ' . ($existEvent->venue->name)
-                . '<br/> <br/>Sila buat pembayaran yuran sebanyak <b>RM'
-                . ($existFee->amount) . ' (' . ($existFee->name)
-                . ')</b>, kemudian tekan butang di bawah untuk ke sesawang profil bagi mengemaskini status pembayaran untuk disahkan.',
-            'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
-            'ic' => ($existParticipant->ic),
-        ];
-
-        Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($request) {
-            $message->subject('Pengesahan Pendaftaran (Berjaya)');
-            $message->from(Auth::user()->email);
-            $message->to($request->email);
-        });
-        return Redirect()->back()->with('messageNewApplication', 'New participant applied successfully');
     }
     public function edit($id)
     {
@@ -1090,15 +1147,14 @@ class EventParticipantController extends Controller
                 return 'RM' . $events->amount . '/person (' . $events->fee_name . ')';
             })
             ->addColumn('action', function ($events) {
-                if ($events->is_question_sended == 1) {
+                if ($events->is_verified_payment_proof == 1) {
                     return '
                     <a href="#" data-target="#crud-modals" data-toggle="modal" data-event_id="' . $events->id . '" data-event_participant_id="' . $events->event_participant_id . '" data-is_verified_payment_proof="' . $events->is_verified_payment_proof . '" data-amount="' . $events->amount . '" class="btn btn-sm btn-primary">Update Payment Proof</a>
                     <a target="_blank" rel="noopener noreferrer"
-                    href="/feedback/form/participant/'.$events->event_participant_id.'
+                    href="/feedback/form/participant/' . $events->event_participant_id . '
                     type="submit" class="btn btn-sm btn-primary"
                     style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; position: relative; -webkit-text-size-adjust: none; border-radius: 4px; color: #fff; display: inline-block; overflow: hidden; text-decoration: none; background-color: #2d3748; border-bottom: 8px solid #2d3748; border-left: 18px solid #2d3748; border-right: 18px solid #2d3748; border-top: 8px solid #2d3748;">Feedback
                     Form</a>';
-
                 } else {
                     return '<a href="#" data-target="#crud-modals" data-toggle="modal" data-event_id="' . $events->id . '" data-event_participant_id="' . $events->event_participant_id . '" data-is_verified_payment_proof="' . $events->is_verified_payment_proof . '" data-amount="' . $events->amount . '" class="btn btn-sm btn-primary">Update Payment Proof</a>';
                 }
@@ -1158,11 +1214,11 @@ class EventParticipantController extends Controller
             //     'payment_proof_input.required' => 'Poster is required',
 
             // ]);
-            $posters = $request->file('payment_proof_input');
+            $images = $request->file('payment_proof_input');
 
-            foreach ($posters as $poster) {
+            foreach ($images as $image) {
                 $name_gen = hexdec(uniqid());
-                $img_ext = strtolower($poster->getClientOriginalExtension());
+                $img_ext = strtolower($image->getClientOriginalExtension());
 
                 $img_name = $year . $month . $day . '_id' . ($request->event_id) . '_' . $name_gen . '.' . $img_ext;
 
@@ -1171,7 +1227,7 @@ class EventParticipantController extends Controller
                 $up_location = 'storage/shortcourse/payment_proof_input/' . $year . '/';
                 $last_img = $up_location . $img_name;
 
-                $poster->move($up_location, $img_name);
+                $image->move($up_location, $img_name);
                 // where('event_id', $request->event_id)->where('participant_id', $request->participant_id)
                 EventParticipantPaymentProof::create([
                     'event_participant_id' => $request->event_participant_id,
