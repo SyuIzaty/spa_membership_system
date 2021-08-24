@@ -171,6 +171,14 @@
                                                                                 @endif
                                                                             @endforeach
                                                                         </select>
+
+                                                                        @error('venue')
+                                                                            <p style="color: red">
+                                                                                <strong> *
+                                                                                    {{ $message }}
+                                                                                </strong>
+                                                                            </p>
+                                                                        @enderror
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -197,6 +205,51 @@
                                                                     </div>
                                                                 </td>
                                                             </tr>
+                                                            <tr>
+                                                                <td>Feedback Set</td>
+                                                                <td name="event_feedback_set_show" id="event_feedback_set_show">
+                                                                    {{ $event->event_feedback_set->name }}
+                                                                </td>
+                                                                <td name="event_feedback_set_edit" id="event_feedback_set_edit" style="display: none">
+                                                                    {{-- <div class="form-group">
+                                                                        <input id="event_feedback_set.name" name="event_feedback_set.name"
+                                                                            value="{{$event->event_feedback_set->name}}"
+                                                                            class="form-control">
+                                                                        @error('event_feedback_set.name')>
+                                                                            <p style="color: red">
+                                                                                <strong> *
+                                                                                    {{ $message }}
+                                                                                </strong>
+                                                                            </p>
+                                                                        @enderror
+                                                                    </div> --}}
+                                                                    <div class="form-group">
+                                                                        <select class="form-control event_feedback_set " name="event_feedback_set"
+                                                                            id="event_feedback_set" data-select2-id="event_feedback_set" tabindex="-1"
+                                                                            aria-hidden="true">
+                                                                            <option
+                                                                                value={{ $event->event_feedback_set ? $event->event_feedback_set->id : '' }}>
+                                                                                {{ $event->event_feedback_set ? $event->event_feedback_set->name : 'Choose an event feedback set' }}
+                                                                            </option>
+                                                                            @foreach ($event_feedback_sets as $event_feedback_set)
+                                                                                @if ($event->event_feedback_set ? $event_feedback_set->id != $event->event_feedback_set->id : false)
+                                                                                    <option value="{{ $event_feedback_set->id }}">
+                                                                                        {{ $event_feedback_set->name }}
+                                                                                    </option>
+                                                                                @endif
+                                                                            @endforeach
+                                                                        </select>
+                                                                        @error('event_feedback_set')
+                                                                        <p style="color: red">
+                                                                            <strong> *
+                                                                                {{ $message }}
+                                                                            </strong>
+                                                                        </p>
+                                                                    @enderror
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+
                                                             <tr>
                                                                 <td>Total Seat Open</td>
                                                                 <td name="max_participant_show" id="max_participant_show">
@@ -1524,10 +1577,11 @@
                     $("#venue_description_show").hide();
                     $("#venue_description_edit").show();
 
-
                     $("#venue_show").hide();
                     $("#venue_edit").show();
 
+                    $("#event_feedback_set_show").hide();
+                    $("#event_feedback_set_edit").show();
 
                     $("#max_participant_show").hide();
                     $("#max_participant_edit").show();
@@ -1555,6 +1609,9 @@
                     $("#venue_show").show();
                     $("#venue_edit").hide();
 
+                    $("#event_feedback_set_show").show();
+                    $("#event_feedback_set_edit").hide();
+
                     $("#max_participant_show").show();
                     $("#max_participant_edit").hide();
 
@@ -1567,7 +1624,7 @@
                 $(document).ready(function() {
                     // $('.venue, .is_base_fee_select_add, .is_base_fee_select_edit').select2();
 
-                    $('.venue').select2();
+                    $('.venue, .event_feedback_set').select2();
 
                 });
 

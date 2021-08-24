@@ -180,7 +180,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" title="Feedback Set Catalogue" data-filter-tags="feedback-set-catalogue">
+                                        <a href="/feedback-sets" title="Feedback Set Catalogue" data-filter-tags="feedback-set-catalogue">
                                             <i class="ni ni-globe"></i>
                                             <span class="nav-link-text" data-i18n="nav.feedback-set-catalogue">Feedback Set
                                                 Catalogue</span>
@@ -239,12 +239,12 @@
                                 </a>
                             </li>
 
-                            <li>
+                            {{-- <li>
                                 <a href="/feedback/form" title="Feedback" data-filter-tags="feedback">
                                     <i class="ni ni-note"></i>
                                     <span class="nav-link-text" data-i18n="nav.shortcourse">Feedback</span>
                                 </a>
-                            </li>
+                            </li> --}}
                         @endcan
                         @can('view form')
                             @can('view list')

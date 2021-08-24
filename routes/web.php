@@ -353,7 +353,13 @@ Route::post('/venue', 'ShortCourseManagement\Catalogues\Venue\VenueController@st
 Route::post('/venue/delete/{id}', 'ShortCourseManagement\Catalogues\Venue\VenueController@delete');
 
 //SCM - Feedback
+Route::get('/feedback/form/view/{id}', 'ShortCourseManagement\Feedbacks\FeedbackController@viewForm');
 Route::get('/feedback/form/participant/{event_participant_id}', 'ShortCourseManagement\Feedbacks\FeedbackController@show');
 Route::post('/feedback/form/submit', 'ShortCourseManagement\Feedbacks\FeedbackController@submit');
-Route::get('/feedback/form', 'ShortCourseManagement\Feedbacks\FeedbackController@form');
 Route::get('/feedback/appreciation', 'ShortCourseManagement\Feedbacks\FeedbackController@appreciation');
+Route::get('/feedback-sets', 'ShortCourseManagement\Feedbacks\FeedbackController@index');
+Route::post('/event_feedback_sets/data', 'ShortCourseManagement\Feedbacks\FeedbackController@dataEventFeedbackSet');
+Route::get('/event_feedback_sets/{id}', 'ShortCourseManagement\Feedbacks\FeedbackController@showDetails');
+Route::post('/event_feedback_set/delete/{id}', 'ShortCourseManagement\Feedbacks\FeedbackController@delete');
+Route::post('/event_feedback_sets/update/{id}', 'ShortCourseManagement\Feedbacks\FeedbackController@update');
+

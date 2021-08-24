@@ -14,6 +14,7 @@ class Trainer extends Model
         'user_id',
         'ic',
         'phone',
+        'email',
         'description',
         'created_by',
         'created_at',

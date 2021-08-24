@@ -102,7 +102,7 @@
                                                             for="qHeader">5</label></th>
                                                 </div>
                                             </tr>
-                                            @foreach ($sections as $section)
+                                            @foreach ($event_feedback_set->sections as $section)
                                                 <tr class="bg-primary text-white">
                                                     <td colspan="7">{{ $section->name }}</td>
                                                 </tr>

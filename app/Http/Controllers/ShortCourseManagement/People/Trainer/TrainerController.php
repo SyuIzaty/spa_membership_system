@@ -92,6 +92,7 @@ class TrainerController extends Controller
                     'user_id' => $existUser->id,
                     'ic' => $request->trainer_ic_input,
                     'phone' => $request->trainer_phone,
+                    'email' => $request->trainer_email,
                     'created_by' => Auth::user()->id,
                 ]);
             }
@@ -174,6 +175,7 @@ class TrainerController extends Controller
         $updateTrainer = Trainer::find($id)->update([
             'ic' => $request->ic,
             'phone' => $request->phone,
+            'email' => $request->email,
             'updated_by' => Auth::user()->id,
         ]);
 

@@ -17,6 +17,8 @@ use App\Models\ShortCourseManagement\TopicShortCourse;
 use App\Models\ShortCourseManagement\Topic;
 use App\Models\ShortCourseManagement\EventStatusCategory;
 use App\Models\ShortCourseManagement\VenueType;
+use App\Models\ShortCourseManagement\EventFeedbackSet;
+
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
@@ -336,7 +338,8 @@ class EventController extends Controller
             'events_trainers.trainer',
             'fees',
             'event_status_category',
-            'events_contact_persons.contact_person'
+            'events_contact_persons.contact_person',
+            'event_feedback_set'
         ]);
 
         // $totalParticipantsNotApprovedYet = $event->events_participants->where('is_approved', 0)->where('is_done_email_cancellation_disqualified', 0)->count();
@@ -417,6 +420,8 @@ class EventController extends Controller
         $venues = Venue::all();
         $shortcourses = ShortCourse::all();
 
+        $event_feedback_sets = EventFeedbackSet::all();
+
         $users = User::where('category', 'STF')->orWhere('category', 'EXT')->get();
         $eventStatusCategories = EventStatusCategory::all();
 
@@ -431,7 +436,7 @@ class EventController extends Controller
         }
         // dd($event);
         //
-        return view('short-course-management.event-management.show', compact('event', 'venues', 'shortcourses', 'users', 'statistics', 'eventStatusCategories'));
+        return view('short-course-management.event-management.show', compact('event', 'venues', 'shortcourses', 'users', 'statistics', 'eventStatusCategories', 'event_feedback_sets'));
     }
     public function edit($id)
     {
@@ -445,12 +450,14 @@ class EventController extends Controller
             'datetime_start' => 'required',
             'datetime_end' => 'required',
             'venue' => 'required',
+            'event_feedback_set' => 'required',
             'max_participant' => 'required',
         ], [
             'name.required' => 'Please insert event name',
             'name.max' => 'Name exceed maximum length',
             'datetime_start.required' => 'Please insert event datetime start',
             'datetime_end.required' => 'Please insert event datetime end',
+            'event_feedback_set.required' => 'Please insert set of feedback to be used for the event',
             'max_participant.required' => 'Please insert total seat of the event',
         ]);
 
@@ -460,6 +467,7 @@ class EventController extends Controller
             'datetime_end' => $request->datetime_end,
             'venue_id' => $request->venue,
             'venue_description' => $request->venue_description,
+            'event_feedback_set_id' => $request->event_feedback_set,
             'max_participant' => $request->max_participant,
         ]);
 
@@ -729,7 +737,7 @@ class EventController extends Controller
 
     public function indexPublicView()
     {
-        $events = Event::where('event_status_category_id', 2)->orderByDesc('created_at')->get()->load(['events_participants', 'venue', 'fees']);
+        $events = Event::where([['event_status_category_id','=', 2],['datetime_start','>=', Carbon::today()->toDateString()]])->orderByDesc('created_at')->get()->load(['events_participants', 'venue', 'fees']);
         $index = 0;
         foreach ($events as $event) {
             $events[$index]->created_at_diffForHumans = $events[$index]->created_at->diffForHumans();
@@ -787,7 +795,7 @@ class EventController extends Controller
 
     public function dataPublicView()
     {
-        $events = Event::where('event_status_category_id', 2)->get()->load(['events_participants', 'venue']);
+        $events = Event::where([['event_status_category_id','=', 2],['datetime_start','>=', Carbon::today()->toDateString()]])->orderBy('datetime_start')->get()->load(['events_participants', 'venue']);
         $index = 0;
         foreach ($events as $event) {
             if (isset($event->events_participants)) {

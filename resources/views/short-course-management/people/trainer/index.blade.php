@@ -36,6 +36,7 @@
                                         <tr class="bg-primary-50 text-center">
                                             <th>ID</th>
                                             <th>NAME</th>
+                                            <th>IC</th>
                                             <th>DATES</th>
                                             <th>EVENTS</th>
                                             <th>MANAGE. DETAILS</th>
@@ -265,6 +266,10 @@
                     {
                         data: 'user.name',
                         name: 'user.name'
+                    },
+                    {
+                        data: 'ic',
+                        name: 'ic'
                     },
                     {
                         data: 'dates',

@@ -25,9 +25,9 @@
                                             class="card-img" style="object-fit: fill;">
                                     @else
                                         <img src="{{ asset($event->thumbnail_path) }}" style="object-fit: fill;
-                                                                background-image:url('{{ asset('storage /shortcourse/poster/default/intec_poster.jpg') }}');
-                                                                background-repeat: no-repeat;
-                                                                background-size: 137px 194px;">
+                                                                                background-image:url('{{ asset('storage /shortcourse/poster/default/intec_poster.jpg') }}');
+                                                                                background-repeat: no-repeat;
+                                                                                background-size: 137px 194px;">
                                     @endif
                                 </div>
 
@@ -509,7 +509,7 @@
 @section('script')
     <script>
         var event_id = '<?php echo $event->id; ?>';
-
+        //New Application
         $(document).ready(function() {
             //New Application
             {
@@ -553,7 +553,6 @@
 
                         } else {
                             // TODO: Not Apply Yet
-                            console.log(data);
                             $('.modal-body #fullname').removeAttr('readonly', true);
                             $('.modal-body #phone').removeAttr('readonly', true);
                             $('.modal-body #payment_proof_input').removeAttr('readonly', true);
@@ -592,6 +591,10 @@
                                 $('.modal-body #promo_code').attr('readonly', true);
                                 $('#promo_code_edit_add').hide();
                                 $('#promo_code_edit_remove').show();
+                            } else {
+                                $('.modal-body #promo_code').removeAttr('readonly');
+                                $('#promo_code_edit_add').show();
+                                $('#promo_code_edit_remove').hide();
                             }
 
                         } else {
