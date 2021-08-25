@@ -363,3 +363,11 @@ Route::get('/event_feedback_sets/{id}', 'ShortCourseManagement\Feedbacks\Feedbac
 Route::post('/event_feedback_set/delete/{id}', 'ShortCourseManagement\Feedbacks\FeedbackController@delete');
 Route::post('/event_feedback_sets/update/{id}', 'ShortCourseManagement\Feedbacks\FeedbackController@update');
 
+//SCM - Topic
+Route::get('/topics', 'ShortCourseManagement\Catalogues\Topic\TopicController@index');
+Route::get('/topics/{id}', 'ShortCourseManagement\Catalogues\Topic\TopicController@show');
+Route::post('/topics/data', 'ShortCourseManagement\Catalogues\Topic\TopicController@dataTopics');
+Route::post('/topic/update', 'ShortCourseManagement\Catalogues\Topic\TopicController@update');
+Route::post('/topic', 'ShortCourseManagement\Catalogues\Topic\TopicController@store');
+Route::get('/topic/delete/{id}', 'ShortCourseManagement\Catalogues\Topic\TopicController@delete');
+

@@ -180,6 +180,13 @@
                                         </a>
                                     </li>
                                     <li>
+                                        <a href="/topics" title="Topic Catalogue" data-filter-tags="topic-catalogue">
+                                            <i class="ni ni-globe"></i>
+                                            <span class="nav-link-text" data-i18n="nav.topic-catalogue">Topic
+                                                Catalogue</span>
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a href="/feedback-sets" title="Feedback Set Catalogue" data-filter-tags="feedback-set-catalogue">
                                             <i class="ni ni-globe"></i>
                                             <span class="nav-link-text" data-i18n="nav.feedback-set-catalogue">Feedback Set
