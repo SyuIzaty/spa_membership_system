@@ -160,20 +160,21 @@ class AssetController extends Controller
 
     public function data_assetList()
     {
-        if( Auth::user()->hasRole('Inventory Admin') )
-        { 
-            $asset = Asset::all();
-        }
-        else
-        {
-            $as = AssetCustodian::where('custodian_id', Auth::user()->id)->pluck('department_id');
+        // if( Auth::user()->hasRole('Inventory Admin') )
+        // { 
+        //     $asset = Asset::all();
+        // }
+        // else
+        // {
+        //     $as = AssetCustodian::where('custodian_id', Auth::user()->id)->pluck('department_id');
 
-            $asset = Asset::whereHas('type',function($q) use ($as){
-                $q->whereHas('department', function($q) use ($as){
-                    $q->whereIn('id', $as);
-                });
-            });
-        }
+        //     $asset = Asset::whereHas('type',function($q) use ($as){
+        //         $q->whereHas('department', function($q) use ($as){
+        //             $q->whereIn('id', $as);
+        //         });
+        //     });
+        // }
+        $asset = Asset::all();
 
         return datatables()::of($asset)
         ->addColumn('action', function ($asset) {
