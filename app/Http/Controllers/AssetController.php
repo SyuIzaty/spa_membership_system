@@ -160,21 +160,20 @@ class AssetController extends Controller
 
     public function data_assetList()
     {
-        // if( Auth::user()->hasRole('Inventory Admin') )
-        // { 
-        //     $asset = Asset::all();
-        // }
-        // else
-        // {
-        //     $as = AssetCustodian::where('custodian_id', Auth::user()->id)->pluck('department_id');
+        if( Auth::user()->hasRole('Inventory Admin') )
+        { 
+            $asset = Asset::all();
+        }
+        else
+        {
+            $as = AssetCustodian::where('custodian_id', Auth::user()->id)->pluck('department_id');
 
-        //     $asset = Asset::whereHas('type',function($q) use ($as){
-        //         $q->whereHas('department', function($q) use ($as){
-        //             $q->whereIn('id', $as);
-        //         });
-        //     });
-        // }
-        $asset = Asset::all();
+            $asset = Asset::whereHas('type',function($q) use ($as){
+                $q->whereHas('department', function($q) use ($as){
+                    $q->whereIn('id', $as);
+                });
+            });
+        }
 
         return datatables()::of($asset)
         ->addColumn('action', function ($asset) {
@@ -196,7 +195,7 @@ class AssetController extends Controller
 
         ->editColumn('department_id', function ($asset) {
 
-            return '--';//strtoupper($asset->type->department->department_name) ?? '<div style="color:red;" >--</div>';
+            return strtoupper($asset->type->department->department_name) ?? '<div style="color:red;" >--</div>';
         })
 
         ->editColumn('custodian_id', function ($asset) {
