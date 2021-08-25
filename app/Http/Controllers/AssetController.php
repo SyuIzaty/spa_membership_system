@@ -195,7 +195,7 @@ class AssetController extends Controller
 
         ->editColumn('department_id', function ($asset) {
 
-            return strtoupper($asset->type->department->department_name) ?? '<div style="color:red;" >--</div>';
+            return '--';//strtoupper($asset->type->department->department_name) ?? '<div style="color:red;" >--</div>';
         })
 
         ->editColumn('custodian_id', function ($asset) {
