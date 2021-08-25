@@ -25,7 +25,7 @@ class TopicController extends Controller
 
     public function dataTopics()
     {
-        $topics = Topic::orderByDesc('id')->get()->load(['topics_shortcourses']);
+        $topics = Topic::orderByDesc('id')->get()->load(['topics_shortcourses','subcategory']);
         $index = 0;
         foreach ($topics as $topic) {
 

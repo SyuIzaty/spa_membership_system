@@ -34,6 +34,7 @@
                                                     <tr class="bg-primary-50 text-center">
                                                         <th>ID</th>
                                                         <th>NAME</th>
+                                                        <th>SUBCATEGORY</th>
                                                         <th>DATES</th>
                                                         <th>SHORTCOURSES</th>
                                                         <th>MANAGE. DETAILS</th>
@@ -265,6 +266,10 @@
                     {
                         data: 'name',
                         name: 'name'
+                    },
+                    {
+                        data: 'subcategory.name',
+                        name: 'subcategory.name'
                     },
                     {
                         data: 'dates',

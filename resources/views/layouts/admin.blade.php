@@ -174,21 +174,21 @@
                                     </li>
                                     <li>
                                         <a href="/venues" title="Venue Catalogue" data-filter-tags="venue-catalogue">
-                                            <i class="ni ni-globe"></i>
+                                            <i class="ni ni-book-open"></i>
                                             <span class="nav-link-text" data-i18n="nav.venue-catalogue">Venue
                                                 Catalogue</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="/topics" title="Topic Catalogue" data-filter-tags="topic-catalogue">
-                                            <i class="ni ni-globe"></i>
+                                            <i class="ni ni-book-open"></i>
                                             <span class="nav-link-text" data-i18n="nav.topic-catalogue">Topic
                                                 Catalogue</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="/feedback-sets" title="Feedback Set Catalogue" data-filter-tags="feedback-set-catalogue">
-                                            <i class="ni ni-globe"></i>
+                                            <i class="ni ni-book-open"></i>
                                             <span class="nav-link-text" data-i18n="nav.feedback-set-catalogue">Feedback Set
                                                 Catalogue</span>
                                         </a>
