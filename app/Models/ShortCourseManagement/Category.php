@@ -20,7 +20,7 @@ class Category extends Model
         'deleted_at'
     ];
 
-    public function SubCategories()
+    public function subcategories()
     {
         return $this->hasMany('App\Models\ShortCourseManagement\SubCategory',
         'category_id',

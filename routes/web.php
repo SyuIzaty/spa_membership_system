@@ -364,10 +364,26 @@ Route::post('/event_feedback_set/delete/{id}', 'ShortCourseManagement\Feedbacks\
 Route::post('/event_feedback_sets/update/{id}', 'ShortCourseManagement\Feedbacks\FeedbackController@update');
 
 //SCM - Topic
-Route::get('/topics', 'ShortCourseManagement\Catalogues\Topic\TopicController@index');
-Route::get('/topics/{id}', 'ShortCourseManagement\Catalogues\Topic\TopicController@show');
-Route::post('/topics/data', 'ShortCourseManagement\Catalogues\Topic\TopicController@dataTopics');
-Route::post('/topic/update', 'ShortCourseManagement\Catalogues\Topic\TopicController@update');
-Route::post('/topic', 'ShortCourseManagement\Catalogues\Topic\TopicController@store');
-Route::get('/topic/delete/{id}', 'ShortCourseManagement\Catalogues\Topic\TopicController@delete');
+Route::get('/topics', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\TopicController@index');
+Route::get('/topics/{id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\TopicController@show');
+Route::post('/topics/data', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\TopicController@dataTopics');
+Route::post('/topic/update', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\TopicController@update');
+Route::post('/topic', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\TopicController@store');
+Route::get('/topic/delete/{id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\TopicController@delete');
+
+//SCM - Subcategory
+// Route::get('/subcategories', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@index');
+Route::get('/subcategories/{id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@show');
+Route::post('/subcategories/data', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@dataSubCategories');
+Route::post('/subcategory/update', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@update');
+Route::post('/subcategory', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@store');
+Route::get('/subcategory/delete/{id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@delete');
+
+//SCM - Category
+// Route::get('/subcategories', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@index');
+Route::get('/categories/{id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\CategoryController@show');
+Route::post('/categories/data', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\CategoryController@dataCategories');
+Route::post('/category/update', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\CategoryController@update');
+Route::post('/category', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\CategoryController@store');
+Route::get('/category/delete/{id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\CategoryController@delete');
 

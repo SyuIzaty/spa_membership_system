@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\ShortCourseManagement\Catalogues\Topic;
+namespace App\Http\Controllers\ShortCourseManagement\Catalogues\TopicSubCategoryCategory;
 
 use App\Models\ShortCourseManagement\Topic;
-use App\Models\ShortCourseManagement\TopicType;
 use App\Models\ShortCourseManagement\SubCategory;
 use App\Models\ShortCourseManagement\Category;
 // use App\Models\ShortCourseManagement\TopicTopic;
@@ -98,7 +97,6 @@ class TopicController extends Controller
         $topic = Topic::find($id)->load([
             'events',
         ]);
-        $topic_types = TopicType::all();
 
 
         if (isset($topic->events)) {
@@ -109,7 +107,7 @@ class TopicController extends Controller
         }
         $topic->totalEvents = $totalEvents;
 
-        return view('short-course-management.catalogues.topic-catalogue.show', compact('topic', 'topic_types'));
+        return view('short-course-management.catalogues.topic-catalogue.show', compact('topic'));
     }
 
     public function delete($id)

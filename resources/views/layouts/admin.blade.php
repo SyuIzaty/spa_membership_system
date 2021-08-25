@@ -182,7 +182,7 @@
                                     <li>
                                         <a href="/topics" title="Topic Catalogue" data-filter-tags="topic-catalogue">
                                             <i class="ni ni-book-open"></i>
-                                            <span class="nav-link-text" data-i18n="nav.topic-catalogue">Topic
+                                            <span class="nav-link-text" data-i18n="nav.topic-catalogue">Topic-SubCategory-Category
                                                 Catalogue</span>
                                         </a>
                                     </li>
