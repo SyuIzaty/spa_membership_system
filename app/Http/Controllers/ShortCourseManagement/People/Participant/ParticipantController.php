@@ -169,10 +169,10 @@ class ParticipantController extends Controller
 
         return $existParticipant;
     }
-    public function searchByIcGeneralShow($ic)
+    public function searchByIcGeneralShow(Request $request)
     {
         //
-        $participant = Participant::where('ic', $ic)->first();
+        $participant = Participant::where('ic', $request->ic)->first();
 
         return view('short-course-management.shortcourse.participant.show', compact('participant'));
     }

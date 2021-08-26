@@ -75,11 +75,12 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                     <div class="row row-xl-12 justify-content-between">
                         <div
                             class="col col-sm-6 d-flex align-items-center justify-content-center p-0 bg-transparent bg-img-none shadow-0 height-9 logo width-mobile-auto m-0">
-                            <a href="/shortcourse"><img src="{{ asset('img/intec_logo.png') }}" alt="INTEC Shourtcourse"
-                                aria-roledescription="logo"></a>
+                            <a href="/shortcourse"><img src="{{ asset('img/intec_logo.png') }}"
+                                    alt="INTEC Shourtcourse" aria-roledescription="logo"></a>
                             {{-- <span class="page-logo-text mr-1">INTEC Education College</span> --}}
                         </div>
-                        <div class="col col-sm-6 d-flex align-items-center justify-content-center p-0 width-mobile-auto m-0">
+                        <div
+                            class="col col-sm-6 d-flex align-items-center justify-content-center p-0 width-mobile-auto m-0">
                             <form class="form-inline">
                                 <input class="form-control mr-sm-2" type="search" placeholder="IC No."
                                     id="ic_input_general" name="ic_input_general" aria-label="Search">
@@ -96,14 +97,19 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                     <div class="card-header">
                         Result
                     </div>
-                    <div class="card-body">
-                        <h5 class="card-title" id="applicant-basic-details-name"><span class="content"></span></h5>
-                        <p class="card-text" id="applicant-basic-details-ic"><span class="content"></span></p>
-                        <a href="#" class="btn btn-primary" id="ic_details_view" style="display:none;">View</a>
-                    </div>
-                    <div class="card-footer text-muted">
+                    <form action="{{ url('/participant/search-by-ic-general/data') }}" method="post"
+                        enctype="multipart/form-data">
+                        @csrf
+                        <div class="card-body">
+                            <input type="hidden" name="ic" id="ic">
+                            <h5 class="card-title" id="applicant-basic-details-name"><span class="content"></span></h5>
+                            <p class="card-text" id="applicant-basic-details-ic"><span class="content"></span></p>
+                            <button type="submit" href="#" class="btn btn-primary" id="ic_details_view" style="display:none;">View</button>
+                        </div>
+                    </form>
+                    {{-- <div class="card-footer text-muted">
                         2 days ago
-                    </div>
+                    </div> --}}
                 </div>
                 {{-- <div class="d-flex flex-1" style="background: url({{asset('img/svg/pattern-1.svg')}} no-repeat center bottom fixed; background-size: cover;"> --}}
                 <div class="container text-white d-flex align-items-center justify-content-center">
@@ -144,6 +150,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                         .name + "</span>");
                     $("#applicant-basic-details-ic .content").replaceWith("<span class='content'>" + ic +
                         "</span>");
+                    $('#ic').val(ic);
                     $('#ic_details_view').show();
                     console.log("Has Data");
                 } else {
@@ -165,10 +172,10 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                 });
         });
 
-        $('#ic_details_view').click(function() {
-            var ic = $('#ic_input_general').val();
-            window.location.href = '/participant/search-by-ic-general/' + ic + '/show';
-        })
+        // $('#ic_details_view').click(function() {
+        //     var ic = $('#ic_input_general').val();
+        //     // window.location.href = '/participant/search-by-ic-general/' + ic + '/show';
+        // })
     </script>
 
 </body>

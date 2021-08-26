@@ -332,7 +332,8 @@ Route::post('/event/updateSpecificEditor', 'ShortCourseManagement\EventManagemen
 
 //SCM - Participant
 Route::get('/participant/search-by-ic-general/{ic}', 'ShortCourseManagement\People\Participant\ParticipantController@searchByIcGeneral');
-Route::get('/participant/search-by-ic-general/{ic}/show', 'ShortCourseManagement\People\Participant\ParticipantController@searchByIcGeneralShow');
+Route::post('/participant/search-by-ic-general/data', 'ShortCourseManagement\People\Participant\ParticipantController@searchByIcGeneralShow');
+// Route::post('/participant/search-by-ic-general/{ic}/show', 'ShortCourseManagement\People\Participant\ParticipantController@searchByIcGeneralShow');
 Route::get('/participant/search-by-ic/{ic}/event/{event_id}', 'ShortCourseManagement\People\Participant\ParticipantController@searchByIc');
 Route::get('/participant/search-by-representative-ic/{ic}', 'ShortCourseManagement\People\Participant\ParticipantController@searchByRepresentativeIc');
 
