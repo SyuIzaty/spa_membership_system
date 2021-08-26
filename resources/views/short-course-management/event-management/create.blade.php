@@ -481,7 +481,7 @@
                     $("#trainer_user_id").removeAttr('disabled');
                     $("#trainer_user_id").addClass('user');
 
-                    $("#trainer_user_id_hidden").val(-1);
+                    $("#trainer_user_id_hidden").val(trainer_ic);
 
 
                     $("#trainer_user_id option[value='-1']").attr("selected", "true");

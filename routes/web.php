@@ -322,6 +322,7 @@ Route::post('/event/contact_person/detached/{id}', 'ShortCourseManagement\EventM
 Route::post('/event/trainer/attached/{event_id}', 'ShortCourseManagement\EventManagement\EventController@storeTrainer');
 Route::post('/event/shortcourse/attached/{id}', 'ShortCourseManagement\EventManagement\EventController@storeShortCourse');
 Route::get('/event/create', 'ShortCourseManagement\EventManagement\EventController@create');
+Route::post('/event/delete/{id}', 'ShortCourseManagement\EventManagement\EventController@delete');
 Route::get('/events', 'ShortCourseManagement\EventManagement\EventController@index');
 Route::post('/event', 'ShortCourseManagement\EventManagement\EventController@addEvent');
 Route::get('/event/{id}', 'ShortCourseManagement\EventManagement\EventController@show');

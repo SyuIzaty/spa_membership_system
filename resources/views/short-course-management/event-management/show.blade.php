@@ -1553,6 +1553,19 @@
 
                                                                     </td>
                                                                 </tr>
+                                                                <tr>
+                                                                    <td class="text-center">Status</td>
+                                                                    <td class="text-center" id="event_status_category_name"
+                                                                        name="event_status_category_name">
+                                                                        Active
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        <button
+                                                                            {{ count($event->events_participants) == 0 ? null : 'disabled' }}
+                                                                            href="javascript:;" id="delete_event"
+                                                                            class="btn btn-danger mr-auto ml-2 waves-effect waves-themed font-weight-bold">DELETE</button>
+                                                                    </td>
+                                                                </tr>
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -2065,6 +2078,57 @@
                 });
             }
 
+        }
+
+        // Delete Venue
+        {
+
+            var event_name = '<?php echo $event->name; ?>';
+            $('#delete_event').on('click',
+                function(e) {
+
+                    const tag = $(e.currentTarget);
+
+                    const title = "Delete Venue";
+                    const text = `Are you sure you want to delete '${event_name}'?`;
+                    const confirmButtonText = "Delete";
+                    const cancelButtonText = "Cancel";
+                    const url = "/event/delete/" + event_id;
+                    const urlRedirect = "/events";
+
+                    e.preventDefault();
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    Swal.fire({
+                        title: title,
+                        text: text,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: confirmButtonText,
+                        cancelButtonText: cancelButtonText
+                    }).then((result) => {
+                        if (result.value) {
+                            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                            $.ajax({
+                                url: url,
+                                type: 'POST',
+                                dataType: 'json',
+                                data: {
+                                    method: 'POST',
+                                    submit: true
+                                }
+                            }).then((result) => {
+                                $(location).prop('href', urlRedirect);
+                            });
+
+                        }
+                    })
+                });
         }
 
         // Additional Info

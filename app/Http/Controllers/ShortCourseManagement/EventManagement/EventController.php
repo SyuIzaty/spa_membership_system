@@ -740,7 +740,7 @@ class EventController extends Controller
 
     public function indexPublicView()
     {
-        $events = Event::where([['event_status_category_id','=', 2],['datetime_start','>=', Carbon::today()->toDateString()]])->orderByDesc('created_at')->get()->load(['events_participants', 'venue', 'fees']);
+        $events = Event::where([['event_status_category_id', '=', 2], ['datetime_start', '>=', Carbon::today()->toDateString()]])->orderByDesc('created_at')->get()->load(['events_participants', 'venue', 'fees']);
         $index = 0;
         foreach ($events as $event) {
             $events[$index]->created_at_diffForHumans = $events[$index]->created_at->diffForHumans();
@@ -798,7 +798,7 @@ class EventController extends Controller
 
     public function dataPublicView()
     {
-        $events = Event::where([['event_status_category_id','=', 2],['datetime_start','>=', Carbon::today()->toDateString()]])->orderBy('datetime_start')->get()->load(['events_participants', 'venue']);
+        $events = Event::where([['event_status_category_id', '=', 2], ['datetime_start', '>=', Carbon::today()->toDateString()]])->orderBy('datetime_start')->get()->load(['events_participants', 'venue']);
         $index = 0;
         foreach ($events as $event) {
             if (isset($event->events_participants)) {
@@ -903,5 +903,57 @@ class EventController extends Controller
         // $update=Event::find($event_id)->load(['event_status_category']);
 
         return Redirect()->back()->with('success', 'Event Status Updated Successfully');
+    }
+
+    public function delete($id)
+    {
+
+        $exists = Event::find($id);
+        $exists->updated_by = Auth::user()->id;
+        $exists->deleted_by = Auth::user()->id;
+        $exists->save();
+        $exists->delete();
+
+        $exists = EventShortCourse::where('event_id', $id)->get();
+        $index = 0;
+        foreach ($exists as $exist) {
+            $exists[$index]->updated_by = Auth::user()->id;
+            $exists[$index]->deleted_by = Auth::user()->id;
+            $exists[$index]->save();
+            $exists[$index]->delete();
+            $index++;
+        }
+
+        $exists = EventTrainer::where('event_id', $id)->get();
+        $index = 0;
+        foreach ($exists as $exist) {
+            $exists[$index]->updated_by = Auth::user()->id;
+            $exists[$index]->deleted_by = Auth::user()->id;
+            $exists[$index]->save();
+            $exists[$index]->delete();
+            $index++;
+        }
+
+        $exists = EventContactPerson::where('event_id', $id)->get();
+        $index = 0;
+        foreach ($exists as $exist) {
+            $exists[$index]->updated_by = Auth::user()->id;
+            $exists[$index]->deleted_by = Auth::user()->id;
+            $exists[$index]->save();
+            $exists[$index]->delete();
+            $index++;
+        }
+
+        $exists = Fee::where('event_id', $id)->get();
+        $index = 0;
+        foreach ($exists as $exist) {
+            $exists[$index]->updated_by = Auth::user()->id;
+            $exists[$index]->deleted_by = Auth::user()->id;
+            $exists[$index]->save();
+            $exists[$index]->delete();
+            $index++;
+        }
+
+        return $exists;
     }
 }
