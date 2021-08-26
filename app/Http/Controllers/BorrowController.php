@@ -27,17 +27,16 @@ class BorrowController extends Controller
     {
         if( Auth::user()->hasRole('Inventory Admin') )
         { 
-            $department = AssetDepartment::all();
+            $department = AssetDepartment::orderBy('department_name')->get();
         }
         else
         {
             $department = AssetDepartment::whereHas('custodians', function($query){
                 $query->where('custodian_id', Auth::user()->id);
-            })->get();
+            })->orderBy('department_name')->get();
         }
         
-        $user = User::all();
-
+        $user = User::orderBy('name')->get();
         $asset = new Asset();
         $borrow = new Borrow();
         return view('inventory.borrow-new', compact('department', 'asset', 'user', 'borrow'));
@@ -56,6 +55,7 @@ class BorrowController extends Controller
     public function findAsset(Request $request)
     {
         $data2 = Asset::select('id', 'asset_code')
+            ->orderBy('asset_code')
             ->where('availability', '2')
             ->where('status', '1')
             ->where('asset_type',$request->id)
@@ -193,7 +193,7 @@ class BorrowController extends Controller
 
     public function borrowDetail($id)
     {
-        $user = User::all();
+        $user = User::orderBy('name')->get();
         $borrow = Borrow::where('id', $id)->first(); 
         $status = BorrowStatus::all();
 

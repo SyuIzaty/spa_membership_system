@@ -562,7 +562,7 @@
                                         <div class="form-group">
                                             <td width="15%"><label class="form-label" for="custodian_id"><span class="text-danger">*</span> Custodian :</label></td>
                                             <td colspan="7">
-                                                <select class="form-control custodian_id" name="custodian_id" id="custodian_id" >
+                                                <select class="form-control custodian_id" name="custodian_id" id="custodian_id" required>
                                                     <option value="">Select Custodian</option>
                                                     @foreach ($custodian as $custs) 
                                                         <option value="{{ $custs->id }}" {{ old('custodian_id') ==  $custs->id  ? 'selected' : '' }}>{{ $custs->name }}</option>
@@ -575,7 +575,7 @@
                                         <div class="form-group">
                                             <td width="15%"><label class="form-label" for="reason_remark"><span class="text-danger">*</span> Reason :</label></td>
                                             <td colspan="7">
-                                                <textarea rows="5" class="form-control" id="reason_remark" name="reason_remark">{{ old('reason_remark') }}</textarea>
+                                                <textarea rows="5" class="form-control" id="reason_remark" name="reason_remark" required>{{ old('reason_remark') }}</textarea>
                                                 @error('reason_remark')
                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                 @enderror
@@ -629,7 +629,7 @@
                                         <div class="form-group">
                                             <td width="15%"><label class="form-label" for="reason_remark"><span class="text-danger">*</span> Reason :</label></td>
                                             <td colspan="7">
-                                                <textarea rows="5" class="reason form-control" id="reason" name="reason_remark">{{ old('reason_remark') }}</textarea>
+                                                <textarea rows="5" class="reason form-control" id="reason" name="reason_remark" required>{{ old('reason_remark') }}</textarea>
                                                 @error('reason_remark')
                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                 @enderror

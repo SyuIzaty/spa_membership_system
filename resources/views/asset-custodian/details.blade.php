@@ -130,7 +130,7 @@
             <tr id="row${i}" class="head-added">
             <td>
                 <select name="custodian_id[]" class="custodians_id form-control">
-                    <option value="">-- Select Custodian --</option>
+                    <option value="">Select Manager</option>
                     @foreach ($members as $member) 
                         <option value="{{ $member->id }}" {{ old('custodian_id') ? 'selected' : '' }}>{{ $member->name }}</option>
                     @endforeach
@@ -213,7 +213,7 @@
             confirmButtonText: 'Yes, delete it!'
         })
         .then((willDelete) => {
-            if (willDelete) {
+            if (willDelete.value) {
                     form[0].submit();
                     Swal.fire({ text: "Successfully delete the data.", icon: 'success'
                 });

@@ -97,7 +97,7 @@
                     <p><span class="text-danger">*</span> Required fields</p>
                         <div class="form-group">
                             <td width="10%"><label class="form-label" for="department_name"><span class="text-danger">*</span> Department Name :</label></td>
-                            <td colspan="4"><input value="{{ old('department_name') }}" class="form-control" id="department_name" name="department_name">
+                            <td colspan="4"><input value="{{ old('department_name') }}" class="form-control" id="department_name" name="department_name" required>
                                 @error('department_name')
                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                 @enderror
@@ -178,7 +178,7 @@
             confirmButtonText: 'Yes, delete it!'
         })
         .then((willDelete) => {
-            if (willDelete) {
+            if (willDelete.value) {
                     form[0].submit();
                     Swal.fire({ text: "Successfully delete the data.", icon: 'success'
                 });

@@ -67,8 +67,8 @@
                         <div class="form-group">
                             <td width="10%"><label class="form-label" for="department_id"><span class="text-danger">*</span> Department :</label></td>
                             <td colspan="4">
-                                <select name="department_id" id="department_id" class="department form-control">
-                                    <option value="">-- Select Department --</option>
+                                <select name="department_id" id="department_id" class="department form-control" required>
+                                    <option value="">Select Department</option>
                                     @foreach ($department as $depart) 
                                         <option value="{{ $depart->id }}" {{ old('department_id') ? 'selected' : '' }}>{{ $depart->department_name }}</option>
                                     @endforeach
@@ -81,7 +81,7 @@
 
                         <div class="form-group">
                             <td width="10%"><label class="form-label" for="asset_type"><span class="text-danger">*</span> Asset Type :</label></td>
-                            <td colspan="4"><input value="{{ old('asset_type') }}" class="form-control" id="asset_type" name="asset_type">
+                            <td colspan="4"><input value="{{ old('asset_type') }}" class="form-control" id="asset_type" name="asset_type" required>
                                 @error('asset_type')
                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                 @enderror
@@ -109,7 +109,7 @@
                     <input type="hidden" name="type_id" id="type">
                     <p><span class="text-danger">*</span> Required fields</p>
                     <div class="form-group">
-                        <td width="15%"><label class="form-label" for="department_id"><span class="text-danger">*</span> Asset Type :</label></td>
+                        <td width="15%"><label class="form-label" for="department_id"><span class="text-danger">*</span> Department :</label></td>
                         <td colspan="5">
                             <select class="form-control" name="department_id" id="department" disabled>
                                 <option value="">-- Select Department --</option>
@@ -125,8 +125,8 @@
 
                     <div class="form-group">
                         <td width="15%"><label class="form-label" for="asset_type"><span class="text-danger">*</span> Asset Type :</label></td>
-                        <td colspan="5"><input class="form-control" id="asset" name="asset_type">
-                            @error('jenis_kerosakan')
+                        <td colspan="5"><input class="form-control" id="asset" name="asset_type" required>
+                            @error('asset_type')
                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                             @enderror
                         </td>

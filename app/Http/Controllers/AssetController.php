@@ -31,19 +31,19 @@ class AssetController extends Controller
     {
         if( Auth::user()->hasRole('Inventory Admin') )
         { 
-            $department = AssetDepartment::all();
+            $department = AssetDepartment::orderBy('department_name')->get();
         }
         else
         {
             $department = AssetDepartment::whereHas('custodians', function($query){
                 $query->where('custodian_id', Auth::user()->id);
-            })->get();
+            })->orderBy('department_name')->get();
         }
 
         $members = User::whereHas('roles', function($query){
             $query->where('id', 'INV002');
-        })->get();        
-        $custodian = User::all();
+        })->orderBy('name')->get();        
+        $custodian = User::orderBy('name')->get();
         $availability = AssetAvailability::all();
         $asset = new Asset();
         $assetSet = new AssetSet();
@@ -53,6 +53,7 @@ class AssetController extends Controller
     public function findAssetType(Request $request)
     {
         $data = AssetType::select('asset_type', 'id')
+                ->orderBy('asset_type')
                 ->where('department_id', $request->id)
                 ->take(100)->get();
 
@@ -71,6 +72,7 @@ class AssetController extends Controller
 
     public function newAssetStore(Request $request)
     {
+        // dd($request);
         $user = Auth::user();
         $code = Carbon::now()->format('Y').mt_rand(100000, 999999);
 
@@ -256,7 +258,7 @@ class AssetController extends Controller
         $department = AssetDepartment::all();
         $availability = AssetAvailability::all();
         $set = AssetSet::where('asset_id', $id)->get();
-        $custodian = User::all();
+        $custodian = User::orderBy('name')->get();
         $setType = AssetType::where('department_id', $asset->type->department_id)->get();
 
         return view('inventory.asset-detail', compact('asset', 'image', 'department', 'availability', 'set', 'setType', 'custodian'))->with('no', 1)->with('num', 1);

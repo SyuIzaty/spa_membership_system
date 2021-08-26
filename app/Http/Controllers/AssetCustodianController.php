@@ -80,7 +80,7 @@ class AssetCustodianController extends Controller
             ]);
         }
 
-        Session::flash('message', 'New Custodian List Added');
+        Session::flash('message', 'New Manager Is Added');
         return redirect('custodian-list/'.$request->ids);
     }
 
