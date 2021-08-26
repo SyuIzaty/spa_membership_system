@@ -35,7 +35,7 @@ Route::resource('/module-auth', 'ModuleAuthController');
 Route::post('/data_moduleauth', 'ModuleAuthController@data_moduleauth');
 Route::get('/test', 'ApplicantController@test');
 
-Route::group(['middleware' => 'auth'], function(){
+Route::group(['middleware' => 'auth'], function () {
 
     // Aduan
     Route::get('/borang-aduan', 'AduanController@borangAduan')->name('borangAduan');
@@ -230,9 +230,9 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/vaccine-detail/{id}', 'VaccineController@vaccineDetail')->name('vaccineDetail');
     Route::get('/export-vaccine', 'VaccineController@exportVaccine');
     Route::delete('deleteVaccine/{id}', 'VaccineController@deleteVaccine')->name('deleteVaccine');
-    Route::get('/dependentForm','VaccineController@dependentForm')->name('dependentForm');
-    Route::post('dependentStore','VaccineController@dependentStore');
-    Route::post('dependentUpdate','VaccineController@dependentUpdate');
+    Route::get('/dependentForm', 'VaccineController@dependentForm')->name('dependentForm');
+    Route::post('dependentStore', 'VaccineController@dependentStore');
+    Route::post('dependentUpdate', 'VaccineController@dependentUpdate');
     Route::post('deleteChild/{id}', 'VaccineController@deleteChild')->name('deleteChild');
 
     // Change Password
@@ -242,106 +242,143 @@ Route::group(['middleware' => 'auth'], function(){
     // Geolocation
     Route::get('/geolocation', 'GeolocationController@index');
 
+    //SCM - Trainer
+    Route::get('/trainer/search-by-user_id/{user_id}', 'ShortCourseManagement\People\Trainer\TrainerController@searchByUserId');
+    Route::get('/trainer/search-by-trainer_ic/{trainer_ic}', 'ShortCourseManagement\People\Trainer\TrainerController@searchByTrainerIc');
+
+    Route::get('/trainers', 'ShortCourseManagement\People\Trainer\TrainerController@index');
+    Route::get('/trainers/{id}', 'ShortCourseManagement\People\Trainer\TrainerController@show');
+    Route::post('/trainers/data', 'ShortCourseManagement\People\Trainer\TrainerController@dataTrainers');
+    Route::post('/trainers/update/{id}', 'ShortCourseManagement\People\Trainer\TrainerController@update');
+    Route::post('/trainer', 'ShortCourseManagement\People\Trainer\TrainerController@store');
+    Route::post('/trainer/delete/{id}', 'ShortCourseManagement\People\Trainer\TrainerController@delete');
+
+    //SCM - Participants
+    Route::get('/participant/search-by-participant_ic/{participant_ic}', 'ShortCourseManagement\People\Participant\ParticipantController@searchByParticipantIc');
+
+    Route::get('/participants', 'ShortCourseManagement\People\Participant\ParticipantController@index');
+    Route::post('/participant', 'ShortCourseManagement\People\Participant\ParticipantController@store');
+    Route::get('/participants/{id}', 'ShortCourseManagement\People\Participant\ParticipantController@show');
+    Route::post('/participants/data', 'ShortCourseManagement\People\Participant\ParticipantController@dataParticipants');
+    Route::post('/participants/update/{id}', 'ShortCourseManagement\People\Participant\ParticipantController@update');
+    Route::post('/participant/delete/{id}', 'ShortCourseManagement\People\Participant\ParticipantController@delete');
+
+
+    //SCM - Contact Person
+    Route::get('/contact_person/search-by-user_id/{user_id}', 'ShortCourseManagement\People\ContactPerson\ContactPersonController@searchByUserId');
+    Route::get('/contact_person/search-by-contact_person_ic/{contact_person_ic}', 'ShortCourseManagement\People\ContactPerson\ContactPersonController@searchByContactPersonIc');
+
+    //SCM - Shortcourse
+    Route::get('/shortcourses', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@index');
+    Route::post('/shortcourses/data', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@dataShortCourses');
+    Route::get('/shortcourses/{id}', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@show');
+    Route::get('event/shortcourse/search-by-id/{id}', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@searchById');
+    Route::post('/shortcourses/update/{id}', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@update');
+    Route::post('/shortcourse/topic/attached/{id}', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@storeTopicShortCourse');
+    Route::post('/shortcourse/topic/detached/{id}', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@removeTopicShortCourse');
+    Route::post('/shortcourse/delete/{id}', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@delete');
+    Route::post('/shortcourse', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@store');
+
+    //SCM - EventParticipant
+    Route::get('/event/{id}/events-participants/show', 'ShortCourseManagement\EventManagement\EventParticipantController@show');
+    Route::post('/event/{id}/events-participants/data-applicants', 'ShortCourseManagement\EventManagement\EventParticipantController@dataApplicants');
+    Route::post('/event/{id}/events-participants/data-no-payment-yet', 'ShortCourseManagement\EventManagement\EventParticipantController@dataNoPaymentYet');
+    Route::post('/event/{id}/events-participants/data-payment-wait-for-verification', 'ShortCourseManagement\EventManagement\EventParticipantController@dataPaymentWaitForVerification');
+    Route::post('/event/{id}/events-participants/data-ready-for-event', 'ShortCourseManagement\EventManagement\EventParticipantController@dataReadyForEvent');
+    Route::post('/event/{id}/events-participants/data-disqualified', 'ShortCourseManagement\EventManagement\EventParticipantController@dataDisqualified');
+    Route::post('/event/{id}/events-participants/data-expected-attendances', 'ShortCourseManagement\EventManagement\EventParticipantController@dataExpectedAttendances');
+    Route::post('/event/{id}/events-participants/data-attended-participants', 'ShortCourseManagement\EventManagement\EventParticipantController@dataAttendedParticipants');
+    Route::post('/event/{id}/events-participants/data-not-attended-participants', 'ShortCourseManagement\EventManagement\EventParticipantController@dataNotAttendedParticipants');
+    Route::post('/event/{id}/events-participants/data-participant-post-event', 'ShortCourseManagement\EventManagement\EventParticipantController@dataParticipantPostEvent');
+    Route::post('/event/{id}/events-participants/data-completed-participation-process', 'ShortCourseManagement\EventManagement\EventParticipantController@dataCompletedParticipationProcess');
+    Route::post('/event/{id}/events-participants/data-not-completed-participation-process', 'ShortCourseManagement\EventManagement\EventParticipantController@dataNotCompletedParticipationProcess');
+    Route::get('/event-participant/{event_participant_id}/payment_proof', 'ShortCourseManagement\EventManagement\EventParticipantController@showPaymentProof');
+    Route::post('/event-participant-payment_proof/delete/{payment_proof_id}', 'ShortCourseManagement\EventManagement\EventParticipantController@removePaymentProof');
+
+    //SCM - EventParticipant - Update Progress
+    Route::post('/update-progress/{progress_name}/{eventParticipant_id}', 'ShortCourseManagement\EventManagement\EventParticipantController@updateProgress');
+    Route::post('/update-progress/bundle', 'ShortCourseManagement\EventManagement\EventParticipantController@updateProgressBundle');
+
+    //SCM - Event
+    Route::post('/event/store-new', 'ShortCourseManagement\EventManagement\EventController@storeNew');
+    Route::post('/events/data/event-management', 'ShortCourseManagement\EventManagement\EventController@dataEventManagement');
+    Route::post('/events/update/{id}', 'ShortCourseManagement\EventManagement\EventController@update');
+    Route::post('/events/fee/update/{id}', 'ShortCourseManagement\EventManagement\EventController@updateFee');
+    Route::post('/event/fee/create/{id}', 'ShortCourseManagement\EventManagement\EventController@storeFee');
+    Route::post('/event/fee/delete/{id}', 'ShortCourseManagement\EventManagement\EventController@deleteFee');
+    Route::post('/event/trainer/detached/{id}', 'ShortCourseManagement\EventManagement\EventController@detachedTrainer');
+    Route::post('/event/shortcourse/detached/{id}', 'ShortCourseManagement\EventManagement\EventController@detachedShortCourse');
+    Route::post('/event/contact_person/attached/{event_id}', 'ShortCourseManagement\EventManagement\EventController@storeContactPerson');
+    Route::post('/event/contact_person/detached/{id}', 'ShortCourseManagement\EventManagement\EventController@detachedContactPerson');
+    Route::post('/event/trainer/attached/{event_id}', 'ShortCourseManagement\EventManagement\EventController@storeTrainer');
+    Route::post('/event/shortcourse/attached/{id}', 'ShortCourseManagement\EventManagement\EventController@storeShortCourse');
+    Route::get('/event/create', 'ShortCourseManagement\EventManagement\EventController@create');
+    Route::post('/event/delete/{id}', 'ShortCourseManagement\EventManagement\EventController@delete');
+    Route::get('/events', 'ShortCourseManagement\EventManagement\EventController@index');
+    Route::post('/event', 'ShortCourseManagement\EventManagement\EventController@addEvent');
+    Route::get('/event/{id}', 'ShortCourseManagement\EventManagement\EventController@show');
+    Route::delete('/event/{id}', 'ShortCourseManagement\EventManagement\EventController@deleteEvent');
+    Route::get('/event/{event_id}/update-event-status-category/{event_status_category_id}', 'ShortCourseManagement\EventManagement\EventController@updateEventStatus');
+    Route::post('/event/updatePoster', 'ShortCourseManagement\EventManagement\EventController@updatePoster')->name('store.poster');
+    Route::post('/event/updateSpecificEditor', 'ShortCourseManagement\EventManagement\EventController@updateSpecificEditor')->name('store.specific.editors');
+
+    //SCM - Participant
+    // Route::post('/participant/search-by-ic-general/{ic}/show', 'ShortCourseManagement\People\Participant\ParticipantController@searchByIcGeneralShow');
+
+    //SCM - Venue
+    Route::get('/venues', 'ShortCourseManagement\Catalogues\Venue\VenueController@index');
+    Route::get('/venues/{id}', 'ShortCourseManagement\Catalogues\Venue\VenueController@show');
+    Route::post('/venues/data', 'ShortCourseManagement\Catalogues\Venue\VenueController@dataVenues');
+    Route::post('/venues/update/{id}', 'ShortCourseManagement\Catalogues\Venue\VenueController@update');
+    Route::post('/venue', 'ShortCourseManagement\Catalogues\Venue\VenueController@store');
+    Route::post('/venue/delete/{id}', 'ShortCourseManagement\Catalogues\Venue\VenueController@delete');
+
+    //SCM - Feedback
+    Route::get('/feedback/form/view/{id}', 'ShortCourseManagement\Feedbacks\FeedbackController@viewForm');
+    Route::get('/feedback/form/participant/{event_participant_id}', 'ShortCourseManagement\Feedbacks\FeedbackController@show');
+    Route::post('/feedback/form/submit', 'ShortCourseManagement\Feedbacks\FeedbackController@submit');
+    Route::get('/feedback/appreciation', 'ShortCourseManagement\Feedbacks\FeedbackController@appreciation');
+    Route::get('/feedback-sets', 'ShortCourseManagement\Feedbacks\FeedbackController@index');
+    Route::post('/event_feedback_sets/data', 'ShortCourseManagement\Feedbacks\FeedbackController@dataEventFeedbackSet');
+    Route::get('/event_feedback_sets/{id}', 'ShortCourseManagement\Feedbacks\FeedbackController@showDetails');
+    Route::post('/event_feedback_set/delete/{id}', 'ShortCourseManagement\Feedbacks\FeedbackController@delete');
+    Route::post('/event_feedback_sets/update/{id}', 'ShortCourseManagement\Feedbacks\FeedbackController@update');
+
+    //SCM - Topic
+    Route::get('/topics', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\TopicController@index');
+    Route::get('/topics/{id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\TopicController@show');
+    Route::post('/topics/data', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\TopicController@dataTopics');
+    Route::post('/topic/update', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\TopicController@update');
+    Route::post('/topic', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\TopicController@store');
+    Route::get('/topic/delete/{id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\TopicController@delete');
+
+    //SCM - Subcategory
+    // Route::get('/subcategories', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@index');
+    Route::get('/subcategories/{id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@show');
+    Route::post('/subcategories/data', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@dataSubCategories');
+    Route::post('/subcategory/update', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@update');
+    Route::post('/subcategory', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@store');
+    Route::get('/subcategory/delete/{id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@delete');
+
+    //SCM - Category
+    // Route::get('/subcategories', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@index');
+    Route::get('/categories/{id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\CategoryController@show');
+    Route::post('/categories/data', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\CategoryController@dataCategories');
+    Route::post('/category/update', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\CategoryController@update');
+    Route::post('/category', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\CategoryController@store');
+    Route::get('/category/delete/{id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\CategoryController@delete');
 });
 
-// Covid19
-Route::get('/covid', 'CovidController@openForm')->name('openForm');
-Route::get('/findUser', 'CovidController@findUser');
-Route::post('openFormStore', 'CovidController@storeOpenForm');
-Route::get('/add-form', 'CovidController@addForm');
-
-//SCM - Trainer
-Route::get('/trainer/search-by-user_id/{user_id}', 'ShortCourseManagement\People\Trainer\TrainerController@searchByUserId');
-Route::get('/trainer/search-by-trainer_ic/{trainer_ic}', 'ShortCourseManagement\People\Trainer\TrainerController@searchByTrainerIc');
-
-Route::get('/trainers', 'ShortCourseManagement\People\Trainer\TrainerController@index');
-Route::get('/trainers/{id}', 'ShortCourseManagement\People\Trainer\TrainerController@show');
-Route::post('/trainers/data', 'ShortCourseManagement\People\Trainer\TrainerController@dataTrainers');
-Route::post('/trainers/update/{id}', 'ShortCourseManagement\People\Trainer\TrainerController@update');
-Route::post('/trainer', 'ShortCourseManagement\People\Trainer\TrainerController@store');
-Route::post('/trainer/delete/{id}', 'ShortCourseManagement\People\Trainer\TrainerController@delete');
-
-//SCM - Participants
-Route::get('/participant/search-by-participant_ic/{participant_ic}', 'ShortCourseManagement\People\Participant\ParticipantController@searchByParticipantIc');
-
-Route::get('/participants', 'ShortCourseManagement\People\Participant\ParticipantController@index');
-Route::post('/participant', 'ShortCourseManagement\People\Participant\ParticipantController@store');
-Route::get('/participants/{id}', 'ShortCourseManagement\People\Participant\ParticipantController@show');
-Route::post('/participants/data', 'ShortCourseManagement\People\Participant\ParticipantController@dataParticipants');
-Route::post('/participants/update/{id}', 'ShortCourseManagement\People\Participant\ParticipantController@update');
-Route::post('/participant/delete/{id}', 'ShortCourseManagement\People\Participant\ParticipantController@delete');
-
-
-//SCM - Contact Person
-Route::get('/contact_person/search-by-user_id/{user_id}', 'ShortCourseManagement\People\ContactPerson\ContactPersonController@searchByUserId');
-Route::get('/contact_person/search-by-contact_person_ic/{contact_person_ic}', 'ShortCourseManagement\People\ContactPerson\ContactPersonController@searchByContactPersonIc');
-
-//SCM - Shortcourse
-Route::get('/shortcourses', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@index');
-Route::post('/shortcourses/data', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@dataShortCourses');
-Route::get('/shortcourses/{id}', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@show');
-Route::get('event/shortcourse/search-by-id/{id}', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@searchById');
-Route::post('/shortcourses/update/{id}', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@update');
-Route::post('/shortcourse/topic/attached/{id}', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@storeTopicShortCourse');
-Route::post('/shortcourse/topic/detached/{id}', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@removeTopicShortCourse');
-Route::post('/shortcourse/delete/{id}', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@delete');
-Route::post('/shortcourse', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@store');
-
-//SCM - EventParticipant
-Route::get('/event/{id}/events-participants/show', 'ShortCourseManagement\EventManagement\EventParticipantController@show');
+//SCM - Public View
+Route::get('/participant/search-by-ic/{ic}/event/{event_id}', 'ShortCourseManagement\People\Participant\ParticipantController@searchByIc');
 Route::post('/event/{event_id}/events-participants/store', 'ShortCourseManagement\EventManagement\EventParticipantController@store');
-Route::post('/event/{id}/events-participants/data-applicants', 'ShortCourseManagement\EventManagement\EventParticipantController@dataApplicants');
-Route::post('/event/{id}/events-participants/data-no-payment-yet', 'ShortCourseManagement\EventManagement\EventParticipantController@dataNoPaymentYet');
-Route::post('/event/{id}/events-participants/data-payment-wait-for-verification', 'ShortCourseManagement\EventManagement\EventParticipantController@dataPaymentWaitForVerification');
-Route::post('/event/{id}/events-participants/data-ready-for-event', 'ShortCourseManagement\EventManagement\EventParticipantController@dataReadyForEvent');
-Route::post('/event/{id}/events-participants/data-disqualified', 'ShortCourseManagement\EventManagement\EventParticipantController@dataDisqualified');
-Route::post('/event/{id}/events-participants/data-expected-attendances', 'ShortCourseManagement\EventManagement\EventParticipantController@dataExpectedAttendances');
-Route::post('/event/{id}/events-participants/data-attended-participants', 'ShortCourseManagement\EventManagement\EventParticipantController@dataAttendedParticipants');
-Route::post('/event/{id}/events-participants/data-not-attended-participants', 'ShortCourseManagement\EventManagement\EventParticipantController@dataNotAttendedParticipants');
-Route::post('/event/{id}/events-participants/data-participant-post-event', 'ShortCourseManagement\EventManagement\EventParticipantController@dataParticipantPostEvent');
-Route::post('/event/{id}/events-participants/data-completed-participation-process', 'ShortCourseManagement\EventManagement\EventParticipantController@dataCompletedParticipationProcess');
-Route::post('/event/{id}/events-participants/data-not-completed-participation-process', 'ShortCourseManagement\EventManagement\EventParticipantController@dataNotCompletedParticipationProcess');
 Route::get('/event/{event_id}/promo-code/{promo_code}/participant', 'ShortCourseManagement\EventManagement\EventParticipantController@applyPromoCode');
 Route::get('/event/{event_id}/base-fee', 'ShortCourseManagement\EventManagement\EventParticipantController@baseFee');
-Route::get('/event-participant/{event_participant_id}/payment_proof', 'ShortCourseManagement\EventManagement\EventParticipantController@showPaymentProof');
-Route::post('/event-participant-payment_proof/delete/{payment_proof_id}', 'ShortCourseManagement\EventManagement\EventParticipantController@removePaymentProof');
-
-//SCM - EventParticipant - Update Progress
-Route::post('/update-progress/{progress_name}/{eventParticipant_id}', 'ShortCourseManagement\EventManagement\EventParticipantController@updateProgress');
-Route::post('/events/data/event-management/shortcourse/event-participant/{participant_id}', 'ShortCourseManagement\EventManagement\EventParticipantController@dataEventParticipantList');
-Route::post('/update-progress/bundle', 'ShortCourseManagement\EventManagement\EventParticipantController@updateProgressBundle');
-
-//SCM - Event
-Route::post('/event/store-new', 'ShortCourseManagement\EventManagement\EventController@storeNew');
-Route::post('/events/data/event-management', 'ShortCourseManagement\EventManagement\EventController@dataEventManagement');
-Route::post('/events/update/{id}', 'ShortCourseManagement\EventManagement\EventController@update');
-Route::post('/events/fee/update/{id}', 'ShortCourseManagement\EventManagement\EventController@updateFee');
-Route::post('/event/fee/create/{id}', 'ShortCourseManagement\EventManagement\EventController@storeFee');
-Route::post('/event/fee/delete/{id}', 'ShortCourseManagement\EventManagement\EventController@deleteFee');
-Route::post('/event/trainer/detached/{id}', 'ShortCourseManagement\EventManagement\EventController@detachedTrainer');
-Route::post('/event/shortcourse/detached/{id}', 'ShortCourseManagement\EventManagement\EventController@detachedShortCourse');
-Route::post('/event/contact_person/attached/{event_id}', 'ShortCourseManagement\EventManagement\EventController@storeContactPerson');
-Route::post('/event/contact_person/detached/{id}', 'ShortCourseManagement\EventManagement\EventController@detachedContactPerson');
-Route::post('/event/trainer/attached/{event_id}', 'ShortCourseManagement\EventManagement\EventController@storeTrainer');
-Route::post('/event/shortcourse/attached/{id}', 'ShortCourseManagement\EventManagement\EventController@storeShortCourse');
-Route::get('/event/create', 'ShortCourseManagement\EventManagement\EventController@create');
-Route::post('/event/delete/{id}', 'ShortCourseManagement\EventManagement\EventController@delete');
-Route::get('/events', 'ShortCourseManagement\EventManagement\EventController@index');
-Route::post('/event', 'ShortCourseManagement\EventManagement\EventController@addEvent');
-Route::get('/event/{id}', 'ShortCourseManagement\EventManagement\EventController@show');
-Route::delete('/event/{id}', 'ShortCourseManagement\EventManagement\EventController@deleteEvent');
-Route::get('/event/{event_id}/update-event-status-category/{event_status_category_id}', 'ShortCourseManagement\EventManagement\EventController@updateEventStatus');
-Route::post('/event/updatePoster', 'ShortCourseManagement\EventManagement\EventController@updatePoster')->name('store.poster');
-Route::post('/event/updateSpecificEditor', 'ShortCourseManagement\EventManagement\EventController@updateSpecificEditor')->name('store.specific.editors');
-
-//SCM - Participant
-Route::get('/participant/search-by-ic-general/{ic}', 'ShortCourseManagement\People\Participant\ParticipantController@searchByIcGeneral');
-Route::post('/participant/search-by-ic-general/data', 'ShortCourseManagement\People\Participant\ParticipantController@searchByIcGeneralShow');
-// Route::post('/participant/search-by-ic-general/{ic}/show', 'ShortCourseManagement\People\Participant\ParticipantController@searchByIcGeneralShow');
-Route::get('/participant/search-by-ic/{ic}/event/{event_id}', 'ShortCourseManagement\People\Participant\ParticipantController@searchByIc');
 Route::get('/participant/search-by-representative-ic/{ic}', 'ShortCourseManagement\People\Participant\ParticipantController@searchByRepresentativeIc');
+Route::post('/participant/search-by-ic-general/data', 'ShortCourseManagement\People\Participant\ParticipantController@searchByIcGeneralShow');
+Route::get('/participant/search-by-ic-general/{ic}', 'ShortCourseManagement\People\Participant\ParticipantController@searchByIcGeneral');
+Route::post('/events/data/event-management/shortcourse/event-participant/{participant_id}', 'ShortCourseManagement\EventManagement\EventParticipantController@dataEventParticipantList');
 
-//SCM - Public View
 Route::post('/events/data/shortcourse', 'ShortCourseManagement\EventManagement\EventController@dataPublicView');
 Route::get('/shortcourse/{id}', 'ShortCourseManagement\EventManagement\EventController@showPublicView');
 Route::get('/shortcourse', 'ShortCourseManagement\EventManagement\EventController@indexPublicView');
@@ -350,46 +387,8 @@ Route::post('/shortcourse/participant/save-payment-proof', 'ShortCourseManagemen
 Route::get('/shortcourse/participant/request-verification/event/{event_id}/participant_id/{participant_id}', 'ShortCourseManagement\EventManagement\EventParticipantController@requestVerification')->name('store.request_verification');
 Route::get('/get-payment-proof-image/{id}/{payment_proof_path}', 'ShortCourseManagement\EventManagement\EventParticipantController@getPaymentProofImage');
 
-//SCM - Venue
-Route::get('/venues', 'ShortCourseManagement\Catalogues\Venue\VenueController@index');
-Route::get('/venues/{id}', 'ShortCourseManagement\Catalogues\Venue\VenueController@show');
-Route::post('/venues/data', 'ShortCourseManagement\Catalogues\Venue\VenueController@dataVenues');
-Route::post('/venues/update/{id}', 'ShortCourseManagement\Catalogues\Venue\VenueController@update');
-Route::post('/venue', 'ShortCourseManagement\Catalogues\Venue\VenueController@store');
-Route::post('/venue/delete/{id}', 'ShortCourseManagement\Catalogues\Venue\VenueController@delete');
-
-//SCM - Feedback
-Route::get('/feedback/form/view/{id}', 'ShortCourseManagement\Feedbacks\FeedbackController@viewForm');
-Route::get('/feedback/form/participant/{event_participant_id}', 'ShortCourseManagement\Feedbacks\FeedbackController@show');
-Route::post('/feedback/form/submit', 'ShortCourseManagement\Feedbacks\FeedbackController@submit');
-Route::get('/feedback/appreciation', 'ShortCourseManagement\Feedbacks\FeedbackController@appreciation');
-Route::get('/feedback-sets', 'ShortCourseManagement\Feedbacks\FeedbackController@index');
-Route::post('/event_feedback_sets/data', 'ShortCourseManagement\Feedbacks\FeedbackController@dataEventFeedbackSet');
-Route::get('/event_feedback_sets/{id}', 'ShortCourseManagement\Feedbacks\FeedbackController@showDetails');
-Route::post('/event_feedback_set/delete/{id}', 'ShortCourseManagement\Feedbacks\FeedbackController@delete');
-Route::post('/event_feedback_sets/update/{id}', 'ShortCourseManagement\Feedbacks\FeedbackController@update');
-
-//SCM - Topic
-Route::get('/topics', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\TopicController@index');
-Route::get('/topics/{id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\TopicController@show');
-Route::post('/topics/data', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\TopicController@dataTopics');
-Route::post('/topic/update', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\TopicController@update');
-Route::post('/topic', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\TopicController@store');
-Route::get('/topic/delete/{id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\TopicController@delete');
-
-//SCM - Subcategory
-// Route::get('/subcategories', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@index');
-Route::get('/subcategories/{id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@show');
-Route::post('/subcategories/data', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@dataSubCategories');
-Route::post('/subcategory/update', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@update');
-Route::post('/subcategory', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@store');
-Route::get('/subcategory/delete/{id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@delete');
-
-//SCM - Category
-// Route::get('/subcategories', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@index');
-Route::get('/categories/{id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\CategoryController@show');
-Route::post('/categories/data', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\CategoryController@dataCategories');
-Route::post('/category/update', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\CategoryController@update');
-Route::post('/category', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\CategoryController@store');
-Route::get('/category/delete/{id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\CategoryController@delete');
-
+// Covid19
+Route::get('/covid', 'CovidController@openForm')->name('openForm');
+Route::get('/findUser', 'CovidController@findUser');
+Route::post('openFormStore', 'CovidController@storeOpenForm');
+Route::get('/add-form', 'CovidController@addForm');
