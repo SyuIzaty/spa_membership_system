@@ -85,7 +85,7 @@
                         <div class="form-group">
                             <td width="10%"><label class="form-label" for="department_id"><span class="text-danger">*</span> Department :</label></td>
                             <td colspan="4">
-                                <select name="department_id" id="department_id" class="department form-control">
+                                <select name="department_id" id="department_id" class="department form-control" required>
                                     <option value="">Select Department</option>
                                     @foreach ($department as $depart) 
                                         <option value="{{ $depart->id }}" {{ old('department_id') ? 'selected' : '' }}>{{ $depart->department_name }}</option>
@@ -98,7 +98,7 @@
                         </div>
                         <div class="form-group">
                             <td width="10%"><label class="form-label" for="stock_name"><span class="text-danger">*</span> Stock Name :</label></td>
-                                <td colspan="4"><input value="{{ old('stock_name') }}" class="form-control" id="stock_name" name="stock_name" style="text-transform: uppercase">
+                                <td colspan="4"><input value="{{ old('stock_name') }}" class="form-control" id="stock_name" name="stock_name" style="text-transform: uppercase" required>
                                     @error('stock_name')
                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                     @enderror
@@ -107,7 +107,7 @@
                         </div>
                         <div class="form-group">
                             <td width="10%"><label class="form-label" for="model"><span class="text-danger">*</span> Model :</label></td>
-                                <td colspan="4"><input value="{{ old('model') }}" class="form-control" id="model" name="model" style="text-transform: uppercase">
+                                <td colspan="4"><input value="{{ old('model') }}" class="form-control" id="model" name="model" style="text-transform: uppercase" required>
                                     @error('model')
                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                     @enderror
@@ -126,7 +126,7 @@
                         <div class="form-group">
                             <td width="10%"><label class="form-label" for="status"><span class="text-danger">*</span> Status :</label></td>
                             <td colspan="4">
-                                <select class="form-control stat" id="status" name="status">
+                                <select class="form-control stat" id="status" name="status" required>
                                     <option value="">Select Status</option>
                                     <option value="1" {{ old('status') == '1' ? 'selected':''}} >Active</option>
                                     <option value="0" {{ old('status') == '0' ? 'selected':''}} >Inactive</option>

@@ -338,7 +338,7 @@
                                         <div class="form-group">
                                             <td width="15%"><label class="form-label" for="stock_in"><span class="text-danger">*</span> Stock In :</label></td>
                                             <td colspan="7">
-                                                <input type="number" step="any" value="{{ old('stock_in') }}" class="form-control" id="stock_in" name="stock_in">
+                                                <input type="number" step="any" value="{{ old('stock_in') }}" class="form-control" id="stock_in" name="stock_in" required>
                                                 @error('stock_in')
                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                 @enderror
@@ -346,7 +346,7 @@
                                         <div class="form-group">
                                             <td width="15%"><label class="form-label" for="unit_price"><span class="text-danger">*</span> Unit Price (RM) :</label></td>
                                             <td colspan="7">
-                                                <input type="number" step="any" value="{{ old('unit_price') }}" class="form-control" id="unit_price" name="unit_price">
+                                                <input type="number" step="any" value="{{ old('unit_price') }}" class="form-control" id="unit_price" name="unit_price" required>
                                                 @error('unit_price')
                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                 @enderror
@@ -354,7 +354,7 @@
                                         <div class="form-group">
                                             <td width="15%"><label class="form-label" for="purchase_date"><span class="text-danger">*</span> Purchase Date :</label></td>
                                             <td colspan="7">
-                                                <input type="date" class="form-control" id="purchase_date" name="purchase_date" value="{{ old('purchase_date') }}">
+                                                <input type="date" class="form-control" id="purchase_date" name="purchase_date" value="{{ old('purchase_date') }}" required>
                                                 @error('purchase_date')
                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                 @enderror
@@ -362,7 +362,7 @@
                                         <div class="form-group">
                                             <td width="15%"><label class="form-label" for="trans_date"><span class="text-danger">*</span> Stock In Date :</label></td>
                                             <td colspan="7">
-                                                <input type="date" class="form-control" id="trans_date" name="trans_date" value="{{ old('trans_date') }}">
+                                                <input type="date" class="form-control" id="trans_date" name="trans_date" value="{{ old('trans_date') }}" required>
                                                 @error('trans_date')
                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                 @enderror
@@ -370,7 +370,7 @@
                                         <div class="form-group">
                                             <td width="15%"><label class="form-label" for="lo_no"><span class="text-danger">*</span> L.O. Number :</label></td>
                                             <td colspan="7">
-                                                <input value="{{ old('lo_no') }}" class="form-control" id="lo_no" name="lo_no">
+                                                <input value="{{ old('lo_no') }}" class="form-control" id="lo_no" name="lo_no" required>
                                                 @error('lo_no')
                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                 @enderror
@@ -378,7 +378,7 @@
                                         <div class="form-group">
                                             <td width="15%"><label class="form-label" for="io_no"><span class="text-danger">*</span> Invoice Number :</label></td>
                                             <td colspan="7">
-                                                <input value="{{ old('io_no') }}" class="form-control" id="io_no" name="io_no">
+                                                <input value="{{ old('io_no') }}" class="form-control" id="io_no" name="io_no" required>
                                                 @error('io_no')
                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                 @enderror
@@ -415,7 +415,7 @@
                                         <div class="form-group">
                                             <td width="15%"><label class="form-label" for="stock_out"><span class="text-danger">*</span> Stock Out :</label></td>
                                             <td colspan="7">
-                                                <input type="number" step="any" value="{{ old('stock_out') }}" class="form-control" id="stock_out" name="stock_out">
+                                                <input type="number" step="any" value="{{ old('stock_out') }}" class="form-control" id="stock_out" name="stock_out" required>
                                                 @error('stock_out')
                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                 @enderror
@@ -423,7 +423,7 @@
                                         <div class="form-group">
                                             <td width="15%"><label class="form-label" for="trans_date"><span class="text-danger">*</span> Stock Out Date :</label></td>
                                             <td colspan="7">
-                                                <input type="date" class="form-control" id="trans_date" name="trans_date" value="{{ old('trans_date') }}">
+                                                <input type="date" class="form-control" id="trans_date" name="trans_date" value="{{ old('trans_date') }}" required>
                                                 @error('trans_date')
                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                 @enderror
@@ -431,7 +431,7 @@
                                         <div class="form-group">
                                             <td width="15%"><label class="form-label" for="supply_to"><span class="text-danger">*</span> Supply To :</label></td>
                                             <td colspan="7">
-                                                <select class="form-control supply_to" name="supply_to" id="supply_to" >
+                                                <select class="form-control supply_to" name="supply_to" id="supply_to" required>
                                                     <option value=""> Select User </option>
                                                     @foreach ($user as $usr) 
                                                         <option value="{{ $usr->id }}" {{ old('supply_to') ==  $usr->id  ? 'selected' : '' }}>{{ $usr->name }}</option>
@@ -444,7 +444,7 @@
                                         <div class="form-group">
                                             <td width="15%"><label class="form-label" for="reason"><span class="text-danger">*</span> Reason :</label></td>
                                             <td colspan="7">
-                                                <textarea rows="5" class="form-control" id="reason" name="reason">{{ old('reason') }}</textarea>
+                                                <textarea rows="5" class="form-control" id="reason" name="reason" required>{{ old('reason') }}</textarea>
                                                 @error('reason')
                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                 @enderror
@@ -473,7 +473,7 @@
                                     <div class="form-group">
                                         <td width="15%"><label class="form-label" for="stock_in"><span class="text-danger">*</span> Stock In :</label></td>
                                         <td colspan="7">
-                                            <input type="number" step="any" value="{{ old('stock_in') }}" class="form-control stock" id="stock_in" name="stock_in">
+                                            <input type="number" step="any" value="{{ old('stock_in') }}" class="form-control stock" id="stock_in" name="stock_in" required>
                                             @error('stock_in')
                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                                             @enderror
@@ -481,7 +481,7 @@
                                     <div class="form-group">
                                         <td width="15%"><label class="form-label" for="unit_price"><span class="text-danger">*</span> Unit Price (RM) :</label></td>
                                         <td colspan="7">
-                                            <input type="number" step="any" value="{{ old('unit_price') }}" class="form-control price" id="unit_price" name="unit_price">
+                                            <input type="number" step="any" value="{{ old('unit_price') }}" class="form-control price" id="unit_price" name="unit_price" required>
                                             @error('unit_price')
                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                                             @enderror
@@ -489,7 +489,7 @@
                                     <div class="form-group">
                                         <td width="15%"><label class="form-label" for="purchase_date"><span class="text-danger">*</span> Purchase Date :</label></td>
                                         <td colspan="7">
-                                            <input type="date" class="form-control purchase" id="purchase_date" name="purchase_date" value="{{ old('purchase_date') }}">
+                                            <input type="date" class="form-control purchase" id="purchase_date" name="purchase_date" value="{{ old('purchase_date') }}" required>
                                             @error('purchase_date')
                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                                             @enderror
@@ -497,7 +497,7 @@
                                     <div class="form-group">
                                         <td width="15%"><label class="form-label" for="trans_date"><span class="text-danger">*</span> Stock In Date :</label></td>
                                         <td colspan="7">
-                                            <input type="date" class="form-control trans" id="trans_date" name="trans_date" value="{{ old('trans_date') }}">
+                                            <input type="date" class="form-control trans" id="trans_date" name="trans_date" value="{{ old('trans_date') }}" required>
                                             @error('trans_date')
                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                                             @enderror
@@ -505,7 +505,7 @@
                                     <div class="form-group">
                                         <td width="15%"><label class="form-label" for="lo_no"><span class="text-danger">*</span> L.O. Number :</label></td>
                                         <td colspan="7">
-                                            <input value="{{ old('lo_no') }}" class="form-control lo" id="lo_no" name="lo_no">
+                                            <input value="{{ old('lo_no') }}" class="form-control lo" id="lo_no" name="lo_no" required>
                                             @error('lo_no')
                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                                             @enderror
@@ -513,7 +513,7 @@
                                     <div class="form-group">
                                         <td width="15%"><label class="form-label" for="io_no"><span class="text-danger">*</span> Invoice Number :</label></td>
                                         <td colspan="7">
-                                            <input value="{{ old('io_no') }}" class="form-control io" id="io_no" name="io_no">
+                                            <input value="{{ old('io_no') }}" class="form-control io" id="io_no" name="io_no" required>
                                             @error('io_no')
                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                                             @enderror
@@ -549,7 +549,7 @@
                                     <div class="form-group">
                                         <td width="15%"><label class="form-label" for="stock_out"><span class="text-danger">*</span> Stock Out :</label></td>
                                         <td colspan="7">
-                                            <input type="number" step="any" value="{{ old('stock_out') }}" class="form-control stock" id="stock_out" name="stock_out">
+                                            <input type="number" step="any" value="{{ old('stock_out') }}" class="form-control stock" id="stock_out" name="stock_out" required>
                                             @error('stock_out')
                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                                             @enderror
@@ -557,7 +557,7 @@
                                     <div class="form-group">
                                         <td width="15%"><label class="form-label" for="trans_date"><span class="text-danger">*</span> Stock Out Date :</label></td>
                                         <td colspan="7">
-                                            <input type="date" class="form-control trans" id="trans_date" name="trans_date" value="{{ old('trans_date') }}">
+                                            <input type="date" class="form-control trans" id="trans_date" name="trans_date" value="{{ old('trans_date') }}" required>
                                             @error('trans_date')
                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                                             @enderror
@@ -565,7 +565,7 @@
                                     <div class="form-group">
                                         <td width="15%"><label class="form-label" for="supply_to"><span class="text-danger">*</span> Supply To :</label></td>
                                         <td colspan="7">
-                                            <select class="form-control supply" name="supply_to" id="supply_to" >
+                                            <select class="form-control supply" name="supply_to" id="supply_to" required>
                                                 <option value=""> Select User </option>
                                                 @foreach ($user as $usr) 
                                                     <option value="{{ $usr->id }}" {{ old('supply_to') ==  $usr->id  ? 'selected' : '' }}>{{ $usr->name }}</option>
@@ -578,7 +578,7 @@
                                     <div class="form-group">
                                         <td width="15%"><label class="form-label" for="reason"><span class="text-danger">*</span> Reason :</label></td>
                                         <td colspan="7">
-                                            <textarea rows="5" class="form-control reason" id="reason" name="reason">{{ old('reason') }}</textarea>
+                                            <textarea rows="5" class="form-control reason" id="reason" name="reason" required>{{ old('reason') }}</textarea>
                                             @error('reason')
                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                                             @enderror

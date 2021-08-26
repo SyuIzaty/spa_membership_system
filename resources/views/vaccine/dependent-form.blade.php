@@ -602,7 +602,7 @@
             confirmButtonText: 'Yes, delete it!'
         })
         .then((willDelete) => {
-            if (willDelete) {
+            if (willDelete.value) {
                     form[0].submit();
                     Swal.fire({ text: "Successfully delete the data.", icon: 'success'
                 });
