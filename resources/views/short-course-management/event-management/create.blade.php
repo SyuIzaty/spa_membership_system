@@ -102,7 +102,8 @@
                                                         {{-- {{ Form::textarea('shortcourse_description', old('shortcourse_description'), ['class' => 'form-control', 'placeholder' => 'Event Description', 'id' => 'shortcourse_description']) }} --}}
                                                         <textarea id="shortcourse_description"
                                                             name="shortcourse_description"
-                                                            class="form-control ck-editor__editable ck-editor__editable_inline" rows="10">{{ old('shortcourse_description') }}  </textarea>
+                                                            class="form-control ck-editor__editable ck-editor__editable_inline"
+                                                            rows="10">{{ old('shortcourse_description') }}  </textarea>
                                                         @error('shortcourse_description')
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror
@@ -116,7 +117,8 @@
                                                     <td class="col px-4">
                                                         {{-- {{ Form::textarea('shortcourse_objective', old('shortcourse_objective'), ['class' => 'form-control', 'placeholder' => 'Event Objective', 'id' => 'shortcourse_objective']) }} --}}
                                                         <textarea id="shortcourse_objective" name="shortcourse_objective"
-                                                            class="form-control ck-editor__editable ck-editor__editable_inline" rows="10">{{ old('shortcourse_objective') }}  </textarea>
+                                                            class="form-control ck-editor__editable ck-editor__editable_inline"
+                                                            rows="10">{{ old('shortcourse_objective') }}  </textarea>
                                                         @error('shortcourse_objective')
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror
@@ -296,6 +298,27 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="col col-lg-2 px-4">
+                                                        {{ Form::label('title', 'Feedback Set **', ['style' => 'font-weight:bold']) }}
+                                                    </td>
+                                                    <td class="col px-4">
+                                                        <select class="form-control event_feedback_set"
+                                                            name="event_feedback_set_id" id="event_feedback_set_id">
+                                                            <option disabled selected>Select Feedback Set</option>
+                                                            @foreach ($event_feedback_sets as $event_feedback_set)
+                                                                <option value="{{ $event_feedback_set->id }}"
+                                                                    name="{{ $event_feedback_set->name }}"
+                                                                    {{ old('event_feedback_set_id') == $event_feedback_set->id ? 'selected' : null }}>
+                                                                    {{ $event_feedback_set->id }} -
+                                                                    {{ $event_feedback_set->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        @error('event_feedback_set_id')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', "Trainer's IC ** e.g.:700423102003", ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
@@ -313,7 +336,8 @@
                                                         {{ Form::label('title', "Trainer's User ID **", ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        <input type="number" name="trainer_user_id" hidden>
+                                                        <input type="text" name="trainer_user_id_hidden"
+                                                            id="trainer_user_id_hidden" hidden>
                                                         {{ Form::text('trainer_user_id_text', '', ['class' => 'form-control', 'placeholder' => "Trainer's User ID", 'id' => 'trainer_user_id_text', 'disabled', 'style' => 'display:none', 'readonly']) }}
                                                         <select class="form-control user" name="trainer_user_id"
                                                             id="trainer_user_id"
@@ -425,12 +449,14 @@
             var trainer_ic = $('#search-by-trainer_ic_input').val();
             $.get("/trainer/search-by-trainer_ic/" + trainer_ic, function(data) {
 
-                console.log(data.id);
+                // console.log(data.id);
                 // $("#trainer_user_id option[value='" + data.id + "']").attr("selected", "true");
 
                 $("#trainer_user_id").select2().val(data.id).trigger("change");
                 $("#trainer_user_id_text").hide();
                 $("#trainer_user_id_text").attr('disabled');
+                $("#trainer_user_id").prop('disabled', true);
+                $("#trainer_user_id_hidden").val(data.id);
 
                 // $("#trainer_user_id").hide();
                 // $("#trainer_user_id").attr('style', 'display: none');
@@ -443,6 +469,8 @@
 
 
 
+
+
             }).fail(
                 function() {
                     $('#trainer_ic').val(null);
@@ -452,6 +480,9 @@
                     $("#trainer_user_id").show();
                     $("#trainer_user_id").removeAttr('disabled');
                     $("#trainer_user_id").addClass('user');
+
+                    $("#trainer_user_id_hidden").val(-1);
+
 
                     $("#trainer_user_id option[value='-1']").attr("selected", "true");
                     $('input[name=trainer_user_id]').val(-1);
@@ -491,6 +522,8 @@
             $("#trainer_user_id").select2().val(-1).trigger("change");
             $("#trainer_user_id_text").hide();
             $("#trainer_user_id_text").attr('disabled');
+            $("#trainer_user_id").prop('disabled', false);
+            $("#trainer_user_id").prop('disabled', true);
 
             $("#trainer_user_id_text").val(null);
             $('#trainer_fullname').val(null);
@@ -641,7 +674,7 @@
             //         index+=1;
             //     });
 
-            $('.shortcourse, .user, .venue, .topic1, .fee, .venue_type').select2();
+            $('.shortcourse, .user, .venue, .topic1, .fee, .venue_type, .event_feedback_set').select2();
 
 
             $(document).on('click', '.btn_remove', function() {

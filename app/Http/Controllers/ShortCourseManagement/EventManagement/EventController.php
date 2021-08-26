@@ -111,8 +111,9 @@ class EventController extends Controller
 
         $venue_types = VenueType::all();
 
+        $event_feedback_sets = EventFeedbackSet::all();
 
-        return view('short-course-management.event-management.create', compact('venues', 'shortcourses', 'topics', 'users', 'venue_types'));
+        return view('short-course-management.event-management.create', compact('venues', 'shortcourses', 'topics', 'users', 'venue_types', 'event_feedback_sets'));
     }
     public function storeNew(Request $request)
     {
@@ -138,6 +139,7 @@ class EventController extends Controller
             'fee_name' => 'required|min:3',
             'fee_id' => 'required',
             'fee_amount' => 'required|numeric',
+            'event_feedback_set_id' => 'required',
             'trainer_ic' => 'required',
             'trainer_fullname' => 'required|min:3',
             'trainer_phone' => 'required|min:10',
@@ -163,6 +165,7 @@ class EventController extends Controller
             'fee_id.required' => 'Please insert fee id',
             'fee_amount.required' => 'Please insert fee amount',
             'fee_amount.numeric' => 'Please insert number only',
+            'event_feedback_set_id.required' => 'Please choose event feedback set',
             'trainer_ic.required' => 'Please insert trainer IC',
             'trainer_fullname.required' => "Please insert trainer's fullname",
             'trainer_fullname.min' => "The trainer's fullname should have at least 3 characters",
@@ -240,7 +243,7 @@ class EventController extends Controller
             'name' => $request->shortcourse_name,
             'description' => $request->shortcourse_description,
             'objective' => $request->shortcourse_objective,
-            'event_feedback_set_id' => 1,
+            'event_feedback_set_id' => $request->event_feedback_set_id,
             'datetime_start' => $request->datetime_start,
             'datetime_end' => $request->datetime_end,
             'registration_due_date' => $request->datetime_start,
@@ -269,7 +272,7 @@ class EventController extends Controller
         $existTrainer = Trainer::where('ic', '=', $request->trainer_ic)->first();
 
         if (!$existTrainer) {
-            $existUser = User::where('id', $request->trainer_user_id)->first();
+            $existUser = User::where('id', $request->trainer_user_id_hidden)->first();
             if (!$existUser) {
                 // TODO: Create User
                 $existUser = User::create([
