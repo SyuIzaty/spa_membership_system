@@ -207,10 +207,12 @@
                                                             </tr>
                                                             <tr>
                                                                 <td>Feedback Set</td>
-                                                                <td name="event_feedback_set_show" id="event_feedback_set_show">
+                                                                <td name="event_feedback_set_show"
+                                                                    id="event_feedback_set_show">
                                                                     {{ $event->event_feedback_set->name }}
                                                                 </td>
-                                                                <td name="event_feedback_set_edit" id="event_feedback_set_edit" style="display: none">
+                                                                <td name="event_feedback_set_edit"
+                                                                    id="event_feedback_set_edit" style="display: none">
                                                                     {{-- <div class="form-group">
                                                                         <input id="event_feedback_set.name" name="event_feedback_set.name"
                                                                             value="{{$event->event_feedback_set->name}}"
@@ -224,28 +226,31 @@
                                                                         @enderror
                                                                     </div> --}}
                                                                     <div class="form-group">
-                                                                        <select class="form-control event_feedback_set " name="event_feedback_set"
-                                                                            id="event_feedback_set" data-select2-id="event_feedback_set" tabindex="-1"
-                                                                            aria-hidden="true">
+                                                                        <select class="form-control event_feedback_set "
+                                                                            name="event_feedback_set"
+                                                                            id="event_feedback_set"
+                                                                            data-select2-id="event_feedback_set"
+                                                                            tabindex="-1" aria-hidden="true">
                                                                             <option
                                                                                 value={{ $event->event_feedback_set ? $event->event_feedback_set->id : '' }}>
                                                                                 {{ $event->event_feedback_set ? $event->event_feedback_set->name : 'Choose an event feedback set' }}
                                                                             </option>
                                                                             @foreach ($event_feedback_sets as $event_feedback_set)
                                                                                 @if ($event->event_feedback_set ? $event_feedback_set->id != $event->event_feedback_set->id : false)
-                                                                                    <option value="{{ $event_feedback_set->id }}">
+                                                                                    <option
+                                                                                        value="{{ $event_feedback_set->id }}">
                                                                                         {{ $event_feedback_set->name }}
                                                                                     </option>
                                                                                 @endif
                                                                             @endforeach
                                                                         </select>
                                                                         @error('event_feedback_set')
-                                                                        <p style="color: red">
-                                                                            <strong> *
-                                                                                {{ $message }}
-                                                                            </strong>
-                                                                        </p>
-                                                                    @enderror
+                                                                            <p style="color: red">
+                                                                                <strong> *
+                                                                                    {{ $message }}
+                                                                                </strong>
+                                                                            </p>
+                                                                        @enderror
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -1402,7 +1407,7 @@
                                                 <div class="row row-md-12">
                                                     <div class="col-sm-6">
                                                         <div class="d-flex justify-content-center">
-                                                            @if (!isset($event->thumbnail_path))
+                                                            {{-- @if (!isset($event->thumbnail_path))
                                                                 <img src="{{ asset('storage/shortcourse/poster/default/intec_poster.jpg') }}"
                                                                     class="card-img" style="object-fit: fill;">
                                                             @else
@@ -1411,6 +1416,15 @@
                                                                 background-image:url('{{ asset('storage /shortcourse/poster/default/intec_poster.jpg') }}');
                                                                 background-repeat: no-repeat;
                                                                 background-size: 137px 194px;">
+                                                            @endif --}}
+
+
+                                                            @if (!isset($event->thumbnail_path))
+                                                                <img src="{{ asset('storage/shortcourse/poster/default/intec_poster.jpg') }}"
+                                                                    class="card-img" style="object-fit: fill;">
+                                                            @else
+                                                                <img src="{{ asset($event->thumbnail_path) }}"
+                                                                    class="card-img" style="object-fit: fill;">
                                                             @endif
                                                         </div>
 
