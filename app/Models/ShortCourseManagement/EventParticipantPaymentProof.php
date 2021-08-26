@@ -11,6 +11,7 @@ class EventParticipantPaymentProof extends Model
     protected $table = 'scm_event_participant_payment_proof';
     protected $primaryKey = 'id';
     protected $fillable = [
+        'name',
         'payment_proof_path',
         'event_participant_id',
         'created_by',

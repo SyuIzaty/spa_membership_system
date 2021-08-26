@@ -11,6 +11,9 @@ use App\Models\ShortCourseManagement\Fee;
 use App\Models\ShortCourseManagement\EventParticipantPaymentProof;
 use Auth;
 use DateTime;
+use File;
+use Response;;
+
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
@@ -580,21 +583,38 @@ class EventParticipantController extends Controller
             $images = $request->file('payment_proof_input');
 
             foreach ($images as $image) {
+
+                // Public Folder
+                // $name_gen = hexdec(uniqid());
+                // $img_ext = strtolower($image->getClientOriginalExtension());
+
+                // $img_name = $year . $month . $day . '_id' . ($request->event_id) . '_' . $name_gen . '.' . $img_ext;
+
+
+
+                // $up_location = 'storage/shortcourse/payment_proof_input/' . $year . '/';
+                // $last_img = $up_location . $img_name;
+
+                // $image->move($up_location, $img_name);
+                // End of Public
+
+
                 $name_gen = hexdec(uniqid());
                 $img_ext = strtolower($image->getClientOriginalExtension());
 
                 $img_name = $year . $month . $day . '_id' . ($request->event_id) . '_' . $name_gen . '.' . $img_ext;
 
+                $up_location = 'shortcourse/payment_proof_input/' . $year . '/';
+
+                $image->storeAs($up_location, $img_name);
+                $web_path = "app/" . $up_location . $img_name;
+                $request->merge(['upload_image' => $img_name, 'web_path' => $web_path]);
 
 
-                $up_location = 'storage/shortcourse/payment_proof_input/' . $year . '/';
-                $last_img = $up_location . $img_name;
-
-                $image->move($up_location, $img_name);
-                // where('event_id', $request->event_id)->where('participant_id', $request->participant_id)
                 EventParticipantPaymentProof::create([
                     'event_participant_id' => $existEventParticipant->id,
-                    'payment_proof_path' => $last_img,
+                    'name' => $img_name,
+                    'payment_proof_path' => "app/" . $up_location,
                     'created_by' => 'public_user',
                 ]);
             }
@@ -1171,14 +1191,32 @@ class EventParticipantController extends Controller
             ['event_participant_id', '=', $event_participant_id]
         ])->get();
 
+
         $index = 0;
         foreach ($eventParticipantPaymentProofs as $eventParticipantPaymentProof) {
-            $eventParticipantPaymentProofs[$index]['created_at_diffForHumans'] = $eventParticipantPaymentProof->created_at->diffForHumans();;
+            $eventParticipantPaymentProofs[$index]['created_at_diffForHumans'] = $eventParticipantPaymentProof->created_at->diffForHumans();
+
             $index += 1;
         }
 
         return $eventParticipantPaymentProofs;
     }
+
+    public function getPaymentProofImage($id, $payment_proof_path)
+    {
+        $event_participant_payment_proof= EventParticipantPaymentProof::find($id);
+        $path = storage_path().'/'.$event_participant_payment_proof->payment_proof_path. $payment_proof_path;
+
+        $file = File::get($path);
+        $filetype = File::mimeType($path);
+
+        $response = Response::make($file, 200);
+        $response->header("Content-Type", $filetype);
+
+        return $response;
+
+    }
+
     public function removePaymentProof(Request $request, $payment_proof_id)
     {
 
@@ -1217,21 +1255,45 @@ class EventParticipantController extends Controller
             $images = $request->file('payment_proof_input');
 
             foreach ($images as $image) {
+                // Public Folder
+                // storage/shortcourse/payment_proof_input/2021/20210809_id19_1707603867289898.png
+                // $name_gen = hexdec(uniqid());
+                // $img_ext = strtolower($image->getClientOriginalExtension());
+
+                // $img_name = $year . $month . $day . '_id' . ($request->event_id) . '_' . $name_gen . '.' . $img_ext;
+
+
+
+                // $up_location = 'storage/shortcourse/payment_proof_input/' . $year . '/';
+                // $last_img = $up_location . $img_name;
+
+                // $image->move($up_location, $img_name);
+
+                // EventParticipantPaymentProof::create([
+                //     'event_participant_id' => $request->event_participant_id,
+                //     'payment_proof_path' => $last_img,
+                //     'created_by' => 'public_user',
+                // ]);
+                // End of Public Folder
+
+                // app/shortcourse/payment_proof_input/2021/20210826_id27_1709125459615751.png
                 $name_gen = hexdec(uniqid());
                 $img_ext = strtolower($image->getClientOriginalExtension());
 
                 $img_name = $year . $month . $day . '_id' . ($request->event_id) . '_' . $name_gen . '.' . $img_ext;
 
+                $up_location = 'shortcourse/payment_proof_input/' . $year . '/';
+
+                $image->storeAs($up_location, $img_name);
+                $web_path = "app/" . $up_location . $img_name;
+                $request->merge(['upload_image' => $img_name, 'web_path' => $web_path]);
 
 
-                $up_location = 'storage/shortcourse/payment_proof_input/' . $year . '/';
-                $last_img = $up_location . $img_name;
 
-                $image->move($up_location, $img_name);
-                // where('event_id', $request->event_id)->where('participant_id', $request->participant_id)
                 EventParticipantPaymentProof::create([
                     'event_participant_id' => $request->event_participant_id,
-                    'payment_proof_path' => $last_img,
+                    'name' => $img_name,
+                    'payment_proof_path' => "app/" . $up_location,
                     'created_by' => 'public_user',
                 ]);
             }

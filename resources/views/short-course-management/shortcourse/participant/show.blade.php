@@ -364,7 +364,8 @@
                             // TODO: Insert result into couresol
 
                             data.forEach(function(img, index) {
-                                var src = `{{ asset('${img.payment_proof_path}') }}`;
+                                var src = img.name;
+                                var id = img.id;
                                 $('#carousel-indicators').append(
                                     `<li data-target="#multi-item-example" data-slide-to="${index}" ${index==0?"class='active'":null}></li>`
                                 );
@@ -375,7 +376,7 @@
                                             <div class="col-md-12">
                                                 <div class="card mb-5">
                                                     <img class="card-img-top"
-                                                        src="${src}"
+                                                        src="/get-payment-proof-image/${id}/${src}"
                                                         alt="Card image cap">
                                                     <div
                                                         class="card-body d-flex justify-content-between">
