@@ -292,8 +292,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/event/{id}/events-participants/data-participant-post-event', 'ShortCourseManagement\EventManagement\EventParticipantController@dataParticipantPostEvent');
     Route::post('/event/{id}/events-participants/data-completed-participation-process', 'ShortCourseManagement\EventManagement\EventParticipantController@dataCompletedParticipationProcess');
     Route::post('/event/{id}/events-participants/data-not-completed-participation-process', 'ShortCourseManagement\EventManagement\EventParticipantController@dataNotCompletedParticipationProcess');
-    Route::get('/event-participant/{event_participant_id}/payment_proof', 'ShortCourseManagement\EventManagement\EventParticipantController@showPaymentProof');
-    Route::post('/event-participant-payment_proof/delete/{payment_proof_id}', 'ShortCourseManagement\EventManagement\EventParticipantController@removePaymentProof');
 
     //SCM - EventParticipant - Update Progress
     Route::post('/update-progress/{progress_name}/{eventParticipant_id}', 'ShortCourseManagement\EventManagement\EventParticipantController@updateProgress');
@@ -378,6 +376,8 @@ Route::get('/participant/search-by-representative-ic/{ic}', 'ShortCourseManageme
 Route::post('/participant/search-by-ic-general/data', 'ShortCourseManagement\People\Participant\ParticipantController@searchByIcGeneralShow');
 Route::get('/participant/search-by-ic-general/{ic}', 'ShortCourseManagement\People\Participant\ParticipantController@searchByIcGeneral');
 Route::post('/events/data/event-management/shortcourse/event-participant/{participant_id}', 'ShortCourseManagement\EventManagement\EventParticipantController@dataEventParticipantList');
+Route::get('/event-participant/{event_participant_id}/payment_proof', 'ShortCourseManagement\EventManagement\EventParticipantController@showPaymentProof');
+Route::post('/event-participant-payment_proof/delete/{payment_proof_id}', 'ShortCourseManagement\EventManagement\EventParticipantController@removePaymentProof');
 
 Route::post('/events/data/shortcourse', 'ShortCourseManagement\EventManagement\EventController@dataPublicView');
 Route::get('/shortcourse/{id}', 'ShortCourseManagement\EventManagement\EventController@showPublicView');

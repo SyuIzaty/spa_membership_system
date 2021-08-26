@@ -537,14 +537,14 @@ class EventParticipantController extends Controller
                     'ic' => $request->ic_input,
                     'phone' => $request->phone,
                     'email' => $request->email,
-                    'created_by' => Auth::user()->id,
+                    'created_by' => Auth::user() ? Auth::user()->id : 'public_user',
                 ]);
             } else {
                 $existParticipant->name = $request->fullname;
                 $existParticipant->ic = $request->ic_input;
                 $existParticipant->phone = $request->phone;
                 $existParticipant->email = $request->email;
-                $existParticipant->updated_by = Auth::user()->id;
+                $existParticipant->updated_by = Auth::user() ? Auth::user()->id : 'public_user';
                 $existParticipant->save();
             }
 
@@ -562,12 +562,12 @@ class EventParticipantController extends Controller
                     'participant_representative_id' => $existParticipant->id,
                     'is_verified_payment_proof' => 0,
                     'is_approved_application' => 1,
-                    'created_by' => Auth::user()->id,
+                    'created_by' => Auth::user() ? Auth::user()->id : 'public_user',
                 ]);
             } else {
                 $existEventParticipant->fee_id = $request->fee_id;
                 // $existEventParticipant->is_verified_payment_proof = 0;
-                $existEventParticipant->updated_by = Auth::user()->id;
+                $existEventParticipant->updated_by = Auth::user() ? Auth::user()->id : 'public_user';
                 $existEventParticipant->save();
                 return Redirect()->back()->with('messageAlreadyApplied', 'The participant have already been applied before.');
             }
@@ -615,7 +615,7 @@ class EventParticipantController extends Controller
                     'event_participant_id' => $existEventParticipant->id,
                     'name' => $img_name,
                     'payment_proof_path' => "app/" . $up_location,
-                    'created_by' => 'public_user',
+                    'created_by' => Auth::user() ? Auth::user()->id : 'public_user',
                 ]);
             }
 
@@ -625,7 +625,7 @@ class EventParticipantController extends Controller
             if (count($eventParticipantPaymentProof) > 0 && $eventParticipant->is_verified_payment_proof != 1) {
                 $update = EventParticipant::where([['id', '=', $request->event_participant_id]])->update([
                     'is_verified_payment_proof' => 0,
-                    'updated_by' => 'public_user',
+                    'updated_by' => Auth::user() ? Auth::user()->id : 'public_user',
                     'updated_at' => Carbon::now()
                 ]);
             }
@@ -648,7 +648,7 @@ class EventParticipantController extends Controller
 
             Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($request) {
                 $message->subject('Pengesahan Pendaftaran (Berjaya)');
-                $message->from(Auth::user()->email);
+                $message->from(Auth::user() ? Auth::user()->email : 'corporate@intec.edu.my');
                 $message->to($request->email);
             });
 
@@ -1204,8 +1204,8 @@ class EventParticipantController extends Controller
 
     public function getPaymentProofImage($id, $payment_proof_path)
     {
-        $event_participant_payment_proof= EventParticipantPaymentProof::find($id);
-        $path = storage_path().'/'.$event_participant_payment_proof->payment_proof_path. $payment_proof_path;
+        $event_participant_payment_proof = EventParticipantPaymentProof::find($id);
+        $path = storage_path() . '/' . $event_participant_payment_proof->payment_proof_path . $payment_proof_path;
 
         $file = File::get($path);
         $filetype = File::mimeType($path);
@@ -1214,7 +1214,6 @@ class EventParticipantController extends Controller
         $response->header("Content-Type", $filetype);
 
         return $response;
-
     }
 
     public function removePaymentProof(Request $request, $payment_proof_id)
@@ -1222,7 +1221,7 @@ class EventParticipantController extends Controller
 
 
         $exist = EventParticipantPaymentProof::find($payment_proof_id);
-        if (Auth::user()->id) {
+        if (Auth::user()) {
             $exist->updated_by = Auth::user()->id;
             $exist->deleted_by = Auth::user()->id;
         } else {
@@ -1299,23 +1298,24 @@ class EventParticipantController extends Controller
             }
 
             $eventParticipantPaymentProof = EventParticipantPaymentProof::where([['event_participant_id', '=', $request->event_participant_id]])->get();
-            $eventParticipant = EventParticipant::find($request->event_participant_id);
+            $eventParticipant = EventParticipant::find($request->event_participant_id)->load(['participant']);
             if (count($eventParticipantPaymentProof) > 0 && $eventParticipant->is_verified_payment_proof != 1) {
                 $update = EventParticipant::where([['id', '=', $request->event_participant_id]])->update([
                     'is_verified_payment_proof' => 0,
-                    'updated_by' => 'public_user',
+                    'updated_by' => Auth::user() ? Auth::user()->id : 'public_user',
                     'updated_at' => Carbon::now()
                 ]);
             }
-
+            $request->ic = $eventParticipant->participant->ic;
             return Redirect()->back()->with('success', 'Payment proof updated successfully');
+            // return Redirect()->back()->post("ShortCourseManagement\People\Participant\ParticipantController@searchByIcGeneralShow", [$request]);
         }
         $eventParticipantPaymentProof = EventParticipantPaymentProof::where([['event_participant_id', '=', $request->event_participant_id]])->get();
         $eventParticipant = EventParticipant::find($request->event_participant_id);
         if (count($eventParticipantPaymentProof) > 0 && $eventParticipant->is_verified_payment_proof != 1) {
             $update = EventParticipant::where([['id', '=', $request->event_participant_id]])->update([
                 'is_verified_payment_proof' => 0,
-                'updated_by' => 'public_user',
+                'updated_by' => Auth::user() ? Auth::user()->id : 'public_user',
                 'updated_at' => Carbon::now()
             ]);
         }
