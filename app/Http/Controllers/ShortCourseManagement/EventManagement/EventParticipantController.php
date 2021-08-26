@@ -1216,11 +1216,16 @@ class EventParticipantController extends Controller
         return $response;
     }
 
-    public function removePaymentProof(Request $request, $payment_proof_id)
+    public function removePaymentProof(Request $request)
     {
 
+        $exist = EventParticipantPaymentProof::find($request->payment_proof_id);
+        $existEventParticipant= EventParticipant::find($exist->event_participant_id)->load(['participant']);
 
-        $exist = EventParticipantPaymentProof::find($payment_proof_id);
+
+        // dd($request);
+
+        // dd($exist);
         if (Auth::user()) {
             $exist->updated_by = Auth::user()->id;
             $exist->deleted_by = Auth::user()->id;
@@ -1231,7 +1236,12 @@ class EventParticipantController extends Controller
         $exist->save();
         $exist->delete();
 
-        return Redirect()->back()->with('messageEventParticipantPaymentProof', 'A Payment Proof Deleted Successfully');
+        // return Redirect()->back()->with('messageEventParticipantPaymentProof', 'A Payment Proof Deleted Successfully');
+        $request->ic = $existEventParticipant->participant->ic;
+
+        $participant = Participant::where('ic', $request->ic)->first();
+
+        return view('short-course-management.shortcourse.participant.show', compact('participant'));
     }
 
 
@@ -1307,11 +1317,13 @@ class EventParticipantController extends Controller
                 ]);
             }
             $request->ic = $eventParticipant->participant->ic;
-            return Redirect()->back()->with('success', 'Payment proof updated successfully');
-            // return Redirect()->back()->post("ShortCourseManagement\People\Participant\ParticipantController@searchByIcGeneralShow", [$request]);
+
+            $participant = Participant::where('ic', $request->ic)->first();
+
+            return view('short-course-management.shortcourse.participant.show', compact('participant'));
         }
         $eventParticipantPaymentProof = EventParticipantPaymentProof::where([['event_participant_id', '=', $request->event_participant_id]])->get();
-        $eventParticipant = EventParticipant::find($request->event_participant_id);
+        $eventParticipant = EventParticipant::find($request->event_participant_id)->load(['participant']);
         if (count($eventParticipantPaymentProof) > 0 && $eventParticipant->is_verified_payment_proof != 1) {
             $update = EventParticipant::where([['id', '=', $request->event_participant_id]])->update([
                 'is_verified_payment_proof' => 0,
@@ -1319,7 +1331,11 @@ class EventParticipantController extends Controller
                 'updated_at' => Carbon::now()
             ]);
         }
-        return Redirect()->back();
+        $request->ic = $eventParticipant->participant->ic;
+
+        $participant = Participant::where('ic', $request->ic)->first();
+
+        return view('short-course-management.shortcourse.participant.show', compact('participant'));
     }
 
     public function requestVerification($event_id, $participant_id)

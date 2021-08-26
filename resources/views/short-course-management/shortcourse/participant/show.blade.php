@@ -382,8 +382,9 @@
                                                         class="card-body d-flex justify-content-between">
                                                         <h4 class="card-title">${img.created_at_diffForHumans}</h4>
                                                             <form method="post"
-                                                                action="/event-participant-payment_proof/delete/${img.id}">
+                                                                action="/event-participant-payment_proof">
                                                                 @csrf
+                                                                <input type="hidden" name="payment_proof_id" value="${img.id}">
                                                                 <button type="submit"
                                                                     class="btn btn-sm btn-danger float-right mr-2" ${is_verified_payment_proof_id==1?'disabled':null}>
                                                                     <i class="ni ni-close"></i>

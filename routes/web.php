@@ -377,7 +377,7 @@ Route::post('/participant/search-by-ic-general/data', 'ShortCourseManagement\Peo
 Route::get('/participant/search-by-ic-general/{ic}', 'ShortCourseManagement\People\Participant\ParticipantController@searchByIcGeneral');
 Route::post('/events/data/event-management/shortcourse/event-participant/{participant_id}', 'ShortCourseManagement\EventManagement\EventParticipantController@dataEventParticipantList');
 Route::get('/event-participant/{event_participant_id}/payment_proof', 'ShortCourseManagement\EventManagement\EventParticipantController@showPaymentProof');
-Route::post('/event-participant-payment_proof/delete/{payment_proof_id}', 'ShortCourseManagement\EventManagement\EventParticipantController@removePaymentProof');
+Route::post('/event-participant-payment_proof', 'ShortCourseManagement\EventManagement\EventParticipantController@removePaymentProof');
 
 Route::post('/events/data/shortcourse', 'ShortCourseManagement\EventManagement\EventController@dataPublicView');
 Route::get('/shortcourse/{id}', 'ShortCourseManagement\EventManagement\EventController@showPublicView');

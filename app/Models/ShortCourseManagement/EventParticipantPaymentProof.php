@@ -22,7 +22,7 @@ class EventParticipantPaymentProof extends Model
         'deleted_at'
     ];
 
-    public function subcategory()
+    public function event_participant()
     {
         return $this->belongsTo('App\Models\ShortCourseManagement\EventParticipant',
         'event_participant_id',
