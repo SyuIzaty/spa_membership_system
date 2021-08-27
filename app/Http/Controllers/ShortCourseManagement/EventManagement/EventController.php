@@ -179,8 +179,8 @@ class EventController extends Controller
             //TODO: Create new shortcourse
             $createShortCourse = ShortCourse::create([
                 'name' => $request->shortcourse_name,
-                'shortcourse_description' => $request->shortcourse_description,
-                'shortcourse_objective' => $request->shortcourse_objective,
+                'description' => $request->shortcourse_description,
+                'objective' => $request->shortcourse_objective,
                 'created_by' => Auth::user()->id,
             ]);
             if (isset($request->shortcourse_topic)) {

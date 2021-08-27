@@ -352,6 +352,8 @@
                             $('#participant_phone').val(null);
                             $('#participant_email').val(null);
 
+                            $('.modal-body #registration_message').empty();
+                            $('.modal-body #registration_update_submit').empty();
 
                             $('.modal-body #registration_update_submit').append(
                                 '<i class = "ni ni-plus"></i> Register');

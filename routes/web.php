@@ -333,7 +333,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     //SCM - Feedback
     Route::get('/feedback/form/view/{id}', 'ShortCourseManagement\Feedbacks\FeedbackController@viewForm');
-    Route::get('/feedback/form/participant/{event_participant_id}', 'ShortCourseManagement\Feedbacks\FeedbackController@show');
+    Route::get('/feedback/form/participant/{event_participant_id}/{sha1_ic}', 'ShortCourseManagement\Feedbacks\FeedbackController@show');
     Route::post('/feedback/form/submit', 'ShortCourseManagement\Feedbacks\FeedbackController@submit');
     Route::get('/feedback/appreciation', 'ShortCourseManagement\Feedbacks\FeedbackController@appreciation');
     Route::get('/feedback-sets', 'ShortCourseManagement\Feedbacks\FeedbackController@index');

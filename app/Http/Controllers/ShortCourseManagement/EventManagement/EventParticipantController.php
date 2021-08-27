@@ -1106,7 +1106,7 @@ class EventParticipantController extends Controller
     public function dataEventParticipantList($participant_id)
     {
         // $events = Event::orderByDesc('id')->get()->load(['events_participants', 'venue']);
-        $eventsParticipants = EventParticipant::where('participant_id', $participant_id)->get()->load(['event', 'fee']);
+        $eventsParticipants = EventParticipant::where('participant_id', $participant_id)->get()->load(['event', 'fee', 'participant']);
         $events = [];
         $indexEvent = 0;
         foreach ($eventsParticipants as $eventParticipant) {
@@ -1121,6 +1121,7 @@ class EventParticipantController extends Controller
                 $events[$indexEvent]['amount'] = $eventParticipant->fee->amount;
                 $events[$indexEvent]['fee_name'] = $eventParticipant->fee->name;
                 $events[$indexEvent]['is_question_sended'] = $eventParticipant->is_question_sended;
+                $events[$indexEvent]['participant_sha1_ic'] = $eventParticipant->participant->sha1_ic;
                 $indexEvent += 1;
             }
         }
@@ -1175,7 +1176,7 @@ class EventParticipantController extends Controller
                     return '
                     <a href="#" data-target="#crud-modals" data-toggle="modal" data-event_id="' . $events->id . '" data-event_participant_id="' . $events->event_participant_id . '" data-is_verified_payment_proof="' . $events->is_verified_payment_proof . '" data-amount="' . $events->amount . '" class="btn btn-sm btn-primary">Update Payment Proof</a>
                     <a target="_blank" rel="noopener noreferrer"
-                    href="/feedback/form/participant/' . $events->event_participant_id . '
+                    href="/feedback/form/participant/'.$events->event_participant_id.'/' . $events->participant_sha1_ic . '"
                     type="submit" class="btn btn-sm btn-primary"
                     style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; position: relative; -webkit-text-size-adjust: none; border-radius: 4px; color: #fff; display: inline-block; overflow: hidden; text-decoration: none; background-color: #2d3748; border-bottom: 8px solid #2d3748; border-left: 18px solid #2d3748; border-right: 18px solid #2d3748; border-top: 8px solid #2d3748;">Feedback
                     Form</a>';
@@ -1252,6 +1253,7 @@ class EventParticipantController extends Controller
 
     public function updatePaymentProof(Request $request)
     {
+        // dd($request);
         if ($request->file('payment_proof_input')) {
             $date = Carbon::today()->toDateString();
             $year = substr($date, 0, 4);

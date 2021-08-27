@@ -395,6 +395,14 @@
                             $("#trainer_user_id").removeAttr('disabled');
                             $("#trainer_user_id").addClass('user');
 
+                            $('.modal-body #registration_message').empty();
+                            $('.modal-body #registration_update_submit').empty();
+
+                            $('.modal-body #registration_update_submit').append(
+                                '<i class = "ni ni-plus"></i> Register');
+                            $('.modal-body #registration_message').append(
+                                'Register a new Trainer');
+
                             $("#trainer_user_id option[value='-1']").attr("selected", "true");
                             $('#trainer_fullname').val(null);
                             $('#trainer_phone').val(null);

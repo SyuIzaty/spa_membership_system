@@ -7,6 +7,7 @@ use App\Models\ShortCourseManagement\Section;
 use App\Models\ShortCourseManagement\EventParticipant;
 use App\Models\ShortCourseManagement\EventParticipantQuestionAnswer;
 use App\Models\ShortCourseManagement\EventFeedbackSet;
+use App\Models\ShortCourseManagement\Participant;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DateTime;
@@ -70,20 +71,23 @@ class FeedbackController extends Controller
     {
         //
     }
-    public function show($event_participant_id)
+    public function show($event_participant_id, $sha1_ic)
     {
         //
-        $event_participant_question_id = EventParticipantQuestionAnswer::where('event_participant_id', $event_participant_id)->first();
-        // scm_event_participant_question_answer
-        if (!$event_participant_question_id) {
-            // $sections = Section::all()->load(['questions']);
+        $participant_id = Participant::where('sha1_ic', $sha1_ic)->first();
+        if (isset($participant_id)) {
+            $event_participant_question_id = EventParticipantQuestionAnswer::where('event_participant_id', $event_participant_id)->first();
+            // scm_event_participant_question_answer
+            if (!$event_participant_question_id) {
+                // $sections = Section::all()->load(['questions']);
 
-            $event_participant = EventParticipant::find($event_participant_id)->load(['Participant', 'Event']);
+                $event_participant = EventParticipant::find($event_participant_id)->load(['Participant', 'Event']);
 
-            $event_feedback_set = EventFeedbackSet::find($event_participant->event->event_feedback_set_id)->load(['sections.questions']);
-            return view('short-course-management.feedback.index', compact('event_feedback_set', 'event_participant'));
-        } else {
-            return redirect('/feedback/appreciation');
+                $event_feedback_set = EventFeedbackSet::find($event_participant->event->event_feedback_set_id)->load(['sections.questions']);
+                return view('short-course-management.feedback.index', compact('event_feedback_set', 'event_participant'));
+            } else {
+                return redirect('/feedback/appreciation');
+            }
         }
     }
 

@@ -85,16 +85,21 @@ class ParticipantController extends Controller
             ['ic', '=', $request->participant_ic_input],
         ])->first();
         if (!$existParticipant) {
+
+            $sha1_ic=sha1($request->participant_ic_input);
             $existParticipant = Participant::create([
                 'name' => $request->participant_fullname,
                 'ic' => $request->participant_ic_input,
+                'sha1_ic' =>$sha1_ic,
                 'phone' => $request->participant_phone,
                 'email' => $request->participant_email,
                 'created_by' => Auth::user()->id,
             ]);
         } else {
+            $sha1_ic=sha1($request->participant_ic_input);
             $existParticipant->name = $request->participant_fullname;
             $existParticipant->ic = $request->participant_ic_input;
+            $existParticipant->sha1_ic = $sha1_ic;
             $existParticipant->phone = $request->participant_phone;
             $existParticipant->email = $request->participant_email;
             $existParticipant->updated_by = Auth::user()->id;
@@ -146,9 +151,11 @@ class ParticipantController extends Controller
         ]);
 
 
+        $sha1_ic=sha1($request->ic);
         //return true or false
         $updateParticipant = Participant::find($id)->update([
             'ic' => $request->ic,
+            'sha1_ic' =>$sha1_ic,
             'phone' => $request->phone,
             'name' => $request->name,
             'email' => $request->email,
