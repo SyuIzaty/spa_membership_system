@@ -13,6 +13,7 @@ class Participant extends Model
     protected $fillable = [
         'name',
         'ic',
+        'sha1_ic',
         'phone',
         'email',
         'created_by',

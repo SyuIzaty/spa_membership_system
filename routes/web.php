@@ -369,11 +369,13 @@ Route::group(['middleware' => 'auth'], function () {
 
 //SCM - Public View
 Route::get('/participant/search-by-ic/{ic}/event/{event_id}', 'ShortCourseManagement\People\Participant\ParticipantController@searchByIc');
+
+Route::get('/participant/get-hash-ic/{ic}', 'ShortCourseManagement\People\Participant\ParticipantController@hashIc');
 Route::post('/event/{event_id}/events-participants/store', 'ShortCourseManagement\EventManagement\EventParticipantController@store');
 Route::get('/event/{event_id}/promo-code/{promo_code}/participant', 'ShortCourseManagement\EventManagement\EventParticipantController@applyPromoCode');
 Route::get('/event/{event_id}/base-fee', 'ShortCourseManagement\EventManagement\EventParticipantController@baseFee');
 Route::get('/participant/search-by-representative-ic/{ic}', 'ShortCourseManagement\People\Participant\ParticipantController@searchByRepresentativeIc');
-Route::post('/participant/search-by-ic-general/data', 'ShortCourseManagement\People\Participant\ParticipantController@searchByIcGeneralShow');
+Route::get('/participant/search-by-ic-general/{sha1_ic}/data', 'ShortCourseManagement\People\Participant\ParticipantController@searchByIcGeneralShow');
 Route::get('/participant/search-by-ic-general/{ic}', 'ShortCourseManagement\People\Participant\ParticipantController@searchByIcGeneral');
 Route::post('/events/data/event-management/shortcourse/event-participant/{participant_id}', 'ShortCourseManagement\EventManagement\EventParticipantController@dataEventParticipantList');
 Route::get('/event-participant/{event_participant_id}/payment_proof', 'ShortCourseManagement\EventManagement\EventParticipantController@showPaymentProof');

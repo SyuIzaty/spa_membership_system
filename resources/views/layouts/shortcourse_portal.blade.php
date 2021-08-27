@@ -97,16 +97,17 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                     <div class="card-header">
                         Result
                     </div>
-                    <form action="{{ url('/participant/search-by-ic-general/data') }}" method="post"
+                    {{-- <form action="{{ url('/participant/search-by-ic-general/data') }}" method="post"
                         enctype="multipart/form-data">
-                        @csrf
-                        <div class="card-body">
-                            <input type="hidden" name="ic" id="ic">
-                            <h5 class="card-title" id="applicant-basic-details-name"><span class="content"></span></h5>
-                            <p class="card-text" id="applicant-basic-details-ic"><span class="content"></span></p>
-                            <button type="submit" href="#" class="btn btn-primary" id="ic_details_view" style="display:none;">View</button>
-                        </div>
-                    </form>
+                        @csrf --}}
+                    <div class="card-body">
+                        <input type="hidden" name="ic" id="ic">
+                        <h5 class="card-title" id="applicant-basic-details-name"><span class="content"></span></h5>
+                        <p class="card-text" id="applicant-basic-details-ic"><span class="content"></span></p>
+                        <button type="submit" href="#" class="btn btn-primary" id="ic_details_view"
+                            style="display:none;">View</button>
+                    </div>
+                    {{-- </form> --}}
                     {{-- <div class="card-footer text-muted">
                         2 days ago
                     </div> --}}
@@ -172,10 +173,14 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                 });
         });
 
-        // $('#ic_details_view').click(function() {
-        //     var ic = $('#ic_input_general').val();
-        //     // window.location.href = '/participant/search-by-ic-general/' + ic + '/show';
-        // })
+        $('#ic_details_view').click(function() {
+            var ic = $('#ic_input_general').val();
+            // TODO: Use Ajax to send ic to backend and return sha1 value
+
+            $.get("/participant/get-hash-ic/" + ic, function(data) {
+                window.location.href = '/participant/search-by-ic-general/' + data + '/data';
+            });
+        })
     </script>
 
 </body>

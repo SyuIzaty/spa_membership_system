@@ -169,12 +169,17 @@ class ParticipantController extends Controller
 
         return $existParticipant;
     }
-    public function searchByIcGeneralShow(Request $request)
+    public function searchByIcGeneralShow($sha1_ic)
     {
         //
-        $participant = Participant::where('ic', $request->ic)->first();
+        $participant = Participant::where('sha1_ic', $sha1_ic)->first();
 
         return view('short-course-management.shortcourse.participant.show', compact('participant'));
+    }
+    public function hashIc($ic)
+    {
+        //
+        return sha1($ic);
     }
     public function searchByIc($ic, $event_id)
     {
