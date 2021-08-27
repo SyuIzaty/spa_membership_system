@@ -1041,9 +1041,10 @@
 
                                                 <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
                                                     style="content-align:right">
-                                                    <a href="javascript:;" data-toggle="modal" id="add-shortcourse"
-                                                        class="btn btn-primary ml-auto mt-2 mr-2 waves-effect waves-themed"><i
-                                                            class="ni ni-plus"> </i> Add Short Course</a>
+                                                    <button href="javascript:;" data-toggle="modal" id="add-shortcourse"
+                                                        class="btn btn-primary ml-auto mt-2 mr-2 waves-effect waves-themed"
+                                                        {{ count($event->events_shortcourses) == 0 ? null : 'disabled' }}><i
+                                                            class="ni ni-plus"> </i> Add Short Course</button>
 
                                                     <div class="modal fade" id="crud-modal-add-shortcourse"
                                                         aria-hidden="true">
@@ -1138,7 +1139,7 @@
                                                                         <hr class="mt-1 mb-2">
                                                                         <div class="footer">
                                                                             <button type="button"
-                                                                                class="btn btn-success ml-auto float-right mr-2"
+                                                                                class="btn btn-danger ml-auto float-right mr-2"
                                                                                 data-dismiss="modal"
                                                                                 id="close-add-shortcourse"><i
                                                                                     class="fal fa-window-close"></i>
@@ -1588,6 +1589,13 @@
 
         // General
         {
+            $(document).ready(function() {
+
+                document.getElementById("add-shortcourse").addEventListener("click", function(event) {
+                    event.preventDefault()
+                });
+
+            });
             // Basic Information
             {
                 $("#edit-basic").click(function(e) {

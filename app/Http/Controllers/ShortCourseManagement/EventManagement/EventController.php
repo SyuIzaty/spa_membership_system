@@ -356,7 +356,7 @@ class EventController extends Controller
         $statistics['wait_for_applicant_making_payment'] = $event->events_participants
             ->where('event_id', $id)
             ->where('is_approved_application', 1)
-            ->where('is_verified_payment_proof', null)
+            ->whereNull('is_verified_payment_proof')
             ->where('is_disqualified', 0)
             ->count();
 
