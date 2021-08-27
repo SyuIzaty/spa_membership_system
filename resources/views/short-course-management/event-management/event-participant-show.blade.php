@@ -3867,10 +3867,10 @@
                             }).always(function(data) {
                                 $(currentTableId).DataTable().draw(false);
                             });
-                            var delayInMilliseconds = 10000; //10 second
+                            var delayInMilliseconds = 3000; //3 second
 
                             setTimeout(function() {
-                                //your code to be executed after 10 second
+                                //your code to be executed after 3 second
                                 $(nextTableId).DataTable().ajax.reload();
                             }, delayInMilliseconds);
 
