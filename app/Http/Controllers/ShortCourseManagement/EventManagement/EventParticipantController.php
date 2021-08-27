@@ -442,7 +442,7 @@ class EventParticipantController extends Controller
             $eventsParticipants[$index]->created_at_diffForHumans = $eventsParticipants[$index]->created_at->diffForHumans();
             $eventsParticipants[$index]->organisationsString = '';
             if ($eventsParticipants[$index]->is_done_email_completed == 1) {
-                $eventsParticipants[$index]->done_email_completed_datetime_diffForHumans = $eventsParticipants[$index]->done_email_completed_datetime->diffForHumans();
+                $eventsParticipants[$index]->done_email_completed_datetime_diffForHumans = $eventsParticipants[$index]->done_email_completed_datetime;
             } else {
                 $eventsParticipants[$index]->done_email_completed_datetime_diffForHumans = $eventsParticipants[$index]->done_email_completed_datetime;
             }
