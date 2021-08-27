@@ -8,8 +8,10 @@ use App\Models\ShortCourseManagement\EventParticipant;
 use App\Models\ShortCourseManagement\EventParticipantQuestionAnswer;
 use App\Models\ShortCourseManagement\EventFeedbackSet;
 use App\Models\ShortCourseManagement\Participant;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use DateTime;
 use Auth;
 
@@ -138,6 +140,30 @@ class FeedbackController extends Controller
                     }
                 }
             }
+            $eventParticipant=EventParticipant::find($request->event_participant_id)->load(['event.venue','participant']);
+            $message =  [
+                'opening' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . ($eventParticipant->participant->name),
+                'introduction' => 'Tahniah! Anda telah <b>BERJAYA MEMBUAT MAKLUM BALAS</b> bagi program, ',
+                'detail' => 'Program: ' . ($eventParticipant->event->name)
+                    . '<br/>Tarikh: ' . ($eventParticipant->event->datetime_start) . ' sehingga ' . ($eventParticipant->event->datetime_end)
+                    . '<br/>Tempat: ' . ($eventParticipant->event->venue->name),
+                'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga anda terus berjaya. Terima kasih.',
+                'sha1_ic' => ($eventParticipant->participant->sha1_ic),
+                'event_participant_id' => ($eventParticipant->id),
+            ];
+
+            Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($eventParticipant) {
+                $message->subject('Pengesahan Maklum Balas (Berjaya Diterima)');
+                $message->from(Auth::user()->email);
+                $message->to($eventParticipant->participant->email);
+            });
+
+            $update = EventParticipant::find($eventParticipant->id)->update([
+                'is_question_sended' => 1,
+                'question_sended_datetime' => Carbon::now(),
+                'is_done_email_completed' => 1,
+                'done_email_completed_datetime'=>Carbon::now(),
+            ]);
         }
         // return view('short-course-management.feedback.appreciation');
         return redirect('/feedback/appreciation');

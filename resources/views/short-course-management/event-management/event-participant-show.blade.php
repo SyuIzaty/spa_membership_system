@@ -590,11 +590,11 @@
                                                                                     class="ni ni-close"></i> Disqualified
                                                                                 All
                                                                                 Ticked</button>
-                                                                            <a href="javascript:;" data-toggle="modal"
-                                                                                id="new-application"
-                                                                                class="btn btn-primary px-5 mx-5 waves-effect waves-themed align-middle">
+                                                                            <button href="javascript:;" id="new-application"
+                                                                                class="btn btn-primary px-5 mx-5 waves-effect waves-themed align-middle"
+                                                                                {{ $event->total_seat_available == 0 ? 'disabled' : null }}>
                                                                                 <i class="ni ni-check"></i> New
-                                                                                Application</a>
+                                                                                Application</button>
                                                                         </div>
                                                                     </form>
                                                                 </div>
@@ -1807,6 +1807,9 @@
                 $(document).ready(function() {
                     //New Application
                     {
+                        document.getElementById("new-application").addEventListener("click", function(event) {
+                            event.preventDefault()
+                        });
                         $('#new-application').click(function() {
                             var ic = null;
                             $('.modal-body #ic_input').val(ic);

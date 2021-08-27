@@ -24,7 +24,12 @@ class EventParticipantController extends Controller
     {
         //eventParticipantIndex
 
-        $event = Event::find($id);
+        $event = Event::find($id)->load(['events_participants']);
+        $currentApplicants = $event->events_participants
+            ->where('is_approved_application', 1)
+            ->count();
+
+        $event->total_seat_available = $event->max_participant - $currentApplicants;
 
 
         //
@@ -532,17 +537,17 @@ class EventParticipantController extends Controller
                 ['ic', '=', $request->ic_input],
             ])->first();
             if (!$existParticipant) {
-                $sha1_ic=sha1($request->ic_input);
+                $sha1_ic = sha1($request->ic_input);
                 $existParticipant = Participant::create([
                     'name' => $request->fullname,
                     'ic' => $request->ic_input,
-                    'sha1_ic' =>$sha1_ic,
+                    'sha1_ic' => $sha1_ic,
                     'phone' => $request->phone,
                     'email' => $request->email,
                     'created_by' => Auth::user() ? Auth::user()->id : 'public_user',
                 ]);
             } else {
-                $sha1_ic=sha1($request->ic_input);
+                $sha1_ic = sha1($request->ic_input);
                 $existParticipant->name = $request->fullname;
                 $existParticipant->ic = $request->ic_input;
                 $existParticipant->sha1_ic = $sha1_ic;
@@ -652,6 +657,24 @@ class EventParticipantController extends Controller
 
             Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($request) {
                 $message->subject('Pengesahan Pendaftaran (Berjaya)');
+                $message->from(Auth::user() ? Auth::user()->email : 'corporate@intec.edu.my');
+                $message->to($request->email);
+            });
+
+            $message =  [
+                'opening' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . ($existParticipant->name),
+                'introduction' => 'Bukti pembayaran anda <b>TELAH DIHANTAR dan SEDANG DISEMAK</b> oleh pihak INTEC bagi program, ',
+                'detail' => 'Program: ' . ($existEvent->name)
+                    . '<br/>Tarikh: ' . ($existEvent->datetime_start) . ' sehingga ' . ($existEvent->datetime_end)
+                    . '<br/>Tempat: ' . ($existEvent->venue->name),
+                'conclusion' => 'Sila tunggu maklumbalas dari kami bagi pengesahan pembayaran anda.
+                Sebarang pertanyaan boleh terus berhubung dengan kami.
+                Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
+                'sha1_ic' => ($eventParticipant->participant->sha1_ic),
+            ];
+
+            Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($request) {
+                $message->subject('Pengesahan Bukti Pembayaran (Telah Dihantar dan Sedang Disemak)');
                 $message->from(Auth::user() ? Auth::user()->email : 'corporate@intec.edu.my');
                 $message->to($request->email);
             });
@@ -892,6 +915,22 @@ class EventParticipantController extends Controller
                     'question_sended_datetime' => Carbon::now(),
                     'is_done_email_completed' => 0,
                 ]);
+                $message =  [
+                    'opening' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . ($eventParticipant->participant->name),
+                    'introduction' => 'Tahniah! Anda telah disahkan sebagai <b>HADIR dan LAYAK MEMBUAT MAKLUM BALAS</b> bagi program, ',
+                    'detail' => 'Program: ' . ($eventParticipant->event->name)
+                        . '<br/>Tarikh: ' . ($eventParticipant->event->datetime_start) . ' sehingga ' . ($eventParticipant->event->datetime_end)
+                        . '<br/>Tempat: ' . ($eventParticipant->event->venue->name),
+                    'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga anda terus berjaya. Terima kasih.',
+                    'sha1_ic' => ($eventParticipant->participant->sha1_ic),
+                    'event_participant_id' => ($eventParticipant->id),
+                ];
+
+                Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($eventParticipant) {
+                    $message->subject('Pengesahan Maklum Balas (Layak Membuat Maklum Balas)');
+                    $message->from(Auth::user()->email);
+                    $message->to($eventParticipant->participant->email);
+                });
                 break;
             default:
                 break;
@@ -1093,6 +1132,23 @@ class EventParticipantController extends Controller
                         'question_sended_datetime' => Carbon::now(),
                         'is_done_email_completed' => 0,
                     ]);
+
+                    $message =  [
+                        'opening' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . ($eventParticipant->participant->name),
+                        'introduction' => 'Tahniah! Anda telah disahkan sebagai <b>HADIR dan LAYAK MEMBUAT MAKLUM BALAS</b> bagi program, ',
+                        'detail' => 'Program: ' . ($eventParticipant->event->name)
+                            . '<br/>Tarikh: ' . ($eventParticipant->event->datetime_start) . ' sehingga ' . ($eventParticipant->event->datetime_end)
+                            . '<br/>Tempat: ' . ($eventParticipant->event->venue->name),
+                        'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga anda terus berjaya. Terima kasih.',
+                        'sha1_ic' => ($eventParticipant->participant->sha1_ic),
+                        'event_participant_id' => ($eventParticipant->id),
+                    ];
+
+                    Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($eventParticipant) {
+                        $message->subject('Pengesahan Maklum Balas (Layak Membuat Maklum Balas)');
+                        $message->from(Auth::user()->email);
+                        $message->to($eventParticipant->participant->email);
+                    });
                     break;
                 default:
                     break;
@@ -1176,7 +1232,7 @@ class EventParticipantController extends Controller
                     return '
                     <a href="#" data-target="#crud-modals" data-toggle="modal" data-event_id="' . $events->id . '" data-event_participant_id="' . $events->event_participant_id . '" data-is_verified_payment_proof="' . $events->is_verified_payment_proof . '" data-amount="' . $events->amount . '" class="btn btn-sm btn-primary">Update Payment Proof</a>
                     <a target="_blank" rel="noopener noreferrer"
-                    href="/feedback/form/participant/'.$events->event_participant_id.'/' . $events->participant_sha1_ic . '"
+                    href="/feedback/form/participant/' . $events->event_participant_id . '/' . $events->participant_sha1_ic . '"
                     type="submit" class="btn btn-sm btn-primary"
                     style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; position: relative; -webkit-text-size-adjust: none; border-radius: 4px; color: #fff; display: inline-block; overflow: hidden; text-decoration: none; background-color: #2d3748; border-bottom: 8px solid #2d3748; border-left: 18px solid #2d3748; border-right: 18px solid #2d3748; border-top: 8px solid #2d3748;">Feedback
                     Form</a>';
@@ -1225,7 +1281,7 @@ class EventParticipantController extends Controller
     {
 
         $exist = EventParticipantPaymentProof::find($request->payment_proof_id);
-        $existEventParticipant= EventParticipant::find($exist->event_participant_id)->load(['participant']);
+        $existEventParticipant = EventParticipant::find($exist->event_participant_id)->load(['participant']);
 
 
         // dd($request);
@@ -1314,7 +1370,7 @@ class EventParticipantController extends Controller
             }
 
             $eventParticipantPaymentProof = EventParticipantPaymentProof::where([['event_participant_id', '=', $request->event_participant_id]])->get();
-            $eventParticipant = EventParticipant::find($request->event_participant_id)->load(['participant']);
+            $eventParticipant = EventParticipant::find($request->event_participant_id)->load(['participant', 'event.venue']);
             if (count($eventParticipantPaymentProof) > 0 && $eventParticipant->is_verified_payment_proof != 1) {
                 $update = EventParticipant::where([['id', '=', $request->event_participant_id]])->update([
                     'is_verified_payment_proof' => 0,
@@ -1324,7 +1380,26 @@ class EventParticipantController extends Controller
             }
             $request->ic = $eventParticipant->participant->ic;
 
-            $participant = Participant::where('ic', $request->ic)->first();
+
+            $message =  [
+                'opening' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . ($eventParticipant->participant->name),
+                'introduction' => 'Bukti pembayaran anda <b>TELAH DIHANTAR dan SEDANG DISEMAK</b> oleh pihak INTEC bagi program, ',
+                'detail' => 'Program: ' . ($eventParticipant->event->name)
+                    . '<br/>Tarikh: ' . ($eventParticipant->event->datetime_start) . ' sehingga ' . ($eventParticipant->event->datetime_end)
+                    . '<br/>Tempat: ' . ($eventParticipant->event->venue->name),
+                'conclusion' => 'Sila tunggu maklumbalas dari kami bagi pengesahan pembayaran anda.
+                Sebarang pertanyaan boleh terus berhubung dengan kami.
+                Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
+                'sha1_ic' => ($eventParticipant->participant->sha1_ic),
+            ];
+
+            Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($eventParticipant) {
+                $message->subject('Pengesahan Bukti Pembayaran (Telah Dihantar dan Sedang Disemak)');
+                $message->from(Auth::user() ? Auth::user()->email : 'corporate@intec.edu.my');
+                $message->to($eventParticipant->participant->email);
+            });
+
+            // $participant = Participant::where('ic', $request->ic)->first();
 
             return Redirect()->back();
         }
