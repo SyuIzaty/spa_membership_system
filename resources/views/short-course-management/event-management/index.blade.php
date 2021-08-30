@@ -31,7 +31,7 @@
                                 </div>
                             @endif
                             <div class="table-responsive">
-                                <table class="table table-bordered table-hover table-striped w-100" id="event">
+                                <table class="table table-bordered table-hover table-striped w-100 m-0 table-sm" id="event">
                                     <thead>
                                         <tr class="bg-primary-50 text-center">
                                             <th>ID</th>
@@ -152,6 +152,20 @@
                 "order": [
                     [0, "desc"]
                 ],
+
+                "columnDefs": [{
+                    "targets": 2,
+                    "orderable": false
+                },{
+                    "targets": 3,
+                    "orderable": false
+                },{
+                    "targets": 6,
+                    "orderable": false
+                },{
+                    "targets": 8,
+                    "orderable": false
+                }],
                 "initComplete": function(settings, json) {
 
 

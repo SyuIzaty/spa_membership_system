@@ -352,7 +352,7 @@
                                                                         method="post" name="form">
                                                                         @csrf
                                                                         <p><span class="text-danger">*</span>
-                                                                            Vital Information</p>
+                                                                            Required Field</p>
                                                                         <hr class="mt-1 mb-2">
                                                                         <div id="form-fee">
                                                                             <div class="form-group">
@@ -465,7 +465,7 @@
                                                                     {{-- {!! Form::open(['action' => 'EventParticipantController@store', 'method' => 'POST']) !!} --}}
 
                                                                     <p><span class="text-danger">*</span>
-                                                                        Vital Information</p>
+                                                                        Required Field</p>
                                                                     <hr class="mt-1 mb-2">
                                                                     <div id="form-fee">
 
@@ -645,7 +645,7 @@
                                                                         {{-- {!! Form::open(['action' => 'ShortCourseManagement\EventManagement\EventController@storeTrainer\ '.$event->id, 'method' => 'POST']) !!} --}}
 
                                                                         <p><span class="text-danger">*</span>
-                                                                            Vital Information</p>
+                                                                            Required Field</p>
                                                                         <hr class="mt-1 mb-2">
                                                                         <div class="form-group">
                                                                             <label for="trainer_ic"><span
@@ -847,7 +847,7 @@
                                                                         {{-- {!! Form::open(['action' => 'ShortCourseManagement\EventManagement\EventController@storeContactPerson\ '.$event->id, 'method' => 'POST']) !!} --}}
 
                                                                         <p><span class="text-danger">*</span>
-                                                                            Vital Information</p>
+                                                                            Required Field</p>
                                                                         <hr class="mt-1 mb-2">
                                                                         <div class="form-group">
                                                                             <label for="contact_person_ic"><span
@@ -1061,7 +1061,7 @@
                                                                         @csrf
                                                                         <input type="hidden" name="id_5" id="id_5">
                                                                         <p><span class="text-danger">*</span>
-                                                                            Vital Information</p>
+                                                                            Required Field</p>
                                                                         <hr class="mt-1 mb-2">
                                                                         <div class="form-group">
                                                                             <label for="user_id"><span

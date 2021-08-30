@@ -124,7 +124,7 @@
                                                             {{-- <input type="hidden" name="id"
                                                                     id="id"> --}}
                                                             <p><span class="text-danger">*</span>
-                                                                Vital Information</p>
+                                                                Required Field</p>
                                                             <hr class="mt-1 mb-2">
                                                             <div class="form-group">
                                                                 <label for="ic"><span class="text-danger">*</span>

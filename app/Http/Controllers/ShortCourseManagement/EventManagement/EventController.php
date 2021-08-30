@@ -805,7 +805,9 @@ class EventController extends Controller
 
     public function dataPublicView()
     {
-        $events = Event::where([['event_status_category_id', '=', 2], ['datetime_start', '>=', Carbon::today()->toDateString()]])->orderBy('datetime_start')->get()->load(['events_participants', 'venue']);
+        // $events = Event::where([['event_status_category_id', '=', 2], ['datetime_start', '>=', Carbon::today()->toDateString()]])->orderBy('datetime_start')->get()->load(['events_participants', 'venue']);
+        $events = Event::where([['event_status_category_id', '=', 2]])->orderBy('datetime_start')->get()->load(['events_participants', 'venue']);
+
         $index = 0;
         foreach ($events as $event) {
             if (isset($event->events_participants)) {

@@ -31,9 +31,9 @@
                                             class="card-img" style="width:137px;height:194px;">
                                     @else
                                         <img src="{{ asset($event->thumbnail_path) }}" class="card-img" style="width:137px;height:194px;
-                                                        background-image:url('{{ asset('storage /shortcourse/poster/default/intec_poster.jpg') }}');
-                                                        background-repeat: no-repeat;
-                                                        background-size: 137px 194px;">
+                                                                background-image:url('{{ asset('storage /shortcourse/poster/default/intec_poster.jpg') }}');
+                                                                background-repeat: no-repeat;
+                                                                background-size: 137px 194px;">
                                     @endif
                                 </div>
                                 <div class="col-md-7">
@@ -64,7 +64,6 @@
             <div class="row justify-content-md-center">
                 <div class="col">
                     <div class="panel-content">
-                        <span id="intake_fail"></span>
                         @csrf
                         @if (session()->has('message'))
                             <div class="alert alert-success">
@@ -72,7 +71,7 @@
                             </div>
                         @endif
                         <div class="table-responsive">
-                            <table class="table table-bordered table-hover table-striped w-100" id="event">
+                            <table class="table table-bordered table-hover table-striped w-100 m-0 table-sm" id="event">
                                 <thead>
                                     <tr class="bg-primary-50 text-center">
                                         <th>ID</th>
@@ -90,6 +89,7 @@
                                 </tbody>
                             </table>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -153,11 +153,20 @@
                 "order": [
                     [0, "desc"]
                 ],
-                "initComplete": function(settings, json) {
-
-
-                }
+                "columnDefs": [{
+                    "targets": 2,
+                    "orderable": false
+                }],
+                "initComplete": function(settings, json) {}
             });
+            table.on('order.dt search.dt', function() {
+                table.column(0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).nodes().each(function(cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }).draw();
 
         });
     </script>

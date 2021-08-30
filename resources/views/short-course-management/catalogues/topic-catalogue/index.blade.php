@@ -40,7 +40,7 @@
                                             </div>
                                         @endif
                                         <div class="table-responsive">
-                                            <table class="table table-bordered table-hover table-striped w-100" id="topic">
+                                            <table class="table table-bordered table-hover table-striped w-100 m-0 table-sm" id="topic">
                                                 <thead>
                                                     <tr class="bg-primary-50 text-center">
                                                         <th>ID</th>
@@ -72,7 +72,7 @@
                                                             <form action="{{ url('/topic') }}" method="post" name="form">
                                                                 @csrf
                                                                 <p><span class="text-danger">*</span>
-                                                                    Vital Information</p>
+                                                                    Required Field</p>
                                                                 <hr class="mt-1 mb-2">
                                                                 <div class="form-group">
                                                                     <label for="topic_name"><span
@@ -154,7 +154,7 @@
                                                                 name="form">
                                                                 @csrf
                                                                 <p><span class="text-danger">*</span>
-                                                                    Vital Information</p>
+                                                                    Required Field</p>
                                                                 <hr class="mt-1 mb-2">
                                                                 <input type="text" name="topic_id_edit" id="topic_id_edit"
                                                                     hidden />
@@ -240,7 +240,7 @@
                                             </div>
                                         @endif
                                         <div class="table-responsive">
-                                            <table class="table table-bordered table-hover table-striped w-100"
+                                            <table class="table table-bordered table-hover table-striped w-100 m-0 table-sm"
                                                 id="tableSubCategory">
                                                 <thead>
                                                     <tr class="bg-primary-50 text-center">
@@ -274,7 +274,7 @@
                                                                 name="form">
                                                                 @csrf
                                                                 <p><span class="text-danger">*</span>
-                                                                    Vital Information</p>
+                                                                    Required Field</p>
                                                                 <hr class="mt-1 mb-2">
                                                                 <div class="form-group">
                                                                     <label for="subcategory_name_2"><span
@@ -335,7 +335,7 @@
                                                                 name="form">
                                                                 @csrf
                                                                 <p><span class="text-danger">*</span>
-                                                                    Vital Information</p>
+                                                                    Required Field</p>
                                                                 <hr class="mt-1 mb-2">
                                                                 <input type="text" name="subcategory_id_edit_2"
                                                                     id="subcategory_id_edit_2" hidden />
@@ -401,7 +401,7 @@
                                             </div>
                                         @endif
                                         <div class="table-responsive">
-                                            <table class="table table-bordered table-hover table-striped w-100"
+                                            <table class="table table-bordered table-hover table-striped w-100 m-0 table-sm m-0 table-sm"
                                                 id="tableCategory">
                                                 <thead>
                                                     <tr class="bg-primary-50 text-center">
@@ -434,7 +434,7 @@
                                                                 name="form">
                                                                 @csrf
                                                                 <p><span class="text-danger">*</span>
-                                                                    Vital Information</p>
+                                                                    Required Field</p>
                                                                 <hr class="mt-1 mb-2">
                                                                 <div class="form-group">
                                                                     <label for="category_name_3"><span
@@ -475,7 +475,7 @@
                                                                 name="form">
                                                                 @csrf
                                                                 <p><span class="text-danger">*</span>
-                                                                    Vital Information</p>
+                                                                    Required Field</p>
                                                                 <hr class="mt-1 mb-2">
                                                                 <input type="text" name="category_id_edit_3"
                                                                     id="category_id_edit_3" hidden />

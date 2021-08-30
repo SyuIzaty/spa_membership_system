@@ -31,7 +31,7 @@
                                 </div>
                             @endif
                             <div class="table-responsive">
-                                <table class="table table-bordered table-hover table-striped w-100" id="shortcourse">
+                                <table class="table table-bordered table-hover table-striped w-100 m-0 table-sm" id="shortcourse">
                                     <thead>
                                         <tr class="bg-primary-50 text-center">
                                             <th>ID</th>
@@ -70,7 +70,7 @@
                                                     {{-- {!! Form::open(['action' => 'ShortCourseManagement\EventManagement\EventController@storeContactPerson\ '.$shortcourse->id, 'method' => 'POST']) !!} --}}
 
                                                     <p><span class="text-danger">*</span>
-                                                        Vital Information</p>
+                                                        Required Field</p>
                                                     <hr class="mt-1 mb-2">
                                                     <div class="form-group">
                                                         <label for="user_id"><span class="text-danger">*</span>

@@ -67,7 +67,7 @@
                                     </div>
                                 @endif
                                 <div class="table-responsive">
-                                    <table class="table table-bordered table-hover table-striped w-100" id="event">
+                                    <table class="table table-bordered table-hover table-striped w-100 m-0 table-sm" id="event">
                                         <thead>
                                             <tr class="bg-primary-50 text-center">
                                                 <th>ID</th>
@@ -262,12 +262,16 @@
                     },
                     {
                         data: 'dates',
-                        name: 'dates'
+                        name: 'dates',
+                        orderable: false,
+                        searchable: false
                     },
 
                     {
                         data: 'fee_amount',
-                        name: 'fee_amount'
+                        name: 'fee_amount',
+                        orderable: false,
+                        searchable: false
                     },
                     {
                         data: 'action',

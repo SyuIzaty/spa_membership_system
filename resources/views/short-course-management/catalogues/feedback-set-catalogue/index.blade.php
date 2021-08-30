@@ -31,7 +31,7 @@
                                 </div>
                             @endif
                             <div class="table-responsive">
-                                <table class="table table-bordered table-hover table-striped w-100" id="event_feedback_set">
+                                <table class="table table-bordered table-hover table-striped w-100 m-0 table-sm" id="event_feedback_set">
                                     <thead>
                                         <tr class="bg-primary-50 text-center">
                                             <th>ID</th>
