@@ -314,6 +314,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/event/delete/{id}', 'ShortCourseManagement\EventManagement\EventController@delete');
     Route::get('/events', 'ShortCourseManagement\EventManagement\EventController@index');
     Route::post('/event', 'ShortCourseManagement\EventManagement\EventController@addEvent');
+    Route::get('/event/participant-list/{id}', 'ShortCourseManagement\EventManagement\EventController@participantList')->name('participantList');
     Route::get('/event/{id}', 'ShortCourseManagement\EventManagement\EventController@show');
     Route::delete('/event/{id}', 'ShortCourseManagement\EventManagement\EventController@deleteEvent');
     Route::get('/event/{event_id}/update-event-status-category/{event_status_category_id}', 'ShortCourseManagement\EventManagement\EventController@updateEventStatus');

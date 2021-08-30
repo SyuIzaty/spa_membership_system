@@ -19,6 +19,7 @@ use App\Models\ShortCourseManagement\EventStatusCategory;
 use App\Models\ShortCourseManagement\VenueType;
 use App\Models\ShortCourseManagement\EventFeedbackSet;
 
+use Barryvdh\DomPDF\Facade as PDF;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
@@ -81,10 +82,15 @@ class EventController extends Controller
             })
             ->addColumn('action', function ($events) {
                 return '
-                <a href="/event/' . $events->id . '/events-participants/show" class="btn btn-sm btn-primary">Participants</a>
+                <a href="/event/' . $events->id . '/events-participants/show" class="btn btn-sm btn-primary">Participants</a><br/><br/>
                 <a href="/event/' . $events->id . '" class="btn btn-sm btn-primary">Settings</a>';
             })
-            ->rawColumns(['action', 'management_details', 'participant', 'dates'])
+            ->addColumn('document', function ($events) {
+                return '
+                <a href="/event/participant-list/'.$events->id.'" class="btn btn-sm btn-info">Attendance Sheet</a><br/><br/>
+                ';
+            })
+            ->rawColumns(['action', 'management_details', 'participant', 'dates', 'document'])
             ->make(true);
     }
     public function create()
@@ -331,7 +337,7 @@ class EventController extends Controller
         return Redirect('/event/' . $event->id)->with(compact('event', 'venues', 'shortcourses'));
     }
 
-    function show($id)
+    public function show($id)
     {
 
         $event = Event::find($id)->load([
@@ -955,5 +961,14 @@ class EventController extends Controller
         }
 
         return $exists;
+    }
+    public function participantList($id)
+    {
+        // dd('succeed');
+        $event = Event::find($id)->load(['events_participants.participant', 'venue']);
+        $curr_date = Carbon::now()->format('jS F Y');
+
+        $pdf = PDF::loadView('short-course-management.pdf.participant_list', compact('curr_date', 'event'));
+        return $pdf->stream('Offer Letter.pdf');
     }
 }

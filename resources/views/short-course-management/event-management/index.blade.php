@@ -42,6 +42,7 @@
                                             <th>PARTICIPANT (NOT VALID YET)</th>
                                             <th>CREATED DATE</th>
                                             <th>STATUS</th>
+                                            <th>DOCUMENT</th>
                                             <th>ACTION</th>
                                         </tr>
                                         {{-- <tr>
@@ -135,6 +136,10 @@
                     {
                         data: 'event_status_category.name',
                         name: 'event_status_category.name'
+                    },
+                    {
+                        data: 'document',
+                        name: 'document'
                     },
                     {
                         data: 'action',
