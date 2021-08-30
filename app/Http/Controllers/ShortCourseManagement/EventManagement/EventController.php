@@ -981,23 +981,27 @@ class EventController extends Controller
     {
         $event = Event::find($id)->load(['venue', 'event_feedback_set.sections.questions.events_participants_questions_answers']);
         $statistics = array();
+        $comments = array();
         foreach ($event->event_feedback_set->sections as $section) {
             foreach ($section->questions as $question) {
                 if ($question->question_type == 'RATE') {
                     $statistics[$question->id]['question'] = $question->question;
-                    $statistics[$question->id]['rate_1'] = $question->events_participants_questions_answers?$question->events_participants_questions_answers->where('rate', 1)->count():0;
-                    $statistics[$question->id]['rate_2'] = $question->events_participants_questions_answers?$question->events_participants_questions_answers->where('rate', 2)->count():0;
-                    $statistics[$question->id]['rate_3'] = $question->events_participants_questions_answers?$question->events_participants_questions_answers->where('rate', 3)->count():0;
-                    $statistics[$question->id]['rate_4'] = $question->events_participants_questions_answers?$question->events_participants_questions_answers->where('rate', 4)->count():0;
-                    $statistics[$question->id]['rate_5'] = $question->events_participants_questions_answers?$question->events_participants_questions_answers->where('rate', 5)->count():0;
+                    $statistics[$question->id]['rate_1'] = $question->events_participants_questions_answers ? $question->events_participants_questions_answers->where('rate', 1)->count() : 0;
+                    $statistics[$question->id]['rate_2'] = $question->events_participants_questions_answers ? $question->events_participants_questions_answers->where('rate', 2)->count() : 0;
+                    $statistics[$question->id]['rate_3'] = $question->events_participants_questions_answers ? $question->events_participants_questions_answers->where('rate', 3)->count() : 0;
+                    $statistics[$question->id]['rate_4'] = $question->events_participants_questions_answers ? $question->events_participants_questions_answers->where('rate', 4)->count() : 0;
+                    $statistics[$question->id]['rate_5'] = $question->events_participants_questions_answers ? $question->events_participants_questions_answers->where('rate', 5)->count() : 0;
+                } else {
+                    $comments[$question->id]['question'] = $question->question;
+                    $comments[$question->id]['answers'] = $question->events_participants_questions_answers ? $question->events_participants_questions_answers->map->only(['description']) : [];
                 }
             }
         }
-        // dd($statistics);
+        // dd($comments);
         $chart = new Event;
         $chart->labels = array_keys(['Valid', 'Not Valid']);
         $chart->dataset = array_values([10, 100]);
-        $pdf = PDF::loadView('short-course-management.pdf.event_report', compact('event', 'chart', 'statistics'));
+        $pdf = PDF::loadView('short-course-management.pdf.event_report', compact('event', 'chart', 'statistics','comments'));
         return $pdf->stream($id . '_event_report.pdf');
     }
 }

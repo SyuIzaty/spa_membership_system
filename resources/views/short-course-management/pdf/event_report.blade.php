@@ -40,18 +40,47 @@
         </tbody>
     </table>
     <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Question</th>
+                <th>1</th>
+                <th>2</th>
+                <th>3</th>
+                <th>4</th>
+                <th>5</th>
+
+            </tr>
+        </thead>
         <tbody>
             @foreach ($statistics as $statistic)
                 <tr>
-                    <td>{{$loop->index +1}}</td>
-                    <td>{{$statistic['question']}}</td>
+                    <td>{{ $loop->index + 1 }}</td>
+                    <td>{{ $statistic['question'] }}</td>
                     <td>{{ $statistic['rate_1'] }}</td>
                     <td>{{ $statistic['rate_2'] }}</td>
                     <td>{{ $statistic['rate_3'] }}</td>
                     <td>{{ $statistic['rate_4'] }}</td>
                     <td>{{ $statistic['rate_5'] }}</td>
                 </tr>
-
+            @endforeach
+        </tbody>
+    </table>
+    <table class="table table-bordered">
+        <tr class="bg-dark text-white" style="text-transform: uppercase;">
+            <td colspan="2" style="text-align: center">Subjective Report</td>
+        </tr>
+        <tbody>
+            @foreach ($comments as $comment)
+                <tr>
+                    <td colspan="2">{{ $comment['question'] }}</td>
+                </tr>
+                @foreach ($comment['answers'] as $answer)
+                    <tr>
+                        <td>{{ $loop->index + 1 }}</td>
+                        <td class="col-sm-10">{{ $answer['description'] }}</td>
+                    </tr>
+                @endforeach
             @endforeach
         </tbody>
     </table>
