@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ShortCourseManagement\EventManagement;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ShortCourseManagement\Event;
+use App\Models\ShortCourseManagement\EventParticipant;
 use App\Models\ShortCourseManagement\Venue;
 use App\Models\ShortCourseManagement\ShortCourse;
 use App\Models\ShortCourseManagement\Trainer;
@@ -87,11 +88,11 @@ class EventController extends Controller
             })
             ->addColumn('document', function ($events) {
                 return '
-                <a href="/event/participant-list/'.$events->id.'" class="btn btn-sm btn-info">Attendance Sheet</a><br/><br/>
-                ';
+                <a href="/event/participant-list/' . $events->id . '" class="btn btn-sm btn-info">Attendance Sheet</a><br/><br/>';
             })
             ->rawColumns(['action', 'management_details', 'participant', 'dates', 'document'])
             ->make(true);
+        // <a href="#" class="btn btn-sm btn-info">Event Report</a>
     }
     public function create()
     {
@@ -379,7 +380,6 @@ class EventController extends Controller
             ->where('is_approved_application', 1)
             ->where('is_verified_payment_proof', 1)
             ->where('is_verified_payment_proof', 1)
-            ->where('is_verified_approved_participation', 1)
             ->where('is_disqualified', 0)
             ->count();
 
@@ -965,10 +965,15 @@ class EventController extends Controller
     public function participantList($id)
     {
         // dd('succeed');
-        $event = Event::find($id)->load(['events_participants.participant', 'venue']);
+        $events_participants = EventParticipant::where('event_id', $id)->where('is_approved_application', 1)
+            ->where('is_verified_payment_proof', 1)
+            ->where('is_verified_payment_proof', 1)
+            ->where('is_disqualified', 0)->get()->load(['participant']);
+
+        $event =Event::find($id)->load(['venue']);
         $curr_date = Carbon::now()->format('jS F Y');
 
-        $pdf = PDF::loadView('short-course-management.pdf.participant_list', compact('curr_date', 'event'));
+        $pdf = PDF::loadView('short-course-management.pdf.participant_list', compact('curr_date', 'events_participants','event'));
         return $pdf->stream('Offer Letter.pdf');
     }
 }

@@ -46,7 +46,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($event->events_participants as $event_participant)
+            @foreach ($events_participants as $event_participant)
                 <tr>
                     <td>{{ $loop->index + 1 }}</td>
                     <td class="col-sm-4">{{ $event_participant->participant->name }}</td>
