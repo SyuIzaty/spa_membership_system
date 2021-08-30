@@ -1,7 +1,7 @@
 <head>
     <meta charset="UTF-8">
 
-    <title>Participation Report</title>
+    <title>Attendance Sheet</title>
 
     <link rel="stylesheet" href="css/pdf.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"

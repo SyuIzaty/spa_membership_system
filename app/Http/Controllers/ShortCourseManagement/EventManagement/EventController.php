@@ -88,7 +88,8 @@ class EventController extends Controller
             })
             ->addColumn('document', function ($events) {
                 return '
-                <a href="/event/participant-list/' . $events->id . '" class="btn btn-sm btn-info">Attendance Sheet</a><br/><br/>';
+                <a href="/event/participant-list/' . $events->id . '" class="btn btn-sm btn-info">Attendance Sheet</a><br/><br/>
+                <a href="/event/report/' . $events->id . '" class="btn btn-sm btn-info">Event Report</a>';
             })
             ->rawColumns(['action', 'management_details', 'participant', 'dates', 'document'])
             ->make(true);
@@ -970,10 +971,33 @@ class EventController extends Controller
             ->where('is_verified_payment_proof', 1)
             ->where('is_disqualified', 0)->get()->load(['participant']);
 
-        $event =Event::find($id)->load(['venue']);
+        $event = Event::find($id)->load(['venue']);
         $curr_date = Carbon::now()->format('jS F Y');
 
-        $pdf = PDF::loadView('short-course-management.pdf.participant_list', compact('curr_date', 'events_participants','event'));
-        return $pdf->stream('Offer Letter.pdf');
+        $pdf = PDF::loadView('short-course-management.pdf.participant_list', compact('curr_date', 'events_participants', 'event'));
+        return $pdf->stream($id . '_participant_list.pdf');
+    }
+    public function eventReport($id)
+    {
+        $event = Event::find($id)->load(['venue', 'event_feedback_set.sections.questions.events_participants_questions_answers']);
+        $statistics = array();
+        foreach ($event->event_feedback_set->sections as $section) {
+            foreach ($section->questions as $question) {
+                if ($question->question_type == 'RATE') {
+                    $statistics[$question->id]['question'] = $question->question;
+                    $statistics[$question->id]['rate_1'] = $question->events_participants_questions_answers?$question->events_participants_questions_answers->where('rate', 1)->count():0;
+                    $statistics[$question->id]['rate_2'] = $question->events_participants_questions_answers?$question->events_participants_questions_answers->where('rate', 2)->count():0;
+                    $statistics[$question->id]['rate_3'] = $question->events_participants_questions_answers?$question->events_participants_questions_answers->where('rate', 3)->count():0;
+                    $statistics[$question->id]['rate_4'] = $question->events_participants_questions_answers?$question->events_participants_questions_answers->where('rate', 4)->count():0;
+                    $statistics[$question->id]['rate_5'] = $question->events_participants_questions_answers?$question->events_participants_questions_answers->where('rate', 5)->count():0;
+                }
+            }
+        }
+        // dd($statistics);
+        $chart = new Event;
+        $chart->labels = array_keys(['Valid', 'Not Valid']);
+        $chart->dataset = array_values([10, 100]);
+        $pdf = PDF::loadView('short-course-management.pdf.event_report', compact('event', 'chart', 'statistics'));
+        return $pdf->stream($id . '_event_report.pdf');
     }
 }
