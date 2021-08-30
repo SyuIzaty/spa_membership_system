@@ -22,6 +22,8 @@
     <!-- Place favicon.ico in the root directory -->
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('img/favicon/apple-touch-icon.png') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('img/favicon/favicon-32x32.png') }}">
+    <link rel="stylesheet" href="{{ asset('css/statistics/chartjs/chartjs.css.map') }}">
+    <link rel="stylesheet" href="{{ asset('css/statistics/chartjs/chartjs.css') }}">
     <link rel="mask-icon" href="{{ asset('img/favicon/safari-pinned-tab.svg') }}" color="#5bbad5">
     <!--<link rel="stylesheet" media="screen, print" href="css/your_styles.css">-->
     <link rel="stylesheet" media="screen, print" href="{{ asset('css/datagrid/datatables/datatables.bundle.css') }}">
@@ -132,7 +134,8 @@
                             <span
                                 class="d-inline-block text-truncate text-truncate-sm">{{ Auth::user()->email }}</span>
                         </div>
-                        <img src="{{ asset('img/card-backgrounds/cover-2-lg.png') }}" class="cover" alt="cover">
+                        <img src="{{ asset('img/card-backgrounds/cover-2-lg.png') }}" class="cover"
+                            alt="cover">
                         <a href="#" onclick="return false;" class="pull-trigger-btn" data-action="toggle"
                             data-class="list-filter-active" data-target=".page-sidebar" data-focus="nav_filter_input">
                             <i class="fal fa-angle-down"></i>
@@ -182,12 +185,14 @@
                                     <li>
                                         <a href="/topics" title="Topic Catalogue" data-filter-tags="topic-catalogue">
                                             <i class="ni ni-book-open"></i>
-                                            <span class="nav-link-text" data-i18n="nav.topic-catalogue">Topic-SubCategory-Category
+                                            <span class="nav-link-text"
+                                                data-i18n="nav.topic-catalogue">Topic-SubCategory-Category
                                                 Catalogue</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="/feedback-sets" title="Feedback Set Catalogue" data-filter-tags="feedback-set-catalogue">
+                                        <a href="/feedback-sets" title="Feedback Set Catalogue"
+                                            data-filter-tags="feedback-set-catalogue">
                                             <i class="ni ni-book-open"></i>
                                             <span class="nav-link-text" data-i18n="nav.feedback-set-catalogue">Feedback Set
                                                 Catalogue</span>
@@ -349,7 +354,8 @@
                             <li>
                                 <a href="#" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-chart-pie"></i>
-                                    <span class="nav-link-text" data-i18n="nav.application_intel">Inventory Dashboard</span>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Inventory
+                                        Dashboard</span>
                                 </a>
                             </li>
 
@@ -685,8 +691,10 @@
     <script src="{{ asset('js/datagrid/datatables/datatables.bundle.js') }}"></script>
     <script src="{{ asset('js/notifications/sweetalert2/sweetalert2.bundle.js') }}"></script>
     <script src="{{ asset('js/sweetalert.min.js') }} "></script>
+    <script src="{{ asset('js/statistics/chartjs/chartjs.bundle.js') }}"></script>
     {{-- <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script> --}}
+    {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script> --}}
 
     {{-- <script src="{{asset('js/select2.min.js')}}"></script> --}}
     <link rel="stylesheet" media="screen, print" href="{{ asset('css/formplugins/select2/select2.bundle.css') }}">
@@ -760,6 +768,7 @@
         .ck-editor__editable_inline {
             min-height: 250px;
         }
+
         .document-editor {
             border: 1px solid var(--ck-color-base-border);
             border-radius: var(--ck-border-radius);
