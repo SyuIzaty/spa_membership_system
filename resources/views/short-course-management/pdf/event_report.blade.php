@@ -66,6 +66,14 @@
             @endforeach
         </tbody>
     </table>
+    <table class="table table-striped table-bordered">
+        <tbody>
+            <tr>
+                <td><h3>Total Mark</h3></td>
+                <td><h3>{{ $statistics_summary['mark_by_rate'] }}%</h3></td>
+            </tr>
+        </tbody>
+    </table>
     <table class="table table-bordered">
         <tr class="bg-dark text-white" style="text-transform: uppercase;">
             <td colspan="2" style="text-align: center">Subjective Report</td>
