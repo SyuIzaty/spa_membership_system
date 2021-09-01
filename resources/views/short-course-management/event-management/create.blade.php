@@ -52,7 +52,7 @@
                                             @endif
                                             <div class="text-danger mb-2">** Required Field</div>
                                             <table class="table table-bordered">
-                                                <tr>
+                                                <tr class="row">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Short Course **', ['style' => 'font-weight:bold']) }}
                                                     </td>
@@ -78,7 +78,7 @@
                                                     </td>
                                                 </tr>
                                                 {{-- <tr id="form-add-shortcourse-second-part" style="display: none"> --}}
-                                                <tr id="form-add-shortcourse-second-part"
+                                                <tr  class="row" id="form-add-shortcourse-second-part"
                                                     {{ old('shortcourse_id') ? null : 'style=display:none' }}>
 
 
@@ -93,7 +93,7 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-                                                <tr id="form-add-shortcourse-second-part"
+                                                <tr class="row" id="form-add-shortcourse-second-part"
                                                     {{ old('shortcourse_id') ? null : 'style=display:none' }}>
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Event Description **', ['style' => 'font-weight:bold']) }}
@@ -109,7 +109,7 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-                                                <tr id="form-add-shortcourse-second-part"
+                                                <tr class="row" id="form-add-shortcourse-second-part"
                                                     {{ old('shortcourse_id') ? null : 'style=display:none' }}>
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Event Objective **', ['style' => 'font-weight:bold']) }}
@@ -158,7 +158,7 @@
                                                             More Topic</a>
                                                     </td>
                                                 </tr> --}}
-                                                <tr>
+                                                <tr class="row">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Event Date and Time (Start) **', ['style' => 'font-weight:bold']) }}
                                                     </td>
@@ -170,7 +170,7 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-                                                <tr>
+                                                <tr class="row">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Event Date and Time (End) **', ['style' => 'font-weight:bold']) }}
                                                     </td>
@@ -181,7 +181,7 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-                                                <tr>
+                                                <tr class="row">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Venue **', ['style' => 'font-weight:bold']) }}
                                                     </td>
@@ -205,7 +205,7 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-                                                <tr id="form-add-venue-second-part" style="display: none">
+                                                <tr  class="row" id="form-add-venue-second-part" style="display: none">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Venue Type **', ['style' => 'font-weight:bold']) }}
                                                     </td>
@@ -226,7 +226,7 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-                                                <tr id="form-add-venue-second-part" style="display: none">
+                                                <tr class="row" id="form-add-venue-second-part" style="display: none">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Venue Name **', ['style' => 'font-weight:bold']) }}
                                                     </td>
@@ -239,7 +239,7 @@
                                                     </td>
                                                 </tr>
 
-                                                <tr>
+                                                <tr class="row">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Venue Description (Address/URL) **', ['style' => 'font-weight:bold']) }}
                                                     </td>
@@ -251,7 +251,7 @@
                                                     </td>
                                                 </tr>
 
-                                                <tr>
+                                                <tr class="row">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Fee Name **', ['style' => 'font-weight:bold']) }}
                                                     </td>
@@ -262,7 +262,7 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-                                                <tr>
+                                                <tr class="row">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Fee Type **', ['style' => 'font-weight:bold']) }}
                                                     </td>
@@ -284,7 +284,7 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-                                                <tr>
+                                                <tr class="row">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Fee Amount (RM) **', ['style' => 'font-weight:bold']) }}
                                                     </td>
@@ -296,7 +296,7 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-                                                <tr>
+                                                <tr class="row">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Feedback Set **', ['style' => 'font-weight:bold']) }}
                                                     </td>
@@ -317,7 +317,7 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-                                                <tr>
+                                                <tr class="row">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', "Trainer's IC ** e.g.:700423102003", ['style' => 'font-weight:bold']) }}
                                                     </td>
@@ -331,7 +331,7 @@
                                                             Search</a>
                                                     </td>
                                                 </tr>
-                                                <tr id="form-add-trainer-second-part">
+                                                <tr class="row" id="form-add-trainer-second-part">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', "Trainer's User ID **", ['style' => 'font-weight:bold']) }}
                                                     </td>
@@ -361,7 +361,7 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-                                                <tr id="form-add-trainer-second-part">
+                                                <tr class="row" id="form-add-trainer-second-part">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', "Trainer's Fullname **", ['style' => 'font-weight:bold']) }}
                                                     </td>
@@ -372,7 +372,7 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-                                                <tr id="form-add-trainer-second-part">
+                                                <tr class="row" id="form-add-trainer-second-part">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', "Trainer's Phone ** e.g.:0132345678", ['style' => 'font-weight:bold']) }}
                                                     </td>
@@ -383,7 +383,7 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-                                                <tr id="form-add-trainer-second-part">
+                                                <tr class="row" id="form-add-trainer-second-part">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', "Trainer's Email **", ['style' => 'font-weight:bold']) }}
                                                     </td>
