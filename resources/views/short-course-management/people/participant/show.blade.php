@@ -41,6 +41,13 @@
                                         <hr class="mt-2 mb-3">
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
+                                                @if (Session::has('successUpdate'))
+                                                    <div class="alert alert-success"
+                                                        style="color: #3b6324; background-color: #d3fabc;">
+                                                        <i class="icon fal fa-check-circle"></i>
+                                                        {{ Session::get('successUpdate') }}
+                                                    </div>
+                                                @endif
                                                 <form action="{{ url('/participants/update/' . $participant->id) }}"
                                                     method="post" name="form">
                                                     @csrf
@@ -70,7 +77,7 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr>
-                                                                <td >Name</td>
+                                                                <td>Name</td>
                                                                 <td name="name_show" id="name_show">
                                                                     {{ $participant->name }}
                                                                 </td>
@@ -90,7 +97,7 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td >Email</td>
+                                                                <td>Email</td>
                                                                 <td name="email_show" id="email_show">
                                                                     {{ $participant->email }}
                                                                 </td>
@@ -110,7 +117,7 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td >IC</td>
+                                                                <td>IC</td>
                                                                 <td name="ic_show" id="ic_show">
                                                                     {{ $participant->ic }}
                                                                 </td>
@@ -130,7 +137,7 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td >Phone</td>
+                                                                <td>Phone</td>
                                                                 <td name="phone_show" id="phone_show">
                                                                     {{ $participant->phone }}
                                                                 </td>
@@ -159,7 +166,7 @@
                                                         <tr class=" bg-primary-50">
                                                             <th colspan="3"><b>Settings</b></th>
                                                         </tr>
-                                                        <tr >
+                                                        <tr>
                                                             <th class="text-center" scope="col" style="width:20%">
                                                                 Title
                                                             </th>
@@ -203,13 +210,15 @@
                                                         <table class="table table-striped table-bordered">
                                                             <thead class="table-primary">
                                                                 <tr>
-                                                                    <th class="text-center" scope="col" style="width:20%">
+                                                                    <th class="text-center" scope="col"
+                                                                        style="width:20%">
                                                                         <h3>Title</h3>
                                                                     </th>
                                                                     <th class="text-center" scope="col">
                                                                         <h3>Value</h3>
                                                                     </th>
-                                                                    <th class="text-center" scope="col" style="width:20%">
+                                                                    <th class="text-center" scope="col"
+                                                                        style="width:20%">
                                                                         <h3>Action</h3>
 
                                                                     </th>

@@ -41,6 +41,13 @@
                                         <hr class="mt-2 mb-3">
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
+                                                @if (Session::has('successUpdate'))
+                                                    <div class="alert alert-success"
+                                                        style="color: #3b6324; background-color: #d3fabc;">
+                                                        <i class="icon fal fa-check-circle"></i>
+                                                        {{ Session::get('successUpdate') }}
+                                                    </div>
+                                                @endif
                                                 <form action="{{ url('/venues/update/' . $venue->id) }}" method="post"
                                                     name="form">
                                                     @csrf

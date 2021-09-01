@@ -162,7 +162,7 @@ class ParticipantController extends Controller
             'updated_by' => Auth::user()->id,
         ]);
 
-        return Redirect()->back()->with('messageParticipantBasicDetails', 'Basic Details Update Successfully');
+        return Redirect()->back()->with('updateSuccess', 'Participant Information Updated Successfully');
     }
 
     public function destroy($id)

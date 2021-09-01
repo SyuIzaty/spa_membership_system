@@ -21,8 +21,8 @@
                                 data-offset="0,10" data-original-title="Collapse"></button>
                             <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip"
                                 data-offset="0,10" data-original-title="Fullscreen"></button>
-                            <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10"
-                                data-original-title="Close"></button>
+                            <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip"
+                                data-offset="0,10" data-original-title="Close"></button>
                         </div>
                     </div>
                     <div class="panel-container show">
@@ -41,7 +41,8 @@
                                         Payments</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a data-toggle="tab" class="nav-link" href="#application-status" role="tab">Application
+                                    <a data-toggle="tab" class="nav-link" href="#application-status"
+                                        role="tab">Application
                                         Status</a>
                                 </li>
                                 {{-- <li class="nav-item">
@@ -56,7 +57,7 @@
                             <div class="row">
                                 <div class="tab-content col-md-12">
                                     <div class="tab-pane" id="applications" role="tabpanel" hidden>
-                                        <hr class="mt-2 mb-3">
+                                        {{-- <hr class="mt-2 mb-3"> --}}
                                         <div class="row">
 
                                             <div class="col-md-12 grid-margin">
@@ -67,13 +68,6 @@
                                                         {{ Session::get('messageNewApplication') }}
                                                     </div>
                                                 @endif
-                                                @if (Session::has('messageAlreadyApplied'))
-                                                    <div class="alert alert-danger  text-white"
-                                                        style="color:rgb(105, 0, 0); background-color: rgb(255, 51, 51);width:100%;">
-                                                        <i class="icon fal fa-times-circle" style="color:white"></i>
-                                                        {{ Session::get('messageAlreadyApplied') }}
-                                                    </div>
-                                                @endif
                                             </div>
                                             <div class="col-md-12 grid-margin stretch-card">
                                                 <div class="row">
@@ -81,7 +75,8 @@
                                                         <div id="panel-1" class="panel">
                                                             <div class="panel-hdr">
                                                                 <h2>
-                                                                    <span class="fw-300">Step 1 (Pre-Event) - </span> Make
+                                                                    <span class="fw-300">Step 1 (Pre-Event) -
+                                                                    </span> Make
                                                                     Application
                                                                 </h2>
                                                                 <div class="panel-toolbar">
@@ -426,7 +421,8 @@
                                                         <div id="panel-1" class="panel">
                                                             <div class="panel-hdr">
                                                                 <h2>
-                                                                    <span class="fw-300">Step 2 (Pre-Event) - </span>
+                                                                    <span class="fw-300">Step 2 (Pre-Event) -
+                                                                    </span>
                                                                     (List of New Applicants) Approve
                                                                     Application from this List of Applications
                                                                 </h2>
@@ -512,15 +508,18 @@
                                         </div>
                                     </div>
                                     <div class="tab-pane active" id="pending-payments" role="tabpanel">
-                                        <hr class="mt-2 mb-3">
+                                        {{-- <hr class="mt-2 mb-3"> --}}
                                         <div class="row">
+                                            <div class="col-md-12 grid-margin">
+                                            </div>
                                             <div class="col-md-12 grid-margin stretch-card">
                                                 <div class="row">
                                                     <div class="col-xl-12">
                                                         <div id="panel-1" class="panel">
                                                             <div class="panel-hdr">
                                                                 <h2>
-                                                                    <span class="fw-300"></span> List of Not Make Payment
+                                                                    <span class="fw-300"></span> List of Not Make
+                                                                    Payment
                                                                     Yet
                                                                 </h2>
                                                                 <div class="panel-toolbar">
@@ -539,18 +538,46 @@
                                                             </div>
                                                             <div class="panel-container show">
                                                                 <div class="panel-content">
-                                                                    @if (Session::has('messageAllNoPaymentYet'))
+                                                                    @if (Session::has('successPaymentProofUpdate'))
                                                                         <div class="alert alert-success"
                                                                             style="color: #3b6324; background-color: #d3fabc;">
                                                                             <i class="icon fal fa-check-circle"></i>
-                                                                            {{ Session::get('messageAllNoPaymentYet') }}
+                                                                            {{ Session::get('successPaymentProofUpdate') }}
                                                                         </div>
                                                                     @endif
-                                                                    @if (Session::has('notification'))
+                                                                    @if (Session::has('failedPaymentProofUpdate'))
+                                                                        <div class="alert alert-danger"
+                                                                            style="color: #5b0303; background-color: #ff6c6cc9;">
+                                                                            <i class="icon fal fa-times-circle"></i>
+                                                                            {{ Session::get('failedPaymentProofUpdate') }}
+                                                                        </div>
+                                                                    @endif
+                                                                    @if (Session::has('successNewApplication'))
                                                                         <div class="alert alert-success"
-                                                                            style="color: #3b6324; background-color: #d3fabc;">
+                                                                            style="color: #3b6324; background-color: #d3fabc;width:100%;">
                                                                             <i class="icon fal fa-check-circle"></i>
-                                                                            {{ Session::get('notification') }}
+                                                                            {{ Session::get('successNewApplication') }}
+                                                                        </div>
+                                                                    @endif
+
+                                                                    @if (Session::has('failedNewApplication'))
+                                                                        <div class="alert alert-danger"
+                                                                            style="color: #5b0303; background-color: #ff6c6cc9;">
+                                                                            <i class="icon fal fa-times-circle"></i>
+                                                                            {{ Session::get('failedNewApplication') }}
+                                                                        </div>
+                                                                    @endif
+
+                                                                    @if ($errors->any())
+                                                                        <div class="alert alert-danger">
+                                                                            <strong>Whoops!</strong> There were some
+                                                                            problems with your
+                                                                            input.<br><br>
+                                                                            <ul>
+                                                                                @foreach ($errors->all() as $error)
+                                                                                    <li>{{ $error }}</li>
+                                                                                @endforeach
+                                                                            </ul>
                                                                         </div>
                                                                     @endif
 
@@ -600,8 +627,8 @@
                                                                 </div>
                                                                 <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
                                                                     style="content-align:right">
-                                                                    <div class="modal fade" id="crud-modal-new-application"
-                                                                        aria-hidden="true">
+                                                                    <div class="modal fade"
+                                                                        id="crud-modal-new-application" aria-hidden="true">
                                                                         <div class="modal-dialog">
                                                                             <div class="modal-content">
                                                                                 <div class="card-header">
@@ -627,7 +654,8 @@
                                                                                                     class="text-danger">*</span>
                                                                                                 IC</label>
                                                                                             <div class="row">
-                                                                                                <div class="col">
+                                                                                                <div
+                                                                                                    class="col">
                                                                                                     <input
                                                                                                         class="form-control"
                                                                                                         id="ic_input"
@@ -662,10 +690,12 @@
 
                                                                                             <hr class="mt-1 mb-2">
                                                                                             <div class="form-group">
-                                                                                                <label class="form-label"
+                                                                                                <label
+                                                                                                    class="form-label"
                                                                                                     for="fullname"><span
                                                                                                         class="text-danger">*</span>Fullname</label>
-                                                                                                <input class="form-control"
+                                                                                                <input
+                                                                                                    class="form-control"
                                                                                                     id="fullname"
                                                                                                     name="fullname">
                                                                                                 @error('fullname')
@@ -678,10 +708,12 @@
                                                                                             </div>
                                                                                             <hr class="mt-1 mb-2">
                                                                                             <div class="form-group">
-                                                                                                <label class="form-label"
+                                                                                                <label
+                                                                                                    class="form-label"
                                                                                                     for="phone"><span
                                                                                                         class="text-danger">*</span>Phone</label>
-                                                                                                <input class="form-control"
+                                                                                                <input
+                                                                                                    class="form-control"
                                                                                                     id="phone" name="phone">
                                                                                                 @error('phone')
                                                                                                     <p style="color: red">
@@ -694,10 +726,12 @@
 
                                                                                             <hr class="mt-1 mb-2">
                                                                                             <div class="form-group">
-                                                                                                <label class="form-label"
+                                                                                                <label
+                                                                                                    class="form-label"
                                                                                                     for="email"><span
                                                                                                         class="text-danger">*</span>Email</label>
-                                                                                                <input class="form-control"
+                                                                                                <input
+                                                                                                    class="form-control"
                                                                                                     id="email" name="email">
                                                                                                 @error('email')
                                                                                                     <p style="color: red">
@@ -709,7 +743,8 @@
                                                                                             </div>
                                                                                             <hr class="mt-1 mb-2">
                                                                                             <div class="form-group">
-                                                                                                <label class="form-label"
+                                                                                                <label
+                                                                                                    class="form-label"
                                                                                                     for="payment_proof_input"><span
                                                                                                         class="text-danger">*</span>Payment
                                                                                                     Proof</label>
@@ -719,12 +754,22 @@
                                                                                                         class="custom-file-label"
                                                                                                         name="payment_proof_input[]"
                                                                                                         accept="image/png, image/jpeg"
-                                                                                                        multiple="" />
+                                                                                                        multiple=""
+                                                                                                        id="payment_proof_input" />
                                                                                                 </div>
+
+                                                                                                @error('payment_proof_input')
+                                                                                                    <p style="color: red">
+                                                                                                        <strong> *
+                                                                                                            {{ $message }}
+                                                                                                        </strong>
+                                                                                                    </p>
+                                                                                                @enderror
                                                                                             </div>
                                                                                             <hr class="mt-1 mb-2">
                                                                                             <div class="form-group">
-                                                                                                <label class="form-label"
+                                                                                                <label
+                                                                                                    class="form-label"
                                                                                                     for="is_base_fee_select_add"><span
                                                                                                         class="text-danger">*</span>Fee</label>
                                                                                                 {{-- <input class="form-control" id="is_base_fee_select_add"
@@ -750,8 +795,10 @@
                                                                                                         </option>
                                                                                                     @endforeach
                                                                                                 </select>
-                                                                                                <div class="row">
-                                                                                                    <div class="col-sm-5">
+                                                                                                <div
+                                                                                                    class="row">
+                                                                                                    <div
+                                                                                                        class="col-sm-5">
                                                                                                         <div class="input-group flex-nowrap"
                                                                                                             id="fee_id_show"
                                                                                                             name="fee_id_show"
@@ -780,7 +827,8 @@
                                                                                                     <div class="col-sm-7"
                                                                                                         id="promo_code_col"
                                                                                                         style="display:none">
-                                                                                                        <div class="row">
+                                                                                                        <div
+                                                                                                            class="row">
                                                                                                             <div
                                                                                                                 class="col">
                                                                                                                 <input
@@ -825,25 +873,17 @@
                                                                                             {{-- <hr class="mt-1 mb-2"> --}}
                                                                                             <div
                                                                                                 class="custom-control custom-checkbox">
-                                                                                                {{-- <input type="checkbox"
-                                                                            class="custom-control-input"
-                                                                            id="represent-by-himself_show"
-                                                                            checked="checked"
-                                                                            disabled> --}}
                                                                                                 <input type="checkbox"
                                                                                                     class="custom-control-input"
                                                                                                     id="represent-by-himself"
                                                                                                     checked="checked"
                                                                                                     type="hidden">
-                                                                                                {{-- <label
-                                                                            class="custom-control-label"
-                                                                            for="represent-by-himself">Represent
-                                                                            By Himself</label> --}}
                                                                                             </div>
                                                                                             <div id="representative"
                                                                                                 style="display:none">
                                                                                                 <hr class="mt-1 mb-2">
-                                                                                                <div class="form-group">
+                                                                                                <div
+                                                                                                    class="form-group">
                                                                                                     <label
                                                                                                         for="representative-ic"><span
                                                                                                             class="text-danger">*</span>
@@ -893,7 +933,8 @@
                                                                                                 </p>
                                                                                                 <div id="form-application-third-part"
                                                                                                     style="display: none">
-                                                                                                    <div class="form-group">
+                                                                                                    <div
+                                                                                                        class="form-group">
                                                                                                         <label
                                                                                                             class="form-label"
                                                                                                             for="representative_fullname"><span
@@ -941,7 +982,8 @@
                                                                 </div>
                                                                 </form>
 
-                                                                <div class="modal fade" id="crud-modals" aria-hidden="true">
+                                                                <div class="modal fade" id="crud-modals"
+                                                                    aria-hidden="true">
                                                                     <div class="modal-dialog">
                                                                         <div class="modal-content">
                                                                             <div class="card-header">
@@ -1021,7 +1063,8 @@
                                                                                                 class="form-control-plaintext"
                                                                                                 id="amount" name="amount"
                                                                                                 readonly>
-                                                                                            <div class="input-group-append">
+                                                                                            <div
+                                                                                                class="input-group-append">
                                                                                                 <span
                                                                                                     style="background-color:white; border-style: none;"
                                                                                                     class="input-group-text">/
@@ -1108,9 +1151,8 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="tab-pane" id="verify-payments" role="tabpanel">
-                                        <hr class="mt-2 mb-3">
+                                        {{-- <hr class="mt-2 mb-3"> --}}
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
                                                 <div class="row">
@@ -1118,7 +1160,8 @@
                                                         <div id="panel-1" class="panel">
                                                             <div class="panel-hdr">
                                                                 <h2>
-                                                                    <span class="fw-300"></span> Already Make Payment, Need
+                                                                    <span class="fw-300"></span> Already Make
+                                                                    Payment, Need
                                                                     Verification
                                                                 </h2>
                                                                 <div class="panel-toolbar">
@@ -1130,8 +1173,9 @@
                                                                         data-action="panel-fullscreen" data-toggle="tooltip"
                                                                         data-offset="0,10"
                                                                         data-original-title="Fullscreen"></button>
-                                                                    <button class="btn btn-panel" data-action="panel-close"
-                                                                        data-toggle="tooltip" data-offset="0,10"
+                                                                    <button class="btn btn-panel"
+                                                                        data-action="panel-close" data-toggle="tooltip"
+                                                                        data-offset="0,10"
                                                                         data-original-title="Close"></button>
                                                                 </div>
                                                             </div>
@@ -1252,7 +1296,8 @@
                                                                                             <hr class="mt-1 mb-1">
                                                                                             <div
                                                                                                 class="form-group col col-sm-5">
-                                                                                                <label class="form-label"
+                                                                                                <label
+                                                                                                    class="form-label"
                                                                                                     for="amount_to_be_verified">Fee
                                                                                                     Amount</label>
                                                                                                 <div class="input-group flex-nowrap"
@@ -1306,7 +1351,7 @@
                                         </div>
                                     </div>
                                     <div class="tab-pane" id="application-status" role="tabpanel">
-                                        <hr class="mt-2 mb-3">
+                                        {{-- <hr class="mt-2 mb-3"> --}}
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
                                                 <div class="row">
@@ -1326,8 +1371,9 @@
                                                                         data-action="panel-fullscreen" data-toggle="tooltip"
                                                                         data-offset="0,10"
                                                                         data-original-title="Fullscreen"></button>
-                                                                    <button class="btn btn-panel" data-action="panel-close"
-                                                                        data-toggle="tooltip" data-offset="0,10"
+                                                                    <button class="btn btn-panel"
+                                                                        data-action="panel-close" data-toggle="tooltip"
+                                                                        data-offset="0,10"
                                                                         data-original-title="Close"></button>
                                                                 </div>
                                                             </div>
@@ -1479,7 +1525,7 @@
                                     </div>
 
                                     <div class="tab-pane" id="attendance-status" role="tabpanel" hidden>
-                                        <hr class="mt-2 mb-3">
+                                        {{-- <hr class="mt-2 mb-3"> --}}
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
                                                 <div class="row">
@@ -1487,7 +1533,8 @@
                                                         <div id="panel-1" class="panel">
                                                             <div class="panel-hdr">
                                                                 <h2>
-                                                                    <span class="fw-300">Succeed Attendance - </span>
+                                                                    <span class="fw-300">Succeed Attendance -
+                                                                    </span>
                                                                     (Attended Participants) Send Feedback
                                                                     Questionaire
                                                                 </h2>
@@ -1500,8 +1547,9 @@
                                                                         data-action="panel-fullscreen" data-toggle="tooltip"
                                                                         data-offset="0,10"
                                                                         data-original-title="Fullscreen"></button>
-                                                                    <button class="btn btn-panel" data-action="panel-close"
-                                                                        data-toggle="tooltip" data-offset="0,10"
+                                                                    <button class="btn btn-panel"
+                                                                        data-action="panel-close" data-toggle="tooltip"
+                                                                        data-offset="0,10"
                                                                         data-original-title="Close"></button>
                                                                 </div>
                                                             </div>
@@ -1579,7 +1627,8 @@
                                                         <div id="panel-1" class="panel">
                                                             <div class="panel-hdr">
                                                                 <h2>
-                                                                    <span class="fw-300">Failed Attendance - </span> (Not
+                                                                    <span class="fw-300">Failed Attendance -
+                                                                    </span> (Not
                                                                     Attended
                                                                     Participants)
                                                                 </h2>
@@ -1592,8 +1641,9 @@
                                                                         data-action="panel-fullscreen" data-toggle="tooltip"
                                                                         data-offset="0,10"
                                                                         data-original-title="Fullscreen"></button>
-                                                                    <button class="btn btn-panel" data-action="panel-close"
-                                                                        data-toggle="tooltip" data-offset="0,10"
+                                                                    <button class="btn btn-panel"
+                                                                        data-action="panel-close" data-toggle="tooltip"
+                                                                        data-offset="0,10"
                                                                         data-original-title="Close"></button>
                                                                 </div>
                                                             </div>
@@ -1642,7 +1692,7 @@
                                         </div>
                                     </div>
                                     <div class="tab-pane" id="feedback-status" role="tabpanel">
-                                        <hr class="mt-2 mb-3">
+                                        {{-- <hr class="mt-2 mb-3"> --}}
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
                                                 <div class="row">
@@ -1661,8 +1711,9 @@
                                                                         data-action="panel-fullscreen" data-toggle="tooltip"
                                                                         data-offset="0,10"
                                                                         data-original-title="Fullscreen"></button>
-                                                                    <button class="btn btn-panel" data-action="panel-close"
-                                                                        data-toggle="tooltip" data-offset="0,10"
+                                                                    <button class="btn btn-panel"
+                                                                        data-action="panel-close" data-toggle="tooltip"
+                                                                        data-offset="0,10"
                                                                         data-original-title="Close"></button>
                                                                 </div>
                                                             </div>

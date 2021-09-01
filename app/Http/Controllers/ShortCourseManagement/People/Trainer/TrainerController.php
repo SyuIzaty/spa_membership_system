@@ -188,7 +188,7 @@ class TrainerController extends Controller
             'updated_by' => Auth::user()->id,
         ]);
 
-        return Redirect()->back()->with('messageTrainerBasicDetails', 'Basic Details Update Successfully');
+        return Redirect()->back()->with('successUpdate', 'Trainer Information Updated Successfully');
     }
 
     public function destroy($id)

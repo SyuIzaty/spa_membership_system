@@ -160,7 +160,7 @@ class ShortCourseController extends Controller
             'updated_by' => Auth::user()->id,
         ]);
 
-        return Redirect()->back()->with('messageShortCourseBasicDetails', 'Basic Details Update Successfully');
+        return Redirect()->back()->with('successUpdate', 'Short Course Information Updated Successfully');
     }
 
     public function destroy($id)
@@ -191,8 +191,9 @@ class ShortCourseController extends Controller
             'created_by' => Auth::user()->id,
             'is_active' => 1,
         ]);
-
+        // $_SESSION['successUpdate'] = $_POST['New Topic Attached to the Short Course Successfully'];
         return $create;
+        // return Redirect()->back()->with('successUpdate', 'New Topic Attached to the Short Course Successfully');
     }
 
     public function removeTopicShortCourse(Request $request, $id)
@@ -209,6 +210,6 @@ class ShortCourseController extends Controller
         $exist->save();
         $exist->delete();
 
-        return Redirect()->back()->with('messageShortCourseBasicDetails', 'Remove a topic Successfully');
+        return Redirect()->back()->with('successUpdate', 'A Topic Detached from the Short Course Successfully');
     }
 }

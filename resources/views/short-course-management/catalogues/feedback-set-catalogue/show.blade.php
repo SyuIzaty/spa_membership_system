@@ -32,7 +32,8 @@
                                     <a data-toggle="tab" class="nav-link" href="#general" role="tab">General</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a data-toggle="tab" class="nav-link" style="display:none" href="#setting" role="tab">Setting</a>
+                                    <a data-toggle="tab" class="nav-link" style="display:none" href="#setting"
+                                        role="tab">Setting</a>
                                 </li>
                             </ul>
                             <div class="row">
@@ -41,8 +42,17 @@
                                         <hr class="mt-2 mb-3">
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
-                                                <form action="{{ url('/event_feedback_sets/update/' . $event_feedback_set->id) }}" method="post"
-                                                    name="form">
+
+                                                @if (Session::has('successUpdate'))
+                                                    <div class="alert alert-success"
+                                                        style="color: #3b6324; background-color: #d3fabc;">
+                                                        <i class="icon fal fa-check-circle"></i>
+                                                        {{ Session::get('successUpdate') }}
+                                                    </div>
+                                                @endif
+                                                <form
+                                                    action="{{ url('/event_feedback_sets/update/' . $event_feedback_set->id) }}"
+                                                    method="post" name="form">
                                                     @csrf
                                                     <table class="table table-bordered table-hover table-striped">
                                                         <thead class="thead bg-primary-50">
@@ -91,15 +101,14 @@
                                                             </tr>
                                                             <tr>
                                                                 <td class="col-md-3">Feedback Set Description</td>
-                                                                <td name="description_show"
-                                                                    id="description_show">
+                                                                <td name="description_show" id="description_show">
                                                                     {{ $event_feedback_set->description }}
                                                                 </td>
-                                                                <td name="description_edit"
-                                                                    id="description_edit" style="display: none">
+                                                                <td name="description_edit" id="description_edit"
+                                                                    style="display: none">
                                                                     <div class="form-group">
-                                                                        <input id="description"
-                                                                            name="description" type="text"
+                                                                        <input id="description" name="description"
+                                                                            type="text"
                                                                             value="{{ $event_feedback_set->description }}"
                                                                             class="form-control">
                                                                         @error('description')
@@ -122,7 +131,7 @@
                                                         <tr class=" bg-primary-50">
                                                             <th colspan="3"><b>Settings</b></th>
                                                         </tr>
-                                                        <tr >
+                                                        <tr>
                                                         <tr>
                                                             <th class="text-center" scope="col" style="width:20%">
                                                                 Title
@@ -140,7 +149,8 @@
                                                     <tbody>
                                                         <tr>
                                                             <td class="text-center">Status</td>
-                                                            <td class="text-center" id="event_feedback_set_status_category_name"
+                                                            <td class="text-center"
+                                                                id="event_feedback_set_status_category_name"
                                                                 name="event_feedback_set_status_category_name">
                                                                 Active
                                                             </td>
@@ -161,19 +171,20 @@
                                     <div class="tab-pane" id="setting" role="tabpanel" style="display:none">
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
-
                                                 <div class="card">
                                                     <div class="card-body">
                                                         <table class="table table-striped table-bordered">
                                                             <thead class="table-primary">
                                                                 <tr>
-                                                                    <th class="text-center" scope="col" style="width:20%">
+                                                                    <th class="text-center" scope="col"
+                                                                        style="width:20%">
                                                                         <h3>Title</h3>
                                                                     </th>
                                                                     <th class="text-center" scope="col">
                                                                         <h3>Value</h3>
                                                                     </th>
-                                                                    <th class="text-center" scope="col" style="width:20%">
+                                                                    <th class="text-center" scope="col"
+                                                                        style="width:20%">
                                                                         <h3>Action</h3>
 
                                                                     </th>
@@ -183,14 +194,16 @@
                                                             <tbody>
                                                                 <tr>
                                                                     <td class="text-center">Status</td>
-                                                                    <td class="text-center" id="event_feedback_set_status_category_name"
+                                                                    <td class="text-center"
+                                                                        id="event_feedback_set_status_category_name"
                                                                         name="event_feedback_set_status_category_name">
                                                                         Active
                                                                     </td>
                                                                     <td class="text-center">
                                                                         <button
                                                                             {{ $event_feedback_set->totalEvents == 0 ? null : 'disabled' }}
-                                                                            href="javascript:;" id="delete_event_feedback_set"
+                                                                            href="javascript:;"
+                                                                            id="delete_event_feedback_set"
                                                                             class="btn btn-danger mr-auto ml-2 waves-effect waves-themed font-weight-bold">DELETE</button>
                                                                     </td>
                                                                 </tr>

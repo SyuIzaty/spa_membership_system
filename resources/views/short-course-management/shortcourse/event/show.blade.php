@@ -11,6 +11,33 @@
         <div class="row">
             <div class="col-xl-12">
                 {{-- Start Update Form --}}
+
+                @if (Session::has('successNewApplication'))
+                    <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;width:100%;">
+                        <i class="icon fal fa-check-circle"></i>
+                        {{ Session::get('successNewApplication') }}
+                    </div>
+                @endif
+
+                @if (Session::has('failedNewApplication'))
+                    <div class="alert alert-danger" style="color: #5b0303; background-color: #ff6c6cc9;">
+                        <i class="icon fal fa-times-circle"></i>
+                        {{ Session::get('failedNewApplication') }}
+                    </div>
+                @endif
+
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <strong>Whoops!</strong> There were some
+                        problems with your
+                        input.<br><br>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <div class="panel-container show">
                     <div class="panel-content">
                         <div class="row row-md-12">
@@ -209,6 +236,13 @@
                                                                             name="payment_proof_input[]"
                                                                             accept="image/png, image/jpeg" multiple="" />
                                                                     </div>
+                                                                    @error('payment_proof_input')
+                                                                        <p style="color: red">
+                                                                            <strong> *
+                                                                                {{ $message }}
+                                                                            </strong>
+                                                                        </p>
+                                                                    @enderror
                                                                 </div>
                                                                 <hr class="mt-1 mb-2">
                                                                 <div class="form-group">

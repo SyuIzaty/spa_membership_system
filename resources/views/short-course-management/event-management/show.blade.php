@@ -32,7 +32,8 @@
                                     <a data-toggle="tab" class="nav-link" href="#general" role="tab">General</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a data-toggle="tab" class="nav-link" href="#specific" role="tab">Addtitional Info</a>
+                                    <a data-toggle="tab" class="nav-link" href="#specific" role="tab">Addtitional
+                                        Info</a>
                                 </li>
                                 <li class="nav-item">
                                     <a data-toggle="tab" class="nav-link" href="#setting" role="tab">Setting</a>
@@ -44,6 +45,13 @@
                                         <hr class="mt-2 mb-3">
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
+                                                @if (Session::has('successUpdateGeneral'))
+                                                    <div class="alert alert-success"
+                                                        style="color: #3b6324; background-color: #d3fabc;">
+                                                        <i class="icon fal fa-check-circle"></i>
+                                                        {{ Session::get('successUpdateGeneral') }}
+                                                    </div>
+                                                @endif
                                                 <form action="{{ url('/events/update/' . $event->id) }}" method="post"
                                                     name="form">
                                                     @csrf
@@ -356,7 +364,8 @@
                                                                         <hr class="mt-1 mb-2">
                                                                         <div id="form-fee">
                                                                             <div class="form-group">
-                                                                                <label class="form-label" for="name"><span
+                                                                                <label class="form-label"
+                                                                                    for="name"><span
                                                                                         class="text-danger">*</span>name</label>
                                                                                 <input class="form-control"
                                                                                     id="name-fee-add" name="name">
@@ -369,7 +378,8 @@
                                                                                 @enderror
                                                                             </div>
                                                                             <div class="form-group">
-                                                                                <label class="form-label" for="amount"><span
+                                                                                <label class="form-label"
+                                                                                    for="amount"><span
                                                                                         class="text-danger">*</span>amount</label>
                                                                                 <input type="number" step=".01"
                                                                                     class="form-control" id="amount_add"
@@ -497,7 +507,8 @@
                                                                             @enderror
                                                                         </div>
                                                                         <div class="form-group">
-                                                                            <label class="form-label" for="amount"><span
+                                                                            <label class="form-label"
+                                                                                for="amount"><span
                                                                                     class="text-danger">*</span>amount</label>
                                                                             <input type="number" step=".01"
                                                                                 class="form-control" id="amount_edit"
@@ -542,10 +553,11 @@
                                                                             id="form_group-promo_code-edit"
                                                                             name="form_group-promo_code-edit"
                                                                             style="display: none">
-                                                                            <label class="form-label" for="promo_code"><span
+                                                                            <label class="form-label"
+                                                                                for="promo_code"><span
                                                                                     class="text-danger">*</span>promo_code</label>
-                                                                            <input class="form-control" id="promo_code-edit"
-                                                                                name="promo_code">
+                                                                            <input class="form-control"
+                                                                                id="promo_code-edit" name="promo_code">
                                                                             @error('promo_code')
                                                                                 <p style="color: red">
                                                                                     <strong> *
@@ -631,7 +643,8 @@
                                                     <a href="javascript:;" data-toggle="modal" id="add-trainer"
                                                         class="btn btn-primary ml-auto mt-2 mr-2 waves-effect waves-themed"><i
                                                             class="ni ni-plus"> </i> Add Trainer</a>
-                                                    <div class="modal fade" id="crud-modal-add-trainer" aria-hidden="true">
+                                                    <div class="modal fade" id="crud-modal-add-trainer"
+                                                        aria-hidden="true">
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
                                                                 <div class="card-header">
@@ -774,7 +787,8 @@
                                                                             </div>
                                                                         </div>
                                                                         <hr class="mt-1 mb-2">
-                                                                        <div class="footer" id="add_trainer_footer">
+                                                                        <div class="footer"
+                                                                            id="add_trainer_footer">
                                                                             <button type="button"
                                                                                 class="btn btn-danger ml-auto float-right mr-2"
                                                                                 data-dismiss="modal"
@@ -980,7 +994,8 @@
                                                                             </div>
                                                                         </div>
                                                                         <hr class="mt-1 mb-2">
-                                                                        <div class="footer" id="add_contact_person_footer">
+                                                                        <div class="footer"
+                                                                            id="add_contact_person_footer">
                                                                             <button type="button"
                                                                                 class="btn btn-danger ml-auto float-right mr-2"
                                                                                 data-dismiss="modal"
@@ -1187,7 +1202,7 @@
                                                     <div class="col-sm-6 col-xl-3">
                                                         <div
                                                             class="p-3 bg-primary-500 rounded overflow-hidden position-relative text-white mb-g">
-                                                            <div class="">
+                                                            <div class="___class_+?263___">
                                                                 <h3 class="display-4 d-block l-h-n m-0 fw-500">
                                                                     {{ $statistics['wait_for_application_approval'] }}
                                                                     <small class="m-0 l-h-n">Wait for Applic.
@@ -1201,7 +1216,7 @@
                                                     <div class="col-sm-6 col-xl-3">
                                                         <div
                                                             class="p-3 bg-warning-500 rounded overflow-hidden position-relative text-white mb-g">
-                                                            <div class="">
+                                                            <div class="___class_+?269___">
                                                                 <h3 class="display-4 d-block l-h-n m-0 fw-500">
                                                                     {{ $statistics['wait_for_applicant_making_payment'] }}
                                                                     <small class="m-0 l-h-n">In progress of Make.
@@ -1215,11 +1230,12 @@
                                                     <div class="col-sm-6 col-xl-3">
                                                         <div
                                                             class="p-3 bg-success-500 rounded overflow-hidden position-relative text-white mb-g">
-                                                            <div class="">
+                                                            <div class="___class_+?275___">
                                                                 <h3 class="display-4 d-block l-h-n m-0 fw-500">
 
                                                                     {{ $statistics['wait_for_payment_verification'] }}
-                                                                    <small class="m-0 l-h-n">Wait for Pay. Confirm.</small>
+                                                                    <small class="m-0 l-h-n">Wait for Pay.
+                                                                        Confirm.</small>
                                                                 </h3>
                                                             </div>
                                                             <i class="ni ni-doc position-absolute pos-right pos-bottom opacity-15 mb-n5 mr-n6"
@@ -1229,7 +1245,7 @@
                                                     <div class="col-sm-6 col-xl-3">
                                                         <div
                                                             class="p-3 bg-info-500 rounded overflow-hidden position-relative text-white mb-g">
-                                                            <div class="">
+                                                            <div class="___class_+?281___">
                                                                 <h3 class="display-4 d-block l-h-n m-0 fw-500">
                                                                     {{ $statistics['ready_for_event'] }}
                                                                     <small class="m-0 l-h-n">Ready for Event</small>
@@ -1242,7 +1258,7 @@
                                                     <div class="col-sm-6 col-xl-3">
                                                         <div
                                                             class="p-3 bg-primary-500 rounded overflow-hidden position-relative text-white mb-g">
-                                                            <div class="">
+                                                            <div class="___class_+?287___">
                                                                 <h3 class="display-4 d-block l-h-n m-0 fw-500">
                                                                     {{ $statistics['attended_participant'] }}
                                                                     <small class="m-0 l-h-n">Attend</small>
@@ -1255,7 +1271,7 @@
                                                     <div class="col-sm-6 col-xl-3">
                                                         <div
                                                             class="p-3 bg-danger-500 rounded overflow-hidden position-relative text-white mb-g">
-                                                            <div class="">
+                                                            <div class="___class_+?293___">
                                                                 <h3 class="display-4 d-block l-h-n m-0 fw-500">
                                                                     {{ $statistics['not_attended_participant'] }}
                                                                     <small class="m-0 l-h-n">Not Attend</small>
@@ -1268,7 +1284,7 @@
                                                     <div class="col-sm-6 col-xl-3">
                                                         <div
                                                             class="p-3 bg-danger-500 rounded overflow-hidden position-relative text-white mb-g">
-                                                            <div class="">
+                                                            <div class="___class_+?299___">
                                                                 <h3 class="display-4 d-block l-h-n m-0 fw-500">
                                                                     {{ $statistics['cancelled_application'] }}
                                                                     <small class="m-0 l-h-n">Cancelled Applic.</small>
@@ -1282,10 +1298,11 @@
                                                     <div class="col-sm-6 col-xl-3">
                                                         <div
                                                             class="p-3 bg-danger-500 rounded overflow-hidden position-relative text-white mb-g">
-                                                            <div class="">
+                                                            <div class="___class_+?305___">
                                                                 <h3 class="display-4 d-block l-h-n m-0 fw-500">
                                                                     {{ $statistics['not_completed_feedback'] }}
-                                                                    <small class="m-0 l-h-n">Not Completed Feedback</small>
+                                                                    <small class="m-0 l-h-n">Not Completed
+                                                                        Feedback</small>
                                                                 </h3>
                                                             </div>
                                                             <i class="fal fa-clock position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n4"
@@ -1296,7 +1313,7 @@
                                                     <div class="col-sm-6 col-xl-3">
                                                         <div
                                                             class="p-3 bg-primary-500 rounded overflow-hidden position-relative text-white mb-g">
-                                                            <div class="">
+                                                            <div class="___class_+?311___">
                                                                 <h3 class="display-4 d-block l-h-n m-0 fw-500">
                                                                     {{ $statistics['completed_participation_process'] }}
                                                                     <small class="m-0 l-h-n">Completed</small>
@@ -1372,20 +1389,20 @@
                                                                                 name="editor_target_audience" rows="10"
                                                                                 class="ck-editor__editable ck-editor__editable_inline"> {{ $event->target_audience }} </textarea>
                                                                         </div>
-                                                                        <div class="tab-pane" id="objective_specific_tab"
-                                                                            role="tabpanel">
+                                                                        <div class="tab-pane"
+                                                                            id="objective_specific_tab" role="tabpanel">
                                                                             <textarea id="editor_objective"
                                                                                 name="editor_objective" rows="10"
                                                                                 class="ck-editor__editable ck-editor__editable_inline"> {{ $event->objective }} </textarea>
                                                                         </div>
-                                                                        <div class="tab-pane" id="outline_specific_tab"
-                                                                            role="tabpanel">
+                                                                        <div class="tab-pane"
+                                                                            id="outline_specific_tab" role="tabpanel">
                                                                             <textarea id="editor_outline"
                                                                                 name="editor_outline" rows="10"
                                                                                 class="ck-editor__editable ck-editor__editable_inline">{{ $event->outline }}</textarea>
                                                                         </div>
-                                                                        <div class="tab-pane" id="tentative_specific_tab"
-                                                                            role="tabpanel">
+                                                                        <div class="tab-pane"
+                                                                            id="tentative_specific_tab" role="tabpanel">
                                                                             <textarea id="editor_tentative"
                                                                                 name="editor_tentative" rows="10"
                                                                                 class="ck-editor__editable ck-editor__editable_inline">{{ $event->tentative }}</textarea>
@@ -1500,13 +1517,15 @@
                                                         <table class="table table-striped table-bordered">
                                                             <thead class="table-primary">
                                                                 <tr>
-                                                                    <th class="text-center" scope="col" style="width:20%">
+                                                                    <th class="text-center" scope="col"
+                                                                        style="width:20%">
                                                                         <h3>Title</h3>
                                                                     </th>
                                                                     <th class="text-center" scope="col">
                                                                         <h3>Value</h3>
                                                                     </th>
-                                                                    <th class="text-center" scope="col" style="width:20%">
+                                                                    <th class="text-center" scope="col"
+                                                                        style="width:20%">
                                                                         <h3>Action</h3>
 
                                                                     </th>
@@ -1516,7 +1535,8 @@
                                                             <tbody>
                                                                 <tr>
                                                                     <td class="text-center">Status</td>
-                                                                    <td class="text-center" id="event_status_category_name"
+                                                                    <td class="text-center"
+                                                                        id="event_status_category_name"
                                                                         name="event_status_category_name">
                                                                         {{ $event->event_status_category->name }}</td>
                                                                     <td class="text-center">
@@ -1556,7 +1576,8 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td class="text-center">Status</td>
-                                                                    <td class="text-center" id="event_status_category_name"
+                                                                    <td class="text-center"
+                                                                        id="event_status_category_name"
                                                                         name="event_status_category_name">
                                                                         Active
                                                                     </td>

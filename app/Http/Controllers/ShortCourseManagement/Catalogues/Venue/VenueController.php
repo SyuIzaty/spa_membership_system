@@ -150,7 +150,7 @@ class VenueController extends Controller
             'updated_by' => Auth::user()->id,
         ]);
 
-        return Redirect()->back()->with('messageVenueBasicDetails', 'Basic Details Update Successfully');
+        return Redirect()->back()->with('successUpdate', 'Venue Information Updated Successfully');
     }
 
     public function destroy($id)

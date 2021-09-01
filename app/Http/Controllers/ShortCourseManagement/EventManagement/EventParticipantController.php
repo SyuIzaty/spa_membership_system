@@ -500,11 +500,6 @@ class EventParticipantController extends Controller
 
     public function store(Request $request, $event_id)
     {
-        Validator::extend('check_array', function ($attribute, $value, $parameters, $validator) {
-            return count(array_filter($value, function ($var) use ($parameters) {
-                return ($var && $var >= $parameters[0]);
-            }));
-        });
 
         $validated = $request->validate([
             'ic_input' => 'required',
@@ -514,7 +509,7 @@ class EventParticipantController extends Controller
             'fee_id' => 'required',
             'representative_ic_input'  => 'required',
             'representative_fullname' => 'required',
-            'payment_proof_input' => 'check_array:1',
+            'payment_proof_input' => 'present|array',
 
         ], [
             'ic_input.required' => 'Please insert IC of the participant',
@@ -527,7 +522,14 @@ class EventParticipantController extends Controller
             'representative_fullname.required' => 'Please insert the representative fullname of the participant',
             'representative_ic_input.required' => "Please insert the representative's IC of the participant",
             'representative_fullname.min' => "The representative's fullname should have at least 3 characters",
+            'payment_proof_input.present' => "At least one payment proof is required",
         ]);
+
+        // $validator = Validator::make($request->all(), $this->rules());
+
+        // if ($validator->fails()) {
+        //     return Redirect()->back()->with('failedNewApplication', 'New Application Failed. Please try again.');
+        // }
 
         // dd($request->file('payment_proof_input'));
         //
@@ -679,9 +681,9 @@ class EventParticipantController extends Controller
                 $message->to($request->email);
             });
 
-            return Redirect()->back()->with('messageNewApplication', 'New participant applied successfully');
+            return Redirect()->back()->with('successNewApplication', 'New Application Created successfully');
         } else {
-            return Redirect()->back()->with('messageNewApplication', 'New participant application fail. Please try again.');
+            return Redirect()->back()->with('failedNewApplication', 'New Application Failed. Please try again.');
         }
     }
     public function edit($id)
@@ -1401,7 +1403,7 @@ class EventParticipantController extends Controller
 
             // $participant = Participant::where('ic', $request->ic)->first();
 
-            return Redirect()->back();
+            return Redirect()->back()->with('successPaymentProofUpdate', 'Payment Proof Updated and Verification Requested successfully');
         }
         $eventParticipantPaymentProof = EventParticipantPaymentProof::where([['event_participant_id', '=', $request->event_participant_id]])->get();
         $eventParticipant = EventParticipant::find($request->event_participant_id)->load(['participant']);
@@ -1415,8 +1417,8 @@ class EventParticipantController extends Controller
         $request->ic = $eventParticipant->participant->ic;
 
         $participant = Participant::where('ic', $request->ic)->first();
-
-        return Redirect()->back();
+        return Redirect()->back()->with('successPaymentProofUpdate', 'Payment Proof Verification Requested Successfully with No New Payment Proof Uploaded');
+        // return Redirect()->back()->with('failedPaymentProofUpdate', 'Fail to Update the Payment Proof');
     }
 
     public function requestVerification($event_id, $participant_id)

@@ -17,12 +17,18 @@
                                 data-offset="0,10" data-original-title="Collapse"></button>
                             <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip"
                                 data-offset="0,10" data-original-title="Fullscreen"></button>
-                            <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10"
-                                data-original-title="Close"></button>
+                            <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip"
+                                data-offset="0,10" data-original-title="Close"></button>
                         </div>
                     </div>
                     <div class="panel-container show">
                         <div class="panel-content">
+                            @if (Session::has('success'))
+                                <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;">
+                                    <i class="icon fal fa-check-circle"></i>
+                                    {{ Session::get('success') }}
+                                </div>
+                            @endif
                             <span id="intake_fail"></span>
                             @csrf
                             @if (session()->has('message'))
@@ -31,7 +37,8 @@
                                 </div>
                             @endif
                             <div class="table-responsive">
-                                <table class="table table-bordered table-hover table-striped w-100 m-0 table-sm" id="shortcourse">
+                                <table class="table table-bordered table-hover table-striped w-100 m-0 table-sm"
+                                    id="shortcourse">
                                     <thead>
                                         <tr class="bg-primary-50 text-center">
                                             <th>ID</th>

@@ -481,7 +481,7 @@ class EventController extends Controller
             'max_participant' => $request->max_participant,
         ]);
 
-        return Redirect()->back()->with('messageEventBasicDetails', 'Basic Details Update Successfully');
+        return Redirect()->back()->with('successUpdateGeneral', 'Basic Information Updated Successfully');
     }
     public function updateFee(Request $request, $id)
     {
@@ -515,7 +515,7 @@ class EventController extends Controller
             'is_active' => 1,
         ]);
 
-        return Redirect()->back()->with('messageEventBasicDetails', 'Basic Details Update Successfully');
+        return Redirect()->back()->with('successUpdateGeneral', 'Fee Updated Successfully');
     }
 
     public function storeFee(Request $request, $id)
@@ -550,7 +550,7 @@ class EventController extends Controller
             'is_active' => 1,
         ]);
 
-        return Redirect()->back()->with('messageEventBasicDetails', 'Basic Details Update Successfully');
+        return Redirect()->back()->with('successUpdateGeneral', 'New Fee Created Successfully');
     }
 
 
@@ -564,7 +564,7 @@ class EventController extends Controller
         $exist->save();
         $exist->delete();
 
-        return Redirect()->back()->with('messageEventBasicDetails', 'Basic Details Update Successfully');
+        return Redirect()->back()->with('successUpdateGeneral', 'A Fee Deleted Successfully Successfully');
     }
 
     public function detachedTrainer($EventTrainer_id)
@@ -576,7 +576,7 @@ class EventController extends Controller
         $exist->save();
         $exist->delete();
 
-        return Redirect()->back()->with('messageEventBasicDetails', 'Basic Details Update Successfully');
+        return Redirect()->back()->with('successUpdateGeneral', 'A Trainer Removed Successfully');
     }
 
     public function detachedContactPerson($event_contact_person_id)
@@ -588,7 +588,7 @@ class EventController extends Controller
         $exist->save();
         $exist->delete();
 
-        return Redirect()->back()->with('messageEventBasicDetails', 'Basic Details Update Successfully');
+        return Redirect()->back()->with('successUpdateGeneral', 'A Contact Person Removed Successfully');
     }
 
 
@@ -602,7 +602,7 @@ class EventController extends Controller
         $exist->save();
         $exist->delete();
 
-        return Redirect()->back()->with('messageEventBasicDetails', 'Basic Details Update Successfully');
+        return Redirect()->back()->with('messageEventBasicDetails', 'A Short Course Removed Successfully');
     }
 
     public function storeTrainer(Request $request, $event_id)
@@ -666,7 +666,7 @@ class EventController extends Controller
         // ]);
 
 
-        return Redirect()->back()->with('messageEventBasicDetails', 'Basic Details Update Successfully');
+        return Redirect()->back()->with('successUpdateGeneral', 'A Trainer Updated Successfully');
     }
 
     public function storeContactPerson(Request $request, $event_id)
@@ -717,7 +717,7 @@ class EventController extends Controller
         ]);
 
 
-        return Redirect()->back()->with('messageEventBasicDetails', 'Basic Details Update Successfully');
+        return Redirect()->back()->with('successUpdateGeneral', 'A Contact Person Updated Successfully');
     }
     public function storeShortCourse(Request $request, $id)
     {
@@ -736,7 +736,7 @@ class EventController extends Controller
             'is_active' => 1,
         ]);
 
-        return Redirect()->back()->with('messageEventBasicDetails', 'Basic Details Update Successfully');
+        return Redirect()->back()->with('successUpdateGeneral', 'A Short Course Updated Successfully');
     }
     public function destroy($id)
     {

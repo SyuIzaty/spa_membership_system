@@ -252,7 +252,7 @@ class FeedbackController extends Controller
             'updated_by' => Auth::user()->id,
         ]);
 
-        return Redirect()->back()->with('messageEventFeedbackSets', 'Event Feedback Set Update Successfully');
+        return Redirect()->back()->with('successUpdate', 'Event Feedback Set Information Updated Successfully');
     }
 
     public function destroy($id)

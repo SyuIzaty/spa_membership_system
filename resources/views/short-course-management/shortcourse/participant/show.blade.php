@@ -57,6 +57,19 @@
                 </div>
                 <div class="card my-2">
                     <div class="card-body">
+
+                        @if (Session::has('successPaymentProofUpdate'))
+                            <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;">
+                                <i class="icon fal fa-check-circle"></i>
+                                {{ Session::get('successPaymentProofUpdate') }}
+                            </div>
+                        @endif
+                        @if (Session::has('failedPaymentProofUpdate'))
+                            <div class="alert alert-danger" style="color: #5b0303; background-color: #ff6c6cc9;">
+                                <i class="icon fal fa-times-circle"></i>
+                                {{ Session::get('failedPaymentProofUpdate') }}
+                            </div>
+                        @endif
                         <div class="panel-container show">
                             <div class="panel-content">
                                 <span id="intake_fail"></span>
