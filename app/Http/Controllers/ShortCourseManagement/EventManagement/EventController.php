@@ -444,7 +444,7 @@ class EventController extends Controller
         foreach ($event->events_contact_persons as $event_contact_person) {
             $event_contact_person->contact_person->user = User::find($event_contact_person->contact_person->user_id);
         }
-        // dd($event);
+        // dd($event->fees);
         //
         return view('short-course-management.event-management.show', compact('event', 'venues', 'shortcourses', 'users', 'statistics', 'eventStatusCategories', 'event_feedback_sets'));
     }
@@ -526,15 +526,17 @@ class EventController extends Controller
             'name' => 'required|max:255',
             'amount_add' => 'required',
             'is_base_fee_select_add_input' => 'required',
+            'promo_code'=>'required',
         ], [
             'name.required' => 'Please insert fee name',
             'name.max' => 'Name exceed maximum length',
             'amount_add.required' => 'Please insert fee amount',
             'is_base_fee_select_add_input.required' => 'Please insert fee type',
+            'promo_code.required' => 'Please insert promo code for the fee',
         ]);
 
         if ($request->is_base_fee_select_add_input == 0) {
-            $promo_code = $request->promo_code_add;
+            $promo_code = $request->promo_code;
         } else {
             $promo_code = null;
         }
@@ -564,7 +566,7 @@ class EventController extends Controller
         $exist->save();
         $exist->delete();
 
-        return Redirect()->back()->with('successUpdateGeneral', 'A Fee Deleted Successfully Successfully');
+        return Redirect()->back()->with('successUpdateGeneral', 'A Fee Deleted Successfully');
     }
 
     public function detachedTrainer($EventTrainer_id)

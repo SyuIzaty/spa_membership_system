@@ -52,6 +52,18 @@
                                                         {{ Session::get('successUpdateGeneral') }}
                                                     </div>
                                                 @endif
+
+                                                @if ($errors->any())
+                                                    <div class="alert alert-danger">
+                                                        <strong>Whoops!</strong> There were some problems with your
+                                                        input.<br><br>
+                                                        <ul>
+                                                            @foreach ($errors->all() as $error)
+                                                                <li>{{ $error }}</li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </div>
+                                                @endif
                                                 <form action="{{ url('/events/update/' . $event->id) }}" method="post"
                                                     name="form">
                                                     @csrf
@@ -430,8 +442,7 @@
                                                                                         class="text-danger">*</span>Promo
                                                                                     Code</label>
                                                                                 <input class="form-control"
-                                                                                    id="promo_code_add"
-                                                                                    name="promo_code_add">
+                                                                                    id="promo_code_add" name="promo_code">
                                                                                 @error('promo_code')
                                                                                     <p style="color: red">
                                                                                         <strong> *
@@ -555,7 +566,8 @@
                                                                             style="display: none">
                                                                             <label class="form-label"
                                                                                 for="promo_code"><span
-                                                                                    class="text-danger">*</span>promo_code</label>
+                                                                                    class="text-danger">*</span>promo
+                                                                                code</label>
                                                                             <input class="form-control"
                                                                                 id="promo_code-edit" name="promo_code">
                                                                             @error('promo_code')
@@ -1741,7 +1753,6 @@
                     } else {
                         $("#form_group-promo_code-edit").hide();
                     }
-
                     $('.modal-body #fee_id').val(fee_id);
                     $('.modal-body #name_fee_edit').val(name);
                     $('.modal-body #amount_edit').val(amount);
