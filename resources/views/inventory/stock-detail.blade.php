@@ -238,6 +238,7 @@
                                                             <th style="vertical-align: middle">L.O. Number</th>
                                                             <th style="vertical-align: middle">Invoice Number</th>
                                                             <th style="vertical-align: middle">Purchase Date</th>
+                                                            <th style="vertical-align: middle">Supply Type</th>
                                                             <th style="vertical-align: middle">Supply To</th>
                                                             <th style="vertical-align: middle">Reason</th>
                                                             <th style="vertical-align: middle">Created By</th>
@@ -257,6 +258,7 @@
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Invoice Number"></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Purchase Date"></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Reason"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Supply Type"></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Supply To"></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Created By"></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Created At"></td>
@@ -288,7 +290,16 @@
                                                         <td>{{ isset($list->lo_no) ? $list->lo_no : '--'}}</td>
                                                         <td>{{ isset($list->io_no) ? $list->io_no : '--'}}</td>
                                                         <td>{{ isset($list->purchase_date) ? date('Y-m-d', strtotime($list->purchase_date)) : '--' }}</td>
-                                                        <td>{{ isset($list->users->name) ? strtoupper($list->users->name) : '--' }}</td>
+                                                        @if($list->supply_type == 'INT')
+                                                            <td>INTERNAL</td>
+                                                        @else
+                                                            <td>EXTERNAL</td>
+                                                        @endif
+                                                        @if($list->supply_type == 'INT')
+                                                            <td>{{ isset($list->users->name) ? strtoupper($list->users->name) : '--' }}</td>
+                                                        @else
+                                                            <td>{{ isset($list->ext_supply_to) ? strtoupper($list->ext_supply_to) : '--' }}</td>
+                                                        @endif
                                                         <td>{{ isset($list->reason) ? $list->reason : '--'}}</td>
                                                         <td>{{ isset($list->user->name) ? strtoupper($list->user->name) : '--' }}</td>
                                                         <td>{{ isset($list->created_at) ? date('Y-m-d |  h:i A', strtotime($list->created_at)) : '--' }}</td>
@@ -298,7 +309,7 @@
                                                                     data-price="{{$list->unit_price}}" data-purchase="{{$list->purchase_date}}" data-trans="{{$list->trans_date}}" data-remark="{{$list->remark}}" class="btn btn-sm btn-success"><i class="fal fa-pencil"></i></a>
                                                             @else
                                                                 <a href="" data-target="#crud-modalOut" data-toggle="modal" data-id="{{$list->id}}" data-stock="{{$list->stock_out}}" data-reason="{{$list->reason}}" data-supply="{{$list->supply_to}}" 
-                                                                    data-trans="{{$list->trans_date}}" class="btn btn-sm btn-danger"><i class="fal fa-pencil"></i></a>
+                                                                    data-extsupply="{{$list->ext_supply_to}}" data-trans="{{$list->trans_date}}" data-type="{{$list->supply_type}}"  class="btn btn-sm btn-danger"><i class="fal fa-pencil"></i></a>
                                                             @endif
                                                             <a href="{{ action('StockController@deleteTrans', ['id' => $list->id, 'stock_id' => $list->stock_id]) }}" class="btn btn-warning btn-sm"><i class="fal fa-trash"></i></a>
                                                         </td>
@@ -429,15 +440,35 @@
                                                 @enderror
                                         </div>
                                         <div class="form-group">
+                                            <td width="15%"><label class="form-label" for="supply_type"><span class="text-danger">*</span> Supply Type :</label></td>
+                                            <td colspan="7">
+                                                <select class="form-control supply_type" id="supply_type" name="supply_type" required>
+                                                    <option value="">Please Select</option>
+                                                    <option value="INT" {{ old('supply_type') == 'INT' ? 'selected':''}} >Internal</option>
+                                                    <option value="EXT" {{ old('supply_type') == 'EXT' ? 'selected':''}} >External</option>
+                                                </select>
+                                                @error('supply_type')
+                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                @enderror
+                                        </div>
+                                        <div class="form-group int">
                                             <td width="15%"><label class="form-label" for="supply_to"><span class="text-danger">*</span> Supply To :</label></td>
                                             <td colspan="7">
-                                                <select class="form-control supply_to" name="supply_to" id="supply_to" required>
+                                                <select class="form-control supply_to" name="supply_to" id="supply_to">
                                                     <option value=""> Select User </option>
                                                     @foreach ($user as $usr) 
                                                         <option value="{{ $usr->id }}" {{ old('supply_to') ==  $usr->id  ? 'selected' : '' }}>{{ $usr->name }}</option>
                                                     @endforeach
                                                 </select>
                                                 @error('supply_to')
+                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                @enderror
+                                        </div>
+                                        <div class="form-group ext">
+                                            <td width="15%"><label class="form-label" for="ext_supply_to"><span class="text-danger">*</span> Supply To :</label></td>
+                                            <td colspan="7">
+                                                <input value="{{ old('ext_supply_to') }}" class="form-control" id="ext_supply_to" name="ext_supply_to" placeholder="Name/Company">
+                                                @error('ext_supply_to')
                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                 @enderror
                                         </div>
@@ -563,15 +594,35 @@
                                             @enderror
                                     </div>
                                     <div class="form-group">
-                                        <td width="15%"><label class="form-label" for="supply_to"><span class="text-danger">*</span> Supply To :</label></td>
+                                        <td width="15%"><label class="form-label" for="type"><span class="text-danger">*</span> Supply Type :</label></td>
                                         <td colspan="7">
-                                            <select class="form-control supply" name="supply_to" id="supply_to" required>
-                                                <option value=""> Select User </option>
+                                            <select class="form-control type" name="type" id="type" required disabled>
+                                                <option value="">Please Select</option>
+                                                <option value="INT" {{ old('type') ==  'INT'  ? 'selected' : '' }}>Internal</option>
+                                                <option value="EXT" {{ old('type') ==  'EXT'  ? 'selected' : '' }}>External</option>
+                                            </select>
+                                            @error('type')
+                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                            @enderror
+                                    </div>
+                                    <div class="form-group ints">
+                                        <td width="15%"><label class="form-label" for="supply"><span class="text-danger">*</span> Supply To :</label></td>
+                                        <td colspan="7">
+                                            <select class="form-control supply" name="supply" id="supply">
+                                                <option value=""> Please Select </option>
                                                 @foreach ($user as $usr) 
-                                                    <option value="{{ $usr->id }}" {{ old('supply_to') ==  $usr->id  ? 'selected' : '' }}>{{ $usr->name }}</option>
+                                                    <option value="{{ $usr->id }}" {{ old('supply') ==  $usr->id  ? 'selected' : '' }}>{{ $usr->name }}</option>
                                                 @endforeach
                                             </select>
-                                            @error('supply_to')
+                                            @error('supply')
+                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                            @enderror
+                                    </div>
+                                    <div class="form-group exts">
+                                        <td width="15%"><label class="form-label" for="extsupply"><span class="text-danger">*</span> Supply To :</label></td>
+                                        <td colspan="7">
+                                            <input value="{{ old('extsupply') }}" class="form-control extsupply" id="extsupply" name="extsupply" placeholder="Name/Company">
+                                            @error('extsupply')
                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                                             @enderror
                                     </div>
@@ -608,6 +659,33 @@
     {
         $('#status').select2();
 
+        // Display TransOut
+            $(".int").hide();
+
+            $( "#supply_type" ).change(function() {
+                var val = $("#supply_type").val();
+                if(val=="INT"){
+                    $(".int").show();
+                    $(".ext").hide();
+                } 
+            });
+
+            $(".ext").hide();
+
+            $( "#supply_type" ).change(function() {
+                var val = $("#supply_type").val();
+                if(val=="EXT"){
+                    $(".ext").show();
+                    $(".int").hide();
+                } 
+            });
+
+            $('.supply_type').val('{{ old('supply_type') }}'); 
+            $(".supply_type").change(); 
+            $('.supply_to').val('{{ old('supply_to') }}');
+            $('.ext_supply_to').val('{{ old('ext_supply_to') }}');
+        //
+
         $('#new').click(function () {
             $('#crud-modal').modal('show');
         });
@@ -616,7 +694,7 @@
             $('#crud-modals').modal('show');
         });
 
-        $('#supply_to').select2({ 
+        $('.supply_to, .supply_type').select2({ 
             dropdownParent: $('#crud-modals') 
         }); 
 
@@ -647,14 +725,36 @@
             var id = button.data('id') 
             var stock = button.data('stock') 
             var reason = button.data('reason') 
+            var type = button.data('type')
             var supply = button.data('supply')
+            var extsupply = button.data('extsupply')
             var trans = button.data('trans')
 
             $('.modal-body #ids').val(id); 
             $('.modal-body .stock').val(stock); 
             $('.modal-body .reason').val(reason); 
+            $('.modal-body .type').val(type); 
             $('.modal-body .supply').val(supply); 
+            $('.modal-body .extsupply').val(extsupply); 
             $('.modal-body .trans').val(trans); 
+
+            $('.supply, .type').select2({ 
+                dropdownParent: $('#crud-modalOut') 
+            });
+
+            $(".ints").hide();
+            $(".exts").hide();
+
+            if(type=="INT")
+            {
+                $(".ints").show();
+                $(".exts").hide();
+            }
+            if(type=="EXT")
+            {
+                $(".exts").show();
+                $(".ints").hide();
+            }
         });
 
     });

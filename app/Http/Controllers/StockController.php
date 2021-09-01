@@ -175,7 +175,7 @@ class StockController extends Controller
         $image = StockImage::where('stock_id', $id)->get();
         $transaction = StockTransaction::where('stock_id', $id)->first();
         $department = AssetDepartment::all();
-        $user = User::all();
+        $user = User::orderBy('name')->get();
 
         $total_bal = 0;
         foreach($stock->transaction as $list){
@@ -284,24 +284,52 @@ class StockController extends Controller
         foreach($stock->transaction as $list){
             $total_bal += ($list->stock_in - $list->stock_out);
         }
-         
-        $request->validate([
-            'stock_out'        => 'required|numeric|lte:'.$total_bal,
-            'reason'           => 'required',
-            'trans_date'       => 'required',
-            'supply_to'        => 'required',
-        ]);
+        
+        if($request->supply_type == 'INT') {
 
-        $stockOut = StockTransaction::create([
-            'stock_id'         => $request->id,
-            'stock_in'         => '0',
-            'stock_out'        => $request->stock_out,
-            'created_by'       => $user->id,
-            'reason'           => $request->reason,
-            'supply_to'        => $request->supply_to,
-            'trans_date'       => $request->trans_date,
-            'status'           => '0',
-        ]);
+            $request->validate([
+                'stock_out'        => 'required|numeric|lte:'.$total_bal,
+                'reason'           => 'required',
+                'trans_date'       => 'required',
+                'supply_to'        => 'required',
+                'supply_type'      => 'required',
+            ]);
+
+            $stockOut = StockTransaction::create([
+                'stock_id'         => $request->id,
+                'stock_in'         => '0',
+                'stock_out'        => $request->stock_out,
+                'created_by'       => $user->id,
+                'reason'           => $request->reason,
+                'supply_type'      => $request->supply_type,
+                'supply_to'        => $request->supply_to,
+                'trans_date'       => $request->trans_date,
+                'status'           => '0',
+            ]);
+        }
+
+        if($request->supply_type == 'EXT') {
+
+            $request->validate([
+                'stock_out'        => 'required|numeric|lte:'.$total_bal,
+                'reason'           => 'required',
+                'trans_date'       => 'required',
+                'supply_type'      => 'required',
+                'ext_supply_to'    => 'required',
+            ]);
+
+            $stockOut = StockTransaction::create([
+                'stock_id'         => $request->id,
+                'stock_in'         => '0',
+                'stock_out'        => $request->stock_out,
+                'created_by'       => $user->id,
+                'reason'           => $request->reason,
+                'supply_type'      => $request->supply_type,
+                'ext_supply_to'    => $request->ext_supply_to,
+                'trans_date'       => $request->trans_date,
+                'status'           => '0',
+            ]);
+        }
 
         Session::flash('noty', 'Transaction Out Details Successfully Updated');
         return redirect('stock-detail/'.$request->id);
@@ -341,20 +369,41 @@ class StockController extends Controller
         $user = Auth::user();
         $stock = StockTransaction::where('id', $request->ids)->first();
 
-        $request->validate([
-            'stock_out'        => 'required',
-            'reason'           => 'required',
-            'trans_date'       => 'required',
-            'supply_to'        => 'required',
-        ]);
+        if($stock->supply_type == 'INT') {
 
-        $stock->update([
-            'stock_in'         => '0',
-            'stock_out'        => $request->stock_out,
-            'reason'           => $request->reason,
-            'supply_to'        => $request->supply_to,
-            'trans_date'       => $request->trans_date,
-        ]);
+            $request->validate([
+                'stock_out'        => 'required',
+                'reason'           => 'required',
+                'trans_date'       => 'required',
+                'supply'           => 'required',
+            ]);
+
+            $stock->update([
+                'stock_in'         => '0',
+                'stock_out'        => $request->stock_out,
+                'reason'           => $request->reason,
+                'supply_to'        => $request->supply,
+                'trans_date'       => $request->trans_date,
+            ]);
+        }
+        
+        if($stock->supply_type == 'EXT') {
+
+            $request->validate([
+                'stock_out'        => 'required',
+                'reason'           => 'required',
+                'trans_date'       => 'required',
+                'extsupply'        => 'required',
+            ]);
+
+            $stock->update([
+                'stock_in'         => '0',
+                'stock_out'        => $request->stock_out,
+                'reason'           => $request->reason,
+                'ext_supply_to'    => $request->extsupply,
+                'trans_date'       => $request->trans_date,
+            ]);
+        }
 
         Session::flash('notyOut', 'Stock Transaction Successfully Updated');
         return redirect('stock-detail/'.$stock->stock_id);

@@ -5,12 +5,12 @@
     <div class="row">
         <div class="col-xl-12" style="padding: 50px; margin-bottom: 20px">
                 
-                <center><img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="280" alt="INTEC" style="margin-top: -40px"></center><br>
+                <center><img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="280" alt="INTEC"></center><br>
 
-                <div align="left">
-                    <h4 style="margin-top: -25px; margin-bottom: -15px"><b> ASSET ID : #{{ $asset->id}}</b></h4>
+                <div align="center">
+                    <h4 style="margin-top: -25px; margin-bottom: -15px"><b> ASSET {{ $asset->asset_code}} - {{ $asset->asset_name}} INFO</b></h4>
                 </div>
-
+                <br>
                 <table id="asset" class="table table-bordered table-hover table-striped w-100 mb-1">
                     <thead>
                         <tr>
@@ -28,18 +28,24 @@
                         </tr>
                         <tr>
                             <div class="form-group">
+                                <td width="15%"><label class="form-label" for="asset_code">Code Type : </label></td>
+                                <td colspan="3">{{ $asset->codeType->code_name ?? '--' }}</td>
                                 <td width="15%"><label class="form-label" for="asset_code">Asset Code : </label></td>
                                 <td colspan="3">{{ $asset->asset_code ?? '--' }}</td>
+                            </div>
+                        </tr>
+                        <tr>
+                            <div class="form-group">
                                 <td width="15%"><label class="form-label" for="finance_code">Asset Code (Finance):</label></td>
                                 <td colspan="3">{{ $asset->finance_code ?? '--' }}</td>
+                                <td width="15%"><label class="form-label" for="serial_no">Serial No. : </label></td>
+                                <td colspan="3">{{ $asset->serial_no ?? '--' }}</td>
                             </div>
                         </tr>
                         <tr>
                             <div class="form-group">
                                 <td width="15%"><label class="form-label" for="asset_name">Asset Name:</label></td>
-                                <td colspan="3">{{ $asset->asset_name ?? '--' }}</td>
-                                <td width="15%"><label class="form-label" for="serial_no">Serial No. : </label></td>
-                                <td colspan="3">{{ $asset->serial_no ?? '--' }}</td>
+                                <td colspan="6">{{ $asset->asset_name ?? '--' }}</td>
                             </div>
                         </tr>
                         <tr>
@@ -54,10 +60,10 @@
                             <div class="form-group">
                                 <td width="15%"><label class="form-label" for="status"> Status:</label></td>
                                 <td colspan="3">
-                                    @if($asset->status == '1') 
-                                        ACTIVE 
-                                    @else 
-                                        INACTIVE 
+                                    {{ isset($asset->assetStatus->status_name) ? strtoupper($asset->assetStatus->status_name) : '--' }}
+                                    <br><br>
+                                    @if($asset->status == '2' || $asset->status == '3')
+                                        {{$asset->assetStatus->status_name}} Date : {{ date('d-m-Y', strtotime($asset->inactive_date)) ?? '--' }}
                                     @endif
                                 </td>
                                 <td width="15%"><label class="form-label" for="status"> Availability:</label></td>
@@ -68,14 +74,16 @@
                             <div class="form-group">
                                 <td width="15%"><label class="form-label" for="custodian_id"> Current Custodian : </label></td>
                                 <td colspan="3">{{ $asset->custodians->name ?? '--' }}</td>
-                                <td width="15%"><label class="form-label" for="storage_location"> Storage:</label></td>
-                                <td colspan="3">{{ $asset->storage_location ?? '--' }}</td>
+                                <td width="15%"><label class="form-label" for="created_by"> Created By : </label></td>
+                                <td colspan="3">{{ $asset->user->name ?? '--' }}</td>
                             </div>
                         </tr>
                         <tr>
                             <div class="form-group">
+                                <td width="15%"><label class="form-label" for="storage_location"> Location/Storage:</label></td>
+                                <td colspan="3">{{ $asset->storage_location ?? '--' }}</td>
                                 <td width="15%"><label class="form-label" for="custodian_id"> Set Package : </label></td>
-                                <td colspan="6">
+                                <td colspan="3">
                                     @if($asset->set_package == 'Y') 
                                         YES 
                                     @else 
@@ -84,19 +92,33 @@
                                 </td>
                             </div>
                         </tr>
-                        @if($asset->set_package == 'Y')
+                    </thead>
+                </table>
+
+                @if($asset->set_package == 'Y')
+                    <table id="assets" class="table table-bordered table-hover w-100 mb-1">
+                        <thead style="background-color: #f7f7f7" class="text-center">
+                            <tr>
+                                <td>No.</td>
+                                <td>Package Asset Type</td>
+                                <td>Package Serial No.</td>
+                                <td>Package Model</td>
+                                <td>Package Brand</td>
+                            </tr>
+                        </thead>
+                        <tbody>
                             @foreach ($set as $sets)
                                 <tr align="center">
                                     <td>{{ $num++ }}</td>
-                                    <td colspan="2">{{ $sets->type->asset_type }}</td>
+                                    <td>{{ $sets->type->asset_type }}</td>
                                     <td>{{ $sets->serial_no }}</td>
                                     <td>{{ $sets->model }}</td>
                                     <td>{{ $sets->brand }}</td>
                                 </tr>
                             @endforeach
-                        @endif
-                    </thead>
-                </table>
+                        </tbody>
+                    </table>
+                @endif
 
                 <table id="asset" class="table table-bordered table-hover table-striped w-100 mb-1">
                     <thead>

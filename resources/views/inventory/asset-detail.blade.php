@@ -36,6 +36,10 @@
                                             <i class="fal fa-list"></i>
                                             <span class="hidden-sm-down ml-1"> PURCHASE INFO</span>
                                         </a>
+                                        <a class="nav-link mb-2" id="track-tab" data-toggle="pill" href="#track" role="tab" aria-controls="track" aria-selected="false" style="border: 1px solid;">
+                                            <i class="fal fa-road"></i>
+                                            <span class="hidden-sm-down ml-1"> ASSET TRAIL</span>
+                                        </a>
                                         <a class="nav-link mb-2" id="custodian-tab" data-toggle="pill" href="#custodian" role="tab" aria-controls="custodian" aria-selected="false" style="border: 1px solid;">
                                             <i class="fal fa-book"></i>
                                             <span class="hidden-sm-down ml-1"> CUSTODIAN TRACK</span>
@@ -65,11 +69,11 @@
                                                                         <p style="margin-bottom: -15px"><span class="text-danger">*</span> Required fields</p>
                                                                         <tr>
                                                                             <div class="form-group">
-                                                                                <td width="15%"><label class="form-label" for="department_id"><span class="text-danger">*</span> Department : </label></td>
+                                                                                <td width="15%"><label class="form-label" for="department_id"> Department : </label></td>
                                                                                 <td colspan="3">
                                                                                     <input class="form-control" id="department_id" style="cursor:context-menu" name="department_id" value="{{ strtoupper($asset->type->department->department_name) }}" readonly>
                                                                                 </td>
-                                                                                <td width="15%"><label class="form-label" for="asset_type"><span class="text-danger">*</span> Asset Type : </label></td>
+                                                                                <td width="15%"><label class="form-label" for="asset_type"> Asset Type : </label></td>
                                                                                 <td colspan="3">
                                                                                     <input class="form-control" id="asset_type" style="cursor:context-menu" name="asset_type" value="{{ $asset->type->asset_type }}" readonly>
                                                                                 </td>
@@ -77,7 +81,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <div class="form-group">
-                                                                                <td width="15%"><label class="form-label" for="asset_code"><span class="text-danger">*</span> Asset Code : </label></td>
+                                                                                <td width="15%"><label class="form-label" for="asset_code"> Asset Code : </label></td>
                                                                                 <td colspan="3">
                                                                                     <input class="form-control" id="asset_code" style="cursor:context-menu" name="asset_code" value="{{ $asset->asset_code }}" readonly>
                                                                                 </td>
@@ -92,6 +96,18 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <div class="form-group">
+                                                                                <td width="15%"><label class="form-label" for="asset_code_type"><span class="text-danger">*</span> Code Type:</label></td>
+                                                                                <td colspan="3">
+                                                                                    <select class="form-control asset_code_type" name="asset_code_type" id="asset_code_type">
+                                                                                        <option value="">Please Select</option>
+                                                                                        @foreach ($codeType as $codeTypes) 
+                                                                                            <option value="{{ $codeTypes->id }}" {{ $asset->asset_code_type == $codeTypes->id ? 'selected="selected"' : '' }}>{{ $codeTypes->id }} - {{ $codeTypes->code_name }}</option>
+                                                                                        @endforeach
+                                                                                    </select>
+                                                                                    @error('asset_code_type')
+                                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                    @enderror
+                                                                                </td>
                                                                                 <td width="15%"><label class="form-label" for="asset_name"><span class="text-danger">*</span> Asset Name:</label></td>
                                                                                 <td colspan="3">
                                                                                     <input class="form-control" id="asset_name" name="asset_name" value="{{ $asset->asset_name }}" style="text-transform: uppercase">
@@ -99,6 +115,10 @@
                                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                     @enderror
                                                                                 </td>
+                                                                            </div>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <div class="form-group">
                                                                                 <td width="15%"><label class="form-label" for="serial_no"><span class="text-danger">*</span> Serial No. : </label></td>
                                                                                 <td colspan="3">
                                                                                     <input class="form-control" id="serial_no" name="serial_no" value="{{ $asset->serial_no }}" style="text-transform: uppercase">
@@ -106,10 +126,6 @@
                                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                     @enderror
                                                                                 </td>
-                                                                            </div>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <div class="form-group">
                                                                                 <td width="15%"><label class="form-label" for="model"><span class="text-danger">*</span> Model:</label></td>
                                                                                 <td colspan="3">
                                                                                     <input class="form-control" id="model" name="model" value="{{ $asset->model }}" style="text-transform: uppercase">
@@ -117,6 +133,10 @@
                                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                     @enderror
                                                                                 </td>
+                                                                            </div>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <div class="form-group">
                                                                                 <td width="15%"><label class="form-label" for="brand"> Brand : </label></td>
                                                                                 <td colspan="3">
                                                                                     <input class="form-control" id="brand" name="brand" value="{{ $asset->brand }}" style="text-transform: uppercase">
@@ -124,18 +144,31 @@
                                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                     @enderror
                                                                                 </td>
+                                                                                <td width="15%"><label class="form-label" for="storage_location"> Location/Storage:</label></td>
+                                                                                <td colspan="3">
+                                                                                    <input class="form-control" id="storage_location" name="storage_location" value="{{ $asset->storage_location }}">
+                                                                                    @error('storage_location')
+                                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                    @enderror
+                                                                                </td>
                                                                             </div>
                                                                         </tr>
                                                                         <tr>
                                                                             <div class="form-group">
-                                                                                <td width="15%"><label class="form-label" for="status"> Status:</label></td>
+                                                                                <td width="15%"><label class="form-label" for="status"><span class="text-danger">*</span> Status:</label></td>
                                                                                 <td colspan="3">
-                                                                                    <select class="form-control" id="status" name="status">
+                                                                                    <select class="form-control status" name="status" id="status">
                                                                                         <option value="">Select Status</option>
-                                                                                        <option value="1" {{ old('status', $asset->status) == '1' ? 'selected':''}} >Active</option>
-                                                                                        <option value="0" {{ old('status', $asset->status) == '0' ? 'selected':''}} >Inactive</option>
+                                                                                        @foreach ($status as $statuss) 
+                                                                                            <option value="{{ $statuss->id }}" {{ $asset->status == $statuss->id ? 'selected="selected"' : '' }}>{{ $statuss->status_name }}</option>
+                                                                                        @endforeach
                                                                                     </select>
                                                                                     @error('status')
+                                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                    @enderror
+                                                                                    <br><br>
+                                                                                    <input type="date" class="form-control inactive" id="inactive_date" name="inactive_date" value="{{ isset($asset->inactive_date) ? date('Y-m-d', strtotime($asset->inactive_date)) : old('inactive_date') }}"/>
+                                                                                    @error('inactive_date')
                                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                     @enderror
                                                                                 </td>
@@ -155,16 +188,13 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <div class="form-group">
-                                                                                <td width="15%"><label class="form-label" for="custodian_id"><span class="text-danger">*</span> Current Custodian : </label></td>
+                                                                                <td width="15%"><label class="form-label" for="custodian_id"> Current Custodian : </label></td>
                                                                                 <td colspan="3">
                                                                                     <input class="form-control" id="custodian_id" style="cursor:context-menu" name="custodian_id" value="{{ $asset->custodians->name }}" readonly>
                                                                                 </td>
-                                                                                <td width="15%"><label class="form-label" for="storage_location"> Storage:</label></td>
+                                                                                <td width="15%"><label class="form-label" for="created_by"> Created By : </label></td>
                                                                                 <td colspan="3">
-                                                                                    <input class="form-control" id="storage_location" name="storage_location" value="{{ $asset->storage_location }}">
-                                                                                    @error('storage_location')
-                                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                                    @enderror
+                                                                                    <input class="form-control" id="created_by" style="cursor:context-menu" name="created_by" value="{{ $asset->user->name }}" readonly>
                                                                                 </td>
                                                                             </div>
                                                                         </tr>
@@ -490,6 +520,60 @@
                                             </div>
                                         </div>
 
+                                        <div class="tab-pane" id="track" role="tabpanel" style="margin-top: -18px"><br>
+                                            <div class="col-sm-12 mb-4">
+                                                <div class="table-responsive">
+                                                    <table id="trk" class="table table-bordered table-hover table-striped w-100">
+                                                        <thead>
+                                                            <tr align="center" class="bg-primary-50">
+                                                                <th>#ID</th>
+                                                                <th>Type</th>
+                                                                <th>Asset Code</th>
+                                                                <th>Finance Code</th>
+                                                                <th>Asset Name</th>
+                                                                <th>Serial No.</th>
+                                                                <th>Purchase Date</th>
+                                                                <th>Vendor Name</th>
+                                                                <th>L.O. No.</th>
+                                                                <th>D.O. No.</th>
+                                                                <th>Invoice No.</th>
+                                                                <th>Price (RM)</th>
+                                                                <th>Status</th>
+                                                                <th>Updated By</th>
+                                                                <th>Date</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach($assetTrail as $trails)
+                                                            <tr>
+                                                                <td>{{ $trails->id ?? '--' }}</td>
+                                                                <td>{{ $trails->codeType->code_name ?? '--' }}</td>
+                                                                <td>{{ $trails->asset_code ?? '--' }}</td>
+                                                                <td>{{ $trails->finance_code ?? '--' }}</td>
+                                                                <td>{{ $trails->asset_name ?? '--' }}</td>
+                                                                <td>{{ $trails->serial_no ?? '--' }}</td>
+                                                                <td>{{ date('d-m-Y', strtotime($trails->purchase_date)) ?? '--' }}</td>
+                                                                <td>{{ $trails->vendor_name ?? '--' }}</td>
+                                                                <td>{{ $trails->lo_no ?? '--' }}</td>
+                                                                <td>{{ $trails->do_no ?? '--' }}</td>
+                                                                <td>{{ $trails->io_no ?? '--' }}</td>
+                                                                <td>{{ $trails->total_price ?? '--' }}</td>
+                                                                <td>{{ $trails->assetStatus->status_name ?? '--' }}</td>
+                                                                <td>{{ $trails->staffs->name ?? '--' }}</td>
+                                                                <td>{{ date('d/m/Y', strtotime($trails->created_at)) }}<br>{{ date('h:i A', strtotime($trails->created_at)) }}</td>
+                                                                <td><a href="/asset-trail/{{ $trails->id }}" class="btn btn-sm btn-info"><i class="fal fa-eye"></i></a></td>
+                                                            </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <br>
+                                                <a style="color: white" data-page="/trailPdf/{{ $asset->id }}" class="btn btn-danger ml-auto float-right" onclick="Print(this)"><i class="fal fa-download"></i> PDF</a>
+                                                <a style="margin-right:5px" href="/asset-index" class="btn btn-success ml-auto float-right"><i class="fal fa-arrow-alt-left"></i> Back</a><br>
+                                            </div>
+                                        </div>
+
                                         <div class="tab-pane" id="custodian" role="tabpanel" style="margin-top: -18px"><br>
                                             <div class="col-sm-12 mb-4">
                                                 @if (Session::has('msg'))
@@ -499,7 +583,7 @@
                                                     <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('noty') }}</div>
                                                 @endif
                                                 <div class="table-responsive">
-                                                    <table class="table table-bordered table-hover table-striped w-100">
+                                                    <table id="cst" class="table table-bordered table-hover table-striped w-100">
                                                         <thead>
                                                             <tr align="center" class="bg-primary-50">
                                                                 <th style="width: 50px;">No.</th>
@@ -507,8 +591,13 @@
                                                                 <th>Change Reason</th>
                                                                 <th>Assign Date</th>
                                                                 <th>Assign By</th>
+                                                                <th>Verification</th>
+                                                                <th>Verify Date</th>
+                                                                <th>Status</th>
                                                                 <th>Action</th>
                                                             </tr>
+                                                        </thead>
+                                                        <tbody>
                                                             @foreach($asset->assetCustodian as $list)
                                                             <tr align="center"  class="data-row">
                                                                 <td>{{ $no++ }}</td>
@@ -516,17 +605,28 @@
                                                                 <td class="reason">{{ isset($list->reason_remark) ? $list->reason_remark : '--'}}</td>
                                                                 <td class="date">{{ date('d-m-Y | h:i A', strtotime($list->created_at)) }}</td>
                                                                 <td class="user">{{ strtoupper($list->user->name) }}</td>
+                                                                <td class="user">
+                                                                    @if($list->verification == '1')
+                                                                        <p style="color: green"><b>YES</b></p>
+                                                                    @else
+                                                                        <p style="color: red"><b>NO</b></p>
+                                                                    @endif
+                                                                </td>
+                                                                <td class="date">{{ isset($list->verification_date) ? date('d-m-Y | h:i A', strtotime($list->verification_date)) : '--' }}</td>
+                                                                <td class="user">{{ isset($list->status) ? strtoupper($list->custodianStatus->status_name) : '--' }}</td>
                                                                 <td>
                                                                     <a href="" data-target="#crud-modal2" data-toggle="modal" data-id="{{$list->id}}" data-custodian="{{$list->custodian->name}}" data-reason="{{$list->reason_remark}}" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
                                                                     <meta name="csrf-token" content="{{ csrf_token() }}">
                                                                 </td>
                                                             </tr>
                                                             @endforeach
-                                                        </thead>
+                                                        </tbody>
                                                     </table>
                                                 </div>
+                                                <br>
                                                 <a href="" data-target="#crud-modal" data-toggle="modal" data-depart="{{$asset->type->department_id}}" class="btn btn-primary ml-auto float-right"><i class="fal fa-plus-square"></i> Change Custodian</a>
-                                                <a style="margin-right:5px" href="/asset-index" class="btn btn-success ml-auto float-right"><i class="fal fa-arrow-alt-left"></i> Back</a><br><br>
+                                                <a style="color: white; margin-right:5px" data-page="/custodianPdf/{{ $asset->id }}" class="btn btn-danger ml-auto float-right" onclick="Print(this)"><i class="fal fa-download"></i> PDF</a>
+                                                <a style="margin-right:5px" href="/asset-index" class="btn btn-success ml-auto float-right"><i class="fal fa-arrow-alt-left"></i> Back</a><br>
                                             </div>
                                         </div>
                                     </div>
@@ -720,7 +820,7 @@
 
     $(document).ready(function()
     {
-        $('#status, #availability, #asset_types').select2();
+        $('#status, #availability, #asset_types, #asset_code_type').select2();
 
         $('.department, .custodian_id').select2({ 
             dropdownParent: $("#crud-modal") 
@@ -828,38 +928,21 @@
             });
         });
 
-        // if($('.department').val()!=''){
-        //             updateCust($('.department'));
-        //         }
-        //         $(document).on('change','.department',function(){
-        //             updateCust($(this));
-        //         });
+        var table = $('#trk').DataTable({
+            columnDefs: [],
+                orderCellsTop: true,
+                "order": [],
+                "initComplete": function(settings, json) {
+                }
+        });
 
-        //         function updateCust(elem){
-        //         var eduid=elem.val();
-        //         var op=" "; 
-
-        //         $.ajax({
-        //             type:'get',
-        //             url:'{!!URL::to('findCustodian')!!}',
-        //             data:{'id':eduid},
-        //             success:function(data)
-        //             {
-        //                 console.log(data)
-        //                 op+='<option value=""> Select Custodian </option>';
-        //                 for (var i=0; i<data.length; i++)
-        //                 {
-        //                     var selected = (data[i].id=="{{old('custodian_id', $asset->custodian_id)}}") ? "selected='selected'" : '';
-        //                     op+='<option value="'+data[i].id+'" '+selected+'>'+data[i].custodian.name+'</option>';
-        //                 }
-
-        //                 $('.custodian_id').html(op);
-        //             },
-        //             error:function(){
-        //                 console.log('success');
-        //             },
-        //         });
-        //     }
+        var table = $('#cst').DataTable({
+            columnDefs: [],
+                orderCellsTop: true,
+                "order": [],
+                "initComplete": function(settings, json) {
+                }
+        });
 
     });
 
@@ -887,6 +970,21 @@
         });
 
         $('input[name="set_package"]:checked').change(); 
+
+        $(".inactive").hide();
+
+        $( "#status" ).change(function() {
+            var val = $("#status").val();
+            if(val=="2" || val=="3"){
+                $(".inactive").show();
+            } else {
+                $(".inactive").hide();
+            }
+        });
+
+        $('#status').val(); 
+        $("#status").change(); 
+        $('.inactive').val();
 
     })
 

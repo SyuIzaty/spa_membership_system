@@ -57,8 +57,9 @@
                                     <select class="selectfilter form-control" name="status" id="status">
                                         <option value="">Select Status</option>
                                         <option>All</option>
-                                        <option value="1" {{ $request->status == '1' ? 'selected' : '' }}>ACTIVE</option>
-                                        <option value="0" {{ $request->status == '0' ? 'selected' : '' }}>INACTIVE</option>
+                                        @foreach($status as $statuss)
+                                            <option value="{{$statuss->id}}" {{ $request->status == $statuss->id  ? 'selected' : '' }}>{{ $statuss->status_name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -69,6 +70,8 @@
                                     <thead>
                                         <tr class="bg-primary-50 text-center">
                                             <th>ID</th>
+                                            <th>DEPARTMENT</th>
+                                            <th>CODE TYPE</th>
                                             <th>FINANCE CODE</th>
                                             <th>ASSET CODE</th>
                                             <th>ASSET NAME</th>
@@ -77,6 +80,7 @@
                                             <th>MODEL</th>
                                             <th>BRAND</th>
                                             <th>STATUS</th>
+                                            <th>SELL/DISPOSE DATE</th>
                                             <th>AVAILABILITY</th>
                                             <th>SET</th>
                                             <th>PRICE (RM)</th>
@@ -135,9 +139,11 @@
             "dom" : "Bltp",
             "lengthMenu": [[10, 25, 50, 0], [10, 25, 50, "All"]],
             iDisplayLength: 10,
-            columnDefs: [{ "visible": false,"targets":[19]}],
+            columnDefs: [{ "visible": false,"targets":[21]}],
             columns: [
                     { data: 'id', name: 'id' },
+                    { data: 'department', name: 'department' },
+                    { data: 'asset_code_type', name: 'asset_code_type' },
                     { data: 'finance_code', name: 'finance_code' },
                     { data: 'asset_code', name: 'asset_code' },
                     { data: 'asset_name', name: 'asset_name' },
@@ -146,6 +152,7 @@
                     { data: 'model', name: 'model' },
                     { data: 'brand', name: 'brand' },
                     { data: 'status', name: 'status' },
+                    { data: 'inactive_date', name: 'inactive_date' },
                     { data: 'availability', name: 'availability' },
                     { data: 'set_package', name: 'set_package' },
                     { data: 'total_price', name: 'total_price' },

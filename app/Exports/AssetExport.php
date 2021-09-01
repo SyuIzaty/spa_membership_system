@@ -72,6 +72,8 @@ class AssetExport implements FromCollection, WithHeadings
         $collected = collect($list)->groupBy('id')->transform(function($item,$key){
             $data = [
                 'ID'               => "",
+                'Department'       => "",
+                'Code_type'       => "",
                 'Finance_code'     => "",
                 'Asset_code'       => "",
                 'Asset_name'       => "",
@@ -80,6 +82,7 @@ class AssetExport implements FromCollection, WithHeadings
                 'Model'            => "",
                 'Brand'            => "",
                 'Status'           => "",
+                'Sell_dispose'     => "",
                 'Availability'     => "",
                 'Set'              => "",
                 'Price'            => "",
@@ -98,6 +101,8 @@ class AssetExport implements FromCollection, WithHeadings
                 if($ikey == 0)
                 {
                     $data['ID'] =$ivalue->user_id;
+                    $data['Department'] =$ivalue->type->department->department_name;
+                    $data['Code_type'] =$ivalue->asset_code_type;
                     $data['Finance_code'] =$ivalue->finance_code;
                     $data['Asset_code'] =$ivalue->asset_code;
                     $data['Asset_name'] =$ivalue->asset_name;
@@ -106,6 +111,7 @@ class AssetExport implements FromCollection, WithHeadings
                     $data['Model'] =$ivalue->model;
                     $data['Brand'] =$ivalue->brand;
                     $data['Status'] =$ivalue->status;
+                    $data['Sell_dispose'] =$ivalue->inactive_date;
                     $data['Availability'] =$ivalue->availability;
                     $data['Set'] =$ivalue->set_package;
                     $data['Price'] =$ivalue->total_price;
@@ -129,6 +135,6 @@ class AssetExport implements FromCollection, WithHeadings
 
     public function headings(): array
     {
-        return ['ID','FINANCE CODE','ASSET CODE','ASSET NAME','ASSET TYPE','SERIAL NO.', 'MODEL', 'BRAND','STATUS', 'AVAILABILITY', 'SET','PRICE (RM)','L.O. NO.','D.O. NO.','INVOICE NO.','PURCHASE DATE','VENDOR','CUSTODIAN','LOCATION','CREATED BY','REMARK'];
+        return ['ID','DEPARTMENT','CODE TYPE','FINANCE CODE','ASSET CODE','ASSET NAME','ASSET TYPE','SERIAL NO.', 'MODEL', 'BRAND','STATUS','SELL/DISPOSE', 'AVAILABILITY', 'SET','PRICE (RM)','L.O. NO.','D.O. NO.','INVOICE NO.','PURCHASE DATE','VENDOR','CUSTODIAN','LOCATION','CREATED BY','REMARK'];
     }
 }

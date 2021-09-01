@@ -349,88 +349,111 @@
                         {{-- End Aduan --}}
 
                         {{-- Start Inventory --}}
-                        @can('view inventory')
+                        @can('view inventory menu')
                             <li class="nav-title">INVENTORY MANAGEMENT</li>
-                            <li>
-                                <a href="#" title="Application Intel" data-filter-tags="application intel">
-                                    <i class="fal fa-chart-pie"></i>
-                                    <span class="nav-link-text" data-i18n="nav.application_intel">Inventory
-                                        Dashboard</span>
-                                </a>
-                            </li>
-
-                            <li class="open">
-                                <a href="#" title="Asset" data-filter-tags="asset">
-                                    <i class="fal fa-barcode-read"></i>
-                                    <span class="nav-link-text" data-i18n="nav.asset">Asset Management</span>
-                                </a>
-                                <ul>
-                                    <li>
-                                        <a href="/asset-index" title="Detail" data-filter-tags="detail">
-                                            <span class="nav-link-text" data-i18n="nav.detail"> Asset Detail</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/export_asset" title="Report" data-filter-tags="report">
-                                            <span class="nav-link-text" data-i18n="nav.report"> Reporting</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="open">
-                                <a href="#" title="Stock" data-filter-tags="stock">
-                                    <i class="fal fa-calendar-times"></i>
-                                    <span class="nav-link-text" data-i18n="nav.stock">Stock Management</span>
-                                </a>
-                                <ul>
-                                    <li>
-                                        <a href="/stock-index" title="Detail" data-filter-tags="detail">
-                                            <span class="nav-link-text" data-i18n="nav.detail"> Stock Detail</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="open">
-                                <a href="#" title="Borrow" data-filter-tags="borrow">
-                                    <i class="fal fa-address-book"></i>
-                                    <span class="nav-link-text" data-i18n="nav.borrow">Borrower Management</span>
-                                </a>
-                                <ul>
-                                    <li>
-                                        <a href="/borrow-index" title="Detail" data-filter-tags="detail">
-                                            <span class="nav-link-text" data-i18n="nav.detail"> Borrower Detail</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/monitor-list" title="Monitoring" data-filter-tags="delay">
-                                            <span class="nav-link-text" data-i18n="nav.delay"> Monitoring</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/export-borrow" title="Report" data-filter-tags="report">
-                                            <span class="nav-link-text" data-i18n="nav.report"> Reporting</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="open">
-                                <a href="#" title="Borrow" data-filter-tags="borrow">
-                                    <i class="fal fa-asterisk"></i>
-                                    <span class="nav-link-text" data-i18n="nav.borrow">Parameter Settings</span>
-                                </a>
-                                <ul>
-                                    <li>
-                                        <a href="/asset-type" title="Asset" data-filter-tags="asset">
-                                            <span class="nav-link-text" data-i18n="nav.asset">Asset Type</span>
-                                        </a>
-                                    </li>
-                                    @can('create custodian')
+                            @can('view inventory')
+                                <li>
+                                    <a href="#" title="Application Intel" data-filter-tags="application intel">
+                                        <i class="fal fa-chart-pie"></i>
+                                        <span class="nav-link-text" data-i18n="nav.application_intel">Inventory Dashboard</span>
+                                    </a>
+                                </li>
+                                <li class="open">
+                                    <a href="#" title="Asset" data-filter-tags="asset">
+                                        <i class="fal fa-barcode-read"></i>
+                                        <span class="nav-link-text" data-i18n="nav.asset">Asset Management</span>
+                                    </a>
+                                    <ul>
                                         <li>
-                                            <a href="/asset-custodian" title="Custodian" data-filter-tags="custodian">
-                                                <span class="nav-link-text" data-i18n="nav.custodian">Manager List</span>
+                                            <a href="/asset-index" title="Detail" data-filter-tags="detail">
+                                                <span class="nav-link-text" data-i18n="nav.detail"> Asset Detail</span>
                                             </a>
                                         </li>
-                                    @endcan
+                                        <li>
+                                            <a href="/asset-upload" title="Upload" data-filter-tags="upload">
+                                                <span class="nav-link-text" data-i18n="nav.upload"> Bulk Upload</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/export_asset" title="Report" data-filter-tags="report">
+                                                <span class="nav-link-text" data-i18n="nav.report"> Reporting</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="open">
+                                    <a href="#" title="Stock" data-filter-tags="stock">
+                                        <i class="fal fa-calendar-times"></i>
+                                        <span class="nav-link-text" data-i18n="nav.stock">Stock Management</span>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="/stock-index" title="Detail" data-filter-tags="detail">
+                                                <span class="nav-link-text" data-i18n="nav.detail"> Stock Detail</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="open">
+                                    <a href="#" title="Borrow" data-filter-tags="borrow">
+                                        <i class="fal fa-address-book"></i>
+                                        <span class="nav-link-text" data-i18n="nav.borrow">Borrower Management</span>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="/borrow-index" title="Detail" data-filter-tags="detail">
+                                                <span class="nav-link-text" data-i18n="nav.detail"> Borrower Detail</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/monitor-list" title="Monitoring" data-filter-tags="delay">
+                                                <span class="nav-link-text" data-i18n="nav.delay"> Monitoring</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/export-borrow" title="Report" data-filter-tags="report">
+                                                <span class="nav-link-text" data-i18n="nav.report"> Reporting</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="open">
+                                    <a href="#" title="Parameter" data-filter-tags="parameter">
+                                        <i class="fal fa-asterisk"></i>
+                                        <span class="nav-link-text" data-i18n="nav.parameter">Parameter Settings</span>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="/asset-type" title="Asset" data-filter-tags="asset">
+                                                <span class="nav-link-text" data-i18n="nav.asset">Asset Type</span>
+                                            </a>
+                                        </li>
+                                        @can('create custodian')
+                                            <li>
+                                                <a href="/asset-custodian" title="Manager" data-filter-tags="manager">
+                                                    <span class="nav-link-text" data-i18n="nav.manager">Manager List</span>
+                                                </a>
+                                            </li>
+                                        @endcan
+                                    </ul>
+                                </li>
+                            @endcan
+                            <li class="open">
+                                <a href="#" title="List" data-filter-tags="list">
+                                    <i class="fal fa-archive"></i>
+                                    <span class="nav-link-text" data-i18n="nav.list">MyAsset</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/verify-list" title="Pending" data-filter-tags="pending">
+                                            <span class="nav-link-text" data-i18n="nav.pending">Pending Verification</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/individual-list" title="MyAsset" data-filter-tags="myasset">
+                                            <span class="nav-link-text" data-i18n="nav.myasset">MyAsset List</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                         @endcan

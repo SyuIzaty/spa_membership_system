@@ -61,61 +61,71 @@
                 </table>
 
                 <br>
+                {{-- <div class="table-responsive"> --}}
+                    <table id="log" class="table table-bordered table-hover table-striped w-100 table-sm">
+                        <thead>
+                            <tr align="center" class="bg-primary-50">
+                                <th style="vertical-align: middle">#ID</th>
+                                <th style="vertical-align: middle">StockIn (+)</th>
+                                <th style="vertical-align: middle">StockOut (-)</th>
+                                <th style="vertical-align: middle">Balance (=)</th>
+                                <th style="vertical-align: middle">UnitPrice (RM)</th>
+                                <th style="vertical-align: middle">Status</th>
+                                <th style="vertical-align: middle">Transaction Date</th>
+                                <th style="vertical-align: middle">Remark</th>
+                                <th style="vertical-align: middle">L.O. No</th>
+                                <th style="vertical-align: middle">Invoice No</th>
+                                <th style="vertical-align: middle">Purchase Date</th>
+                                <th style="vertical-align: middle">Supply Type</th>
+                                <th style="vertical-align: middle">Supply To</th>
+                                <th style="vertical-align: middle">Reason</th>
+                                <th style="vertical-align: middle">Created By</th>
+                                <th style="vertical-align: middle">Created At</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php $total_bal = 0; @endphp
 
-                <table id="log" class="table table-bordered table-hover table-striped w-100">
-                    <thead>
-                        <tr align="center" class="bg-primary-50">
-                            <th style="vertical-align: middle">#ID</th>
-                            <th style="vertical-align: middle">StockIn (+)</th>
-                            <th style="vertical-align: middle">StockOut (-)</th>
-                            <th style="vertical-align: middle">Balance (=)</th>
-                            <th style="vertical-align: middle">UnitPrice (RM)</th>
-                            <th style="vertical-align: middle">Status</th>
-                            <th style="vertical-align: middle">Transaction Date</th>
-                            <th style="vertical-align: middle">Remark</th>
-                            <th style="vertical-align: middle">L.O. Number</th>
-                            <th style="vertical-align: middle">Invoice Number</th>
-                            <th style="vertical-align: middle">Purchase Date</th>
-                            <th style="vertical-align: middle">Supply To</th>
-                            <th style="vertical-align: middle">Reason</th>
-                            <th style="vertical-align: middle">Created By</th>
-                            <th style="vertical-align: middle">Created Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php $total_bal = 0; @endphp
-
-                        @foreach($stock->transaction as $list)
-                        <tr align="center" class="data-row">
-                            <td>{{ isset($list->id) ? $list->id : '--'}}</td>
-                            <td>{{ isset($list->stock_in) ? $list->stock_in : '--'}}</td>
-                            <td>{{ isset($list->stock_out) ? $list->stock_out : '--'}}</td>
-                            <td>{{ $total_bal += ($list->stock_in - $list->stock_out) }}</td>
-                            <td>{{ isset($list->unit_price) ? $list->unit_price : '--'}}</td>
-                            @if($list->status == '1')
-                                <td style="background-color: #1dc9b7">
-                                    <div style="text-transform: uppercase; color: #000000"><b>IN</b></div>
+                            @foreach($stock->transaction as $list)
+                            <tr align="center" class="data-row">
+                                <td>{{ isset($list->id) ? $list->id : '--'}}</td>
+                                <td>{{ isset($list->stock_in) ? $list->stock_in : '--'}}</td>
+                                <td>{{ isset($list->stock_out) ? $list->stock_out : '--'}}</td>
+                                <td>{{ $total_bal += ($list->stock_in - $list->stock_out) }}</td>
+                                <td>{{ isset($list->unit_price) ? $list->unit_price : '--'}}</td>
+                                @if($list->status == '1')
+                                    <td style="background-color: #1dc9b7">
+                                        <div style="text-transform: uppercase; color: #000000"><b>IN</b></div>
+                                    </td>
+                                @else
+                                    <td style="background-color: #fd3995">
+                                        <div style="text-transform: uppercase; color: #000000"><b>OUT</b></div>
+                                    </td>
+                                @endif
                                 </td>
-                            @else
-                                <td style="background-color: #fd3995">
-                                    <div style="text-transform: uppercase; color: #000000"><b>OUT</b></div>
-                                </td>
-                            @endif
-                            </td>
-                            <td>{{ isset($list->trans_date) ? date('Y-m-d | h:i A', strtotime($list->trans_date)) : '--' }}</td>
-                            <td>{{ isset($list->remark) ? $list->remark : '--'}}</td>
-                            <td>{{ isset($list->lo_no) ? $list->lo_no : '--'}}</td>
-                            <td>{{ isset($list->io_no) ? $list->io_no : '--'}}</td>
-                            <td>{{ isset($list->purchase_date) ? date('Y-m-d', strtotime($list->purchase_date)) : '--' }}</td>
-                            <td>{{ isset($list->users->name) ? strtoupper($list->users->name) : '--' }}</td>
-                            <td>{{ isset($list->reason) ? $list->reason : '--'}}</td>
-                            <td>{{ isset($list->user->name) ? strtoupper($list->user->name) : '--' }}</td>
-                            <td>{{ isset($list->created_at) ? date('Y-m-d |  h:i A', strtotime($list->created_at)) : '--' }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-
+                                <td>{{ isset($list->trans_date) ? date('Y-m-d | h:i A', strtotime($list->trans_date)) : '--' }}</td>
+                                <td>{{ isset($list->remark) ? $list->remark : '--'}}</td>
+                                <td>{{ isset($list->lo_no) ? $list->lo_no : '--'}}</td>
+                                <td>{{ isset($list->io_no) ? $list->io_no : '--'}}</td>
+                                <td>{{ isset($list->purchase_date) ? date('Y-m-d', strtotime($list->purchase_date)) : '--' }}</td>
+                                @if($list->supply_type == 'INT')
+                                    <td>INT</td>
+                                @else
+                                    <td>EXT</td>
+                                @endif
+                                @if($list->supply_type == 'INT')
+                                    <td>{{ isset($list->users->name) ? strtoupper($list->users->name) : '--' }}</td>
+                                @else
+                                    <td>{{ isset($list->ext_supply_to) ? strtoupper($list->ext_supply_to) : '--' }}</td>
+                                @endif
+                                <td>{{ isset($list->reason) ? $list->reason : '--'}}</td>
+                                <td>{{ isset($list->user->name) ? strtoupper($list->user->name) : '--' }}</td>
+                                <td>{{ isset($list->created_at) ? date('Y-m-d |  h:i A', strtotime($list->created_at)) : '--' }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                {{-- </div> --}}
                 <br>
                 <div style="font-style: italic; font-size: 10px">
                     <p style="float: left">@ Copyright INTEC Education College</p>

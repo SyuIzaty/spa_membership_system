@@ -130,7 +130,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('assetList', 'AssetController@data_assetList');
     Route::delete('asset-index/{id}', 'AssetController@assetDelete');
     Route::get('/asset-detail/{id}', 'AssetController@assetDetail');
-    Route::get('get-file-image/{filename}', 'AssetController@getImage');
     Route::post('assetUpdate', 'AssetController@assetUpdate');
     Route::post('assetPurchaseUpdate', 'AssetController@assetPurchaseUpdate');
     Route::post('createCustodian', 'AssetController@createCustodian');
@@ -144,6 +143,18 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('deleteImage/{id}/{asset_id}', 'AssetController@deleteImage')->name('deleteImage');
     Route::get('deleteSet/{id}/{asset_id}', 'AssetController@deleteSet')->name('deleteSet');
     Route::post('updateSet', 'AssetController@updateSet');
+    Route::get('/trailPdf/{id}', 'AssetController@trailPdf')->name('trailPdf');
+    Route::get('/custodianPdf/{id}', 'AssetController@custodianPdf')->name('custodianPdf');
+    Route::get('/verify-list', 'AssetController@verifyList');
+    Route::post('verifyList', 'AssetController@data_verifyList');
+    Route::post('verification/{id}', 'AssetController@updateVerification');
+    Route::get('/individual-list', 'AssetController@individualList');
+    Route::post('individualList', 'AssetController@data_individualList');
+    Route::get('/export-individual-asset', 'AssetController@exportIndividualAsset');
+    Route::get('/asset-info/{id}', 'AssetController@assetInfo');
+    Route::get('/asset-upload', 'AssetController@bulkUpload');
+    Route::post('import-asset','AssetController@importAsset');
+    Route::get('/assetTemplates','AssetController@assetTemplate');
 
     // Stock
     Route::get('/stock-index', 'StockController@stockIndex');
@@ -391,8 +402,12 @@ Route::post('/shortcourse/participant/save-payment-proof', 'ShortCourseManagemen
 Route::get('/shortcourse/participant/request-verification/event/{event_id}/participant_id/{participant_id}', 'ShortCourseManagement\EventManagement\EventParticipantController@requestVerification')->name('store.request_verification');
 Route::get('/get-payment-proof-image/{id}/{payment_proof_path}', 'ShortCourseManagement\EventManagement\EventParticipantController@getPaymentProofImage');
 
-// Covid19
+// Covid19 Public
 Route::get('/covid', 'CovidController@openForm')->name('openForm');
 Route::get('/findUser', 'CovidController@findUser');
 Route::post('openFormStore', 'CovidController@storeOpenForm');
 Route::get('/add-form', 'CovidController@addForm');
+
+// Asset Public
+Route::get('/asset-search', 'AssetController@assetSearch')->name('assetSearch');
+Route::get('get-file-image/{filename}', 'AssetController@getImage');

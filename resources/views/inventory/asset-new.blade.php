@@ -78,44 +78,49 @@
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                     @enderror
                                                                 </td>
+                                                                <td width="10%"><label class="form-label" for="asset_code_type"><span class="text-danger">*</span> Code Type :</label></td>
+                                                                <td colspan="3">
+                                                                    <select class="form-control asset_code_type" name="asset_code_type" id="asset_code_type" >
+                                                                        <option value="">Please Select</option>
+                                                                        @foreach ($codeType as $codeTypes) 
+                                                                            <option value="{{ $codeTypes->id }}" {{ old('asset_code_type') ==  $codeTypes->id  ? 'selected' : '' }}>{{ $codeTypes->id }} - {{ $codeTypes->code_name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    @error('asset_code_type')
+                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                    @enderror
+                                                                </td>
+                                                            </div>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <div class="form-group">
                                                                 <td width="10%"><label class="form-label" for="asset_name"><span class="text-danger">*</span> Asset Name :</label></td>
                                                                 <td colspan="3"><input value="{{ old('asset_name') }}" class="form-control" id="asset_name" name="asset_name" style="text-transform: uppercase" required>
                                                                     @error('asset_name')
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                     @enderror
                                                                 </td>
-                                                            </div>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <div class="form-group">
                                                                 <td width="10%"><label class="form-label" for="serial_no"><span class="text-danger">*</span> Serial No. :</label></td>
                                                                 <td colspan="3"><input value="{{ old('serial_no') }}" class="form-control" id="serial_no" name="serial_no" style="text-transform: uppercase" required>
                                                                     @error('serial_no')
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                     @enderror
                                                                 </td>
+                                                            </div>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <div class="form-group">
                                                                 <td width="10%"><label class="form-label" for="model"><span class="text-danger">*</span> Model :</label></td>
                                                                 <td colspan="3"><input value="{{ old('model') }}" class="form-control" id="model" name="model" style="text-transform: uppercase" required>
                                                                     @error('model')
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                     @enderror
                                                                 </td>
-                                                            </div>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <div class="form-group">
                                                                 <td width="10%"><label class="form-label" for="brand"> Brand :</label></td>
                                                                 <td colspan="3"><input value="{{ old('brand') }}" class="form-control" id="brand" name="brand" style="text-transform: uppercase">
                                                                     @error('brand')
-                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                    @enderror
-                                                                </td>
-                                                                <td width="10%"><label class="form-label" for="upload_image"> Image :</label></td>
-                                                                <td colspan="3">
-                                                                    <input type="file" class="form-control" id="upload_image" name="upload_image[]" multiple>
-                                                                    @error('upload_image')
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                     @enderror
                                                                 </td>
@@ -126,12 +131,18 @@
                                                             <div class="form-group">
                                                                 <td width="10%"><label class="form-label" for="status"><span class="text-danger">*</span> Status :</label></td>
                                                                 <td colspan="3">
-                                                                    <select class="form-control status" id="status" name="status" required>
+                                                                    <select class="form-control status" name="status" id="status" required>
                                                                         <option value="">Select Status</option>
-                                                                        <option value="1" {{ old('status') == '1' ? 'selected':''}} >Active</option>
-                                                                        <option value="0" {{ old('status') == '0' ? 'selected':''}} >Inactive</option>
+                                                                        @foreach ($status as $statuss) 
+                                                                            <option value="{{ $statuss->id }}" {{ old('status') ==  $statuss->id  ? 'selected' : '' }}>{{ $statuss->status_name }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                     @error('status')
+                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                    @enderror
+                                                                    <br><br>
+                                                                    <input type="date" class="form-control inactive" id="inactive_date" name="inactive_date" value="{{ old('inactive_date') }}">
+                                                                    @error('inactive_date')
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                     @enderror
                                                                 </td>
@@ -151,14 +162,21 @@
                                                         </tr>
                                                         <tr>
                                                             <div class="form-group">
-                                                                <td colspan="6">
-                                                                    <label class="form-label" for="set_package"><span class="text-danger">*</span> Set Package ? 
-                                                                        <input class="ml-5" type="radio" name="set_package" id="set_package" value="Y" {{ old('set_package') == "Y" ? 'checked' : '' }}> Yes
+                                                                <td width="10%"><label class="form-label" for="set_package"><span class="text-danger">*</span>  Set Package ?</label></td>
+                                                                <td colspan="3">
+                                                                        <input type="radio" name="set_package" id="set_package" value="Y" {{ old('set_package') == "Y" ? 'checked' : '' }}> Yes
                                                                         <input class="ml-5" type="radio" name="set_package" id="set_package" value="N" {{ old('set_package') == "N" ? 'checked' : '' }}> No
                                                                         @error('set_package')
                                                                             <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                         @enderror
                                                                     </label>
+                                                                </td>
+                                                                <td width="10%"><label class="form-label" for="upload_image"> Image :</label></td>
+                                                                <td colspan="3">
+                                                                    <input type="file" class="form-control" id="upload_image" name="upload_image[]" multiple>
+                                                                    @error('upload_image')
+                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                    @enderror
                                                                 </td>
                                                             </div>
                                                         </tr>
@@ -323,7 +341,7 @@
 @section('script')
 <script>
   $(document).ready( function() {
-        $('#department_id, #asset_type, #asset_types, #custodian_id, #status, #availability').select2();
+        $('#department_id, #asset_type, #asset_types, #custodian_id, #status, #availability, #asset_code_type').select2();
 
          // Add Set
          $('#addhead').click(function(){
@@ -459,6 +477,20 @@
         $('input[name="set_package"]:checked').val('{{ old('set_package') }}');
         $('input[name="set_package"]:checked').change(); 
 
+        $(".inactive").hide();
+
+        $( "#status" ).change(function() {
+            var val = $("#status").val();
+            if(val=="2" || val=="3"){
+                $(".inactive").show();
+            } else {
+                $(".inactive").hide();
+            }
+        });
+
+        $('#status').val('{{ old('status') }}'); 
+        $("#status").change(); 
+        $('#inactive_date').val('{{ old('inactive_date') }}');
     })
 
 </script>
