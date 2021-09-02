@@ -983,7 +983,6 @@ class EventController extends Controller
     }
     public function eventReport($id)
     {
-        // $event = Event::find($id)->load(['venue', 'event_feedback_set.sections.questions', 'events_participants.events_participants_questions_answers']);
         $event = Event::find($id)->load(['venue', 'event_feedback_set.sections.questions.events_participants_questions_answers.event_participant']);
 
         $statistics = array();
@@ -1000,7 +999,6 @@ class EventController extends Controller
             foreach ($section->questions as $question) {
                 $events_participants = EventParticipant::where('event_id', $id)->get();
                 if ($question->question_type == 'RATE') {
-                    // dd($question->events_participants_questions_answers->where('event_participant.event_id', $id)->all());
                     $question_answers = $question->events_participants_questions_answers->where('event_participant.event_id', $id) ?
                         $question->events_participants_questions_answers->where('event_participant.event_id', $id)->all() : null;
 
@@ -1022,35 +1020,10 @@ class EventController extends Controller
                         return $question_answer->rate === 5;
                     })) : 0;
 
-                    // $statistics[$question->id]['rate_1'] = $question_answers ? $question_answers->where('rate', 1)->count() : 0;
-                    // $statistics[$question->id]['rate_2'] = $question_answers ? $question_answers->where('rate', 2)->count() : 0;
-                    // $statistics[$question->id]['rate_3'] = $question_answers ? $question_answers->where('rate', 3)->count() : 0;
-                    // $statistics[$question->id]['rate_4'] = $question_answers ? $question_answers->where('rate', 4)->count() : 0;
-                    // $statistics[$question->id]['rate_5'] = $question_answers ? $question_answers->where('rate', 5)->count() : 0;
-
-                    // $statistics[$question->id]['rate_1'] = 0;
-                    // $statistics[$question->id]['rate_2'] = 0;
-                    // $statistics[$question->id]['rate_3'] = 0;
-                    // $statistics[$question->id]['rate_4'] = 0;
-                    // $statistics[$question->id]['rate_5'] = 0;
-
-                    // foreach ($event->events_participants as $event_participant) {
-
-                    //     $statistics[$question->id]['rate_1'] += $event_participant ? ($event_participant->events_participants_questions_answers->where('question_id', $question->id) ? $event_participant->events_participants_questions_answers->where('question_id', $question->id)->where('rate', 1)->count() : 0) : 0;
-                    //     $statistics[$question->id]['rate_2'] += $event_participant ? ($event_participant->events_participants_questions_answers->where('question_id', $question->id) ? $event_participant->events_participants_questions_answers->where('question_id', $question->id)->where('rate', 2)->count() : 0) : 0;
-                    //     $statistics[$question->id]['rate_3'] += $event_participant ? ($event_participant->events_participants_questions_answers->where('question_id', $question->id) ? $event_participant->events_participants_questions_answers->where('question_id', $question->id)->where('rate', 3)->count() : 0) : 0;
-                    //     $statistics[$question->id]['rate_4'] += $event_participant ? ($event_participant->events_participants_questions_answers->where('question_id', $question->id) ? $event_participant->events_participants_questions_answers->where('question_id', $question->id)->where('rate', 4)->count() : 0) : 0;
-                    //     $statistics[$question->id]['rate_5'] += $event_participant ? ($event_participant->events_participants_questions_answers->where('question_id', $question->id) ? $event_participant->events_participants_questions_answers->where('question_id', $question->id)->where('rate', 5)->count() : 0) : 0;
-                    // }
-
 
                     $total_rating_question += 1;
 
                     $total_participants_answered_feedback = count($question_answers);
-
-                    // $total_participants_answered_feedback = $question_answers->count();
-
-                    // $total_participants_answered_feedback = $event->events_participants->where('is_done_email_completed', 1)->count();
 
 
                     $total_rate_1 += ($statistics[$index]['rate_1'] * 1);
@@ -1072,16 +1045,6 @@ class EventController extends Controller
                             array_push($comments[$index]['answers'],$temp2);
                         }
                     }
-                    // dd($comments);
-
-                    // $comments[$question->id]['answers'] = $question->events_participants_questions_answers ? $question->events_participants_questions_answers->map->only(['description']) : [];
-                    // $comments[$question->id]['answers'] = [];
-                    // foreach ($event->events_participants as $event_participant) {
-                    //     $temp = $event_participant ? ($event_participant->events_participants_questions_answers->where('question_id', $question->id) ? $event_participant->events_participants_questions_answers->where('question_id', $question->id)->map->only(['description']) : null) : null;
-                    //     if ($temp != null) {
-                    //         array_push($comments[$question->id]['answers'], $temp);
-                    //     }
-                    // }
 
                     $index += 1;
                 }

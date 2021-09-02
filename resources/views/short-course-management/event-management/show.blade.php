@@ -3,12 +3,6 @@
 {{-- The content template is taken from sims.resources.views.applicant.display --}}
 @section('content')
     <main id="js-page-content" role="main" class="page-content">
-        {{-- <div class="subheader">
-            <h1 class="subheader-title">
-                <i class='subheader-icon fal fa-table'></i>
-                ({{ $event->id }}) {{ $event->name }}
-            </h1>
-        </div> --}}
         <div class="row">
             <div class="col-xl-12">
                 <div id="panel-1" class="panel">
@@ -117,7 +111,6 @@
                                                                 <td name="datetime_start_show" id="datetime_start_show">
                                                                     {{ date('d/m/Y h:i A', strtotime($event->datetime_start)) }}
                                                                 </td>
-                                                                {{-- <input class="form-control" type="datetime-local" value="2023-07-23T11:25:00" id="example-datetime-local-input"> --}}
                                                                 <td name="datetime_start_edit" id="datetime_start_edit"
                                                                     style="display: none">
                                                                     <div class="form-group">
@@ -163,18 +156,6 @@
                                                                     {{ $event->venue->name }}
                                                                 </td>
                                                                 <td name="venue_edit" id="venue_edit" style="display: none">
-                                                                    {{-- <div class="form-group">
-                                                                        <input id="venue.name" name="venue.name"
-                                                                            value="{{$event->venue->name}}"
-                                                                            class="form-control">
-                                                                        @error('venue.name')>
-                                                                            <p style="color: red">
-                                                                                <strong> *
-                                                                                    {{ $message }}
-                                                                                </strong>
-                                                                            </p>
-                                                                        @enderror
-                                                                    </div> --}}
                                                                     <div class="form-group">
                                                                         <select class="form-control venue " name="venue"
                                                                             id="venue" data-select2-id="venue" tabindex="-1"
@@ -233,18 +214,6 @@
                                                                 </td>
                                                                 <td name="event_feedback_set_edit"
                                                                     id="event_feedback_set_edit" style="display: none">
-                                                                    {{-- <div class="form-group">
-                                                                        <input id="event_feedback_set.name" name="event_feedback_set.name"
-                                                                            value="{{$event->event_feedback_set->name}}"
-                                                                            class="form-control">
-                                                                        @error('event_feedback_set.name')>
-                                                                            <p style="color: red">
-                                                                                <strong> *
-                                                                                    {{ $message }}
-                                                                                </strong>
-                                                                            </p>
-                                                                        @enderror
-                                                                    </div> --}}
                                                                     <div class="form-group">
                                                                         <select class="form-control event_feedback_set "
                                                                             name="event_feedback_set"
@@ -366,7 +335,6 @@
                                                                         Fee</h5>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    {{-- {!! Form::open(['action' => 'ShortCourseManagement\EventManagement\EventController@storeFee', 'method' => 'POST']) !!} --}}
                                                                     <form
                                                                         action="{{ url('/event/fee/create/' . $event->id) }}"
                                                                         method="post" name="form">
@@ -409,8 +377,6 @@
                                                                                     for="is_base_fee_select_add"><span
                                                                                         class="text-danger">*</span>Fee
                                                                                     Type</label>
-                                                                                {{-- <input class="form-control" id="is_base_fee_select_add"
-                                                                                name="is_base_fee_select_add"> --}}
                                                                                 <input type="hidden"
                                                                                     name="is_base_fee_select_add_input"
                                                                                     id="is_base_fee_select_add_input"
@@ -465,7 +431,6 @@
                                                                                 Apply</button>
                                                                         </div>
                                                                     </form>
-                                                                    {{-- {!! Form::close() !!} --}}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -483,8 +448,6 @@
                                                                     action="{{ url('/events/fee/update/' . $event->id) }}"
                                                                     method="post" name="form">
                                                                     @csrf
-                                                                    {{-- {!! Form::open(['action' => 'EventParticipantController@store', 'method' => 'POST']) !!} --}}
-
                                                                     <p><span class="text-danger">*</span>
                                                                         Required Field</p>
                                                                     <hr class="mt-1 mb-2">
@@ -497,18 +460,7 @@
                                                                                     class="text-danger">*</span>name</label>
                                                                             <input type="text" class="form-control"
                                                                                 id="name_fee_edit" name="name_fee_edit">
-                                                                            {{-- <div class="form-group">
-                                                                            <input id="name" name="name" type="text"
-                                                                                value="{{ $event->name }}"
-                                                                                class="form-control">
-                                                                            @error('name')
-                                                                                <p style="color: red">
-                                                                                    <strong> *
-                                                                                        {{ $message }}
-                                                                                    </strong>
-                                                                                </p>
-                                                                            @enderror
-                                                                        </div> --}}
+
                                                                             @error('name')
                                                                                 <p style="color: red">
                                                                                     <strong> *
@@ -591,8 +543,6 @@
                                                                                 class="ni ni-plus"></i>
                                                                             Apply</button>
                                                                     </div>
-
-                                                                    {{-- {!! Form::close() !!} --}}
                                                                 </form>
                                                             </div>
                                                         </div>
@@ -611,26 +561,6 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {{-- @foreach ($trainers as $trainer)
-                                                            <tr>
-                                                                <td><b>{{ $trainer->id }}</b></td>
-                                                                <td><b>{{ $trainer->name }}</b></td>
-                                                                <td>
-                                                                    <a href="#"
-                                                                        class="btn btn-sm btn-danger float-right mr-2">
-                                                                        <i class="ni ni-close"></i>
-                                                                    </a>
-                                                                    <form method="post"
-                                                                    action="/event/trainer/detached/{{ $fee->id }}">
-                                                                    @csrf
-                                                                    <button type="submit"
-                                                                        class="btn btn-sm btn-danger float-right mr-2">
-                                                                        <i class="ni ni-close"></i>
-                                                                    </button>
-                                                                </form>
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach --}}
 
                                                         @foreach ($event->events_trainers as $event_trainer)
                                                             <tr>
@@ -667,8 +597,6 @@
                                                                         action="{{ url('/event/trainer/attached/' . $event->id) }}"
                                                                         method="post" name="form">
                                                                         @csrf
-                                                                        {{-- {!! Form::open(['action' => 'ShortCourseManagement\EventManagement\EventController@storeTrainer\ '.$event->id, 'method' => 'POST']) !!} --}}
-
                                                                         <p><span class="text-danger">*</span>
                                                                             Required Field</p>
                                                                         <hr class="mt-1 mb-2">
@@ -676,7 +604,6 @@
                                                                             <label for="trainer_ic"><span
                                                                                     class="text-danger">*</span>
                                                                                 Trainer's IC</label>
-                                                                            {{-- <div class="form-inline" style="width:100%"> --}}
                                                                             <div class="form-group"
                                                                                 id="search-by-trainer_ic-div">
                                                                                 <input class="form-control"
@@ -687,7 +614,6 @@
                                                                                 id="search-by-trainer_ic"
                                                                                 class="btn btn-primary mb-2" hidden><i
                                                                                     class="ni ni-magnifier"></i></a>
-                                                                            {{-- </div> --}}
                                                                             @error('trainer_ic_input')
                                                                                 <p style="color: red">
                                                                                     <strong> *
@@ -698,30 +624,6 @@
                                                                         </div>
                                                                         <hr class="mt-1 mb-2">
                                                                         <div id="form-add-trainer-second-part">
-
-                                                                            {{-- <div class="form-group">
-                                                                                <label for="user_id"><span
-                                                                                        class="text-danger">*</span>
-                                                                                    Trainer's User ID</label>
-                                                                                <div class="form-inline" style="width:100%">
-                                                                                    <div class="form-group mr-2 mb-2"
-                                                                                        style="width:85%">
-                                                                                        <input class="form-control w-100"
-                                                                                            id="user_id" name="user_id">
-                                                                                    </div>
-                                                                                    <a href="javascript:;" data-toggle="#"
-                                                                                        id="search-by-user_id"
-                                                                                        class="btn btn-primary mb-2"><i
-                                                                                            class="ni ni-magnifier"></i></a>
-                                                                                </div>
-                                                                                @error('user_id')
-                                                                                    <p style="color: red">
-                                                                                        <strong> *
-                                                                                            {{ $message }}
-                                                                                        </strong>
-                                                                                    </p>
-                                                                                @enderror
-                                                                            </div> --}}
                                                                             <div class="form-group">
                                                                                 <label for="user_id"><span
                                                                                         class="text-danger">*</span>
@@ -729,7 +631,7 @@
                                                                                 {{ Form::text('trainer_user_id_text', '', ['class' => 'form-control', 'placeholder' => "Trainer's User ID", 'id' => 'trainer_user_id_text', 'disabled', 'readonly']) }}
                                                                                 <select class="form-control user"
                                                                                     name="trainer_user_id"
-                                                                                    id="trainer_user_id" disabled
+                                                                                    id="trainer_user_id"
                                                                                     style="display:none">
                                                                                     <option disabled>Select User ID</option>
                                                                                     <option value='-1' name="create_new">
@@ -812,8 +714,6 @@
                                                                                     class="ni ni-plus"></i>
                                                                                 Add</button>
                                                                         </div>
-
-                                                                        {{-- {!! Form::close() !!} --}}
                                                                     </form>
                                                                 </div>
                                                             </div>
@@ -870,7 +770,6 @@
                                                                         action="{{ url('/event/contact_person/attached/' . $event->id) }}"
                                                                         method="post" name="form">
                                                                         @csrf
-                                                                        {{-- {!! Form::open(['action' => 'ShortCourseManagement\EventManagement\EventController@storeContactPerson\ '.$event->id, 'method' => 'POST']) !!} --}}
 
                                                                         <p><span class="text-danger">*</span>
                                                                             Required Field</p>
@@ -879,7 +778,6 @@
                                                                             <label for="contact_person_ic"><span
                                                                                     class="text-danger">*</span>
                                                                                 Contact Person's IC</label>
-                                                                            {{-- <div class="form-inline" style="width:100%"> --}}
                                                                             <div class="form-group"
                                                                                 id="search-by-contact_person_ic-div">
                                                                                 <input class="form-control w-100"
@@ -891,7 +789,6 @@
                                                                                 class="btn btn-primary mb-2"
                                                                                 style="width:10%" hidden><i
                                                                                     class="ni ni-magnifier"></i></a>
-                                                                            {{-- </div> --}}
                                                                             @error('contact_person_ic_input')
                                                                                 <p style="color: red">
                                                                                     <strong> *
@@ -902,30 +799,6 @@
                                                                         </div>
                                                                         <hr class="mt-1 mb-2">
                                                                         <div id="form-add-contact_person-second-part">
-
-                                                                            {{-- <div class="form-group">
-                                                                                <label for="user_id"><span
-                                                                                        class="text-danger">*</span>
-                                                                                    ContactPerson's User ID</label>
-                                                                                <div class="form-inline" style="width:100%">
-                                                                                    <div class="form-group mr-2 mb-2"
-                                                                                        style="width:85%">
-                                                                                        <input class="form-control w-100"
-                                                                                            id="user_id" name="user_id">
-                                                                                    </div>
-                                                                                    <a href="javascript:;" data-toggle="#"
-                                                                                        id="search-by-user_id"
-                                                                                        class="btn btn-primary mb-2"><i
-                                                                                            class="ni ni-magnifier"></i></a>
-                                                                                </div>
-                                                                                @error('user_id')
-                                                                                    <p style="color: red">
-                                                                                        <strong> *
-                                                                                            {{ $message }}
-                                                                                        </strong>
-                                                                                    </p>
-                                                                                @enderror
-                                                                            </div> --}}
                                                                             <div class="form-group">
                                                                                 <label for="user_id"><span
                                                                                         class="text-danger">*</span>
@@ -1019,8 +892,6 @@
                                                                                     class="ni ni-plus"></i>
                                                                                 Add</button>
                                                                         </div>
-
-                                                                        {{-- {!! Form::close() !!} --}}
                                                                     </form>
                                                                 </div>
                                                             </div>
@@ -1047,11 +918,6 @@
                                                                 <td>{{ $events_shortcourses->shortcourse->name }}
                                                                 </td>
                                                                 <td>
-                                                                    {{-- <a href="#"
-                                                                        class="btn btn-sm btn-danger float-right mr-2">
-                                                                        <i class="ni ni-close"></i>
-                                                                    </a> --}}
-
                                                                     <form method="post"
                                                                         action="/event/shortcourse/detached/{{ $events_shortcourses->id }}">
                                                                         @csrf
@@ -1189,27 +1055,6 @@
                                         <div class="card">
                                             <div class="card-header bg-primary-50"><b>Participation Statistics</b></div>
                                             <div class="card-body">
-                                                {{-- <table class="table table-striped table-bordered m-0">
-                                                        <thead class="thead">
-                                                            <tr class=" bg-primary-50">
-                                                                <th colspan="5"><b>Pre-Event</b></th>
-                                                            </tr>
-                                                            <tr >
-                                                                <th>Wait for Applic. Approv.</th>
-                                                                <th>In progress of Make. Pay.</th>
-                                                                <th>Wait for Pay. Confirm.</th>
-                                                                <th>Ready for Event</th>
-                                                                <th>Cancelled Applic.</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <td><b>0</b></td>
-                                                            <td><b>0</b></td>
-                                                            <td><b>0</b></td>
-                                                            <td><b>0</b></td>
-                                                            <td><b>0</b></td>
-                                                        </tbody>
-                                                    </table> --}}
                                                 <div class="row d-flex align-items-center justify-content-center">
                                                     <div class="col-sm-6 col-xl-3">
                                                         <div
@@ -1437,18 +1282,6 @@
                                                 <div class="row row-md-12">
                                                     <div class="col-sm-6">
                                                         <div class="d-flex justify-content-center">
-                                                            {{-- @if (!isset($event->thumbnail_path))
-                                                                <img src="{{ asset('storage/shortcourse/poster/default/intec_poster.jpg') }}"
-                                                                    class="card-img" style="object-fit: fill;">
-                                                            @else
-                                                                <img src="{{ asset($event->thumbnail_path) }}"
-                                                                style="object-fit: fill;
-                                                                background-image:url('{{ asset('storage /shortcourse/poster/default/intec_poster.jpg') }}');
-                                                                background-repeat: no-repeat;
-                                                                background-size: 137px 194px;">
-                                                            @endif --}}
-
-
                                                             @if (!isset($event->thumbnail_path))
                                                                 <img src="{{ asset('storage/shortcourse/poster/default/intec_poster.jpg') }}"
                                                                     class="card-img" style="object-fit: fill;">
@@ -1457,7 +1290,6 @@
                                                                     class="card-img" style="object-fit: fill;">
                                                             @endif
                                                         </div>
-
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="card">
@@ -1469,7 +1301,6 @@
                                                                             {{ session()->get('message') }}
                                                                         </div>
                                                                     @endif
-                                                                    {{-- {!! Form::open(['action' => ['ShortCourseManagement\EventManagement\EventController@updatePoster'], 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!} --}}
                                                                     <form action="{{ route('store.poster') }}"
                                                                         method="POST" enctype="multipart/form-data">
                                                                         @csrf
@@ -1479,15 +1310,6 @@
                                                                             <label class="form-label mx-2"
                                                                                 for="inputGroupFile01">Upload New</label>
                                                                             <div class="input-group" style="width:100%">
-                                                                                {{-- <div class="custom-file">
-                                                                                    <input type="file"
-                                                                                        class="custom-file-input"
-                                                                                        id="poster_input">
-                                                                                    <label class="custom-file-label"
-                                                                                        for="inputGroupFile02"
-                                                                                        aria-describedby="inputGroupFileAddon02">Choose
-                                                                                        file</label>
-                                                                                </div> --}}
                                                                                 <div class="custom-file">
                                                                                     <input type="file"
                                                                                         class="custom-file-label"
@@ -1501,25 +1323,19 @@
                                                                             @enderror
                                                                             <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
                                                                                 style="content-align:right">
-                                                                                {{-- <a href="javascript:;" data-toggle="modal" id="add-shortcourse"
-                                                                                class="btn btn-primary ml-auto mt-2 mr-2 waves-effect waves-themed"><i
-                                                                                    class="ni ni-plus"> </i> Add Short Course</a> --}}
                                                                                 <button type="submit"
                                                                                     class="btn btn-primary ml-auto mt-2 mr-2 waves-effect waves-themed">Upload</button>
                                                                             </div>
                                                                         </div>
                                                                     </form>
-                                                                    {{-- {!! Form::close() !!} --}}
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="tab-pane" id="setting" role="tabpanel">
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
@@ -1572,18 +1388,6 @@
                                                                             @endphp
                                                                             class="btn btn-danger mr-auto ml-2 waves-effect waves-themed font-weight-bold">
                                                                             {{ isset($eventStatusCategories->where('id', $event->event_status_category->id - 1)->first()->name) ? $eventStatusCategories->where('id', $event->event_status_category->id - 1)->first()->name : 'ERROR' }}</a>
-
-                                                                        {{-- <a id="status_cancel"
-                                                                            name="status_move_backward" href="javascript:;"
-                                                                            @php
-                                                                                if ($event->event_status_category->id === 3) {
-                                                                                    echo "style='display: none'";
-                                                                                }
-                                                                            @endphp
-                                                                            class="btn btn-danger mr-auto ml-2 waves-effect waves-themed font-weight-bold">
-                                                                            {{ isset($eventStatusCategories->where('id', 3)->first()->name) ? $eventStatusCategories->where('id', 3)->first()->name : 'ERROR' }}</a> --}}
-
-
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -1627,6 +1431,11 @@
                 document.getElementById("add-shortcourse").addEventListener("click", function(event) {
                     event.preventDefault()
                 });
+                $('.venue, .event_feedback_set').select2();
+                $('.user').select2({
+                    dropdownParent: $('#crud-modal-add-trainer, #crud-modal-add-contact_person')
+                });
+
 
             });
             // Basic Information
@@ -1689,12 +1498,15 @@
                     $("#edit-basic-close").hide();
                 });
 
-                $(document).ready(function() {
-                    // $('.venue, .is_base_fee_select_add, .is_base_fee_select_edit').select2();
+                // $(document).ready(function() {
+                //     // $('.venue, .is_base_fee_select_add, .is_base_fee_select_edit').select2();
 
-                    $('.venue, .event_feedback_set').select2();
+                //     $('.venue, .event_feedback_set').select2();
+                //     $('.user').select2({
+                //         dropdownParent: $('#crud-modal-add-trainer')
+                //     });
 
-                });
+                // });
 
             }
 
@@ -1799,6 +1611,7 @@
                     $('.modal-body #phone').val(null);
                     $('.modal-body #email').val(null);
                     $('#crud-modal-add-trainer').modal('show');
+
                     // $("div[id=form-add-trainer-second-part]").hide();
                 });
 
@@ -1809,6 +1622,8 @@
 
                     $('.modal-body #id').val(null);
                     $('.modal-body #user_id').val(null);
+                    $('#trainer_user_id').next(".select2-container").hide();
+                    $('#trainer_user_id').prop('disabled', true);
 
 
                     // $("div[id=form-add-trainer-second-part]").hide();
@@ -1827,10 +1642,13 @@
                         $("#trainer_user_id_text").show();
                         $("#trainer_user_id_text").removeAttr('disabled');
                         $("#trainer_user_id").removeAttr('disabled');
-
+                        $('#trainer_user_id').prop('disabled', false);
+                        console.log('Masuk Tapi x hide');
                         $("#trainer_user_id").hide();
                         $("#trainer_user_id").attr('style', 'display: none');
-                        $("#trainer_user_id").removeClass('user');
+                        // $("#trainer_user_id").removeClass('user');
+                        $('#trainer_user_id').next(".select2-container").hide();
+
 
                         $("#trainer_user_id_text").val(data.id);
                         $('#trainer_fullname').val(data.name);
@@ -1842,7 +1660,6 @@
                         }
                         $('#trainer_email').val(data.email);
 
-
                     }).fail(
                         function() {
                             console.log('fail');
@@ -1851,21 +1668,25 @@
                             $("#trainer_user_id_text").attr('disabled');
 
                             $("#trainer_user_id").show();
+                            $("#trainer_user_id").removeProp('style');
                             $("#trainer_user_id").removeAttr('disabled');
-                            $("#trainer_user_id").addClass('user');
+                            // $("#trainer_user_id").addClass('user');
+                            $("#trainer_user_id").prop('disabled', false);
+                            $('#trainer_user_id').next(".select2-container").show();
 
                             $("#trainer_user_id option[value='-1']").attr("selected", "true");
+                            $("#trainer_user_id option[value='-1']").prop("selected", true);
+                            $("#trainer_user_id").select2().val(-1).trigger("change");
                             $('#trainer_fullname').val(null);
                             $('#trainer_phone').val(null);
                             $('#trainer_email').val(null);
+                            $('.user').select2({
+                                dropdownParent: $('#crud-modal-add-trainer')
+                            });
                         }).always(
                         function() {
                             $("div[id=form-add-trainer-second-part]").show();
                             $('#add_trainer_footer').show();
-                            // $('#search-by-trainer_ic').hide();
-                            // $("#search-by-trainer_ic-div").css({
-                            //     "width": "100%"
-                            // });
                         });
 
                 });
@@ -1994,6 +1815,9 @@
                     $('.modal-body #id').val(null);
                     $('.modal-body #user_id').val(null);
 
+                    $('#contact_person_user_id').next(".select2-container").hide();
+                    $('#contact_person_user_id').prop('disabled', true);
+
 
                     // $("div[id=form-add-contact_person-second-part]").hide();
                     // $('#add_contact_person_footer').hide();
@@ -2013,10 +1837,12 @@
                         $("#contact_person_user_id_text").show();
                         $("#contact_person_user_id_text").removeAttr('disabled');
                         $("#contact_person_user_id").removeAttr('disabled');
+                        $('#contact_person_user_id').prop('disabled', false);
 
                         $("#contact_person_user_id").hide();
                         $("#contact_person_user_id").attr('style', 'display: none');
-                        $("#contact_person_user_id").removeClass('user');
+                        // $("#contact_person_user_id").removeClass('user');
+                        $('#contact_person_user_id').next(".select2-container").hide();
 
                         $("#contact_person_user_id_text").val(data.id);
                         $('#contact_person_fullname').val(data.name);
@@ -2038,21 +1864,26 @@
                             $("#contact_person_user_id_text").attr('disabled');
 
                             $("#contact_person_user_id").show();
+                            $("#contact_person_user_id").removeProp('style');
                             $("#contact_person_user_id").removeAttr('disabled');
-                            $("#contact_person_user_id").addClass('user');
+                            // $("#contact_person_user_id").addClass('user');
+
+                            $("#contact_person_user_id").prop('disabled', false);
+                            $('#contact_person_user_id').next(".select2-container").show();
 
                             $("#contact_person_user_id option[value='-1']").attr("selected", "true");
+                            $("#contact_person_user_id option[value='-1']").prop("selected", true);
+                            $("#contact_person_user_id").select2().val(-1).trigger("change");
                             $('#contact_person_fullname').val(null);
                             $('#contact_person_phone').val(null);
                             $('#contact_person_email').val(null);
+                            $('.user').select2({
+                                dropdownParent: $('#crud-modal-add-contact_person')
+                            });
                         }).always(
                         function() {
                             $("div[id=form-add-contact_person-second-part]").show();
                             $('#add_contact_person_footer').show();
-                            // $('#search-by-contact_person_ic').hide();
-                            // $("#search-by-contact_person_ic-div").css({
-                            //     "width": "100%"
-                            // });
                         });
 
                 });
@@ -2234,27 +2065,9 @@
                     });
             });
 
-            // $('#status_cancel').click(function() {
-            //     $.get("/event/" + event_id + "/update-event-status-category/" + 3,
-            //         function(data) {
-            //             window.location.reload()
-
-            //         }).fail(
-            //         function() {
-            //             // TODO: Notify Users
-            //             console.log('fail');
-            //         });
-            // });
-
         }
     </script>
 @endsection
 
 @section('style')
-    {{-- <style>
-        .ck-editor__editable_inline {
-            min-height: 250px;
-        }
-
-    </style> --}}
 @endsection
