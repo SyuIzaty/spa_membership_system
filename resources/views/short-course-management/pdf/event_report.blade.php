@@ -86,7 +86,7 @@
                 @foreach ($comment['answers'] as $answer)
                     <tr>
                         <td>{{ $loop->index + 1 }}</td>
-                        <td class="col-sm-10">{{ $answer['description'] }}</td>
+                        <td class="col-sm-10">{{ $answer }}</td>
                     </tr>
                 @endforeach
             @endforeach
