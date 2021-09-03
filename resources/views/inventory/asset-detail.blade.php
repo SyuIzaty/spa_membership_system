@@ -168,14 +168,8 @@
                                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                     @enderror
                                                                                     <br><br>
-                                                                                    @if($asset->status == '2' || $asset->status == '3')
-                                                                                        <input type="date" class="form-control" id="inactive_date" name="inactive_date" value="{{ isset($asset->inactive_date) ? date('Y-m-d', strtotime($asset->inactive_date)) : old('inactive_date') }}"/>
-                                                                                        @error('inactive_date')
-                                                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                                        @enderror
-                                                                                    @endif
-                                                                                    <input type="date" class="form-control inactive" id="inactive_dates" name="inactive_dates" value="{{ old('inactive_dates') }}">
-                                                                                    @error('inactive_dates')
+                                                                                    <input type="date" class="form-control inactive" id="inactive_date" name="inactive_date" value="{{ isset($asset->inactive_date) ? date('Y-m-d', strtotime($asset->inactive_date)) : old('inactive_date') }}"/>
+                                                                                    @error('inactive_date')
                                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                     @enderror
                                                                                 </td>
@@ -997,7 +991,7 @@
 
         $('#status').val(); 
         $("#status").change(); 
-        $('#inactive_dates').val('{{ old('inactive_dates') }}');
+        $('#inactive_date').val('{{ old('inactive_date') }}');
 
     })
 

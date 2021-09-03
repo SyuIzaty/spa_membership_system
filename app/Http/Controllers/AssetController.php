@@ -419,7 +419,7 @@ class AssetController extends Controller
                         'set_package'       => 'required',
                         'status'            => 'required',
                         'asset_code_type'   => 'required',
-                        'inactive_dates'     => 'required',
+                        'inactive_date'     => 'required',
                     ]);
         
                     $asset->update([
@@ -433,7 +433,7 @@ class AssetController extends Controller
                         'storage_location'      => $request->storage_location,
                         'set_package'           => $request->set_package,
                         'asset_code_type'       => $request->asset_code_type,
-                        'inactive_date'         => $request->inactive_dates,
+                        'inactive_date'         => $request->inactive_date,
                     ]);
 
                 } else {
