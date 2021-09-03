@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ShortCourseManagement\Catalogues\TopicSubCategory
 
 // use App\Models\ShortCourseManagement\Category;
 use App\Models\ShortCourseManagement\Category;
+use App\Models\ShortCourseManagement\SubCategory;
 // use App\Models\ShortCourseManagement\CategoryCategory;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -150,6 +151,11 @@ class CategoryController extends Controller
         //
         $subcategory = Category::where('id', $id)->first();
         return $subcategory;
+    }
+
+    public function getSubCategories($category_id){
+        $subcategories = SubCategory::where('category_id', $category_id)->get();
+        return $subcategories;
     }
 
     // public function storeCategoryCategory(Request $request, $id)

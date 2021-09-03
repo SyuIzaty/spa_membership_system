@@ -30,10 +30,11 @@
                                         <img src="{{ asset('storage/shortcourse/poster/default/intec_poster.jpg') }}"
                                             class="card-img" style="width:137px;height:194px;">
                                     @else
-                                        <img src="{{ asset($event->thumbnail_path) }}" class="card-img" style="width:137px;height:194px;
-                                                                background-image:url('{{ asset('storage /shortcourse/poster/default/intec_poster.jpg') }}');
-                                                                background-repeat: no-repeat;
-                                                                background-size: 137px 194px;">
+                                        <img src="{{ asset($event->thumbnail_path) }}" class="card-img"
+                                            style="width:137px;height:194px;
+                                                                                                                                                background-image:url('{{ asset('storage /shortcourse/poster/default/intec_poster.jpg') }}');
+                                                                                                                                                background-repeat: no-repeat;
+                                                                                                                                                background-size: 137px 194px;">
                                     @endif
                                 </div>
                                 <div class="col-md-7">
@@ -65,38 +66,92 @@
                 <div class="col">
                     <div class="panel-content">
                         @csrf
-                        @if (session()->has('message'))
-                            <div class="alert alert-success">
-                                {{ session()->get('message') }}
-                            </div>
-                        @endif
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-hover table-striped w-100 m-0 table-sm" id="event">
-                                <thead>
-                                    <tr class="bg-primary-50 text-center">
-                                        <th>ID</th>
-                                        <th>NAME</th>
-                                        <th>DATES</th>
-                                    </tr>
-                                    {{-- <tr>
+                        <div class="row row-md-12">
+                            <div class="col-sm-8">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover table-striped w-100 m-0 table-sm"
+                                        id="event">
+                                        <thead>
+                                            <tr class="bg-primary-50 text-center">
+                                                <th>ID</th>
+                                                <th>NAME</th>
+                                                <th>DATES</th>
+                                            </tr>
+                                            {{-- <tr>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Name"></td> --}}
-                                    {{-- <td class="hasinput"><input type="text" class="form-control" placeholder="Search Dates"></td> --}}
-                                    {{-- <td></td>
+                                            {{-- <td class="hasinput"><input type="text" class="form-control" placeholder="Search Dates"></td> --}}
+                                            {{-- <td></td>
                                     </tr> --}}
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="table-responsive">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Filters</h5>
+                                            <div class="form-group" id="form-group-category">
+                                                <span style="color: purple">
+                                                    <h3>Category</h3>
+                                                </span>
+                                                <select class="form-control category " name="category" id="category"
+                                                    data-select2-id="category" tabindex="-1" aria-hidden="true">
+                                                    <option value='-1'>
+                                                        All
+                                                    </option>
+                                                    @foreach ($categories as $category)
+                                                        <option value="{{ $category->id }}">
+                                                            {{ $category->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="form-group" id="form-group-subcategory" style="display:none">
+                                                <span style="color: purple">
+                                                    <h3>Sub-Category</h3>
+                                                </span>
+                                                <select class="form-control subcategory " name="subcategory"
+                                                    id="subcategory" data-select2-id="subcategory" tabindex="-1"
+                                                    aria-hidden="true">
+                                                    <option value='-1'>
+                                                        All
+                                                    </option>
+                                                    @foreach ($subcategories as $subcategory)
+                                                        <option value="{{ $subcategory->id }}">
+                                                            {{ $subcategory->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="form-group" id="form-group-topic" style="display:none">
+                                                <span style="color: purple">
+                                                    <h3>Topic</h3>
+                                                </span>
+                                                <select class="form-control topic " name="topic" id="topic"
+                                                    data-select2-id="topic" tabindex="-1" aria-hidden="true">
+                                                    <option value='-1'>
+                                                        All
+                                                    </option>
+                                                    @foreach ($topics as $topic)
+                                                        <option value="{{ $topic->id }}">
+                                                            {{ $topic->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
+                        </div>
                     </div>
                 </div>
             </div>
-
-
-
-
         </div>
 
     </main>
@@ -105,6 +160,9 @@
 @section('script')
     <script>
         $(document).ready(function() {
+
+            $('.category, .subcategory, .topic').select2();
+
             $('#event thead tr .hasinput').each(function(i) {
                 $('input', this).on('keyup change', function() {
                     if (table.column(i).search() !== this.value) {
@@ -134,6 +192,11 @@
                     type: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: function(d) {
+                        d.category_id = $('#category').find(":selected").val();
+                        d.subcategory_id = $('#subcategory').find(":selected").val();
+                        d.topic_id = $('#topic').find(":selected").val();
                     }
                 },
                 columns: [{
@@ -167,6 +230,51 @@
                     cell.innerHTML = i + 1;
                 });
             }).draw();
+
+            $('#category').change(function(event) {
+                var category_id = $('#category').find(":selected").val();
+                $('#form-group-topic').hide();
+                $('#form-group-subcategory').hide();
+
+                $.get("/category/subcategories/" + category_id, function(data) {
+                    $('#subcategory').empty();
+                    $('#subcategory').append(`
+                        <option value = '-1'> All </option>
+                    `);
+                    data.forEach(function(x) {
+                        $('#subcategory').append(`
+                            <option value = '${x.id}'> ${x.name} </option>
+                        `);
+                    })
+                }).done(function(data) {
+                    if (category_id != -1) {
+                        $('#form-group-subcategory').show();
+                    }
+                    $('#event').DataTable().ajax.reload();
+                });
+
+            });
+
+            $('#subcategory').change(function(event) {
+                var subcategory_id = $('#subcategory').find(":selected").val();
+                $('#form-group-topic').hide();
+                $.get("/category/subcategory/topics/" + subcategory_id, function(data) {
+                    $('#topic').empty();
+                    $('#topic').append(`
+                        <option value = '-1'> All </option>
+                    `);
+                    data.forEach(function(x) {
+                        $('#topic').append(`
+                            <option value = '${x.id}'> ${x.name} </option>
+                        `);
+                    })
+                }).done(function(data) {
+                    if (subcategory_id != -1) {
+                        $('#form-group-topic').show();
+                    }
+
+                });
+            });
 
         });
     </script>

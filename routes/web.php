@@ -381,6 +381,8 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 //SCM - Public View
+Route::get('/category/subcategories/{category_id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\CategoryController@getSubCategories');
+Route::get('/category/subcategory/topics/{subcategory_id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@getTopics');
 Route::get('/participant/search-by-ic/{ic}/event/{event_id}', 'ShortCourseManagement\People\Participant\ParticipantController@searchByIc');
 
 Route::get('/participant/get-hash-ic/{ic}', 'ShortCourseManagement\People\Participant\ParticipantController@hashIc');
