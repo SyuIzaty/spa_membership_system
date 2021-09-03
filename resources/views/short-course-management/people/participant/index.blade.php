@@ -17,21 +17,34 @@
                                 data-offset="0,10" data-original-title="Collapse"></button>
                             <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip"
                                 data-offset="0,10" data-original-title="Fullscreen"></button>
-                            <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10"
-                                data-original-title="Close"></button>
+                            <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip"
+                                data-offset="0,10" data-original-title="Close"></button>
                         </div>
                     </div>
                     <div class="panel-container show">
                         <div class="panel-content">
                             <span id="intake_fail"></span>
                             @csrf
-                            @if (session()->has('message'))
-                                <div class="alert alert-success">
-                                    {{ session()->get('message') }}
+                            @if (Session::has('successUpdateGeneral'))
+                                <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;">
+                                    <i class="icon fal fa-check-circle"></i>
+                                    {{ Session::get('successUpdateGeneral') }}
+                                </div>
+                            @endif
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <strong>Whoops!</strong> There were some problems with your
+                                    input.<br><br>
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
                                 </div>
                             @endif
                             <div class="table-responsive">
-                                <table class="table table-bordered table-hover table-striped w-100 m-0 table-sm" id="participant">
+                                <table class="table table-bordered table-hover table-striped w-100 m-0 table-sm"
+                                    id="participant">
                                     <thead>
                                         <tr class="bg-primary-50 text-center">
                                             <th>ID</th>
@@ -177,7 +190,8 @@
                                                         </div>
                                                     </div>
                                                     <hr class="mt-1 mb-2">
-                                                    <div class="footer" id="add_participant_footer" style="display:none">
+                                                    <div class="footer" id="add_participant_footer"
+                                                        style="display:none">
                                                         <button type="button"
                                                             class="btn btn-danger ml-auto float-right mr-2"
                                                             data-dismiss="modal" id="close-add-participant"><i

@@ -17,21 +17,36 @@
                                 data-offset="0,10" data-original-title="Collapse"></button>
                             <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip"
                                 data-offset="0,10" data-original-title="Fullscreen"></button>
-                            <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10"
-                                data-original-title="Close"></button>
+                            <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip"
+                                data-offset="0,10" data-original-title="Close"></button>
                         </div>
                     </div>
                     <div class="panel-container show">
                         <div class="panel-content">
                             <span id="intake_fail"></span>
                             @csrf
-                            @if (session()->has('message'))
-                                <div class="alert alert-success">
-                                    {{ session()->get('message') }}
+                            @if (Session::has('successUpdateGeneral'))
+                                <div class="alert alert-success"
+                                    style="color: #3b6324; background-color: #d3fabc;">
+                                    <i class="icon fal fa-check-circle"></i>
+                                    {{ Session::get('successUpdateGeneral') }}
+                                </div>
+                            @endif
+
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <strong>Whoops!</strong> There were some problems with your
+                                    input.<br><br>
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
                                 </div>
                             @endif
                             <div class="table-responsive">
-                                <table class="table table-bordered table-hover table-striped w-100 m-0 table-sm" id="trainer">
+                                <table class="table table-bordered table-hover table-striped w-100 m-0 table-sm"
+                                    id="trainer">
                                     <thead>
                                         <tr class="bg-primary-50 text-center">
                                             <th>ID</th>
@@ -199,7 +214,8 @@
                                                         </div>
                                                     </div>
                                                     <hr class="mt-1 mb-2">
-                                                    <div class="footer" id="add_trainer_footer" style="display:none">
+                                                    <div class="footer" id="add_trainer_footer"
+                                                        style="display:none">
                                                         <button type="button"
                                                             class="btn btn-danger ml-auto float-right mr-2"
                                                             data-dismiss="modal" id="close-add-trainer"><i
@@ -227,6 +243,10 @@
 @section('script')
     <script>
         $(document).ready(function() {
+
+            $('.user').select2({
+                dropdownParent: $('#crud-modal')
+            });
 
             $('#trainer thead tr .hasinput').each(function(i) {
                 $('input', this).on('keyup change', function() {
@@ -331,6 +351,8 @@
 
                     $('.modal-body #id').val(null);
                     $('.modal-body #user_id').val(null);
+                    $('#trainer_user_id').next(".select2-container").hide();
+                    $('#trainer_user_id').prop('disabled', true);
 
 
                     $("div[id=form-add-trainer-second-part]").hide();
@@ -353,9 +375,14 @@
                         $("#trainer_user_id_text").removeAttr('disabled');
                         $("#trainer_user_id").removeAttr('disabled');
 
+                        $("#trainer_user_id").removeAttr('disabled');
+                        $('#trainer_user_id').prop('disabled', false);
+
                         $("#trainer_user_id").hide();
                         $("#trainer_user_id").attr('style', 'display: none');
-                        $("#trainer_user_id").removeClass('user');
+                        // $("#trainer_user_id").removeClass('user');
+
+                        $('#trainer_user_id').next(".select2-container").hide();
 
                         $("#trainer_user_id_text").val(data.id);
                         $('#trainer_fullname').val(data.name);
@@ -395,6 +422,13 @@
                             $("#trainer_user_id").removeAttr('disabled');
                             $("#trainer_user_id").addClass('user');
 
+                            $("#trainer_user_id").removeProp('style');
+                            $("#trainer_user_id").removeAttr('disabled');
+
+
+                            $("#trainer_user_id").prop('disabled', false);
+                            $('#trainer_user_id').next(".select2-container").show();
+
                             $('.modal-body #registration_message').empty();
                             $('.modal-body #registration_update_submit').empty();
 
@@ -404,9 +438,15 @@
                                 'Register a new Trainer');
 
                             $("#trainer_user_id option[value='-1']").attr("selected", "true");
+                            $("#trainer_user_id option[value='-1']").prop("selected", true);
+                            $("#trainer_user_id").select2().val(-1).trigger("change");
                             $('#trainer_fullname').val(null);
                             $('#trainer_phone').val(null);
                             $('#trainer_email').val(null);
+
+                            $('.user').select2({
+                                dropdownParent: $('#crud-modal')
+                            });
                         }).always(
                         function() {
                             $("div[id=form-add-trainer-second-part]").show();

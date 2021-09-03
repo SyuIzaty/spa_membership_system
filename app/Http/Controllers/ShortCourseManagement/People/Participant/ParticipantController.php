@@ -22,8 +22,8 @@ class ParticipantController extends Controller
     public function dataParticipants()
     {
         $participants = Participant::orderByDesc('id')->get()->load(['events_participants']);
-        $index=0;
-        foreach($participants as $participant){
+        $index = 0;
+        foreach ($participants as $participant) {
 
             if (isset($participant->events_participants)) {
                 $totalEvents = $participant->events_participants->count();
@@ -34,7 +34,7 @@ class ParticipantController extends Controller
             $participants[$index]->totalEvents = $totalEvents;
             $participants[$index]['created_at_toDayDateTimeString'] = date_format(new DateTime($participants[$index]->created_at), 'g:ia \o\n l jS F Y');
             $participants[$index]['updated_at_toDayDateTimeString'] = date_format(new DateTime($participants[$index]->updated_at), 'g:ia \o\n l jS F Y');
-            $index+=1;
+            $index += 1;
         }
 
 
@@ -43,7 +43,7 @@ class ParticipantController extends Controller
                 return 'Created At:<br>' . $participants->created_at_toDayDateTimeString . '<br><br> Last Update:<br>' . $participants->updated_at_toDayDateTimeString;
             })
             ->addColumn('events_participants', function ($participants) {
-                return 'Total Events: ' . $participants->totalEvents ;
+                return 'Total Events: ' . $participants->totalEvents;
             })
             ->addColumn('management_details', function ($participants) {
                 return 'Created By: ' . $participants->created_by . '<br> Created At: ' . $participants->created_at;
@@ -54,7 +54,6 @@ class ParticipantController extends Controller
             })
             ->rawColumns(['action', 'management_details', 'events_participants', 'dates'])
             ->make(true);
-
     }
 
     public function create()
@@ -86,17 +85,17 @@ class ParticipantController extends Controller
         ])->first();
         if (!$existParticipant) {
 
-            $sha1_ic=sha1($request->participant_ic_input);
+            $sha1_ic = sha1($request->participant_ic_input);
             $existParticipant = Participant::create([
                 'name' => $request->participant_fullname,
                 'ic' => $request->participant_ic_input,
-                'sha1_ic' =>$sha1_ic,
+                'sha1_ic' => $sha1_ic,
                 'phone' => $request->participant_phone,
                 'email' => $request->participant_email,
                 'created_by' => Auth::user()->id,
             ]);
         } else {
-            $sha1_ic=sha1($request->participant_ic_input);
+            $sha1_ic = sha1($request->participant_ic_input);
             $existParticipant->name = $request->participant_fullname;
             $existParticipant->ic = $request->participant_ic_input;
             $existParticipant->sha1_ic = $sha1_ic;
@@ -106,8 +105,18 @@ class ParticipantController extends Controller
             $existParticipant->save();
             return Redirect()->back()->with('messageAlreadyApplied', 'The participant detail have been updated before.');
         }
-
-        return Redirect()->back()->with('messageNewApplication', 'New participant created successfully');
+        $participant = Participant::find($existParticipant->id)->load([
+            'events_participants',
+        ]);
+        if (isset($participant->events_participants)) {
+            $totalEvents = $participant->events_participants->count();
+            // dd($totalEvents);
+        } else {
+            $totalEvents = 0;
+        }
+        $participant->totalEvents = $totalEvents;
+        // return Redirect()->back()->with('messageNewApplication', 'New participant created successfully');
+        return redirect('/participants/' . $existParticipant->id)->with(compact('existParticipant'));
     }
     public function show($id)
     {
@@ -126,7 +135,6 @@ class ParticipantController extends Controller
         $participant->totalEvents = $totalEvents;
 
         return view('short-course-management.people.participant.show', compact('participant',));
-
     }
 
     public function edit($id)
@@ -151,11 +159,11 @@ class ParticipantController extends Controller
         ]);
 
 
-        $sha1_ic=sha1($request->ic);
+        $sha1_ic = sha1($request->ic);
         //return true or false
         $updateParticipant = Participant::find($id)->update([
             'ic' => $request->ic,
-            'sha1_ic' =>$sha1_ic,
+            'sha1_ic' => $sha1_ic,
             'phone' => $request->phone,
             'name' => $request->name,
             'email' => $request->email,
@@ -240,7 +248,8 @@ class ParticipantController extends Controller
         return $participant;
     }
 
-    public function delete(Request $request, $id){
+    public function delete(Request $request, $id)
+    {
 
         $exist = Participant::find($id);
         if (Auth::user()->id) {

@@ -960,30 +960,22 @@
                                                                             <label for="user_id"><span
                                                                                     class="text-danger">*</span>
                                                                                 Short Course Name</label>
-                                                                            <div class="form-inline" style="width:100%">
-                                                                                <div class="form-group mr-2 mb-2"
-                                                                                    style="width:85%">
-                                                                                    <div class="form-group">
-                                                                                        <select
-                                                                                            class="form-control shortcourse"
-                                                                                            name="shortcourse_id"
-                                                                                            id="shortcourse_id"
-                                                                                            data-select2-id="shortcourse_id"
-                                                                                            tabindex="-1"
-                                                                                            aria-hidden="true">
-                                                                                            <option value=''>Choose a Short
-                                                                                                Course
-                                                                                            </option>
-                                                                                            @foreach ($shortcourses as $shortcourse)
-                                                                                                <option
-                                                                                                    value="{{ $shortcourse->id }}"
-                                                                                                    data-select2-id="{{ $shortcourse->id }}">
-                                                                                                    {{ $shortcourse->name }}
-                                                                                                </option>
-                                                                                            @endforeach
-                                                                                        </select>
-                                                                                    </div>
-                                                                                </div>
+                                                                            <div class="form-group">
+                                                                                <select class="form-control shortcourse"
+                                                                                    name="shortcourse_id"
+                                                                                    id="shortcourse_id"
+                                                                                    data-select2-id="shortcourse_id"
+                                                                                    tabindex="-1" aria-hidden="true">
+                                                                                    <option value=''>Choose a Short
+                                                                                        Course
+                                                                                    </option>
+                                                                                    @foreach ($shortcourses as $shortcourse)
+                                                                                        <option
+                                                                                            value="{{ $shortcourse->id }}">
+                                                                                            {{ $shortcourse->name }}
+                                                                                        </option>
+                                                                                    @endforeach
+                                                                                </select>
                                                                             </div>
                                                                             @error('shortcourse_id')
                                                                                 <p style="color: red">
@@ -1435,8 +1427,10 @@
                 $('.user').select2({
                     dropdownParent: $('#crud-modal-add-trainer, #crud-modal-add-contact_person')
                 });
-
-
+                $('.shortcourse').select2({
+                    dropdownParent: $(
+                        '#crud-modal-add-shortcourse')
+                });
             });
             // Basic Information
             {
@@ -1643,7 +1637,6 @@
                         $("#trainer_user_id_text").removeAttr('disabled');
                         $("#trainer_user_id").removeAttr('disabled');
                         $('#trainer_user_id').prop('disabled', false);
-                        console.log('Masuk Tapi x hide');
                         $("#trainer_user_id").hide();
                         $("#trainer_user_id").attr('style', 'display: none');
                         // $("#trainer_user_id").removeClass('user');
@@ -1778,6 +1771,11 @@
                 $('#shortcourse_id').change(function() {
                     var id = $('.modal-body #shortcourse_id').val();
                     $.get("/event/shortcourse/search-by-id/" + id, function(data) {
+
+                        $('.shortcourse').select2({
+                            dropdownParent: $(
+                                '#crud-modal-add-shortcourse')
+                        });
                         $('.modal-body #objective').append(data.objective);
                         $('.modal-body #description').append(data.description);
 

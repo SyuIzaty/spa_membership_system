@@ -113,7 +113,7 @@ class TrainerController extends Controller
         }
         $trainer->totalEvents = $totalEvents;
 
-        return view('short-course-management.people.trainer.show', compact('trainer',));
+        return redirect('/trainers/' . $trainer->id)->with(compact('trainer'));
     }
     public function show($id)
     {
