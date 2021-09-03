@@ -16,6 +16,7 @@ use App\Exports\IndividualAssetExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Mail;
 use App\Imports\AssetImport;
+use App\Borrow;
 use App\Asset;
 use App\AssetSet;
 use App\Custodian;
@@ -29,7 +30,7 @@ use DB;
 
 class AssetController extends Controller
 {
-    
+    // Asset List
     public function assetIndex()
     {  
         $data_department = AssetDepartment::all();
@@ -352,8 +353,9 @@ class AssetController extends Controller
         $codeType = AssetCodeType::all();
         $status = AssetStatus::all();
         $assetTrail = AssetTrail::where('asset_id', $id)->orderBy('created_at', 'desc')->get();
+        $borrow = Borrow::where('asset_id', $id)->whereNull('actual_return_date')->where('status','1')->first();
 
-        return view('inventory.asset-detail', compact('asset', 'image', 'department', 'availability', 'set', 'setType', 'custodian', 'codeType', 'status', 'assetTrail'))->with('no', 1)->with('num', 1);
+        return view('inventory.asset-detail', compact('borrow', 'asset', 'image', 'department', 'availability', 'set', 'setType', 'custodian', 'codeType', 'status', 'assetTrail'))->with('no', 1)->with('num', 1);
     }
 
     public function deleteImage($id, $asset_id)
@@ -404,54 +406,141 @@ class AssetController extends Controller
         $asset = Asset::where('id', $request->id)->first();
         $assets = Asset::where('id', $request->id)->first();
         
-        if($request->status == '2' || $request->status == '3') {
-            $request->validate([
-                'asset_name'        => 'required',
-                'serial_no'         => 'required',
-                'model'             => 'required',
-                'set_package'       => 'required',
-                'status'            => 'required',
-                'asset_code_type'   => 'required',
-                'inactive_date'     => 'required',
-            ]);
+        if($request->status != $asset->status) {
+        // request status != asset status
+            if($request->status == '2' || $request->status == '3') {
+            // check between 2 or 3
+                if($asset->status == '1') {
+                // check former status 1 or not
+                    $request->validate([
+                        'asset_name'        => 'required',
+                        'serial_no'         => 'required',
+                        'model'             => 'required',
+                        'set_package'       => 'required',
+                        'status'            => 'required',
+                        'asset_code_type'   => 'required',
+                        'inactive_dates'     => 'required',
+                    ]);
+        
+                    $asset->update([
+                        'asset_name'            => strtoupper($request->asset_name), 
+                        'finance_code'          => $request->finance_code, 
+                        'serial_no'             => strtoupper($request->serial_no), 
+                        'model'                 => strtoupper($request->model),
+                        'brand'                 => strtoupper($request->brand),
+                        'status'                => $request->status,
+                        'availability'          => $request->availability,
+                        'storage_location'      => $request->storage_location,
+                        'set_package'           => $request->set_package,
+                        'asset_code_type'       => $request->asset_code_type,
+                        'inactive_date'         => $request->inactive_dates,
+                    ]);
 
-            $asset->update([
-                'asset_name'            => strtoupper($request->asset_name), 
-                'finance_code'          => $request->finance_code, 
-                'serial_no'             => strtoupper($request->serial_no), 
-                'model'                 => strtoupper($request->model),
-                'brand'                 => strtoupper($request->brand),
-                'status'                => $request->status,
-                'availability'          => $request->availability,
-                'storage_location'      => $request->storage_location,
-                'set_package'           => $request->set_package,
-                'asset_code_type'       => $request->asset_code_type,
-                'inactive_date'         => $request->inactive_date,
-            ]);
+                } else {
+                  // former status 2 or 3
+                    $request->validate([
+                        'asset_name'        => 'required',
+                        'serial_no'         => 'required',
+                        'model'             => 'required',
+                        'set_package'       => 'required',
+                        'status'            => 'required',
+                        'asset_code_type'   => 'required',
+                        'inactive_date'     => 'required',
+                    ]);
+        
+                    $asset->update([
+                        'asset_name'            => strtoupper($request->asset_name), 
+                        'finance_code'          => $request->finance_code, 
+                        'serial_no'             => strtoupper($request->serial_no), 
+                        'model'                 => strtoupper($request->model),
+                        'brand'                 => strtoupper($request->brand),
+                        'status'                => $request->status,
+                        'availability'          => $request->availability,
+                        'storage_location'      => $request->storage_location,
+                        'set_package'           => $request->set_package,
+                        'asset_code_type'       => $request->asset_code_type,
+                        'inactive_date'         => $request->inactive_date,
+                    ]);
+                }
+            } else {
+              // request status == 1
+                $request->validate([
+                    'asset_name'        => 'required',
+                    'serial_no'         => 'required',
+                    'model'             => 'required',
+                    'set_package'       => 'required',
+                    'status'            => 'required',
+                    'asset_code_type'   => 'required',
+                ]);
+    
+                $asset->update([
+                    'asset_name'            => strtoupper($request->asset_name), 
+                    'finance_code'          => $request->finance_code, 
+                    'serial_no'             => strtoupper($request->serial_no), 
+                    'model'                 => strtoupper($request->model),
+                    'brand'                 => strtoupper($request->brand),
+                    'status'                => $request->status,
+                    'availability'          => $request->availability,
+                    'storage_location'      => $request->storage_location,
+                    'set_package'           => $request->set_package,
+                    'asset_code_type'       => $request->asset_code_type,
+                    'inactive_date'         => null,
+                ]);
 
+            }      
         } else {
-            $request->validate([
-                'asset_name'        => 'required',
-                'serial_no'         => 'required',
-                'model'             => 'required',
-                'set_package'       => 'required',
-                'status'            => 'required',
-                'asset_code_type'   => 'required',
-            ]);
+          // request status == asset status
+             if($request->status == '2' || $request->status == '3') {
+             // check between 2 or 3
+                $request->validate([
+                    'asset_name'        => 'required',
+                    'serial_no'         => 'required',
+                    'model'             => 'required',
+                    'set_package'       => 'required',
+                    'status'            => 'required',
+                    'asset_code_type'   => 'required',
+                    'inactive_date'     => 'required',
+                ]);
+    
+                $asset->update([
+                    'asset_name'            => strtoupper($request->asset_name), 
+                    'finance_code'          => $request->finance_code, 
+                    'serial_no'             => strtoupper($request->serial_no), 
+                    'model'                 => strtoupper($request->model),
+                    'brand'                 => strtoupper($request->brand),
+                    'status'                => $request->status,
+                    'availability'          => $request->availability,
+                    'storage_location'      => $request->storage_location,
+                    'set_package'           => $request->set_package,
+                    'asset_code_type'       => $request->asset_code_type,
+                    'inactive_date'         => $request->inactive_date,
+                ]);
 
-            $asset->update([
-                'asset_name'            => strtoupper($request->asset_name), 
-                'finance_code'          => $request->finance_code, 
-                'serial_no'             => strtoupper($request->serial_no), 
-                'model'                 => strtoupper($request->model),
-                'brand'                 => strtoupper($request->brand),
-                'status'                => $request->status,
-                'availability'          => $request->availability,
-                'storage_location'      => $request->storage_location,
-                'set_package'           => $request->set_package,
-                'asset_code_type'       => $request->asset_code_type,
-                'inactive_date'         => null,
-            ]);
+             } else {
+                // request status == 1
+                $request->validate([
+                    'asset_name'        => 'required',
+                    'serial_no'         => 'required',
+                    'model'             => 'required',
+                    'set_package'       => 'required',
+                    'status'            => 'required',
+                    'asset_code_type'   => 'required',
+                ]);
+    
+                $asset->update([
+                    'asset_name'            => strtoupper($request->asset_name), 
+                    'finance_code'          => $request->finance_code, 
+                    'serial_no'             => strtoupper($request->serial_no), 
+                    'model'                 => strtoupper($request->model),
+                    'brand'                 => strtoupper($request->brand),
+                    'status'                => $request->status,
+                    'availability'          => $request->availability,
+                    'storage_location'      => $request->storage_location,
+                    'set_package'           => $request->set_package,
+                    'asset_code_type'       => $request->asset_code_type,
+                ]);
+
+             }
         }
 
         if($request->asset_name != $assets->asset_name || $request->asset_code_type != $assets->asset_code_type || $request->serial_no != $assets->serial_no || $request->status != $assets->status)
@@ -638,6 +727,31 @@ class AssetController extends Controller
         return redirect('asset-detail/'.$request->id);
     }
 
+    public function assetPdf(Request $request, $id)
+    {
+        $asset = Asset::where('id', $id)->first(); 
+        $image = AssetImage::where('asset_id', $id)->get();
+        $set = AssetSet::where('asset_id', $id)->get();
+        $borrow = Borrow::where('asset_id', $id)->whereNull('actual_return_date')->where('status','1')->first();
+         
+        return view('inventory.asset-pdf', compact('asset', 'image', 'set', 'borrow'))->with('num', 1);
+    }
+
+    public function trailPdf(Request $request, $id)
+    {
+        $asset = Asset::where('id', $id)->first();
+         
+        return view('inventory.trail-pdf', compact('asset'));
+    }
+
+    public function custodianPdf(Request $request, $id)
+    {
+        $asset = Asset::where('id', $id)->first();
+         
+        return view('inventory.custodian-pdf', compact('asset'));
+    }
+
+    // My Asset 
     public function verifyList()
     {  
         $data_department = AssetDepartment::all();
@@ -821,29 +935,17 @@ class AssetController extends Controller
         return Excel::download(new IndividualAssetExport,'MyAsset.xlsx');
     }
 
-    public function assetPdf(Request $request, $id)
+    public function assetInfo($id)
     {
         $asset = Asset::where('id', $id)->first(); 
         $image = AssetImage::where('asset_id', $id)->get();
         $set = AssetSet::where('asset_id', $id)->get();
-         
-        return view('inventory.asset-pdf', compact('asset', 'image', 'set'))->with('num', 1);
+        $borrow = Borrow::where('asset_id', $id)->whereNull('actual_return_date')->where('status','1')->first();
+
+        return view('inventory.asset-info', compact('asset', 'image', 'set', 'borrow'))->with('num', 1);
     }
 
-    public function trailPdf(Request $request, $id)
-    {
-        $asset = Asset::where('id', $id)->first();
-         
-        return view('inventory.trail-pdf', compact('asset'));
-    }
-
-    public function custodianPdf(Request $request, $id)
-    {
-        $asset = Asset::where('id', $id)->first();
-         
-        return view('inventory.custodian-pdf', compact('asset'));
-    }
-
+    // Export
     public function asset_all(Request $request)
     {
         if( Auth::user()->hasRole('Inventory Admin') )
@@ -1052,15 +1154,7 @@ class AssetController extends Controller
        ->make(true);
     }
 
-    public function assetInfo($id)
-    {
-        $asset = Asset::where('id', $id)->first(); 
-        $image = AssetImage::where('asset_id', $id)->get();
-        $set = AssetSet::where('asset_id', $id)->get();
-
-        return view('inventory.asset-info', compact('asset', 'image', 'set'))->with('num', 1);
-    }
-
+    // Search
     public function assetSearch(Request $request)
     {  
         $data = $data2 = $data3 =  '';
@@ -1080,6 +1174,7 @@ class AssetController extends Controller
         return view('inventory.asset-search', compact('data','request'))->with('num', 1);
     }
 
+    // Upload
     public function bulkUpload(Request $request)
     {
         $code = AssetCodeType::all();

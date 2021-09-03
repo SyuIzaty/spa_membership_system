@@ -111,7 +111,15 @@
                                                                                 @endif
                                                                             </td>
                                                                             <td width="15%"><label class="form-label" for="status"> Availability :</label></td>
-                                                                            <td colspan="3">{{ isset($data->availabilities->name) ? strtoupper($data->availabilities->name) : '--' }}</td>
+                                                                            <td colspan="3">
+                                                                                {{ isset($data->availabilities->name) ? strtoupper($data->availabilities->name) : '--' }}
+                                                                                @if($data->availability == '1')
+                                                                                    @if(isset($data->assetBorrower))
+                                                                                        <br><br>
+                                                                                        <p> Current Borrower : {{$data->assetBorrower->borrower->staff_name}} ({{$data->assetBorrower->borrower->staff_id}})</p>
+                                                                                    @endif
+                                                                                @endif
+                                                                            </td>
                                                                         </div>
                                                                     </tr>
                                                                     <tr>
@@ -142,15 +150,21 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        @foreach ($data->assetSet as $sets)
-                                                                            <tr align="center">
-                                                                                <td>{{ $num++ }}</td>
-                                                                                <td>{{ $sets->type->asset_type }}</td>
-                                                                                <td>{{ $sets->serial_no }}</td>
-                                                                                <td>{{ $sets->model }}</td>
-                                                                                <td>{{ $sets->brand }}</td>
+                                                                        @if(!empty($data->assetSet) && $data->assetSet->count() > 0)
+                                                                            @foreach ($data->assetSet as $sets)
+                                                                                <tr align="center">
+                                                                                    <td>{{ $num++ }}</td>
+                                                                                    <td>{{ $sets->type->asset_type }}</td>
+                                                                                    <td>{{ $sets->serial_no }}</td>
+                                                                                    <td>{{ $sets->model }}</td>
+                                                                                    <td>{{ $sets->brand }}</td>
+                                                                                </tr>
+                                                                            @endforeach
+                                                                        @else
+                                                                            <tr align="center" class="data-row">
+                                                                                <td valign="top" colspan="6">-- NO SET AVAILABLE --</td>
                                                                             </tr>
-                                                                        @endforeach
+                                                                        @endif
                                                                     </tbody>
                                                                 </table>
                                                             @endif

@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use App\Asset;
 use Illuminate\Support\Facades\Mail;
 use App\Custodian;
+use App\AssetTrail;
 use Auth;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -46,6 +47,33 @@ class AssetImport implements ToModel, WithHeadingRow, WithValidation
             'set_package'               => $row['package'],
             'custodian_id'              => $row['custodian'],
             'created_by'                => Auth::user()->id,
+        ]);
+
+        $trail = AssetTrail::create([
+            'asset_id'              => $asset->id,
+            'asset_type'            => $asset->asset_type,
+            'asset_code'            => $asset->asset_code,
+            'asset_code_type'       => $asset->asset_code_type,
+            'finance_code'          => $asset->finance_code,
+            'asset_name'            => $asset->asset_name, 
+            'serial_no'             => $asset->serial_no, 
+            'model'                 => $asset->model,
+            'brand'                 => $asset->brand,
+            'status'                => $asset->status,
+            'inactive_date'         => $asset->inactive_date,
+            'availability'          => $asset->availability,
+            'purchase_date'         => $asset->purchase_date,
+            'vendor_name'           => $asset->vendor_name,
+            'lo_no'                 => $asset->lo_no,
+            'do_no'                 => $asset->do_no,
+            'io_no'                 => $asset->io_no,
+            'total_price'           => $asset->total_price,
+            'remark'                => $asset->remark,
+            'set_package'           => $asset->set_package,
+            'storage_location'      => $asset->storage_location,
+            'custodian_id'          => $asset->custodian_id, 
+            'created_by'            => $asset->created_by,
+            'updated_by'            => Auth::user()->id,
         ]);
 
         $custodian = Custodian::create([

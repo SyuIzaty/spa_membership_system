@@ -457,7 +457,7 @@
                                                 <select class="form-control supply_to" name="supply_to" id="supply_to">
                                                     <option value=""> Select User </option>
                                                     @foreach ($user as $usr) 
-                                                        <option value="{{ $usr->id }}" {{ old('supply_to') ==  $usr->id  ? 'selected' : '' }}>{{ $usr->name }}</option>
+                                                        <option value="{{ $usr->id }}" {{ old('supply_to') ==  $usr->id  ? 'selected' : '' }}>{{ $usr->id }} - {{ $usr->name }}</option>
                                                     @endforeach
                                                 </select>
                                                 @error('supply_to')

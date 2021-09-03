@@ -65,4 +65,10 @@ class Asset extends Model
         return $this->hasMany('App\AssetImage','asset_id');  
     }
 
+    public function assetBorrower()
+    {
+        return $this->hasOne('App\Borrow','asset_id', 'id')->whereNull('actual_return_date')->where('status','1');  
+    }
+
+
 }

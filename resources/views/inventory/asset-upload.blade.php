@@ -205,7 +205,7 @@
                                         <div class="card-header">
                                             <a href="javascript:void(0);" class="card-title collapsed" data-toggle="collapse" data-target="#availability" aria-expanded="false">
                                                 <i class="fal fa-info-circle width-2 fs-xl"></i>
-                                                Availibility
+                                                Availability
                                                 <span class="ml-auto">
                                                     <span class="collapsed-reveal">
                                                         <i class="fal fa-minus fs-xl"></i>

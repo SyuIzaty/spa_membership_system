@@ -67,7 +67,15 @@
                                     @endif
                                 </td>
                                 <td width="15%"><label class="form-label" for="status"> Availability:</label></td>
-                                <td colspan="3">{{ isset($asset->availabilities->name) ? strtoupper($asset->availabilities->name) : '--' }}</td>
+                                <td colspan="3">
+                                    {{ isset($asset->availabilities->name) ? strtoupper($asset->availabilities->name) : '--' }}
+                                    @if($asset->availability == '1')
+                                        @if(isset($borrow))
+                                            <br><br>
+                                            <p> Current Borrower : {{$borrow->borrower->staff_name}} ({{$borrow->borrower->staff_id}})</p>
+                                        @endif
+                                    @endif
+                                </td>
                             </div>
                         </tr>
                         <tr>
@@ -107,15 +115,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($set as $sets)
-                                <tr align="center">
-                                    <td>{{ $num++ }}</td>
-                                    <td>{{ $sets->type->asset_type }}</td>
-                                    <td>{{ $sets->serial_no }}</td>
-                                    <td>{{ $sets->model }}</td>
-                                    <td>{{ $sets->brand }}</td>
+                            @if(!empty($set) && $set->count() > 0)
+                                @foreach ($set as $sets)
+                                    <tr align="center">
+                                        <td>{{ $num++ }}</td>
+                                        <td>{{ $sets->type->asset_type }}</td>
+                                        <td>{{ $sets->serial_no }}</td>
+                                        <td>{{ $sets->model }}</td>
+                                        <td>{{ $sets->brand }}</td>
+                                    </tr>
+                                @endforeach
+                            @else 
+                                <tr align="center" class="data-row">
+                                    <td valign="top" colspan="6">-- NO SET AVAILABLE --</td>
                                 </tr>
-                            @endforeach
+                            @endif
                         </tbody>
                     </table>
                 @endif

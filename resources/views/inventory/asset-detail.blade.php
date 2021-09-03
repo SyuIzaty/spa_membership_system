@@ -160,15 +160,22 @@
                                                                                     <select class="form-control status" name="status" id="status">
                                                                                         <option value="">Select Status</option>
                                                                                         @foreach ($status as $statuss) 
-                                                                                            <option value="{{ $statuss->id }}" {{ $asset->status == $statuss->id ? 'selected="selected"' : '' }}>{{ $statuss->status_name }}</option>
+                                                                                            <option value="{{ $statuss->id }}" {{ old('status', ($asset->status ? $asset->assetStatus->id : '')) ==  $statuss->id  ? 'selected' : '' }}>
+                                                                                                {{ $statuss->status_name }}</option>
                                                                                         @endforeach
                                                                                     </select>
                                                                                     @error('status')
                                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                     @enderror
                                                                                     <br><br>
-                                                                                    <input type="date" class="form-control inactive" id="inactive_date" name="inactive_date" value="{{ isset($asset->inactive_date) ? date('Y-m-d', strtotime($asset->inactive_date)) : old('inactive_date') }}"/>
-                                                                                    @error('inactive_date')
+                                                                                    @if($asset->status == '2' || $asset->status == '3')
+                                                                                        <input type="date" class="form-control" id="inactive_date" name="inactive_date" value="{{ isset($asset->inactive_date) ? date('Y-m-d', strtotime($asset->inactive_date)) : old('inactive_date') }}"/>
+                                                                                        @error('inactive_date')
+                                                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                        @enderror
+                                                                                    @endif
+                                                                                    <input type="date" class="form-control inactive" id="inactive_dates" name="inactive_dates" value="{{ old('inactive_dates') }}">
+                                                                                    @error('inactive_dates')
                                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                     @enderror
                                                                                 </td>
@@ -183,6 +190,12 @@
                                                                                     @error('availability')
                                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                     @enderror
+                                                                                    @if($asset->availability == '1')
+                                                                                        @if(isset($borrow))
+                                                                                            <br><br>
+                                                                                            <p> Current Borrower : {{$borrow->borrower->staff_name}} ({{$borrow->borrower->staff_id}})</p>
+                                                                                        @endif
+                                                                                    @endif
                                                                                 </td>
                                                                             </div>
                                                                         </tr>
@@ -316,7 +329,7 @@
                                                                                         @endforeach
                                                                                     @else
                                                                                         <tr align="center" class="data-row">
-                                                                                            <td valign="top" colspan="6" class="dataTables_empty">-- NO DATA AVAILABLE --</td>
+                                                                                            <td valign="top" colspan="6" class="dataTables_empty">-- NO SET AVAILABLE --</td>
                                                                                         </tr>
                                                                                     @endif
                                                                                 </tbody>
@@ -984,7 +997,7 @@
 
         $('#status').val(); 
         $("#status").change(); 
-        $('.inactive').val();
+        $('#inactive_dates').val('{{ old('inactive_dates') }}');
 
     })
 
