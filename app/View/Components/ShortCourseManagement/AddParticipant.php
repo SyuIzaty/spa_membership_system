@@ -1,19 +1,23 @@
 <?php
 
-namespace App\View\Components\short-course-management;
+namespace App\View\Components\ShortCourseManagement;
 
 use Illuminate\View\Component;
 
-class update-payment-proof extends Component
+class AddParticipant extends Component
 {
+
+    public Object $event;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($event)
     {
         //
+
+        $this->event = $event;
     }
 
     /**
@@ -23,6 +27,6 @@ class update-payment-proof extends Component
      */
     public function render()
     {
-        return view('components.short-course-management.update-payment-proof');
+        return view('short-course-management.components.add-participant');
     }
 }

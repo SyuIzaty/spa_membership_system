@@ -129,7 +129,7 @@
                                                 {{ $event->total_seat_available == 0 ? 'disabled' : null }}>Apply
                                                 now!</button>
                                         </div>
-                                        <x-short-course-management.add-participant :event="$event" />
+                                        <x-ShortCourseManagement.AddParticipant :event=$event />
 
                                     </div>
                                 </div>
