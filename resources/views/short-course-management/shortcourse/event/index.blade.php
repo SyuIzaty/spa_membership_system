@@ -272,8 +272,15 @@
                     if (subcategory_id != -1) {
                         $('#form-group-topic').show();
                     }
+                    $('#event').DataTable().ajax.reload();
 
                 });
+            });
+
+            $('#topic').change(function(event) {
+                var subcategory_id = $('#subcategory').find(":selected").val();
+
+                $('#event').DataTable().ajax.reload();
             });
 
         });
