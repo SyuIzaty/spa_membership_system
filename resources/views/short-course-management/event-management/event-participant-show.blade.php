@@ -617,533 +617,190 @@
                                                                                     class="ni ni-close"></i> Disqualified
                                                                                 All
                                                                                 Ticked</button>
-                                                                            <button href="javascript:;" id="new-application"
+                                                                            <a href="javascript:;" id="new-application"
                                                                                 class="btn btn-primary px-5 mx-5 waves-effect waves-themed align-middle"
                                                                                 {{ $event->total_seat_available == 0 ? 'disabled' : null }}>
                                                                                 <i class="ni ni-check"></i> New
-                                                                                Application</button>
+                                                                                Application</a>
                                                                         </div>
                                                                     </form>
                                                                 </div>
                                                                 <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
                                                                     style="content-align:right">
-                                                                    <div class="modal fade"
-                                                                        id="crud-modal-new-application" aria-hidden="true">
+                                                                    <x-short-course-management.add-participant
+                                                                        :event="$event" />
+
+
+                                                                </div>
+                                                                </form>
+                                                                <x-short-course-management.update-payment-proof/>
+
+                                                                    {{-- <div class="modal fade" id="crud-modals"
+                                                                        aria-hidden="true">
                                                                         <div class="modal-dialog">
                                                                             <div class="modal-content">
                                                                                 <div class="card-header">
-                                                                                    <h5 class="card-title w-150">
-                                                                                        Application
+                                                                                    <h5 class="card-title w-100">Payment
+                                                                                        Proof
                                                                                     </h5>
                                                                                 </div>
                                                                                 <div class="modal-body">
                                                                                     <form
-                                                                                        action="{{ url('/event/' . $event->id . '/events-participants/store') }}"
-                                                                                        method="post"
+                                                                                        action="{{ route('store.payment_proof') }}"
+                                                                                        method="POST"
                                                                                         enctype="multipart/form-data">
                                                                                         @csrf
-                                                                                        {{-- {!! Form::open(['action' => 'ShortCourseManagement\EventManagement\EventParticipantController@store', 'method' => 'POST']) !!} --}}
-                                                                                        {{-- <input type="hidden" name="id"
-                                                                    id="id"> --}}
-                                                                                        <p><span
-                                                                                                class="text-danger">*</span>
-                                                                                            Required Field</p>
-                                                                                        <hr class="mt-1 mb-2">
-                                                                                        <div class="form-group">
-                                                                                            <label for="ic"><span
-                                                                                                    class="text-danger">*</span>
-                                                                                                IC</label>
-                                                                                            <div class="row">
-                                                                                                <div
-                                                                                                    class="col">
-                                                                                                    <input
-                                                                                                        class="form-control"
-                                                                                                        id="ic_input"
-                                                                                                        name="ic_input">
-                                                                                                </div>
-                                                                                                <td class="col col-sm-1">
-                                                                                                    <a href="javascript:;"
-                                                                                                        data-toggle="#"
-                                                                                                        id="search-by-ic"
-                                                                                                        class="btn btn-primary mb-2"
-                                                                                                        hidden><i
-                                                                                                            class="ni ni-magnifier"></i></a>
 
-                                                                                                </td>
-                                                                                            </div>
-                                                                                            @error('ic_input')
-                                                                                                <p style="color: red">
-                                                                                                    <strong> *
-                                                                                                        {{ $message }}
-                                                                                                    </strong>
-                                                                                                </p>
-                                                                                            @enderror
-                                                                                        </div>
-                                                                                        <div
-                                                                                            id="form-application-second-part">
-
-                                                                                            <div class="alert alert-primary d-flex justify-content-center"
-                                                                                                style="color: #ffffff; background-color: #2c0549;width:100%;"
-                                                                                                id="application_message">
-                                                                                                Applicant Details
-                                                                                            </div>
-
-                                                                                            <hr class="mt-1 mb-2">
-                                                                                            <div class="form-group">
-                                                                                                <label
-                                                                                                    class="form-label"
-                                                                                                    for="fullname"><span
-                                                                                                        class="text-danger">*</span>Fullname</label>
-                                                                                                <input
-                                                                                                    class="form-control"
-                                                                                                    id="fullname"
-                                                                                                    name="fullname">
-                                                                                                @error('fullname')
-                                                                                                    <p style="color: red">
-                                                                                                        <strong> *
-                                                                                                            {{ $message }}
-                                                                                                        </strong>
-                                                                                                    </p>
-                                                                                                @enderror
-                                                                                            </div>
-                                                                                            <hr class="mt-1 mb-2">
-                                                                                            <div class="form-group">
-                                                                                                <label
-                                                                                                    class="form-label"
-                                                                                                    for="phone"><span
-                                                                                                        class="text-danger">*</span>Phone</label>
-                                                                                                <input
-                                                                                                    class="form-control"
-                                                                                                    id="phone" name="phone">
-                                                                                                @error('phone')
-                                                                                                    <p style="color: red">
-                                                                                                        <strong> *
-                                                                                                            {{ $message }}
-                                                                                                        </strong>
-                                                                                                    </p>
-                                                                                                @enderror
-                                                                                            </div>
-
-                                                                                            <hr class="mt-1 mb-2">
-                                                                                            <div class="form-group">
-                                                                                                <label
-                                                                                                    class="form-label"
-                                                                                                    for="email"><span
-                                                                                                        class="text-danger">*</span>Email</label>
-                                                                                                <input
-                                                                                                    class="form-control"
-                                                                                                    id="email" name="email">
-                                                                                                @error('email')
-                                                                                                    <p style="color: red">
-                                                                                                        <strong> *
-                                                                                                            {{ $message }}
-                                                                                                        </strong>
-                                                                                                    </p>
-                                                                                                @enderror
-                                                                                            </div>
-                                                                                            <hr class="mt-1 mb-2">
-                                                                                            <div class="form-group">
-                                                                                                <label
-                                                                                                    class="form-label"
-                                                                                                    for="payment_proof_input"><span
-                                                                                                        class="text-danger">*</span>Payment
-                                                                                                    Proof</label>
-                                                                                                <div
-                                                                                                    class="custom-file px-2 d-flex flex-column">
-                                                                                                    <input type="file"
-                                                                                                        class="custom-file-label"
-                                                                                                        name="payment_proof_input[]"
-                                                                                                        accept="image/png, image/jpeg"
-                                                                                                        multiple=""
-                                                                                                        id="payment_proof_input" />
-                                                                                                </div>
-
-                                                                                                @error('payment_proof_input')
-                                                                                                    <p style="color: red">
-                                                                                                        <strong> *
-                                                                                                            {{ $message }}
-                                                                                                        </strong>
-                                                                                                    </p>
-                                                                                                @enderror
-                                                                                            </div>
-                                                                                            <hr class="mt-1 mb-2">
-                                                                                            <div class="form-group">
-                                                                                                <label
-                                                                                                    class="form-label"
-                                                                                                    for="is_base_fee_select_add"><span
-                                                                                                        class="text-danger">*</span>Fee</label>
-                                                                                                {{-- <input class="form-control" id="is_base_fee_select_add"
-                                                                        name="is_base_fee_select_add"> --}}
-                                                                                                <select
-                                                                                                    class="form-control fee_id font-weight-bold"
-                                                                                                    name="fee_id"
-                                                                                                    id="fee_id"
-                                                                                                    tabindex="-1"
-                                                                                                    aria-hidden="true"
-                                                                                                    hidden>
-                                                                                                    <option disabled
-                                                                                                        selected>Select
-                                                                                                        Fee
-                                                                                                        Applied</option>
-                                                                                                    @foreach ($event->fees as $fee)
-                                                                                                        <option
-                                                                                                            value="{{ $fee->id }}">
-                                                                                                            {{ $fee->is_base_fee }}
-                                                                                                            -
-                                                                                                            {{ $fee->name }}
-                                                                                                            (RM{{ $fee->amount }})
-                                                                                                        </option>
-                                                                                                    @endforeach
-                                                                                                </select>
-                                                                                                <div
-                                                                                                    class="row">
-                                                                                                    <div
-                                                                                                        class="col-sm-5">
-                                                                                                        <div class="input-group flex-nowrap"
-                                                                                                            id="fee_id_show"
-                                                                                                            name="fee_id_show"
-                                                                                                            style="display:none; width:auto">
-                                                                                                            <div
-                                                                                                                class="input-group-prepend">
-                                                                                                                <span
-                                                                                                                    class="input-group-text"
-                                                                                                                    style="background-color:white; border-style: none;"
-                                                                                                                    id="addon-wrapping">RM</span>
-                                                                                                            </div>
-                                                                                                            <input
-                                                                                                                class="form-control-plaintext"
-                                                                                                                id="fee_id_input"
-                                                                                                                name="fee_id_input"
-                                                                                                                readonly>
-                                                                                                            <div
-                                                                                                                class="input-group-append">
-                                                                                                                <span
-                                                                                                                    style="background-color:white; border-style: none;"
-                                                                                                                    class="input-group-text">/
-                                                                                                                    person</span>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="col-sm-7"
-                                                                                                        id="promo_code_col"
-                                                                                                        style="display:none">
-                                                                                                        <div
-                                                                                                            class="row">
-                                                                                                            <div
-                                                                                                                class="col">
-                                                                                                                <input
-                                                                                                                    class="form-control"
-                                                                                                                    id="promo_code"
-                                                                                                                    name="promo_code"
-                                                                                                                    placeholder="Promo Code (Only if applicable)">
-                                                                                                            </div>
-                                                                                                            <td
-                                                                                                                class="col col-sm-1">
-                                                                                                                <button
-                                                                                                                    type="button"
-                                                                                                                    name="remove"
-                                                                                                                    id="promo_code_edit_remove"
-                                                                                                                    class="btn btn-danger btn_remove"
-                                                                                                                    style="display:none">
-                                                                                                                    <i
-                                                                                                                        class="ni ni-close"></i>
-                                                                                                                </button>
-                                                                                                                <button
-                                                                                                                    type="button"
-                                                                                                                    name="add"
-                                                                                                                    id="promo_code_edit_add"
-                                                                                                                    class="btn btn-primary btn_add">
-                                                                                                                    <i
-                                                                                                                        class="ni ni-check"></i>
-                                                                                                                </button>
-                                                                                                            </td>
-
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-
-                                                                                                @error('fee_id')
-                                                                                                    <p style="color: red">
-                                                                                                        <strong> *
-                                                                                                            {{ $message }}
-                                                                                                        </strong>
-                                                                                                    </p>
-                                                                                                @enderror
-                                                                                            </div>
-                                                                                            {{-- <hr class="mt-1 mb-2"> --}}
-                                                                                            <div
-                                                                                                class="custom-control custom-checkbox">
-                                                                                                <input type="checkbox"
-                                                                                                    class="custom-control-input"
-                                                                                                    id="represent-by-himself"
-                                                                                                    checked="checked"
-                                                                                                    type="hidden">
-                                                                                            </div>
-                                                                                            <div id="representative"
-                                                                                                style="display:none">
-                                                                                                <hr class="mt-1 mb-2">
-                                                                                                <div
-                                                                                                    class="form-group">
-                                                                                                    <label
-                                                                                                        for="representative-ic"><span
-                                                                                                            class="text-danger">*</span>
-                                                                                                        Representative
-                                                                                                        IC</label>
-                                                                                                    <div class="form-inline"
-                                                                                                        style="width:100%">
-                                                                                                        <div class="form-group mr-2 mb-2"
-                                                                                                            style="width:85%">
-                                                                                                            <input
-                                                                                                                class="form-control w-100"
-                                                                                                                id="representative_ic_input"
-                                                                                                                name="representative_ic_input">
-                                                                                                        </div>
-                                                                                                        <a href="javascript:;"
-                                                                                                            data-toggle="#"
-                                                                                                            id="search-by-representative-ic"
-                                                                                                            class="btn btn-primary mb-2"><i
-                                                                                                                class="ni ni-magnifier"></i></a>
-                                                                                                    </div>
-                                                                                                    @error('representative_ic_input')
-                                                                                                        <p style="color: red">
-                                                                                                            <strong> *
-                                                                                                                {{ $message }}
-                                                                                                            </strong>
-                                                                                                        </p>
-                                                                                                    @enderror
-                                                                                                </div>
-                                                                                                <p id="representative-doesnt-exist"
-                                                                                                    style="color: red; display:none;">
-                                                                                                    <strong> * The
-                                                                                                        representative
-                                                                                                        doesn't
-                                                                                                        exist
-                                                                                                    </strong>
-                                                                                                </p>
-                                                                                                <p id="representative-doesnt-valid"
-                                                                                                    style="color: red; display:none;">
-                                                                                                    <strong> * The
-                                                                                                        choosen
-                                                                                                        participant is
-                                                                                                        not
-                                                                                                        valid
-                                                                                                        to represent
-                                                                                                        others
-                                                                                                    </strong>
-                                                                                                </p>
-                                                                                                <div id="form-application-third-part"
-                                                                                                    style="display: none">
-                                                                                                    <div
-                                                                                                        class="form-group">
-                                                                                                        <label
-                                                                                                            class="form-label"
-                                                                                                            for="representative_fullname"><span
-                                                                                                                class="text-danger">*</span>Representative
-                                                                                                            Fullname</label>
-                                                                                                        <input
-                                                                                                            id="representative_fullname"
-                                                                                                            name="representative_fullname"
-                                                                                                            class="form-control"
-                                                                                                            readonly>
-                                                                                                        @error('representative_fullname')
-                                                                                                            <p
-                                                                                                                style="color: red">
-                                                                                                                <strong> *
-                                                                                                                    {{ $message }}
-                                                                                                                </strong>
-                                                                                                            </p>
-                                                                                                        @enderror
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <hr class="mt-1 mb-2">
-                                                                                        <div class="footer"
-                                                                                            id="new_application_footer"
+                                                                                        <div class="form-group col"
+                                                                                            id="carousel"
                                                                                             style="display:none">
+
+                                                                                            <!--Carousel Wrapper-->
+                                                                                            <div id="multi-item-example"
+                                                                                                class="carousel slide carousel-multi-item"
+                                                                                                data-ride="carousel">
+
+                                                                                                <!--Controls-->
+                                                                                                <div
+                                                                                                    class="controls-top">
+                                                                                                    <a class="btn-floating"
+                                                                                                        href="#multi-item-example"
+                                                                                                        data-slide="prev"><i
+                                                                                                            class="ni ni-arrow-left"></i></a>
+
+                                                                                                    <a class="btn-floating"
+                                                                                                        href="#multi-item-example"
+                                                                                                        data-slide="next"><i
+                                                                                                            class="ni ni-arrow-right"></i></a>
+                                                                                                </div>
+                                                                                                <!--/.Controls-->
+
+                                                                                                <!--Indicators-->
+                                                                                                <ol class="carousel-indicators mb-0"
+                                                                                                    id="carousel-indicators">
+                                                                                                </ol>
+                                                                                                <!--/.Indicators-->
+
+                                                                                                <!--Slides-->
+                                                                                                <div class="carousel-inner"
+                                                                                                    role="listbox"
+                                                                                                    id="carousel-slides">
+                                                                                                </div>
+                                                                                                <!--/.Slides-->
+
+                                                                                            </div>
+                                                                                            <!--/.Carousel Wrapper-->
+                                                                                        </div>
+
+                                                                                        <div
+                                                                                            class="custom-file px-2 d-flex flex-column">
+                                                                                            <input type="file"
+                                                                                                class="custom-file-label"
+                                                                                                name="payment_proof_input[]"
+                                                                                                accept="image/png, image/jpeg"
+                                                                                                multiple="" />
+                                                                                        </div>
+                                                                                        <hr class="mt-1 mb-1">
+                                                                                        <div
+                                                                                            class="form-group col col-sm-5">
+                                                                                            <label class="form-label"
+                                                                                                for="amount">Fee
+                                                                                                Amount</label>
+                                                                                            <div class="input-group flex-nowrap"
+                                                                                                id="fee_id_show"
+                                                                                                name="fee_id_show"
+                                                                                                style="width:auto">
+                                                                                                <div
+                                                                                                    class="input-group-prepend">
+                                                                                                    <span
+                                                                                                        class="input-group-text"
+                                                                                                        style="background-color:white; border-style: none;"
+                                                                                                        id="addon-wrapping">RM</span>
+                                                                                                </div>
+                                                                                                <input
+                                                                                                    class="form-control-plaintext"
+                                                                                                    id="amount"
+                                                                                                    name="amount" readonly>
+                                                                                                <div
+                                                                                                    class="input-group-append">
+                                                                                                    <span
+                                                                                                        style="background-color:white; border-style: none;"
+                                                                                                        class="input-group-text">/
+                                                                                                        person</span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <hr class="mt-1 mb-1">
+                                                                                        <div class="form-group col">
+                                                                                            <label class="form-label"
+                                                                                                for="fullname">Status</label>
+                                                                                            <div class="row">
+                                                                                                <input type="number"
+                                                                                                    name="event_participant_id"
+                                                                                                    value=0
+                                                                                                    id="event_participant_id"
+                                                                                                    hidden />
+                                                                                                <input type="number"
+                                                                                                    name="event_id" value=0
+                                                                                                    id="event_id" hidden />
+                                                                                                <input type="number"
+                                                                                                    name="participant_id"
+                                                                                                    id="participant_id"
+                                                                                                    hidden />
+                                                                                                <input
+                                                                                                    class="form-control-plaintext"
+                                                                                                    id="is_verified_payment_proof_id"
+                                                                                                    name="is_verified_payment_proof_id"
+                                                                                                    hidden>
+                                                                                                <div
+                                                                                                    class="col d-flex justify-content-start">
+                                                                                                    <input
+                                                                                                        class="form-control-plaintext"
+                                                                                                        id="is_verified_payment_proof"
+                                                                                                        name="is_verified_payment_proof"
+                                                                                                        disabled>
+                                                                                                </div>
+                                                                                                <div
+                                                                                                    class="col d-flex justify-content-end">
+                                                                                                    <div
+                                                                                                        class="row d-flex justify-content-end">
+                                                                                                        <td
+                                                                                                            class="col col-sm-1">
+                                                                                                            <button
+                                                                                                                type="button"
+                                                                                                                name="request_verification"
+                                                                                                                id="request_verification"
+                                                                                                                class="btn btn-primary btn_add"
+                                                                                                                style="display:none">
+                                                                                                                Request
+                                                                                                                Verification
+                                                                                                            </button>
+                                                                                                        </td>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <hr class="mt-1 mb-1">
+
+
+                                                                                        <div class="footer">
+                                                                                            <button type="submit"
+                                                                                                class="btn btn-primary ml-auto float-right"
+                                                                                                id="submit_payment_proof"><i
+                                                                                                    class="fal fa-save"></i>
+                                                                                                Save & Request
+                                                                                                Verification</button>
                                                                                             <button type="button"
                                                                                                 class="btn btn-danger ml-auto float-right mr-2"
-                                                                                                data-dismiss="modal"
-                                                                                                id="close-new-application"><i
+                                                                                                data-dismiss="modal"><i
                                                                                                     class="fal fa-window-close"></i>
                                                                                                 Close</button>
-                                                                                            <button type="submit"
-                                                                                                class="btn btn-success ml-auto float-right mr-2"
-                                                                                                id="application_update_submit"></button>
                                                                                         </div>
                                                                                     </form>
-
-                                                                                    {{-- {!! Form::close() !!} --}}
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-
-                                                                </div>
-                                                                </form>
-
-                                                                <div class="modal fade" id="crud-modals"
-                                                                    aria-hidden="true">
-                                                                    <div class="modal-dialog">
-                                                                        <div class="modal-content">
-                                                                            <div class="card-header">
-                                                                                <h5 class="card-title w-100">Payment Proof
-                                                                                </h5>
-                                                                            </div>
-                                                                            <div class="modal-body">
-                                                                                <form
-                                                                                    action="{{ route('store.payment_proof') }}"
-                                                                                    method="POST"
-                                                                                    enctype="multipart/form-data">
-                                                                                    @csrf
-
-                                                                                    <div class="form-group col"
-                                                                                        id="carousel" style="display:none">
-
-                                                                                        <!--Carousel Wrapper-->
-                                                                                        <div id="multi-item-example"
-                                                                                            class="carousel slide carousel-multi-item"
-                                                                                            data-ride="carousel">
-
-                                                                                            <!--Controls-->
-                                                                                            <div class="controls-top">
-                                                                                                <a class="btn-floating"
-                                                                                                    href="#multi-item-example"
-                                                                                                    data-slide="prev"><i
-                                                                                                        class="ni ni-arrow-left"></i></a>
-
-                                                                                                <a class="btn-floating"
-                                                                                                    href="#multi-item-example"
-                                                                                                    data-slide="next"><i
-                                                                                                        class="ni ni-arrow-right"></i></a>
-                                                                                            </div>
-                                                                                            <!--/.Controls-->
-
-                                                                                            <!--Indicators-->
-                                                                                            <ol class="carousel-indicators mb-0"
-                                                                                                id="carousel-indicators">
-                                                                                            </ol>
-                                                                                            <!--/.Indicators-->
-
-                                                                                            <!--Slides-->
-                                                                                            <div class="carousel-inner"
-                                                                                                role="listbox"
-                                                                                                id="carousel-slides">
-                                                                                            </div>
-                                                                                            <!--/.Slides-->
-
-                                                                                        </div>
-                                                                                        <!--/.Carousel Wrapper-->
-                                                                                    </div>
-
-                                                                                    <div
-                                                                                        class="custom-file px-2 d-flex flex-column">
-                                                                                        <input type="file"
-                                                                                            class="custom-file-label"
-                                                                                            name="payment_proof_input[]"
-                                                                                            accept="image/png, image/jpeg"
-                                                                                            multiple="" />
-                                                                                    </div>
-                                                                                    <hr class="mt-1 mb-1">
-                                                                                    <div class="form-group col col-sm-5">
-                                                                                        <label class="form-label"
-                                                                                            for="amount">Fee Amount</label>
-                                                                                        <div class="input-group flex-nowrap"
-                                                                                            id="fee_id_show"
-                                                                                            name="fee_id_show"
-                                                                                            style="width:auto">
-                                                                                            <div
-                                                                                                class="input-group-prepend">
-                                                                                                <span
-                                                                                                    class="input-group-text"
-                                                                                                    style="background-color:white; border-style: none;"
-                                                                                                    id="addon-wrapping">RM</span>
-                                                                                            </div>
-                                                                                            <input
-                                                                                                class="form-control-plaintext"
-                                                                                                id="amount" name="amount"
-                                                                                                readonly>
-                                                                                            <div
-                                                                                                class="input-group-append">
-                                                                                                <span
-                                                                                                    style="background-color:white; border-style: none;"
-                                                                                                    class="input-group-text">/
-                                                                                                    person</span>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <hr class="mt-1 mb-1">
-                                                                                    <div class="form-group col">
-                                                                                        <label class="form-label"
-                                                                                            for="fullname">Status</label>
-                                                                                        <div class="row">
-                                                                                            <input type="number"
-                                                                                                name="event_participant_id"
-                                                                                                value=0
-                                                                                                id="event_participant_id"
-                                                                                                hidden />
-                                                                                            <input type="number"
-                                                                                                name="event_id" value=0
-                                                                                                id="event_id" hidden />
-                                                                                            <input type="number"
-                                                                                                name="participant_id"
-                                                                                                id="participant_id"
-                                                                                                hidden />
-                                                                                            <input
-                                                                                                class="form-control-plaintext"
-                                                                                                id="is_verified_payment_proof_id"
-                                                                                                name="is_verified_payment_proof_id"
-                                                                                                hidden>
-                                                                                            <div
-                                                                                                class="col d-flex justify-content-start">
-                                                                                                <input
-                                                                                                    class="form-control-plaintext"
-                                                                                                    id="is_verified_payment_proof"
-                                                                                                    name="is_verified_payment_proof"
-                                                                                                    disabled>
-                                                                                            </div>
-                                                                                            <div
-                                                                                                class="col d-flex justify-content-end">
-                                                                                                <div
-                                                                                                    class="row d-flex justify-content-end">
-                                                                                                    <td
-                                                                                                        class="col col-sm-1">
-                                                                                                        <button
-                                                                                                            type="button"
-                                                                                                            name="request_verification"
-                                                                                                            id="request_verification"
-                                                                                                            class="btn btn-primary btn_add"
-                                                                                                            style="display:none">
-                                                                                                            Request
-                                                                                                            Verification
-                                                                                                        </button>
-                                                                                                    </td>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <hr class="mt-1 mb-1">
-
-
-                                                                                    {{-- <div class="invalid-feedback">Example invalid custom file feedback</div> --}}
-                                                                                    <div class="footer">
-                                                                                        <button type="submit"
-                                                                                            class="btn btn-primary ml-auto float-right"
-                                                                                            id="submit_payment_proof"><i
-                                                                                                class="fal fa-save"></i>
-                                                                                            Save & Request
-                                                                                            Verification</button>
-                                                                                        <button type="button"
-                                                                                            class="btn btn-danger ml-auto float-right mr-2"
-                                                                                            data-dismiss="modal"><i
-                                                                                                class="fal fa-window-close"></i>
-                                                                                            Close</button>
-                                                                                    </div>
-                                                                                </form>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                                                    </div> --}}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1845,285 +1502,9 @@
     <script>
         var event_id = '<?php echo $event->id; ?>';
 
-
-        // $(document).ready(function() {
-
-        //     $('.fee_id').select2();
-        // });
-
         // Processes
         { // Pre-Event
             {
-                //New Application
-                $(document).ready(function() {
-                    //New Application
-                    {
-                        document.getElementById("new-application").addEventListener("click", function(event) {
-                            event.preventDefault()
-                        });
-                        $('#new-application').click(function() {
-                            var ic = null;
-                            $('.modal-body #ic_input').val(ic);
-
-                            // $("div[id=form-application-second-part]").hide();
-                            $('#crud-modal-new-application').modal('show');
-                        });
-
-                        $('#crud-modal-new-application').on('show.bs.modal', function(event) {
-                            var button = $(event.relatedTarget)
-                            var ic = button.data('ic');
-
-                            $('.modal-body #ic_input').val(ic);
-                        });
-
-                        $('#search-by-ic').click(function() {
-                            var ic = $('.modal-body #ic_input').val();
-                            $.get("/participant/search-by-ic/" + ic + "/event/" + event_id, function(data) {
-                                $('.modal-body #application_update_submit').empty();
-                                $('.modal-body #application_message').empty();
-                                if (data.id) {
-                                    // TODO: Already Applied
-                                    $('.modal-body #fullname').attr('readonly', true);
-                                    $('.modal-body #phone').attr('readonly', true);
-
-                                    $('.modal-body #email').attr('readonly', true);
-                                    $('.modal-body #payment_proof_input').attr('readonly', true);
-
-                                    $('.modal-body #promo_code').attr('readonly', true);
-
-                                    $('#promo_code_edit_add').hide();
-                                    $('#promo_code_edit_remove').hide();
-
-                                    $('.modal-body #application_update_submit').hide();
-
-                                    $('.modal-body #application_message').append(
-                                        'Already Apply');
-
-                                } else {
-                                    // TODO: Not Apply Yet
-                                    console.log(data);
-                                    $('.modal-body #fullname').removeAttr('readonly', true);
-                                    $('.modal-body #phone').removeAttr('readonly', true);
-                                    $('.modal-body #payment_proof_input').removeAttr('readonly',
-                                        true);
-                                    $('.modal-body #email').removeAttr('readonly', true);
-                                    $('.modal-body #application_update_submit').show();
-                                    $('.modal-body #application_update_submit').append(
-                                        '<i class = "ni ni-plus"></i> Apply');
-                                    $('.modal-body #application_message').append(
-                                        'Make New Application');
-                                }
-
-                                if (data.participant) {
-                                    $('.modal-body #fullname').val(data.participant.name);
-                                    $('.modal-body #phone').val(data.participant.phone);
-                                    $('.modal-body #email').val(data.participant.email);
-                                } else {
-                                    $('.modal-body #fullname').val(null);
-                                    $('.modal-body #phone').val(null);
-                                    $('.modal-body #email').val(null);
-                                    $('.modal-body #payment_proof_input').val(null);
-
-                                }
-                                var fees = @json($event->fees);
-                                if (fees.length > 1) {
-                                    $('#promo_code_col').show();
-                                } else {
-                                    $('#promo_code_col').hide();
-                                }
-                                if (data.fee_id) {
-                                    $("select[id=fee_id]").val(data.fee_id);
-                                    $('.modal-body #promo_code').val(data.fee.promo_code);
-                                    $("input[id=fee_id_input]").val(data.fee.amount);
-                                    $("select[id=fee_id]").hide();
-                                    $("div[id=fee_id_show]").show();
-                                    if (data.fee.promo_code) {
-                                        $('.modal-body #promo_code').attr('readonly', true);
-                                        $('#promo_code_edit_add').hide();
-                                        $('#promo_code_edit_remove').show();
-                                    } else {
-                                        $('.modal-body #promo_code').removeAttr('readonly');
-                                        $('#promo_code_edit_add').show();
-                                        $('#promo_code_edit_remove').hide();
-                                    }
-
-
-                                } else {
-                                    $("select[id=fee_id]").val(null);
-                                    $('.modal-body #promo_code').val(null);
-                                    $("input[id=fee_id_input]").val(0);
-                                    $("select[id=fee_id]").hide();
-                                    $("div[id=fee_id_show]").show();
-                                }
-                                if ($('#represent-by-himself:checked').length > 0) {
-                                    $('.modal-body #representative_ic_input').val(ic);
-                                    if (data.participant) {
-                                        $('.modal-body #representative_fullname').val(data
-                                            .participant
-                                            .name);
-                                    }
-                                }
-
-                            }).fail(
-                                function() {
-                                    $('.modal-body #fullname').val(null);
-                                    $('.modal-body #phone').val(null);
-                                    $('.modal-body #email').val(null);
-                                    $('.modal-body #payment_proof_input').val(null);
-
-
-                                    $("select[id=fee_id]").hide();
-                                    $("div[id=fee_id_show]").show();
-
-                                    if ($('#represent-by-himself:checked').length > 0) {
-                                        $('.modal-body #representative_ic_input').val(ic);
-                                        $('.modal-body #representative_fullname').val(null);
-                                    }
-
-                                    $('.modal-body #application_update_submit').show();
-                                    $('.modal-body #application_update_submit').append(
-                                        '<i class = "ni ni-plus"></i> Apply');
-                                }).always(
-                                function() {
-                                    $("div[id=form-application-second-part]").show();
-                                    $("#new_application_footer").show();
-
-                                });
-                        });
-
-                        // promo_code_edit_add
-                        $('#promo_code_edit_add').click(function() {
-                            var promo_code = $('.modal-body #promo_code').val();
-                            $.get("/event/" + event_id + "/promo-code/" + promo_code + "/participant",
-                                function(
-                                    data) {
-                                    if (data.fee_id) {
-                                        $("input[id=fee_id_input]").val(data.fee.amount);
-                                        $("select[id=fee_id]").hide();
-                                        $("div[id=fee_id_show]").show();
-                                        $('#promo_code_edit_add').hide();
-                                        $('#promo_code_edit_remove').show();
-                                        $('.modal-body #promo_code').attr('readonly', true);
-                                        $("select[id=fee_id]").val(data.fee_id);
-
-                                    } else {
-                                        $('.modal-body #promo_code').val(null);
-                                    }
-                                }).fail(
-                                function() {
-                                    // TODO: The code is not valid
-                                });
-
-                        });
-
-                        // promo_code_edit_remove
-                        $('#promo_code_edit_remove').click(function() {
-                            $.get("/event/" + event_id + "/base-fee", function(data) {
-                                var promo_code = $('.modal-body #promo_code').val(null);
-                                if (data.fee_id) {
-                                    $("input[id=fee_id_input]").val(data.fee.amount);
-                                    $("select[id=fee_id]").hide();
-                                    $("div[id=fee_id_show]").show();
-                                    $('#promo_code_edit_add').show();
-                                    $('#promo_code_edit_remove').hide();
-                                    $('.modal-body #promo_code').removeAttr('readonly');
-                                    $("select[id=fee_id]").val(data.fee_id);
-
-                                }
-                            });
-
-                        });
-
-                        $('#ic_input').change(function() {
-                            // var id = null;
-                            var ic_input = $('.modal-body #ic_input').val();
-                            $('.modal-body #fullname').val(null);
-                            $('.modal-body #phone').val(null);
-                            $('.modal-body #payment_proof_input').val(null);
-                            $('.modal-body #email').val(null);
-                            $('.modal-body #representative_ic_input').val(ic_input);
-                            $('.modal-body #representative_fullname').val(null);
-                            // $("div[id=form-application-second-part]").hide();
-                            $("#new_application_footer").hide();
-
-                            $('#search-by-ic').trigger("click");
-                        });
-
-                        $('.modal-body #fullname').change(function() {
-                            // var id = null;
-                            var fullname = $('.modal-body #fullname').val();
-                            $('.modal-body #representative_fullname').val(fullname);
-
-                        });
-
-
-                        $("input[id=represent-by-himself]").change(function() {
-                            var representByHimself = '';
-
-                            $('.modal-body #representative-ic').val(null);
-                            $('.modal-body #representative-email').val(null);
-                            $("p[id=representative-doesnt-exist]").hide();
-                            $("div[id=form-application-third-part]").hide();
-                            $('.modal-body #represent-by-himself').val(representByHimself);
-                            if ($(this)[0].checked) {
-                                $("div[id=representative]").hide();
-                            } else {
-                                $("div[id=representative]").show();
-                            }
-                        });
-                    }
-
-                    // search-by-representative-ic
-                    {
-                        $('#search-by-representative-ic').click(function() {
-                            var representativeIc = $('.modal-body #representative-ic').val();
-                            $.get("/participant/search-by-representative-ic/" + representativeIc, function(
-                                data) {
-                                $('.modal-body #representative_fullname').val(data.name);
-                            }).fail(
-                                function() {
-                                    $("p[id=representative-doesnt-exist]").show();
-                                }).done(
-                                function() {
-                                    $("div[id=form-application-third-part]").show();
-                                });
-
-                        });
-
-                        $('#close-new-application').click(function() {
-                            $('.modal-body #ic').val(null);
-                            $('.modal-body #fullname').val(null);
-                            $('.modal-body #phone').val(null);
-                            $('.modal-body #payment_proof_input').val(null);
-                            $('.modal-body #email').val(null);
-                        });
-                    }
-                });
-
-                // search-by-representative-ic
-                {
-                    $('#search-by-representative-ic').click(function() {
-                        var representativeIc = $('.modal-body #representative-ic').val();
-                        $.get("/participant/search-by-representative-ic/" + representativeIc, function(data) {
-                            $('.modal-body #representative_fullname').val(data.name);
-                        }).fail(
-                            function() {
-                                $("p[id=representative-doesnt-exist]").show();
-                            }).done(
-                            function() {
-                                $("div[id=form-application-third-part]").show();
-                            });
-
-                    });
-
-                    $('#close-new-application').click(function() {
-                        $('.modal-body #ic').val(null);
-                        $('.modal-body #fullname').val(null);
-                        $('.modal-body #phone').val(null);
-                        $('.modal-body #email').val(null);
-                    });
-                }
-
                 // all applicants
                 {
                     $(document).ready(function() {
@@ -2448,101 +1829,101 @@
                     });
 
                     //Update Payment Proof
-                    {
+                    // {
 
-                        $('#crud-modals').on('show.bs.modal', function(event) {
-                            var button = $(event.relatedTarget);
-                            var is_verified_payment_proof_id = button.data('is_verified_payment_proof');
-                            $("#is_verified_payment_proof_id").val(is_verified_payment_proof_id);
-                            var event_id = button.data('event_id');
-                            $("#event_id").val(event_id);
-                            var participant_id = button.data('participant_id');
-                            $("#participant_id").val(participant_id);
-                            var event_participant_id = button.data('event_participant_id');
-                            $("#event_participant_id").val(event_participant_id);
-                            var amount = button.data('amount');
-                            $("#amount").val(amount);
-                            var stringStatus;
-                            var style;
-                            if (typeof(is_verified_payment_proof_id) !== "number") {
-                                stringStatus = "No request for verification yet"
-                                style = 'text-danger';
-                                // $("#request_verification").attr("disabled", "false");
-                            } else if (is_verified_payment_proof_id == 0) {
-                                stringStatus = "In verification Process"
-                                $("#request_verification").attr("disabled", "true");
-                                style = 'text-primary';
-                            } else if (is_verified_payment_proof_id == 1) {
-                                stringStatus = "Verified!"
-                                $("#request_verification").attr("disabled", "true");
-                                style = 'text-success';
-                                $("#submit_payment_proof").attr("disabled", "true");
-                            }
-                            // var payment_proof_path = button.data('payment_proof_path');
-                            // if (!payment_proof_path) {
-                            //     $("#payment_proof_path").hide();
-                            // } else {
-                            //     $("#payment_proof_path").show();
-                            //     var src = `{{ asset('${payment_proof_path}') }}`;
-                            //     $("#payment_proof_path").attr("src", src);
-                            // }
+                    //     $('#crud-modals').on('show.bs.modal', function(event) {
+                    //         var button = $(event.relatedTarget);
+                    //         var is_verified_payment_proof_id = button.data('is_verified_payment_proof');
+                    //         $("#is_verified_payment_proof_id").val(is_verified_payment_proof_id);
+                    //         var event_id = button.data('event_id');
+                    //         $("#event_id").val(event_id);
+                    //         var participant_id = button.data('participant_id');
+                    //         $("#participant_id").val(participant_id);
+                    //         var event_participant_id = button.data('event_participant_id');
+                    //         $("#event_participant_id").val(event_participant_id);
+                    //         var amount = button.data('amount');
+                    //         $("#amount").val(amount);
+                    //         var stringStatus;
+                    //         var style;
+                    //         if (typeof(is_verified_payment_proof_id) !== "number") {
+                    //             stringStatus = "No request for verification yet"
+                    //             style = 'text-danger';
+                    //             // $("#request_verification").attr("disabled", "false");
+                    //         } else if (is_verified_payment_proof_id == 0) {
+                    //             stringStatus = "In verification Process"
+                    //             $("#request_verification").attr("disabled", "true");
+                    //             style = 'text-primary';
+                    //         } else if (is_verified_payment_proof_id == 1) {
+                    //             stringStatus = "Verified!"
+                    //             $("#request_verification").attr("disabled", "true");
+                    //             style = 'text-success';
+                    //             $("#submit_payment_proof").attr("disabled", "true");
+                    //         }
+                    //         // var payment_proof_path = button.data('payment_proof_path');
+                    //         // if (!payment_proof_path) {
+                    //         //     $("#payment_proof_path").hide();
+                    //         // } else {
+                    //         //     $("#payment_proof_path").show();
+                    //         //     var src = `{{ asset('${payment_proof_path}') }}`;
+                    //         //     $("#payment_proof_path").attr("src", src);
+                    //         // }
 
-                            $('#carousel').hide();
+                    //         $('#carousel').hide();
 
-                            $.get("/event-participant/" + event_participant_id + "/payment_proof",
-                                function(data) {
-                                    // TODO: Insert result into couresol
+                    //         $.get("/event-participant/" + event_participant_id + "/payment_proof",
+                    //             function(data) {
+                    //                 // TODO: Insert result into couresol
 
-                                    data.forEach(function(img, index) {
-                                        // var src = `{{ asset('${img.payment_proof_path}') }}`;
-                                        var src = img.name;
-                                        var id = img.id;
-                                        $('#carousel-indicators').append(
-                                            `<li data-target="#multi-item-example" data-slide-to="${index}" ${index==0?"class='active'":null}></li>`
-                                        );
+                    //                 data.forEach(function(img, index) {
+                    //                     // var src = `{{ asset('${img.payment_proof_path}') }}`;
+                    //                     var src = img.name;
+                    //                     var id = img.id;
+                    //                     $('#carousel-indicators').append(
+                    //                         `<li data-target="#multi-item-example" data-slide-to="${index}" ${index==0?"class='active'":null}></li>`
+                    //                     );
 
-                                        $('#carousel-slides').append(
-                                            `<div class="carousel-item ${index==0?"active":null}">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="card mb-5">
-                                                            <img class="card-img-top"
-                                                                src="/get-payment-proof-image/${id}/${src}"
-                                                                alt="Card image cap">
-                                                            <div
-                                                                class="card-body d-flex justify-content-between">
-                                                                <h4 class="card-title">${img.created_at_diffForHumans}</h4>
-                                                                <form method="post"
-                                                                    action="/event-participant-payment_proof">
-                                                                    @csrf
-                                                                    <input type="hidden" name="payment_proof_id" value="${img.id}">
-                                                                        @csrf
-                                                                        <button type="submit"
-                                                                            class="btn btn-sm btn-danger float-right mr-2" ${is_verified_payment_proof_id==1?'disabled':null}>
-                                                                            <i class="ni ni-close"></i>
-                                                                        </button>
-                                                                    </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>`);
-                                    });
-                                    if (data.length > 0) {
-                                        $('#carousel').show();
-                                    } else {
-                                        $('#carousel').hide();
-                                    }
-                                }).fail(
-                                function() {
-                                    // TODO: Notify Users
-                                    console.log('fail');
-                                });
+                    //                     $('#carousel-slides').append(
+                    //                         `<div class="carousel-item ${index==0?"active":null}">
+                //                             <div class="row">
+                //                                 <div class="col-md-12">
+                //                                     <div class="card mb-5">
+                //                                         <img class="card-img-top"
+                //                                             src="/get-payment-proof-image/${id}/${src}"
+                //                                             alt="Card image cap">
+                //                                         <div
+                //                                             class="card-body d-flex justify-content-between">
+                //                                             <h4 class="card-title">${img.created_at_diffForHumans}</h4>
+                //                                             <form method="post"
+                //                                                 action="/event-participant-payment_proof">
+                //                                                 @csrf
+                //                                                 <input type="hidden" name="payment_proof_id" value="${img.id}">
+                //                                                     @csrf
+                //                                                     <button type="submit"
+                //                                                         class="btn btn-sm btn-danger float-right mr-2" ${is_verified_payment_proof_id==1?'disabled':null}>
+                //                                                         <i class="ni ni-close"></i>
+                //                                                     </button>
+                //                                                 </form>
+                //                                         </div>
+                //                                     </div>
+                //                                 </div>
+                //                             </div>
+                //                         </div>`);
+                    //                 });
+                    //                 if (data.length > 0) {
+                    //                     $('#carousel').show();
+                    //                 } else {
+                    //                     $('#carousel').hide();
+                    //                 }
+                    //             }).fail(
+                    //             function() {
+                    //                 // TODO: Notify Users
+                    //                 console.log('fail');
+                    //             });
 
-                            $('.modal-body #is_verified_payment_proof').val(stringStatus);
-                            $('.modal-body #is_verified_payment_proof').addClass(style);
-                        });
-                    }
+                    //         $('.modal-body #is_verified_payment_proof').val(stringStatus);
+                    //         $('.modal-body #is_verified_payment_proof').addClass(style);
+                    //     });
+                    // }
 
                     //View Payment Proof
                     {
@@ -3324,14 +2705,7 @@
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             }
                         },
-                        columns: [
-                            // {
-                            //     data: 'checkAttendedParticipants',
-                            //     name: 'checkAttendedParticipants',
-                            //     orderable: false,
-                            //     searchable: false
-                            // },
-                            {
+                        columns: [{
                                 className: 'text-center',
                                 data: 'id',
                                 name: 'id',
@@ -3356,33 +2730,11 @@
                                 data: 'participant.email',
                                 name: 'participant.email'
                             },
-                            // {
-                            //     className: 'text-center',
-                            //     data: 'organization_representative.participant.name',
-                            //     name: 'organization_representative.participant.name'
-                            // },
-                            // {
-                            //     className: 'text-center',
-                            //     data: 'organization_representative.participant.phone',
-                            //     name: 'organization_representative.participant.phone'
-                            // },
-                            // {
-                            //     className: 'text-center',
-                            //     data: 'organization_representative.participant.email',
-                            //     name: 'organization_representative.participant.email'
-                            // },
                             {
                                 className: 'text-center',
                                 data: 'created_at_diffForHumans',
                                 name: 'created_at_diffForHumans',
-                            },
-                            // {
-                            //     className: 'text-center',
-                            //     data: 'action',
-                            //     name: 'action',
-                            //     orderable: false,
-                            //     searchable: false
-                            // }
+                            }
                         ],
                         orderCellsTop: true,
                         "order": [
