@@ -213,9 +213,8 @@
                                                             @enderror
                                                         </div>
                                                     </div>
-                                                    <hr class="mt-1 mb-2">
                                                     <div class="footer" id="add_trainer_footer"
-                                                        style="display:none">
+                                                        style="display:none; margin-top: 10px;">
                                                         <button type="button"
                                                             class="btn btn-danger ml-auto float-right mr-2"
                                                             data-dismiss="modal" id="close-add-trainer"><i

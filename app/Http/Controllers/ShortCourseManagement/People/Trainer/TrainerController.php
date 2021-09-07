@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\ShortCourseManagement\People\Trainer;
+
 use App\Models\ShortCourseManagement\ContactPerson;
 use App\Models\ShortCourseManagement\Trainer;
 use App\Http\Controllers\Controller;
@@ -23,8 +24,8 @@ class TrainerController extends Controller
     public function dataTrainers()
     {
         $trainers = Trainer::orderByDesc('id')->get()->load(['events_trainers', 'user']);
-        $index=0;
-        foreach($trainers as $trainer){
+        $index = 0;
+        foreach ($trainers as $trainer) {
 
             if (isset($trainer->events_trainers)) {
                 $totalEvents = $trainer->events_trainers->count();
@@ -35,7 +36,7 @@ class TrainerController extends Controller
             $trainers[$index]->totalEvents = $totalEvents;
             $trainers[$index]['created_at_toDayDateTimeString'] = date_format(new DateTime($trainers[$index]->created_at), 'g:ia \o\n l jS F Y');
             $trainers[$index]['updated_at_toDayDateTimeString'] = date_format(new DateTime($trainers[$index]->updated_at), 'g:ia \o\n l jS F Y');
-            $index+=1;
+            $index += 1;
         }
 
 
@@ -44,7 +45,7 @@ class TrainerController extends Controller
                 return 'Created At:<br>' . $trainers->created_at_toDayDateTimeString . '<br><br> Last Update:<br>' . $trainers->updated_at_toDayDateTimeString;
             })
             ->addColumn('events_trainers', function ($trainers) {
-                return 'Total Events: ' . $trainers->totalEvents ;
+                return 'Total Events: ' . $trainers->totalEvents;
             })
             ->addColumn('management_details', function ($trainers) {
                 return 'Created By: ' . $trainers->created_by . '<br> Created At: ' . $trainers->created_at;
@@ -55,7 +56,6 @@ class TrainerController extends Controller
             })
             ->rawColumns(['action', 'management_details', 'events_trainers', 'dates'])
             ->make(true);
-
     }
 
     public function create()
@@ -87,6 +87,11 @@ class TrainerController extends Controller
                     'category' => 'EXT',
                     'password' => Hash::make($request->trainer_ic_input),
                 ]);
+            } else {
+                User::find($existUser->id)->update([
+                    'name' => $request->trainer_fullname,
+                    'updated_by' => Auth::user()->id,
+                ]);
             }
             if ($existUser) {
                 $existTrainer = Trainer::create([
@@ -97,6 +102,18 @@ class TrainerController extends Controller
                     'created_by' => Auth::user()->id,
                 ]);
             }
+        } else {
+            Trainer::find($existTrainer->id)->update([
+                'ic' => $request->trainer_ic_input,
+                'phone' => $request->trainer_phone,
+                'email' => $request->trainer_email,
+                'updated_by' => Auth::user()->id,
+            ]);
+            $existUser = User::where('id', $request->trainer_user_id)->first();
+            User::find($existUser->id)->update([
+                'name' => $request->trainer_fullname,
+                'updated_by' => Auth::user()->id,
+            ]);
         }
 
 
@@ -132,10 +149,10 @@ class TrainerController extends Controller
         $trainer->totalEvents = $totalEvents;
 
         return view('short-course-management.people.trainer.show', compact('trainer',));
-
     }
 
-    public function delete(Request $request, $id){
+    public function delete(Request $request, $id)
+    {
 
         $exist = Trainer::find($id);
         if (Auth::user()->id) {
@@ -180,7 +197,7 @@ class TrainerController extends Controller
             'updated_by' => Auth::user()->id,
         ]);
 
-        $trainer =Trainer::find($id);
+        $trainer = Trainer::find($id);
 
         $updateUser = User::find($trainer->user_id)->update([
             'name' => $request->name,
@@ -199,14 +216,14 @@ class TrainerController extends Controller
     public function searchById($id)
     {
         //
-        $trainer=Trainer::where('id', $id)->first();
+        $trainer = Trainer::where('id', $id)->first();
         return $trainer;
     }
 
     public function searchByUserId($user_id)
     {
         //
-        $user=User::where('id', $user_id)->first()->load(['trainer']);
+        $user = User::where('id', $user_id)->first()->load(['trainer']);
         return $user;
     }
 
@@ -215,12 +232,12 @@ class TrainerController extends Controller
         //
 
 
-        $trainer=Trainer::where('ic', $trainer_ic)->first();
-        if($trainer){
-            $user=User::where('id', $trainer->user_id)->first()->load(['trainer']);
-        }else{
-            $contact_person=ContactPerson::where('ic', $trainer_ic)->first();
-            $user=User::where('id', $contact_person->user_id)->first()->load(['contact_person']);
+        $trainer = Trainer::where('ic', $trainer_ic)->first();
+        if ($trainer) {
+            $user = User::where('id', $trainer->user_id)->first()->load(['trainer']);
+        } else {
+            $contact_person = ContactPerson::where('ic', $trainer_ic)->first();
+            $user = User::where('id', $contact_person->user_id)->first()->load(['contact_person']);
         }
 
         return $user;

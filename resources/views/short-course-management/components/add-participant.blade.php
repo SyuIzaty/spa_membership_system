@@ -102,7 +102,7 @@
                             @enderror
                         </div>
                         <hr class="mt-1 mb-2">
-                        <div class="form-group">
+                        <div class="form-group" id="fee_form" style="display:none">
                             <label class="form-label" for="is_base_fee_select_add"><span
                                     class="text-danger">*</span>Fee</label>
                             {{-- <input class="form-control" id="is_base_fee_select_add"
@@ -169,7 +169,7 @@
                             @enderror
                         </div>
                         {{-- <hr class="mt-1 mb-2"> --}}
-                        <div class="custom-control custom-checkbox">
+                        <div class="custom-control custom-checkbox" style="display:none">
                             <input type="checkbox" class="custom-control-input" id="represent-by-himself"
                                 checked="checked" type="hidden">
                         </div>
@@ -230,13 +230,13 @@
                             </div>
                         </div>
                     </div>
-                    <hr class="mt-1 mb-2">
-                    <div class="footer" id="new_application_footer" style="display:none">
+                    {{-- <hr class="mt-1 mb-2"> --}}
+                    <div class="footer" id="new_application_footer">
                         <button type="button" class="btn btn-danger ml-auto float-right mr-2" data-dismiss="modal"
                             id="close-new-application"><i class="fal fa-window-close"></i>
                             Close</button>
                         <button type="submit" class="btn btn-success ml-auto float-right mr-2"
-                            id="application_update_submit"></button>
+                            id="application_update_submit" style="display:none"></button>
                     </div>
                 </form>
 
@@ -255,6 +255,7 @@
             $('#new-application').click(function() {
                 var ic = null;
                 $('.modal-body #ic_input').val(ic);
+                $("#fee_form").hide();
 
                 // $("div[id=form-application-second-part]").hide();
                 $('#crud-modal-new-application').modal('show');
@@ -377,8 +378,7 @@
                     }).always(
                     function() {
                         $("div[id=form-application-second-part]").show();
-                        $("#new_application_footer").show();
-
+                        $("#fee_form").show();
                     });
             });
 
@@ -434,8 +434,7 @@
                 $('.modal-body #email').val(null);
                 $('.modal-body #representative_ic_input').val(ic_input);
                 $('.modal-body #representative_fullname').val(null);
-                // $("div[id=form-application-second-part]").hide();
-                $("#new_application_footer").hide();
+
 
                 $('#search-by-ic').trigger("click");
             });
