@@ -1332,74 +1332,75 @@
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
 
-                                                <div class="card">
+                                                <table class="table table-striped table-bordered">
+                                                    <thead class="table-primary">
+                                                        <tr>
+                                                            <th class="text-center" scope="col" style="width:20%">
+                                                                <h3>Title</h3>
+                                                            </th>
+                                                            <th class="text-center" scope="col">
+                                                                <h3>Value</h3>
+                                                            </th>
+                                                            <th class="text-center" scope="col" style="width:20%">
+                                                                <h3>Action</h3>
+
+                                                            </th>
+                                                        </tr>
+
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-center">Status</td>
+                                                            <td class="text-center" id="event_status_category_name"
+                                                                name="event_status_category_name">
+                                                                {{ $event->event_status_category->name }}</td>
+                                                            <td class="text-center">
+
+
+                                                                <a id="status_move_forward" name="status_move_forward"
+                                                                    href="javascript:;" @php
+                                                                        if ($event->event_status_category->id === 2 || $event->event_status_category->id === 3) {
+                                                                            echo "style='display: none'";
+                                                                        }
+                                                                    @endphp
+                                                                    class="btn btn-primary mr-auto ml-2 waves-effect waves-themed font-weight-bold">{{ isset($eventStatusCategories->where('id', $event->event_status_category->id + 1)->first()->name) ? $eventStatusCategories->where('id', $event->event_status_category->id + 1)->first()->name : 'ERROR' }}</a>
+
+                                                                <a id="status_move_backward" name="status_move_backward"
+                                                                    href="javascript:;" @php
+                                                                        if ($event->event_status_category->id === 1) {
+                                                                            echo "style='display: none'";
+                                                                        }
+                                                                    @endphp
+                                                                    class="btn btn-danger mr-auto ml-2 waves-effect waves-themed font-weight-bold">
+                                                                    {{ isset($eventStatusCategories->where('id', $event->event_status_category->id - 1)->first()->name) ? $eventStatusCategories->where('id', $event->event_status_category->id - 1)->first()->name : 'ERROR' }}</a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-center">Status</td>
+                                                            <td class="text-center" id="event_status_category_name"
+                                                                name="event_status_category_name">
+                                                                Active
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <button
+                                                                    {{ count($event->events_participants) == 0 ? null : 'disabled' }}
+                                                                    href="javascript:;" id="delete_event"
+                                                                    class="btn btn-danger mr-auto ml-2 waves-effect waves-themed font-weight-bold">DELETE</button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="card" style="box-shadow:none;">
+                                                    <div class="card-header" style="display:flex;">
+                                                        <i class="ni ni-eye" style='font-size:35px; align-self:center;'></i><h1 style="margin:0;"><span style="margin-left:15px; font-size:35px;">Preview</span></h1>
+                                                    </div>
                                                     <div class="card-body">
-                                                        <table class="table table-striped table-bordered">
-                                                            <thead class="table-primary">
-                                                                <tr>
-                                                                    <th class="text-center" scope="col"
-                                                                        style="width:20%">
-                                                                        <h3>Title</h3>
-                                                                    </th>
-                                                                    <th class="text-center" scope="col">
-                                                                        <h3>Value</h3>
-                                                                    </th>
-                                                                    <th class="text-center" scope="col"
-                                                                        style="width:20%">
-                                                                        <h3>Action</h3>
-
-                                                                    </th>
-                                                                </tr>
-
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td class="text-center">Status</td>
-                                                                    <td class="text-center"
-                                                                        id="event_status_category_name"
-                                                                        name="event_status_category_name">
-                                                                        {{ $event->event_status_category->name }}</td>
-                                                                    <td class="text-center">
-
-
-                                                                        <a id="status_move_forward"
-                                                                            name="status_move_forward" href="javascript:;"
-                                                                            @php
-                                                                                if ($event->event_status_category->id === 2 || $event->event_status_category->id === 3) {
-                                                                                    echo "style='display: none'";
-                                                                                }
-                                                                            @endphp
-                                                                            class="btn btn-primary mr-auto ml-2 waves-effect waves-themed font-weight-bold">{{ isset($eventStatusCategories->where('id', $event->event_status_category->id + 1)->first()->name) ? $eventStatusCategories->where('id', $event->event_status_category->id + 1)->first()->name : 'ERROR' }}</a>
-
-                                                                        <a id="status_move_backward"
-                                                                            name="status_move_backward" href="javascript:;"
-                                                                            @php
-                                                                                if ($event->event_status_category->id === 1) {
-                                                                                    echo "style='display: none'";
-                                                                                }
-                                                                            @endphp
-                                                                            class="btn btn-danger mr-auto ml-2 waves-effect waves-themed font-weight-bold">
-                                                                            {{ isset($eventStatusCategories->where('id', $event->event_status_category->id - 1)->first()->name) ? $eventStatusCategories->where('id', $event->event_status_category->id - 1)->first()->name : 'ERROR' }}</a>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="text-center">Status</td>
-                                                                    <td class="text-center"
-                                                                        id="event_status_category_name"
-                                                                        name="event_status_category_name">
-                                                                        Active
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        <button
-                                                                            {{ count($event->events_participants) == 0 ? null : 'disabled' }}
-                                                                            href="javascript:;" id="delete_event"
-                                                                            class="btn btn-danger mr-auto ml-2 waves-effect waves-themed font-weight-bold">DELETE</button>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
+                                                        <x-ShortCourseManagement.PublicViewEventDetail :errors=$errors
+                                                            :event=$event />
                                                     </div>
                                                 </div>
+
+
                                             </div>
                                         </div>
                                     </div>
