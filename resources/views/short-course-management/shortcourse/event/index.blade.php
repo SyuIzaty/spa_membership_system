@@ -75,6 +75,7 @@
                                             <tr class="bg-primary-50 text-center">
                                                 <th>ID</th>
                                                 <th>NAME</th>
+                                                <th>TOPIC</th>
                                                 <th>DATES</th>
                                             </tr>
                                             {{-- <tr>
@@ -206,6 +207,10 @@
                     {
                         data: 'name-with-href',
                         name: 'name-with-href'
+                    },
+                    {
+                        data: 'topic_list_string',
+                        name: 'topic_list_string'
                     },
                     {
                         data: 'dates',

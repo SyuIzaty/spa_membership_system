@@ -815,7 +815,7 @@ class EventController extends Controller
         // dd($request->category_id);
         // $events = Event::where([['event_status_category_id', '=', 2], ['datetime_start', '>=', Carbon::today()->toDateString()]])->orderBy('datetime_start')->get()->load(['events_participants', 'venue']);
         if ($request->category_id == -1 && $request->subcategory_id == -1 && $request->topic_id == -1) {
-            $events = Event::where([['event_status_category_id', '=', 2]])->orderBy('datetime_start')->get()->load(['events_participants', 'venue', 'events_shortcourses.shortcourse.topics_shortcourses.topic']);
+            $events = Event::where([['event_status_category_id', '=', 2]])->distinct()->orderBy('datetime_start')->get()->load(['events_participants', 'venue', 'events_shortcourses.shortcourse.topics_shortcourses.topic']);
         } else if ($request->category_id != -1 && $request->subcategory_id == -1 && $request->topic_id == -1) {
             // $category =Category::find($request->category_id)->load(['subcategories.topics.topics_shortcourses.shortcourse.events_shortcourses.event.events_participants','subcategories.topics.topics_shortcourses.shortcourse.events_shortcourses.event.venue']);
             // $events = Event::where([['event_status_category_id', '=', 2]])
@@ -843,7 +843,7 @@ class EventController extends Controller
                 ->where('scm_shortcourse.deleted_at', '=', null)
                 ->where('scm_topic_shortcourse.deleted_at', '=', null)
                 ->where('scm_topic.deleted_at', '=', null)
-                ->where('scm_subcategory.deleted_at', '=', null)->orderBy('datetime_start')
+                ->where('scm_subcategory.deleted_at', '=', null)->distinct()->orderBy('datetime_start')
                 ->get(['scm_event.*'])->load(['events_participants', 'venue', 'events_shortcourses.shortcourse.topics_shortcourses.topic']);
         } else if ($request->category_id != -1 && $request->subcategory_id != -1 && $request->topic_id == -1) {
             $subcategory_id = $request->subcategory_id;
@@ -857,7 +857,7 @@ class EventController extends Controller
                 ->where('scm_event_shortcourse.deleted_at', '=', null)
                 ->where('scm_shortcourse.deleted_at', '=', null)
                 ->where('scm_topic_shortcourse.deleted_at', '=', null)
-                ->where('scm_topic.deleted_at', '=', null)->orderBy('datetime_start')
+                ->where('scm_topic.deleted_at', '=', null)->distinct()->orderBy('datetime_start')
                 ->get(['scm_event.*'])->load(['events_participants', 'venue', 'events_shortcourses.shortcourse.topics_shortcourses.topic']);
         } else if ($request->category_id != -1 && $request->subcategory_id != -1 && $request->topic_id != -1) {
             $topic_id = $request->topic_id;
@@ -869,10 +869,9 @@ class EventController extends Controller
                 ->where('scm_event.deleted_at', '=', null)
                 ->where('scm_event_shortcourse.deleted_at', '=', null)
                 ->where('scm_shortcourse.deleted_at', '=', null)
-                ->where('scm_topic_shortcourse.deleted_at', '=', null)->orderBy('datetime_start')
+                ->where('scm_topic_shortcourse.deleted_at', '=', null)->distinct()->orderBy('datetime_start')
                 ->get(['scm_event.*'])->load(['events_participants', 'venue', 'events_shortcourses.shortcourse.topics_shortcourses.topic']);
         }
-
         $index = 0;
         foreach ($events as $event) {
             if (isset($event->events_participants)) {
@@ -884,9 +883,22 @@ class EventController extends Controller
                 $totalParticipantsNotApprovedYet = 0;
                 $totalRejected = 0;
             }
+            $topic_list_string = '';
+            $topicIndex=1;
+            if (isset($event->events_shortcourses)) {
+                foreach ($event->events_shortcourses as $event_shortcourse) {
+                    if (isset($event_shortcourse->shortcourse->topics_shortcourses)) {
+                        foreach ($event_shortcourse->shortcourse->topics_shortcourses as $topic_shortcourse) {
+                            $topic_list_string .=$topicIndex.') '.$topic_shortcourse->topic->name.'<br>';
+                            $topicIndex+=1;
+                        }
+                    }
+                }
+            }
             $events[$index]->totalValidParticipants = $totalValidParticipants;
             $events[$index]->totalParticipantsNotApprovedYet = $totalParticipantsNotApprovedYet;
             $events[$index]->totalRejected = $totalRejected;
+            $events[$index]->topic_list_string=$topic_list_string;
 
 
             $datetime_start = new DateTime($events[$index]->datetime_start);
@@ -898,20 +910,14 @@ class EventController extends Controller
         }
         return datatables()::of($events)
             ->addColumn('name-with-href', function ($events) {
-                // dd($events->events_shortcourses);
-                $htmlString='<a href="/shortcourse/' . $events->id . '" class="text-primary">' . $events->name . '</a>';
+                $htmlString = '<a href="/shortcourse/' . $events->id . '" class="text-primary">' . $events->name . '</a>';
 
-                // $htmlString='<a href="/shortcourse/' . $events->id . '" class="text-primary">' . $events->name . '</a><br><small>(';
-                // foreach($events->events_shortcourses[0]->shortcourse->topics_shortcourses as $topic_shortcourse){
-                //     $htmlString += '|'+$topic_shortcourse->topic->name+'|';
-                // }
-                // $htmlString+=')</small>';
                 return $htmlString;
             })
             ->addColumn('dates', function ($events) {
                 return 'Date Start: <br>' . $events->datetime_start_toDayDateTimeString . '<br><br> Date End: <br>' . $events->datetime_end_toDayDateTimeString;
             })
-            ->rawColumns(['name-with-href', 'dates'])
+            ->rawColumns(['name-with-href', 'dates','topic_list_string'])
             ->make(true);
     }
 

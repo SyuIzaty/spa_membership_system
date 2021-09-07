@@ -25,10 +25,10 @@
                         <div class="panel-content">
                             <span id="intake_fail"></span>
                             @csrf
-                            @if (Session::has('successUpdateGeneral'))
+                            @if (Session::has('messageAlreadyApplied'))
                                 <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;">
                                     <i class="icon fal fa-check-circle"></i>
-                                    {{ Session::get('successUpdateGeneral') }}
+                                    {{ Session::get('messageAlreadyApplied') }}
                                 </div>
                             @endif
                             @if ($errors->any())
