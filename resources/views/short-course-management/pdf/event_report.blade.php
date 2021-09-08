@@ -9,6 +9,8 @@
 
     <link rel="stylesheet" href="css/statistics/chartjs/chartjs.css.map">
     <link rel="stylesheet" href="css/statistics/chartjs/chartjs.css">
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 
 <body>
@@ -69,8 +71,12 @@
     <table class="table table-striped table-bordered">
         <tbody>
             <tr>
-                <td><h3>Total Mark</h3></td>
-                <td><h3>{{ $statistics_summary['mark_by_rate'] }}%</h3></td>
+                <td>
+                    <h3>Total Mark</h3>
+                </td>
+                <td>
+                    <h3>{{ $statistics_summary['mark_by_rate'] }}%</h3>
+                </td>
             </tr>
         </tbody>
     </table>
@@ -92,15 +98,48 @@
             @endforeach
         </tbody>
     </table>
-
-    {{-- <div class="col-md-6">
-        <div style="height:400px">
-            <canvas id="applicants" class="rounded shadow"></canvas>
-        </div>
+    {{-- <div class="card">
+        <div id="chart" class="row col-md-12"></div>
     </div> --}}
 
-
     <p style="margin-bottom: -100px;">This report is computer generated, no signature required</p>
+
+
+    {{-- <script src="js/statistics/chartjs/chartjs.bundle.js"></script> --}}
+
+    {{-- <script>
+        google.charts.load("current", {
+            packages: ['corechart']
+        });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var chartdata = {!! json_encode($chart->dataset) !!};
+            var arr = [
+                ['Question', 'Score', {
+                    "role": "style"
+                }]
+            ];
+            chartdata.forEach(function(ele) {
+                arr.push(ele);
+            });
+            var data = google.visualization.arrayToDataTable(arr);
+            var view = new google.visualization.DataView(data);
+            var options = {
+                title: "Evaluation Report",
+                width: 1000,
+                height: 600,
+                bar: {
+                    groupWidth: "80%"
+                },
+                legend: {
+                    position: "none"
+                },
+            };
+            var chart = new google.visualization.ColumnChart(document.getElementById("chart"));
+            chart.draw(view, options);
+        }
+    </script> --}}
 
 
     {{-- <script>
@@ -142,5 +181,4 @@
             }
         });
     </script> --}}
-    <script src="js/statistics/chartjs/chartjs.bundle.js"></script>
 </body>

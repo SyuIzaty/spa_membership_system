@@ -182,9 +182,6 @@
                                                             <th colspan="3"><b>Settings</b></th>
                                                         </tr>
                                                         <tr>
-                                                            <th class="text-center" scope="col" style="width:20%">
-                                                                Title
-                                                            </th>
                                                             <th class="text-center" scope="col">
                                                                 Value
                                                             </th>
@@ -197,7 +194,6 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td class="text-center">Status</td>
                                                             <td class="text-center" id="shortcourse_status_category_name"
                                                                 name="shortcourse_status_category_name">
                                                                 Active
@@ -225,10 +221,6 @@
                                                         <table class="table table-striped table-bordered">
                                                             <thead class="table-primary">
                                                                 <tr>
-                                                                    <th class="text-center" scope="col"
-                                                                        style="width:20%">
-                                                                        <h3>Title</h3>
-                                                                    </th>
                                                                     <th class="text-center" scope="col">
                                                                         <h3>Value</h3>
                                                                     </th>
@@ -242,7 +234,6 @@
                                                             </thead>
                                                             <tbody>
                                                                 <tr>
-                                                                    <td class="text-center">Status</td>
                                                                     <td class="text-center"
                                                                         id="shortcourse_status_category_name"
                                                                         name="shortcourse_status_category_name">
