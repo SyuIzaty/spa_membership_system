@@ -23,6 +23,7 @@ use App\Models\ShortCourseManagement\VenueType;
 use App\Models\ShortCourseManagement\EventFeedbackSet;
 
 use Barryvdh\DomPDF\Facade as PDF;
+
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
@@ -884,13 +885,13 @@ class EventController extends Controller
                 $totalRejected = 0;
             }
             $topic_list_string = '';
-            $topicIndex=1;
+            $topicIndex = 1;
             if (isset($event->events_shortcourses)) {
                 foreach ($event->events_shortcourses as $event_shortcourse) {
                     if (isset($event_shortcourse->shortcourse->topics_shortcourses)) {
                         foreach ($event_shortcourse->shortcourse->topics_shortcourses as $topic_shortcourse) {
-                            $topic_list_string .=$topicIndex.') '.$topic_shortcourse->topic->name.'<br>';
-                            $topicIndex+=1;
+                            $topic_list_string .= $topicIndex . ') ' . $topic_shortcourse->topic->name . '<br>';
+                            $topicIndex += 1;
                         }
                     }
                 }
@@ -898,7 +899,7 @@ class EventController extends Controller
             $events[$index]->totalValidParticipants = $totalValidParticipants;
             $events[$index]->totalParticipantsNotApprovedYet = $totalParticipantsNotApprovedYet;
             $events[$index]->totalRejected = $totalRejected;
-            $events[$index]->topic_list_string=$topic_list_string;
+            $events[$index]->topic_list_string = $topic_list_string;
 
 
             $datetime_start = new DateTime($events[$index]->datetime_start);
@@ -917,7 +918,7 @@ class EventController extends Controller
             ->addColumn('dates', function ($events) {
                 return 'Date Start: <br>' . $events->datetime_start_toDayDateTimeString . '<br><br> Date End: <br>' . $events->datetime_end_toDayDateTimeString;
             })
-            ->rawColumns(['name-with-href', 'dates','topic_list_string'])
+            ->rawColumns(['name-with-href', 'dates', 'topic_list_string'])
             ->make(true);
     }
 
@@ -1134,12 +1135,13 @@ class EventController extends Controller
             $statistics_summary['mark_by_rate'] = 0;
         }
 
-        // dd($fullmark_mark_by_rate);
-        // dd($comments);
         $chart = new Event;
         $chart->labels = array_keys(['Valid', 'Not Valid']);
         $chart->dataset = array_values([10, 100]);
+
         $pdf = PDF::loadView('short-course-management.pdf.event_report', compact('event', 'chart', 'statistics', 'comments', 'statistics_summary'));
+
         return $pdf->stream($id . '_event_report.pdf');
     }
+    // Generate pdf in laravel, then pass to frontend;
 }

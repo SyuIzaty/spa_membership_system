@@ -98,28 +98,35 @@
             @endforeach
         </tbody>
     </table>
-    {{-- <div class="card">
+    <div class="card">
         <div id="chart" class="row col-md-12"></div>
-    </div> --}}
+    </div>
 
     <p style="margin-bottom: -100px;">This report is computer generated, no signature required</p>
 
-
-    {{-- <script src="js/statistics/chartjs/chartjs.bundle.js"></script> --}}
-
-    {{-- <script>
+    <script type="text/javascript">
+        try {
+            this.print();
+        } catch (e) {
+            window.onload = window.print;
+        }
+    </script>
+    <script>
+        console.log('chartdata');
         google.charts.load("current", {
             packages: ['corechart']
         });
         google.charts.setOnLoadCallback(drawChart);
 
         function drawChart() {
-            var chartdata = {!! json_encode($chart->dataset) !!};
+
+            var chartdata = {!! json_encode($chart) !!};
             var arr = [
                 ['Question', 'Score', {
                     "role": "style"
                 }]
             ];
+            console.log(chartdata);
             chartdata.forEach(function(ele) {
                 arr.push(ele);
             });
@@ -139,46 +146,5 @@
             var chart = new google.visualization.ColumnChart(document.getElementById("chart"));
             chart.draw(view, options);
         }
-    </script> --}}
-
-
-    {{-- <script>
-        var ctx = document.getElementById('applicants').getContext('2d');
-        var chart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                // labels:  ['SPM','A Level','O Level','STPM','STAM','KKM','SVM','IELTS','ICAEW','SKM','Foundation','Diploma','CAT','CFAB','Matriculation','Foundation','MQF','Bachelor Degree','Master','PhD','APEL','SACE'] ,
-                labels: {!! json_encode($chart->labels) !!},
-                datasets: [{
-                    label: 'Offered applicant',
-                    backgroundColor: ["#efb5ae", "#e2d6bb", "#b0d8ed", "#b0c7ed", "#b7e1e6", "#c2b8e5",
-                        "#bbe2d9", "#c0ddc6", "#f6e3d8", "#fcf6f2"
-                    ],
-                    data: {!! json_encode($chart->dataset) !!},
-                }, ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                legend: {
-                    position: "left",
-                    labels: {
-                        fontColor: '#122C4B',
-                        fontFamily: "'Muli', sans-serif",
-                        padding: 15,
-                        boxWidth: 10,
-                        fontSize: 14,
-                    }
-                },
-                layout: {
-                    padding: {
-                        left: 10,
-                        right: 10,
-                        bottom: 30,
-                        top: 30
-                    }
-                }
-            }
-        });
-    </script> --}}
+    </script>
 </body>
