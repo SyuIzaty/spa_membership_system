@@ -15,6 +15,7 @@ class ShortCourse extends Model
         'description',
         'objective',
         'topic_id',
+        'is_icdl',
         'created_by',
         'created_at',
         'updated_by',
@@ -38,6 +39,12 @@ class ShortCourse extends Model
     public function events_shortcourses()
     {
         return $this->hasMany('App\Models\ShortCourseManagement\EventShortCourse',
+         'shortcourse_id',
+         'id');
+    }
+    public function shortcourse_icdl_modules()
+    {
+        return $this->hasMany('App\Models\ShortCourseManagement\ShortCourseICDLModule',
          'shortcourse_id',
          'id');
     }

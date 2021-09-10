@@ -94,6 +94,13 @@
             @endforeach
         </tbody>
     </table>
+
+    <table class="table table-bordered">
+        <tr class="bg-dark text-white" style="text-transform: uppercase;">
+            <td colspan="2" style="text-align: center">Charts and Visualization</td>
+        </tr>
+    </table>
+
     <div class="card">
         <div id="chart" class="row col-md-12"></div>
     </div>

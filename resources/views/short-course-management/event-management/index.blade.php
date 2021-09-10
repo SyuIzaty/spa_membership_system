@@ -74,7 +74,7 @@
         function Print(button) {
             var url = $(button).data('page');
             var printWindow = window.open('{{ url('/') }}' + url + '', 'Print',
-                'left=200, top=200, width=950, height=500, toolbar=0, resizable=0');
+                'left=100, top=50, width=1080, height=800, toolbar=0, resizable=0');
             printWindow.addEventListener('load', function() {
                 printWindow.print();
             }, true);

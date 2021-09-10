@@ -86,5 +86,11 @@ class EventParticipant extends Model
         'question_id',
         'id');
     }
+    public function shortcourse_icdl_modules_event_participants()
+    {
+        return $this->hasMany('App\Models\ShortCourseManagement\ShortCourseICDLModuleEventParticipant',
+         'event_participant_id',
+         'id');
+    }
     // $this->belongsTo(self::class, 'parent_id');
 }
