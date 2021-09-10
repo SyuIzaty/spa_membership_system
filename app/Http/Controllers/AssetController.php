@@ -93,7 +93,7 @@ class AssetController extends Controller
         $user = Auth::user();
         $code = Carbon::now()->format('Y').mt_rand(100000, 999999);
 
-        if($request->status == '2' || $request->status == '3') {
+        if($request->status == '2' || $request->status == '3' || $request->status == '4' || $request->status == '5') {
             $request->validate([
                 'department_id'     => 'required',
                 'asset_type'        => 'required',
@@ -307,15 +307,15 @@ class AssetController extends Controller
 
         ->editColumn('status', function ($asset) {
 
-            if($asset->status=='2' || $asset->status=='3')
+            if($asset->status=='2' || $asset->status=='3' || $asset->status=='4' || $asset->status=='5')
             {
                 $color = '#CC0000';
-                return '<div style="text-transform: uppercase; color:' . $color . '"><b>INACTIVE</b></div>';
+                return '<div style="text-transform: uppercase; color:' . $color . '"><b>'.$asset->assetStatus->status_name.'</b></div>';
             }
             else 
             {
                 $color = '#3CBC3C';
-                return '<div style="text-transform: uppercase; color:' . $color . '"><b>ACTIVE</b></div>';
+                return '<div style="text-transform: uppercase; color:' . $color . '"><b>'.$asset->assetStatus->status_name.'</b></div>';
             }
         })
 
@@ -408,7 +408,7 @@ class AssetController extends Controller
         
         if($request->status != $asset->status) {
         // request status != asset status
-            if($request->status == '2' || $request->status == '3') {
+            if($request->status == '2' || $request->status == '3' || $request->status == '4' || $request->status == '5') {
             // check between 2 or 3
                 if($asset->status == '1') {
                 // check former status 1 or not
@@ -490,7 +490,7 @@ class AssetController extends Controller
             }      
         } else {
           // request status == asset status
-             if($request->status == '2' || $request->status == '3') {
+             if($request->status == '2' || $request->status == '3' || $request->status == '4' || $request->status == '5') {
              // check between 2 or 3
                 $request->validate([
                     'asset_name'        => 'required',

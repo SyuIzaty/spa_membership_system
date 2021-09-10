@@ -106,7 +106,7 @@
                                                                             <td colspan="3">
                                                                                 {{ isset($data->assetStatus->status_name) ? strtoupper($data->assetStatus->status_name) : '--' }}
                                                                                 <br>
-                                                                                @if($data->status == '2' || $data->status == '3')
+                                                                                @if($data->status == '2' || $data->status == '3' || $data->status == '4' || $data->status == '5')
                                                                                      Date : {{ date('d-m-Y', strtotime($data->inactive_date)) ?? '--' }}
                                                                                 @endif
                                                                             </td>

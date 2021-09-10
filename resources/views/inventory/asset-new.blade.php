@@ -481,7 +481,7 @@
 
         $( "#status" ).change(function() {
             var val = $("#status").val();
-            if(val=="2" || val=="3"){
+            if(val=="2" || val=="3" || val=="4" || val=="5"){
                 $(".inactive").show();
             } else {
                 $(".inactive").hide();

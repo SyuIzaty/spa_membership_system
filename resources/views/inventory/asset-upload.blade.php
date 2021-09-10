@@ -24,12 +24,12 @@
                     <div class="panel-content">
                         
                         @if($errors->any())
-                        <div class="alert alert-danger">
-                            <button type="button" class="close" data-dismiss="alert">x</button>
-                                @foreach ($errors->all() as $error)
-                                    <strong>{{ $error }}</strong>
-                                @endforeach
-                        </div>
+                            <div class="alert alert-danger">
+                                <button type="button" class="close" data-dismiss="alert">x</button>
+                                    @foreach ($errors->all() as $error)
+                                        <i class="icon fal fa-check-circle"></i> {{ $error }}
+                                    @endforeach
+                            </div>
                         @endif
                         @if (Session::has('success'))
                             <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('success') }}</div>
@@ -161,7 +161,7 @@
                                     <div class="card">
                                         <div class="card-header">
                                             <a href="javascript:void(0);" class="card-title collapsed" data-toggle="collapse" data-target="#status" aria-expanded="false">
-                                                <i class="fal fa-graduation-cap width-2 fs-xl"></i>
+                                                <i class="fal fa-check-circle width-2 fs-xl"></i>
                                                 Status
                                                 <span class="ml-auto">
                                                     <span class="collapsed-reveal">
@@ -247,7 +247,7 @@
                                     <div class="card">
                                         <div class="card-header">
                                             <a href="javascript:void(0);" class="card-title collapsed" data-toggle="collapse" data-target="#custodian" aria-expanded="false">
-                                                <i class="fal fa-info-circle width-2 fs-xl"></i>
+                                                <i class="fal fa-user width-2 fs-xl"></i>
                                                 Custodian
                                                 <span class="ml-auto">
                                                     <span class="collapsed-reveal">

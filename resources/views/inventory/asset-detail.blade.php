@@ -534,7 +534,7 @@
                                                         <thead>
                                                             <tr align="center" class="bg-primary-50">
                                                                 <th>#ID</th>
-                                                                <th>Type</th>
+                                                                <th>Code Type</th>
                                                                 <th>Asset Code</th>
                                                                 <th>Finance Code</th>
                                                                 <th>Asset Name</th>
@@ -982,7 +982,7 @@
 
         $( "#status" ).change(function() {
             var val = $("#status").val();
-            if(val=="2" || val=="3"){
+            if(val=="2" || val=="3" || val=="4" || val=="5"){
                 $(".inactive").show();
             } else {
                 $(".inactive").hide();
