@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ShortCourseManagement\Catalogues\ShortCourse;
 use App\Models\ShortCourseManagement\ShortCourse;
 use App\Models\ShortCourseManagement\Topic;
 use App\Models\ShortCourseManagement\TopicShortCourse;
+use App\Models\ShortCourseManagement\ShortCourseICDLModule;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DateTime;
@@ -144,17 +145,20 @@ class ShortCourseController extends Controller
         //
         $validated = $request->validate([
             'name' => 'required|max:255',
+            'shortcourse_type' => 'required',
             'description' => 'required',
             'objective' => 'required',
         ], [
             'name.required' => 'Please insert event name',
             'name.max' => 'Name exceed maximum length',
+            'shortcourse_type' => 'Please choose shortcourse type',
             'description.required' => 'Please insert short course description',
             'objective.required' => 'Please insert short course objective',
         ]);
 
         $update = ShortCourse::find($id)->update([
             'name' => $request->name,
+            'is_icdl' => $request->shortcourse_type,
             'description' => $request->description,
             'objective' => $request->objective,
             'updated_by' => Auth::user()->id,
@@ -211,5 +215,43 @@ class ShortCourseController extends Controller
         $exist->delete();
 
         return Redirect()->back()->with('successUpdate', 'A Topic Detached from the Short Course Successfully');
+    }
+
+    public function storeModule(Request $request, $id)
+    {
+        // dd($request);
+        // //
+        $validated = $request->validate([
+            'shortcourse_module' => 'required',
+        ], [
+            'shortcourse_module.required' => 'Please insert module name',
+        ]);
+
+        $create = ShortCourseICDLModule::create([
+            'name' => $request->shortcourse_module,
+            'shortcourse_id' => $id,
+            'created_by' => Auth::user()->id,
+            'is_active' => 1,
+        ]);
+        // $_SESSION['successUpdate'] = $_POST['New Topic Attached to the Short Course Successfully'];
+        return $create;
+        // return Redirect()->back()->with('successUpdate', 'New Topic Attached to the Short Course Successfully');
+    }
+
+    public function removeModule(Request $request, $id)
+    {
+
+        $exist = ShortCourseICDLModule::find($id);
+        if (Auth::user()->id) {
+            $exist->updated_by = Auth::user()->id;
+            $exist->deleted_by = Auth::user()->id;
+        } else {
+            $exist->updated_by = "public_user";
+            $exist->deleted_by = "public_user";
+        }
+        $exist->save();
+        $exist->delete();
+
+        return Redirect()->back()->with('successUpdate', 'A Module has been deleted from the Short Course Successfully');
     }
 }

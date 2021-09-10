@@ -289,6 +289,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/shortcourse/topic/detached/{id}', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@removeTopicShortCourse');
     Route::post('/shortcourse/delete/{id}', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@delete');
     Route::post('/shortcourse', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@store');
+    Route::post('/shortcourse/module/attached/{id}', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@storeModule');
+    Route::post('/shortcourse/shortcourse_icdl_module/remove/{id}', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@removeModule');
 
     //SCM - EventParticipant
     Route::get('/event/{id}/events-participants/show', 'ShortCourseManagement\EventManagement\EventParticipantController@show');

@@ -97,6 +97,37 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
+                                                                <td>Short Course Type</td>
+                                                                <td name="shortcourse_type_show" id="shortcourse_type_show">
+                                                                    {{ $shortcourse->is_icdl == 0 ? 'Regular Short Course' : 'ICDL' }}
+                                                                </td>
+                                                                <td name="shortcourse_type_edit" id="shortcourse_type_edit"
+                                                                    style="display: none">
+                                                                    <div class="form-group">
+                                                                        <select class="form-control shortcourse_type "
+                                                                            name="shortcourse_type" id="shortcourse_type"
+                                                                            data-select2-id="shortcourse_type" tabindex="-1"
+                                                                            aria-hidden="true">
+                                                                            <option value="0"
+                                                                                {{ $shortcourse->is_icdl == 0 ?? 'Selected' }}>
+                                                                                Regular Short Course
+                                                                            </option>
+                                                                            <option value="1"
+                                                                                {{ $shortcourse->is_icdl == 1 ?? 'Selected' }}>
+                                                                                ICDL
+                                                                            </option>
+                                                                        </select>
+                                                                        @error('shortcourse_type')
+                                                                            <p style="color: red">
+                                                                                <strong> *
+                                                                                    {{ $message }}
+                                                                                </strong>
+                                                                            </p>
+                                                                        @enderror
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
                                                                 <td>Objective</td>
                                                                 <td name="objective_show" id="objective_show">
                                                                     {!! $shortcourse->objective !!}
@@ -174,6 +205,40 @@
                                                 <a href="javascript:;" name="addTopic" id="addTopic"
                                                     class="btn btn-primary btn-sm ml-auto float-right my-2">Add
                                                     More Topic</a>
+                                                <hr class="mt-2 mb-3">
+                                                <table class="table table-striped table-bordered m-0" id="module_field"
+                                                    {{ !$shortcourse->is_icdl ?? 'style="display:none"' }}>
+                                                    <thead class="thead">
+                                                        <tr class=" bg-primary-50">
+                                                            <th colspan="3"><b>List of Modules</b></th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Name</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($shortcourse->shortcourse_icdl_modules as $shortcourse_icdl_module)
+                                                            <tr>
+                                                                <td>{{ $shortcourse_icdl_module->name }}
+                                                                </td>
+                                                                <td>
+                                                                    <form method="post"
+                                                                        action="/shortcourse/shortcourse_icdl_module/remove/{{ $shortcourse_icdl_module->id }}">
+                                                                        @csrf
+                                                                        <button type="submit"
+                                                                            class="btn btn-sm btn-danger float-right mr-2">
+                                                                            <i class="ni ni-close"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                                <a href="javascript:;" name="addModule" id="addModule"
+                                                    class="btn btn-primary btn-sm ml-auto float-right my-2">Add
+                                                    More Module</a>
                                                 <hr class="mt-2 mb-3">
                                                 <table class="table table-striped table-bordered">
                                                     <thead class="table-primary">
@@ -281,6 +346,9 @@
                     $("#description_show").hide();
                     $("#description_edit").show();
 
+                    $("#shortcourse_type_show").hide();
+                    $("#shortcourse_type_edit").show();
+
 
                     $("#edit-basic").hide();
                     $("#save-basic").show();
@@ -299,6 +367,9 @@
 
                     $("#description_show").show();
                     $("#description_edit").hide();
+
+                    $("#shortcourse_type_show").show();
+                    $("#shortcourse_type_edit").hide();
 
 
                     $("#edit-basic").show();
@@ -324,6 +395,7 @@
             }
 
             $(document).ready(function() {
+                $(`.shortcourse_type`).select2();
 
                 var i = 1;
                 $('#addTopic').click(function() {
@@ -382,6 +454,57 @@
                                 $('#new-row').show();
                                 $("#addTopic").remove();
                                 alert('Unable to add topic');
+                            });
+                    });
+                });
+
+                $('#addModule').click(function() {
+                    i++;
+                    $('#module_field tbody').after(`
+                            <tr id="new-row">
+                                    <td>
+                                        <input id="add_module" name="shortcourse_module" type="text" class="form-control" placeholder="Insert Module Name">
+                                    </td>
+                                    <td class="d-flex flex-row-reverse ">
+                                        <a href="javascript:;" name="cancel-module" id="cancel-module" class="btn btn-sm btn-danger btn_remove mx-1">X</a>
+                                        <a
+                                            href="javascript:;"
+                                            class="btn btn-sm btn-success mx-1"
+                                            name="save-module" id="save-module">
+                                            <i class="fal fa-save"></i>
+                                        </a>
+                                    </td>
+                            </tr>
+                    `);
+                    $(`.module${i}`).select2();
+                    $('#addModule').hide();
+
+                    $(document).on('click', '#cancel-module', function() {
+                        $('#new-row').remove();
+                        $("#addModule").show();
+                    });
+
+
+                    $(document).on('click', '#save-module', function() {
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+
+                        var $shortcourse_module = $('#add_module').val();
+                        var data = {
+                            shortcourse_module: $shortcourse_module
+                        }
+                        var url = '/shortcourse/module/attached/' + shortcourse_id;
+
+                        $.post(url, data).done(function() {
+                                window.location.reload();
+                            })
+                            .fail(function() {
+                                $('#new-row').show();
+                                $("#addModule").remove();
+                                alert('Unable to add module');
                             });
                     });
                 });
