@@ -3,19 +3,15 @@
 
     <title>Event Report</title>
 
-    <link rel="stylesheet" href="css/pdf.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-
-    <link rel="stylesheet" href="css/statistics/chartjs/chartjs.css.map">
-    <link rel="stylesheet" href="css/statistics/chartjs/chartjs.css">
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 
 <body>
-    <div style="text-align: center;"><img src="{{ public_path('img/intec_logo_new.png') }}"
-            style="height: 90px; width: 200px; margin-top: -30px"></div>
+    {{-- <div style="text-align: center;"><img src="{{ public_path('img/intec_logo_new.png') }}"
+            style="height: 90px; width: 200px; margin-top: -30px"></div> --}}
 
     <table class="table table-bordered">
         <tr class="bg-dark text-white" style="text-transform: uppercase;">
@@ -104,15 +100,7 @@
 
     <p style="margin-bottom: -100px;">This report is computer generated, no signature required</p>
 
-    <script type="text/javascript">
-        try {
-            this.print();
-        } catch (e) {
-            window.onload = window.print;
-        }
-    </script>
     <script>
-        console.log('chartdata');
         google.charts.load("current", {
             packages: ['corechart']
         });
@@ -122,18 +110,17 @@
 
             var chartdata = {!! json_encode($chart) !!};
             var arr = [
-                ['Question', 'Score', {
+                ['Rate', 'Total Voters', {
                     "role": "style"
                 }]
             ];
-            console.log(chartdata);
             chartdata.forEach(function(ele) {
                 arr.push(ele);
             });
             var data = google.visualization.arrayToDataTable(arr);
             var view = new google.visualization.DataView(data);
             var options = {
-                title: "Evaluation Report",
+                title: "Overall Total Rate",
                 width: 1000,
                 height: 600,
                 bar: {

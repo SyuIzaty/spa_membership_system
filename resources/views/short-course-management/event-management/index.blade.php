@@ -17,8 +17,8 @@
                                 data-offset="0,10" data-original-title="Collapse"></button>
                             <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip"
                                 data-offset="0,10" data-original-title="Fullscreen"></button>
-                            <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10"
-                                data-original-title="Close"></button>
+                            <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip"
+                                data-offset="0,10" data-original-title="Close"></button>
                         </div>
                     </div>
                     <div class="panel-container show">
@@ -71,6 +71,14 @@
 @endsection
 @section('script')
     <script>
+        function Print(button) {
+            var url = $(button).data('page');
+            var printWindow = window.open('{{ url('/') }}' + url + '', 'Print',
+                'left=200, top=200, width=950, height=500, toolbar=0, resizable=0');
+            printWindow.addEventListener('load', function() {
+                printWindow.print();
+            }, true);
+        }
         $(document).ready(function() {
 
             $('#event thead tr .hasinput').each(function(i) {
@@ -156,13 +164,13 @@
                 "columnDefs": [{
                     "targets": 2,
                     "orderable": false
-                },{
+                }, {
                     "targets": 3,
                     "orderable": false
-                },{
+                }, {
                     "targets": 6,
                     "orderable": false
-                },{
+                }, {
                     "targets": 8,
                     "orderable": false
                 }],

@@ -90,9 +90,10 @@ class EventController extends Controller
                 <a href="/event/' . $events->id . '" class="btn btn-sm btn-primary">Settings</a>';
             })
             ->addColumn('document', function ($events) {
+
                 return '
                 <a href="/event/participant-list/' . $events->id . '" class="btn btn-sm btn-info">Attendance Sheet</a><br/><br/>
-                <a href="/event/report/' . $events->id . '" class="btn btn-sm btn-info">Event Report</a>';
+                <a data-page="/event/report/' . $events->id . '" class="btn btn-sm btn-info" style="color:white;" onclick="Print(this)">Event Report</a>';
             })
             ->rawColumns(['action', 'management_details', 'participant', 'dates', 'document'])
             ->make(true);
@@ -1134,14 +1135,19 @@ class EventController extends Controller
         } else {
             $statistics_summary['mark_by_rate'] = 0;
         }
+        $chart = [
+            ['Rate 1', $total_rate_1, '#F52100'],
+            ['Rate 2', $total_rate_2, '#EC08FF'],
+            ['Rate 3', $total_rate_3, '#1005E8'],
+            ['Rate 4', $total_rate_4, '#08CCFF'],
+            ['Rate 5', $total_rate_5, '#00D443']
+        ];
 
-        $chart = new Event;
-        $chart->labels = array_keys(['Valid', 'Not Valid']);
-        $chart->dataset = array_values([10, 100]);
+        // $pdf = PDF::loadView('short-course-management.pdf.event_report', compact('event', 'chart', 'statistics', 'comments', 'statistics_summary'));
 
-        $pdf = PDF::loadView('short-course-management.pdf.event_report', compact('event', 'chart', 'statistics', 'comments', 'statistics_summary'));
+        // return $pdf->stream($id . '_event_report.pdf');
 
-        return $pdf->stream($id . '_event_report.pdf');
+        return view('short-course-management.pdf.event_report', compact('event', 'chart', 'statistics', 'comments', 'statistics_summary'));
     }
     // Generate pdf in laravel, then pass to frontend;
 }
