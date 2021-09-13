@@ -77,7 +77,6 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-                                                {{-- <tr id="form-add-shortcourse-second-part" style="display: none"> --}}
                                                 <tr  class="row" id="form-add-shortcourse-second-part"
                                                     {{ old('shortcourse_id') ? null : 'style=display:none' }}>
 
@@ -115,7 +114,6 @@
                                                         {{ Form::label('title', 'Event Objective **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{-- {{ Form::textarea('shortcourse_objective', old('shortcourse_objective'), ['class' => 'form-control', 'placeholder' => 'Event Objective', 'id' => 'shortcourse_objective']) }} --}}
                                                         <textarea id="shortcourse_objective" name="shortcourse_objective"
                                                             class="form-control ck-editor__editable ck-editor__editable_inline"
                                                             rows="10">{{ old('shortcourse_objective') }}  </textarea>
@@ -125,39 +123,6 @@
                                                     </td>
                                                 </tr>
 
-                                                {{-- <tr id="form-add-shortcourse-second-part"
-                                                    {{ old('shortcourse_id') ? null : 'style=display:none' }}>
-                                                    <td class="col col-lg-2 px-4">
-                                                        {{ Form::label('title', "Short Course's Topic **", ['style' => 'font-weight:bold']) }}
-                                                    </td>
-                                                    <td>
-                                                        <table class="table table-bordered" id="topic_field">
-                                                            <tr id="row1" class="topic-added">
-                                                                <td class="col">
-                                                                    <select class="form-control topic1"
-                                                                        name="shortcourse_topic[]" id="add_topic">
-                                                                        <option value="-1" disabled
-                                                                            {{ old('shortcourse_topic') ? (old('shortcourse_topic')[0] == -1 ? 'selected' : null) : null }}>
-                                                                            Select Topic
-                                                                        </option>
-                                                                        @foreach ($topics as $topic)
-                                                                            <option value="{{ $topic->id }}"
-                                                                                {{ old('shortcourse_topic') ? (old('shortcourse_topic')[0] == $topic->id ? 'selected' : null) : null }}>
-                                                                                {{ $topic->id }} -
-                                                                                {{ $topic->name }}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                        @error('shortcourse_topic')
-                                                            <p style="color: red">{{ $message }}</p>
-                                                        @enderror
-                                                        <a href="javascript:;" name="addTopic" id="addTopic"
-                                                            class="btn btn-success btn-sm ml-auto float-right">Add
-                                                            More Topic</a>
-                                                    </td>
-                                                </tr> --}}
                                                 <tr class="row">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Event Date and Time (Start) **', ['style' => 'font-weight:bold']) }}
@@ -266,9 +231,6 @@
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Fee Type **', ['style' => 'font-weight:bold']) }}
                                                     </td>
-                                                    {{-- <td class="col px-4">
-                                                        {{ Form::text('fee_type', 'Normal Price', ['class' => 'form-control', 'placeholder' => 'Fee Type', 'readonly']) }}
-                                                    </td> --}}
 
 
                                                     <td class="col px-4">
@@ -397,9 +359,6 @@
 
 
                                             </table>
-                                            {{-- <button class="btn btn-success btn-sm ml-auto float-right mb-5">Submit</button> --}}
-
-
                                         </div>
                                     </div>
 
@@ -449,8 +408,6 @@
             var trainer_ic = $('#search-by-trainer_ic_input').val();
             $.get("/trainer/search-by-trainer_ic/" + trainer_ic, function(data) {
 
-                // console.log(data.id);
-                // $("#trainer_user_id option[value='" + data.id + "']").attr("selected", "true");
 
                 $("#trainer_user_id").select2().val(data.id).trigger("change");
                 $("#trainer_user_id_text").hide();
@@ -458,9 +415,6 @@
                 $("#trainer_user_id").prop('disabled', true);
                 $("#trainer_user_id_hidden").val(data.id);
 
-                // $("#trainer_user_id").hide();
-                // $("#trainer_user_id").attr('style', 'display: none');
-                // $("#trainer_user_id").removeClass('user');
 
                 $("#trainer_user_id_text").val(data.id);
                 $('#trainer_fullname').val(data.name);
@@ -494,7 +448,6 @@
                     $("tr[id=form-add-trainer-second-part]").show();
 
                     $('#submit').show();
-                    // $('#search-by-trainer_ic').hide();
                 });
 
         });
@@ -532,7 +485,6 @@
 
             $('#submit').hide();
 
-            // $("tr[id=form-add-trainer-second-part]").hide();
             $('#search-by-trainer_ic').trigger("click");
 
 
@@ -546,12 +498,8 @@
             if (shortcourse_id == -1) {
 
                 $('#shortcourse_name').val(null);
-                // $('#shortcourse_description').val(null);
-                // console.log(shortcourse_description);
                 editor_shortcourse_description.setData('');
-                // $('#shortcourse_objective').val(null);
                 editor_shortcourse_objective.setData('');
-                // $('#shortcourse_topic').val(null);
 
                 var rowCount = $('#topic_field tr').length;
                 while (rowCount > 1) {
@@ -560,7 +508,6 @@
                     $(`#row${rowCount}`).remove();
                     rowCount -= 1;
                 }
-                // $(".topic1").select2().val(-1).trigger("change");
 
                 $("tr[id=form-add-shortcourse-second-part]").show();
             } else {
@@ -570,54 +517,20 @@
                 });
 
 
-                // $("topic_field").find("tr:gt(0)").remove();
                 shortcourse_description = selected_shortcourse.description;
                 shortcourse_objective = selected_shortcourse.objective;
 
                 nodeNames = [];
                 if (shortcourse_id) {
                     $('#shortcourse_name').val(selected_shortcourse.name);
-                    // $('#shortcourse_description').val(shortcourse_description);
 
                     editor_shortcourse_description.setData(shortcourse_description);
-                    // $('#shortcourse_objective').val(shortcourse_objective);
                     editor_shortcourse_objective.setData(shortcourse_objective);
 
-                    // $('#shortcourse_topic').val(selected_shortcourse.topics);
                     $("tr[id=form-add-shortcourse-second-part]").show();
 
                     var i = 1;
-                    // selected_shortcourse.topics.forEach((x) => {
-                    //     if (i > 1) {
-                    //         $(`#row${i}`).remove();
-                    //         $('#topic_field tr:last').after(`
-                //         <tr id="row${i}" class="topic-added">
-                //                 <td class="col">
-                //                     <select class="form-control topic${i}" name="shortcourse_topic[]"
-                //                     id="add_topic">
-                //                         <option value="-1" disabled selected>Select Topic
-                //                         </option>
                 @foreach ($topics as $topic)
-                    // <option value="{{ $topic->id }}">
-                        // {{ $topic->id }} -
-                        // {{ $topic->name }}</option>
-                    // @endforeach
-                //                     </select>
-                //                 </td>
-                //                 <td class="col col-sm-1"><button type="button" name="remove" id="${i}" class="btn btn-danger btn_remove">X</button></td>
-                //         </tr> `);
-                    //         $(`.topic${i}`).select2();
-
-                    //     }
-                    //     $(".topic" + i).select2().val(x.id).trigger("change");
-                    //     i += 1;
-                    // });
-
-                    // var rowCount = $('#topic_field tr').length;
-                    // while (rowCount > selected_shortcourse.topics.length) {
-                    //     $(`#row${rowCount}`).remove();
-                    //     rowCount -= 1;
-                    // }
 
                 } else {
                     $('#shortcourse_name').val(null);
@@ -636,43 +549,16 @@
             $('#venue_type_id').val(venue_type_id);
 
 
-            // var venue_name = $('#venue_id').prop("tagName");
             if (venue_id == -1) {
-                // $('#venue_name').val(venue_name);
                 $("tr[id=form-add-venue-second-part]").show();
             } else {
-                // $('#venue_name').val(venue_name);
                 $("tr[id=form-add-venue-second-part]").hide();
 
             }
         });
 
         $(document).ready(function() {
-            //     var i = 101;
-            //     var index =0;
-            //     // TODO: Find the way to use old value and recursive this.
-            //     $('#addTopic').click(function() {
-            //         $('#topic_field tr:last').after(`
-        //             <tr id="row${i}" class="topic-added">
-        //                     <td class="col">
-        //                         <select class="form-control topic${i}" name="shortcourse_topic[]"
-        //                         id="add_topic">
-        //                             <option value="-1" disabled  {{ old('shortcourse_topic') ? (old('shortcourse_topic')[${index}] == -1 ? 'selected' : null) : null }}>Select Topic
-        //                             </option  {{ old('shortcourse_topic') ? (old('shortcourse_topic')[${index}] == $topic->id ? 'selected' : null) : null }}>
-        @foreach ($topics as $topic)
-            // <option value="{{ $topic->id }}">
-                // {{ $topic->id }} -
-                // {{ $topic->name }}</option>
-            // @endforeach
-        //                         </select>
-        //                     </td>
-        //                     <td class="col col-sm-1"><button type="button" name="remove" id="${i}" class="btn btn-danger btn_remove">X</button></td>
-        //             </tr>
-        //     `);
-            //         $(`.topic${i}`).select2();
-            //         i+=1;
-            //         index+=1;
-            //     });
+         @foreach ($topics as $topic)
 
             $('.shortcourse, .user, .venue, .topic1, .fee, .venue_type, .event_feedback_set').select2();
 
