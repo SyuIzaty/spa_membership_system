@@ -9,6 +9,7 @@ use App\Models\ShortCourseManagement\Event;
 use App\Models\ShortCourseManagement\Participant;
 use App\Models\ShortCourseManagement\Fee;
 use App\Models\ShortCourseManagement\EventParticipantPaymentProof;
+use App\Models\ShortCourseManagement\ShortCourseICDLModuleEventParticipant;
 use Auth;
 use DateTime;
 use File;
@@ -23,8 +24,8 @@ class EventParticipantController extends Controller
     public function show($id)
     {
         //eventParticipantIndex
+        $event = Event::find($id)->load(['events_participants', 'events_shortcourses.shortcourse.shortcourse_icdl_modules']);
 
-        $event = Event::find($id)->load(['events_participants']);
         $currentApplicants = $event->events_participants
             ->where('is_approved_application', 1)
             ->count();
@@ -500,7 +501,6 @@ class EventParticipantController extends Controller
 
     public function store(Request $request, $event_id)
     {
-
         $validated = $request->validate([
             'ic_input' => 'required',
             'fullname' => 'required|min:3',
@@ -533,6 +533,9 @@ class EventParticipantController extends Controller
 
         // dd($request->file('payment_proof_input'));
         //
+        if ($request->is_icdl == 1 && !$request->modules) {
+            return Redirect()->back()->with('failedNewApplication', 'New Application Failed. At least a module should be selected for ICDL course. Please try again.');
+        }
         if ($request->file('payment_proof_input')) {
 
             $existParticipant = Participant::where([
@@ -630,6 +633,7 @@ class EventParticipantController extends Controller
                 ]);
             }
 
+
             $eventParticipantPaymentProof = EventParticipantPaymentProof::where([['event_participant_id', '=', $existEventParticipant->id]])->get();
             $eventParticipant = EventParticipant::find($existEventParticipant->id);
             // dd($eventParticipant->is_verified_payment_proof);
@@ -641,6 +645,17 @@ class EventParticipantController extends Controller
                 ]);
             }
             // End payment proof
+
+
+            if ($request->is_icdl == 1) {
+                foreach ($request->modules as $module) {
+                    ShortCourseICDLModuleEventParticipant::create([
+                        'shortcourse_icdl_module_id' => $module,
+                        'event_participant_id' => $existEventParticipant->id,
+                        'created_by' => Auth::user() ? Auth::user()->id : 'public_user',
+                    ]);
+                }
+            }
 
 
 

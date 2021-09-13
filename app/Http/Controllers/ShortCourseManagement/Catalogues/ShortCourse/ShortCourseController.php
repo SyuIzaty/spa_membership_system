@@ -274,6 +274,7 @@ class ShortCourseController extends Controller
             'name' => $request->shortcourse_name_new,
             'description' => $request->description,
             'objective' => $request->objective,
+            'is_icdl' => $request->shortcourse_type,
             'created_by' => Auth::user()->id,
         ]);
 

@@ -349,7 +349,7 @@ class EventController extends Controller
         $event = Event::find($id)->load([
             'events_participants',
             'venue',
-            'events_shortcourses.shortcourse',
+            'events_shortcourses.shortcourse.shortcourse_icdl_modules',
             'events_trainers.trainer',
             'fees',
             'event_status_category',
@@ -789,7 +789,7 @@ class EventController extends Controller
         $event = Event::find($id)->load([
             'events_participants',
             'venue',
-            'events_shortcourses.shortcourse',
+            'events_shortcourses.shortcourse.shortcourse_icdl_modules',
             'events_trainers.trainer',
             'fees',
             'events_contact_persons.contact_person'

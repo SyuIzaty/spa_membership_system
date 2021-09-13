@@ -83,6 +83,18 @@
                                 </p>
                             @enderror
                         </div>
+                        <input id="is_icdl" name="is_icdl" type="number" value={{$event->events_shortcourses[0]->shortcourse->is_icdl}} hidden>
+                        <div class="form-group add-participant__module"
+                            {{ $event->events_shortcourses[0]->shortcourse->is_icdl==1 ?'': 'style=display:none' }}>
+                            <label class="form-label" for="modules"><span
+                                    class="text-danger">*</span>Modules</label>
+                            @foreach ($event->events_shortcourses[0]->shortcourse->shortcourse_icdl_modules as $shortcourse_icdl_module)
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="module-{{$shortcourse_icdl_module->id}}" name="modules[]" value={{$shortcourse_icdl_module->id}}>
+                                    <label class="custom-control-label" for="module-{{$shortcourse_icdl_module->id}}">{{$shortcourse_icdl_module->name}}</label>
+                                </div>
+                            @endforeach
+                        </div>
                         <hr class="mt-1 mb-2">
                         <div class="form-group">
                             <label class="form-label" for="payment_proof_input"><span
@@ -490,3 +502,15 @@
         }
     });
 </script>
+<style>
+    .add-participant__module {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+
+    }
+
+    .add-participant__module .form-label {
+        grid-column: 1/-1;
+    }
+
+</style>

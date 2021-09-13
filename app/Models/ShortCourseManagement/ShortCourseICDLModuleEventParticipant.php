@@ -5,7 +5,7 @@ namespace App\Models\ShortCourseManagement;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ShortCourseICDLModule extends Model
+class ShortCourseICDLModuleEventParticipant extends Model
 {
     use SoftDeletes;
     protected $table = 'scm_shortcourse_icdl_module_event_participant';
