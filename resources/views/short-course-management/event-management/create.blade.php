@@ -530,7 +530,6 @@
                     $("tr[id=form-add-shortcourse-second-part]").show();
 
                     var i = 1;
-                @foreach ($topics as $topic)
 
                 } else {
                     $('#shortcourse_name').val(null);
@@ -558,7 +557,6 @@
         });
 
         $(document).ready(function() {
-         @foreach ($topics as $topic)
 
             $('.shortcourse, .user, .venue, .topic1, .fee, .venue_type, .event_feedback_set').select2();
 
