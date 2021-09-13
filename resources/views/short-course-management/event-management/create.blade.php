@@ -60,9 +60,9 @@
                                                         <select class="form-control shortcourse" name="shortcourse_id"
                                                             id="shortcourse_id">
                                                             <option disabled selected>Select Short Course</option>
-                                                            <option value="-1" name="Others"
+                                                            <option value="-1" name="Create New Short Course"
                                                                 {{ old('shortcourse_id') == -1 ? 'selected' : null }}>
-                                                                Others
+                                                                Create New Short Course
                                                             </option>
                                                             @foreach ($shortcourses as $shortcourse)
                                                                 <option value="{{ $shortcourse->id }}"
@@ -77,7 +77,7 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-                                                <tr  class="row" id="form-add-shortcourse-second-part"
+                                                <tr class="row" id="form-add-shortcourse-second-part"
                                                     {{ old('shortcourse_id') ? null : 'style=display:none' }}>
 
 
@@ -170,7 +170,8 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-                                                <tr  class="row" id="form-add-venue-second-part" style="display: none">
+                                                <tr class="row" id="form-add-venue-second-part"
+                                                    style="display: none">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Venue Type **', ['style' => 'font-weight:bold']) }}
                                                     </td>
@@ -191,7 +192,8 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-                                                <tr class="row" id="form-add-venue-second-part" style="display: none">
+                                                <tr class="row" id="form-add-venue-second-part"
+                                                    style="display: none">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Venue Name **', ['style' => 'font-weight:bold']) }}
                                                     </td>
@@ -359,6 +361,8 @@
 
 
                                             </table>
+
+
                                         </div>
                                     </div>
 
@@ -374,6 +378,125 @@
                             {!! Form::close() !!}
 
                             <hr class="mt-2 mb-3">
+                            <div class="modal fade" id="crud-modal" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="card-header">
+                                            <h5 class="card-title w-150">Add New Shortcourse</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{{ url('/shortcourse/event') }}" method="post"
+                                                name="form">
+                                                @csrf
+                                                {{-- {!! Form::open(['action' => 'ShortCourseManagement\EventManagement\EventController@storeContactPerson\ '.$shortcourse->id, 'method' => 'POST']) !!} --}}
+
+                                                <p><span class="text-danger">*</span>
+                                                    Required Field</p>
+                                                <hr class="mt-1 mb-2">
+                                                <div class="form-group">
+                                                    <label for="user_id"><span
+                                                            class="text-danger">*</span>
+                                                        Short Course Name</label>
+                                                    {{ Form::text('shortcourse_name_new', '', ['class' => 'form-control', 'placeholder' => 'Short Course Name', 'id' => 'shortcourse_name_new']) }}
+                                                    @error('shortcourse_name_new')
+                                                        <p style="color: red">{{ $message }}
+                                                        </p>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="shortcourse_type"><span
+                                                            class="text-danger">*</span>
+                                                        Short Course Type</label>
+                                                    <select class="form-control shortcourse_type "
+                                                        name="shortcourse_type" id="shortcourse_type"
+                                                        data-select2-id="shortcourse_type"
+                                                        aria-hidden="true">
+                                                        <option value="0">
+                                                            Regular Short Course
+                                                        </option>
+                                                        <option value="1">
+                                                            ICDL
+                                                        </option>
+                                                    </select>
+                                                    @error('shortcourse_type')
+                                                        <p style="color: red">
+                                                            <strong> *
+                                                                {{ $message }}
+                                                            </strong>
+                                                        </p>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="objective"><span
+                                                            class="text-danger">*</span>
+                                                        Objective</label>
+                                                    <textarea id="objective" name="objective" type="text"
+                                                        rows="10"
+                                                        class="form-control ck-editor__editable ck-editor__editable_inline"></textarea>
+                                                    @error('objective')
+                                                        <p style="color: red">
+                                                            <strong> *
+                                                                {{ $message }}
+                                                            </strong>
+                                                        </p>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="description"><span
+                                                            class="text-danger">*</span>
+                                                        Description</label>
+                                                    <textarea id="description" name="description"
+                                                        type="text" rows="10"
+                                                        class="form-control ck-editor__editable ck-editor__editable_inline"></textarea>
+                                                    @error('description')
+                                                        <p style="color: red">
+                                                            <strong> *
+                                                                {{ $message }}
+                                                            </strong>
+                                                        </p>
+                                                    @enderror
+                                                </div>
+                                                <div class="modules" id="modules"
+                                                    style="display: inline-block; width:100%;" hidden>
+                                                    <table class="table table-striped table-bordered m-0"
+                                                        id="module_field">
+                                                        <thead class="thead">
+                                                            <tr class=" bg-primary-50">
+                                                                <th colspan="3"><b>List of Modules</b>
+                                                                </th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Name</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr hidden></tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <a href="javascript:;" name="addModule" id="addModule"
+                                                        class="btn btn-primary btn-sm ml-auto float-right my-2">Add
+                                                        More Module</a>
+
+                                                </div>
+                                                <hr class="mt-1 mb-2">
+                                                <div class="footer" id="add_contact_person_footer">
+                                                    <button type="button"
+                                                        class="btn btn-danger ml-auto float-right mr-2"
+                                                        data-dismiss="modal"
+                                                        id="close-add-contact_person"><i
+                                                            class="fal fa-window-close"></i>
+                                                        Close</button>
+                                                    <button type="submit" id="submitShortCourse"
+                                                        class="btn btn-primary ml-auto float-right mr-2"><i
+                                                            class="ni ni-plus"></i>
+                                                        Add</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
@@ -403,6 +526,19 @@
             .catch(error => {
                 console.error(error);
             });
+
+
+        ClassicEditor
+            .create(document.querySelector('#description'))
+            .catch(error => {
+                console.error(error);
+            });
+        ClassicEditor
+            .create(document.querySelector('#objective'))
+            .catch(error => {
+                console.error(error);
+            });
+
         $('#search-by-trainer_ic').click(function() {
 
             var trainer_ic = $('#search-by-trainer_ic_input').val();
@@ -509,19 +645,32 @@
                     rowCount -= 1;
                 }
 
+                $('.modal-body #shortcourse_name').val(null);
+                $('#crud-modal').modal('show');
+
+                $("#shortcourse_type").select2("val", "0")
+
+                $('#crud-modal').on('show.bs.modal', function(event) {
+                    $('.modal-body #shortcourse_name_new').val(null);;
+                });
+
                 $("tr[id=form-add-shortcourse-second-part]").show();
+
             } else {
 
                 var selected_shortcourse = shortcourses.find((x) => {
                     return x.id == shortcourse_id
                 });
 
+                // console.log(selected_shortcourse);
+
 
                 shortcourse_description = selected_shortcourse.description;
                 shortcourse_objective = selected_shortcourse.objective;
 
                 nodeNames = [];
-                if (shortcourse_id) {
+                if (selected_shortcourse != null) {
+                    // console.log(selected_shortcourse.name);
                     $('#shortcourse_name').val(selected_shortcourse.name);
 
                     editor_shortcourse_description.setData(shortcourse_description);
@@ -556,9 +705,69 @@
             }
         });
 
+
         $(document).ready(function() {
+            var i = 0;
+            $('#addModule').click(function() {
+                i++;
+                $('#module_field tbody tr:last').after(`
+                            <tr id="new-row${i}">
+                                    <td>
+                                        <input id="add_module" name="shortcourse_modules[]" type="text" class="form-control" placeholder="Insert Module Name">
+                                    </td>
+                                    <td>
+                                        <a href="javascript:;" name="cancel-module" data-value="${i}" id="cancel-module" class="btn btn-sm btn-danger btn_remove mx-1">X</a>
+                                    </td>
+                            </tr>
+                    `);
+
+                $(document).on('click', '#cancel-module', function(event) {
+                    var row_id=event.target.dataset.value;
+                    $(`#new-row${row_id}`).remove();
+                    $("#addModule").show();
+                });
+
+
+                $(document).on('click', '#save-module', function() {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    var $shortcourse_module = $('#add_module').val();
+                    var data = {
+                        shortcourse_module: $shortcourse_module
+                    }
+                    var url = '/shortcourse/module/attached/' + shortcourse_id;
+
+                    $.post(url, data).done(function() {
+                            window.location.reload();
+                        })
+                        .fail(function() {
+                            $('#new-row').show();
+                            $("#addModule").remove();
+                            alert('Unable to add module');
+                        });
+                });
+            });
+
+            $('#shortcourse_type').change(function(event) {
+                var shortcourse_type = $('#shortcourse_type').find(':selected');
+                if (shortcourse_type[0].value == 0) {
+                    $('#modules').attr("hidden", true);
+                    console.log('hide');
+                } else if (shortcourse_type[0].value == 1) {
+                    $('#modules').removeAttr("hidden", false);
+                    console.log('show');
+                }
+            });
 
             $('.shortcourse, .user, .venue, .topic1, .fee, .venue_type, .event_feedback_set').select2();
+
+            $('.shortcourse_type').select2({
+                dropdownParent: $('#crud-modal')
+            });
 
 
             $(document).on('click', '.btn_remove', function() {

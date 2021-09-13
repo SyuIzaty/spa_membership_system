@@ -254,4 +254,56 @@ class ShortCourseController extends Controller
 
         return Redirect()->back()->with('successUpdate', 'A Module has been deleted from the Short Course Successfully');
     }
+
+    public function storeShortCourseEvent(Request $request){
+        //
+        // dd($request);
+        $validated = $request->validate([
+            'shortcourse_name_new' => 'required',
+            'shortcourse_type' => 'required',
+            'objective' => 'required',
+            'description' => 'required',
+        ], [
+            'shortcourse_name_new.required' => 'Please insert the new short course name',
+            'shortcourse_type.required' => 'Please choose a short course type',
+            'objective.required' => 'Please insert the new short course objective',
+            'description.required' => 'Please insert the new short course description',
+        ]);
+
+        $createShortCourse = ShortCourse::create([
+            'name' => $request->shortcourse_name_new,
+            'description' => $request->description,
+            'objective' => $request->objective,
+            'created_by' => Auth::user()->id,
+        ]);
+
+        foreach ($request->shortcourse_modules as $shortcourse_module){
+            $createModule = ShortCourseICDLModule::create([
+                'name' => $shortcourse_module,
+                'shortcourse_id' => $createShortCourse->id,
+                'created_by' => Auth::user()->id,
+            ]);
+        }
+
+        $shortcourse = ShortCourse::find($createShortCourse->id)->load([
+            'topics_shortcourses.topic',
+            'events_shortcourses'
+        ]);
+
+
+        if (isset($shortcourse->events_shortcourses)) {
+            $totalEvents = $shortcourse->events_shortcourses->count();
+            // dd($totalEvents);
+        } else {
+            $totalEvents = 0;
+        }
+        $shortcourse->totalEvents = $totalEvents;
+
+
+        $topics = Topic::all();
+
+        // return redirect()->back()->with('message', 'Bahan/Alat Ganti Berjaya Dipadam');
+        return redirect()->back();
+
+    }
 }
