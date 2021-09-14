@@ -24,6 +24,9 @@ use App\Models\ShortCourseManagement\EventFeedbackSet;
 use App\Models\ShortCourseManagement\ShortCourseICDLModule;
 use App\Models\ShortCourseManagement\ShortCourseICDLModuleEventParticipant;
 
+use App\Exports\ApplicantByModuleExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 use Barryvdh\DomPDF\Facade as PDF;
 
 use App\User;
@@ -43,7 +46,7 @@ class EventController extends Controller
 
     public function dataEventManagement()
     {
-        $events = Event::orderByDesc('id')->get()->load(['events_participants', 'venue', 'event_status_category']);
+        $events = Event::orderByDesc('id')->get()->load(['events_participants', 'venue', 'event_status_category', 'events_shortcourses.shortcourse']);
         $index = 0;
         foreach ($events as $event) {
             if (isset($event->events_participants)) {
@@ -76,6 +79,8 @@ class EventController extends Controller
             $events[$index]['created_at_toDayDateTimeString'] = date_format(new DateTime($events[$index]->created_at), 'g:ia \o\n l jS F Y');
             $index++;
         }
+
+
         return datatables()::of($events)
             ->addColumn('dates', function ($events) {
                 return 'Date Start:<br>' . $events->datetime_start_toDayDateTimeString . '<br><br> Date End:<br>' . $events->datetime_end_toDayDateTimeString;
@@ -92,7 +97,15 @@ class EventController extends Controller
                 <a href="/event/' . $events->id . '" class="btn btn-sm btn-primary">Settings</a>';
             })
             ->addColumn('document', function ($events) {
+                if (isset($events->events_shortcourses[0])) {
 
+                    if ($events->events_shortcourses[0]->shortcourse->is_icdl == 1) {
+                        return '
+                        <a href="/event/participant-list/' . $events->id . '" class="btn btn-sm btn-info">Attendance Sheet</a><br/><br/>
+                        <a data-page="/event/report/' . $events->id . '" class="btn btn-sm btn-info" style="color:white;" onclick="Print(this)">Event Report</a><br/><br/>
+                        <a href="/event/exportApplicantByModule/' . $events->id . '" class="btn btn-sm btn-info">Applicants By Module</a>';
+                    }
+                }
                 return '
                 <a href="/event/participant-list/' . $events->id . '" class="btn btn-sm btn-info">Attendance Sheet</a><br/><br/>
                 <a data-page="/event/report/' . $events->id . '" class="btn btn-sm btn-info" style="color:white;" onclick="Print(this)">Event Report</a>';
@@ -1168,6 +1181,13 @@ class EventController extends Controller
         // return $pdf->stream($id . '_event_report.pdf');
 
         return view('short-course-management.pdf.event_report', compact('event', 'chart', 'statistics', 'comments', 'statistics_summary'));
+    }
+
+    public function exportApplicantByModule($event_id)
+    {
+        $event= Event::find($event_id)->load(['events_participants', 'venue', 'event_status_category', 'events_shortcourses.shortcourse']);
+        $data=$event;
+        return Excel::download(new ApplicantByModuleExport($data), 'ApplicantByModuleExport.xlsx');
     }
     // Generate pdf in laravel, then pass to frontend;
 }
