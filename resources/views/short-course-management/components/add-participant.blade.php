@@ -83,15 +83,19 @@
                                 </p>
                             @enderror
                         </div>
-                        <input id="is_icdl" name="is_icdl" type="number" value={{$event->events_shortcourses[0]->shortcourse->is_icdl}} hidden>
+                        <input id="is_icdl" name="is_icdl" type="number"
+                            value={{ $event->events_shortcourses[0]->shortcourse->is_icdl }} hidden>
                         <div class="form-group add-participant__module"
-                            {{ $event->events_shortcourses[0]->shortcourse->is_icdl==1 ?'': 'style=display:none' }}>
+                            {{ $event->events_shortcourses[0]->shortcourse->is_icdl == 1 ? '' : 'style=display:none' }}>
                             <label class="form-label" for="modules"><span
                                     class="text-danger">*</span>Modules</label>
                             @foreach ($event->events_shortcourses[0]->shortcourse->shortcourse_icdl_modules as $shortcourse_icdl_module)
                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="module-{{$shortcourse_icdl_module->id}}" name="modules[]" value={{$shortcourse_icdl_module->id}}>
-                                    <label class="custom-control-label" for="module-{{$shortcourse_icdl_module->id}}">{{$shortcourse_icdl_module->name}}</label>
+                                    <input type="checkbox" class="custom-control-input"
+                                        id="module-{{ $shortcourse_icdl_module->id }}" name="modules[]"
+                                        value={{ $shortcourse_icdl_module->id }}>
+                                    <label class="custom-control-label"
+                                        for="module-{{ $shortcourse_icdl_module->id }}">{{ $shortcourse_icdl_module->name }}</label>
                                 </div>
                             @endforeach
                         </div>

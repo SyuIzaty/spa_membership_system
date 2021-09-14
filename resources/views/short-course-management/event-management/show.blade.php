@@ -902,11 +902,12 @@
                                                 <table class="table table-striped table-bordered m-0">
                                                     <thead class="thead">
                                                         <tr class=" bg-primary-50">
-                                                            <th colspan="3"><b>List of Short Courses</b></th>
+                                                            <th colspan="4"><b>List of Short Courses</b></th>
                                                         </tr>
                                                         <tr>
                                                             <th>ID</th>
                                                             <th>Name</th>
+                                                            <th>Course Type</th>
                                                             <th>Action</th>
                                                         </tr>
                                                     </thead>
@@ -916,6 +917,8 @@
                                                                 <td>{{ $events_shortcourses->shortcourse->id }}
                                                                 </td>
                                                                 <td>{{ $events_shortcourses->shortcourse->name }}
+                                                                </td>
+                                                                <td>{{ $events_shortcourses->shortcourse->is_icdl==0? 'Regular Short Course':'ICDL'}}
                                                                 </td>
                                                                 <td>
                                                                     <form method="post"
@@ -1176,6 +1179,32 @@
 
                                             </div>
                                         </div>
+                                        <hr class="mt-2 mb-3">
+                                        <div class="card"
+                                            {{ $event->events_shortcourses[0]->shortcourse->is_icdl == 0 ? 'style=display:none;' : '' }}>
+                                            <div class="card-header bg-primary-50"><b>Application By Module</b></div>
+                                            <div class="card-body">
+                                                <div class="row d-flex align-items-center justify-content-center">
+
+                                                    @foreach ($event->events_shortcourses[0]->shortcourse->shortcourse_icdl_modules as $shortcourse_icdl_module)
+                                                        <div class="col-sm-6 col-xl-3">
+                                                            <div
+                                                                class="p-3 bg-primary-500 rounded overflow-hidden position-relative text-white mb-g">
+                                                                <div class="___class_+?263___">
+                                                                    <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                                                        {{ $shortcourse_icdl_module->totalApplication }}
+                                                                        <small class="m-0 l-h-n">{{$shortcourse_icdl_module->name}}</small>
+                                                                    </h3>
+                                                                </div>
+                                                                <i class="fal fa-users position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1"
+                                                                    style="font-size:6rem"></i>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="tab-pane" id="specific" role="tabpanel">
                                         <hr class="mt-2 mb-2">
@@ -1387,7 +1416,11 @@
                                                 </table>
                                                 <div class="card" style="box-shadow:none;">
                                                     <div class="card-header" style="display:flex;">
-                                                        <i class="ni ni-eye" style='font-size:35px; align-self:center;'></i><h1 style="margin:0;"><span style="margin-left:15px; font-size:35px;">Preview</span></h1>
+                                                        <i class="ni ni-eye"
+                                                            style='font-size:35px; align-self:center;'></i>
+                                                        <h1 style="margin:0;"><span
+                                                                style="margin-left:15px; font-size:35px;">Preview</span>
+                                                        </h1>
                                                     </div>
                                                     <div class="card-body">
                                                         <x-ShortCourseManagement.PublicViewEventDetail :errors=$errors

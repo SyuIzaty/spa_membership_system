@@ -60,8 +60,7 @@
                                                         <select class="form-control shortcourse" name="shortcourse_id"
                                                             id="shortcourse_id">
                                                             <option disabled selected>Select Short Course</option>
-                                                            <option value="-1" name="Create New Short Course"
-                                                                {{ old('shortcourse_id') == -1 ? 'selected' : null }}>
+                                                            <option value="-1" name="Create New Short Course">
                                                                 Create New Short Course
                                                             </option>
                                                             @foreach ($shortcourses as $shortcourse)
@@ -161,7 +160,6 @@
                                                                     name="{{ $venue->name }}"
                                                                     data-venue-type="{{ $venue->venue_type->id }}"
                                                                     {{ old('venue_id') == $venue->id ? 'selected' : null }}>
-                                                                    {{ $venue->id }} -
                                                                     {{ $venue->name }}</option>
                                                             @endforeach
                                                         </select>
@@ -774,6 +772,10 @@
                 var button_id = $(this).attr("id");
                 $('#row' + button_id + '').remove();
             });
+
+            $('#close-add-contact_person').click(function() {
+                location.reload();
+            })
         });
     </script>
 @endsection

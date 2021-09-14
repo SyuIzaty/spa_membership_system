@@ -21,6 +21,8 @@ use App\Models\ShortCourseManagement\Topic;
 use App\Models\ShortCourseManagement\EventStatusCategory;
 use App\Models\ShortCourseManagement\VenueType;
 use App\Models\ShortCourseManagement\EventFeedbackSet;
+use App\Models\ShortCourseManagement\ShortCourseICDLModule;
+use App\Models\ShortCourseManagement\ShortCourseICDLModuleEventParticipant;
 
 use Barryvdh\DomPDF\Facade as PDF;
 
@@ -103,9 +105,9 @@ class EventController extends Controller
     {
         //
 
-        $venues = Venue::all()->load(['venue_type']);
+        $venues = Venue::orderBy('name')->get()->load(['venue_type']);
 
-        $shortcourses = ShortCourse::all()->load(['topics_shortcourses.topic']);
+        $shortcourses = ShortCourse::orderByDesc('id')->get()->load(['topics_shortcourses.topic']);
 
         $index = 0;
         foreach ($shortcourses as $shortcourse) {
@@ -322,10 +324,19 @@ class EventController extends Controller
         $event = Event::find($createEvent->id)->load([
             'events_participants',
             'venue',
-            'events_shortcourses.shortcourse',
+            'events_shortcourses.shortcourse.shortcourse_icdl_modules',
             'events_trainers.trainer',
             'fees'
         ]);
+
+        if ($event->events_shortcourses[0]->shortcourse->is_icdl == 1) {
+            $index_module = 0;
+
+            foreach ($event->events_shortcourses[0]->shortcourse->shortcourse_icdl_modules as $shortcourse_icdl_module) {
+                $event->events_shortcourses[0]->shortcourse->shortcourse_icdl_modules[$index_module]->totalApplication = ShortCourseICDLModuleEventParticipant::where('shortcourse_icdl_module_id', $shortcourse_icdl_module->id)->get()->count();
+                $index_module++;
+            }
+        }
 
 
         $venues = Venue::all();
@@ -447,6 +458,15 @@ class EventController extends Controller
 
         foreach ($event->events_contact_persons as $event_contact_person) {
             $event_contact_person->contact_person->user = User::find($event_contact_person->contact_person->user_id);
+        }
+
+        if ($event->events_shortcourses[0]->shortcourse->is_icdl == 1) {
+            $index_module = 0;
+
+            foreach ($event->events_shortcourses[0]->shortcourse->shortcourse_icdl_modules as $shortcourse_icdl_module) {
+                $event->events_shortcourses[0]->shortcourse->shortcourse_icdl_modules[$index_module]->totalApplication = ShortCourseICDLModuleEventParticipant::where('shortcourse_icdl_module_id', $shortcourse_icdl_module->id)->get()->count();
+                $index_module++;
+            }
         }
         // dd($event->fees);
         //
