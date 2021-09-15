@@ -12,9 +12,16 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithStyles;
+
+
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use DateTime;
 
-class ApplicantByModuleExport implements FromCollection, WithMapping, WithEvents, ShouldAutoSize
+class ApplicantByModuleExport implements FromCollection, WithColumnFormatting, WithStyles, WithMapping, WithEvents, ShouldAutoSize
 {
     /**
      * @return \Illuminate\Support\Collection
@@ -32,9 +39,22 @@ class ApplicantByModuleExport implements FromCollection, WithMapping, WithEvents
         $this->first_row = 1;
 
         $participantList = ShortCourseICDLModuleEventParticipant::join('scm_shortcourse_icdl_module', 'scm_shortcourse_icdl_module_event_participant.shortcourse_icdl_module_id', '=', 'scm_shortcourse_icdl_module.id')
-            ->where('scm_shortcourse_icdl_module.shortcourse_id', '=', $this->shortcourse->id)->orderBy('shortcourse_icdl_module_id')->get(['scm_shortcourse_icdl_module_event_participant.*'])->load(['event_participant.participant','shortcourse_icdl_module']);
+            ->where('scm_shortcourse_icdl_module.shortcourse_id', '=', $this->shortcourse->id)->orderBy('shortcourse_icdl_module_id')->get(['scm_shortcourse_icdl_module_event_participant.*'])->load(['event_participant.participant', 'shortcourse_icdl_module']);
 
-            return collect($participantList);
+        return collect($participantList);
+    }
+    public function columnFormats(): array
+    {
+        return [
+            'B2:B10' => NumberFormat::FORMAT_TEXT,
+            'D2:D10' => NumberFormat::FORMAT_DATE_DATETIME,
+        ];
+    }
+
+    public function styles(Worksheet $sheet)
+    {
+        $sheet->getStyle('A1:D1')->getFont()->setBold(true);
+        $sheet->getStyle('A1:D1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('F7E7E4');
     }
 
     // public function headings(): array
@@ -79,13 +99,12 @@ class ApplicantByModuleExport implements FromCollection, WithMapping, WithEvents
         ];
 
         $headers = $this->getHeadings();
-        if($this->first_row){
+        if ($this->first_row) {
 
             $columns = [
                 $headers, $participants,
             ];
-
-        }else{
+        } else {
             $columns = $participants;
         }
         $this->first_row = 0;
@@ -114,6 +133,7 @@ class ApplicantByModuleExport implements FromCollection, WithMapping, WithEvents
                 // $canvas->sheet->setCellValue('B3', $this->event->datetime_end);
 
                 // $canvas->sheet->setCellValue('B4', $this->event->venue->name);
+
 
 
             }

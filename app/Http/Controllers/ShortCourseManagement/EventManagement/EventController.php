@@ -1187,7 +1187,7 @@ class EventController extends Controller
     {
         $event= Event::find($event_id)->load(['events_participants', 'venue', 'event_status_category', 'events_shortcourses.shortcourse']);
         $data=$event;
-        return Excel::download(new ApplicantByModuleExport($data), 'ApplicantByModuleExport.xlsx');
+        return Excel::download(new ApplicantByModuleExport($data), 'ApplicantByModuleExport_'.$event->id.'.xlsx');
     }
     // Generate pdf in laravel, then pass to frontend;
 }
