@@ -19,25 +19,12 @@ class FeedbackController extends Controller
 {
     public function form()
     {
-        //
         $sections = Section::all()->load(['questions']);
-        // $index = 0;
-        // foreach ($sections as $section) {
-        //     $sections[$index]['questions'] = Question::where('section_id', $section->id)->first();
-        //     $index++;
-        // }
         return view('short-course-management.feedback.index', compact('sections'));
     }
     public function viewForm($id)
     {
-        //
         $event_feedback_set = EventFeedbackSet::find($id)->load(['sections.questions']);
-        // $sections = Section::where('')->all()->load(['questions']);
-        // $index = 0;
-        // foreach ($sections as $section) {
-        //     $sections[$index]['questions'] = Question::where('section_id', $section->id)->first();
-        //     $index++;
-        // }
         return view('short-course-management.feedback.index', compact('event_feedback_set'));
     }
 
@@ -56,7 +43,6 @@ class FeedbackController extends Controller
 
         if (isset($event_feedback_set->events)) {
             $totalEvents = $event_feedback_set->events->count();
-            // dd($totalEvents);
         } else {
             $totalEvents = 0;
         }
@@ -67,21 +53,16 @@ class FeedbackController extends Controller
 
     public function create()
     {
-        //
     }
     public function store(Request $request)
     {
-        //
     }
     public function show($event_participant_id, $sha1_ic)
     {
-        //
         $participant_id = Participant::where('sha1_ic', $sha1_ic)->first();
         if (isset($participant_id)) {
             $event_participant_question_id = EventParticipantQuestionAnswer::where('event_participant_id', $event_participant_id)->first();
-            // scm_event_participant_question_answer
             if (!$event_participant_question_id) {
-                // $sections = Section::all()->load(['questions']);
 
                 $event_participant = EventParticipant::find($event_participant_id)->load(['Participant', 'Event']);
 
@@ -95,7 +76,6 @@ class FeedbackController extends Controller
 
     public function submit(Request $request)
     {
-        //
         $sections = Section::all()->load(['questions']);
         $rules = array();
         foreach ($sections as $section) {
@@ -106,12 +86,7 @@ class FeedbackController extends Controller
 
         $validated = $request->validate($rules);
         $event_participant_question_id = EventParticipantQuestionAnswer::where('event_participant_id', $request->event_participant_id)->first();
-        // scm_event_participant_question_answer
         $data = $request->all();
-        // // dd($data);
-        // foreach ($data as $key => $value) {
-        //     return $value;
-        // }
 
         if (!$event_participant_question_id) {
             foreach ($request->all() as $key => $value) {
@@ -120,7 +95,6 @@ class FeedbackController extends Controller
                     $input_type2 = substr($key, 1, 4);
                     $question_id = substr($key, 5);
                     if (strcmp($input_type2, 'RATE') == 0) {
-                        // dd($question_id)
                         EventParticipantQuestionAnswer::create([
                             'question_id' => $question_id,
                             'event_participant_id' => $request->event_participant_id,
@@ -129,7 +103,6 @@ class FeedbackController extends Controller
                             'created_by' => 'public_user',
                         ]);
                     } else if (strcmp($input_type2, 'TEXT') == 0) {
-                        // dd($question_id)
                         EventParticipantQuestionAnswer::create([
                             'question_id' => $question_id,
                             'event_participant_id' => $request->event_participant_id,
@@ -165,7 +138,6 @@ class FeedbackController extends Controller
                 'done_email_completed_datetime'=>Carbon::now(),
             ]);
         }
-        // return view('short-course-management.feedback.appreciation');
         return redirect('/feedback/appreciation');
     }
     public function appreciation()
@@ -197,7 +169,6 @@ class FeedbackController extends Controller
 
             if (isset($event_feedback_set->events)) {
                 $totalEvents = $event_feedback_set->events->count();
-                // dd($totalEvents);
             } else {
                 $totalEvents = 0;
             }
@@ -225,18 +196,15 @@ class FeedbackController extends Controller
             })
             ->rawColumns(['action', 'management_details', 'events', 'dates'])
             ->make(true);
-        // /feedback/form
     }
 
     public function edit($id)
     {
-        //
     }
 
 
     public function update(Request $request, $id)
     {
-        //
         $validated = $request->validate([
             'name' => 'required|max:255',
             'description' => 'required',
@@ -257,6 +225,5 @@ class FeedbackController extends Controller
 
     public function destroy($id)
     {
-        //
     }
 }

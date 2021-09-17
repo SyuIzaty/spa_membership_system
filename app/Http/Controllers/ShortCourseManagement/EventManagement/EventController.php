@@ -144,20 +144,12 @@ class EventController extends Controller
     }
     public function storeNew(Request $request)
     {
-        //
-        // dd($request->shortcourse_topic[0]);
-        // Validator::extend('check_array', function ($attribute, $value, $parameters, $validator) {
-        //     return count($value) >= 1;
-        // });
-
-        // dd($request);
 
         $validated = $request->validate([
             'shortcourse_id' => 'required',
             'shortcourse_name' => 'required|min:3',
             'shortcourse_description' => 'required|min:3',
             'shortcourse_objective' => 'required|min:3',
-            // 'shortcourse_topic'  => 'check_array',
             'datetime_start' => 'required',
             'datetime_end' => 'required',
             'venue_id' => 'required',
@@ -180,7 +172,6 @@ class EventController extends Controller
             'shortcourse_description.min' => 'The description should have at least 3 characters',
             'shortcourse_objective.required' => 'Please insert event objective',
             'shortcourse_objective.min' => 'The objective should have at least 3 characters',
-            // 'shortcourse_topic.check_array' => 'Please insert at least one topic',
             'datetime_start.required' => 'Please insert event datetime start',
             'datetime_end.required' => 'Please insert event datetime end',
             'venue_id.required' => 'Please choose event venue',
@@ -221,31 +212,6 @@ class EventController extends Controller
                 }
             }
         }
-        // else {
-        //     $updateShortCourse = ShortCourse::find($request->shortcourse_id)->update([
-        //         'name' => $request->shortcourse_name,
-        //         'shortcourse_description' => $request->shortcourse_description,
-        //         'shortcourse_objective' => $request->shortcourse_objective,
-        //         'updated_by' => Auth::user()->id,
-        //     ]);
-
-        //     if (isset($request->shortcourse_topic)) {
-        //         foreach ($request->shortcourse_topic as $shortcourse_topic) {
-        //             $exist = TopicShortCourse::where([
-        //                 ['shortcourse_id', '=', $request->shortcourse_id],
-        //                 ['topic_id', '=', $shortcourse_topic],
-        //             ])->get();
-
-        //             if (!$exist) {
-        //                 $createTopicShortCourse = TopicShortCourse::create([
-        //                     'topic_id' => $shortcourse_topic,
-        //                     'shortcourse_id' => $request->shortcourse_id,
-        //                     'created_by' => Auth::user()->id,
-        //                 ]);
-        //             }
-        //         }
-        //     }
-        // }
 
 
 
@@ -276,7 +242,6 @@ class EventController extends Controller
             'registration_due_date' => $request->datetime_start,
             'venue_id' => $request->venue_id == -1 ? $createVenue->id : $request->venue_id,
             'venue_description' => $request->venue_description,
-            // 'thumbnail_path' => 'storage/shortcourse/poster/default/intec_poster.jpg',
             'created_by' => Auth::user()->id,
         ]);
 
@@ -356,13 +321,9 @@ class EventController extends Controller
 
         $shortcourses = ShortCourse::all();
 
-        // $trainers = array();
         foreach ($event->events_trainers as $event_trainer) {
             $event_trainer->trainer->user = User::find($event_trainer->trainer->user_id);
         }
-        // dd($event);
-        //
-        // return view('short-course-management.event-management.show', compact('event','venues','shortcourses'));
 
         return Redirect('/event/' . $event->id)->with(compact('event', 'venues', 'shortcourses'));
     }
@@ -380,8 +341,6 @@ class EventController extends Controller
             'events_contact_persons.contact_person',
             'event_feedback_set'
         ]);
-
-        // $totalParticipantsNotApprovedYet = $event->events_participants->where('is_approved', 0)->where('is_done_email_cancellation_disqualified', 0)->count();
 
         $statistics['wait_for_application_approval'] = $event->events_participants
             ->where('event_id', $id)
@@ -463,7 +422,6 @@ class EventController extends Controller
         $users = User::where('category', 'STF')->orWhere('category', 'EXT')->get();
         $eventStatusCategories = EventStatusCategory::all();
 
-        // $trainers = array();
         foreach ($event->events_trainers as $event_trainer) {
             $event_trainer->trainer->user = User::find($event_trainer->trainer->user_id);
         }
@@ -481,17 +439,13 @@ class EventController extends Controller
                 $index_module++;
             }
         }
-        // dd($event->fees);
-        //
         return view('short-course-management.event-management.show', compact('event', 'venues', 'shortcourses', 'users', 'statistics', 'eventStatusCategories', 'event_feedback_sets'));
     }
     public function edit($id)
     {
-        //
     }
     public function update(Request $request, $id)
     {
-        //
         $validated = $request->validate([
             'name' => 'required|max:255',
             'datetime_start' => 'required',
@@ -557,8 +511,6 @@ class EventController extends Controller
 
     public function storeFee(Request $request, $id)
     {
-        // dd($request);
-        // //
         $validated = $request->validate([
             'name' => 'required|max:255',
             'amount_add' => 'required',
@@ -646,8 +598,6 @@ class EventController extends Controller
 
     public function storeTrainer(Request $request, $event_id)
     {
-        // //
-        // dd($request);
         $validated = $request->validate([
             'trainer_ic_input' => 'required',
             'trainer_user_id' => 'required',
@@ -692,26 +642,12 @@ class EventController extends Controller
             'is_active' => 1,
         ]);
 
-        // $existTrainer = Trainer::where('ic', $request->trainer_ic_input)->first();
-
-        // $create = EventTrainer::create([
-        //     'event_id' => $event_id,
-        //     'trainer_id' => $existTrainer->id,
-        //     'is_done_paid' => 0,
-        //     'trainer_representative_id' => $existTrainer->id,
-        //     'phone' => $request->trainer_phone,
-        //     'created_by' => Auth::user()->id,
-        //     'is_active' => 1,
-        // ]);
-
 
         return Redirect()->back()->with('successUpdateGeneral', 'A Trainer Updated Successfully');
     }
 
     public function storeContactPerson(Request $request, $event_id)
     {
-        // //
-        // dd($request);
         $validated = $request->validate([
             'contact_person_ic_input' => 'required',
             'contact_person_user_id' => 'required',
@@ -722,7 +658,6 @@ class EventController extends Controller
 
         $existContactPerson = ContactPerson::where('ic', '=', $request->contact_person_ic_input)->first();
 
-        // dd($existContactPerson);
         if (!$existContactPerson) {
             $existUser = User::where('id', $request->contact_person_user_id)->first();
             if (!$existUser) {
@@ -760,8 +695,6 @@ class EventController extends Controller
     }
     public function storeShortCourse(Request $request, $id)
     {
-        // dd($request);
-        // //
         $validated = $request->validate([
             'shortcourse_id' => 'required',
         ], [
@@ -779,10 +712,7 @@ class EventController extends Controller
     }
     public function destroy($id)
     {
-        //
     }
-
-    //Public View
 
     public function indexPublicView()
     {
@@ -796,16 +726,12 @@ class EventController extends Controller
         $subcategories = SubCategory::all();
         $topics = Topic::all();
         return view('short-course-management.shortcourse.event.index', compact('events', 'categories', 'subcategories', 'topics'));
-
-        // return view('short-course-management.event-management.index');
     }
 
     public function getFile($file)
     {
-        // $path = storage_path().'/'.'app'.'/'.'shortcourse'.'/'.'system'.'/'.$file;
         $path = asset('/' . 'storage' . '/' . 'app' . '/' . 'shortcourse' . '/' . 'system' . '/' . $file);
 
-        // dd($path);
 
         $file = File::get($path);
         $filetype = File::mimeType($path);
@@ -841,30 +767,15 @@ class EventController extends Controller
         $event->total_seat_available = $event->max_participant - $currentApplicants;
 
 
-        //
         return view('short-course-management.shortcourse.event.show', compact('event'));
     }
 
     public function dataPublicView(Request $request)
     {
-        // dd($request->category_id);
-        // $events = Event::where([['event_status_category_id', '=', 2], ['datetime_start', '>=', Carbon::today()->toDateString()]])->orderBy('datetime_start')->get()->load(['events_participants', 'venue']);
         if ($request->category_id == -1 && $request->subcategory_id == -1 && $request->topic_id == -1) {
             $events = Event::where([['event_status_category_id', '=', 2]])->distinct()->orderBy('datetime_start')->get()->load(['events_participants', 'venue', 'events_shortcourses.shortcourse.topics_shortcourses.topic']);
         } else if ($request->category_id != -1 && $request->subcategory_id == -1 && $request->topic_id == -1) {
-            // $category =Category::find($request->category_id)->load(['subcategories.topics.topics_shortcourses.shortcourse.events_shortcourses.event.events_participants','subcategories.topics.topics_shortcourses.shortcourse.events_shortcourses.event.venue']);
-            // $events = Event::where([['event_status_category_id', '=', 2]])
-            //         ->whereHas('events_shortcourses', function ($query) use ($category_id) {
-            //             $query->whereHas('shortcourse', function ($query) use ($category_id) {
-            //                 $query->whereHas('topics_shortcourses', function ($query) use ($category_id) {
-            //                     $query->whereHas('topics', function ($query) use ($category_id) {
-            //                         $query->whereHas('subcategories', function ($query) use ($category_id) {
-            //                             $query->where('category_id', $category_id);
-            //                         });
-            //                     });
-            //                 });
-            //             });
-            //     })->orderBy('datetime_start')->get()->load(['events_participants', 'venue']);
+
             $category_id = $request->category_id;
             $events = Event::where([['event_status_category_id', '=', 2]])
                 ->join('scm_event_shortcourse', 'scm_event.id', '=', 'scm_event_shortcourse.event_id')
@@ -1000,7 +911,6 @@ class EventController extends Controller
 
     public function updateSpecificEditor(Request $request)
     {
-        // dd($request);
         Event::find($request->event_id)->update([
             'description' => $request->editor_description,
             'target_audience' => $request->editor_target_audience,
@@ -1021,8 +931,6 @@ class EventController extends Controller
             'updated_by' => Auth::user()->id,
             'updated_at' => Carbon::now()
         ]);
-
-        // $update=Event::find($event_id)->load(['event_status_category']);
 
         return Redirect()->back()->with('success', 'Event Status Updated Successfully');
     }
@@ -1080,7 +988,6 @@ class EventController extends Controller
     }
     public function participantList($id)
     {
-        // dd('succeed');
         $events_participants = EventParticipant::where('event_id', $id)->where('is_approved_application', 1)
             ->where('is_verified_payment_proof', 1)
             ->where('is_verified_payment_proof', 1)
@@ -1148,7 +1055,7 @@ class EventController extends Controller
 
                     $question_answers = $question->events_participants_questions_answers->where('event_participant.event_id', $id) ?
                         $question->events_participants_questions_answers->where('event_participant.event_id', $id)->all() : null;
-                    // dd($question_answers);
+
                     $comments[$index]['answers'] = [];
                     foreach ($question_answers as $question_answer) {
                         $temp2 = $question_answers ? $question_answer->description : null;
@@ -1176,10 +1083,6 @@ class EventController extends Controller
             ['Rate 5', $total_rate_5, '#00D443']
         ];
 
-        // $pdf = PDF::loadView('short-course-management.pdf.event_report', compact('event', 'chart', 'statistics', 'comments', 'statistics_summary'));
-
-        // return $pdf->stream($id . '_event_report.pdf');
-
         return view('short-course-management.pdf.event_report', compact('event', 'chart', 'statistics', 'comments', 'statistics_summary'));
     }
 
@@ -1189,5 +1092,4 @@ class EventController extends Controller
         $data=$event;
         return Excel::download(new ApplicantByModuleExport($data), 'ApplicantByModuleExport_'.$event->id.'.xlsx');
     }
-    // Generate pdf in laravel, then pass to frontend;
 }

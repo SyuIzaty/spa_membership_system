@@ -5,7 +5,6 @@ namespace App\Http\Controllers\ShortCourseManagement\Catalogues\TopicSubCategory
 use App\Models\ShortCourseManagement\Topic;
 use App\Models\ShortCourseManagement\SubCategory;
 use App\Models\ShortCourseManagement\Category;
-// use App\Models\ShortCourseManagement\TopicTopic;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DateTime;
@@ -15,7 +14,6 @@ class TopicController extends Controller
 {
     public function index()
     {
-        //
         $subcategories = SubCategory::all();
 
         $categories = Category::all();
@@ -30,7 +28,6 @@ class TopicController extends Controller
 
             if (isset($topic->topics_shortcourses)) {
                 $totalShortCourses = $topic->topics_shortcourses->count();
-                // dd($totalShortCourses);
             } else {
                 $totalShortCourses = 0;
             }
@@ -70,12 +67,9 @@ class TopicController extends Controller
 
     public function create()
     {
-        //
     }
     public function store(Request $request)
     {
-        // dd($request);
-        //
         $validated = $request->validate([
             'topic_name' => 'required',
             'subcategory_id' => 'required',
@@ -101,7 +95,6 @@ class TopicController extends Controller
 
         if (isset($topic->events)) {
             $totalEvents = $topic->events->count();
-            // dd($totalEvents);
         } else {
             $totalEvents = 0;
         }
@@ -128,13 +121,10 @@ class TopicController extends Controller
 
     public function edit($id)
     {
-        //
     }
 
     public function update(Request $request)
     {
-        //
-        // dd($request);
 
         $validated = $request->validate([
             'topic_name_edit' => 'required',
@@ -155,52 +145,11 @@ class TopicController extends Controller
 
     public function destroy($id)
     {
-        //
     }
 
     public function searchById($id)
     {
-        //
         $topic = Topic::where('id', $id)->first();
         return $topic;
     }
-
-    // public function storeTopicTopic(Request $request, $id)
-    // {
-    //     // dd($request);
-    //     // //
-    //     $validated = $request->validate([
-    //         'topic_topic' => 'required',
-    //     ], [
-    //         'topic_topic.required' => 'Please insert atleast a topic',
-    //     ]);
-
-    //     $create = TopicTopic::create([
-    //         'topic_id' => $request->topic_topic,
-    //         'topic_id' => $id,
-    //         'created_by' => Auth::user()->id,
-    //         'is_active' => 1,
-    //     ]);
-
-    //     return $create;
-    // }
-
-    // public function removeTopicTopic(Request $request, $id)
-    // {
-
-    //     $exist = TopicTopic::find($id);
-    //     if (Auth::user()->id) {
-    //         $exist->updated_by = Auth::user()->id;
-    //         $exist->deleted_by = Auth::user()->id;
-    //     } else {
-    //         $exist->updated_by = "public_user";
-    //         $exist->deleted_by = "public_user";
-    //     }
-    //     $exist->save();
-    //     $exist->delete();
-
-    //     return Redirect()->back()->with('messageTopicBasicDetails', 'Remove a topic Successfully');
-    // }
-
-
 }

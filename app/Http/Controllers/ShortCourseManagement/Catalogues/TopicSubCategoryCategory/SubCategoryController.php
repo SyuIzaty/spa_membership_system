@@ -5,7 +5,6 @@ namespace App\Http\Controllers\ShortCourseManagement\Catalogues\TopicSubCategory
 use App\Models\ShortCourseManagement\SubCategory;
 use App\Models\ShortCourseManagement\Category;
 use App\Models\ShortCourseManagement\Topic;
-// use App\Models\ShortCourseManagement\SubCategorySubCategory;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DateTime;
@@ -25,7 +24,6 @@ class SubCategoryController extends Controller
 
             if (isset($subcategory->topics)) {
                 $totalTopics = $subcategory->topics->count();
-                // dd($totalTopics);
             } else {
                 $totalTopics = 0;
             }
@@ -65,12 +63,9 @@ class SubCategoryController extends Controller
 
     public function create()
     {
-        //
     }
     public function store(Request $request)
     {
-        // dd($request);
-        //
         $validated = $request->validate([
             'subcategory_name_2' => 'required',
             'category_id_2' => 'required',
@@ -97,7 +92,6 @@ class SubCategoryController extends Controller
 
         if (isset($subcategory->events)) {
             $totalEvents = $subcategory->events->count();
-            // dd($totalEvents);
         } else {
             $totalEvents = 0;
         }
@@ -124,13 +118,10 @@ class SubCategoryController extends Controller
 
     public function edit($id)
     {
-        //
     }
 
     public function update(Request $request)
     {
-        //
-
         $validated = $request->validate([
             'subcategory_name_edit_2' => 'required',
             'category_id_edit_2' => 'required',
@@ -150,12 +141,10 @@ class SubCategoryController extends Controller
 
     public function destroy($id)
     {
-        //
     }
 
     public function searchById($id)
     {
-        //
         $subcategory = SubCategory::where('id', $id)->first();
         return $subcategory;
     }
@@ -164,43 +153,4 @@ class SubCategoryController extends Controller
         $topics = Topic::where('subcategory_id', $subcategory_id)->get();
         return $topics;
     }
-
-    // public function storeSubCategorySubCategory(Request $request, $id)
-    // {
-    //     // dd($request);
-    //     // //
-    //     $validated = $request->validate([
-    //         'subcategory_subcategory' => 'required',
-    //     ], [
-    //         'subcategory_subcategory.required' => 'Please insert atleast a subcategory',
-    //     ]);
-
-    //     $create = SubCategorySubCategory::create([
-    //         'subcategory_id' => $request->subcategory_subcategory,
-    //         'subcategory_id' => $id,
-    //         'created_by' => Auth::user()->id,
-    //         'is_active' => 1,
-    //     ]);
-
-    //     return $create;
-    // }
-
-    // public function removeSubCategorySubCategory(Request $request, $id)
-    // {
-
-    //     $exist = SubCategorySubCategory::find($id);
-    //     if (Auth::user()->id) {
-    //         $exist->updated_by = Auth::user()->id;
-    //         $exist->deleted_by = Auth::user()->id;
-    //     } else {
-    //         $exist->updated_by = "public_user";
-    //         $exist->deleted_by = "public_user";
-    //     }
-    //     $exist->save();
-    //     $exist->delete();
-
-    //     return Redirect()->back()->with('messageSubCategoryBasicDetails', 'Remove a subcategory Successfully');
-    // }
-
-
 }

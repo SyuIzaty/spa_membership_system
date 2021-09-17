@@ -29,7 +29,6 @@ class TrainerController extends Controller
 
             if (isset($trainer->events_trainers)) {
                 $totalEvents = $trainer->events_trainers->count();
-                // dd($totalEvents);
             } else {
                 $totalEvents = 0;
             }
@@ -124,7 +123,6 @@ class TrainerController extends Controller
 
         if (isset($trainer->events_trainers)) {
             $totalEvents = $trainer->events_trainers->count();
-            // dd($totalEvents);
         } else {
             $totalEvents = 0;
         }
@@ -142,7 +140,6 @@ class TrainerController extends Controller
 
         if (isset($trainer->events_trainers)) {
             $totalEvents = $trainer->events_trainers->count();
-            // dd($totalEvents);
         } else {
             $totalEvents = 0;
         }
@@ -242,43 +239,4 @@ class TrainerController extends Controller
 
         return $user;
     }
-
-    // public function storeTopicTrainer(Request $request, $id)
-    // {
-    //     // dd($request);
-    //     // //
-    //     $validated = $request->validate([
-    //         'trainer_topic' => 'required',
-    //     ], [
-    //         'trainer_topic.required' => 'Please insert atleast a topic',
-    //     ]);
-
-    //     $create = TopicTrainer::create([
-    //         'topic_id' => $request->trainer_topic,
-    //         'trainer_id' => $id,
-    //         'created_by' => Auth::user()->id,
-    //         'is_active' => 1,
-    //     ]);
-
-    //     return $create;
-    // }
-
-    // public function removeTopicTrainer(Request $request, $id)
-    // {
-
-    //     $exist = TopicTrainer::find($id);
-    //     if (Auth::user()->id) {
-    //         $exist->updated_by = Auth::user()->id;
-    //         $exist->deleted_by = Auth::user()->id;
-    //     } else {
-    //         $exist->updated_by = "public_user";
-    //         $exist->deleted_by = "public_user";
-    //     }
-    //     $exist->save();
-    //     $exist->delete();
-
-    //     return Redirect()->back()->with('messageTrainerBasicDetails', 'Remove a topic Successfully');
-    // }
-
-
 }

@@ -27,7 +27,6 @@ class ParticipantController extends Controller
 
             if (isset($participant->events_participants)) {
                 $totalEvents = $participant->events_participants->count();
-                // dd($totalEvents);
             } else {
                 $totalEvents = 0;
             }
@@ -62,7 +61,6 @@ class ParticipantController extends Controller
     }
     public function store(Request $request)
     {
-        // dd($request);
         $validated = $request->validate([
             'participant_ic_input' => 'required',
             'participant_fullname' => 'required|min:3',
@@ -78,8 +76,6 @@ class ParticipantController extends Controller
             'participant_email.required' => "Please insert email address of the participant"
         ]);
 
-        // dd($request);
-        //
         $existParticipant = Participant::where([
             ['ic', '=', $request->participant_ic_input],
         ])->first();
@@ -110,12 +106,10 @@ class ParticipantController extends Controller
         ]);
         if (isset($participant->events_participants)) {
             $totalEvents = $participant->events_participants->count();
-            // dd($totalEvents);
         } else {
             $totalEvents = 0;
         }
         $participant->totalEvents = $totalEvents;
-        // return Redirect()->back()->with('messageNewApplication', 'New participant created successfully');
         return redirect('/participants/' . $existParticipant->id)->with(compact('existParticipant'));
     }
     public function show($id)
@@ -128,7 +122,6 @@ class ParticipantController extends Controller
 
         if (isset($participant->events_participants)) {
             $totalEvents = $participant->events_participants->count();
-            // dd($totalEvents);
         } else {
             $totalEvents = 0;
         }

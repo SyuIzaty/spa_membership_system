@@ -23,7 +23,6 @@ class EventParticipantController extends Controller
 {
     public function show($id)
     {
-        //eventParticipantIndex
         $event = Event::find($id)->load(['events_participants', 'events_shortcourses.shortcourse.shortcourse_icdl_modules']);
 
         $currentApplicants = $event->events_participants
@@ -32,8 +31,6 @@ class EventParticipantController extends Controller
 
         $event->total_seat_available = $event->max_participant - $currentApplicants;
 
-
-        //
         return view('short-course-management.event-management.event-participant-show', compact('event'));
     }
 
@@ -52,13 +49,9 @@ class EventParticipantController extends Controller
 
         $index = 0;
         foreach ($eventsParticipants as $eventParticipant) {
-            // $eventsParticipants[$index]->organisations = array();
-            // $organization_representative = EventParticipant::find($eventParticipant->organization_representative_id)->load(['participant']);
-            // $eventsParticipants[$index]->organization_representative=$organization_representative;
             $eventsParticipants[$index]->created_at_diffForHumans = $eventsParticipants[$index]->created_at->diffForHumans();
             $eventsParticipants[$index]->organisationsString = '';
             foreach ($eventParticipant->participant->organisations_participants as $organisation_participant) {
-                // array_push($eventsParticipants[$index]->organisations, $organisation_participant->organisation->name);
                 $eventsParticipants[$index]->organisationsString = ($eventsParticipants[$index]->organisationsString) . ($organisation_participant->organisation->name) . '.';
             }
             $index++;
@@ -72,8 +65,6 @@ class EventParticipantController extends Controller
                     '" class="applicants_checkbox">';
             })
             ->addColumn('action', function ($eventsParticipants) {
-                // return '<a href="/event/' . $eventsParticipants->id . '" class="btn btn-sm btn-success">Approved</a>
-                //         <a href="/event/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger">Reject</a>';
                 return '<a href="javascript:;" id="approve-application" data-remote="/update-progress/approve-application/' . $eventsParticipants->id . '" class="btn btn-sm btn-success btn-update-progress">Approve</a>
                         <a href="javascript:;" id="reject-application" data-remote="/update-progress/reject-application/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger btn-update-progress">Reject</a>';
             })
@@ -97,13 +88,9 @@ class EventParticipantController extends Controller
 
         $index = 0;
         foreach ($eventsParticipants as $eventParticipant) {
-            // $eventsParticipants[$index]->organisations = array();
-            // $organization_representative = EventParticipant::find($eventParticipant->organization_representative_id)->load(['participant']);
-            // $eventsParticipants[$index]->organization_representative=$organization_representative;
             $eventsParticipants[$index]->created_at_diffForHumans = $eventsParticipants[$index]->created_at->diffForHumans();
             $eventsParticipants[$index]->organisationsString = '';
             foreach ($eventParticipant->participant->organisations_participants as $organisation_participant) {
-                // array_push($eventsParticipants[$index]->organisations, $organisation_participant->organisation->name);
                 $eventsParticipants[$index]->organisationsString = ($eventsParticipants[$index]->organisationsString) .
                     ($organisation_participant->organisation->name) .
                     '.';
@@ -143,13 +130,9 @@ class EventParticipantController extends Controller
 
         $index = 0;
         foreach ($eventsParticipants as $eventParticipant) {
-            // $eventsParticipants[$index]->organisations = array();
-            // $organization_representative = EventParticipant::find($eventParticipant->organization_representative_id)->load(['participant']);
-            // $eventsParticipants[$index]->organization_representative=$organization_representative;
             $eventsParticipants[$index]->created_at_diffForHumans = $eventsParticipants[$index]->created_at->diffForHumans();
             $eventsParticipants[$index]->organisationsString = '';
             foreach ($eventParticipant->participant->organisations_participants as $organisation_participant) {
-                // array_push($eventsParticipants[$index]->organisations, $organisation_participant->organisation->name);
                 $eventsParticipants[$index]->organisationsString = ($eventsParticipants[$index]->organisationsString) .
                     ($organisation_participant->organisation->name) .
                     '.';
@@ -193,13 +176,9 @@ class EventParticipantController extends Controller
 
         $index = 0;
         foreach ($eventsParticipants as $eventParticipant) {
-            // $eventsParticipants[$index]->organisations = array();
-            // $organization_representative = EventParticipant::find($eventParticipant->organization_representative_id)->load(['participant']);
-            // $eventsParticipants[$index]->organization_representative=$organization_representative;
             $eventsParticipants[$index]->created_at_diffForHumans = $eventsParticipants[$index]->created_at->diffForHumans();
             $eventsParticipants[$index]->organisationsString = '';
             foreach ($eventParticipant->participant->organisations_participants as $organisation_participant) {
-                // array_push($eventsParticipants[$index]->organisations, $organisation_participant->organisation->name);
                 $eventsParticipants[$index]->organisationsString = ($eventsParticipants[$index]->organisationsString) .
                     ($organisation_participant->organisation->name) .
                     '.';
@@ -223,13 +202,9 @@ class EventParticipantController extends Controller
 
         $index = 0;
         foreach ($eventsParticipants as $eventParticipant) {
-            // $eventsParticipants[$index]->organisations = array();
-            // $organization_representative = EventParticipant::find($eventParticipant->organization_representative_id)->load(['participant']);
-            // $eventsParticipants[$index]->organization_representative=$organization_representative;
             $eventsParticipants[$index]->created_at_diffForHumans = $eventsParticipants[$index]->created_at->diffForHumans();
             $eventsParticipants[$index]->organisationsString = '';
             foreach ($eventParticipant->participant->organisations_participants as $organisation_participant) {
-                // array_push($eventsParticipants[$index]->organisations, $organisation_participant->organisation->name);
                 $eventsParticipants[$index]->organisationsString = ($eventsParticipants[$index]->organisationsString) .
                     ($organisation_participant->organisation->name) .
                     '.';
@@ -247,7 +222,6 @@ class EventParticipantController extends Controller
             ['is_verified_payment_proof', '=', 1],
             ['is_verified_payment_proof', '=', 1],
             ['is_disqualified', '=', 0],
-            // ['is_not_attend', '=', null]
         ])->get()
             ->load([
                 'event',
@@ -257,18 +231,13 @@ class EventParticipantController extends Controller
 
         $index = 0;
         foreach ($eventsParticipants as $eventParticipant) {
-            // $eventsParticipants[$index]->organisations = array();
-            // $organization_representative = EventParticipant::find($eventParticipant->organization_representative_id)->load(['participant']);
-            // $eventsParticipants[$index]->organization_representative=$organization_representative;
             $eventsParticipants[$index]->created_at_diffForHumans = $eventsParticipants[$index]->created_at->diffForHumans();
             $eventsParticipants[$index]->organisationsString = '';
             foreach ($eventParticipant->participant->organisations_participants as $organisation_participant) {
-                // array_push($eventsParticipants[$index]->organisations, $organisation_participant->organisation->name);
                 $eventsParticipants[$index]->organisationsString = ($eventsParticipants[$index]->organisationsString) .
                     ($organisation_participant->organisation->name) .
                     '.';
             }
-            // dd($eventParticipant->is_not_attend);
             $eventParticipant['attendance_status'] = (is_null($eventParticipant->is_not_attend) ? "No Status Yet" : ($eventParticipant->is_not_attend === 0 ? 'Attend' : 'Not Attend'));
 
             $eventParticipant['send_question'] = (is_null($eventParticipant->is_question_sended) ? "Not Send Yet" : ($eventParticipant->is_question_sended === 0 ? 'Not Send Yet' : 'Sent'));
@@ -282,8 +251,6 @@ class EventParticipantController extends Controller
                     '" class="expected_attendances_checkbox">';
             })
             ->addColumn('action', function ($eventsParticipants) {
-                // return '<a href="/event/' . $eventsParticipants->id . '" class="btn btn-sm btn-success">Approved</a>
-                //         <a href="/event/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger">Reject</a>';
                 $buttonString = '';
 
                 if (is_null($eventsParticipants->is_not_attend)) {
@@ -291,10 +258,6 @@ class EventParticipantController extends Controller
                         <a href="javascript:;" id="verify-attendance-not-attend" data-remote="/update-progress/verify-attendance-not-attend/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger btn-update-progress">Not Attend</a>';
                 } else if ($eventsParticipants->is_not_attend === 0) {
                     $buttonString .= '<a href="javascript:;" id="verify-attendance-not-attend" data-remote="/update-progress/verify-attendance-not-attend/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger btn-update-progress">Not Attend</a>';
-
-                    // if (is_null($eventsParticipants->is_question_sended)) {
-                    //     $buttonString .= ' <a href="javascript:;" id="send-question" data-remote="/update-progress/send-question/' . $eventsParticipants->id . '" class="btn btn-sm btn-success btn-update-progress">Send Questionaire</a>';
-                    // }
                 } else if ($eventsParticipants->is_not_attend === 1) {
                     $buttonString .= '<a href="javascript:;" id="verify-attendance-attend" data-remote="/update-progress/verify-attendance-attend/' . $eventsParticipants->id . '" class="btn btn-sm btn-success btn-update-progress">Attend</a>';
                 }
@@ -319,13 +282,9 @@ class EventParticipantController extends Controller
             ]);
         $index = 0;
         foreach ($eventsParticipants as $eventParticipant) {
-            // $eventsParticipants[$index]->organisations = array();
-            // $organization_representative = EventParticipant::find($eventParticipant->organization_representative_id)->load(['participant']);
-            // $eventsParticipants[$index]->organization_representative=$organization_representative;
             $eventsParticipants[$index]->created_at_diffForHumans = $eventsParticipants[$index]->created_at->diffForHumans();
             $eventsParticipants[$index]->organisationsString = '';
             foreach ($eventParticipant->participant->organisations_participants as $organisation_participant) {
-                // array_push($eventsParticipants[$index]->organisations, $organisation_participant->organisation->name);
                 $eventsParticipants[$index]->organisationsString = ($eventsParticipants[$index]->organisationsString) .
                     ($organisation_participant->organisation->name) .
                     '.';
@@ -353,13 +312,9 @@ class EventParticipantController extends Controller
 
         $index = 0;
         foreach ($eventsParticipants as $eventParticipant) {
-            // $eventsParticipants[$index]->organisations = array();
-            // $organization_representative = EventParticipant::find($eventParticipant->organization_representative_id)->load(['participant']);
-            // $eventsParticipants[$index]->organization_representative=$organization_representative;
             $eventsParticipants[$index]->created_at_diffForHumans = $eventsParticipants[$index]->created_at->diffForHumans();
             $eventsParticipants[$index]->organisationsString = '';
             foreach ($eventParticipant->participant->organisations_participants as $organisation_participant) {
-                // array_push($eventsParticipants[$index]->organisations, $organisation_participant->organisation->name);
                 $eventsParticipants[$index]->organisationsString = ($eventsParticipants[$index]->organisationsString) .
                     ($organisation_participant->organisation->name) .
                     '.';
@@ -389,13 +344,9 @@ class EventParticipantController extends Controller
 
         $index = 0;
         foreach ($eventsParticipants as $eventParticipant) {
-            // $eventsParticipants[$index]->organisations = array();
-            // $organization_representative = EventParticipant::find($eventParticipant->organization_representative_id)->load(['participant']);
-            // $eventsParticipants[$index]->organization_representative=$organization_representative;
             $eventsParticipants[$index]->created_at_diffForHumans = $eventsParticipants[$index]->created_at->diffForHumans();
             $eventsParticipants[$index]->organisationsString = '';
             foreach ($eventParticipant->participant->organisations_participants as $organisation_participant) {
-                // array_push($eventsParticipants[$index]->organisations, $organisation_participant->organisation->name);
                 $eventsParticipants[$index]->organisationsString = ($eventsParticipants[$index]->organisationsString) .
                     ($organisation_participant->organisation->name) .
                     '.';
@@ -410,8 +361,6 @@ class EventParticipantController extends Controller
                     '" class="participant_post_event_checkbox">';
             })
             ->addColumn('action', function ($eventsParticipants) {
-                // return '<a href="/event/' . $eventsParticipants->id . '" class="btn btn-sm btn-success">Approved</a>
-                //         <a href="/event/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger">Reject</a>';
                 return '<a href="javascript:;" id="send-question" data-remote="/update-progress/send-question/' . $eventsParticipants->id . '" class="btn btn-sm btn-success btn-update-progress">Send Questionaire</a>';
             })
             ->rawColumns(['action', 'checkParticipantPostEvent'])->make(true);
@@ -427,7 +376,6 @@ class EventParticipantController extends Controller
             ['is_disqualified', '=', 0],
             ['is_not_attend', '=', 0],
             ['is_question_sended', '=', 1],
-            // ['is_done_email_completed', '=', 1]
         ])->get()
             ->load([
                 'event',
@@ -437,9 +385,6 @@ class EventParticipantController extends Controller
 
         $index = 0;
         foreach ($eventsParticipants as $eventParticipant) {
-            // $eventsParticipants[$index]->organisations = array();
-            // $organization_representative = EventParticipant::find($eventParticipant->organization_representative_id)->load(['participant']);
-            // $eventsParticipants[$index]->organization_representative=$organization_representative;
             $eventsParticipants[$index]->created_at_diffForHumans = $eventsParticipants[$index]->created_at->diffForHumans();
             $eventsParticipants[$index]->organisationsString = '';
             if ($eventsParticipants[$index]->is_done_email_completed == 1) {
@@ -448,7 +393,6 @@ class EventParticipantController extends Controller
                 $eventsParticipants[$index]->done_email_completed_datetime_diffForHumans = $eventsParticipants[$index]->done_email_completed_datetime;
             }
             foreach ($eventParticipant->participant->organisations_participants as $organisation_participant) {
-                // array_push($eventsParticipants[$index]->organisations, $organisation_participant->organisation->name);
                 $eventsParticipants[$index]->organisationsString = ($eventsParticipants[$index]->organisationsString) .
                     ($organisation_participant->organisation->name) .
                     '.';
@@ -478,13 +422,9 @@ class EventParticipantController extends Controller
 
         $index = 0;
         foreach ($eventsParticipants as $eventParticipant) {
-            // $eventsParticipants[$index]->organisations = array();
-            // $organization_representative = EventParticipant::find($eventParticipant->organization_representative_id)->load(['participant']);
-            // $eventsParticipants[$index]->organization_representative=$organization_representative;
             $eventsParticipants[$index]->created_at_diffForHumans = $eventsParticipants[$index]->created_at->diffForHumans();
             $eventsParticipants[$index]->organisationsString = '';
             foreach ($eventParticipant->participant->organisations_participants as $organisation_participant) {
-                // array_push($eventsParticipants[$index]->organisations, $organisation_participant->organisation->name);
                 $eventsParticipants[$index]->organisationsString = ($eventsParticipants[$index]->organisationsString) .
                     ($organisation_participant->organisation->name) .
                     '.';
@@ -496,7 +436,6 @@ class EventParticipantController extends Controller
     }
     public function create()
     {
-        //
     }
 
     public function store(Request $request, $event_id)
@@ -524,15 +463,6 @@ class EventParticipantController extends Controller
             'representative_fullname.min' => "The representative's fullname should have at least 3 characters",
             'payment_proof_input.present' => "At least one payment proof is required",
         ]);
-
-        // $validator = Validator::make($request->all(), $this->rules());
-
-        // if ($validator->fails()) {
-        //     return Redirect()->back()->with('failedNewApplication', 'New Application Failed. Please try again.');
-        // }
-
-        // dd($request->file('payment_proof_input'));
-        //
         if ($request->is_icdl == 1 && !$request->modules) {
             return Redirect()->back()->with('failedNewApplication', 'New Application Failed. At least a module should be selected for ICDL course. Please try again.');
         }
@@ -580,7 +510,6 @@ class EventParticipantController extends Controller
                 ]);
             } else {
                 $existEventParticipant->fee_id = $request->fee_id;
-                // $existEventParticipant->is_verified_payment_proof = 0;
                 $existEventParticipant->updated_by = Auth::user() ? Auth::user()->id : 'public_user';
                 $existEventParticipant->save();
                 return Redirect()->back()->with('messageAlreadyApplied', 'The participant have already been applied before.');
@@ -636,7 +565,6 @@ class EventParticipantController extends Controller
 
             $eventParticipantPaymentProof = EventParticipantPaymentProof::where([['event_participant_id', '=', $existEventParticipant->id]])->get();
             $eventParticipant = EventParticipant::find($existEventParticipant->id);
-            // dd($eventParticipant->is_verified_payment_proof);
             if (count($eventParticipantPaymentProof) > 0 && $eventParticipant->is_verified_payment_proof != 1) {
                 $update = EventParticipant::where([['id', '=', $request->event_participant_id]])->update([
                     'is_verified_payment_proof' => 0,
@@ -703,22 +631,18 @@ class EventParticipantController extends Controller
     }
     public function edit($id)
     {
-        //
     }
 
     public function update(Request $request, $id)
     {
-        //
     }
 
     public function destroy($id)
     {
-        //
     }
 
     public function applyPromoCode($event_id, $promo_code)
     {
-        //
         $existFee = null;
         if ($promo_code != null && $promo_code != '') {
             $existFee = Fee::where([
@@ -738,7 +662,6 @@ class EventParticipantController extends Controller
     }
     public function baseFee($event_id)
     {
-        //
         $existFee = Fee::where([
             ['event_id', '=', $event_id],
             ['is_base_fee', '=', 1]
@@ -880,13 +803,6 @@ class EventParticipantController extends Controller
                     'question_sended_datetime' => Carbon::now(),
                     'is_done_email_completed' => 0,
                 ]);
-                // $message =  [
-                //     'opening' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik '+ ($eventParticipant->participant->name),
-                //     'content' => 'Tahniah! Anda telah disahkan sebagai hadir bagi program ' + ($eventParticipant->event->name)
-                //     + ' yang dianjurkan oleh INTEC pada ' + ($eventParticipant->event->datetime_start) + ' sehingga '+ ($eventParticipant->event->datetime_end)
-                //     + ' di ' + ($eventParticipant->event->venue->name) +'. Kami amat menghargai segala usaha anda. Semoga anda terus berjaya. Terima kasih.',
-                // ];
-                // dd($eventParticipant);
 
                 $message =  [
                     'opening' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . ($eventParticipant->participant->name),
@@ -1097,13 +1013,6 @@ class EventParticipantController extends Controller
                         'question_sended_datetime' => Carbon::now(),
                         'is_done_email_completed' => 0,
                     ]);
-                    // $message =  [
-                    //     'opening' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik '+ ($eventParticipant->participant->name),
-                    //     'content' => 'Tahniah! Anda telah disahkan sebagai hadir bagi program ' + ($eventParticipant->event->name)
-                    //     + ' yang dianjurkan oleh INTEC pada ' + ($eventParticipant->event->datetime_start) + ' sehingga '+ ($eventParticipant->event->datetime_end)
-                    //     + ' di ' + ($eventParticipant->event->venue->name) +'. Kami amat menghargai segala usaha anda. Semoga anda terus berjaya. Terima kasih.',
-                    // ];
-                    // dd($eventParticipant);
 
                     $message =  [
                         'opening' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . ($eventParticipant->participant->name),
@@ -1173,18 +1082,14 @@ class EventParticipantController extends Controller
         }
         $existEventParticipant = EventParticipant::find($eventParticipant_ids[0])->load(['event']);
         $event = $existEventParticipant->event;
-        // return redirect("/event/' . $event->id . '/events-participants/show")->with( ['event' => $event] );
         return view('short-course-management.event-management.event-participant-show', compact('event'));
     }
     public function dataEventParticipantList($participant_id)
     {
-        // $events = Event::orderByDesc('id')->get()->load(['events_participants', 'venue']);
         $eventsParticipants = EventParticipant::where('participant_id', $participant_id)->get()->load(['event', 'fee', 'participant']);
         $events = [];
         $indexEvent = 0;
         foreach ($eventsParticipants as $eventParticipant) {
-            // $event = Event::find($eventParticipant->event_id)->load(['events_participants', 'venue']);
-            // array_push($events, $event);
             if ($eventParticipant->event) {
                 array_push($events, $eventParticipant->event);
                 $eventParticipant->event = null;
@@ -1257,9 +1162,6 @@ class EventParticipantController extends Controller
                     return '<a href="#" data-target="#crud-modals" data-toggle="modal" data-event_id="' . $events->id . '" data-event_participant_id="' . $events->event_participant_id . '" data-is_verified_payment_proof="' . $events->is_verified_payment_proof . '" data-amount="' . $events->amount . '" class="btn btn-sm btn-primary">Update Payment Proof</a>';
                 }
             })
-
-            // <a href="" data-target="#crud-modals" data-toggle="modal" data-id="' . $kolejs->id . '" data-name="' . $kolejs->name . '" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i> Sunting</a>
-            // <button class="btn btn-sm btn-danger btn-delete" data-remote="/senarai_kolej/softDelete/' . $kolejs->id . '"><i class="fal fa-trash"></i>  Padam</button>
             ->rawColumns(['action', 'management_details', 'participant', 'dates'])
             ->make(true);
     }
@@ -1300,10 +1202,6 @@ class EventParticipantController extends Controller
         $exist = EventParticipantPaymentProof::find($request->payment_proof_id);
         $existEventParticipant = EventParticipant::find($exist->event_participant_id)->load(['participant']);
 
-
-        // dd($request);
-
-        // dd($exist);
         if (Auth::user()) {
             $exist->updated_by = Auth::user()->id;
             $exist->deleted_by = Auth::user()->id;
@@ -1314,7 +1212,6 @@ class EventParticipantController extends Controller
         $exist->save();
         $exist->delete();
 
-        // return Redirect()->back()->with('messageEventParticipantPaymentProof', 'A Payment Proof Deleted Successfully');
         $request->ic = $existEventParticipant->participant->ic;
 
         $participant = Participant::where('ic', $request->ic)->first();
@@ -1326,20 +1223,12 @@ class EventParticipantController extends Controller
 
     public function updatePaymentProof(Request $request)
     {
-        // dd($request);
         if ($request->file('payment_proof_input')) {
             $date = Carbon::today()->toDateString();
             $year = substr($date, 0, 4);
             $month = substr($date, 5, 2);
             $day = substr($date, 8, 2);
 
-            // $validated = $request->validate([
-            //     'payment_proof_input' => 'required|mimes:jpg,jpeg,png',
-
-            // ], [
-            //     'payment_proof_input.required' => 'Poster is required',
-
-            // ]);
             $images = $request->file('payment_proof_input');
 
             foreach ($images as $image) {
@@ -1416,8 +1305,6 @@ class EventParticipantController extends Controller
                 $message->to($eventParticipant->participant->email);
             });
 
-            // $participant = Participant::where('ic', $request->ic)->first();
-
             return Redirect()->back()->with('successPaymentProofUpdate', 'Payment Proof Updated and Verification Requested successfully');
         }
         $eventParticipantPaymentProof = EventParticipantPaymentProof::where([['event_participant_id', '=', $request->event_participant_id]])->get();
@@ -1433,7 +1320,6 @@ class EventParticipantController extends Controller
 
         $participant = Participant::where('ic', $request->ic)->first();
         return Redirect()->back()->with('successPaymentProofUpdate', 'Payment Proof Verification Requested Successfully with No New Payment Proof Uploaded');
-        // return Redirect()->back()->with('failedPaymentProofUpdate', 'Fail to Update the Payment Proof');
     }
 
     public function requestVerification($event_id, $participant_id)

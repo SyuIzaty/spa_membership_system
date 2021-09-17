@@ -4,7 +4,6 @@ namespace App\Http\Controllers\ShortCourseManagement\Catalogues\Venue;
 use App\Models\ShortCourseManagement\Venue;
 use App\Models\ShortCourseManagement\Topic;
 use App\Models\ShortCourseManagement\VenueType;
-// use App\Models\ShortCourseManagement\TopicVenue;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DateTime;
@@ -14,7 +13,6 @@ class VenueController extends Controller
 {
     public function index()
     {
-        //
         return view('short-course-management.catalogues.venue-catalogue.index');
     }
 
@@ -26,7 +24,6 @@ class VenueController extends Controller
 
             if (isset($venue->events)) {
                 $totalEvents = $venue->events->count();
-                // dd($totalEvents);
             } else {
                 $totalEvents = 0;
             }
@@ -58,11 +55,9 @@ class VenueController extends Controller
 
     public function create()
     {
-        //
     }
     public function store(Request $request)
     {
-        //
         $validated = $request->validate([
             'venue_name' => 'required',
         ], [
@@ -81,13 +76,11 @@ class VenueController extends Controller
 
         if (isset($venue->events)) {
             $totalEvents = $venue->events->count();
-            // dd($totalEvents);
         } else {
             $totalEvents = 0;
         }
         $venue->totalEvents = $totalEvents;
 
-        // return view('short-course-management.catalogues.venue-catalogue.show', compact('venue',));
         return redirect('/venues/' . $venue->id)->with(compact('venue'));
     }
     public function show($id)
@@ -101,7 +94,6 @@ class VenueController extends Controller
 
         if (isset($venue->events)) {
             $totalEvents = $venue->events->count();
-            // dd($totalEvents);
         } else {
             $totalEvents = 0;
         }
@@ -128,13 +120,10 @@ class VenueController extends Controller
 
     public function edit($id)
     {
-        //
     }
 
     public function update(Request $request, $id)
     {
-        //
-        // dd($request);
         $validated = $request->validate([
             'name' => 'required|max:255',
             'venue_type_id' => 'required',
@@ -155,52 +144,11 @@ class VenueController extends Controller
 
     public function destroy($id)
     {
-        //
     }
 
     public function searchById($id)
     {
-        //
         $venue=Venue::where('id', $id)->first();
         return $venue;
     }
-
-    // public function storeTopicVenue(Request $request, $id)
-    // {
-    //     // dd($request);
-    //     // //
-    //     $validated = $request->validate([
-    //         'venue_topic' => 'required',
-    //     ], [
-    //         'venue_topic.required' => 'Please insert atleast a topic',
-    //     ]);
-
-    //     $create = TopicVenue::create([
-    //         'topic_id' => $request->venue_topic,
-    //         'venue_id' => $id,
-    //         'created_by' => Auth::user()->id,
-    //         'is_active' => 1,
-    //     ]);
-
-    //     return $create;
-    // }
-
-    // public function removeTopicVenue(Request $request, $id)
-    // {
-
-    //     $exist = TopicVenue::find($id);
-    //     if (Auth::user()->id) {
-    //         $exist->updated_by = Auth::user()->id;
-    //         $exist->deleted_by = Auth::user()->id;
-    //     } else {
-    //         $exist->updated_by = "public_user";
-    //         $exist->deleted_by = "public_user";
-    //     }
-    //     $exist->save();
-    //     $exist->delete();
-
-    //     return Redirect()->back()->with('messageVenueBasicDetails', 'Remove a topic Successfully');
-    // }
-
-
 }

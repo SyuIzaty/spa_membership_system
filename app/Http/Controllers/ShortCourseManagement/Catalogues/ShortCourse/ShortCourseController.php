@@ -15,7 +15,6 @@ class ShortCourseController extends Controller
 {
     public function index()
     {
-        //
         return view('short-course-management.catalogues.course-catalogue.index');
     }
 
@@ -27,7 +26,6 @@ class ShortCourseController extends Controller
 
             if (isset($shortcourse->events_shortcourses)) {
                 $totalEvents = $shortcourse->events_shortcourses->count();
-                // dd($totalEvents);
             } else {
                 $totalEvents = 0;
             }
@@ -58,11 +56,10 @@ class ShortCourseController extends Controller
 
     public function create()
     {
-        //
     }
+
     public function store(Request $request)
     {
-        //
         $validated = $request->validate([
             'shortcourse_name' => 'required',
         ], [
@@ -84,7 +81,6 @@ class ShortCourseController extends Controller
 
         if (isset($shortcourse->events_shortcourses)) {
             $totalEvents = $shortcourse->events_shortcourses->count();
-            // dd($totalEvents);
         } else {
             $totalEvents = 0;
         }
@@ -93,7 +89,6 @@ class ShortCourseController extends Controller
 
         $topics = Topic::all();
 
-        // return view('short-course-management.catalogues.course-catalogue.show', compact('shortcourse','topics',));
         return redirect('/shortcourses/' . $shortcourse->id)->with(compact('shortcourse', 'topics'));
     }
     public function show($id)
@@ -107,7 +102,6 @@ class ShortCourseController extends Controller
 
         if (isset($shortcourse->events_shortcourses)) {
             $totalEvents = $shortcourse->events_shortcourses->count();
-            // dd($totalEvents);
         } else {
             $totalEvents = 0;
         }
@@ -137,12 +131,10 @@ class ShortCourseController extends Controller
 
     public function edit($id)
     {
-        //
     }
 
     public function update(Request $request, $id)
     {
-        //
         $validated = $request->validate([
             'name' => 'required|max:255',
             'shortcourse_type' => 'required',
@@ -169,20 +161,16 @@ class ShortCourseController extends Controller
 
     public function destroy($id)
     {
-        //
     }
 
     public function searchById($id)
     {
-        //
         $shortcourse = ShortCourse::where('id', $id)->first();
         return $shortcourse;
     }
 
     public function storeTopicShortCourse(Request $request, $id)
     {
-        // dd($request);
-        // //
         $validated = $request->validate([
             'shortcourse_topic' => 'required',
         ], [
@@ -195,9 +183,7 @@ class ShortCourseController extends Controller
             'created_by' => Auth::user()->id,
             'is_active' => 1,
         ]);
-        // $_SESSION['successUpdate'] = $_POST['New Topic Attached to the Short Course Successfully'];
         return $create;
-        // return Redirect()->back()->with('successUpdate', 'New Topic Attached to the Short Course Successfully');
     }
 
     public function removeTopicShortCourse(Request $request, $id)
@@ -219,8 +205,6 @@ class ShortCourseController extends Controller
 
     public function storeModule(Request $request, $id)
     {
-        // dd($request);
-        // //
         $validated = $request->validate([
             'shortcourse_module' => 'required',
         ], [
@@ -233,9 +217,7 @@ class ShortCourseController extends Controller
             'created_by' => Auth::user()->id,
             'is_active' => 1,
         ]);
-        // $_SESSION['successUpdate'] = $_POST['New Topic Attached to the Short Course Successfully'];
         return $create;
-        // return Redirect()->back()->with('successUpdate', 'New Topic Attached to the Short Course Successfully');
     }
 
     public function removeModule(Request $request, $id)
@@ -256,8 +238,6 @@ class ShortCourseController extends Controller
     }
 
     public function storeShortCourseEvent(Request $request){
-        //
-        // dd($request);
         $validated = $request->validate([
             'shortcourse_name_new' => 'required',
             'shortcourse_type' => 'required',
@@ -294,7 +274,6 @@ class ShortCourseController extends Controller
 
         if (isset($shortcourse->events_shortcourses)) {
             $totalEvents = $shortcourse->events_shortcourses->count();
-            // dd($totalEvents);
         } else {
             $totalEvents = 0;
         }
@@ -303,7 +282,6 @@ class ShortCourseController extends Controller
 
         $topics = Topic::all();
 
-        // return redirect()->back()->with('message', 'Bahan/Alat Ganti Berjaya Dipadam');
         return redirect()->back();
 
     }
