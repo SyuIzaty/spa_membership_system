@@ -1521,16 +1521,6 @@
                     $("#edit-basic-close").hide();
                 });
 
-                // $(document).ready(function() {
-                //     // $('.venue, .is_base_fee_select_add, .is_base_fee_select_edit').select2();
-
-                //     $('.venue, .event_feedback_set').select2();
-                //     $('.user').select2({
-                //         dropdownParent: $('#crud-modal-add-trainer')
-                //     });
-
-                // });
-
             }
 
             // List of fees
@@ -1554,17 +1544,6 @@
 
                     $('#crud-modal-new-fee').on('show.bs.modal', function(event) {
                         var button = $(event.relatedTarget)
-                        // var id = button.data('id');
-                        // var name = button.data('name');
-                        // var amount = button.data('amount');
-                        // var is_base_fee = button.data('is_base_fee');
-                        // var promo_code = button.data('promo_code');
-
-                        // $('.modal-body #id').val(id);
-                        // $('.modal-body #name').val(name);
-                        // $('.modal-body #amount').val(amount);
-                        // $('.modal-body #is_base_fee').val(is_base_fee);
-                        // $('.modal-body #promo_code').val(promo_code);
                     });
                 }
 
@@ -1604,7 +1583,6 @@
                             $("div[name=form_group-promo_code_add]").show();
                         } else {
                             $("div[name=form_group-promo_code_add]").hide();
-                            // $('.modal-body #hasKolejNew').val(false);
                         }
                     });
 
@@ -1626,7 +1604,6 @@
             // List of Trainers
             {
                 // Add trainer
-                // crud-modal-add-trainer
                 $('#add-trainer').click(function() {
                     $('.modal-body #id').val(null);
                     $('.modal-body #user_id').val(null);
@@ -1634,14 +1611,9 @@
                     $('.modal-body #phone').val(null);
                     $('.modal-body #email').val(null);
                     $('#crud-modal-add-trainer').modal('show');
-
-                    // $("div[id=form-add-trainer-second-part]").hide();
                 });
 
                 $('#crud-modal-add-trainer').on('show.bs.modal', function(event) {
-                    // var button = $(event.relatedTarget)
-                    // var id = button.data('id');
-                    // var user_id = button.data('user_id');
 
                     $('.modal-body #id').val(null);
                     $('.modal-body #user_id').val(null);
@@ -1649,11 +1621,6 @@
                     $('#trainer_user_id').prop('disabled', true);
 
 
-                    // $("div[id=form-add-trainer-second-part]").hide();
-                    // $('#add_trainer_footer').hide();
-                    // $("#search-by-trainer_ic-div").css({
-                    //     "width": "85%"
-                    // });
                     $('#search-by-trainer_ic').show();
                 });
 
@@ -1715,7 +1682,6 @@
 
                 $('#trainer_ic_input').change(function() {
 
-                    // $("#trainer_user_id").select2().val(-1).trigger("change");
                     $("#trainer_user_id_text").hide();
                     $("#trainer_user_id_text").attr('disabled');
 
@@ -1726,7 +1692,6 @@
 
                     $('#add_trainer_footer').hide();
 
-                    // $("div[id=form-add-trainer-second-part]").hide();
                     $('#search-by-trainer_ic').trigger("click");
                 });
 
@@ -1775,7 +1740,6 @@
             // List of Shortcourses
             {
                 // Add shortcourse
-                // crud-modal-add-shortcourse
                 $('#add-shortcourse').click(function() {
                     var id = null;
                     var shortcourse_id = null;
@@ -1823,7 +1787,6 @@
             // List of Contact Persons
             {
                 // Add contact_person
-                // crud-modal-add-contact_person
                 $('#add-contact_person').click(function() {
                     $('.modal-body #id').val(null);
                     $('.modal-body #user_id').val(null);
@@ -1831,13 +1794,9 @@
                     $('.modal-body #phone').val(null);
                     $('.modal-body #email').val(null);
                     $('#crud-modal-add-contact_person').modal('show');
-                    // $("div[id=form-add-contact_person-second-part]").hide();
                 });
 
                 $('#crud-modal-add-contact_person').on('show.bs.modal', function(event) {
-                    // var button = $(event.relatedTarget)
-                    // var id = button.data('id');
-                    // var user_id = button.data('user_id');
 
                     $('.modal-body #id').val(null);
                     $('.modal-body #user_id').val(null);
@@ -1845,12 +1804,6 @@
                     $('#contact_person_user_id').next(".select2-container").hide();
                     $('#contact_person_user_id').prop('disabled', true);
 
-
-                    // $("div[id=form-add-contact_person-second-part]").hide();
-                    // $('#add_contact_person_footer').hide();
-                    // $("#search-by-contact_person_ic-div").css({
-                    //     "width": "85%"
-                    // });
                     $('#search-by-contact_person_ic').show();
                 });
 
@@ -1893,7 +1846,6 @@
                             $("#contact_person_user_id").show();
                             $("#contact_person_user_id").removeProp('style');
                             $("#contact_person_user_id").removeAttr('disabled');
-                            // $("#contact_person_user_id").addClass('user');
 
                             $("#contact_person_user_id").prop('disabled', false);
                             $('#contact_person_user_id').next(".select2-container").show();
@@ -1917,7 +1869,6 @@
 
                 $('#contact_person_ic_input').change(function() {
 
-                    // $("#contact_person_user_id").select2().val(-1).trigger("change");
                     $("#contact_person_user_id_text").hide();
                     $("#contact_person_user_id_text").attr('disabled');
 
@@ -1928,7 +1879,6 @@
 
                     $('#add_contact_person_footer').hide();
 
-                    // $("div[id=form-add-contact_person-second-part]").hide();
                     $('#search-by-contact_person_ic').trigger("click");
 
 
@@ -2060,8 +2010,6 @@
                 .catch(error => {
                     console.error(error);
                 });
-
-            // var desc = CKEDITOR.instances['DSC'].getData();
 
         }
 

@@ -3,11 +3,6 @@
 @section('content')
 
     <main id="js-page-content" role="main" class="page-content">
-        {{-- <div class="subheader">
-            <h1 class="subheader-title">
-                <i class='subheader-icon fal fa-table'></i> Public View (Details)
-            </h1>
-        </div> --}}
         <div class="row">
             <div class="col-xl-12">
                 <div class="row no-gutters">
@@ -90,12 +85,6 @@
                                                 <th style="width:25%">AMOUNTS</th>
                                                 <th>ACTION</th>
                                             </tr>
-                                            {{-- <tr>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
-                                    <td class="hasinput"><input type="text" class="form-control" placeholder="Search Name"></td> --}}
-                                            {{-- <td class="hasinput"><input type="text" class="form-control" placeholder="Search Dates"></td> --}}
-                                            {{-- <td></td>
-                                </tr> --}}
                                         </thead>
                                         <tbody>
                                         </tbody>

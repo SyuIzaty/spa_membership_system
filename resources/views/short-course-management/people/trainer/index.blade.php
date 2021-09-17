@@ -57,12 +57,6 @@
                                             <th>MANAGE. DETAILS</th>
                                             <th>ACTION</th>
                                         </tr>
-                                        {{-- <tr>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Name"></td> --}}
-                                        {{-- <td class="hasinput"><input type="text" class="form-control" placeholder="Search Dates"></td> --}}
-                                        {{-- <td></td>
-                                    </tr> --}}
                                     </thead>
                                     <tbody>
                                     </tbody>
@@ -80,36 +74,6 @@
                                             <div class="card-header">
                                                 <h5 class="card-title w-150">Add Trainer</h5>
                                             </div>
-                                            {{-- <div class="modal-body">
-                                                <form action="{{ url('/trainer') }}"
-                                                    method="post" name="form">
-                                                    @csrf
-                                                    <p><span class="text-danger">*</span>
-                                                        Required Field</p>
-                                                    <hr class="mt-1 mb-2">
-                                                    <div class="form-group">
-                                                        <label for="user_id"><span class="text-danger">*</span>
-                                                            Trainer Name</label>
-                                                        {{ Form::text('trainer_name', '', ['class' => 'form-control', 'placeholder' => "Trainer Name", 'id' => 'trainer_name']) }}
-                                                        @error('trainer_name')
-                                                            <p style="color: red">{{ $message }}
-                                                            </p>
-                                                        @enderror
-                                                    </div>
-                                                    <hr class="mt-1 mb-2">
-                                                    <div class="footer" id="add_contact_person_footer">
-                                                        <button type="button"
-                                                            class="btn btn-danger ml-auto float-right mr-2"
-                                                            data-dismiss="modal" id="close-add-contact_person"><i
-                                                                class="fal fa-window-close"></i>
-                                                            Close</button>
-                                                        <button type="submit"
-                                                            class="btn btn-primary ml-auto float-right mr-2"><i
-                                                                class="ni ni-plus"></i>
-                                                            Add</button>
-                                                    </div>
-                                                </form>
-                                            </div> --}}
                                             <div class="modal-body">
                                                 <form action="{{ url('/trainer') }}" method="post" name="form">
                                                     @csrf
@@ -319,16 +283,6 @@
                 }
             });
 
-            // crud-modal-add-contact_person
-            // $('#create').click(function() {
-            //     $('.modal-body #trainer_name').val(null);
-            //     $('#crud-modal').modal('show');
-            // });
-
-            // $('#crud-modal').on('show.bs.modal', function(event) {
-            //     $('.modal-body #trainer_name').val(null);
-            // });
-
             // List of Trainers
             {
                 // Add trainer
@@ -344,9 +298,6 @@
                 });
 
                 $('#crud-modal').on('show.bs.modal', function(event) {
-                    // var button = $(event.relatedTarget)
-                    // var id = button.data('id');
-                    // var user_id = button.data('user_id');
 
                     $('.modal-body #id').val(null);
                     $('.modal-body #user_id').val(null);
@@ -379,7 +330,6 @@
 
                         $("#trainer_user_id").hide();
                         $("#trainer_user_id").attr('style', 'display: none');
-                        // $("#trainer_user_id").removeClass('user');
 
                         $('#trainer_user_id').next(".select2-container").hide();
 
@@ -450,17 +400,12 @@
                         function() {
                             $("div[id=form-add-trainer-second-part]").show();
                             $('#add_trainer_footer').show();
-                            // $('#search-by-trainer_ic').hide();
-                            // $("#search-by-trainer_ic-div").css({
-                            //     "width": "100%"
-                            // });
                         });
 
                 });
 
                 $('#trainer_ic_input').change(function() {
 
-                    // $("#trainer_user_id").select2().val(-1).trigger("change");
                     $("#trainer_user_id_text").hide();
                     $("#trainer_user_id_text").attr('disabled');
 

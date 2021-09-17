@@ -138,15 +138,6 @@
                         style = 'text-success';
                         $("#submit_payment_proof").attr("disabled", "true");
                     }
-                    // var payment_proof_path = button.data('payment_proof_path');
-                    // if (!payment_proof_path) {
-                    //     $("#payment_proof_path").hide();
-                    // } else {
-                    //     $("#payment_proof_path").show();
-                    //     var src = `{{ asset('${payment_proof_path}') }}`;
-                    //     $("#payment_proof_path").attr("src", src);
-                    // }
-
                     $('#carousel').hide();
 
                     $.get("/event-participant/" + event_participant_id + "/payment_proof",
@@ -154,7 +145,6 @@
                             // TODO: Insert result into couresol
 
                             data.forEach(function(img, index) {
-                                // var src = `{{ asset('${img.payment_proof_path}') }}`;
                                 var src = img.name;
                                 var id = img.id;
                                 $('#carousel-indicators').append(

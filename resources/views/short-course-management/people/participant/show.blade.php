@@ -3,12 +3,6 @@
 {{-- The content template is taken from sims.resources.views.applicant.display --}}
 @section('content')
     <main id="js-page-content" role="main" class="page-content">
-        {{-- <div class="subheader">
-            <h1 class="subheader-title">
-                <i class='subheader-icon fal fa-table'></i>
-                ({{ $participant->id }}) {{ $participant->name }}
-            </h1>
-        </div> --}}
         <div class="row">
             <div class="col-xl-12">
                 <div id="panel-1" class="panel">

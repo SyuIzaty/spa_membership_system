@@ -854,8 +854,6 @@
                                 var delayInMilliseconds = 5000; //5 second
 
                                 setTimeout(function() {
-                                    //your code to be executed after 5 second
-                                    // $('#student').DataTable().ajax.reload();
                                     window.location.reload(true);
                                 }, delayInMilliseconds);
                             }
@@ -1005,7 +1003,6 @@
 
                                 setTimeout(function() {
                                     //your code to be executed after 5 second
-                                    // $('#student').DataTable().ajax.reload();
                                     window.location.reload(true);
                                 }, delayInMilliseconds);
                             }

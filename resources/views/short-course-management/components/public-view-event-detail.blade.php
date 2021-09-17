@@ -31,21 +31,6 @@
             <div class="panel-content">
                 <div class="row row-md-12">
                     <div class="col-sm-6">
-                        {{-- <div class="d-flex justify-content-center">
-                            <img src="/get-file-event/intec_poster.jpg" class="card-img" alt="..."
-                                    style="width:137px;height:194px;">
-                            <img src="{{ URL::to('/') }}/img/system/intec_poster.jpg" class="card-img" alt="..."
-                                style="object-fit: fill;">
-                            @if (!isset($event->thumbnail_path))
-                                <img src="{{ asset('storage/shortcourse/poster/default/intec_poster.jpg') }}"
-                                    class="card-img" style="object-fit: fill;">
-                            @else
-                                <img src="{{ asset($event->thumbnail_path) }}" style="object-fit: fill;
-                                                                        background-image:url('{{ asset('storage /shortcourse/poster/default/intec_poster.jpg') }}');
-                                                                        background-repeat: no-repeat;
-                                                                        background-size: 137px 194px;">
-                            @endif
-                        </div> --}}
 
                         <div class="d-flex justify-content-center">
                             @if (!isset($event->thumbnail_path))

@@ -7,7 +7,6 @@
             <div class="col-md-2"></div>
             <div class="col-md-8">
                 <div class="card">
-                    {{-- <div class="card-header" style="background-image: url({{asset('img/coronavirus.png')}}); background-size: cover"> --}}
                     <div class="card-header">
                         <div class="d-flex justify-content-center" style="color: black">
                             <div class="p-2">
@@ -16,10 +15,6 @@
                                 <h4 style="text-align: center">
                                     <b>INTEC EDUCATION COLLEGE EVENT EVALUATION FORM</b>
                                 </h4>
-                                {{-- <p style="padding-left: 40px; padding-right: 40px">
-                                *<i><b>IMPORTANT!</b></i> : All staff, student and visitor are required to make a daily declaration of COVID-19 risk screening on every working day (whether working in the office or from home) as prevention measures.
-                                However, you are encouraged to make a declaration on a daily basis including public holidays and other holidays.
-                            </p> --}}
                             </div>
                         </div>
                     </div>
@@ -157,12 +152,6 @@
                                                 @endforeach
 
                                             @endforeach
-                                            {{-- <tr>
-                                                <div class="form-group">
-                                                    <td colspan="7"><label class="form-label" for="confirmation">
-                                                    <button style="margin-top: 5px;" class="btn btn-primary float-right" id="submit" name="submit" disabled><i class="fal fa-check"></i> Submit Feedback</button></td>
-                                                </div>
-                                            </tr> --}}
 
                                         </thead>
                                     </table>
@@ -179,53 +168,4 @@
             </div>
         </div>
     </main>
-@endsection
-@section('script')
-    <script>
-        $(document).ready(function() {
-
-
-
-
-            // $('.user_position').val('{{ old('user_position') }}');
-            // $(".user_position").change();
-            // $('.user_id').val('{{ old('user_id') }}');
-            // $(".user_id").change();
-            // $('.user_category').val('{{ old('user_category') }}');
-            // $(".user_category").change();
-            // $('.user_phone').val('{{ old('user_phone') }}');
-            // $('.department_id').val('{{ old('department_id') }}');
-            // $('.temperature').val('{{ old('temperature') }}');
-            // $('.department_stf').val('{{ old('department_stf') }}');
-            // $('.temperature_stf').val('{{ old('temperature_stf') }}');
-            // $('#vsr_name').val('{{ old('vsr_name') }}');
-            // $('#vsr_email').val('{{ old('vsr_email') }}');
-
-            // $('input[name="q1"]:checked').val('{{ old('q1') }}');
-            // $('input[name="q1"]:checked').change();
-            // $('#declare_date1').val('{{ old('declare_date1') }}');
-            // $('input[name="q2"]:checked').val('{{ old('q2') }}');
-            // $('input[name="q2"]:checked').change();
-            // $('#declare_date2').val('{{ old('declare_date2') }}');
-            // $('input[name="q3"]:checked').val('{{ old('q3') }}');
-            // $('input[name="q3"]:checked').change();
-            // $('input[name="q4a"]:checked').val('{{ old('q4a') }}');
-            // $('input[name="q4a"]:checked').change();
-            // $('input[name="q4b"]:checked').val('{{ old('q4b') }}');
-            // $('input[name="q4b"]:checked').change();
-            // $('input[name="q4c"]:checked').val('{{ old('q4c') }}');
-            // $('input[name="q4c"]:checked').change();
-            // $('input[name="q4d"]:checked').val('{{ old('q4d') }}');
-            // $('input[name="q4d"]:checked').change();
-        });
-
-        // function btn() {
-        //     var chk = document.getElementById("chk")
-        //     var submit = document.getElementById("submit");
-        //     submit.disabled = chk.checked ? false : true;
-        //     if (!submit.disabled) {
-        //         submit.focus();
-        //     }
-        // }
-    </script>
 @endsection

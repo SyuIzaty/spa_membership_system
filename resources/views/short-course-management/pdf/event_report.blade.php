@@ -10,8 +10,6 @@
 </head>
 
 <body>
-    {{-- <div style="text-align: center;"><img src="{{ public_path('img/intec_logo_new.png') }}"
-            style="height: 90px; width: 200px; margin-top: -30px"></div> --}}
 
     <table class="table table-bordered">
         <tr class="bg-dark text-white" style="text-transform: uppercase;">

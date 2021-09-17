@@ -3,12 +3,6 @@
 {{-- The content template is taken from sims.resources.views.applicant.display --}}
 @section('content')
     <main id="js-page-content" role="main" class="page-content">
-        {{-- <div class="subheader">
-            <h1 class="subheader-title">
-                <i class='subheader-icon fal fa-table'></i>
-                ({{ $trainer->id }}) {{ $trainer->user->name }}
-            </h1>
-        </div> --}}
         <div class="row">
             <div class="col-xl-12">
                 <div id="panel-1" class="panel">
@@ -32,7 +26,8 @@
                                     <a data-toggle="tab" class="nav-link" href="#general" role="tab">General</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a data-toggle="tab" class="nav-link" href="#setting" style="display:none" role="tab">Setting</a>
+                                    <a data-toggle="tab" class="nav-link" href="#setting" style="display:none"
+                                        role="tab">Setting</a>
                                 </li>
                             </ul>
                             <div class="row">
@@ -77,7 +72,7 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr>
-                                                                <td >Name</td>
+                                                                <td>Name</td>
                                                                 <td name="name_show" id="name_show">
                                                                     {{ $trainer->user->name }}
                                                                 </td>
@@ -97,7 +92,7 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td >Email</td>
+                                                                <td>Email</td>
                                                                 <td name="email_show" id="email_show">
                                                                     {{ $trainer->user->email }}
                                                                 </td>
@@ -117,7 +112,7 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td >IC</td>
+                                                                <td>IC</td>
                                                                 <td name="ic_show" id="ic_show">
                                                                     {{ $trainer->ic }}
                                                                 </td>
@@ -137,7 +132,7 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td >Phone</td>
+                                                                <td>Phone</td>
                                                                 <td name="phone_show" id="phone_show">
                                                                     {{ $trainer->phone }}
                                                                 </td>
@@ -165,7 +160,7 @@
                                                         <tr class=" bg-primary-50">
                                                             <th colspan="3"><b>Settings</b></th>
                                                         </tr>
-                                                        <tr >
+                                                        <tr>
                                                             <th class="text-center" scope="col">
                                                                 Value
                                                             </th>
@@ -178,8 +173,7 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td class="text-center"
-                                                                id="trainer_status_category_name"
+                                                            <td class="text-center" id="trainer_status_category_name"
                                                                 name="trainer_status_category_name">
                                                                 Active
                                                             </td>
@@ -197,7 +191,7 @@
                                         <hr class="mt-2 mb-3">
                                     </div>
 
-                                    <div class="tab-pane" id="setting" role="tabpanel"  style="display:none">
+                                    <div class="tab-pane" id="setting" role="tabpanel" style="display:none">
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
 
@@ -209,7 +203,8 @@
                                                                     <th class="text-center" scope="col">
                                                                         <h3>Value</h3>
                                                                     </th>
-                                                                    <th class="text-center" scope="col" style="width:20%">
+                                                                    <th class="text-center" scope="col"
+                                                                        style="width:20%">
                                                                         <h3>Action</h3>
 
                                                                     </th>
@@ -348,7 +343,6 @@
                         })
                     });
             }
-
         }
     </script>
 @endsection

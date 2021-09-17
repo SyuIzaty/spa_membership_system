@@ -74,8 +74,6 @@
                                             <div class="modal-body">
                                                 <form action="{{ url('/shortcourse') }}" method="post" name="form">
                                                     @csrf
-                                                    {{-- {!! Form::open(['action' => 'ShortCourseManagement\EventManagement\EventController@storeContactPerson\ '.$shortcourse->id, 'method' => 'POST']) !!} --}}
-
                                                     <p><span class="text-danger">*</span>
                                                         Required Field</p>
                                                     <hr class="mt-1 mb-2">
@@ -185,16 +183,6 @@
                 }
             });
 
-            // crud-modal-add-contact_person
-            // $('#create').click(function() {
-            //         $('.modal-body #shortcourse_name').val(null);
-            //         $('#crud-modal').modal('show');
-            //     });
-
-            //     $('#crud-modal').on('show.bs.modal', function(event) {
-            //         $('.modal-body #shortcourse_name').val(null);
-            //     });
-            // crud-modal-add-contact_person
             $('#create').click(function() {
                 $('#shortcourse_name').val('Unnamed Shortcourse');
 

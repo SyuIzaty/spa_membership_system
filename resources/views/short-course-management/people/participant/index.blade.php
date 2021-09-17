@@ -55,12 +55,6 @@
                                             <th>MANAGE. DETAILS</th>
                                             <th>ACTION</th>
                                         </tr>
-                                        {{-- <tr>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Name"></td> --}}
-                                        {{-- <td class="hasinput"><input type="text" class="form-control" placeholder="Search Dates"></td> --}}
-                                        {{-- <td></td>
-                                    </tr> --}}
                                     </thead>
                                     <tbody>
                                     </tbody>
@@ -78,36 +72,7 @@
                                             <div class="card-header">
                                                 <h5 class="card-title w-150">Add Participant</h5>
                                             </div>
-                                            {{-- <div class="modal-body">
-                                                <form action="{{ url('/participant') }}"
-                                                    method="post" name="form">
-                                                    @csrf
-                                                    <p><span class="text-danger">*</span>
-                                                        Required Field</p>
-                                                    <hr class="mt-1 mb-2">
-                                                    <div class="form-group">
-                                                        <label for="user_id"><span class="text-danger">*</span>
-                                                            Participant Name</label>
-                                                        {{ Form::text('participant_name', '', ['class' => 'form-control', 'placeholder' => "Participant Name", 'id' => 'participant_name']) }}
-                                                        @error('participant_name')
-                                                            <p style="color: red">{{ $message }}
-                                                            </p>
-                                                        @enderror
-                                                    </div>
-                                                    <hr class="mt-1 mb-2">
-                                                    <div class="footer" id="add_contact_person_footer">
-                                                        <button type="button"
-                                                            class="btn btn-danger ml-auto float-right mr-2"
-                                                            data-dismiss="modal" id="close-add-contact_person"><i
-                                                                class="fal fa-window-close"></i>
-                                                            Close</button>
-                                                        <button type="submit"
-                                                            class="btn btn-primary ml-auto float-right mr-2"><i
-                                                                class="ni ni-plus"></i>
-                                                            Add</button>
-                                                    </div>
-                                                </form>
-                                            </div> --}}
+
                                             <div class="modal-body">
                                                 <form action="{{ url('/participant') }}" method="post" name="form">
                                                     @csrf
@@ -200,8 +165,6 @@
                                                             class="btn btn-success ml-auto float-right mr-2"
                                                             id="registration_update_submit"></button>
                                                     </div>
-
-                                                    {{-- {!! Form::close() !!} --}}
                                                 </form>
                                             </div>
                                         </div>
@@ -290,21 +253,9 @@
 
                 }
             });
-
-            // crud-modal-add-contact_person
-            // $('#create').click(function() {
-            //     $('.modal-body #participant_name').val(null);
-            //     $('#crud-modal').modal('show');
-            // });
-
-            // $('#crud-modal').on('show.bs.modal', function(event) {
-            //     $('.modal-body #participant_name').val(null);
-            // });
-
             // List of Participants
             {
                 // Add participant
-                // crud-modal-add-participant
                 $('#create').click(function() {
                     $('.modal-body #id').val(null);
                     $('.modal-body #fullname').val(null);
@@ -315,8 +266,6 @@
                 });
 
                 $('#crud-modal').on('show.bs.modal', function(event) {
-                    // var button = $(event.relatedTarget)
-                    // var id = button.data('id');
 
                     $('.modal-body #id').val(null);
                     $("div[id=form-add-participant-second-part]").hide();

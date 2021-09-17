@@ -41,12 +41,6 @@
                                             <th>MANAGE. DETAILS</th>
                                             <th>ACTION</th>
                                         </tr>
-                                        {{-- <tr>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Name"></td> --}}
-                                        {{-- <td class="hasinput"><input type="text" class="form-control" placeholder="Search Dates"></td> --}}
-                                        {{-- <td></td>
-                                    </tr> --}}
                                     </thead>
                                     <tbody>
                                     </tbody>
@@ -130,17 +124,6 @@
 
                 }
             });
-
-            // crud-modal-add-contact_person
-            // $('#create').click(function() {
-            //         $('.modal-body #event_feedback_set_name').val(null);
-            //         $('#crud-modal').modal('show');
-            //     });
-
-            //     $('#crud-modal').on('show.bs.modal', function(event) {
-            //         $('.modal-body #event_feedback_set_name').val(null);
-            //     });
-            // crud-modal-add-contact_person
         })
     </script>
 @endsection

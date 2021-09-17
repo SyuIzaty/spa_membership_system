@@ -41,12 +41,6 @@
                                             <th>MANAGE. DETAILS</th>
                                             <th>ACTION</th>
                                         </tr>
-                                        {{-- <tr>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Name"></td> --}}
-                                        {{-- <td class="hasinput"><input type="text" class="form-control" placeholder="Search Dates"></td> --}}
-                                        {{-- <td></td>
-                                    </tr> --}}
                                     </thead>
                                     <tbody>
                                     </tbody>
@@ -67,8 +61,6 @@
                                             <div class="modal-body">
                                                 <form action="{{ url('/venue') }}" method="post" name="form">
                                                     @csrf
-                                                    {{-- {!! Form::open(['action' => 'ShortCourseManagement\EventManagement\EventController@storeContactPerson\ '.$venue->id, 'method' => 'POST']) !!} --}}
-
                                                     <p><span class="text-danger">*</span>
                                                         Required Field</p>
                                                     <hr class="mt-1 mb-2">
@@ -177,17 +169,6 @@
 
                 }
             });
-
-            // crud-modal-add-contact_person
-            // $('#create').click(function() {
-            //     $('.modal-body #venue_name').val(null);
-            //     $('#crud-modal').modal('show');
-            // });
-
-            // $('#crud-modal').on('show.bs.modal', function(event) {
-            //     $('.modal-body #venue_name').val(null);
-            // });
-
 
             $('#create').click(function() {
                 $('#venue_name').val('Unnamed Venue');

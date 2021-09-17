@@ -3,14 +3,6 @@
 @section('content')
 
     <main id="js-page-content" role="main" class="page-content">
-        {{-- <div class="subheader">
-            <h1 class="subheader-title">
-                <i class='subheader-icon fal fa-table'></i> Public View
-            </h1>
-        </div> --}}
-        {{-- <h1 class="text-center heading text-iceps-blue">
-            <b class="semi-bold">Featured</b> Short Courses
-        </h1> --}}
         <div class="col-xl-12">
             <h1 class="text-center heading">
                 <b class="semi-bold text-primary">Latest</b> Short Courses
@@ -22,10 +14,6 @@
                         <div class="card mb-3" style="max-width: 540px;">
                             <div class="row no-gutters">
                                 <div class="col-md-5 d-flex justify-content-center">
-                                    {{-- <img src="/get-file-event/intec_poster.jpg" class="card-img" alt="..."
-                                        style="width:137px;height:194px;"> --}}
-                                    {{-- <img src="{{ URL::to('/') }}/img/system/intec_poster.jpg" class="card-img" alt="..."
-                                        style="width:137px;height:194px;"> --}}
                                     @if (!isset($event->thumbnail_path))
                                         <img src="{{ asset('storage/shortcourse/poster/default/intec_poster.jpg') }}"
                                             class="card-img" style="width:137px;height:194px;">
@@ -78,12 +66,6 @@
                                                 <th>TOPIC</th>
                                                 <th>DATES</th>
                                             </tr>
-                                            {{-- <tr>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Name"></td> --}}
-                                            {{-- <td class="hasinput"><input type="text" class="form-control" placeholder="Search Dates"></td> --}}
-                                            {{-- <td></td>
-                                    </tr> --}}
                                         </thead>
                                         <tbody>
                                         </tbody>

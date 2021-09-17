@@ -56,10 +56,4 @@
             @endforeach
         </tbody>
     </table>
-    {{-- <div class="app_detail"> --}}
-
-    {{-- {{$detail->applicant_name}}<br>{{$detail->applicant_ic}} --}}
-    {{-- </div> --}}
-
-    {{-- <p style="margin-bottom: -100px;">This letter is computer generated, no signature required</p> --}}
 </body>
