@@ -306,11 +306,9 @@
                                                                 <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
                                                                     style="content-align:right">
                                                                     <x-ShortCourseManagement.AddParticipant :event=$event />
-
-
                                                                 </div>
                                                                 </form>
-                                                                <x-ShortCourseManagement.UpdatePaymentProof/>
+                                                                <x-ShortCourseManagement.UpdatePaymentProof />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -387,7 +385,6 @@
                                                                                 </thead>
                                                                             </table>
                                                                         </div>
-
                                                                         <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
                                                                             style="content-align:right">
                                                                             <button type="submit"
@@ -495,14 +492,12 @@
                                                                                                         class="fal fa-window-close"></i>
                                                                                                     Close</button>
                                                                                             </div>
-
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                     </form>
-
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -596,18 +591,14 @@
                                                                                 Ticked Are Not Attend</button>
                                                                         </div>
                                                                     </form>
-
                                                                 </div>
-
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
-
                                     <div class="tab-pane" id="attendance-status" role="tabpanel" hidden>
                                         <div class="row">
                                             <div class="col-md-12 grid-margin stretch-card">
@@ -657,7 +648,6 @@
                                                                         method="post" name="form">
                                                                         @csrf
                                                                         <div class="table-responsive">
-
                                                                             <table id="table-participant-post-event"
                                                                                 name="table-update-progress-6"
                                                                                 class="table table-bordered table-hover table-striped w-100">
@@ -695,10 +685,7 @@
                                                                                 Ticked</button>
                                                                         </div>
                                                                     </form>
-
                                                                 </div>
-
-
                                                             </div>
                                                         </div>
                                                     </div>
@@ -748,7 +735,6 @@
                                                                                 {{ Session::get('notification') }}
                                                                             </div>
                                                                         @endif
-
                                                                         <div class="table-responsive">
                                                                             <table id="table-not-attended-participants"
                                                                                 name="table-update-progress-7"
@@ -1105,53 +1091,8 @@
                         });
                     });
 
-                    // request_verification
-                    $('#request_verification').click(function() {
-                        var is_verified_payment_proof = $("#is_verified_payment_proof_id").val();
-                        var event_id = $("#event_id").val();
-                        var participant_id = $("#participant_id").val();
-                        if (!is_verified_payment_proof) {
-                            $.get("/shortcourse/participant/request-verification/event/" + event_id +
-                                "/participant_id/" + participant_id,
-                                function(data) {
-                                    var stringStatus = '';
-                                    if (typeof(data.is_verified_payment_proof) !== "number") {
-                                        stringStatus = "No request for verification yet"
-                                        $("#request_verification").attr("disabled", "false");
-                                        style = 'text-danger';
-                                    } else if (data.is_verified_payment_proof == 0) {
-                                        stringStatus = "In verification Process"
-                                        $("#request_verification").attr("disabled", "true");
-                                        style = 'text-primary';
-                                    } else if (data.is_verified_payment_proof == 1) {
-                                        stringStatus = "Verified!"
-                                        $("#request_verification").attr("disabled", "true");
-                                        style = 'text-success';
-                                    }
-                                    $("#is_verified_payment_proof_id").val(data.is_verified_payment_proof);
-                                    $('.modal-body #is_verified_payment_proof').val(stringStatus);
-                                    $('.modal-body #is_verified_payment_proof').addClass(style);
-                                    console.log('masuk');
-                                    setTimeout(function() {
-                                        //your code to be executed after 10 second
-                                        tableAllNoPaymentYet.ajax.reload();
-                                    }, 5000);
-                                    setTimeout(function() {
-                                        //your code to be executed after 10 second
-                                        tablePaymentWaitForVerification.ajax.reload();
-                                    }, 10000);
-                                }).fail(
-                                function() {
-                                    // TODO: The code is not valid
-                                });
-                        }
-                    });
-
-
-
                     //View Payment Proof
                     {
-
                         $('#crud-modals-view-proof').on('show.bs.modal', function(event) {
                             var button = $(event.relatedTarget);
                             var is_verified_payment_proof_id = button.data('is_verified_payment_proof');
@@ -1184,7 +1125,6 @@
                             $.get("/event-participant/" + event_participant_id + "/payment_proof",
                                 function(data) {
                                     // TODO: Insert result into couresol
-
                                     data.forEach(function(img, index) {
                                         var src = img.name;
                                         var id = img.id;
@@ -1207,7 +1147,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>`);
+                                            </div>`
+                                        );
                                     });
                                     if (data.length > 0) {
                                         $('#carousel-view-proof').show();
@@ -1390,8 +1331,7 @@
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             }
                         },
-                        columns: [
-                            {
+                        columns: [{
                                 className: 'text-center',
                                 data: 'id',
                                 name: 'id',
@@ -1468,8 +1408,7 @@
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             }
                         },
-                        columns: [
-                            {
+                        columns: [{
                                 className: 'text-center',
                                 data: 'id',
                                 name: 'id',
@@ -1710,8 +1649,7 @@
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             }
                         },
-                        columns: [
-                            {
+                        columns: [{
                                 className: 'text-center',
                                 data: 'id',
                                 name: 'id',
@@ -2010,8 +1948,7 @@
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             }
                         },
-                        columns: [
-                            {
+                        columns: [{
                                 className: 'text-center',
                                 data: 'id',
                                 name: 'id',
@@ -2100,8 +2037,7 @@
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             }
                         },
-                        columns: [
-                            {
+                        columns: [{
                                 className: 'text-center',
                                 data: 'id',
                                 name: 'id',
@@ -2130,14 +2066,7 @@
                                 className: 'text-center',
                                 data: 'created_at_diffForHumans',
                                 name: 'created_at_diffForHumans',
-                            },
-                            // {
-                            //     className: 'text-center',
-                            //     data: 'action',
-                            //     name: 'action',
-                            //     orderable: false,
-                            //     searchable: false
-                            // }
+                            }
                         ],
                         orderCellsTop: true,
                         "order": [

@@ -93,7 +93,7 @@
                                 <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
                                     style="content-align:right">
                                 </div>
-                                <x-ShortCourseManagement.UpdatePaymentProof/>
+                                <x-ShortCourseManagement.UpdatePaymentProof />
                             </div>
                         </div>
                     </div>
@@ -185,40 +185,6 @@
                     cell.innerHTML = i + 1;
                 });
             }).draw();
-
-            // request_verification
-            $('#request_verification').click(function() {
-                var is_verified_payment_proof = $("#is_verified_payment_proof_id").val();
-                var event_id = $("#event_id").val();
-                var participant_id = $("#participant_id").val();
-                if (!is_verified_payment_proof) {
-                    $.get("/shortcourse/participant/request-verification/event/" + event_id +
-                        "/participant_id/" + participant_id,
-                        function(data) {
-                            var stringStatus = '';
-                            if (typeof(data.is_verified_payment_proof) !== "number") {
-                                stringStatus = "No request for verification yet"
-                                $("#request_verification").attr("disabled", "false");
-                                style = 'text-danger';
-                            } else if (data.is_verified_payment_proof == 0) {
-                                stringStatus = "In verification Process"
-                                $("#request_verification").attr("disabled", "true");
-                                style = 'text-primary';
-                            } else if (data.is_verified_payment_proof == 1) {
-                                stringStatus = "Verified!"
-                                $("#request_verification").attr("disabled", "true");
-                                style = 'text-success';
-                            }
-                            $("#is_verified_payment_proof_id").val(data.is_verified_payment_proof);
-                            $('.modal-body #is_verified_payment_proof').val(stringStatus);
-                            $('.modal-body #is_verified_payment_proof').addClass(style);
-                        }).fail(
-                        function() {
-                            // TODO: The code is not valid
-                        });
-                }
-            });
-
         });
     </script>
 @endsection

@@ -169,11 +169,8 @@
                     "orderable": false
                 }],
                 "initComplete": function(settings, json) {
-
-
                 }
             });
-
         });
     </script>
 @endsection

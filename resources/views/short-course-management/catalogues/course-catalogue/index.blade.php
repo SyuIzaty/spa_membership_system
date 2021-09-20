@@ -48,12 +48,6 @@
                                             <th>MANAGE. DETAILS</th>
                                             <th>ACTION</th>
                                         </tr>
-                                        {{-- <tr>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Name"></td> --}}
-                                        {{-- <td class="hasinput"><input type="text" class="form-control" placeholder="Search Dates"></td> --}}
-                                        {{-- <td></td>
-                                    </tr> --}}
                                     </thead>
                                     <tbody>
                                     </tbody>
@@ -185,7 +179,6 @@
 
             $('#create').click(function() {
                 $('#shortcourse_name').val('Unnamed Shortcourse');
-
                 $("#submitShortCourse").trigger("click");
             });
         })

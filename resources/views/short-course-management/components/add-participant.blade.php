@@ -48,7 +48,7 @@
                         <hr class="mt-1 mb-2">
                         <div class="form-group">
                             <label class="form-label" for="fullname"><span
-                                    class="text-danger">*</span>Fullname</label>
+                                    class="text-danger">*</span>Full Name</label>
                             <input class="form-control" id="fullname" name="fullname">
                             @error('fullname')
                                 <p style="color: red">
@@ -121,8 +121,6 @@
                         <div class="form-group" id="fee_form" style="display:none">
                             <label class="form-label" for="is_base_fee_select_add"><span
                                     class="text-danger">*</span>Fee</label>
-                            {{-- <input class="form-control" id="is_base_fee_select_add"
-                                                                        name="is_base_fee_select_add"> --}}
                             <select class="form-control fee_id font-weight-bold" name="fee_id" id="fee_id" tabindex="-1"
                                 aria-hidden="true" hidden>
                                 <option disabled selected>Select
@@ -175,7 +173,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             @error('fee_id')
                                 <p style="color: red">
                                     <strong> *
@@ -184,7 +181,6 @@
                                 </p>
                             @enderror
                         </div>
-                        {{-- <hr class="mt-1 mb-2"> --}}
                         <div class="custom-control custom-checkbox" style="display:none">
                             <input type="checkbox" class="custom-control-input" id="represent-by-himself"
                                 checked="checked" type="hidden">
@@ -246,7 +242,6 @@
                             </div>
                         </div>
                     </div>
-                    {{-- <hr class="mt-1 mb-2"> --}}
                     <div class="footer" id="new_application_footer">
                         <button type="button" class="btn btn-danger ml-auto float-right mr-2" data-dismiss="modal"
                             id="close-new-application"><i class="fal fa-window-close"></i>
@@ -255,16 +250,19 @@
                             id="application_update_submit" style="display:none"></button>
                     </div>
                 </form>
-
-                {{-- {!! Form::close() !!} --}}
             </div>
         </div>
     </div>
 </div>
 <script>
     var event_id = '<?php echo $event->id; ?>';
+
     $(document).ready(function() { //New Application
         {
+            /*
+            This behave like $emit function. The element with id 'new-application' came from the
+            the source view.
+            */
             document.getElementById("new-application").addEventListener("click", function(event) {
                 event.preventDefault()
             });
@@ -273,7 +271,6 @@
                 $('.modal-body #ic_input').val(ic);
                 $("#fee_form").hide();
 
-                // $("div[id=form-application-second-part]").hide();
                 $('#crud-modal-new-application').modal('show');
             });
 
@@ -290,6 +287,7 @@
                     $('.modal-body #application_update_submit').empty();
                     $('.modal-body #application_message').empty();
                     if (data.id) {
+
                         // TODO: Already Applied
                         $('.modal-body #fullname').attr('readonly', true);
                         $('.modal-body #phone').attr('readonly', true);
@@ -398,7 +396,6 @@
                     });
             });
 
-            // promo_code_edit_add
             $('#promo_code_edit_add').click(function() {
                 var promo_code = $('.modal-body #promo_code').val();
                 $.get("/event/" + event_id + "/promo-code/" + promo_code + "/participant",
@@ -419,6 +416,7 @@
                     }).fail(
                     function() {
                         // TODO: The code is not valid
+                        alert('The promo code is not valid.');
                     });
 
             });
@@ -438,11 +436,9 @@
 
                     }
                 });
-
             });
 
             $('#ic_input').change(function() {
-                // var id = null;
                 var ic_input = $('.modal-body #ic_input').val();
                 $('.modal-body #fullname').val(null);
                 $('.modal-body #phone').val(null);
@@ -451,12 +447,10 @@
                 $('.modal-body #representative_ic_input').val(ic_input);
                 $('.modal-body #representative_fullname').val(null);
 
-
                 $('#search-by-ic').trigger("click");
             });
 
             $('.modal-body #fullname').change(function() {
-                // var id = null;
                 var fullname = $('.modal-body #fullname').val();
                 $('.modal-body #representative_fullname').val(fullname);
 

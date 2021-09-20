@@ -396,27 +396,27 @@
                     i++;
                     $('#topic_field tbody').after(`
                             <tr id="new-row">
-                                    <td>
-                                        <select class="form-control topic${i}" name="shortcourse_topic"
-                                        id="add_topic">
-                                            <option value="-1" disabled selected>Select Topic
-                                            </option>
-                                            @foreach ($topics as $topic)
-                                                <option value="{{ $topic->id }}">
-                                                    {{ $topic->id }} -
-                                                    {{ $topic->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td class="d-flex flex-row-reverse ">
-                                        <a href="javascript:;" name="cancel-topic" id="cancel-topic" class="btn btn-sm btn-danger btn_remove mx-1">X</a>
-                                        <a
-                                            href="javascript:;"
-                                            class="btn btn-sm btn-success mx-1"
-                                            name="save-topic" id="save-topic">
-                                            <i class="fal fa-save"></i>
-                                        </a>
-                                    </td>
+                                <td>
+                                    <select class="form-control topic${i}" name="shortcourse_topic"
+                                    id="add_topic">
+                                        <option value="-1" disabled selected>Select Topic
+                                        </option>
+                                        @foreach ($topics as $topic)
+                                            <option value="{{ $topic->id }}">
+                                                {{ $topic->id }} -
+                                                {{ $topic->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                                <td class="d-flex flex-row-reverse ">
+                                    <a href="javascript:;" name="cancel-topic" id="cancel-topic" class="btn btn-sm btn-danger btn_remove mx-1">X</a>
+                                    <a
+                                        href="javascript:;"
+                                        class="btn btn-sm btn-success mx-1"
+                                        name="save-topic" id="save-topic">
+                                        <i class="fal fa-save"></i>
+                                    </a>
+                                </td>
                             </tr>
                     `);
                     $(`.topic${i}`).select2();
@@ -456,18 +456,18 @@
                     i++;
                     $('#module_field tbody').after(`
                             <tr id="new-row">
-                                    <td>
-                                        <input id="add_module" name="shortcourse_module" type="text" class="form-control" placeholder="Insert Module Name">
-                                    </td>
-                                    <td class="d-flex flex-row-reverse ">
-                                        <a href="javascript:;" name="cancel-module" id="cancel-module" class="btn btn-sm btn-danger btn_remove mx-1">X</a>
-                                        <a
-                                            href="javascript:;"
-                                            class="btn btn-sm btn-success mx-1"
-                                            name="save-module" id="save-module">
-                                            <i class="fal fa-save"></i>
-                                        </a>
-                                    </td>
+                                <td>
+                                    <input id="add_module" name="shortcourse_module" type="text" class="form-control" placeholder="Insert Module Name">
+                                </td>
+                                <td class="d-flex flex-row-reverse ">
+                                    <a href="javascript:;" name="cancel-module" id="cancel-module" class="btn btn-sm btn-danger btn_remove mx-1">X</a>
+                                    <a
+                                        href="javascript:;"
+                                        class="btn btn-sm btn-success mx-1"
+                                        name="save-module" id="save-module">
+                                        <i class="fal fa-save"></i>
+                                    </a>
+                                </td>
                             </tr>
                     `);
                     $(`.module${i}`).select2();
@@ -550,13 +550,10 @@
 
                                 }
                             })
-                        });
+                        }
+                    );
                 }
-
-
-
             });
-
         }
     </script>
 @endsection

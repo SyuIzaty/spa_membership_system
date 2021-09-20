@@ -18,11 +18,10 @@
                                         <img src="{{ asset('storage/shortcourse/poster/default/intec_poster.jpg') }}"
                                             class="card-img" style="width:137px;height:194px;">
                                     @else
-                                        <img src="{{ asset($event->thumbnail_path) }}" class="card-img"
-                                            style="width:137px;height:194px;
-                                                                                                                                                background-image:url('{{ asset('storage /shortcourse/poster/default/intec_poster.jpg') }}');
-                                                                                                                                                background-repeat: no-repeat;
-                                                                                                                                                background-size: 137px 194px;">
+                                        <img src="{{ asset($event->thumbnail_path) }}" class="card-img" style="width:137px;height:194px;
+                                                            background-image:url('{{ asset('storage /shortcourse/poster/default/intec_poster.jpg') }}');
+                                                            background-repeat: no-repeat;
+                                                            background-size: 137px 194px;">
                                     @endif
                                 </div>
                                 <div class="col-md-7">
@@ -36,15 +35,12 @@
                                         <a href="/shortcourse/{{ $event->id }}"
                                             class="btn btn-sm btn-primary btn btn-block">Detail</a>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                     </div>
                 @endforeach
             </div>
-
-
             <hr class="mt-2 mb-3">
             <h1 class="text-center heading">
                 <b class="semi-bold text-primary">Upcoming</b> Short Courses
@@ -130,13 +126,11 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </main>
 
 @endsection

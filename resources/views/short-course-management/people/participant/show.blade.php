@@ -341,9 +341,9 @@
 
                             }
                         })
-                    });
+                    }
+                );
             }
-
         }
     </script>
 @endsection

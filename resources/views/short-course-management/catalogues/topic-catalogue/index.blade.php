@@ -172,7 +172,7 @@
                                                                 <div class="form-group">
                                                                     <label for="subcategory_id_edit"><span
                                                                             class="text-danger">*</span>
-                                                                        SubCategory</label>
+                                                                        Sub-Category</label>
                                                                     <select class="form-control subcategory"
                                                                         name="subcategory_id_edit" id="subcategory_id_edit">
                                                                         <option disabled selected>Choose a SubCategory
@@ -232,7 +232,7 @@
 
                                     <div class="tab-pane" id="subcategory" role="tabpanel">
                                         <br />
-                                        <h2>SubCategories</h2>
+                                        <h2>Sub-Categories</h2>
                                         <br />
                                         @if (session()->has('message'))
                                             <div class="alert alert-success">
@@ -267,7 +267,7 @@
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="card-header">
-                                                            <h5 class="card-title w-150">Add SubCategory</h5>
+                                                            <h5 class="card-title w-150">Add Sub-Category</h5>
                                                         </div>
                                                         <div class="modal-body">
                                                             <form action="{{ url('/subcategory') }}" method="post"
@@ -279,7 +279,7 @@
                                                                 <div class="form-group">
                                                                     <label for="subcategory_name_2"><span
                                                                             class="text-danger">*</span>
-                                                                        SubCategory Name</label>
+                                                                        Sub-Category Name</label>
                                                                     {{ Form::text('subcategory_name_2', '', ['class' => 'form-control', 'placeholder' => 'SubCategory Name', 'id' => 'subcategory_name_2']) }}
                                                                     @error('subcategory_name_2')
                                                                         <p style="color: red">{{ $message }}
@@ -342,7 +342,7 @@
                                                                 <div class="form-group">
                                                                     <label for="subcategory_name_edit_2"><span
                                                                             class="text-danger">*</span>
-                                                                        SubCategory Name</label>
+                                                                        Sub-Category Name</label>
                                                                     {{ Form::text('subcategory_name_edit_2', '', ['class' => 'form-control', 'placeholder' => 'SubCategory Name', 'id' => 'subcategory_name_edit_2']) }}
                                                                     @error('subcategory_name_edit_2')
                                                                         <p style="color: red">{{ $message }}
@@ -694,7 +694,7 @@
                                 var delayInMilliseconds = 5000; //5 second
 
                                 setTimeout(function() {
-                                    //your code to be executed after 5 second
+                                    // The code to be executed after 5 second
                                     // $('#student').DataTable().ajax.reload();
                                     window.location.reload(true);
                                 }, delayInMilliseconds);
@@ -705,7 +705,7 @@
                 }
             }
 
-            // SubCategory
+            // Sub-Category
             {
                 $('#tableSubCategory thead tr .hasinput').each(function(i) {
                     $('input', this).on('keyup change', function() {
@@ -781,7 +781,7 @@
 
 
 
-                // Create SubCategory
+                // Create Sub-Category
                 {
                     $('#createSubCategory').click(function() {
                         $('#crud-modal-subcategory').modal('show');
@@ -790,7 +790,7 @@
                     $('#crud-modal-subcategory').on('show.bs.modal', function(event) {});
                 }
 
-                // Edit SubCategory
+                // Edit Sub-Category
                 {
                     $('#editSubCategory').click(function() {
                         var id = null;
@@ -816,7 +816,7 @@
                     });
                 }
 
-                // Delete SubCategory
+                // Delete Sub-Category
                 {
                     $('#tableSubCategory').on('click', '.btn-delete[data-remote]', function(e) {
                         e.preventDefault();

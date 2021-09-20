@@ -26,7 +26,8 @@
                                     <a data-toggle="tab" class="nav-link" href="#general" role="tab">General</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a data-toggle="tab" class="nav-link" style="display:none" href="#setting" role="tab">Setting</a>
+                                    <a data-toggle="tab" class="nav-link" style="display:none" href="#setting"
+                                        role="tab">Setting</a>
                                 </li>
                             </ul>
                             <div class="row">
@@ -71,7 +72,7 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr>
-                                                                <td >Name</td>
+                                                                <td>Name</td>
                                                                 <td name="name_show" id="name_show">
                                                                     {{ $venue->name }}
                                                                 </td>
@@ -95,10 +96,12 @@
                                                                 <td name="venue_type_show" id="venue_type_show">
                                                                     {{ $venue->venue_type->name }}
                                                                 </td>
-                                                                <td name="venue_type_edit" id="venue_type_edit" style="display: none">
+                                                                <td name="venue_type_edit" id="venue_type_edit"
+                                                                    style="display: none">
                                                                     <div class="form-group">
-                                                                        <select class="form-control venue_type " name="venue_type_id"
-                                                                            id="venue_type_id" data-select2-id="venue_type_id" tabindex="-1"
+                                                                        <select class="form-control venue_type "
+                                                                            name="venue_type_id" id="venue_type_id"
+                                                                            data-select2-id="venue_type_id" tabindex="-1"
                                                                             aria-hidden="true">
                                                                             <option
                                                                                 value={{ $venue->venue_type ? $venue->venue_type->id : '' }}>
@@ -117,16 +120,14 @@
                                                             </tr>
                                                             <tr>
                                                                 <td>Venue Description</td>
-                                                                <td name="description_show"
-                                                                    id="description_show">
+                                                                <td name="description_show" id="description_show">
                                                                     {{ $venue->description }}
                                                                 </td>
-                                                                <td name="description_edit"
-                                                                    id="description_edit" style="display: none">
+                                                                <td name="description_edit" id="description_edit"
+                                                                    style="display: none">
                                                                     <div class="form-group">
-                                                                        <input id="description"
-                                                                            name="description" type="text"
-                                                                            value="{{ $venue->description }}"
+                                                                        <input id="description" name="description"
+                                                                            type="text" value="{{ $venue->description }}"
                                                                             class="form-control">
                                                                         @error('description')
                                                                             <p style="color: red">
@@ -148,7 +149,7 @@
                                                         <tr class=" bg-primary-50">
                                                             <th colspan="3"><b>Settings</b></th>
                                                         </tr>
-                                                        <tr >
+                                                        <tr>
                                                         <tr>
                                                             <th class="text-center" scope="col">
                                                                 Value
@@ -192,7 +193,8 @@
                                                                     <th class="text-center" scope="col">
                                                                         <h3>Value</h3>
                                                                     </th>
-                                                                    <th class="text-center" scope="col" style="width:20%">
+                                                                    <th class="text-center" scope="col"
+                                                                        style="width:20%">
                                                                         <h3>Action</h3>
 
                                                                     </th>
@@ -201,7 +203,8 @@
                                                             </thead>
                                                             <tbody>
                                                                 <tr>
-                                                                    <td class="text-center" id="venue_status_category_name"
+                                                                    <td class="text-center"
+                                                                        id="venue_status_category_name"
                                                                         name="venue_status_category_name">
                                                                         Active
                                                                     </td>
@@ -234,6 +237,9 @@
 
         // General
         {
+
+            $('.venue_type').select2();
+
             // Basic Information
             {
                 $("#edit-basic").click(function(e) {
@@ -271,8 +277,6 @@
                 });
 
             }
-
-            $('.venue_type').select2();
 
             // Delete Venue
             {
@@ -320,7 +324,8 @@
 
                             }
                         })
-                    });
+                    }
+                );
             }
 
         }

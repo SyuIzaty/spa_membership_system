@@ -295,7 +295,7 @@
 
             }
 
-            // Delete Venue
+            // Delete Trainer
             {
                 $('#delete_trainer').on('click',
                     function(e) {
@@ -341,7 +341,8 @@
 
                             }
                         })
-                    });
+                    }
+                );
             }
         }
     </script>

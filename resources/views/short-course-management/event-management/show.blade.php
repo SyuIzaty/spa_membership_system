@@ -243,7 +243,6 @@
                                                                     </div>
                                                                 </td>
                                                             </tr>
-
                                                             <tr>
                                                                 <td>Total Seat Open</td>
                                                                 <td name="max_participant_show" id="max_participant_show">
@@ -1928,7 +1927,7 @@
 
         }
 
-        // Delete Venue
+        // Delete Event
         {
 
             var event_name = '<?php echo $event->name; ?>';
@@ -1937,7 +1936,7 @@
 
                     const tag = $(e.currentTarget);
 
-                    const title = "Delete Venue";
+                    const title = "Delete Event";
                     const text = `Are you sure you want to delete '${event_name}'?`;
                     const confirmButtonText = "Delete";
                     const cancelButtonText = "Cancel";

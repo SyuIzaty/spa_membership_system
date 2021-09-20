@@ -88,9 +88,6 @@
                         </div>
                     </div>
                     <hr class="mt-1 mb-1">
-
-
-                    {{-- <div class="invalid-feedback">Example invalid custom file feedback</div> --}}
                     <div class="footer">
                         <button type="submit" class="btn btn-primary ml-auto float-right" id="submit_payment_proof"><i
                                 class="fal fa-save"></i>
@@ -109,89 +106,127 @@
     //Update Payment Proof
     {
         $(document).ready(function() {
-                $('#crud-modals').on('show.bs.modal', function(event) {
-                    var button = $(event.relatedTarget);
-                    var is_verified_payment_proof_id = button.data('is_verified_payment_proof');
-                    $("#is_verified_payment_proof_id").val(is_verified_payment_proof_id);
-                    var event_id = button.data('event_id');
-                    $("#event_id").val(event_id);
-                    var participant_id = button.data('participant_id');
-                    $("#participant_id").val(participant_id);
-                    var event_participant_id = button.data('event_participant_id');
-                    $("#event_participant_id").val(event_participant_id);
-                    var amount = button.data('amount');
-                    $("#amount").val(amount);
-                    console.log(participant_id);
-                    var stringStatus;
-                    var style;
-                    if (typeof(is_verified_payment_proof_id) !== "number") {
-                        stringStatus = "No request for verification yet"
-                        style = 'text-danger';
-                        // $("#request_verification").attr("disabled", "false");
-                    } else if (is_verified_payment_proof_id == 0) {
-                        stringStatus = "In verification Process"
-                        $("#request_verification").attr("disabled", "true");
-                        style = 'text-primary';
-                    } else if (is_verified_payment_proof_id == 1) {
-                        stringStatus = "Verified!"
-                        $("#request_verification").attr("disabled", "true");
-                        style = 'text-success';
-                        $("#submit_payment_proof").attr("disabled", "true");
-                    }
-                    $('#carousel').hide();
+            $('#crud-modals').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget);
+                var is_verified_payment_proof_id = button.data('is_verified_payment_proof');
 
-                    $.get("/event-participant/" + event_participant_id + "/payment_proof",
-                        function(data) {
-                            // TODO: Insert result into couresol
+                $("#is_verified_payment_proof_id").val(is_verified_payment_proof_id);
+                var event_id = button.data('event_id');
+                $("#event_id").val(event_id);
+                var participant_id = button.data('participant_id');
+                $("#participant_id").val(participant_id);
+                var event_participant_id = button.data('event_participant_id');
+                $("#event_participant_id").val(event_participant_id);
+                var amount = button.data('amount');
+                $("#amount").val(amount);
 
-                            data.forEach(function(img, index) {
-                                var src = img.name;
-                                var id = img.id;
-                                $('#carousel-indicators').append(
-                                    `<li data-target="#multi-item-example" data-slide-to="${index}" ${index==0?"class='active'":null}></li>`
-                                );
 
-                                $('#carousel-slides').append(
-                                    `<div class="carousel-item ${index==0?"active":null}">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card mb-5">
-                                    <img class="card-img-top"
-                                        src="/get-payment-proof-image/${id}/${src}"
-                                        alt="Card image cap">
-                                    <div
-                                        class="card-body d-flex justify-content-between">
-                                        <h4 class="card-title">${img.created_at_diffForHumans}</h4>
-                                        <form method="post"
-                                            action="/event-participant-payment_proof">
-                                            @csrf
-                                            <input type="hidden" name="payment_proof_id" value="${img.id}">
-                                                @csrf
-                                                <button type="submit"
-                                                    class="btn btn-sm btn-danger float-right mr-2" ${is_verified_payment_proof_id==1?'disabled':null}>
-                                                    <i class="ni ni-close"></i>
-                                                </button>
-                                            </form>
+                var stringStatus;
+                var style;
+                if (typeof(is_verified_payment_proof_id) !== "number") {
+                    stringStatus = "No request for verification yet"
+                    style = 'text-danger';
+                } else if (is_verified_payment_proof_id == 0) {
+                    stringStatus = "In verification Process"
+                    $("#request_verification").attr("disabled", "true");
+                    style = 'text-primary';
+                } else if (is_verified_payment_proof_id == 1) {
+                    stringStatus = "Verified!"
+                    $("#request_verification").attr("disabled", "true");
+                    style = 'text-success';
+                    $("#submit_payment_proof").attr("disabled", "true");
+                }
+                $('#carousel').hide();
+
+                $.get("/event-participant/" + event_participant_id + "/payment_proof",
+                    function(data) {
+
+                        // TODO: Insert result into couresol
+                        data.forEach(function(img, index) {
+                            var src = img.name;
+                            var id = img.id;
+                            $('#carousel-indicators').append(
+                                `<li data-target="#multi-item-example" data-slide-to="${index}" ${index==0?"class='active'":null}></li>`
+                            );
+
+                            $('#carousel-slides').append(
+                                `<div class="carousel-item ${index==0?"active":null}">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="card mb-5">
+                                                <img class="card-img-top"
+                                                    src="/get-payment-proof-image/${id}/${src}"
+                                                    alt="Card image cap">
+                                                <div
+                                                    class="card-body d-flex justify-content-between">
+                                                    <h4 class="card-title">${img.created_at_diffForHumans}</h4>
+                                                    <form method="post"
+                                                        action="/event-participant-payment_proof">
+                                                        @csrf
+                                                        <input type="hidden" name="payment_proof_id" value="${img.id}">
+                                                            @csrf
+                                                            <button type="submit"
+                                                                class="btn btn-sm btn-danger float-right mr-2" ${is_verified_payment_proof_id==1?'disabled':null}>
+                                                                <i class="ni ni-close"></i>
+                                                            </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`);
-                            });
-                            if (data.length > 0) {
-                                $('#carousel').show();
-                            } else {
-                                $('#carousel').hide();
+                                </div>`
+                            );
+                        });
+                        if (data.length > 0) {
+                            $('#carousel').show();
+                        } else {
+                            $('#carousel').hide();
+                        }
+                    }).fail(
+                    function() {
+                        // TODO: Notify Users
+                        console.log('No payment proof to show.');
+                    });
+
+                $('.modal-body #is_verified_payment_proof').val(stringStatus);
+                $('.modal-body #is_verified_payment_proof').addClass(style);
+            });
+
+
+            // request_verification
+            $('#request_verification').click(function() {
+                var is_verified_payment_proof = $("#is_verified_payment_proof_id").val();
+                var event_id = $("#event_id").val();
+                var participant_id = $("#participant_id").val();
+                if (!is_verified_payment_proof) {
+                    $.get("/shortcourse/participant/request-verification/event/" + event_id +
+                        "/participant_id/" + participant_id,
+                        function(data) {
+                            var stringStatus = '';
+                            if (typeof(data.is_verified_payment_proof) !== "number") {
+                                stringStatus = "No request for verification yet"
+                                $("#request_verification").attr("disabled", "false");
+                                style = 'text-danger';
+                            } else if (data.is_verified_payment_proof == 0) {
+                                stringStatus = "In verification Process"
+                                $("#request_verification").attr("disabled", "true");
+                                style = 'text-primary';
+                            } else if (data.is_verified_payment_proof == 1) {
+                                stringStatus = "Verified!"
+                                $("#request_verification").attr("disabled", "true");
+                                style = 'text-success';
                             }
+                            $("#is_verified_payment_proof_id").val(data.is_verified_payment_proof);
+                            $('.modal-body #is_verified_payment_proof').val(stringStatus);
+                            $('.modal-body #is_verified_payment_proof').addClass(style);
                         }).fail(
                         function() {
-                            // TODO: Notify Users
-                            console.log('fail');
-                        });
-
-                    $('.modal-body #is_verified_payment_proof').val(stringStatus);
-                    $('.modal-body #is_verified_payment_proof').addClass(style);
-                });
+                            // TODO: The code is not valid
+                            alert('Request Verification Failed');
+                        }
+                    );
+                }
             });
-        }
+        });
+    }
 </script>

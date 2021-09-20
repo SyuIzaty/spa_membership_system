@@ -188,8 +188,6 @@
                                                             class="btn btn-success ml-auto float-right mr-2"
                                                             id="registration_update_submit"></button>
                                                     </div>
-
-                                                    {{-- {!! Form::close() !!} --}}
                                                 </form>
                                             </div>
                                         </div>

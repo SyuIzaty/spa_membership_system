@@ -78,8 +78,6 @@
                                                 </tr>
                                                 <tr class="row" id="form-add-shortcourse-second-part"
                                                     {{ old('shortcourse_id') ? null : 'style=display:none' }}>
-
-
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Event Name **', ['style' => 'font-weight:bold']) }}
                                                     </td>
@@ -97,7 +95,6 @@
                                                         {{ Form::label('title', 'Event Description **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        {{-- {{ Form::textarea('shortcourse_description', old('shortcourse_description'), ['class' => 'form-control', 'placeholder' => 'Event Description', 'id' => 'shortcourse_description']) }} --}}
                                                         <textarea id="shortcourse_description"
                                                             name="shortcourse_description"
                                                             class="form-control ck-editor__editable ck-editor__editable_inline"
@@ -121,7 +118,6 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-
                                                 <tr class="row">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Event Date and Time (Start) **', ['style' => 'font-weight:bold']) }}
@@ -231,8 +227,6 @@
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Fee Type **', ['style' => 'font-weight:bold']) }}
                                                     </td>
-
-
                                                     <td class="col px-4">
                                                         <input type="hidden" id="fee_id" name="fee_id" value="1" />
                                                         <select class="form-control fee" name="fee_id_select"
@@ -356,11 +350,7 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
-
-
                                             </table>
-
-
                                         </div>
                                     </div>
 
@@ -386,8 +376,6 @@
                                             <form action="{{ url('/shortcourse/event') }}" method="post"
                                                 name="form">
                                                 @csrf
-                                                {{-- {!! Form::open(['action' => 'ShortCourseManagement\EventManagement\EventController@storeContactPerson\ '.$shortcourse->id, 'method' => 'POST']) !!} --}}
-
                                                 <p><span class="text-danger">*</span>
                                                     Required Field</p>
                                                 <hr class="mt-1 mb-2">
@@ -475,7 +463,6 @@
                                                     <a href="javascript:;" name="addModule" id="addModule"
                                                         class="btn btn-primary btn-sm ml-auto float-right my-2">Add
                                                         More Module</a>
-
                                                 </div>
                                                 <hr class="mt-1 mb-2">
                                                 <div class="footer" id="add_contact_person_footer">
@@ -506,6 +493,8 @@
 @section('script')
     <script>
         let editor_shortcourse_description;
+        let editor_shortcourse_objective;
+
         ClassicEditor
             .create(document.querySelector('#shortcourse_description'))
             .then(editor => {
@@ -515,7 +504,6 @@
                 console.error(error);
             });
 
-        let editor_shortcourse_objective;
         ClassicEditor
             .create(document.querySelector('#shortcourse_objective'))
             .then(editor => {
@@ -531,6 +519,7 @@
             .catch(error => {
                 console.error(error);
             });
+
         ClassicEditor
             .create(document.querySelector('#objective'))
             .catch(error => {
@@ -540,8 +529,8 @@
         $('#search-by-trainer_ic').click(function() {
 
             var trainer_ic = $('#search-by-trainer_ic_input').val();
-            $.get("/trainer/search-by-trainer_ic/" + trainer_ic, function(data) {
 
+            $.get("/trainer/search-by-trainer_ic/" + trainer_ic, function(data) {
 
                 $("#trainer_user_id").select2().val(data.id).trigger("change");
                 $("#trainer_user_id_text").hide();
@@ -555,10 +544,6 @@
                 $('#trainer_phone').val(data.trainer.phone);
                 $('#trainer_email').val(data.email);
 
-
-
-
-
             }).fail(
                 function() {
                     $('#trainer_ic').val(null);
@@ -571,7 +556,6 @@
 
                     $("#trainer_user_id_hidden").val(trainer_ic);
 
-
                     $("#trainer_user_id option[value='-1']").attr("selected", "true");
                     $('input[name=trainer_user_id]').val(-1);
                     $('#trainer_fullname').val(null);
@@ -579,6 +563,7 @@
                     $('#trainer_email').val(null);
                 }).always(
                 function() {
+
                     $("tr[id=form-add-trainer-second-part]").show();
 
                     $('#submit').show();
@@ -627,8 +612,8 @@
         $('#shortcourse_id').change(function(event) {
             var shortcourse_name = $('#shortcourse_id').find(":selected").attr('name');
             var shortcourse_id = $('#shortcourse_id').find(":selected").val();
-
             var shortcourses = @json($shortcourses);
+
             if (shortcourse_id == -1) {
 
                 $('#shortcourse_name').val(null);
@@ -637,19 +622,18 @@
 
                 var rowCount = $('#topic_field tr').length;
                 while (rowCount > 1) {
-
-
                     $(`#row${rowCount}`).remove();
                     rowCount -= 1;
                 }
 
                 $('.modal-body #shortcourse_name').val(null);
+
                 $('#crud-modal').modal('show');
 
                 $("#shortcourse_type").select2("val", "0")
 
                 $('#crud-modal').on('show.bs.modal', function(event) {
-                    $('.modal-body #shortcourse_name_new').val(null);;
+                    $('.modal-body #shortcourse_name_new').val(null);
                 });
 
                 $("tr[id=form-add-shortcourse-second-part]").show();
@@ -660,15 +644,12 @@
                     return x.id == shortcourse_id
                 });
 
-                // console.log(selected_shortcourse);
-
-
                 shortcourse_description = selected_shortcourse.description;
                 shortcourse_objective = selected_shortcourse.objective;
 
                 nodeNames = [];
                 if (selected_shortcourse != null) {
-                    // console.log(selected_shortcourse.name);
+
                     $('#shortcourse_name').val(selected_shortcourse.name);
 
                     editor_shortcourse_description.setData(shortcourse_description);
@@ -676,7 +657,7 @@
 
                     $("tr[id=form-add-shortcourse-second-part]").show();
 
-                    var i = 1;
+                    // var i = 1;
 
                 } else {
                     $('#shortcourse_name').val(null);
@@ -709,14 +690,14 @@
             $('#addModule').click(function() {
                 i++;
                 $('#module_field tbody tr:last').after(`
-                            <tr id="new-row${i}">
-                                    <td>
-                                        <input id="add_module" name="shortcourse_modules[]" type="text" class="form-control" placeholder="Insert Module Name">
-                                    </td>
-                                    <td>
-                                        <a href="javascript:;" name="cancel-module" data-value="${i}" id="cancel-module" class="btn btn-sm btn-danger btn_remove mx-1">X</a>
-                                    </td>
-                            </tr>
+                        <tr id="new-row${i}">
+                            <td>
+                                <input id="add_module" name="shortcourse_modules[]" type="text" class="form-control" placeholder="Insert Module Name">
+                            </td>
+                            <td>
+                                <a href="javascript:;" name="cancel-module" data-value="${i}" id="cancel-module" class="btn btn-sm btn-danger btn_remove mx-1">X</a>
+                            </td>
+                        </tr>
                     `);
 
                 $(document).on('click', '#cancel-module', function(event) {
@@ -724,7 +705,6 @@
                     $(`#new-row${row_id}`).remove();
                     $("#addModule").show();
                 });
-
 
                 $(document).on('click', '#save-module', function() {
                     $.ajaxSetup({
@@ -766,7 +746,6 @@
             $('.shortcourse_type').select2({
                 dropdownParent: $('#crud-modal')
             });
-
 
             $(document).on('click', '.btn_remove', function() {
                 var button_id = $(this).attr("id");
