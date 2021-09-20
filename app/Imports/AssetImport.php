@@ -25,34 +25,27 @@ class AssetImport implements ToModel, WithHeadingRow, WithValidation
     public function rules(): array
     {
         return [
-            'code_type' => 'nullable',
-            'finance_asset_code' => 'nullable',
-            'asset_name' => 'nullable',
-            'asset_type' => 'required',
-            'serial_no' => 'nullable',
-            'model' => 'nullable',
-            'brand' => 'nullable',
-            'price' => 'nullable',
-            'lo_no' => 'nullable',
-            'invoice_no' => 'nullable',
-            'do_no' => 'nullable',
-            'purchase_date' => 'nullable',
-            'vendor' => 'nullable',
-            'remark' => 'nullable',
-            'status' => 'nullable',
-            'availability' => 'nullable',
-            'storage' => 'nullable',
-            'package' => 'nullable',
-            'custodian' => 'nullable',
+            'code_type'             => 'nullable',
+            'finance_asset_code'    => 'nullable',
+            'asset_name'            => 'nullable',
+            'asset_type'            => 'required',
+            'serial_no'             => 'nullable',
+            'model'                 => 'nullable',
+            'brand'                 => 'nullable',
+            'price'                 => 'nullable',
+            'lo_no'                 => 'nullable',
+            'invoice_no'            => 'nullable',
+            'do_no'                 => 'nullable',
+            'purchase_date'         => 'nullable',
+            'vendor'                => 'nullable',
+            'remark'                => 'nullable',
+            'status'                => 'nullable',
+            'availability'          => 'nullable',
+            'storage'               => 'nullable',
+            'package'               => 'nullable',
+            'custodian'             => 'nullable',
         ];
     }
-
-    public function customValidationMessages()
-{
-    return [
-        '3' => 'Asset Type Required',
-    ];
-}
 
     public function model(array $row)
     {
