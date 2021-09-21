@@ -19,14 +19,20 @@
                                             class="card-img" style="align-self:center; object-fit:cover;">
                                     @else
                                         <img src="{{ asset($event->thumbnail_path) }}" class="card-img" style="
-                                            background-image:url('{{ asset('storage /shortcourse/poster/default/intec_poster.jpg') }}');
-                                            background-repeat: no-repeat;
-                                            background-size: 137px 194px;">
+                                                    background-image:url('{{ asset('storage /shortcourse/poster/default/intec_poster.jpg') }}');
+                                                    background-repeat: no-repeat;
+                                                    background-size: 137px 194px;">
                                     @endif
                                 </div>
-                                <div class="col-md-7">
+                                <div class="col-md-7 d-flex flex-column justify-content-between">
                                     <div class="card-body">
-                                        <h5 class="card-title"><b>{{ $event->name }}</b></h5>
+                                        <h5 class="card-title" style="
+                                                display: -webkit-box;
+                                                -webkit-line-clamp: 3;
+                                                -webkit-box-orient: vertical;
+                                                text-align: start;
+                                                overflow: hidden;
+                                                text-overflow: ellipsis;"><b>{{ $event->name }}</b></h5>
                                         <p class="card-text"><small class="text-muted">Published:
                                                 {{ $event->created_at_diffForHumans }}</small>
                                         </p>

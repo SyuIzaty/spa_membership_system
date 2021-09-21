@@ -43,7 +43,6 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
             height: 4.125rem;
             -webkit-box-shadow: 0 0 28px 0 rgb(0 0 0 / 13%);
             box-shadow: 0 0 28px 0 rgb(0 0 0 / 13%);
-            overflow: hidden;
             text-align: center;
             display: -webkit-box;
             display: -ms-flexbox;
@@ -64,6 +63,15 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
             height: 70px;
         }
 
+        #header {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min-content, 340px));
+            align-items: center;
+            justify-items: center;
+            justify-content:center;
+            grid-column-gap: 30%;
+        }
+
     </style>
 </head>
 
@@ -71,22 +79,19 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
     <div class="page-wrapper">
         <div class="page-inner">
             <div class="page-content-wrapper bg-transparent m-0">
-                <div class="height-10 shadow-sm px-4">
-                    <div class="row row-xl-12 justify-content-between">
-                        <div
-                            class="col col-6 d-flex align-items-center justify-content-center p-0 bg-transparent bg-img-none shadow-0 height-9 logo width-mobile-auto m-0">
-                            <a href="/shortcourse"><img src="{{ asset('img/intec_logo.png') }}"
-                                    alt="INTEC Shourtcourse" aria-roledescription="logo"></a>
-                        </div>
-                        <div
-                            class="col col-sm-6 d-flex align-items-center justify-content-center p-0 width-mobile-auto m-0">
-                            <form class="form-inline">
-                                <input class="form-control mr-sm-2" type="search" placeholder="IC No."
-                                    id="ic_input_general" name="ic_input_general" aria-label="Search">
-                                <a href="javascript:;" data-toggle="#" id="search-by-ic-general"
-                                    class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search/Pay</a>
-                            </form>
-                        </div>
+                <div class="shadow-sm px-4" id="header">
+                    <div id="header__logo"
+                        class="col col-6 d-flex align-items-center justify-content-center p-0 bg-transparent bg-img-none shadow-0 height-9 logo width-mobile-auto m-0">
+                        <a href="/shortcourse"><img src="{{ asset('img/intec_logo.png') }}" alt="INTEC Shourtcourse"
+                                aria-roledescription="logo"></a>
+                    </div>
+                    <div id="header__search">
+                        <form class="form-inline">
+                            <input class="form-control mr-sm-2" type="search" placeholder="IC No." id="ic_input_general"
+                                name="ic_input_general" aria-label="Search">
+                            <a href="javascript:;" data-toggle="#" id="search-by-ic-general"
+                                class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search/Pay</a>
+                        </form>
                     </div>
 
                 </div>
