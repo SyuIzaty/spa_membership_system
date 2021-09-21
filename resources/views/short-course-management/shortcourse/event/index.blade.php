@@ -10,18 +10,18 @@
             <hr class="mt-2 mb-3">
             <div class="row">
                 @foreach ($events as $event)
-                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" style="">
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
                         <div class="card mb-3" style="max-width: 540px;">
                             <div class="row no-gutters">
                                 <div class="col-md-5 d-flex justify-content-center">
                                     @if (!isset($event->thumbnail_path))
                                         <img src="{{ asset('storage/shortcourse/poster/default/intec_poster.jpg') }}"
-                                            class="card-img" style="width:137px;height:194px;">
+                                            class="card-img" style="align-self:center; object-fit:cover;">
                                     @else
-                                        <img src="{{ asset($event->thumbnail_path) }}" class="card-img" style="width:137px;height:194px;
-                                                            background-image:url('{{ asset('storage /shortcourse/poster/default/intec_poster.jpg') }}');
-                                                            background-repeat: no-repeat;
-                                                            background-size: 137px 194px;">
+                                        <img src="{{ asset($event->thumbnail_path) }}" class="card-img" style="
+                                            background-image:url('{{ asset('storage /shortcourse/poster/default/intec_poster.jpg') }}');
+                                            background-repeat: no-repeat;
+                                            background-size: 137px 194px;">
                                     @endif
                                 </div>
                                 <div class="col-md-7">

@@ -95,22 +95,16 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                     <div class="card-header">
                         Result
                     </div>
-                    {{-- <form action="{{ url('/participant/search-by-ic-general/data') }}" method="post"
-                        enctype="multipart/form-data">
-                        @csrf --}}
                     <div class="card-body">
                         <input type="hidden" name="ic" id="ic">
-                        <h5 class="card-title" id="applicant-basic-details-name"><span class="content"></span></h5>
-                        <p class="card-text" id="applicant-basic-details-ic"><span class="content"></span></p>
+                        <h5 class="card-title" id="applicant-basic-details-name"><span
+                                class="content"></span></h5>
+                        <p class="card-text" id="applicant-basic-details-ic"><span class="content"></span>
+                        </p>
                         <button type="submit" href="#" class="btn btn-primary" id="ic_details_view"
                             style="display:none;">View</button>
                     </div>
-                    {{-- </form> --}}
-                    {{-- <div class="card-footer text-muted">
-                        2 days ago
-                    </div> --}}
                 </div>
-                {{-- <div class="d-flex flex-1" style="background: url({{asset('img/svg/pattern-1.svg')}} no-repeat center bottom fixed; background-size: cover;"> --}}
                 <div class="container text-white d-flex align-items-center justify-content-center">
                     @yield('content')
                     <div class="position-absolute pos-bottom pos-left pos-right p-3 text-center text-white">
@@ -119,7 +113,6 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                             target='_blank'>https://intec.edu.my</a>
                     </div>
                 </div>
-                {{-- </div> --}}
             </div>
         </div>
     </div>
@@ -130,10 +123,6 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
     <script src="{{ asset('js/datagrid/datatables/datatables.bundle.js') }}"></script>
     <script src="{{ asset('js/notifications/sweetalert2/sweetalert2.bundle.js') }}"></script>
     <script src="{{ asset('js/sweetalert.min.js') }} "></script>
-    {{-- <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-        <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script> --}}
-
-    {{-- <script src="{{asset('js/select2.min.js')}}"></script> --}}
     <link rel="stylesheet" media="screen, print" href="{{ asset('css/formplugins/select2/select2.bundle.css') }}">
     <script src="{{ asset('js/formplugins/select2/select2.bundle.js') }}"></script>
     <script src="{{ asset('js/jquery.tabledit.min.js') }}"></script>
@@ -159,7 +148,6 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                     $("#applicant-basic-details-ic .content").replaceWith("<span class='content'>" + ic +
                         "</span>");
                     $('#ic_details_view').hide();
-                    // $("#applicant-basic-details-ic").append(data.ic);
                 }
 
             }).done(

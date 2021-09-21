@@ -437,6 +437,10 @@ class EventController extends Controller
                 $index_module++;
             }
         }
+        $currentApplicants = $event->events_participants
+            ->where('is_approved_application', 1)
+            ->count();
+        $event->total_seat_available = $event->max_participant - $currentApplicants;
         return view('short-course-management.event-management.show', compact('event', 'venues', 'shortcourses', 'users', 'statistics', 'eventStatusCategories', 'event_feedback_sets'));
     }
     public function edit($id)
