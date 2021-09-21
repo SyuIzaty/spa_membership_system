@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ShortCourseManagement\Catalogues\TopicSubCategory
 
 use App\Models\ShortCourseManagement\Category;
 use App\Models\ShortCourseManagement\SubCategory;
+// use App\Models\ShortCourseManagement\CategoryType;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DateTime;
@@ -79,24 +80,24 @@ class CategoryController extends Controller
         ]);
         return redirect('/topics');
     }
-    public function show($id)
-    {
+    // public function show($id)
+    // {
 
-        $subcategory = Category::find($id)->load([
-            'events',
-        ]);
-        $subcategory_types = CategoryType::all();
+    //     $subcategory = Category::find($id)->load([
+    //         'events',
+    //     ]);
+    //     $subcategory_types = CategoryType::all();
 
 
-        if (isset($subcategory->events)) {
-            $totalEvents = $subcategory->events->count();
-        } else {
-            $totalEvents = 0;
-        }
-        $subcategory->totalEvents = $totalEvents;
+    //     if (isset($subcategory->events)) {
+    //         $totalEvents = $subcategory->events->count();
+    //     } else {
+    //         $totalEvents = 0;
+    //     }
+    //     $subcategory->totalEvents = $totalEvents;
 
-        return view('short-course-management.catalogues.subcategory-catalogue.show', compact('subcategory', 'subcategory_types'));
-    }
+    //     return view('short-course-management.catalogues.subcategory-catalogue.show', compact('subcategory', 'subcategory_types'));
+    // }
 
     public function delete($id)
     {

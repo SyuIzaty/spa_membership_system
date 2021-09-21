@@ -21,7 +21,6 @@ use App\Models\ShortCourseManagement\Topic;
 use App\Models\ShortCourseManagement\EventStatusCategory;
 use App\Models\ShortCourseManagement\VenueType;
 use App\Models\ShortCourseManagement\EventFeedbackSet;
-use App\Models\ShortCourseManagement\ShortCourseICDLModule;
 use App\Models\ShortCourseManagement\ShortCourseICDLModuleEventParticipant;
 
 use App\Exports\ApplicantByModuleExport;

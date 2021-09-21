@@ -32,6 +32,9 @@
 
 @section('js')
 
-    <script> console.log('Hi!'); </script>
+    <script>
+        console.log('Hi!');
+
+    </script>
 
 @stop

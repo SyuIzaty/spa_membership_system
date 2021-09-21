@@ -369,7 +369,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     //SCM - Subcategory
     // Route::get('/subcategories', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@index');
-    Route::get('/subcategories/{id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@show');
+    // Route::get('/subcategories/{id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@show');
     Route::post('/subcategories/data', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@dataSubCategories');
     Route::post('/subcategory/update', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@update');
     Route::post('/subcategory', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@store');
@@ -377,7 +377,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     //SCM - Category
     // Route::get('/subcategories', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@index');
-    Route::get('/categories/{id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\CategoryController@show');
+    // Route::get('/categories/{id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\CategoryController@show');
     Route::post('/categories/data', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\CategoryController@dataCategories');
     Route::post('/category/update', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\CategoryController@update');
     Route::post('/category', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\CategoryController@store');
