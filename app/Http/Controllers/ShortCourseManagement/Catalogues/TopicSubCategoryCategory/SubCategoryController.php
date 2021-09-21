@@ -81,24 +81,24 @@ class SubCategoryController extends Controller
         ]);
         return redirect('/topics');
     }
-    public function show($id)
-    {
+    // public function show($id)
+    // {
 
-        $subcategory = SubCategory::find($id)->load([
-            'events',
-        ]);
-        $subcategory_types = SubCategoryType::all();
+    //     $subcategory = SubCategory::find($id)->load([
+    //         'events',
+    //     ]);
+    //     $subcategory_types = SubCategoryType::all();
 
 
-        if (isset($subcategory->events)) {
-            $totalEvents = $subcategory->events->count();
-        } else {
-            $totalEvents = 0;
-        }
-        $subcategory->totalEvents = $totalEvents;
+    //     if (isset($subcategory->events)) {
+    //         $totalEvents = $subcategory->events->count();
+    //     } else {
+    //         $totalEvents = 0;
+    //     }
+    //     $subcategory->totalEvents = $totalEvents;
 
-        return view('short-course-management.catalogues.subcategory-catalogue.show', compact('subcategory', 'subcategory_types'));
-    }
+    //     return view('short-course-management.catalogues.subcategory-catalogue.show', compact('subcategory', 'subcategory_types'));
+    // }
 
     public function delete($id)
     {

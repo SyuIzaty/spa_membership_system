@@ -111,7 +111,6 @@ class EventController extends Controller
             })
             ->rawColumns(['action', 'management_details', 'participant', 'dates', 'document'])
             ->make(true);
-        // <a href="#" class="btn btn-sm btn-info">Event Report</a>
     }
     public function create()
     {

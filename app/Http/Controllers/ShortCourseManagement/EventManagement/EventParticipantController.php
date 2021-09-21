@@ -693,7 +693,9 @@ class EventParticipantController extends Controller
         }
         $existEventParticipant = EventParticipant::find($eventParticipant_ids[0])->load(['event']);
         $event = $existEventParticipant->event;
-        return view('short-course-management.event-management.event-participant-show', compact('event'));
+        // return view('short-course-management.event-management.event-participant-show', compact('event'));
+        // return redirect()->route('Merchant view')->with( ['event' => $event] );
+        return redirect()->back()->with(compact('event'));
     }
     public function dataEventParticipantList($participant_id)
     {
