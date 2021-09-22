@@ -31,8 +31,8 @@ class ParticipantController extends Controller
                 $totalEvents = 0;
             }
             $participants[$index]->totalEvents = $totalEvents;
-            $participants[$index]['created_at_toDayDateTimeString'] = date_format(new DateTime($participants[$index]->created_at), 'g:ia \o\n l jS F Y');
-            $participants[$index]['updated_at_toDayDateTimeString'] = date_format(new DateTime($participants[$index]->updated_at), 'g:ia \o\n l jS F Y');
+            $participants[$index]['created_at_toDayDateTimeString'] = date_format(new DateTime($participants[$index]->created_at), 'j/m/Y \(l\) g:ia');
+            $participants[$index]['updated_at_toDayDateTimeString'] = date_format(new DateTime($participants[$index]->updated_at), 'j/m/Y \(l\) g:ia');
             $index += 1;
         }
 

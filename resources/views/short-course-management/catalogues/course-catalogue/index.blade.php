@@ -43,7 +43,6 @@
                                         <tr class="bg-primary-50 text-center">
                                             <th>ID</th>
                                             <th>NAME</th>
-                                            <th>DATES</th>
                                             <th>EVENTS</th>
                                             <th>MANAGE. DETAILS</th>
                                             <th>ACTION</th>
@@ -147,10 +146,6 @@
                     {
                         data: 'name',
                         name: 'name'
-                    },
-                    {
-                        data: 'dates',
-                        name: 'dates'
                     },
                     {
                         data: 'events',

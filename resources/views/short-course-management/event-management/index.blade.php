@@ -40,7 +40,6 @@
                                             <th>DATE END</th>
                                             <th>PARTICIPANT (VALID)</th>
                                             <th>PARTICIPANT (NOT VALID YET)</th>
-                                            <th>CREATED DATE</th>
                                             <th>STATUS</th>
                                             <th>DOCUMENT</th>
                                             <th>ACTION</th>
@@ -130,10 +129,6 @@
                     {
                         data: 'totalParticipantsNotApprovedYet',
                         name: 'totalParticipantsNotApprovedYet'
-                    },
-                    {
-                        data: 'created_at_toDayDateTimeString',
-                        name: 'created_at_toDayDateTimeString'
                     },
                     {
                         data: 'event_status_category.name',

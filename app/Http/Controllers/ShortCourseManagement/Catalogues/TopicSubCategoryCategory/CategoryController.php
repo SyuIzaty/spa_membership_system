@@ -28,8 +28,8 @@ class CategoryController extends Controller
                 $totalSubcategories = 0;
             }
             $categories[$index]->totalSubcategories = $totalSubcategories;
-            $categories[$index]['created_at_toDayDateTimeString'] = date_format(new DateTime($categories[$index]->created_at), 'g:ia \o\n l jS F Y');
-            $categories[$index]['updated_at_toDayDateTimeString'] = date_format(new DateTime($categories[$index]->updated_at), 'g:ia \o\n l jS F Y');
+            $categories[$index]['created_at_toDayDateTimeString'] = date_format(new DateTime($categories[$index]->created_at), 'j/m/Y \(l\) g:ia');
+            $categories[$index]['updated_at_toDayDateTimeString'] = date_format(new DateTime($categories[$index]->updated_at), 'j/m/Y \(l\) g:ia');
             $index += 1;
         }
 

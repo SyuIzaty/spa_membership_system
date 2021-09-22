@@ -745,8 +745,8 @@ class EventParticipantController extends Controller
 
             $datetime_start = new DateTime($events[$index]->datetime_start);
             $datetime_end = new DateTime($events[$index]->datetime_end);
-            $events[$index]['datetime_start_toDayDateTimeString'] = date_format($datetime_start, 'g:ia \o\n l jS F Y');
-            $events[$index]['datetime_end_toDayDateTimeString'] = date_format($datetime_end, 'g:ia \o\n l jS F Y');
+            $events[$index]['datetime_start_toDayDateTimeString'] = date_format($datetime_start, 'j/m/Y \(l\) g:ia');
+            $events[$index]['datetime_end_toDayDateTimeString'] = date_format($datetime_end, 'j/m/Y \(l\) g:ia');
             $index++;
         }
         return datatables()::of($events)

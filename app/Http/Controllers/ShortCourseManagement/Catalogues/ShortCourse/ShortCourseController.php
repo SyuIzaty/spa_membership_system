@@ -30,8 +30,8 @@ class ShortCourseController extends Controller
                 $totalEvents = 0;
             }
             $shortcourses[$index]->totalEvents = $totalEvents;
-            $shortcourses[$index]['created_at_toDayDateTimeString'] = date_format(new DateTime($shortcourses[$index]->created_at), 'g:ia \o\n l jS F Y');
-            $shortcourses[$index]['updated_at_toDayDateTimeString'] = date_format(new DateTime($shortcourses[$index]->updated_at), 'g:ia \o\n l jS F Y');
+            $shortcourses[$index]['created_at_toDayDateTimeString'] = date_format(new DateTime($shortcourses[$index]->created_at), 'j/m/Y \(l\) g:ia');
+            $shortcourses[$index]['updated_at_toDayDateTimeString'] = date_format(new DateTime($shortcourses[$index]->updated_at), 'j/m/Y \(l\) g:ia');
             $index += 1;
         }
 

@@ -173,8 +173,8 @@ class FeedbackController extends Controller
                 $totalEvents = 0;
             }
             $event_feedback_sets[$index]->totalEvents = $totalEvents;
-            $event_feedback_sets[$index]['created_at_toDayDateTimeString'] = date_format(new DateTime($event_feedback_sets[$index]->created_at), 'g:ia \o\n l jS F Y');
-            $event_feedback_sets[$index]['updated_at_toDayDateTimeString'] = date_format(new DateTime($event_feedback_sets[$index]->updated_at), 'g:ia \o\n l jS F Y');
+            $event_feedback_sets[$index]['created_at_toDayDateTimeString'] = date_format(new DateTime($event_feedback_sets[$index]->created_at), 'j/m/Y \(l\) g:ia');
+            $event_feedback_sets[$index]['updated_at_toDayDateTimeString'] = date_format(new DateTime($event_feedback_sets[$index]->updated_at), 'j/m/Y \(l\) g:ia');
             $index += 1;
         }
 

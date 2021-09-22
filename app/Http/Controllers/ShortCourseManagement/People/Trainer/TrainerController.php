@@ -33,8 +33,8 @@ class TrainerController extends Controller
                 $totalEvents = 0;
             }
             $trainers[$index]->totalEvents = $totalEvents;
-            $trainers[$index]['created_at_toDayDateTimeString'] = date_format(new DateTime($trainers[$index]->created_at), 'g:ia \o\n l jS F Y');
-            $trainers[$index]['updated_at_toDayDateTimeString'] = date_format(new DateTime($trainers[$index]->updated_at), 'g:ia \o\n l jS F Y');
+            $trainers[$index]['created_at_toDayDateTimeString'] = date_format(new DateTime($trainers[$index]->created_at), 'j/m/Y \(l\) g:ia');
+            $trainers[$index]['updated_at_toDayDateTimeString'] = date_format(new DateTime($trainers[$index]->updated_at), 'j/m/Y \(l\) g:ia');
             $index += 1;
         }
 

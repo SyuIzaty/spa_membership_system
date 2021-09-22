@@ -46,7 +46,6 @@
                                                         <th>ID</th>
                                                         <th>NAME</th>
                                                         <th>SUBCATEGORY</th>
-                                                        <th>DATES</th>
                                                         <th>SHORTCOURSES</th>
                                                         <th>MANAGE. DETAILS</th>
                                                         <th>ACTION</th>
@@ -247,7 +246,6 @@
                                                         <th>ID</th>
                                                         <th>NAME</th>
                                                         <th>CATEGORY</th>
-                                                        <th>DATES</th>
                                                         <th>TOPIC</th>
                                                         <th>MANAGE. DETAILS</th>
                                                         <th>ACTION</th>
@@ -407,7 +405,6 @@
                                                     <tr class="bg-primary-50 text-center">
                                                         <th>ID</th>
                                                         <th>NAME</th>
-                                                        <th>DATES</th>
                                                         <th>SUBCATEGORY</th>
                                                         <th>MANAGE. DETAILS</th>
                                                         <th>ACTION</th>
@@ -566,10 +563,6 @@
                         {
                             data: 'subcategory.name',
                             name: 'subcategory.name'
-                        },
-                        {
-                            data: 'dates',
-                            name: 'dates'
                         },
                         {
                             data: 'total_shortcourses',
@@ -751,10 +744,6 @@
                             name: 'category.name'
                         },
                         {
-                            data: 'dates',
-                            name: 'dates'
-                        },
-                        {
                             data: 'total_topics',
                             name: 'total_topics'
                         },
@@ -903,10 +892,6 @@
                         {
                             data: 'name',
                             name: 'name'
-                        },
-                        {
-                            data: 'dates',
-                            name: 'dates'
                         },
                         {
                             data: 'total_subcategories',

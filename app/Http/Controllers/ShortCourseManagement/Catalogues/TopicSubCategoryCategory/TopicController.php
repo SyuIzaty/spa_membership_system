@@ -32,8 +32,8 @@ class TopicController extends Controller
                 $totalShortCourses = 0;
             }
             $topics[$index]->totalShortCourses = $totalShortCourses;
-            $topics[$index]['created_at_toDayDateTimeString'] = date_format(new DateTime($topics[$index]->created_at), 'g:ia \o\n l jS F Y');
-            $topics[$index]['updated_at_toDayDateTimeString'] = date_format(new DateTime($topics[$index]->updated_at), 'g:ia \o\n l jS F Y');
+            $topics[$index]['created_at_toDayDateTimeString'] = date_format(new DateTime($topics[$index]->created_at), 'j/m/Y \(l\) g:ia');
+            $topics[$index]['updated_at_toDayDateTimeString'] = date_format(new DateTime($topics[$index]->updated_at), 'j/m/Y \(l\) g:ia');
             $index += 1;
         }
 

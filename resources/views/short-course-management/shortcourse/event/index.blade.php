@@ -66,7 +66,8 @@
                                                 <th>ID</th>
                                                 <th>NAME</th>
                                                 <th>TOPIC</th>
-                                                <th>DATES</th>
+                                                <th>FROM</th>
+                                                <th>TO</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -195,8 +196,13 @@
                         name: 'topic_list_string'
                     },
                     {
-                        data: 'dates',
-                        name: 'dates'
+                        data: 'datetime_start_toDayDateTimeString',
+                        name: 'datetime_start_toDayDateTimeString'
+                    },
+
+                    {
+                        data: 'datetime_end_toDayDateTimeString',
+                        name: 'datetime_end_toDayDateTimeString'
                     }
                 ],
                 orderCellsTop: true,

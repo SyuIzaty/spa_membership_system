@@ -73,9 +73,10 @@ class EventController extends Controller
             $events[$index]->totalParticipantsNotApprovedYet = $totalParticipantsNotApprovedYet;
             $events[$index]->totalRejected = $totalRejected;
 
-            $events[$index]['datetime_start_toDayDateTimeString'] = date_format(new DateTime($events[$index]->datetime_start), 'g:ia \o\n l jS F Y');
-            $events[$index]['datetime_end_toDayDateTimeString'] = date_format(new DateTime($events[$index]->datetime_end), 'g:ia \o\n l jS F Y');
-            $events[$index]['created_at_toDayDateTimeString'] = date_format(new DateTime($events[$index]->created_at), 'g:ia \o\n l jS F Y');
+            $events[$index]['datetime_start_toDayDateTimeString'] = date_format(new DateTime($events[$index]->datetime_start), 'j/m/Y \(l\) g:ia');
+            // $events[$index]['datetime_start_toDayDateTimeString'] =$events[$index]->datetime_start->format('dd/mm/Y');
+            $events[$index]['datetime_end_toDayDateTimeString'] = date_format(new DateTime($events[$index]->datetime_end), 'j/m/Y \(l\) g:ia');
+            $events[$index]['created_at_toDayDateTimeString'] = date_format(new DateTime($events[$index]->created_at), 'j/m/Y \(l\) g:ia');
             $index++;
         }
 
@@ -92,22 +93,30 @@ class EventController extends Controller
             })
             ->addColumn('action', function ($events) {
                 return '
+                <div class="d-flex justify-content-center">
                 <a href="/event/' . $events->id . '/events-participants/show" class="btn btn-sm btn-primary">Participants</a><br/><br/>
-                <a href="/event/' . $events->id . '" class="btn btn-sm btn-primary">Settings</a>';
+                <a href="/event/' . $events->id . '" class="btn btn-sm btn-primary" style="margin-left:5px">Settings</a>
+                </div>
+                ';
             })
             ->addColumn('document', function ($events) {
                 if (isset($events->events_shortcourses[0])) {
 
                     if ($events->events_shortcourses[0]->shortcourse->is_icdl == 1) {
                         return '
-                        <a href="/event/participant-list/' . $events->id . '" class="btn btn-sm btn-info">Attendance Sheet</a><br/><br/>
-                        <a data-page="/event/report/' . $events->id . '" class="btn btn-sm btn-info" style="color:white;" onclick="Print(this)">Event Report</a><br/><br/>
-                        <a href="/event/exportApplicantByModule/' . $events->id . '" class="btn btn-sm btn-info">Applicants By Module</a>';
+                        <div style="display:flex;">
+                        <a href="/event/participant-list/' . $events->id . '" class="btn btn-info btn-lg btn-icon waves-effect waves-themed"><i class="ni ni-note"></i></a><br/><br/>
+                        <a data-page="/event/report/' . $events->id . '" class="btn btn-success btn-lg btn-icon waves-effect waves-themed" style="margin-left:5px" onclick="Print(this)"><i class="ni ni-graph"></i></a><br/><br/>
+                        <a href="/event/exportApplicantByModule/' . $events->id . '" class="btn btn-primary btn-lg btn-icon waves-effect waves-themed" style="margin-left:5px"><i class="ni ni-users"></i></a>
+                        </div>
+                        ';
                     }
                 }
                 return '
-                <a href="/event/participant-list/' . $events->id . '" class="btn btn-sm btn-info">Attendance Sheet</a><br/><br/>
-                <a data-page="/event/report/' . $events->id . '" class="btn btn-sm btn-info" style="color:white;" onclick="Print(this)">Event Report</a>';
+                <div class="d-flex justify-content-center">
+                <a href="/event/participant-list/' . $events->id . '" class="btn btn-info btn-lg btn-icon waves-effect waves-themed"><i class="ni ni-note"></i></a><br/><br/>
+                <a data-page="/event/report/' . $events->id . '" class="btn btn-success btn-lg btn-icon waves-effect waves-themed" style="margin-left:5px" onclick="Print(this)"><i class="ni ni-graph"></i></a>
+                </div>';
             })
             ->rawColumns(['action', 'management_details', 'participant', 'dates', 'document'])
             ->make(true);
@@ -851,8 +860,8 @@ class EventController extends Controller
 
             $datetime_start = new DateTime($events[$index]->datetime_start);
             $datetime_end = new DateTime($events[$index]->datetime_end);
-            $events[$index]['datetime_start_toDayDateTimeString'] = date_format($datetime_start, 'g:ia \o\n l jS F Y');
-            $events[$index]['datetime_end_toDayDateTimeString'] = date_format($datetime_end, 'g:ia \o\n l jS F Y');
+            $events[$index]['datetime_start_toDayDateTimeString'] = date_format($datetime_start, 'j/m/Y \(l\) g:ia');
+            $events[$index]['datetime_end_toDayDateTimeString'] = date_format($datetime_end, 'j/m/Y \(l\) g:ia');
 
             $index++;
         }

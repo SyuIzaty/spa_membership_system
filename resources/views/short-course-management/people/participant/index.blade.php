@@ -50,9 +50,9 @@
                                             <th>ID</th>
                                             <th>NAME</th>
                                             <th>IC</th>
-                                            <th>DATES</th>
+                                            <th>EMAIL</th>
+                                            <th>PHONE</th>
                                             <th>EVENTS</th>
-                                            <th>MANAGE. DETAILS</th>
                                             <th>ACTION</th>
                                         </tr>
                                     </thead>
@@ -226,16 +226,16 @@
                         name: 'ic'
                     },
                     {
-                        data: 'dates',
-                        name: 'dates'
+                        data: 'email',
+                        name: 'email'
+                    },
+                    {
+                        data: 'phone',
+                        name: 'phone'
                     },
                     {
                         data: 'events_participants',
                         name: 'events_participants'
-                    },
-                    {
-                        data: 'management_details',
-                        name: 'management_details'
                     },
                     {
                         data: 'action',

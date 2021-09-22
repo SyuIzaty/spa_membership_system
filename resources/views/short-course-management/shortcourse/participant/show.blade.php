@@ -81,7 +81,8 @@
                                             <tr class="bg-primary-50 text-center">
                                                 <th>ID</th>
                                                 <th style="width:30%">NAME</th>
-                                                <th style="width:30%">DATES</th>
+                                                <th style="width:30%">FROM</th>
+                                                <th style="width:30%">TO</th>
                                                 <th style="width:25%">AMOUNTS</th>
                                                 <th>ACTION</th>
                                             </tr>
@@ -148,12 +149,17 @@
                         name: 'name'
                     },
                     {
-                        data: 'dates',
-                        name: 'dates',
+                        data: 'datetime_start_toDayDateTimeString',
+                        name: 'datetime_start_toDayDateTimeString',
                         orderable: false,
                         searchable: false
                     },
-
+                    {
+                        data: 'datetime_end_toDayDateTimeString',
+                        name: 'datetime_end_toDayDateTimeString',
+                        orderable: false,
+                        searchable: false
+                    },
                     {
                         data: 'fee_amount',
                         name: 'fee_amount',

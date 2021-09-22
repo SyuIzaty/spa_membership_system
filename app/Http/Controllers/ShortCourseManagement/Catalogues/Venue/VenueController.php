@@ -28,8 +28,8 @@ class VenueController extends Controller
                 $totalEvents = 0;
             }
             $venues[$index]->totalEvents = $totalEvents;
-            $venues[$index]['created_at_toDayDateTimeString'] = date_format(new DateTime($venues[$index]->created_at), 'g:ia \o\n l jS F Y');
-            $venues[$index]['updated_at_toDayDateTimeString'] = date_format(new DateTime($venues[$index]->updated_at), 'g:ia \o\n l jS F Y');
+            $venues[$index]['created_at_toDayDateTimeString'] = date_format(new DateTime($venues[$index]->created_at), 'j/m/Y \(l\) g:ia');
+            $venues[$index]['updated_at_toDayDateTimeString'] = date_format(new DateTime($venues[$index]->updated_at), 'j/m/Y \(l\) g:ia');
             $index+=1;
         }
 
