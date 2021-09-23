@@ -29,6 +29,9 @@
                         <div class="panel-content">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item active">
+                                    <a data-toggle="tab" class="nav-link" href="#all-applicant" role="tab">All Application</a>
+                                </li>
+                                <li class="nav-item">
                                     <a data-toggle="tab" class="nav-link" href="#pending-payments" role="tab">Pending
                                         Payments</a>
                                 </li>
@@ -189,7 +192,122 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane active" id="pending-payments" role="tabpanel">
+
+                                    <div class="tab-pane active" id="all-applicant" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-md-12 grid-margin">
+                                            </div>
+                                            <div class="col-md-12 grid-margin stretch-card">
+                                                <div class="row">
+                                                    <div class="col-xl-12">
+                                                        <div id="panel-1" class="panel">
+                                                            <div class="panel-hdr">
+                                                                <h2>
+                                                                    <span class="fw-300"></span> List of Applicants
+                                                                </h2>
+                                                                <div class="panel-toolbar">
+                                                                    <button class="btn btn-panel"
+                                                                        data-action="panel-collapse" data-toggle="tooltip"
+                                                                        data-offset="0,10"
+                                                                        data-original-title="Collapse"></button>
+                                                                    <button class="btn btn-panel"
+                                                                        data-action="panel-fullscreen" data-toggle="tooltip"
+                                                                        data-offset="0,10"
+                                                                        data-original-title="Fullscreen"></button>
+                                                                    <button class="btn btn-panel" data-action="panel-close"
+                                                                        data-toggle="tooltip" data-offset="0,10"
+                                                                        data-original-title="Close"></button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="panel-container show">
+                                                                <div class="panel-content">
+                                                                    @if (Session::has('successPaymentProofUpdate'))
+                                                                        <div class="alert alert-success"
+                                                                            style="color: #3b6324; background-color: #d3fabc;">
+                                                                            <i class="icon fal fa-check-circle"></i>
+                                                                            {{ Session::get('successPaymentProofUpdate') }}
+                                                                        </div>
+                                                                    @endif
+                                                                    @if (Session::has('failedPaymentProofUpdate'))
+                                                                        <div class="alert alert-danger"
+                                                                            style="color: #5b0303; background-color: #ff6c6cc9;">
+                                                                            <i class="icon fal fa-times-circle"></i>
+                                                                            {{ Session::get('failedPaymentProofUpdate') }}
+                                                                        </div>
+                                                                    @endif
+                                                                    @if (Session::has('successNewApplication'))
+                                                                        <div class="alert alert-success"
+                                                                            style="color: #3b6324; background-color: #d3fabc;width:100%;">
+                                                                            <i class="icon fal fa-check-circle"></i>
+                                                                            {{ Session::get('successNewApplication') }}
+                                                                        </div>
+                                                                    @endif
+
+                                                                    @if (Session::has('failedNewApplication'))
+                                                                        <div class="alert alert-danger"
+                                                                            style="color: #5b0303; background-color: #ff6c6cc9;">
+                                                                            <i class="icon fal fa-times-circle"></i>
+                                                                            {{ Session::get('failedNewApplication') }}
+                                                                        </div>
+                                                                    @endif
+
+                                                                    @if ($errors->any())
+                                                                        <div class="alert alert-danger">
+                                                                            <strong>Whoops!</strong> There were some
+                                                                            problems with your
+                                                                            input.<br><br>
+                                                                            <ul>
+                                                                                @foreach ($errors->all() as $error)
+                                                                                    <li>{{ $error }}</li>
+                                                                                @endforeach
+                                                                            </ul>
+                                                                        </div>
+                                                                    @endif
+
+                                                                    <form action="{{ url('/update-progress/bundle') }}"
+                                                                        method="post" name="form">
+                                                                        @csrf
+                                                                        <div class="table-responsive">
+                                                                            <table id="table-all-applicant"
+                                                                                name="table-all-applicant"
+                                                                                class="table table-bordered table-hover table-striped w-100">
+                                                                                <thead>
+                                                                                    <tr class="bg-primary-50 text-center">
+                                                                                        <th style="width:30px">Id</th>
+                                                                                        <th>Organisation</th>
+                                                                                        <th>IC</th>
+                                                                                        <th>Name</th>
+                                                                                        <th>Phone</th>
+                                                                                        <th>Email</th>
+                                                                                        <th>Date Apply</th>
+                                                                                        <th>Action</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                            </table>
+                                                                        </div>
+                                                                        <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
+                                                                            style="content-align:right">
+                                                                            <a href="javascript:;" id="new-application"
+                                                                                class="btn btn-primary ml-auto mr-2 waves-effect waves-themed"
+                                                                                {{ $event->total_seat_available == 0 ? 'disabled' : null }}>
+                                                                                <i class="ni ni-check"></i> New
+                                                                                Application</a>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                                <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
+                                                                    style="content-align:right">
+                                                                    <x-ShortCourseManagement.AddParticipant :event=$event edit={{true}}/>
+                                                                </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="pending-payments" role="tabpanel">
                                         <div class="row">
                                             <div class="col-md-12 grid-margin">
                                             </div>
@@ -295,17 +413,11 @@
                                                                                     class="ni ni-close"></i> Disqualified
                                                                                 All
                                                                                 Ticked</button>
-                                                                            <a href="javascript:;" id="new-application"
-                                                                                class="btn btn-primary px-5 mx-5 waves-effect waves-themed align-middle"
-                                                                                {{ $event->total_seat_available == 0 ? 'disabled' : null }}>
-                                                                                <i class="ni ni-check"></i> New
-                                                                                Application</a>
                                                                         </div>
                                                                     </form>
                                                                 </div>
                                                                 <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
                                                                     style="content-align:right">
-                                                                    <x-ShortCourseManagement.AddParticipant :event=$event />
                                                                 </div>
                                                                 </form>
                                                                 <x-ShortCourseManagement.UpdatePaymentProof />
@@ -986,19 +1098,98 @@
                     });
                 }
 
-                // all no payment yet
-                {
-                    $(document).ready(function() {
-                        $("#check-all-no-payment-yet").click(function() {
-                            $("input[type=checkbox]").prop("checked", $(this).prop("checked"));
-                        });
+                // all applicants
 
-                        $("input[type=checkbox]").click(function() {
-                            if (!$(this).prop("checked")) {
-                                $('#check-all-no-payment-yet').prop("checked", false);
+                {
+                    var tableAllApplicant = $('#table-all-applicant').DataTable({
+                        columnDefs: [{
+                            targets: [1],
+                            render: function(data, type, row) {
+                                return !data ? 'N/A' : data;
+                            }
+                        }],
+                        processing: true,
+                        serverSide: true,
+                        ajax: {
+                            url: "/event/" + event_id + "/events-participants/data-all-applicant",
+                            type: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        },
+                        columns: [
+                            {
+                                className: 'text-center',
+                                data: 'id',
+                                name: 'id',
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'organisationsString',
+                                name: 'organisationsString'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.ic',
+                                name: 'participant.ic'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.name',
+                                name: 'participant.name'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.phone',
+                                name: 'participant.phone'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.email',
+                                name: 'participant.email'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'created_at_diffForHumans',
+                                name: 'created_at_diffForHumans',
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'action',
+                                name: 'action',
+                                orderable: false,
+                                searchable: false
+                            }
+                        ],
+                        orderCellsTop: true,
+                        "order": [
+                            [0, "desc"]
+                        ],
+                    });
+
+                    $('#table-all-applicant thead tr .hasinput').each(function(i) {
+                        $('input', this).on('keyup change', function() {
+                            if (tableAllApplicant.column(i).search() !== this.value) {
+                                tableAllApplicant
+                                    .column(i)
+                                    .search(this.value)
+                                    .draw();
                             }
                         });
-                    })
+
+                        $('select', this).on('keyup change', function() {
+                            if (tableAllApplicant.column(i).search() !== this.value) {
+                                tableAllApplicant
+                                    .column(i)
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+                    });
+                }
+
+                // all no payment yet
+                {
 
                     var tableAllNoPaymentYet = $('#table-all-no-payment-yet').DataTable({
                         columnDefs: [{

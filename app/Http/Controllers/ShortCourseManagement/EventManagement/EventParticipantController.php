@@ -33,6 +33,40 @@ class EventParticipantController extends Controller
 
         return view('short-course-management.event-management.event-participant-show', compact('event'));
     }
+    public function dataAllApplicant($id)
+    {
+        $eventsParticipants = EventParticipant::where([
+            ['event_id', '=', $id],
+        ])->get()
+            ->load([
+                'event',
+                'organization_representative',
+                'participant.organisations_participants.organisation'
+            ]);
+
+        $index = 0;
+        foreach ($eventsParticipants as $eventParticipant) {
+            $eventsParticipants[$index]->created_at_diffForHumans = $eventsParticipants[$index]->created_at->diffForHumans();
+            $eventsParticipants[$index]->organisationsString = '';
+            foreach ($eventParticipant->participant->organisations_participants as $organisation_participant) {
+                $eventsParticipants[$index]->organisationsString = ($eventsParticipants[$index]->organisationsString) . ($organisation_participant->organisation->name) . '.';
+            }
+            $index++;
+        }
+
+
+        return datatables()::of($eventsParticipants)
+            ->addColumn('checkApplicant', function ($eventsParticipants) {
+                return '<input type="checkbox" name="applicants_checkbox[]" value="' .
+                    $eventsParticipants->id .
+                    '" class="applicants_checkbox">';
+            })
+            ->addColumn('action', function ($eventsParticipants) {
+                return '<a href="javascript:;" id="edit-application" data-toggle="modal" data-event_participant_id="' . $eventsParticipants->id . '" data-participant_ic="' . $eventsParticipants->participant->ic . '" class="btn btn-sm btn-success btn-edit-application">Edit</a>';
+            })
+            ->rawColumns(['action', 'checkApplicant'])
+            ->make(true);
+    }
 
     public function dataApplicants($id)
     {
@@ -440,34 +474,60 @@ class EventParticipantController extends Controller
 
     public function store(Request $request, $event_id)
     {
-        $validated = $request->validate([
-            'ic_input' => 'required',
-            'fullname' => 'required|min:3',
-            'phone' => 'required|min:10',
-            'email' => 'required|email:rfc',
-            'fee_id' => 'required',
-            'representative_ic_input'  => 'required',
-            'representative_fullname' => 'required',
-            'payment_proof_input' => 'present|array',
+        if ($request->input_type == 'add') {
 
-        ], [
-            'ic_input.required' => 'Please insert IC of the participant',
-            'fullname.required' => 'Please insert fullname of the participant',
-            'fullname.min' => 'The fullname should have at least 3 characters',
-            'phone.required' => 'Please insert phone number of the participant',
-            'phone.min' => 'The phone number should have at least 10 characters',
-            'email.required' => "Please insert email address of the participant",
-            'fee_id.required' => 'Please choose the fee applicable for the participant',
-            'representative_fullname.required' => 'Please insert the representative fullname of the participant',
-            'representative_ic_input.required' => "Please insert the representative's IC of the participant",
-            'representative_fullname.min' => "The representative's fullname should have at least 3 characters",
-            'payment_proof_input.present' => "At least one payment proof is required",
-        ]);
+            $validated = $request->validate([
+                'ic_input' => 'required',
+                'fullname' => 'required|min:3',
+                'phone' => 'required|min:10',
+                'email' => 'required|email:rfc',
+                'fee_id' => 'required',
+                'representative_ic_input'  => 'required',
+                'representative_fullname' => 'required',
+                'payment_proof_input' => 'present|array',
+
+            ], [
+                'ic_input.required' => 'Please insert IC of the participant',
+                'fullname.required' => 'Please insert fullname of the participant',
+                'fullname.min' => 'The fullname should have at least 3 characters',
+                'phone.required' => 'Please insert phone number of the participant',
+                'phone.min' => 'The phone number should have at least 10 characters',
+                'email.required' => "Please insert email address of the participant",
+                'fee_id.required' => 'Please choose the fee applicable for the participant',
+                'representative_fullname.required' => 'Please insert the representative fullname of the participant',
+                'representative_ic_input.required' => "Please insert the representative's IC of the participant",
+                'representative_fullname.min' => "The representative's fullname should have at least 3 characters",
+                'payment_proof_input.present' => "At least one payment proof is required",
+            ]);
+        } else {
+
+            $validated = $request->validate([
+                'ic_input' => 'required',
+                'fullname' => 'required|min:3',
+                'phone' => 'required|min:10',
+                'email' => 'required|email:rfc',
+                'fee_id' => 'required',
+                'representative_ic_input'  => 'required',
+                'representative_fullname' => 'required',
+
+            ], [
+                'ic_input.required' => 'Please insert IC of the participant',
+                'fullname.required' => 'Please insert fullname of the participant',
+                'fullname.min' => 'The fullname should have at least 3 characters',
+                'phone.required' => 'Please insert phone number of the participant',
+                'phone.min' => 'The phone number should have at least 10 characters',
+                'email.required' => "Please insert email address of the participant",
+                'fee_id.required' => 'Please choose the fee applicable for the participant',
+                'representative_fullname.required' => 'Please insert the representative fullname of the participant',
+                'representative_ic_input.required' => "Please insert the representative's IC of the participant",
+                'representative_fullname.min' => "The representative's fullname should have at least 3 characters",
+            ]);
+        }
+
         if ($request->is_icdl == 1 && !$request->modules) {
             return Redirect()->back()->with('failedNewApplication', 'New Application Failed. At least a module should be selected for ICDL course. Please try again.');
         }
-        if ($request->file('payment_proof_input')) {
-
+        if (($request->input_type == 'add' && $request->file('payment_proof_input')) || $request->input_type == 'edit') {
             $existParticipant = Participant::where([
                 ['ic', '=', $request->ic_input],
             ])->first();
@@ -493,10 +553,12 @@ class EventParticipantController extends Controller
             }
 
 
+
             $existEventParticipant = EventParticipant::where([
                 ['event_id', '=', $event_id],
                 ['participant_id', '=', $existParticipant->id],
             ])->first();
+
 
             if (!$existEventParticipant) {
                 $existEventParticipant = EventParticipant::create([
@@ -512,119 +574,167 @@ class EventParticipantController extends Controller
                 $existEventParticipant->fee_id = $request->fee_id;
                 $existEventParticipant->updated_by = Auth::user() ? Auth::user()->id : 'public_user';
                 $existEventParticipant->save();
-                return Redirect()->back()->with('messageAlreadyApplied', 'The participant have already been applied before.');
+                if ($request->input_type == 'add') {
+                    return Redirect()->back()->with('messageAlreadyApplied', 'The participant have already been applied before.');
+                }
             }
+
 
             $existEvent = Event::where('id', $event_id)->first()->load(['venue']);
             $existFee = Fee::where('id', $request->fee_id)->first();
 
             // Start payment proof
-            $date = Carbon::today()->toDateString();
-            $year = substr($date, 0, 4);
-            $month = substr($date, 5, 2);
-            $day = substr($date, 8, 2);
-            $images = $request->file('payment_proof_input');
-
-            foreach ($images as $image) {
-
-                // Public Folder
-                // $name_gen = hexdec(uniqid());
-                // $img_ext = strtolower($image->getClientOriginalExtension());
-
-                // $img_name = $year . $month . $day . '_id' . ($request->event_id) . '_' . $name_gen . '.' . $img_ext;
+            if ($request->input_type == 'add') {
 
 
+                $date = Carbon::today()->toDateString();
+                $year = substr($date, 0, 4);
+                $month = substr($date, 5, 2);
+                $day = substr($date, 8, 2);
+                $images = $request->file('payment_proof_input');
 
-                // $up_location = 'storage/shortcourse/payment_proof_input/' . $year . '/';
-                // $last_img = $up_location . $img_name;
+                foreach ($images as $image) {
 
-                // $image->move($up_location, $img_name);
-                // End of Public
+                    // Public Folder
+                    // $name_gen = hexdec(uniqid());
+                    // $img_ext = strtolower($image->getClientOriginalExtension());
 
-
-                $name_gen = hexdec(uniqid());
-                $img_ext = strtolower($image->getClientOriginalExtension());
-
-                $img_name = $year . $month . $day . '_id' . ($request->event_id) . '_' . $name_gen . '.' . $img_ext;
-
-                $up_location = 'shortcourse/payment_proof_input/' . $year . '/';
-
-                $image->storeAs($up_location, $img_name);
-                $web_path = "app/" . $up_location . $img_name;
-                $request->merge(['upload_image' => $img_name, 'web_path' => $web_path]);
+                    // $img_name = $year . $month . $day . '_id' . ($request->event_id) . '_' . $name_gen . '.' . $img_ext;
 
 
-                EventParticipantPaymentProof::create([
-                    'event_participant_id' => $existEventParticipant->id,
-                    'name' => $img_name,
-                    'payment_proof_path' => "app/" . $up_location,
-                    'created_by' => Auth::user() ? Auth::user()->id : 'public_user',
-                ]);
-            }
+
+                    // $up_location = 'storage/shortcourse/payment_proof_input/' . $year . '/';
+                    // $last_img = $up_location . $img_name;
+
+                    // $image->move($up_location, $img_name);
+                    // End of Public
 
 
-            $eventParticipantPaymentProof = EventParticipantPaymentProof::where([['event_participant_id', '=', $existEventParticipant->id]])->get();
-            $eventParticipant = EventParticipant::find($existEventParticipant->id);
-            if (count($eventParticipantPaymentProof) > 0 && $eventParticipant->is_verified_payment_proof != 1) {
-                $update = EventParticipant::where([['id', '=', $request->event_participant_id]])->update([
-                    'is_verified_payment_proof' => 0,
-                    'updated_by' => Auth::user() ? Auth::user()->id : 'public_user',
-                    'updated_at' => Carbon::now()
-                ]);
+                    $name_gen = hexdec(uniqid());
+                    $img_ext = strtolower($image->getClientOriginalExtension());
+
+                    $img_name = $year . $month . $day . '_id' . ($request->event_id) . '_' . $name_gen . '.' . $img_ext;
+
+                    $up_location = 'shortcourse/payment_proof_input/' . $year . '/';
+
+                    $image->storeAs($up_location, $img_name);
+                    $web_path = "app/" . $up_location . $img_name;
+                    $request->merge(['upload_image' => $img_name, 'web_path' => $web_path]);
+
+
+                    EventParticipantPaymentProof::create([
+                        'event_participant_id' => $existEventParticipant->id,
+                        'name' => $img_name,
+                        'payment_proof_path' => "app/" . $up_location,
+                        'created_by' => Auth::user() ? Auth::user()->id : 'public_user',
+                    ]);
+                }
+
+
+                $eventParticipantPaymentProof = EventParticipantPaymentProof::where([['event_participant_id', '=', $existEventParticipant->id]])->get();
+                $eventParticipant = EventParticipant::find($existEventParticipant->id);
+                if (count($eventParticipantPaymentProof) > 0 && $eventParticipant->is_verified_payment_proof != 1) {
+                    $update = EventParticipant::where([['id', '=', $request->event_participant_id]])->update([
+                        'is_verified_payment_proof' => 0,
+                        'updated_by' => Auth::user() ? Auth::user()->id : 'public_user',
+                        'updated_at' => Carbon::now()
+                    ]);
+                }
             }
             // End payment proof
 
-
+            // if ($request->is_icdl == 1) {
+            //     foreach ($request->modules as $module) {
+            //         $participantModule = ShortCourseICDLModuleEventParticipant::where([['shortcourse_icdl_module_id', '=', $module], ['event_participant_id', '=', $existEventParticipant->id]])->first();
+            //         if (!$participantModule) {
+            //             ShortCourseICDLModuleEventParticipant::create([
+            //                 'shortcourse_icdl_module_id' => $module,
+            //                 'event_participant_id' => $existEventParticipant->id,
+            //                 'created_by' => Auth::user() ? Auth::user()->id : 'public_user',
+            //             ]);
+            //         }
+            //     }
+            // }
             if ($request->is_icdl == 1) {
+                $participantModuleAll = ShortCourseICDLModuleEventParticipant::where([['event_participant_id', '=', $existEventParticipant->id]])->get();
+                // dd($participantModuleAll);
                 foreach ($request->modules as $module) {
-                    ShortCourseICDLModuleEventParticipant::create([
-                        'shortcourse_icdl_module_id' => $module,
-                        'event_participant_id' => $existEventParticipant->id,
-                        'created_by' => Auth::user() ? Auth::user()->id : 'public_user',
-                    ]);
+                    $moduleExist = false;
+                    foreach ($participantModuleAll as $participantModule) {
+                        if ($module == $participantModule->shortcourse_icdl_module_id) {
+                            $moduleExist = true;
+                            break;
+                        }
+                    }
+                    if ($moduleExist == false) {
+                        ShortCourseICDLModuleEventParticipant::create([
+                            'shortcourse_icdl_module_id' => $module,
+                            'event_participant_id' => $existEventParticipant->id,
+                            'created_by' => Auth::user() ? Auth::user()->id : 'public_user',
+                        ]);
+                    }
+                }
+                foreach ($participantModuleAll as $participantModule) {
+                    $moduleNotExist = false;
+                    foreach ($request->modules as $module) {
+                        if ($module == $participantModule->shortcourse_icdl_module_id) {
+                            $moduleNotExist = true;
+                            break;
+                        }
+                    }
+                    if ($moduleNotExist == false) {
+                        $participantModule->updated_by = Auth::user()->id;
+                        $participantModule->deleted_by = Auth::user()->id;
+                        $participantModule->save();
+                        $participantModule->delete();
+                    }
                 }
             }
 
 
+            if ($request->input_type == 'add') {
+                $message =  [
+                    'opening' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . ($existParticipant->name),
+                    'introduction' => 'Pendaftaran anda <b>TELAH DISAHKAN BERJAYA</b> oleh pihak INTEC bagi program, ',
+                    'detail' => 'Program: ' . ($existEvent->name)
+                        . '<br/>Tarikh: ' . ($existEvent->datetime_start) . ' sehingga ' . ($existEvent->datetime_end)
+                        . '<br/>Tempat: ' . ($existEvent->venue->name)
+                        . '<br/> <br/>Sila buat pembayaran yuran sebanyak <b>RM'
+                        . ($existFee->amount) . ' (' . ($existFee->name)
+                        . ')</b>, kemudian tekan butang di bawah untuk ke sesawang profil bagi mengemaskini status pembayaran untuk disahkan.',
+                    'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
+                    'sha1_ic' => ($existParticipant->sha1_ic),
+                ];
 
-            $message =  [
-                'opening' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . ($existParticipant->name),
-                'introduction' => 'Pendaftaran anda <b>TELAH DISAHKAN BERJAYA</b> oleh pihak INTEC bagi program, ',
-                'detail' => 'Program: ' . ($existEvent->name)
-                    . '<br/>Tarikh: ' . ($existEvent->datetime_start) . ' sehingga ' . ($existEvent->datetime_end)
-                    . '<br/>Tempat: ' . ($existEvent->venue->name)
-                    . '<br/> <br/>Sila buat pembayaran yuran sebanyak <b>RM'
-                    . ($existFee->amount) . ' (' . ($existFee->name)
-                    . ')</b>, kemudian tekan butang di bawah untuk ke sesawang profil bagi mengemaskini status pembayaran untuk disahkan.',
-                'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
-                'sha1_ic' => ($existParticipant->sha1_ic),
-            ];
+                Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($request) {
+                    $message->subject('Pengesahan Pendaftaran (Berjaya)');
+                    $message->from(Auth::user() ? Auth::user()->email : 'corporate@intec.edu.my');
+                    $message->to($request->email);
+                });
 
-            Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($request) {
-                $message->subject('Pengesahan Pendaftaran (Berjaya)');
-                $message->from(Auth::user() ? Auth::user()->email : 'corporate@intec.edu.my');
-                $message->to($request->email);
-            });
-
-            $message =  [
-                'opening' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . ($existParticipant->name),
-                'introduction' => 'Bukti pembayaran anda <b>TELAH DIHANTAR dan SEDANG DISEMAK</b> oleh pihak INTEC bagi program, ',
-                'detail' => 'Program: ' . ($existEvent->name)
-                    . '<br/>Tarikh: ' . ($existEvent->datetime_start) . ' sehingga ' . ($existEvent->datetime_end)
-                    . '<br/>Tempat: ' . ($existEvent->venue->name),
-                'conclusion' => 'Sila tunggu maklumbalas dari kami bagi pengesahan pembayaran anda.
+                $message =  [
+                    'opening' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . ($existParticipant->name),
+                    'introduction' => 'Bukti pembayaran anda <b>TELAH DIHANTAR dan SEDANG DISEMAK</b> oleh pihak INTEC bagi program, ',
+                    'detail' => 'Program: ' . ($existEvent->name)
+                        . '<br/>Tarikh: ' . ($existEvent->datetime_start) . ' sehingga ' . ($existEvent->datetime_end)
+                        . '<br/>Tempat: ' . ($existEvent->venue->name),
+                    'conclusion' => 'Sila tunggu maklumbalas dari kami bagi pengesahan pembayaran anda.
                 Sebarang pertanyaan boleh terus berhubung dengan kami.
                 Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
-                'sha1_ic' => ($eventParticipant->participant->sha1_ic),
-            ];
+                    'sha1_ic' => ($eventParticipant->participant->sha1_ic),
+                ];
 
-            Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($request) {
-                $message->subject('Pengesahan Bukti Pembayaran (Telah Dihantar dan Sedang Disemak)');
-                $message->from(Auth::user() ? Auth::user()->email : 'corporate@intec.edu.my');
-                $message->to($request->email);
-            });
+                Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($request) {
+                    $message->subject('Pengesahan Bukti Pembayaran (Telah Dihantar dan Sedang Disemak)');
+                    $message->from(Auth::user() ? Auth::user()->email : 'corporate@intec.edu.my');
+                    $message->to($request->email);
+                });
 
-            return Redirect()->back()->with('successNewApplication', 'New Application Created successfully');
+                return Redirect()->back()->with('successNewApplication', 'New Application Created successfully');
+            } else {
+
+                return Redirect()->back()->with('successUpdateApplication', 'Application updated successfully');
+            }
         } else {
             return Redirect()->back()->with('failedNewApplication', 'New Application Failed. Please try again.');
         }
@@ -673,7 +783,7 @@ class EventParticipantController extends Controller
 
     public function updateProgress($progress_name, $eventParticipant_id)
     {
-        $this->_progressFlow($eventParticipant_id,$progress_name);
+        $this->_progressFlow($eventParticipant_id, $progress_name);
     }
 
     public function updateProgressBundle(Request $request)
@@ -689,7 +799,7 @@ class EventParticipantController extends Controller
         $eventParticipant_ids = $localRequest[$checkbox_key];
         $progress_name = $request["update-progress"];
         foreach ($eventParticipant_ids as $eventParticipant_id) {
-            $this->_progressFlow($eventParticipant_id,$progress_name);
+            $this->_progressFlow($eventParticipant_id, $progress_name);
         }
         $existEventParticipant = EventParticipant::find($eventParticipant_ids[0])->load(['event']);
         $event = $existEventParticipant->event;
@@ -947,7 +1057,8 @@ class EventParticipantController extends Controller
         return $update;
     }
 
-    private function _progressFlow($eventParticipant_id,$progress_name){
+    private function _progressFlow($eventParticipant_id, $progress_name)
+    {
         $eventParticipant = EventParticipant::where('id', $eventParticipant_id)->first()->load(['participant', 'event.venue', 'fee']);
 
         switch ($progress_name) {

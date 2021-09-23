@@ -8,16 +8,18 @@ class AddParticipant extends Component
 {
 
     public Object $event;
+    public $edit;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($event)
+    public function __construct($event, $edit)
     {
         //
 
         $this->event = $event;
+        $this->edit = $edit;
     }
 
     /**

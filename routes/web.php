@@ -296,6 +296,7 @@ Route::group(['middleware' => 'auth'], function () {
     //SCM - EventParticipant
     Route::get('/event/{id}/events-participants/show', 'ShortCourseManagement\EventManagement\EventParticipantController@show');
     Route::post('/event/{id}/events-participants/data-applicants', 'ShortCourseManagement\EventManagement\EventParticipantController@dataApplicants');
+    Route::post('/event/{id}/events-participants/data-all-applicant', 'ShortCourseManagement\EventManagement\EventParticipantController@dataAllApplicant');
     Route::post('/event/{id}/events-participants/data-no-payment-yet', 'ShortCourseManagement\EventManagement\EventParticipantController@dataNoPaymentYet');
     Route::post('/event/{id}/events-participants/data-payment-wait-for-verification', 'ShortCourseManagement\EventManagement\EventParticipantController@dataPaymentWaitForVerification');
     Route::post('/event/{id}/events-participants/data-ready-for-event', 'ShortCourseManagement\EventManagement\EventParticipantController@dataReadyForEvent');

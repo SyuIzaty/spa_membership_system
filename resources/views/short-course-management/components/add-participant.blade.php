@@ -45,10 +45,11 @@
                             Applicant Details
                         </div>
 
+                        <input type="hidden" id="input_type" name="input_type">
                         <hr class="mt-1 mb-2">
                         <div class="form-group">
-                            <label class="form-label" for="fullname"><span
-                                    class="text-danger">*</span>Full Name</label>
+                            <label class="form-label" for="fullname"><span class="text-danger">*</span>Full
+                                Name</label>
                             <input class="form-control" id="fullname" name="fullname">
                             @error('fullname')
                                 <p style="color: red">
@@ -100,7 +101,7 @@
                             @endforeach
                         </div>
                         <hr class="mt-1 mb-2">
-                        <div class="form-group">
+                        <div class="form-group" id="payment_proof_form">
                             <label class="form-label" for="payment_proof_input"><span
                                     class="text-danger">*</span>Payment
                                 Proof</label>
@@ -255,40 +256,71 @@
     </div>
 </div>
 <script>
-    var event_id = '<?php echo $event->id; ?>';
+    var edit;
+    var event=@json($event);
 
-    $(document).ready(function() { //New Application
-        {
-            /*
-            This behave like $emit function. The element with id 'new-application' came from the
-            the source view.
-            */
-            document.getElementById("new-application").addEventListener("click", function(event) {
-                event.preventDefault()
-            });
-            $('#new-application').click(function() {
-                var ic = null;
-                $('.modal-body #ic_input').val(ic);
-                $("#fee_form").hide();
+    $(document).ready(function() {
 
-                $('#crud-modal-new-application').modal('show');
-            });
+        $('#crud-modal-new-application').on('show.bs.modal', function(event) {
+            var ic = document.getElementById('ic_input').value;
+            if (ic == "") {
 
-            $('#crud-modal-new-application').on('show.bs.modal', function(event) {
-                var button = $(event.relatedTarget)
-                var ic = button.data('ic');
+                $('.modal-body #ic_input').attr('readonly', false);
+            } else {
 
-                $('.modal-body #ic_input').val(ic);
-            });
+                $('.modal-body #ic_input').attr('readonly', true);
+            }
+        });
 
-            $('#search-by-ic').click(function() {
-                var ic = $('.modal-body #ic_input').val();
-                $.get("/participant/search-by-ic/" + ic + "/event/" + event_id, function(data) {
-                    $('.modal-body #application_update_submit').empty();
-                    $('.modal-body #application_message').empty();
-                    if (data.id) {
 
-                        // TODO: Already Applied
+        $('#ic_input').change(function() {
+            var ic_input = $('.modal-body #ic_input').val();
+            $('.modal-body #fullname').val(null);
+            $('.modal-body #phone').val(null);
+            $('.modal-body #payment_proof_input').val(null);
+            $('.modal-body #email').val(null);
+            $('.modal-body #representative_ic_input').val(ic_input);
+            $('.modal-body #representative_fullname').val(null);
+
+            $('#search-by-ic').trigger("click");
+        });
+
+
+        $('#search-by-ic').click(function() {
+            var ic = $('.modal-body #ic_input').val();
+            $.get("/participant/search-by-ic/" + ic + "/event/" + event.id, function(data) {
+                $('.modal-body #application_update_submit').empty();
+                $('.modal-body #application_message').empty();
+                if (data.id) {
+
+                    $('#promo_code_edit_add').hide();
+                    $('#promo_code_edit_remove').hide();
+
+                    $('.modal-body #application_update_submit').hide();
+                    if(data.shortcourse_icdl_modules_event_participants){
+                        data.shortcourse_icdl_modules_event_participants.forEach((x)=>{
+                            $('.modal-body #module-'+x.shortcourse_icdl_module_id).prop('checked', true);
+
+                        });
+                    }
+                    if (edit) {
+
+                        $('.modal-body #fullname').attr('readonly', false);
+                        $('.modal-body #phone').attr('readonly', false);
+
+                        $('.modal-body #email').attr('readonly', false);
+                        $('.modal-body #payment_proof_input').attr('readonly', false);
+
+                        $('.modal-body #promo_code').attr('readonly', false);
+
+                        $('.modal-body #application_update_submit').show();
+                        $('.modal-body #application_update_submit').append(
+                            '<i class = "ni ni-plus"></i> Edit');
+
+                        $('.modal-body #application_message').append(
+                            'Already Apply - Edit Details');
+                    } else {
+
                         $('.modal-body #fullname').attr('readonly', true);
                         $('.modal-body #phone').attr('readonly', true);
 
@@ -296,207 +328,249 @@
                         $('.modal-body #payment_proof_input').attr('readonly', true);
 
                         $('.modal-body #promo_code').attr('readonly', true);
-
-                        $('#promo_code_edit_add').hide();
-                        $('#promo_code_edit_remove').hide();
-
-                        $('.modal-body #application_update_submit').hide();
-
                         $('.modal-body #application_message').append(
                             'Already Apply');
+                    }
 
+
+                } else {
+                    // TODO: Not Apply Yet
+                    $('.modal-body #fullname').removeAttr('readonly', true);
+                    $('.modal-body #phone').removeAttr('readonly', true);
+                    $('.modal-body #payment_proof_input').removeAttr('readonly',
+                        true);
+                    $('.modal-body #email').removeAttr('readonly', true);
+                    $('.modal-body #application_update_submit').show();
+                    $('.modal-body #application_update_submit').append(
+                        '<i class = "ni ni-plus"></i> Apply');
+                    $('.modal-body #application_message').append(
+                        'Make New Application');
+                }
+
+                if (data.participant) {
+                    $('.modal-body #fullname').val(data.participant.name);
+                    $('.modal-body #phone').val(data.participant.phone);
+                    $('.modal-body #email').val(data.participant.email);
+                } else {
+                    $('.modal-body #fullname').val(null);
+                    $('.modal-body #phone').val(null);
+                    $('.modal-body #email').val(null);
+                    $('.modal-body #payment_proof_input').val(null);
+
+                }
+                var fees = @json($event->fees);
+                if (fees.length > 1) {
+                    $('#promo_code_col').show();
+                } else {
+                    $('#promo_code_col').hide();
+                }
+                if (data.fee_id) {
+                    $("select[id=fee_id]").val(data.fee_id);
+                    $('.modal-body #promo_code').val(data.fee.promo_code);
+                    $("input[id=fee_id_input]").val(data.fee.amount);
+                    $("select[id=fee_id]").hide();
+                    $("div[id=fee_id_show]").show();
+                    if (data.fee.promo_code) {
+                        $('.modal-body #promo_code').attr('readonly', true);
+                        $('#promo_code_edit_add').hide();
+                        $('#promo_code_edit_remove').show();
                     } else {
-                        // TODO: Not Apply Yet
-                        console.log(data);
-                        $('.modal-body #fullname').removeAttr('readonly', true);
-                        $('.modal-body #phone').removeAttr('readonly', true);
-                        $('.modal-body #payment_proof_input').removeAttr('readonly',
-                            true);
-                        $('.modal-body #email').removeAttr('readonly', true);
-                        $('.modal-body #application_update_submit').show();
-                        $('.modal-body #application_update_submit').append(
-                            '<i class = "ni ni-plus"></i> Apply');
-                        $('.modal-body #application_message').append(
-                            'Make New Application');
-                    }
-
-                    if (data.participant) {
-                        $('.modal-body #fullname').val(data.participant.name);
-                        $('.modal-body #phone').val(data.participant.phone);
-                        $('.modal-body #email').val(data.participant.email);
-                    } else {
-                        $('.modal-body #fullname').val(null);
-                        $('.modal-body #phone').val(null);
-                        $('.modal-body #email').val(null);
-                        $('.modal-body #payment_proof_input').val(null);
-
-                    }
-                    var fees = @json($event->fees);
-                    if (fees.length > 1) {
-                        $('#promo_code_col').show();
-                    } else {
-                        $('#promo_code_col').hide();
-                    }
-                    if (data.fee_id) {
-                        $("select[id=fee_id]").val(data.fee_id);
-                        $('.modal-body #promo_code').val(data.fee.promo_code);
-                        $("input[id=fee_id_input]").val(data.fee.amount);
-                        $("select[id=fee_id]").hide();
-                        $("div[id=fee_id_show]").show();
-                        if (data.fee.promo_code) {
-                            $('.modal-body #promo_code').attr('readonly', true);
-                            $('#promo_code_edit_add').hide();
-                            $('#promo_code_edit_remove').show();
-                        } else {
-                            $('.modal-body #promo_code').removeAttr('readonly');
-                            $('#promo_code_edit_add').show();
-                            $('#promo_code_edit_remove').hide();
-                        }
-
-
-                    } else {
-                        $("select[id=fee_id]").val(null);
-                        $('.modal-body #promo_code').val(null);
-                        $("input[id=fee_id_input]").val(0);
-                        $("select[id=fee_id]").hide();
-                        $("div[id=fee_id_show]").show();
-                    }
-                    if ($('#represent-by-himself:checked').length > 0) {
-                        $('.modal-body #representative_ic_input').val(ic);
-                        if (data.participant) {
-                            $('.modal-body #representative_fullname').val(data
-                                .participant
-                                .name);
-                        }
-                    }
-
-                }).fail(
-                    function() {
-                        $('.modal-body #fullname').val(null);
-                        $('.modal-body #phone').val(null);
-                        $('.modal-body #email').val(null);
-                        $('.modal-body #payment_proof_input').val(null);
-
-
-                        $("select[id=fee_id]").hide();
-                        $("div[id=fee_id_show]").show();
-
-                        if ($('#represent-by-himself:checked').length > 0) {
-                            $('.modal-body #representative_ic_input').val(ic);
-                            $('.modal-body #representative_fullname').val(null);
-                        }
-
-                        $('.modal-body #application_update_submit').show();
-                        $('.modal-body #application_update_submit').append(
-                            '<i class = "ni ni-plus"></i> Apply');
-                    }).always(
-                    function() {
-                        $("div[id=form-application-second-part]").show();
-                        $("#fee_form").show();
-                    });
-            });
-
-            $('#promo_code_edit_add').click(function() {
-                var promo_code = $('.modal-body #promo_code').val();
-                $.get("/event/" + event_id + "/promo-code/" + promo_code + "/participant",
-                    function(
-                        data) {
-                        if (data.fee_id) {
-                            $("input[id=fee_id_input]").val(data.fee.amount);
-                            $("select[id=fee_id]").hide();
-                            $("div[id=fee_id_show]").show();
-                            $('#promo_code_edit_add').hide();
-                            $('#promo_code_edit_remove').show();
-                            $('.modal-body #promo_code').attr('readonly', true);
-                            $("select[id=fee_id]").val(data.fee_id);
-
-                        } else {
-                            $('.modal-body #promo_code').val(null);
-                        }
-                    }).fail(
-                    function() {
-                        // TODO: The code is not valid
-                        alert('The promo code is not valid.');
-                    });
-
-            });
-
-            // promo_code_edit_remove
-            $('#promo_code_edit_remove').click(function() {
-                $.get("/event/" + event_id + "/base-fee", function(data) {
-                    var promo_code = $('.modal-body #promo_code').val(null);
-                    if (data.fee_id) {
-                        $("input[id=fee_id_input]").val(data.fee.amount);
-                        $("select[id=fee_id]").hide();
-                        $("div[id=fee_id_show]").show();
+                        $('.modal-body #promo_code').removeAttr('readonly');
                         $('#promo_code_edit_add').show();
                         $('#promo_code_edit_remove').hide();
-                        $('.modal-body #promo_code').removeAttr('readonly');
+                    }
+
+
+                } else {
+                    $("select[id=fee_id]").val(null);
+                    $('.modal-body #promo_code').val(null);
+                    $("input[id=fee_id_input]").val(0);
+                    $("select[id=fee_id]").hide();
+                    $("div[id=fee_id_show]").show();
+                }
+                if ($('#represent-by-himself:checked').length > 0) {
+                    $('.modal-body #representative_ic_input').val(ic);
+                    if (data.participant) {
+                        $('.modal-body #representative_fullname').val(data
+                            .participant
+                            .name);
+                    }
+                }
+
+            }).fail(
+                function() {
+                    $('.modal-body #fullname').val(null);
+                    $('.modal-body #phone').val(null);
+                    $('.modal-body #email').val(null);
+                    $('.modal-body #payment_proof_input').val(null);
+
+
+                    $("select[id=fee_id]").hide();
+                    $("div[id=fee_id_show]").show();
+
+                    if ($('#represent-by-himself:checked').length > 0) {
+                        $('.modal-body #representative_ic_input').val(ic);
+                        $('.modal-body #representative_fullname').val(null);
+                    }
+
+                    $('.modal-body #application_update_submit').show();
+                    $('.modal-body #application_update_submit').append(
+                        '<i class = "ni ni-plus"></i> Apply');
+                }).always(
+                function() {
+                    $("div[id=form-application-second-part]").show();
+                    $("#fee_form").show();
+                });
+        });
+
+
+
+        $('#promo_code_edit_add').click(function() {
+            var promo_code = $('.modal-body #promo_code').val();
+            $.get("/event/" + event.id + "/promo-code/" + promo_code + "/participant",
+                function(
+                    data) {
+                    if (data.fee_id) {
+                        $("input[id=fee_id_input]").val(data.fee.amount);
+                        $("select[id=fee_id]").hide();
+                        $("div[id=fee_id_show]").show();
+                        $('#promo_code_edit_add').hide();
+                        $('#promo_code_edit_remove').show();
+                        $('.modal-body #promo_code').attr('readonly', true);
                         $("select[id=fee_id]").val(data.fee_id);
 
+                    } else {
+                        $('.modal-body #promo_code').val(null);
                     }
+                }).fail(
+                function() {
+                    // TODO: The code is not valid
+                    alert('The promo code is not valid.');
                 });
+
+        });
+
+        // promo_code_edit_remove
+        $('#promo_code_edit_remove').click(function() {
+            $.get("/event/" + event.id + "/base-fee", function(data) {
+                var promo_code = $('.modal-body #promo_code').val(null);
+                if (data.fee_id) {
+                    $("input[id=fee_id_input]").val(data.fee.amount);
+                    $("select[id=fee_id]").hide();
+                    $("div[id=fee_id_show]").show();
+                    $('#promo_code_edit_add').show();
+                    $('#promo_code_edit_remove').hide();
+                    $('.modal-body #promo_code').removeAttr('readonly');
+                    $("select[id=fee_id]").val(data.fee_id);
+
+                }
+            });
+        });
+
+
+        $('.modal-body #fullname').change(function() {
+            var fullname = $('.modal-body #fullname').val();
+            $('.modal-body #representative_fullname').val(fullname);
+
+        });
+
+
+        $("input[id=represent-by-himself]").change(function() {
+            var representByHimself = '';
+
+            $('.modal-body #representative-ic').val(null);
+            $('.modal-body #representative-email').val(null);
+            $("p[id=representative-doesnt-exist]").hide();
+            $("div[id=form-application-third-part]").hide();
+            $('.modal-body #represent-by-himself').val(representByHimself);
+            if ($(this)[0].checked) {
+                $("div[id=representative]").hide();
+            } else {
+                $("div[id=representative]").show();
+            }
+        });
+
+        // search-by-representative-ic
+        {
+            $('#search-by-representative-ic').click(function() {
+                var representativeIc = $('.modal-body #representative-ic').val();
+                $.get("/participant/search-by-representative-ic/" + representativeIc, function(
+                    data) {
+                    $('.modal-body #representative_fullname').val(data.name);
+                }).fail(
+                    function() {
+                        $("p[id=representative-doesnt-exist]").show();
+                    }).done(
+                    function() {
+                        $("div[id=form-application-third-part]").show();
+                    });
+
             });
 
-            $('#ic_input').change(function() {
-                var ic_input = $('.modal-body #ic_input').val();
+            $('#close-new-application').click(function() {
+                $('.modal-body #ic').val(null);
                 $('.modal-body #fullname').val(null);
                 $('.modal-body #phone').val(null);
                 $('.modal-body #payment_proof_input').val(null);
                 $('.modal-body #email').val(null);
-                $('.modal-body #representative_ic_input').val(ic_input);
-                $('.modal-body #representative_fullname').val(null);
+            });
+        }
+    })
 
+    $(document).ready(function() { //New Application
+        {
+            /*
+            NOTE: This behave like $emit function. The element with id 'new-application' came from the
+            the source view.
+            */
+            document.getElementById("new-application").addEventListener("click", function(event) {
+                event.preventDefault()
+            });
+            $('#new-application').click(function() {
+                var ic = null;
+                edit = false;
+                $('.modal-body #ic_input').val(ic);
+                $('#input_type').val('add');
+                $("#fee_form").hide();
+                if(event.events_shortcourses[0].shortcourse.is_icdl){
+                    event.events_shortcourses[0].shortcourse.shortcourse_icdl_modules.forEach((x)=>{
+                            $('.modal-body #module-'+x.id).prop('checked', false);
+                    });
+                }
+                $('#crud-modal-new-application').modal('show');
+            });
+        }
+    });
+
+    $(document).ready(function() { //Edit Application
+        {
+            $('table[name*="table-all-applicant"]').on('click', '#edit-application', function(e) {
+
+                var target = e.target;
+                var ic = target.getAttribute("data-participant_ic");
+
+                $('#input_type').val('edit');
+
+                edit = true;
+                $('.modal-body #ic_input').val(ic);
+                $("#fee_form").hide();
+
+
+
+                if(event.events_shortcourses[0].shortcourse.is_icdl){
+                    event.events_shortcourses[0].shortcourse.shortcourse_icdl_modules.forEach((x)=>{
+                            $('.modal-body #module-'+x.id).prop('checked', false);
+                    });
+                }
+
+                $('.modal-body #payment_proof_input').attr('readonly', false);
+                $('.modal-body #payment_proof_input').attr('disabled', true);
+                $('.modal-body #payment_proof_input').hide();
+                $('#payment_proof_form').hide();
+
+                $('#crud-modal-new-application').modal('show');
                 $('#search-by-ic').trigger("click");
             });
-
-            $('.modal-body #fullname').change(function() {
-                var fullname = $('.modal-body #fullname').val();
-                $('.modal-body #representative_fullname').val(fullname);
-
-            });
-
-
-            $("input[id=represent-by-himself]").change(function() {
-                var representByHimself = '';
-
-                $('.modal-body #representative-ic').val(null);
-                $('.modal-body #representative-email').val(null);
-                $("p[id=representative-doesnt-exist]").hide();
-                $("div[id=form-application-third-part]").hide();
-                $('.modal-body #represent-by-himself').val(representByHimself);
-                if ($(this)[0].checked) {
-                    $("div[id=representative]").hide();
-                } else {
-                    $("div[id=representative]").show();
-                }
-            });
-
-            // search-by-representative-ic
-            {
-                $('#search-by-representative-ic').click(function() {
-                    var representativeIc = $('.modal-body #representative-ic').val();
-                    $.get("/participant/search-by-representative-ic/" + representativeIc, function(
-                        data) {
-                        $('.modal-body #representative_fullname').val(data.name);
-                    }).fail(
-                        function() {
-                            $("p[id=representative-doesnt-exist]").show();
-                        }).done(
-                        function() {
-                            $("div[id=form-application-third-part]").show();
-                        });
-
-                });
-
-                $('#close-new-application').click(function() {
-                    $('.modal-body #ic').val(null);
-                    $('.modal-body #fullname').val(null);
-                    $('.modal-body #phone').val(null);
-                    $('.modal-body #payment_proof_input').val(null);
-                    $('.modal-body #email').val(null);
-                });
-            }
         }
     });
 </script>
