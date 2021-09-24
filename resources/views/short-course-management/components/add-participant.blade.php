@@ -84,22 +84,6 @@
                                 </p>
                             @enderror
                         </div>
-                        <input id="is_icdl" name="is_icdl" type="number"
-                            value={{ $event->events_shortcourses[0]->shortcourse->is_icdl }} hidden>
-                        <div class="form-group add-participant__module"
-                            {{ $event->events_shortcourses[0]->shortcourse->is_icdl == 1 ? '' : 'style=display:none' }}>
-                            <label class="form-label" for="modules"><span
-                                    class="text-danger">*</span>Modules</label>
-                            @foreach ($event->events_shortcourses[0]->shortcourse->shortcourse_icdl_modules as $shortcourse_icdl_module)
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input"
-                                        id="module-{{ $shortcourse_icdl_module->id }}" name="modules[]"
-                                        value={{ $shortcourse_icdl_module->id }}>
-                                    <label class="custom-control-label"
-                                        for="module-{{ $shortcourse_icdl_module->id }}">{{ $shortcourse_icdl_module->name }}</label>
-                                </div>
-                            @endforeach
-                        </div>
                         <hr class="mt-1 mb-2">
                         <div class="form-group" id="payment_proof_form">
                             <label class="form-label" for="payment_proof_input"><span
@@ -119,9 +103,31 @@
                             @enderror
                         </div>
                         <hr class="mt-1 mb-2">
+
+                        <div class="form-group" id="modular_form" style="display:none">
+                            <input id="is_icdl" name="is_icdl" type="number"
+                                value={{ $event->events_shortcourses[0]->shortcourse->is_icdl }} hidden>
+                            <div class="form-group add-participant__module"
+                                {{ $event->events_shortcourses[0]->shortcourse->is_icdl == 1 ? '' : 'style=display:none' }}>
+                                <label class="form-label" for="modules"><span
+                                        class="text-danger">*</span>Modules</label>
+                                @foreach ($event->events_shortcourses[0]->shortcourse->shortcourse_icdl_modules as $shortcourse_icdl_module)
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input"
+                                            id="module-{{ $shortcourse_icdl_module->id }}" name="modules[]"
+                                            value={{ $shortcourse_icdl_module->id }}
+                                            data-fee_amount="{{ $shortcourse_icdl_module->fee_amount }}">
+                                        <label class="custom-control-label"
+                                            for="module-{{ $shortcourse_icdl_module->id }}">{{ $shortcourse_icdl_module->name }}
+                                            (+RM{{ $shortcourse_icdl_module->fee_amount }})</label>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        <hr class="mt-1 mb-2">
                         <div class="form-group" id="fee_form" style="display:none">
                             <label class="form-label" for="is_base_fee_select_add"><span
-                                    class="text-danger">*</span>Fee</label>
+                                    class="text-danger">*</span>Base Fee</label>
                             <select class="form-control fee_id font-weight-bold" name="fee_id" id="fee_id" tabindex="-1"
                                 aria-hidden="true" hidden>
                                 <option disabled selected>Select
@@ -145,8 +151,8 @@
                                                 style="background-color:white; border-style: none;"
                                                 id="addon-wrapping">RM</span>
                                         </div>
-                                        <input class="form-control-plaintext" id="fee_id_input" name="fee_id_input"
-                                            readonly>
+                                        <input type="number" class="form-control-plaintext" id="fee_id_input"
+                                            name="fee_id_input" readonly>
                                         <div class="input-group-append">
                                             <span style="background-color:white; border-style: none;"
                                                 class="input-group-text">/
@@ -174,6 +180,12 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <hr class="mt-1 mb-2">
+                            <label class="form-label" for="fee_amount_applied_total"><span
+                                    class="text-danger">*</span>Total Fee (RM)</label>
+                            <input id="fee_amount_applied_total" name="fee_amount_applied_total" type="number"
+                                class="form-control" value='0.00' readonly>
                             @error('fee_id')
                                 <p style="color: red">
                                     <strong> *
@@ -257,7 +269,7 @@
 </div>
 <script>
     var edit;
-    var event=@json($event);
+    var event = @json($event);
 
     $(document).ready(function() {
 
@@ -297,9 +309,10 @@
                     $('#promo_code_edit_remove').hide();
 
                     $('.modal-body #application_update_submit').hide();
-                    if(data.shortcourse_icdl_modules_event_participants){
-                        data.shortcourse_icdl_modules_event_participants.forEach((x)=>{
-                            $('.modal-body #module-'+x.shortcourse_icdl_module_id).prop('checked', true);
+                    if (data.shortcourse_icdl_modules_event_participants) {
+                        data.shortcourse_icdl_modules_event_participants.forEach((x) => {
+                            $('.modal-body #module-' + x.shortcourse_icdl_module_id)
+                                .prop('checked', true);
 
                         });
                     }
@@ -312,6 +325,8 @@
                         $('.modal-body #payment_proof_input').attr('readonly', false);
 
                         $('.modal-body #promo_code').attr('readonly', false);
+
+                        $('[id^="module-"]').attr('disabled', false);
 
                         $('.modal-body #application_update_submit').show();
                         $('.modal-body #application_update_submit').append(
@@ -328,6 +343,10 @@
                         $('.modal-body #payment_proof_input').attr('readonly', true);
 
                         $('.modal-body #promo_code').attr('readonly', true);
+
+                        $('[id^="module-"]').attr('disabled',true);
+
+
                         $('.modal-body #application_message').append(
                             'Already Apply');
                     }
@@ -340,6 +359,10 @@
                     $('.modal-body #payment_proof_input').removeAttr('readonly',
                         true);
                     $('.modal-body #email').removeAttr('readonly', true);
+
+
+                    $('[id^="module-"]').removeAttr('disabled', true);
+
                     $('.modal-body #application_update_submit').show();
                     $('.modal-body #application_update_submit').append(
                         '<i class = "ni ni-plus"></i> Apply');
@@ -370,6 +393,14 @@
                     $("input[id=fee_id_input]").val(data.fee.amount);
                     $("select[id=fee_id]").hide();
                     $("div[id=fee_id_show]").show();
+
+                    if (data.fee_amount_applied) {
+                        $('#fee_amount_applied_total').val(data.fee_amount_applied);
+                    } else {
+
+                        $('#fee_amount_applied_total').val(data.fee.amount);
+                    }
+
                     if (data.fee.promo_code) {
                         $('.modal-body #promo_code').attr('readonly', true);
                         $('#promo_code_edit_add').hide();
@@ -419,6 +450,7 @@
                 }).always(
                 function() {
                     $("div[id=form-application-second-part]").show();
+                    $("#modular_form").show();
                     $("#fee_form").show();
                 });
         });
@@ -431,6 +463,7 @@
                 function(
                     data) {
                     if (data.fee_id) {
+                        var prevAmount = $("input[id=fee_id_input]").val();
                         $("input[id=fee_id_input]").val(data.fee.amount);
                         $("select[id=fee_id]").hide();
                         $("div[id=fee_id_show]").show();
@@ -438,6 +471,13 @@
                         $('#promo_code_edit_remove').show();
                         $('.modal-body #promo_code').attr('readonly', true);
                         $("select[id=fee_id]").val(data.fee_id);
+
+
+                        var fee_amount_applied_total = $('#fee_amount_applied_total').val();
+                        var sum = (parseFloat(fee_amount_applied_total) -
+                                parseFloat(prevAmount)) +
+                            parseFloat(data.fee.amount);
+                        $('#fee_amount_applied_total').val(sum);
 
                     } else {
                         $('.modal-body #promo_code').val(null);
@@ -515,6 +555,24 @@
                 $('.modal-body #email').val(null);
             });
         }
+
+        // checkbox triggered
+        {
+            $('[id^="module-"]').change(function(e) {
+                var value = 0;
+                if (e.currentTarget.checked) {
+                    value += parseFloat(e.currentTarget.dataset.fee_amount);
+                } else {
+                    value -= parseFloat(e.currentTarget.dataset.fee_amount);
+                }
+
+                var fee_amount_applied_total = $('#fee_amount_applied_total').val();
+                var sum = parseFloat(fee_amount_applied_total) + value;
+                $('#fee_amount_applied_total').val(sum);
+            });
+
+
+        }
     })
 
     $(document).ready(function() { //New Application
@@ -531,10 +589,11 @@
                 edit = false;
                 $('.modal-body #ic_input').val(ic);
                 $('#input_type').val('add');
+                $("#modular_form").hide();
                 $("#fee_form").hide();
-                if(event.events_shortcourses[0].shortcourse.is_icdl){
-                    event.events_shortcourses[0].shortcourse.shortcourse_icdl_modules.forEach((x)=>{
-                            $('.modal-body #module-'+x.id).prop('checked', false);
+                if (event.events_shortcourses[0].shortcourse.is_icdl) {
+                    event.events_shortcourses[0].shortcourse.shortcourse_icdl_modules.forEach((x) => {
+                        $('.modal-body #module-' + x.id).prop('checked', false);
                     });
                 }
                 $('#crud-modal-new-application').modal('show');
@@ -553,13 +612,15 @@
 
                 edit = true;
                 $('.modal-body #ic_input').val(ic);
+
+                $("#modular_form").hide();
                 $("#fee_form").hide();
 
 
 
-                if(event.events_shortcourses[0].shortcourse.is_icdl){
-                    event.events_shortcourses[0].shortcourse.shortcourse_icdl_modules.forEach((x)=>{
-                            $('.modal-body #module-'+x.id).prop('checked', false);
+                if (event.events_shortcourses[0].shortcourse.is_icdl) {
+                    event.events_shortcourses[0].shortcourse.shortcourse_icdl_modules.forEach((x) => {
+                        $('.modal-body #module-' + x.id).prop('checked', false);
                     });
                 }
 

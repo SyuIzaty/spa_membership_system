@@ -699,7 +699,7 @@
                                 <input id="add_module" name="shortcourse_modules[]" type="text" class="form-control" placeholder="Insert Module Name">
                             </td>
                             <td>
-                                <input id="module_fee_amount" name="module_fee_amounts[]" type="text" class="form-control" value='0.00'>
+                                <input id="module_fee_amount" name="module_fee_amounts[]" type="number" class="form-control" value='0.00'>
                             <td>
                                 <a href="javascript:;" name="cancel-module" data-value="${i}" id="cancel-module" class="btn btn-sm btn-danger btn_remove mx-1">X</a>
                             </td>

@@ -565,6 +565,7 @@ class EventParticipantController extends Controller
                     'event_id' => $event_id,
                     'participant_id' => $existParticipant->id,
                     'fee_id' => $request->fee_id,
+                    'fee_amount_applied' => $request->fee_amount_applied_total,
                     'participant_representative_id' => $existParticipant->id,
                     'is_verified_payment_proof' => 0,
                     'is_approved_application' => 1,
@@ -572,6 +573,7 @@ class EventParticipantController extends Controller
                 ]);
             } else {
                 $existEventParticipant->fee_id = $request->fee_id;
+                $existEventParticipant->fee_amount_applied = $request->fee_amount_applied_total;
                 $existEventParticipant->updated_by = Auth::user() ? Auth::user()->id : 'public_user';
                 $existEventParticipant->save();
                 if ($request->input_type == 'add') {

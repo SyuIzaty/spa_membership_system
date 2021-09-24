@@ -13,7 +13,9 @@ class EventParticipant extends Model
     protected $fillable = [
         'event_id',
         'participant_id',
-        'fee_id', 'is_paid',
+        'fee_id',
+        'fee_amount_applied',
+        'is_paid',
         'payment_type_id',
         'payment_proof_path',
         'is_verified_payment_proof',
