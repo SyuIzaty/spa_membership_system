@@ -41,7 +41,8 @@ class EventParticipantController extends Controller
             ->load([
                 'event',
                 'organization_representative',
-                'participant.organisations_participants.organisation'
+                'participant.organisations_participants.organisation',
+                'shortcourse_icdl_modules_event_participants.shortcourse_icdl_module'
             ]);
 
         $index = 0;
@@ -49,7 +50,14 @@ class EventParticipantController extends Controller
             $eventsParticipants[$index]->created_at_diffForHumans = $eventsParticipants[$index]->created_at->diffForHumans();
             $eventsParticipants[$index]->organisationsString = '';
             foreach ($eventParticipant->participant->organisations_participants as $organisation_participant) {
-                $eventsParticipants[$index]->organisationsString = ($eventsParticipants[$index]->organisationsString) . ($organisation_participant->organisation->name) . '.';
+                $eventsParticipants[$index]->organisationsString = ($eventsParticipants[$index]->organisationsString) . ($organisation_participant->organisation->name) . '<br>';
+            }
+
+            $eventsParticipants[$index]->selected_module = '';
+            $moduleIndex=1;
+            foreach ($eventParticipant->shortcourse_icdl_modules_event_participants as $shortcourse_icdl_module_event_participant) {
+                $eventsParticipants[$index]->selected_modules = ($eventsParticipants[$index]->selected_modules) . $moduleIndex . ') '.($shortcourse_icdl_module_event_participant->shortcourse_icdl_module->name) . '<br>';
+                $moduleIndex++;
             }
             $index++;
         }
@@ -64,7 +72,7 @@ class EventParticipantController extends Controller
             ->addColumn('action', function ($eventsParticipants) {
                 return '<a href="javascript:;" id="edit-application" data-toggle="modal" data-event_participant_id="' . $eventsParticipants->id . '" data-participant_ic="' . $eventsParticipants->participant->ic . '" class="btn btn-sm btn-success btn-edit-application">Edit</a>';
             })
-            ->rawColumns(['action', 'checkApplicant'])
+            ->rawColumns(['action', 'checkApplicant','selected_modules'])
             ->make(true);
     }
 

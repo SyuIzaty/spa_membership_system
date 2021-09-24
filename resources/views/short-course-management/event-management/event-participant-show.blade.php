@@ -279,6 +279,7 @@
                                                                                         <th>Name</th>
                                                                                         <th>Phone</th>
                                                                                         <th>Email</th>
+                                                                                        <th {{$event->events_shortcourses[0]->shortcourse->is_icdl==1? '':"hidden"}}>Module</th>
                                                                                         <th>Date Apply</th>
                                                                                         <th>Action</th>
                                                                                     </tr>
@@ -956,6 +957,7 @@
 @section('script')
     <script>
         var event_id = '<?php echo $event->id; ?>';
+        var eventJson=@json($event);
 
         // Processes
         { // Pre-Event
@@ -1101,7 +1103,8 @@
                 // all applicants
 
                 {
-                    var tableAllApplicant = $('#table-all-applicant').DataTable({
+                    if(eventJson.events_shortcourses[0].shortcourse.is_icdl==0){
+                        var tableAllApplicant = $('#table-all-applicant').DataTable({
                         columnDefs: [{
                             targets: [1],
                             render: function(data, type, row) {
@@ -1166,6 +1169,79 @@
                             [0, "desc"]
                         ],
                     });
+                    }else{
+                        var tableAllApplicant = $('#table-all-applicant').DataTable({
+                        columnDefs: [{
+                            targets: [1],
+                            render: function(data, type, row) {
+                                return !data ? 'N/A' : data;
+                            }
+                        }],
+                        processing: true,
+                        serverSide: true,
+                        ajax: {
+                            url: "/event/" + event_id + "/events-participants/data-all-applicant",
+                            type: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        },
+                        columns: [
+                            {
+                                className: 'text-center',
+                                data: 'id',
+                                name: 'id',
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'organisationsString',
+                                name: 'organisationsString'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.ic',
+                                name: 'participant.ic'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.name',
+                                name: 'participant.name'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.phone',
+                                name: 'participant.phone'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'participant.email',
+                                name: 'participant.email'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'selected_modules',
+                                name: 'selected_modules',
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'created_at_diffForHumans',
+                                name: 'created_at_diffForHumans',
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'action',
+                                name: 'action',
+                                orderable: false,
+                                searchable: false
+                            }
+                        ],
+                        orderCellsTop: true,
+                        "order": [
+                            [0, "desc"]
+                        ],
+                    });
+                    }
+
 
                     $('#table-all-applicant thead tr .hasinput').each(function(i) {
                         $('input', this).on('keyup change', function() {
