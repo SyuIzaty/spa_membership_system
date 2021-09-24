@@ -102,13 +102,15 @@
                                 </p>
                             @enderror
                         </div>
-                        <hr class="mt-1 mb-2">
 
                         <div class="form-group" id="modular_form" style="display:none">
+
                             <input id="is_icdl" name="is_icdl" type="number"
                                 value={{ $event->events_shortcourses[0]->shortcourse->is_icdl }} hidden>
                             <div class="form-group add-participant__module"
                                 {{ $event->events_shortcourses[0]->shortcourse->is_icdl == 1 ? '' : 'style=display:none' }}>
+                                <hr class="mt-1 mb-2">
+
                                 <label class="form-label" for="modules"><span
                                         class="text-danger">*</span>Modules</label>
                                 @foreach ($event->events_shortcourses[0]->shortcourse->shortcourse_icdl_modules as $shortcourse_icdl_module)
@@ -344,7 +346,7 @@
 
                         $('.modal-body #promo_code').attr('readonly', true);
 
-                        $('[id^="module-"]').attr('disabled',true);
+                        $('[id^="module-"]').attr('disabled', true);
 
 
                         $('.modal-body #application_message').append(
@@ -463,7 +465,9 @@
                 function(
                     data) {
                     if (data.fee_id) {
+                        // It is important for prevAmount assignment come before new value inserted
                         var prevAmount = $("input[id=fee_id_input]").val();
+
                         $("input[id=fee_id_input]").val(data.fee.amount);
                         $("select[id=fee_id]").hide();
                         $("div[id=fee_id_show]").show();
@@ -495,6 +499,7 @@
             $.get("/event/" + event.id + "/base-fee", function(data) {
                 var promo_code = $('.modal-body #promo_code').val(null);
                 if (data.fee_id) {
+                    var prevAmount = $("input[id=fee_id_input]").val();
                     $("input[id=fee_id_input]").val(data.fee.amount);
                     $("select[id=fee_id]").hide();
                     $("div[id=fee_id_show]").show();
@@ -502,6 +507,14 @@
                     $('#promo_code_edit_remove').hide();
                     $('.modal-body #promo_code').removeAttr('readonly');
                     $("select[id=fee_id]").val(data.fee_id);
+
+
+                    var fee_amount_applied_total = $('#fee_amount_applied_total').val();
+                    var sum = (parseFloat(fee_amount_applied_total) -
+                            parseFloat(prevAmount)) +
+                        parseFloat(data.fee.amount);
+
+                    $('#fee_amount_applied_total').val(sum);
 
                 }
             });
