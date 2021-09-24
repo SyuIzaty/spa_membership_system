@@ -13,6 +13,7 @@ class ShortCourseICDLModule extends Model
     protected $fillable = [
         'name',
         'shortcourse_id',
+        'fee_amount',
         'created_by',
         'created_at',
         'updated_by',

@@ -208,6 +208,7 @@
                                                         </tr>
                                                         <tr>
                                                             <th>Name</th>
+                                                            <th>Fee (RM)</th>
                                                             <th>Action</th>
                                                         </tr>
                                                     </thead>
@@ -216,7 +217,17 @@
                                                             <tr>
                                                                 <td>{{ $shortcourse_icdl_module->name }}
                                                                 </td>
+                                                                <td>{{ $shortcourse_icdl_module->fee_amount }}
+                                                                </td>
                                                                 <td>
+                                                                    <a href="#" class="btn btn-sm btn-info float-right mr-2"
+                                                                        name="edit-module" id="edit-module"
+                                                                        data-target="#edit-module-modal" data-toggle="modal"
+                                                                        data-id={{ $shortcourse_icdl_module->id }}
+                                                                        data-name='{{ $shortcourse_icdl_module->name }}'
+                                                                        data-fee_amount='{{ $shortcourse_icdl_module->fee_amount }}'>
+                                                                        <i class="fal fa-pencil"></i>
+                                                                    </a>
                                                                     <form method="post"
                                                                         action="/shortcourse/shortcourse_icdl_module/remove/{{ $shortcourse_icdl_module->id }}">
                                                                         @csrf
@@ -230,6 +241,73 @@
                                                         @endforeach
                                                     </tbody>
                                                 </table>
+
+                                                <div class="modal fade" id="edit-module-modal" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="card-header">
+                                                                <h5 class="card-title w-150">Edit
+                                                                    Module</h5>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form action="{{ url('/events/module/update') }}"
+                                                                    method="post" name="form">
+                                                                    @csrf
+                                                                    <p><span class="text-danger">*</span>
+                                                                        Required Field</p>
+                                                                    <hr class="mt-1 mb-2">
+                                                                    <div id="form">
+                                                                        <input type="number" name="module_id" id="module_id"
+                                                                            style="display:none">
+                                                                        <div class="form-group">
+                                                                            <label class="form-label"
+                                                                                for="module_name"><span
+                                                                                    class="text-danger">*</span>Name</label>
+                                                                            <input type="text" class="form-control"
+                                                                                id="module_name" name="module_name">
+                                                                            @error('module_name')
+                                                                                <p style="color: red">
+                                                                                    <strong> *
+                                                                                        {{ $message }}
+                                                                                    </strong>
+                                                                                </p>
+                                                                            @enderror
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label class="form-label"
+                                                                                for="module_fee_amount"><span
+                                                                                    class="text-danger">*</span>Fee
+                                                                                Amount (RM)</label>
+                                                                            <input type="number" step=".01"
+                                                                                class="form-control"
+                                                                                id="module_fee_amount"
+                                                                                name="module_fee_amount">
+                                                                            @error('module_fee_amount')
+                                                                                <p style="color: red">
+                                                                                    <strong> *
+                                                                                        {{ $message }}
+                                                                                    </strong>
+                                                                                </p>
+                                                                            @enderror
+                                                                        </div>
+                                                                    </div>
+                                                                    <hr class="mt-1 mb-2">
+                                                                    <div class="footer">
+                                                                        <button type="button"
+                                                                            class="btn btn-danger ml-auto float-right mr-2"
+                                                                            data-dismiss="modal" id="close-edit-fee"><i
+                                                                                class="fal fa-window-close"></i>
+                                                                            Close</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary ml-auto float-right mr-2"><i
+                                                                                class="ni ni-plus"></i>
+                                                                            Update</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <a href="javascript:;" name="addModule" id="addModule"
                                                     class="btn btn-primary btn-sm ml-auto float-right my-2">Add
                                                     More Module</a>
@@ -459,6 +537,10 @@
                                 <td>
                                     <input id="add_module" name="shortcourse_module" type="text" class="form-control" placeholder="Insert Module Name">
                                 </td>
+
+                                <td>
+                                    <input id="module_fee_amount" name="module_fee_amount" type="text" class="form-control" value='0.00'>
+                                </td>
                                 <td class="d-flex flex-row-reverse ">
                                     <a href="javascript:;" name="cancel-module" id="cancel-module" class="btn btn-sm btn-danger btn_remove mx-1">X</a>
                                     <a
@@ -487,8 +569,11 @@
                         });
 
                         var $shortcourse_module = $('#add_module').val();
+
+                        var $module_fee_amount = $('#module_fee_amount').val();
                         var data = {
-                            shortcourse_module: $shortcourse_module
+                            shortcourse_module: $shortcourse_module,
+                            module_fee_amount: $module_fee_amount
                         }
                         var url = '/shortcourse/module/attached/' + shortcourse_id;
 
@@ -553,6 +638,19 @@
                         }
                     );
                 }
+            });
+        }
+        // Edit Module Modal
+        {
+            $('#edit-module-modal').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget)
+                var id = button.data('id');
+                var name = button.data('name');
+                var amount = button.data('fee_amount');
+
+                $('.modal-body #module_id').val(id);
+                $('.modal-body #module_name').val(name);
+                $('.modal-body #module_fee_amount').val(amount);
             });
         }
     </script>

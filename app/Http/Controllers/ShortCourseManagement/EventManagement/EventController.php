@@ -24,6 +24,7 @@ use App\Models\ShortCourseManagement\EventFeedbackSet;
 use App\Models\ShortCourseManagement\ShortCourseICDLModuleEventParticipant;
 
 use App\Exports\ApplicantByModuleExport;
+use App\Models\ShortCourseManagement\ShortCourseICDLModule;
 use Maatwebsite\Excel\Facades\Excel;
 
 use Barryvdh\DomPDF\Facade as PDF;
@@ -1099,8 +1100,23 @@ class EventController extends Controller
 
     public function exportApplicantByModule($event_id)
     {
-        $event= Event::find($event_id)->load(['events_participants', 'venue', 'event_status_category', 'events_shortcourses.shortcourse']);
-        $data=$event;
-        return Excel::download(new ApplicantByModuleExport($data), 'ApplicantByModuleExport_'.$event->id.'.xlsx');
+        $event = Event::find($event_id)->load(['events_participants', 'venue', 'event_status_category', 'events_shortcourses.shortcourse']);
+        $data = $event;
+        return Excel::download(new ApplicantByModuleExport($data), 'ApplicantByModuleExport_' . $event->id . '.xlsx');
+    }
+    public function eventModuleUpdate(Request $request)
+    {
+        $validated = $request->validate([
+            'module_name' => 'required',
+            'module_fee_amount' => 'required'
+        ]);
+
+        $shortcourse_icdl_module=ShortCourseICDLModule::find($request->module_id)->update([
+            'name' => $request->module_name,
+            'fee_amount' => $request->module_fee_amount,
+            'updated_by' => Auth::user()->id
+        ]);
+
+        return Redirect()->back()->with('successUpdate', 'Short Course Module Updated Successfully');
     }
 }

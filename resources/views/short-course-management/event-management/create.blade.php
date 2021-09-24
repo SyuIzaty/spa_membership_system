@@ -375,9 +375,14 @@
                                         <div class="modal-body">
                                             <form action="{{ url('/shortcourse/event') }}" method="post" name="form">
                                                 @csrf
+                                                {{-- <div class="grid-custom">
+                                                    <div class="grid-upper"> --}}
                                                 <p><span class="text-danger">*</span>
                                                     Required Field</p>
+
                                                 <hr class="mt-1 mb-2">
+                                                {{-- </div>
+                                                    <div class="grid-left"> --}}
                                                 <div class="form-group">
                                                     <label for="user_id"><span class="text-danger">*</span>
                                                         Short Course Name</label>
@@ -408,6 +413,8 @@
                                                         </p>
                                                     @enderror
                                                 </div>
+                                                {{-- </div>
+                                                    <div class="grid-center"> --}}
                                                 <div class="form-group">
                                                     <label for="objective"><span class="text-danger">*</span>
                                                         Objective</label>
@@ -434,6 +441,10 @@
                                                         </p>
                                                     @enderror
                                                 </div>
+
+                                                {{-- </div>
+                                                    <div class="grid-right"> --}}
+
                                                 <div class="modules" id="modules"
                                                     style="display: inline-block; width:100%;" hidden>
                                                     <table class="table table-striped table-bordered m-0"
@@ -445,6 +456,7 @@
                                                             </tr>
                                                             <tr>
                                                                 <th>Name</th>
+                                                                <th>Fee (RM)</th>
                                                                 <th>Action</th>
                                                             </tr>
                                                         </thead>
@@ -456,6 +468,8 @@
                                                         class="btn btn-primary btn-sm ml-auto float-right my-2">Add
                                                         More Module</a>
                                                 </div>
+                                                {{-- </div> --}}
+                                                {{-- </div> --}}
                                                 <hr class="mt-1 mb-2">
                                                 <div class="footer" id="add_contact_person_footer">
                                                     <button type="button" class="btn btn-danger ml-auto float-right mr-2"
@@ -685,6 +699,8 @@
                                 <input id="add_module" name="shortcourse_modules[]" type="text" class="form-control" placeholder="Insert Module Name">
                             </td>
                             <td>
+                                <input id="module_fee_amount" name="module_fee_amounts[]" type="text" class="form-control" value='0.00'>
+                            <td>
                                 <a href="javascript:;" name="cancel-module" data-value="${i}" id="cancel-module" class="btn btn-sm btn-danger btn_remove mx-1">X</a>
                             </td>
                         </tr>
@@ -747,4 +763,13 @@
             });
         });
     </script>
+@endsection
+@section('style')
+    <style>
+        .grid-custom {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, 30vw);
+        }
+
+    </style>
 @endsection

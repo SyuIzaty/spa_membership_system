@@ -207,6 +207,7 @@ class ShortCourseController extends Controller
     {
         $validated = $request->validate([
             'shortcourse_module' => 'required',
+            'module_fee_amount' => 'required',
         ], [
             'shortcourse_module.required' => 'Please insert module name',
         ]);
@@ -214,6 +215,7 @@ class ShortCourseController extends Controller
         $create = ShortCourseICDLModule::create([
             'name' => $request->shortcourse_module,
             'shortcourse_id' => $id,
+            'fee_amount' => $request->module_fee_amount,
             'created_by' => Auth::user()->id,
             'is_active' => 1,
         ]);
@@ -258,12 +260,16 @@ class ShortCourseController extends Controller
             'created_by' => Auth::user()->id,
         ]);
 
+        $index=0;
+
         foreach ($request->shortcourse_modules as $shortcourse_module){
             $createModule = ShortCourseICDLModule::create([
                 'name' => $shortcourse_module,
                 'shortcourse_id' => $createShortCourse->id,
+                'fee_amount' => $request->module_fee_amounts[$index],
                 'created_by' => Auth::user()->id,
             ]);
+            $index++;
         }
 
         $shortcourse = ShortCourse::find($createShortCourse->id)->load([

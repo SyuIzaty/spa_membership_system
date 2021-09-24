@@ -331,6 +331,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/event', 'ShortCourseManagement\EventManagement\EventController@addEvent');
     Route::get('/event/participant-list/{id}', 'ShortCourseManagement\EventManagement\EventController@participantList')->name('participantList');
     Route::get('/event/report/{id}', 'ShortCourseManagement\EventManagement\EventController@eventReport')->name('event-report');
+    Route::post('/events/module/update', 'ShortCourseManagement\EventManagement\EventController@eventModuleUpdate');
 
     Route::get('/event/{event_id}/update-event-status-category/{event_status_category_id}', 'ShortCourseManagement\EventManagement\EventController@updateEventStatus');
     Route::post('/event/updatePoster', 'ShortCourseManagement\EventManagement\EventController@updatePoster')->name('store.poster');
