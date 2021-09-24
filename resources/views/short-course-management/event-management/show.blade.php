@@ -917,7 +917,7 @@
                                                                 </td>
                                                                 <td>{{ $events_shortcourses->shortcourse->name }}
                                                                 </td>
-                                                                <td>{{ $events_shortcourses->shortcourse->is_icdl==0? 'Regular Short Course':'ICDL'}}
+                                                                <td>{{ $events_shortcourses->shortcourse->is_icdl==0? 'Regular Short Course':'Modular Short Course'}}
                                                                 </td>
                                                                 <td>
                                                                     <form method="post"

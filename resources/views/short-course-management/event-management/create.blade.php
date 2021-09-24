@@ -373,15 +373,13 @@
                                             <h5 class="card-title w-150">Add New Shortcourse</h5>
                                         </div>
                                         <div class="modal-body">
-                                            <form action="{{ url('/shortcourse/event') }}" method="post"
-                                                name="form">
+                                            <form action="{{ url('/shortcourse/event') }}" method="post" name="form">
                                                 @csrf
                                                 <p><span class="text-danger">*</span>
                                                     Required Field</p>
                                                 <hr class="mt-1 mb-2">
                                                 <div class="form-group">
-                                                    <label for="user_id"><span
-                                                            class="text-danger">*</span>
+                                                    <label for="user_id"><span class="text-danger">*</span>
                                                         Short Course Name</label>
                                                     {{ Form::text('shortcourse_name_new', '', ['class' => 'form-control', 'placeholder' => 'Short Course Name', 'id' => 'shortcourse_name_new']) }}
                                                     @error('shortcourse_name_new')
@@ -390,18 +388,16 @@
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="shortcourse_type"><span
-                                                            class="text-danger">*</span>
+                                                    <label for="shortcourse_type"><span class="text-danger">*</span>
                                                         Short Course Type</label>
-                                                    <select class="form-control shortcourse_type "
-                                                        name="shortcourse_type" id="shortcourse_type"
-                                                        data-select2-id="shortcourse_type"
+                                                    <select class="form-control shortcourse_type " name="shortcourse_type"
+                                                        id="shortcourse_type" data-select2-id="shortcourse_type"
                                                         aria-hidden="true">
                                                         <option value="0">
                                                             Regular Short Course
                                                         </option>
                                                         <option value="1">
-                                                            ICDL
+                                                            Modular Short Course
                                                         </option>
                                                     </select>
                                                     @error('shortcourse_type')
@@ -413,11 +409,9 @@
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="objective"><span
-                                                            class="text-danger">*</span>
+                                                    <label for="objective"><span class="text-danger">*</span>
                                                         Objective</label>
-                                                    <textarea id="objective" name="objective" type="text"
-                                                        rows="10"
+                                                    <textarea id="objective" name="objective" type="text" rows="10"
                                                         class="form-control ck-editor__editable ck-editor__editable_inline"></textarea>
                                                     @error('objective')
                                                         <p style="color: red">
@@ -428,11 +422,9 @@
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="description"><span
-                                                            class="text-danger">*</span>
+                                                    <label for="description"><span class="text-danger">*</span>
                                                         Description</label>
-                                                    <textarea id="description" name="description"
-                                                        type="text" rows="10"
+                                                    <textarea id="description" name="description" type="text" rows="10"
                                                         class="form-control ck-editor__editable ck-editor__editable_inline"></textarea>
                                                     @error('description')
                                                         <p style="color: red">
@@ -466,10 +458,8 @@
                                                 </div>
                                                 <hr class="mt-1 mb-2">
                                                 <div class="footer" id="add_contact_person_footer">
-                                                    <button type="button"
-                                                        class="btn btn-danger ml-auto float-right mr-2"
-                                                        data-dismiss="modal"
-                                                        id="close-add-contact_person"><i
+                                                    <button type="button" class="btn btn-danger ml-auto float-right mr-2"
+                                                        data-dismiss="modal" id="close-add-contact_person"><i
                                                             class="fal fa-window-close"></i>
                                                         Close</button>
                                                     <button type="submit" id="submitShortCourse"
@@ -701,7 +691,7 @@
                     `);
 
                 $(document).on('click', '#cancel-module', function(event) {
-                    var row_id=event.target.dataset.value;
+                    var row_id = event.target.dataset.value;
                     $(`#new-row${row_id}`).remove();
                     $("#addModule").show();
                 });
@@ -752,9 +742,9 @@
                 $('#row' + button_id + '').remove();
             });
 
-            $('#close-add-contact_person').click(function() {
+            $('#crud-modal').on('hide.bs.modal', function(event) {
                 location.reload();
-            })
+            });
         });
     </script>
 @endsection

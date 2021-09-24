@@ -93,7 +93,7 @@
                                                             <tr>
                                                                 <td>Short Course Type</td>
                                                                 <td name="shortcourse_type_show" id="shortcourse_type_show">
-                                                                    {{ $shortcourse->is_icdl == 0 ? 'Regular Short Course' : 'ICDL' }}
+                                                                    {{ $shortcourse->is_icdl == 0 ? 'Regular Short Course' : 'Modular Short Course' }}
                                                                 </td>
                                                                 <td name="shortcourse_type_edit" id="shortcourse_type_edit"
                                                                     style="display: none">
@@ -108,7 +108,7 @@
                                                                             </option>
                                                                             <option value="1"
                                                                                 {{ $shortcourse->is_icdl == 1 ?? 'Selected' }}>
-                                                                                ICDL
+                                                                                Modular Short Course
                                                                             </option>
                                                                         </select>
                                                                         @error('shortcourse_type')

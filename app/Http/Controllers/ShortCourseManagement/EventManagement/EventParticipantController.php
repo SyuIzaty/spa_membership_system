@@ -525,7 +525,7 @@ class EventParticipantController extends Controller
         }
 
         if ($request->is_icdl == 1 && !$request->modules) {
-            return Redirect()->back()->with('failedNewApplication', 'New Application Failed. At least a module should be selected for ICDL course. Please try again.');
+            return Redirect()->back()->with('failedNewApplication', 'New Application Failed. At least a module should be selected for Modular Short Course. Please try again.');
         }
         if (($request->input_type == 'add' && $request->file('payment_proof_input')) || $request->input_type == 'edit') {
             $existParticipant = Participant::where([
@@ -875,12 +875,14 @@ class EventParticipantController extends Controller
             ->addColumn('action', function ($events) {
                 if ($events->is_verified_payment_proof == 1) {
                     return '
-                    <a href="#" data-target="#crud-modals" data-toggle="modal" data-event_id="' . $events->id . '" data-event_participant_id="' . $events->event_participant_id . '" data-is_verified_payment_proof="' . $events->is_verified_payment_proof . '" data-amount="' . $events->amount . '" class="btn btn-sm btn-primary">Update Payment Proof</a>
-                    <a target="_blank" rel="noopener noreferrer"
-                    href="/feedback/form/participant/' . $events->event_participant_id . '/' . $events->participant_sha1_ic . '"
-                    type="submit" class="btn btn-sm btn-primary"
-                    style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; position: relative; -webkit-text-size-adjust: none; border-radius: 4px; color: #fff; display: inline-block; overflow: hidden; text-decoration: none; background-color: #2d3748; border-bottom: 8px solid #2d3748; border-left: 18px solid #2d3748; border-right: 18px solid #2d3748; border-top: 8px solid #2d3748;">Feedback
-                    Form</a>';
+                    <div class="d-flex justify-content-center">
+                        <a href="#" data-target="#crud-modals" data-toggle="modal" data-event_id="' . $events->id . '" data-event_participant_id="' . $events->event_participant_id . '" data-is_verified_payment_proof="' . $events->is_verified_payment_proof . '" data-amount="' . $events->amount . '" class="btn btn-sm btn-primary">Update Payment Proof</a>
+                        <a target="_blank" rel="noopener noreferrer"
+                        href="/feedback/form/participant/' . $events->event_participant_id . '/' . $events->participant_sha1_ic . '"
+                        type="submit" class="btn btn-sm btn-primary"
+                        style="margin-left:5px; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; position: relative; -webkit-text-size-adjust: none; border-radius: 4px; color: #fff; display: inline-block; overflow: hidden; text-decoration: none; background-color: #2d3748; border-bottom: 8px solid #2d3748; border-left: 18px solid #2d3748; border-right: 18px solid #2d3748; border-top: 8px solid #2d3748;">Feedback
+                        Form</a>
+                    </div>';
                 } else {
                     return '<a href="#" data-target="#crud-modals" data-toggle="modal" data-event_id="' . $events->id . '" data-event_participant_id="' . $events->event_participant_id . '" data-is_verified_payment_proof="' . $events->is_verified_payment_proof . '" data-amount="' . $events->amount . '" class="btn btn-sm btn-primary">Update Payment Proof</a>';
                 }
