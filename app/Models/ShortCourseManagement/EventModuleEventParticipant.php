@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class EventModuleEventParticipant extends Model
 {
     use SoftDeletes;
-    protected $table = 'scm_shortcourse_icdl_module_event_participant';
+    protected $table = 'scm_event_module_event_participant';
     protected $primaryKey = 'id';
     protected $fillable = [
         'name',

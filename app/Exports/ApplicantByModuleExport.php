@@ -38,8 +38,8 @@ class ApplicantByModuleExport implements FromCollection, WithColumnFormatting, W
 
         $this->first_row = 1;
 
-        $participantList = EventModuleEventParticipant::join('scm_shortcourse_icdl_module', 'scm_shortcourse_icdl_module_event_participant.event_module_id', '=', 'scm_shortcourse_icdl_module.id')
-            ->where('scm_shortcourse_icdl_module.shortcourse_id', '=', $this->shortcourse->id)->orderBy('event_module_id')->get(['scm_shortcourse_icdl_module_event_participant.*'])->load(['event_participant.participant', 'event_module']);
+        $participantList = EventModuleEventParticipant::join('scm_event_module', 'scm_event_module_event_participant.event_module_id', '=', 'scm_event_module.id')
+            ->where('scm_event_module.shortcourse_id', '=', $this->shortcourse->id)->orderBy('event_module_id')->get(['scm_event_module_event_participant.*'])->load(['event_participant.participant', 'event_module']);
 
         return collect($participantList);
     }
