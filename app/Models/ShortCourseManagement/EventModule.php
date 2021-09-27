@@ -5,7 +5,7 @@ namespace App\Models\ShortCourseManagement;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ShortCourseICDLModule extends Model
+class EventModule extends Model
 {
     use SoftDeletes;
     protected $table = 'scm_shortcourse_icdl_module';
@@ -13,6 +13,7 @@ class ShortCourseICDLModule extends Model
     protected $fillable = [
         'name',
         'shortcourse_id',
+        'event_id',
         'fee_amount',
         'created_by',
         'created_at',
@@ -30,10 +31,18 @@ class ShortCourseICDLModule extends Model
         'id');
     }
 
-    public function shortcourse_icdl_modules_event_participants()
+    public function event()
     {
-        return $this->hasMany('App\Models\ShortCourseManagement\ShortCourseICDLModuleEventParticipant',
-         'shortcourse_icdl_module_id',
+        //Paramenet 1 belongs to parameter 0
+        return $this->belongsTo('App\Models\ShortCourseManagement\Event',
+        'event_id',
+        'id');
+    }
+
+    public function event_modules_event_participants()
+    {
+        return $this->hasMany('App\Models\ShortCourseManagement\EventModuleEventParticipant',
+         'event_module_id',
          'id');
     }
 }

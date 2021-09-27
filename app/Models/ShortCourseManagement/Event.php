@@ -12,6 +12,7 @@ class Event extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
         'name',
+        'is_modular',
         'description',
         'target_audience',
         'tentative',
@@ -77,5 +78,11 @@ class Event extends Model
     public function event_feedback_set()
     {
         return $this->belongsTo('App\Models\ShortCourseManagement\EventFeedbackSet', 'event_feedback_set_id', 'id');
+    }
+    public function event_modules()
+    {
+        return $this->hasMany('App\Models\ShortCourseManagement\EventModule',
+         'event_id',
+         'id');
     }
 }

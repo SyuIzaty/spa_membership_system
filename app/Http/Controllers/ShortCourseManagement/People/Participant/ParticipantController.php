@@ -203,7 +203,7 @@ class ParticipantController extends Controller
                 $eventParticipant = EventParticipant::where([
                     ['event_id', '=', $event_id],
                     ['participant_id', '=', $existParticipant->id],
-                ])->first()->load(['participant.organisations_participants.organisation', 'fee','shortcourse_icdl_modules_event_participants']);
+                ])->first()->load(['participant.organisations_participants.organisation', 'fee','event_modules_event_participants']);
             } else {
                 $fee = Fee::where([
                     ['event_id', '=', $event_id],

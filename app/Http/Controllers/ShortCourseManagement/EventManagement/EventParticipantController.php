@@ -9,7 +9,7 @@ use App\Models\ShortCourseManagement\Event;
 use App\Models\ShortCourseManagement\Participant;
 use App\Models\ShortCourseManagement\Fee;
 use App\Models\ShortCourseManagement\EventParticipantPaymentProof;
-use App\Models\ShortCourseManagement\ShortCourseICDLModuleEventParticipant;
+use App\Models\ShortCourseManagement\EventModuleEventParticipant;
 use Auth;
 use DateTime;
 use File;
@@ -23,7 +23,7 @@ class EventParticipantController extends Controller
 {
     public function show($id)
     {
-        $event = Event::find($id)->load(['events_participants', 'events_shortcourses.shortcourse.shortcourse_icdl_modules']);
+        $event = Event::find($id)->load(['events_participants', 'events_shortcourses.shortcourse.event_modules']);
 
         $currentApplicants = $event->events_participants
             ->where('is_approved_application', 1)
@@ -42,7 +42,7 @@ class EventParticipantController extends Controller
                 'event',
                 'organization_representative',
                 'participant.organisations_participants.organisation',
-                'shortcourse_icdl_modules_event_participants.shortcourse_icdl_module'
+                'event_modules_event_participants.event_module'
             ]);
 
         $index = 0;
@@ -55,8 +55,8 @@ class EventParticipantController extends Controller
 
             $eventsParticipants[$index]->selected_module = '';
             $moduleIndex=1;
-            foreach ($eventParticipant->shortcourse_icdl_modules_event_participants as $shortcourse_icdl_module_event_participant) {
-                $eventsParticipants[$index]->selected_modules = ($eventsParticipants[$index]->selected_modules) . $moduleIndex . ') '.($shortcourse_icdl_module_event_participant->shortcourse_icdl_module->name) . '<br>';
+            foreach ($eventParticipant->event_modules_event_participants as $event_module_event_participant) {
+                $eventsParticipants[$index]->selected_modules = ($eventsParticipants[$index]->selected_modules) . $moduleIndex . ') '.($event_module_event_participant->event_module->name) . '<br>';
                 $moduleIndex++;
             }
             $index++;
@@ -532,7 +532,7 @@ class EventParticipantController extends Controller
             ]);
         }
 
-        if ($request->is_icdl == 1 && !$request->modules) {
+        if ($request->is_modular == 1 && !$request->modules) {
             return Redirect()->back()->with('failedNewApplication', 'New Application Failed. At least a module should be selected for Modular Short Course. Please try again.');
         }
         if (($request->input_type == 'add' && $request->file('payment_proof_input')) || $request->input_type == 'edit') {
@@ -653,32 +653,32 @@ class EventParticipantController extends Controller
             }
             // End payment proof
 
-            // if ($request->is_icdl == 1) {
+            // if ($request->is_modular == 1) {
             //     foreach ($request->modules as $module) {
-            //         $participantModule = ShortCourseICDLModuleEventParticipant::where([['shortcourse_icdl_module_id', '=', $module], ['event_participant_id', '=', $existEventParticipant->id]])->first();
+            //         $participantModule = EventModuleEventParticipant::where([['event_module_id', '=', $module], ['event_participant_id', '=', $existEventParticipant->id]])->first();
             //         if (!$participantModule) {
-            //             ShortCourseICDLModuleEventParticipant::create([
-            //                 'shortcourse_icdl_module_id' => $module,
+            //             EventModuleEventParticipant::create([
+            //                 'event_module_id' => $module,
             //                 'event_participant_id' => $existEventParticipant->id,
             //                 'created_by' => Auth::user() ? Auth::user()->id : 'public_user',
             //             ]);
             //         }
             //     }
             // }
-            if ($request->is_icdl == 1) {
-                $participantModuleAll = ShortCourseICDLModuleEventParticipant::where([['event_participant_id', '=', $existEventParticipant->id]])->get();
+            if ($request->is_modular == 1) {
+                $participantModuleAll = EventModuleEventParticipant::where([['event_participant_id', '=', $existEventParticipant->id]])->get();
                 // dd($participantModuleAll);
                 foreach ($request->modules as $module) {
                     $moduleExist = false;
                     foreach ($participantModuleAll as $participantModule) {
-                        if ($module == $participantModule->shortcourse_icdl_module_id) {
+                        if ($module == $participantModule->event_module_id) {
                             $moduleExist = true;
                             break;
                         }
                     }
                     if ($moduleExist == false) {
-                        ShortCourseICDLModuleEventParticipant::create([
-                            'shortcourse_icdl_module_id' => $module,
+                        EventModuleEventParticipant::create([
+                            'event_module_id' => $module,
                             'event_participant_id' => $existEventParticipant->id,
                             'created_by' => Auth::user() ? Auth::user()->id : 'public_user',
                         ]);
@@ -687,7 +687,7 @@ class EventParticipantController extends Controller
                 foreach ($participantModuleAll as $participantModule) {
                     $moduleNotExist = false;
                     foreach ($request->modules as $module) {
-                        if ($module == $participantModule->shortcourse_icdl_module_id) {
+                        if ($module == $participantModule->event_module_id) {
                             $moduleNotExist = true;
                             break;
                         }

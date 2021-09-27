@@ -107,6 +107,37 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
+                                                                <td>Event Type</td>
+                                                                <td name="event_type_show" id="event_type_show">
+                                                                    {{ $event->is_modular == 0 ? 'Regular Event' : 'Modular Event' }}
+                                                                </td>
+                                                                <td name="event_type_edit" id="event_type_edit"
+                                                                    style="display: none">
+                                                                    <div class="form-group">
+                                                                        <select class="form-control event_type "
+                                                                            name="event_type" id="event_type"
+                                                                            data-select2-id="event_type" tabindex="-1"
+                                                                            aria-hidden="true">
+                                                                            <option value="0"
+                                                                                {{ $event->is_modular == 0 ? 'Selected' : '' }}>
+                                                                                Regular Event
+                                                                            </option>
+                                                                            <option value="1"
+                                                                                {{ $event->is_modular == 1 ? 'Selected' : '' }}>
+                                                                                Modular Event
+                                                                            </option>
+                                                                        </select>
+                                                                        @error('event_type')
+                                                                            <p style="color: red">
+                                                                                <strong> *
+                                                                                    {{ $message }}
+                                                                                </strong>
+                                                                            </p>
+                                                                        @enderror
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
                                                                 <td>Date Start</td>
                                                                 <td name="datetime_start_show" id="datetime_start_show">
                                                                     {{ date('d/m/Y h:i A', strtotime($event->datetime_start)) }}
@@ -917,7 +948,7 @@
                                                                 </td>
                                                                 <td>{{ $events_shortcourses->shortcourse->name }}
                                                                 </td>
-                                                                <td>{{ $events_shortcourses->shortcourse->is_icdl==0? 'Regular Short Course':'Modular Short Course'}}
+                                                                <td>{{ $events_shortcourses->shortcourse->is_modular == 0 ? 'Regular Short Course' : 'Modular Short Course' }}
                                                                 </td>
                                                                 <td>
                                                                     <form method="post"
@@ -1042,6 +1073,118 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                <table class="table table-striped table-bordered m-0" id="module_field"
+                                                    {{ !$event->is_modular ?? 'style="display:none"' }}>
+                                                    <thead class="thead">
+                                                        <tr class=" bg-primary-50">
+                                                            <th colspan="3"><b>List of Modules</b></th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Name</th>
+                                                            <th>Fee (RM)</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($event->event_modules as $event_module)
+                                                            <tr>
+                                                                <td>{{ $event_module->name }}
+                                                                </td>
+                                                                <td>{{ $event_module->fee_amount }}
+                                                                </td>
+                                                                <td>
+                                                                    <a href="#"
+                                                                        class="btn btn-sm btn-info float-right mr-2"
+                                                                        name="edit-module" id="edit-module"
+                                                                        data-target="#edit-module-modal" data-toggle="modal"
+                                                                        data-id={{ $event_module->id }}
+                                                                        data-name='{{ $event_module->name }}'
+                                                                        data-fee_amount='{{ $event_module->fee_amount }}'>
+                                                                        <i class="fal fa-pencil"></i>
+                                                                    </a>
+                                                                    <form method="post"
+                                                                        action="/event/event_module/remove/{{ $event_module->id }}">
+                                                                        @csrf
+                                                                        <button type="submit"
+                                                                            class="btn btn-sm btn-danger float-right mr-2">
+                                                                            <i class="ni ni-close"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                                <div class="modal fade" id="edit-module-modal" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="card-header">
+                                                                <h5 class="card-title w-150">Edit
+                                                                    Module</h5>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form action="{{ url('/events/module/update') }}"
+                                                                    method="post" name="form">
+                                                                    @csrf
+                                                                    <p><span class="text-danger">*</span>
+                                                                        Required Field</p>
+                                                                    <hr class="mt-1 mb-2">
+                                                                    <div id="form">
+                                                                        <input type="number" name="module_id" id="module_id"
+                                                                            style="display:none">
+                                                                        <div class="form-group">
+                                                                            <label class="form-label"
+                                                                                for="module_name"><span
+                                                                                    class="text-danger">*</span>Name</label>
+                                                                            <input type="text" class="form-control"
+                                                                                id="module_name" name="module_name">
+                                                                            @error('module_name')
+                                                                                <p style="color: red">
+                                                                                    <strong> *
+                                                                                        {{ $message }}
+                                                                                    </strong>
+                                                                                </p>
+                                                                            @enderror
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label class="form-label"
+                                                                                for="module_fee_amount"><span
+                                                                                    class="text-danger">*</span>Fee
+                                                                                Amount (RM)</label>
+                                                                            <input type="number" step=".01"
+                                                                                class="form-control"
+                                                                                id="module_fee_amount"
+                                                                                name="module_fee_amount">
+                                                                            @error('module_fee_amount')
+                                                                                <p style="color: red">
+                                                                                    <strong> *
+                                                                                        {{ $message }}
+                                                                                    </strong>
+                                                                                </p>
+                                                                            @enderror
+                                                                        </div>
+                                                                    </div>
+                                                                    <hr class="mt-1 mb-2">
+                                                                    <div class="footer">
+                                                                        <button type="button"
+                                                                            class="btn btn-danger ml-auto float-right mr-2"
+                                                                            data-dismiss="modal" id="close-edit-fee"><i
+                                                                                class="fal fa-window-close"></i>
+                                                                            Close</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary ml-auto float-right mr-2"><i
+                                                                                class="ni ni-plus"></i>
+                                                                            Update</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <a href="javascript:;" name="addModule" id="addModule"
+                                                    class="btn btn-primary btn-sm ml-auto float-right my-2">Add
+                                                    More Module</a>
                                                 <hr class="mt-2 mb-3">
                                             </div>
                                         </div>
@@ -1180,19 +1323,20 @@
                                         </div>
                                         <hr class="mt-2 mb-3">
                                         <div class="card"
-                                            {{ $event->events_shortcourses[0]->shortcourse->is_icdl == 0 ? 'style=display:none;' : '' }}>
+                                            {{ $event->events_shortcourses[0]->shortcourse->is_modular == 0 ? 'style=display:none;' : '' }}>
                                             <div class="card-header bg-primary-50"><b>Application By Module</b></div>
                                             <div class="card-body">
                                                 <div class="row d-flex align-items-center justify-content-center">
 
-                                                    @foreach ($event->events_shortcourses[0]->shortcourse->shortcourse_icdl_modules as $shortcourse_icdl_module)
+                                                    @foreach ($event->events_shortcourses[0]->shortcourse->event_modules as $event_module)
                                                         <div class="col-sm-6 col-xl-3">
                                                             <div
                                                                 class="p-3 bg-primary-500 rounded overflow-hidden position-relative text-white mb-g">
                                                                 <div class="___class_+?263___">
                                                                     <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                                                                        {{ $shortcourse_icdl_module->totalApplication }}
-                                                                        <small class="m-0 l-h-n">{{$shortcourse_icdl_module->name}}</small>
+                                                                        {{ $event_module->totalApplication }}
+                                                                        <small
+                                                                            class="m-0 l-h-n">{{ $event_module->name }}</small>
                                                                     </h3>
                                                                 </div>
                                                                 <i class="fal fa-users position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1"
@@ -1451,7 +1595,7 @@
                 document.getElementById("add-shortcourse").addEventListener("click", function(event) {
                     event.preventDefault()
                 });
-                $('.venue, .event_feedback_set').select2();
+                $('.venue, .event_feedback_set, .event_type').select2();
                 $('.user').select2({
                     dropdownParent: $('#crud-modal-add-trainer, #crud-modal-add-contact_person')
                 });
@@ -1465,6 +1609,9 @@
                 $("#edit-basic").click(function(e) {
                     $("#name_show").hide();
                     $("#name_edit").show();
+
+                    $("#event_type_show").hide();
+                    $("#event_type_edit").show();
 
                     $("#datetime_start_show").hide();
                     $("#datetime_start_edit").show();
@@ -1495,6 +1642,8 @@
                     $("#name_show").show();
                     $("#name_edit").hide();
 
+                    $("#event_type_show").show();
+                    $("#event_type_edit").hide();
 
                     $("#datetime_start_show").show();
                     $("#datetime_start_edit").hide();
@@ -1924,6 +2073,79 @@
 
                 });
             }
+
+
+            // Edit Module Modal
+            {
+                $('#edit-module-modal').on('show.bs.modal', function(event) {
+                    var button = $(event.relatedTarget)
+                    var id = button.data('id');
+                    var name = button.data('name');
+                    var amount = button.data('fee_amount');
+
+                    $('.modal-body #module_id').val(id);
+                    $('.modal-body #module_name').val(name);
+                    $('.modal-body #module_fee_amount').val(amount);
+                });
+            }
+            var i = 1;
+            $('#addModule').click(function() {
+                i++;
+                $('#module_field tbody').after(`
+                            <tr id="new-row">
+                                <td>
+                                    <input id="add_module" name="event_module" type="text" class="form-control" placeholder="Insert Module Name">
+                                </td>
+
+                                <td>
+                                    <input id="module_fee_amount" name="module_fee_amount" type="text" class="form-control" value='0.00'>
+                                </td>
+                                <td class="d-flex flex-row-reverse ">
+                                    <a href="javascript:;" name="cancel-module" id="cancel-module" class="btn btn-sm btn-danger btn_remove mx-1">X</a>
+                                    <a
+                                        href="javascript:;"
+                                        class="btn btn-sm btn-success mx-1"
+                                        name="save-module" id="save-module">
+                                        <i class="fal fa-save"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                    `);
+                $(`.module${i}`).select2();
+                $('#addModule').hide();
+
+                $(document).on('click', '#cancel-module', function() {
+                    $('#new-row').remove();
+                    $("#addModule").show();
+                });
+
+
+                $(document).on('click', '#save-module', function() {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    var $shortcourse_module = $('#add_module').val();
+
+                    var $module_fee_amount = $('#module_fee_amount').val();
+                    var data = {
+                        shortcourse_module: $shortcourse_module,
+                        module_fee_amount: $module_fee_amount
+                    }
+                    var url = '/event/module/attached/' + event_id;
+
+                    $.post(url, data).done(function() {
+                            window.location.reload();
+                        })
+                        .fail(function() {
+                            $('#new-row').show();
+                            $("#addModule").remove();
+                            alert('Unable to add module');
+                        });
+                });
+            });
 
         }
 

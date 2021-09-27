@@ -105,23 +105,23 @@
 
                         <div class="form-group" id="modular_form" style="display:none">
 
-                            <input id="is_icdl" name="is_icdl" type="number"
-                                value={{ $event->events_shortcourses[0]->shortcourse->is_icdl }} hidden>
+                            <input id="is_modular" name="is_modular" type="number"
+                                value={{ $event->events_shortcourses[0]->shortcourse->is_modular }} hidden>
                             <div class="form-group add-participant__module"
-                                {{ $event->events_shortcourses[0]->shortcourse->is_icdl == 1 ? '' : 'style=display:none' }}>
+                                {{ $event->events_shortcourses[0]->shortcourse->is_modular == 1 ? '' : 'style=display:none' }}>
                                 <hr class="mt-1 mb-2">
 
                                 <label class="form-label" for="modules"><span
                                         class="text-danger">*</span>Modules</label>
-                                @foreach ($event->events_shortcourses[0]->shortcourse->shortcourse_icdl_modules as $shortcourse_icdl_module)
+                                @foreach ($event->events_shortcourses[0]->shortcourse->event_modules as $event_module)
                                     <div class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input"
-                                            id="module-{{ $shortcourse_icdl_module->id }}" name="modules[]"
-                                            value={{ $shortcourse_icdl_module->id }}
-                                            data-fee_amount="{{ $shortcourse_icdl_module->fee_amount }}">
+                                            id="module-{{ $event_module->id }}" name="modules[]"
+                                            value={{ $event_module->id }}
+                                            data-fee_amount="{{ $event_module->fee_amount }}">
                                         <label class="custom-control-label"
-                                            for="module-{{ $shortcourse_icdl_module->id }}">{{ $shortcourse_icdl_module->name }}
-                                            (+RM{{ $shortcourse_icdl_module->fee_amount }})</label>
+                                            for="module-{{ $event_module->id }}">{{ $event_module->name }}
+                                            (+RM{{ $event_module->fee_amount }})</label>
                                     </div>
                                 @endforeach
                             </div>
@@ -311,9 +311,9 @@
                     $('#promo_code_edit_remove').hide();
 
                     $('.modal-body #application_update_submit').hide();
-                    if (data.shortcourse_icdl_modules_event_participants) {
-                        data.shortcourse_icdl_modules_event_participants.forEach((x) => {
-                            $('.modal-body #module-' + x.shortcourse_icdl_module_id)
+                    if (data.event_modules_event_participants) {
+                        data.event_modules_event_participants.forEach((x) => {
+                            $('.modal-body #module-' + x.event_module_id)
                                 .prop('checked', true);
 
                         });
@@ -604,8 +604,8 @@
                 $('#input_type').val('add');
                 $("#modular_form").hide();
                 $("#fee_form").hide();
-                if (event.events_shortcourses[0].shortcourse.is_icdl) {
-                    event.events_shortcourses[0].shortcourse.shortcourse_icdl_modules.forEach((x) => {
+                if (event.events_shortcourses[0].shortcourse.is_modular) {
+                    event.events_shortcourses[0].shortcourse.event_modules.forEach((x) => {
                         $('.modal-body #module-' + x.id).prop('checked', false);
                     });
                 }
@@ -631,8 +631,8 @@
 
 
 
-                if (event.events_shortcourses[0].shortcourse.is_icdl) {
-                    event.events_shortcourses[0].shortcourse.shortcourse_icdl_modules.forEach((x) => {
+                if (event.events_shortcourses[0].shortcourse.is_modular) {
+                    event.events_shortcourses[0].shortcourse.event_modules.forEach((x) => {
                         $('.modal-body #module-' + x.id).prop('checked', false);
                     });
                 }

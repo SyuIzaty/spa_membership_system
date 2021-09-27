@@ -279,7 +279,7 @@
                                                                                         <th>Name</th>
                                                                                         <th>Phone</th>
                                                                                         <th>Email</th>
-                                                                                        <th {{$event->events_shortcourses[0]->shortcourse->is_icdl==1? '':"hidden"}}>Module</th>
+                                                                                        <th {{$event->events_shortcourses[0]->shortcourse->is_modular==1? '':"hidden"}}>Module</th>
                                                                                         <th>Date Apply</th>
                                                                                         <th>Action</th>
                                                                                     </tr>
@@ -1103,7 +1103,7 @@
                 // all applicants
 
                 {
-                    if(eventJson.events_shortcourses[0].shortcourse.is_icdl==0){
+                    if(eventJson.events_shortcourses[0].shortcourse.is_modular==0){
                         var tableAllApplicant = $('#table-all-applicant').DataTable({
                         columnDefs: [{
                             targets: [1],

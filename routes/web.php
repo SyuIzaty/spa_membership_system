@@ -291,7 +291,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/shortcourse', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@store');
     Route::post('/shortcourse/event', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@storeShortCourseEvent');
     Route::post('/shortcourse/module/attached/{id}', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@storeModule');
-    Route::post('/shortcourse/shortcourse_icdl_module/remove/{id}', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@removeModule');
+    Route::post('/shortcourse/event_module/remove/{id}', 'ShortCourseManagement\Catalogues\ShortCourse\ShortCourseController@removeModule');
 
     //SCM - EventParticipant
     Route::get('/event/{id}/events-participants/show', 'ShortCourseManagement\EventManagement\EventParticipantController@show');
@@ -332,6 +332,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/event/participant-list/{id}', 'ShortCourseManagement\EventManagement\EventController@participantList')->name('participantList');
     Route::get('/event/report/{id}', 'ShortCourseManagement\EventManagement\EventController@eventReport')->name('event-report');
     Route::post('/events/module/update', 'ShortCourseManagement\EventManagement\EventController@eventModuleUpdate');
+    Route::post('/event/event_module/remove/{id}', 'ShortCourseManagement\EventManagement\EventController@removeModule');
+    Route::post('/event/module/attached/{id}', 'ShortCourseManagement\EventManagement\EventController@storeModule');
 
     Route::get('/event/{event_id}/update-event-status-category/{event_status_category_id}', 'ShortCourseManagement\EventManagement\EventController@updateEventStatus');
     Route::post('/event/updatePoster', 'ShortCourseManagement\EventManagement\EventController@updatePoster')->name('store.poster');

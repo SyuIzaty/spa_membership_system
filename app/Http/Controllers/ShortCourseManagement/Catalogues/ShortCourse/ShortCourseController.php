@@ -5,7 +5,7 @@ namespace App\Http\Controllers\ShortCourseManagement\Catalogues\ShortCourse;
 use App\Models\ShortCourseManagement\ShortCourse;
 use App\Models\ShortCourseManagement\Topic;
 use App\Models\ShortCourseManagement\TopicShortCourse;
-use App\Models\ShortCourseManagement\ShortCourseICDLModule;
+use App\Models\ShortCourseManagement\EventModule;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DateTime;
@@ -150,7 +150,7 @@ class ShortCourseController extends Controller
 
         $update = ShortCourse::find($id)->update([
             'name' => $request->name,
-            'is_icdl' => $request->shortcourse_type,
+            'is_modular' => $request->shortcourse_type,
             'description' => $request->description,
             'objective' => $request->objective,
             'updated_by' => Auth::user()->id,
@@ -212,7 +212,7 @@ class ShortCourseController extends Controller
             'shortcourse_module.required' => 'Please insert module name',
         ]);
 
-        $create = ShortCourseICDLModule::create([
+        $create = EventModule::create([
             'name' => $request->shortcourse_module,
             'shortcourse_id' => $id,
             'fee_amount' => $request->module_fee_amount,
@@ -225,7 +225,7 @@ class ShortCourseController extends Controller
     public function removeModule(Request $request, $id)
     {
 
-        $exist = ShortCourseICDLModule::find($id);
+        $exist = EventModule::find($id);
         if (Auth::user()->id) {
             $exist->updated_by = Auth::user()->id;
             $exist->deleted_by = Auth::user()->id;
@@ -256,14 +256,14 @@ class ShortCourseController extends Controller
             'name' => $request->shortcourse_name_new,
             'description' => $request->description,
             'objective' => $request->objective,
-            'is_icdl' => $request->shortcourse_type,
+            'is_modular' => $request->shortcourse_type,
             'created_by' => Auth::user()->id,
         ]);
 
         $index=0;
 
         foreach ($request->shortcourse_modules as $shortcourse_module){
-            $createModule = ShortCourseICDLModule::create([
+            $createModule = EventModule::create([
                 'name' => $shortcourse_module,
                 'shortcourse_id' => $createShortCourse->id,
                 'fee_amount' => $request->module_fee_amounts[$index],

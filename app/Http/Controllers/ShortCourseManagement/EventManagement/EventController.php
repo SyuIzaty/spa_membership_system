@@ -21,10 +21,10 @@ use App\Models\ShortCourseManagement\Topic;
 use App\Models\ShortCourseManagement\EventStatusCategory;
 use App\Models\ShortCourseManagement\VenueType;
 use App\Models\ShortCourseManagement\EventFeedbackSet;
-use App\Models\ShortCourseManagement\ShortCourseICDLModuleEventParticipant;
+use App\Models\ShortCourseManagement\EventModuleEventParticipant;
 
 use App\Exports\ApplicantByModuleExport;
-use App\Models\ShortCourseManagement\ShortCourseICDLModule;
+use App\Models\ShortCourseManagement\EventModule;
 use Maatwebsite\Excel\Facades\Excel;
 
 use Barryvdh\DomPDF\Facade as PDF;
@@ -103,7 +103,7 @@ class EventController extends Controller
             ->addColumn('document', function ($events) {
                 if (isset($events->events_shortcourses[0])) {
 
-                    if ($events->events_shortcourses[0]->shortcourse->is_icdl == 1) {
+                    if ($events->events_shortcourses[0]->shortcourse->is_modular == 1) {
                         return '
                         <div style="display:flex;">
                         <a href="/event/participant-list/' . $events->id . '" class="btn btn-info btn-lg btn-icon waves-effect waves-themed"><i class="ni ni-note"></i></a><br/><br/>
@@ -310,16 +310,17 @@ class EventController extends Controller
         $event = Event::find($createEvent->id)->load([
             'events_participants',
             'venue',
-            'events_shortcourses.shortcourse.shortcourse_icdl_modules',
+            'events_shortcourses.shortcourse.event_modules',
             'events_trainers.trainer',
-            'fees'
+            'fees',
+            'event_modules',
         ]);
 
-        if ($event->events_shortcourses[0]->shortcourse->is_icdl == 1) {
+        if ($event->is_modular == 1) {
             $index_module = 0;
 
-            foreach ($event->events_shortcourses[0]->shortcourse->shortcourse_icdl_modules as $shortcourse_icdl_module) {
-                $event->events_shortcourses[0]->shortcourse->shortcourse_icdl_modules[$index_module]->totalApplication = ShortCourseICDLModuleEventParticipant::where('shortcourse_icdl_module_id', $shortcourse_icdl_module->id)->get()->count();
+            foreach ($event->event_modules as $event_module) {
+                $event->event_modules[$index_module]->totalApplication = EventModuleEventParticipant::where('event_module_id', $event_module->id)->get()->count();
                 $index_module++;
             }
         }
@@ -342,12 +343,13 @@ class EventController extends Controller
         $event = Event::find($id)->load([
             'events_participants',
             'venue',
-            'events_shortcourses.shortcourse.shortcourse_icdl_modules',
+            'events_shortcourses.shortcourse.event_modules',
             'events_trainers.trainer',
             'fees',
             'event_status_category',
             'events_contact_persons.contact_person',
-            'event_feedback_set'
+            'event_feedback_set',
+            'event_modules',
         ]);
 
         $statistics['wait_for_application_approval'] = $event->events_participants
@@ -439,11 +441,11 @@ class EventController extends Controller
             $event_contact_person->contact_person->user = User::find($event_contact_person->contact_person->user_id);
         }
 
-        if ($event->events_shortcourses[0]->shortcourse->is_icdl == 1) {
+        if ($event->is_modular == 1) {
             $index_module = 0;
 
-            foreach ($event->events_shortcourses[0]->shortcourse->shortcourse_icdl_modules as $shortcourse_icdl_module) {
-                $event->events_shortcourses[0]->shortcourse->shortcourse_icdl_modules[$index_module]->totalApplication = ShortCourseICDLModuleEventParticipant::where('shortcourse_icdl_module_id', $shortcourse_icdl_module->id)->get()->count();
+            foreach ($event->event_modules as $event_module) {
+                $event->event_modules[$index_module]->totalApplication = EventModuleEventParticipant::where('event_module_id', $event_module->id)->get()->count();
                 $index_module++;
             }
         }
@@ -460,6 +462,7 @@ class EventController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|max:255',
+            'is_modular' => 'required',
             'datetime_start' => 'required',
             'datetime_end' => 'required',
             'venue' => 'required',
@@ -476,6 +479,7 @@ class EventController extends Controller
 
         $update = Event::find($id)->update([
             'name' => $request->name,
+            'is_modular' => $request->is_modular,
             'datetime_start' => $request->datetime_start,
             'datetime_end' => $request->datetime_end,
             'venue_id' => $request->venue,
@@ -760,7 +764,7 @@ class EventController extends Controller
         $event = Event::find($id)->load([
             'events_participants',
             'venue',
-            'events_shortcourses.shortcourse.shortcourse_icdl_modules',
+            'events_shortcourses.shortcourse.event_modules',
             'events_trainers.trainer',
             'fees',
             'events_contact_persons.contact_person'
@@ -1111,12 +1115,48 @@ class EventController extends Controller
             'module_fee_amount' => 'required'
         ]);
 
-        $shortcourse_icdl_module=ShortCourseICDLModule::find($request->module_id)->update([
+        $event_module=EventModule::find($request->module_id)->update([
             'name' => $request->module_name,
             'fee_amount' => $request->module_fee_amount,
             'updated_by' => Auth::user()->id
         ]);
 
         return Redirect()->back()->with('successUpdate', 'Short Course Module Updated Successfully');
+    }
+
+    public function removeModule(Request $request, $id)
+    {
+
+        $exist = EventModule::find($id);
+        if (Auth::user()->id) {
+            $exist->updated_by = Auth::user()->id;
+            $exist->deleted_by = Auth::user()->id;
+        } else {
+            $exist->updated_by = "public_user";
+            $exist->deleted_by = "public_user";
+        }
+        $exist->save();
+        $exist->delete();
+
+        return Redirect()->back()->with('successUpdate', 'A Module has been deleted from the Short Course Successfully');
+    }
+
+    public function storeModule(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'shortcourse_module' => 'required',
+            'module_fee_amount' => 'required',
+        ], [
+            'shortcourse_module.required' => 'Please insert module name',
+        ]);
+
+        $create = EventModule::create([
+            'name' => $request->shortcourse_module,
+            'event_id' => $id,
+            'fee_amount' => $request->module_fee_amount,
+            'created_by' => Auth::user()->id,
+            'is_active' => 1,
+        ]);
+        return $create;
     }
 }

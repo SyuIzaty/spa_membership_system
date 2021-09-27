@@ -93,7 +93,7 @@
                                                             <tr>
                                                                 <td>Short Course Type</td>
                                                                 <td name="shortcourse_type_show" id="shortcourse_type_show">
-                                                                    {{ $shortcourse->is_icdl == 0 ? 'Regular Short Course' : 'Modular Short Course' }}
+                                                                    {{ $shortcourse->is_modular == 0 ? 'Regular Short Course' : 'Modular Short Course' }}
                                                                 </td>
                                                                 <td name="shortcourse_type_edit" id="shortcourse_type_edit"
                                                                     style="display: none">
@@ -103,11 +103,11 @@
                                                                             data-select2-id="shortcourse_type" tabindex="-1"
                                                                             aria-hidden="true">
                                                                             <option value="0"
-                                                                                {{ $shortcourse->is_icdl == 0 ?? 'Selected' }}>
+                                                                                {{ $shortcourse->is_modular == 0 ? 'Selected' : '' }}>
                                                                                 Regular Short Course
                                                                             </option>
                                                                             <option value="1"
-                                                                                {{ $shortcourse->is_icdl == 1 ?? 'Selected' }}>
+                                                                                {{ $shortcourse->is_modular == 1 ? 'Selected' : '' }}>
                                                                                 Modular Short Course
                                                                             </option>
                                                                         </select>
@@ -201,7 +201,7 @@
                                                     More Topic</a>
                                                 <hr class="mt-2 mb-3">
                                                 <table class="table table-striped table-bordered m-0" id="module_field"
-                                                    {{ !$shortcourse->is_icdl ?? 'style="display:none"' }}>
+                                                    {{ !$shortcourse->is_modular ?? 'style="display:none"' }}>
                                                     <thead class="thead">
                                                         <tr class=" bg-primary-50">
                                                             <th colspan="3"><b>List of Modules</b></th>
@@ -213,23 +213,23 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @foreach ($shortcourse->shortcourse_icdl_modules as $shortcourse_icdl_module)
+                                                        @foreach ($shortcourse->event_modules as $event_module)
                                                             <tr>
-                                                                <td>{{ $shortcourse_icdl_module->name }}
+                                                                <td>{{ $event_module->name }}
                                                                 </td>
-                                                                <td>{{ $shortcourse_icdl_module->fee_amount }}
+                                                                <td>{{ $event_module->fee_amount }}
                                                                 </td>
                                                                 <td>
                                                                     <a href="#" class="btn btn-sm btn-info float-right mr-2"
                                                                         name="edit-module" id="edit-module"
                                                                         data-target="#edit-module-modal" data-toggle="modal"
-                                                                        data-id={{ $shortcourse_icdl_module->id }}
-                                                                        data-name='{{ $shortcourse_icdl_module->name }}'
-                                                                        data-fee_amount='{{ $shortcourse_icdl_module->fee_amount }}'>
+                                                                        data-id={{ $event_module->id }}
+                                                                        data-name='{{ $event_module->name }}'
+                                                                        data-fee_amount='{{ $event_module->fee_amount }}'>
                                                                         <i class="fal fa-pencil"></i>
                                                                     </a>
                                                                     <form method="post"
-                                                                        action="/shortcourse/shortcourse_icdl_module/remove/{{ $shortcourse_icdl_module->id }}">
+                                                                        action="/shortcourse/event_module/remove/{{ $event_module->id }}">
                                                                         @csrf
                                                                         <button type="submit"
                                                                             class="btn btn-sm btn-danger float-right mr-2">

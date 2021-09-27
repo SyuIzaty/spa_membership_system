@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\ShortCourseManagement\ShortCourseICDLModuleEventParticipant;
+use App\Models\ShortCourseManagement\EventModuleEventParticipant;
 use App\Models\ShortCourseManagement\Event;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
@@ -38,8 +38,8 @@ class ApplicantByModuleExport implements FromCollection, WithColumnFormatting, W
 
         $this->first_row = 1;
 
-        $participantList = ShortCourseICDLModuleEventParticipant::join('scm_shortcourse_icdl_module', 'scm_shortcourse_icdl_module_event_participant.shortcourse_icdl_module_id', '=', 'scm_shortcourse_icdl_module.id')
-            ->where('scm_shortcourse_icdl_module.shortcourse_id', '=', $this->shortcourse->id)->orderBy('shortcourse_icdl_module_id')->get(['scm_shortcourse_icdl_module_event_participant.*'])->load(['event_participant.participant', 'shortcourse_icdl_module']);
+        $participantList = EventModuleEventParticipant::join('scm_shortcourse_icdl_module', 'scm_shortcourse_icdl_module_event_participant.event_module_id', '=', 'scm_shortcourse_icdl_module.id')
+            ->where('scm_shortcourse_icdl_module.shortcourse_id', '=', $this->shortcourse->id)->orderBy('event_module_id')->get(['scm_shortcourse_icdl_module_event_participant.*'])->load(['event_participant.participant', 'event_module']);
 
         return collect($participantList);
     }
@@ -61,7 +61,7 @@ class ApplicantByModuleExport implements FromCollection, WithColumnFormatting, W
     // {
     //     return [
     //         'Id',
-    //         'shortcourse_icdl_module_id',
+    //         'event_module_id',
     //         'event_participant_id',
     //         'created_at',
     //         'created_by',
@@ -72,7 +72,7 @@ class ApplicantByModuleExport implements FromCollection, WithColumnFormatting, W
     // {
     //     return [
     //         $collection->id,
-    //         $collection->shortcourse_icdl_module_id,
+    //         $collection->event_module_id,
     //         $collection->event_participant_id,
     //         Date::dateTimeToExcel($collection->created_at),
     //         $collection->created_by,
@@ -92,7 +92,7 @@ class ApplicantByModuleExport implements FromCollection, WithColumnFormatting, W
     public function map($collection): array
     {
         $participants = [
-            $collection->shortcourse_icdl_module->name,
+            $collection->event_module->name,
             $collection->event_participant->participant->ic,
             $collection->event_participant->participant->name,
             $collection->event_participant->participant->created_at
