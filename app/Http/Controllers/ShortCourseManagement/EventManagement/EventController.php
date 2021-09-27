@@ -103,7 +103,7 @@ class EventController extends Controller
             ->addColumn('document', function ($events) {
                 if (isset($events->events_shortcourses[0])) {
 
-                    if ($events->events_shortcourses[0]->shortcourse->is_modular == 1) {
+                    if ($events->is_modular == 1) {
                         return '
                         <div style="display:flex;">
                         <a href="/event/participant-list/' . $events->id . '" class="btn btn-info btn-lg btn-icon waves-effect waves-themed"><i class="ni ni-note"></i></a><br/><br/>

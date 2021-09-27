@@ -118,6 +118,67 @@
                                                         @enderror
                                                     </td>
                                                 </tr>
+
+                                                <tr class="row" id="form-add-shortcourse-second-part"
+                                                    {{ old('shortcourse_id') ? null : 'style=display:none' }}>
+                                                    <td class="col col-lg-2 px-4">
+                                                        {{ Form::label('title', 'Event Type **', ['style' => 'font-weight:bold']) }}
+                                                    </td>
+                                                    <td class="col px-4">
+                                                        <select class="form-control event_type" name="event_type"
+                                                            id="event_type">
+                                                            <option disabled selected>Select Event Type</option>
+                                                            <option value=0 name="event_type"
+                                                                {{ old('event_type') == 0 ? 'selected' : null }}>
+                                                                Regular Event
+                                                            </option>
+
+                                                            <option value=1 name="event_type"
+                                                                {{ old('event_type') == 1 ? 'selected' : null }}>
+                                                                Modular Event
+                                                            </option>
+                                                        </select>
+                                                        @error('event_type')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
+                                                    </td>
+                                                </tr>
+                                                <tr class="row" id="form-add-shortcourse-second-part-event-type"
+                                                    {{ old('shortcourse_id') || old('event_type') == 1 ? null : 'style=display:none' }}>
+                                                    <td class="col col-lg-2 px-4">
+                                                        {{ Form::label('title', 'Event Module **', ['style' => 'font-weight:bold']) }}
+                                                    </td>
+                                                    <td class="col px-4">
+                                                        <div id="form_event_module">
+
+                                                            <div class="row" style="justify-content: center;">
+                                                                <div class="column" style="width: 60%;">
+                                                                    <input id="event_module" name="event_module" type="text"
+                                                                        class="form-control"
+                                                                        placeholder="Insert Module Name">
+                                                                </div>
+
+                                                                <div class="column" style="width: 20%;">
+                                                                    <input id="event_module_fee_amount"
+                                                                        name="event_module_fee_amount" type="text"
+                                                                        class="form-control" value='0.00'>
+                                                                </div>
+
+                                                                <div class="d-flex flex-row-reverse column"
+                                                                    style="width: 15%;">
+                                                                    <a href="javascript:;" name="cancel-event-module"
+                                                                        id="cancel-event-module"
+                                                                        class="btn btn-sm btn-danger btn_remove mx-1">X</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <a href="javascript:;" name="addEventModule" id="addEventModule"
+                                                            class="btn btn-primary btn-sm ml-auto float-right my-2">Add
+                                                            More Module</a>
+                                                    </td>
+
+                                                </tr>
                                                 <tr class="row">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Event Date and Time (Start) **', ['style' => 'font-weight:bold']) }}
@@ -624,6 +685,9 @@
                 editor_shortcourse_description.setData('');
                 editor_shortcourse_objective.setData('');
 
+                $('#event_type').val(0); // Select the option with a value of '1'
+                $('#event_type').trigger('change');
+
                 var rowCount = $('#topic_field tr').length;
                 while (rowCount > 1) {
                     $(`#row${rowCount}`).remove();
@@ -650,6 +714,7 @@
 
                 shortcourse_description = selected_shortcourse.description;
                 shortcourse_objective = selected_shortcourse.objective;
+                event_type = selected_shortcourse.is_modular;
 
                 nodeNames = [];
                 if (selected_shortcourse != null) {
@@ -658,6 +723,17 @@
 
                     editor_shortcourse_description.setData(shortcourse_description);
                     editor_shortcourse_objective.setData(shortcourse_objective);
+
+                    $('#event_type').val(event_type); // Select the option with a value of '1'
+                    $('#event_type').trigger('change');
+
+                    if (event_type == 1) {
+                        //
+                        $("#form-add-shortcourse-second-part-event-type").show();
+                    } else {
+
+                        $("#form-add-shortcourse-second-part-event-type").hide();
+                    }
 
                     $("tr[id=form-add-shortcourse-second-part]").show();
 
@@ -668,29 +744,55 @@
                     $('#shortcourse_description').val(null);
                     $('#shortcourse_objective').val(null);
                     $("tr[id=form-add-shortcourse-second-part]").hide();
+
+                    $("#form-add-shortcourse-second-part-event-type").hide();
                 }
             }
+
         });
-        $('#venue_id').change(function(event) {
-            var venue_name = $('#venue_id').find(":selected").attr('name');
-            var venue_id = $('#venue_id').find(":selected").val();
-            var venue_type_id = $('#venue_id').find(":selected").attr('data-venue-type');
 
-            $('#venue_name').val(venue_name);
-            $('#venue_type_id').val(venue_type_id);
-
-
-            if (venue_id == -1) {
-                $("tr[id=form-add-venue-second-part]").show();
+        $('#event_type').change(function(event) {
+            var event_type=$('#event_type').find(':selected').val();
+            if (event_type == 1) {
+                $("#form-add-shortcourse-second-part-event-type").show();
             } else {
-                $("tr[id=form-add-venue-second-part]").hide();
 
+                $("#form-add-shortcourse-second-part-event-type").hide();
             }
         });
 
 
         $(document).ready(function() {
             var i = 0;
+            $('#addEventModule').click(function() {
+                i++;
+                $('#form_event_module').append(`
+                    <div class="row" style="justify-content: center;" id="module-row-${i}">
+                        <div class="column" style="width: 60%;">
+                            <input id="event_module-${i}" name="event_module[]" type="text"
+                                class="form-control" placeholder="Insert Module Name">
+                        </div>
+
+                        <div class="column" style="width: 20%;">
+                            <input id="event_module_fee_amount-${i}" name="event_module_fee_amount[]"
+                                type="text" class="form-control" value='0.00'>
+                        </div>
+
+                        <div class="d-flex flex-row-reverse column" style="width: 15%;">
+                            <a href="javascript:;" name="cancel-event-module"
+                                data-module_id="${i}"
+                                id="cancel-event-module"
+                                class="btn btn-sm btn-danger btn_remove mx-1">X</a>
+                        </div>
+                    </div>
+                    `);
+
+                $(document).on('click', `#cancel-event-module`, function(event) {
+                    var module_id = event.target.dataset.module_id;
+                    $(`#module-row-${module_id}`).remove();
+                });
+            });
+
             $('#addModule').click(function() {
                 i++;
                 $('#module_field tbody tr:last').after(`
@@ -747,7 +849,8 @@
                 }
             });
 
-            $('.shortcourse, .user, .venue, .topic1, .fee, .venue_type, .event_feedback_set').select2();
+            $('.shortcourse, .user, .venue, .topic1, .fee, .venue_type, .event_feedback_set, .event_type')
+                .select2();
 
             $('.shortcourse_type').select2({
                 dropdownParent: $('#crud-modal')
@@ -761,6 +864,24 @@
             $('#crud-modal').on('hide.bs.modal', function(event) {
                 location.reload();
             });
+        });
+
+
+        $('#venue_id').change(function(event) {
+            var venue_name = $('#venue_id').find(":selected").attr('name');
+            var venue_id = $('#venue_id').find(":selected").val();
+            var venue_type_id = $('#venue_id').find(":selected").attr('data-venue-type');
+
+            $('#venue_name').val(venue_name);
+            $('#venue_type_id').val(venue_type_id);
+
+
+            if (venue_id == -1) {
+                $("tr[id=form-add-venue-second-part]").show();
+            } else {
+                $("tr[id=form-add-venue-second-part]").hide();
+
+            }
         });
     </script>
 @endsection

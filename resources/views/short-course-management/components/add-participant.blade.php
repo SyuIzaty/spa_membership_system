@@ -106,14 +106,14 @@
                         <div class="form-group" id="modular_form" style="display:none">
 
                             <input id="is_modular" name="is_modular" type="number"
-                                value={{ $event->events_shortcourses[0]->shortcourse->is_modular }} hidden>
+                                value={{ $event->is_modular }} hidden>
                             <div class="form-group add-participant__module"
-                                {{ $event->events_shortcourses[0]->shortcourse->is_modular == 1 ? '' : 'style=display:none' }}>
+                                {{ $event->is_modular == 1 ? '' : 'style=display:none' }}>
                                 <hr class="mt-1 mb-2">
 
                                 <label class="form-label" for="modules"><span
                                         class="text-danger">*</span>Modules</label>
-                                @foreach ($event->events_shortcourses[0]->shortcourse->event_modules as $event_module)
+                                @foreach ($event->event_modules as $event_module)
                                     <div class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input"
                                             id="module-{{ $event_module->id }}" name="modules[]"

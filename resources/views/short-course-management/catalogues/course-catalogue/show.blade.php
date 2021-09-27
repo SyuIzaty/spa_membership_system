@@ -201,7 +201,7 @@
                                                     More Topic</a>
                                                 <hr class="mt-2 mb-3">
                                                 <table class="table table-striped table-bordered m-0" id="module_field"
-                                                    {{ !$shortcourse->is_modular ?? 'style="display:none"' }}>
+                                                    {{ $shortcourse->is_modular==0 ? 'style=display:none' : '' }}>
                                                     <thead class="thead">
                                                         <tr class=" bg-primary-50">
                                                             <th colspan="3"><b>List of Modules</b></th>

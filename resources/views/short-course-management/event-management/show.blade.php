@@ -937,7 +937,6 @@
                                                         <tr>
                                                             <th>ID</th>
                                                             <th>Name</th>
-                                                            <th>Course Type</th>
                                                             <th>Action</th>
                                                         </tr>
                                                     </thead>
@@ -947,8 +946,6 @@
                                                                 <td>{{ $events_shortcourses->shortcourse->id }}
                                                                 </td>
                                                                 <td>{{ $events_shortcourses->shortcourse->name }}
-                                                                </td>
-                                                                <td>{{ $events_shortcourses->shortcourse->is_modular == 0 ? 'Regular Short Course' : 'Modular Short Course' }}
                                                                 </td>
                                                                 <td>
                                                                     <form method="post"
@@ -1323,12 +1320,12 @@
                                         </div>
                                         <hr class="mt-2 mb-3">
                                         <div class="card"
-                                            {{ $event->events_shortcourses[0]->shortcourse->is_modular == 0 ? 'style=display:none;' : '' }}>
+                                            {{ $event->is_modular == 0 ? 'style=display:none;' : '' }}>
                                             <div class="card-header bg-primary-50"><b>Application By Module</b></div>
                                             <div class="card-body">
                                                 <div class="row d-flex align-items-center justify-content-center">
 
-                                                    @foreach ($event->events_shortcourses[0]->shortcourse->event_modules as $event_module)
+                                                    @foreach ($event->event_modules as $event_module)
                                                         <div class="col-sm-6 col-xl-3">
                                                             <div
                                                                 class="p-3 bg-primary-500 rounded overflow-hidden position-relative text-white mb-g">
