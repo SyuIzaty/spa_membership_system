@@ -105,25 +105,39 @@
 
                         <div class="form-group" id="modular_form" style="display:none">
 
-                            <input id="is_modular" name="is_modular" type="number"
-                                value={{ $event->is_modular }} hidden>
+                            <input id="is_modular" name="is_modular" type="number" value={{ $event->is_modular }}
+                                hidden>
                             <div class="form-group add-participant__module"
                                 {{ $event->is_modular == 1 ? '' : 'style=display:none' }}>
                                 <hr class="mt-1 mb-2">
 
                                 <label class="form-label" for="modules"><span
                                         class="text-danger">*</span>Modules</label>
-                                @foreach ($event->event_modules as $event_module)
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input"
-                                            id="module-{{ $event_module->id }}" name="modules[]"
-                                            value={{ $event_module->id }}
-                                            data-fee_amount="{{ $event_module->fee_amount }}">
-                                        <label class="custom-control-label"
-                                            for="module-{{ $event_module->id }}">{{ $event_module->name }}
-                                            (+RM{{ $event_module->fee_amount }})</label>
-                                    </div>
-                                @endforeach
+                                @if ($event->is_modular_single_selection == 0)
+                                    @foreach ($event->event_modules as $event_module)
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input"
+                                                id="module-{{ $event_module->id }}" name="modules[]"
+                                                value={{ $event_module->id }}
+                                                data-fee_amount="{{ $event_module->fee_amount }}">
+                                            <label class="custom-control-label"
+                                                for="module-{{ $event_module->id }}">{{ $event_module->name }}
+                                                (+RM{{ $event_module->fee_amount }})</label>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    @foreach ($event->event_modules as $event_module)
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="radio" class="custom-control-input"
+                                                id="module-{{ $event_module->id }}" name="modules[]"
+                                                value={{ $event_module->id }}
+                                                data-fee_amount="{{ $event_module->fee_amount }}">
+                                            <label class="custom-control-label"
+                                                for="module-{{ $event_module->id }}">{{ $event_module->name }}
+                                                (+RM{{ $event_module->fee_amount }})</label>
+                                        </div>
+                                    @endforeach
+                                @endif
                             </div>
                         </div>
                         <hr class="mt-1 mb-2">
@@ -399,7 +413,6 @@
                     if (data.fee_amount_applied) {
                         $('#fee_amount_applied_total').val(data.fee_amount_applied);
                     } else {
-
                         $('#fee_amount_applied_total').val(data.fee.amount);
                     }
 
@@ -571,16 +584,24 @@
 
         // checkbox triggered
         {
+            var totalAddition = 0;
             $('[id^="module-"]').change(function(e) {
                 var value = 0;
-                if (e.currentTarget.checked) {
-                    value += parseFloat(e.currentTarget.dataset.fee_amount);
+                var prevValue = totalAddition;
+                if (e.currentTarget.type == 'checkbox') {
+                    if (e.currentTarget.checked) {
+                        value += parseFloat(e.currentTarget.dataset.fee_amount);
+
+                    } else {
+                        value -= parseFloat(e.currentTarget.dataset.fee_amount);
+                    }
                 } else {
-                    value -= parseFloat(e.currentTarget.dataset.fee_amount);
+                    value += parseFloat(e.currentTarget.dataset.fee_amount);
+                    totalAddition = value;
                 }
 
                 var fee_amount_applied_total = $('#fee_amount_applied_total').val();
-                var sum = parseFloat(fee_amount_applied_total) + value;
+                var sum = parseFloat(fee_amount_applied_total) + value - prevValue;
                 $('#fee_amount_applied_total').val(sum);
             });
 
