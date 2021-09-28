@@ -459,6 +459,47 @@
                         @endcan
                         {{-- End Inventory --}}
 
+                        {{-- Start Computer Grant Management --}}
+                            <li class="nav-title">COMPUTER GRANT MANAGEMENT</li>
+                                <li class="open">
+                                    <a href="#" title="Grant" data-filter-tags="grant">
+                                        <i class="fal fa-laptop"></i>
+                                        <span class="nav-link-text" data-i18n="nav.grant">Grant</span>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="/application-form" title="New Grant" data-filter-tags="new">
+                                                <span class="nav-link-text" data-i18n="nav.new"> New Grant</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#" title="All Grant" data-filter-tags="all">
+                                        <i class="fal fa-list"></i>
+                                        <span class="nav-link-text" data-i18n="nav.all">All Grant</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" title="Grant FAQ" data-filter-tags="faq">
+                                        <i class="fal fa-info"></i>
+                                        <span class="nav-link-text" data-i18n="nav.faq">FAQ</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" title="Grant Claim" data-filter-tags="claim">
+                                        <i class="fal fa-dollar-sign"></i>
+                                        <span class="nav-link-text" data-i18n="nav.claim">Grant Claim</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" title="Log" data-filter-tags="log">
+                                        <i class="fal fa-clipboard-list"></i>
+                                        <span class="nav-link-text" data-i18n="nav.log">Activity Log</span>
+                                    </a>
+                                </li>
+                        {{-- End Computer Grant Management --}}
+
                         {{-- Start Covid --}}
                         @can('view admin')
 
