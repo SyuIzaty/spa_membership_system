@@ -38,7 +38,7 @@
                                     <div class="tab-pane active" id="general" role="tabpanel">
                                         <hr class="mt-2 mb-3">
                                         <div class="row">
-                                            <div class="col-md-12 grid-margin stretch-card">
+                                            <div class="col-md-12 grid-margin stretch-card" style="padding-bottom:2rem;">
                                                 @if (Session::has('successUpdateGeneral'))
                                                     <div class="alert alert-success"
                                                         style="color: #3b6324; background-color: #d3fabc;">
@@ -1070,279 +1070,288 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
-                                                <table class="table table-striped table-bordered m-0" id="module_field"
-                                                    {{ !$event->is_modular ?? 'style="display:none"' }}>
-                                                    <thead class="thead">
-                                                        <tr class=" bg-primary-50">
-                                                            <th colspan="3"><b>List of Modules</b></th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Name</th>
-                                                            <th>Fee (RM)</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($event->event_modules as $event_module)
-                                                            <tr>
-                                                                <td>{{ $event_module->name }}
-                                                                </td>
-                                                                <td>{{ $event_module->fee_amount }}
-                                                                </td>
-                                                                <td>
-                                                                    <a href="#"
-                                                                        class="btn btn-sm btn-info float-right mr-2"
-                                                                        name="edit-module" id="edit-module"
-                                                                        data-target="#edit-module-modal" data-toggle="modal"
-                                                                        data-id={{ $event_module->id }}
-                                                                        data-name='{{ $event_module->name }}'
-                                                                        data-fee_amount='{{ $event_module->fee_amount }}'>
-                                                                        <i class="fal fa-pencil"></i>
-                                                                    </a>
-                                                                    <form method="post"
-                                                                        action="/event/event_module/remove/{{ $event_module->id }}">
-                                                                        @csrf
-                                                                        <button type="submit"
-                                                                            class="btn btn-sm btn-danger float-right mr-2">
-                                                                            <i class="ni ni-close"></i>
-                                                                        </button>
-                                                                    </form>
-                                                                </td>
+                                                <div id="module_field" style="display:flex; flex-direction:column;"
+                                                    {{ $event->is_modular == 1 ? '' : 'hidden' }}>
+                                                    <table class="table table-striped table-bordered m-0">
+                                                        <thead class="thead">
+                                                            <tr class=" bg-primary-50">
+                                                                <th colspan="3"><b>List of Modules</b></th>
                                                             </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                                <div class="modal fade" id="edit-module-modal" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="card-header">
-                                                                <h5 class="card-title w-150">Edit
-                                                                    Module</h5>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <form action="{{ url('/events/module/update') }}"
-                                                                    method="post" name="form">
-                                                                    @csrf
-                                                                    <p><span class="text-danger">*</span>
-                                                                        Required Field</p>
-                                                                    <hr class="mt-1 mb-2">
-                                                                    <div id="form">
-                                                                        <input type="number" name="module_id" id="module_id"
-                                                                            style="display:none">
-                                                                        <div class="form-group">
-                                                                            <label class="form-label"
-                                                                                for="module_name"><span
-                                                                                    class="text-danger">*</span>Name</label>
-                                                                            <input type="text" class="form-control"
-                                                                                id="module_name" name="module_name">
-                                                                            @error('module_name')
-                                                                                <p style="color: red">
-                                                                                    <strong> *
-                                                                                        {{ $message }}
-                                                                                    </strong>
-                                                                                </p>
-                                                                            @enderror
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label class="form-label"
-                                                                                for="module_fee_amount"><span
-                                                                                    class="text-danger">*</span>Fee
-                                                                                Amount (RM)</label>
-                                                                            <input type="number" step=".01"
-                                                                                class="form-control"
-                                                                                id="module_fee_amount"
-                                                                                name="module_fee_amount">
-                                                                            @error('module_fee_amount')
-                                                                                <p style="color: red">
-                                                                                    <strong> *
-                                                                                        {{ $message }}
-                                                                                    </strong>
-                                                                                </p>
-                                                                            @enderror
-                                                                        </div>
-                                                                    </div>
-                                                                    <hr class="mt-1 mb-2">
-                                                                    <div class="footer">
-                                                                        <button type="button"
-                                                                            class="btn btn-danger ml-auto float-right mr-2"
-                                                                            data-dismiss="modal" id="close-edit-fee"><i
-                                                                                class="fal fa-window-close"></i>
-                                                                            Close</button>
-                                                                        <button type="submit"
-                                                                            class="btn btn-primary ml-auto float-right mr-2"><i
-                                                                                class="ni ni-plus"></i>
-                                                                            Update</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <a href="javascript:;" name="addModule" id="addModule"
-                                                    class="btn btn-primary btn-sm ml-auto float-right my-2">Add
-                                                    More Module</a>
-                                                <hr class="mt-2 mb-3">
-                                            </div>
-                                        </div>
-                                        <hr class="mt-2 mb-3">
-                                        <div class="card">
-                                            <div class="card-header bg-primary-50"><b>Participation Statistics</b></div>
-                                            <div class="card-body">
-                                                <div class="row d-flex align-items-center justify-content-center">
-                                                    <div class="col-sm-6 col-xl-3">
-                                                        <div
-                                                            class="p-3 bg-primary-500 rounded overflow-hidden position-relative text-white mb-g">
-                                                            <div class="___class_+?263___">
-                                                                <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                                                                    {{ $statistics['wait_for_application_approval'] }}
-                                                                    <small class="m-0 l-h-n">Wait for Applic.
-                                                                        Approv.</small>
-                                                                </h3>
-                                                            </div>
-                                                            <i class="fal fa-users position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1"
-                                                                style="font-size:6rem"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6 col-xl-3">
-                                                        <div
-                                                            class="p-3 bg-warning-500 rounded overflow-hidden position-relative text-white mb-g">
-                                                            <div class="___class_+?269___">
-                                                                <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                                                                    {{ $statistics['wait_for_applicant_making_payment'] }}
-                                                                    <small class="m-0 l-h-n">In progress of Make.
-                                                                        Pay.</small>
-                                                                </h3>
-                                                            </div>
-                                                            <i class="fal fa-briefcase position-absolute pos-right pos-bottom opacity-15  mb-n1 mr-n4"
-                                                                style="font-size: 6rem;"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6 col-xl-3">
-                                                        <div
-                                                            class="p-3 bg-success-500 rounded overflow-hidden position-relative text-white mb-g">
-                                                            <div class="___class_+?275___">
-                                                                <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                                            <tr>
+                                                                <th>Name</th>
+                                                                <th>Fee (RM)</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach ($event->event_modules as $event_module)
+                                                                <tr>
+                                                                    <td>{{ $event_module->name }}
+                                                                    </td>
+                                                                    <td>{{ $event_module->fee_amount }}
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href="#"
+                                                                            class="btn btn-sm btn-info float-right mr-2"
+                                                                            name="edit-module" id="edit-module"
+                                                                            data-target="#edit-module-modal"
+                                                                            data-toggle="modal"
+                                                                            data-id={{ $event_module->id }}
+                                                                            data-name='{{ $event_module->name }}'
+                                                                            data-fee_amount='{{ $event_module->fee_amount }}'>
+                                                                            <i class="fal fa-pencil"></i>
+                                                                        </a>
+                                                                        <form method="post"
+                                                                            action="/event/event_module/remove/{{ $event_module->id }}">
+                                                                            @csrf
+                                                                            <button type="submit"
+                                                                                class="btn btn-sm btn-danger float-right mr-2">
+                                                                                <i class="ni ni-close"></i>
+                                                                            </button>
+                                                                        </form>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
 
-                                                                    {{ $statistics['wait_for_payment_verification'] }}
-                                                                    <small class="m-0 l-h-n">Wait for Pay.
-                                                                        Confirm.</small>
-                                                                </h3>
-                                                            </div>
-                                                            <i class="ni ni-doc position-absolute pos-right pos-bottom opacity-15 mb-n5 mr-n6"
-                                                                style="font-size: 8rem;"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6 col-xl-3">
-                                                        <div
-                                                            class="p-3 bg-info-500 rounded overflow-hidden position-relative text-white mb-g">
-                                                            <div class="___class_+?281___">
-                                                                <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                                                                    {{ $statistics['ready_for_event'] }}
-                                                                    <small class="m-0 l-h-n">Ready for Event</small>
-                                                                </h3>
-                                                            </div>
-                                                            <i class="fal fa-calendar position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n4"
-                                                                style="font-size: 6rem;"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6 col-xl-3">
-                                                        <div
-                                                            class="p-3 bg-primary-500 rounded overflow-hidden position-relative text-white mb-g">
-                                                            <div class="___class_+?287___">
-                                                                <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                                                                    {{ $statistics['attended_participant'] }}
-                                                                    <small class="m-0 l-h-n">Attend</small>
-                                                                </h3>
-                                                            </div>
-                                                            <i class="fal fa-check position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n4"
-                                                                style="font-size: 6rem;"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6 col-xl-3">
-                                                        <div
-                                                            class="p-3 bg-danger-500 rounded overflow-hidden position-relative text-white mb-g">
-                                                            <div class="___class_+?293___">
-                                                                <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                                                                    {{ $statistics['not_attended_participant'] }}
-                                                                    <small class="m-0 l-h-n">Not Attend</small>
-                                                                </h3>
-                                                            </div>
-                                                            <i class="fal fa-times position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n4"
-                                                                style="font-size: 6rem;"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6 col-xl-3">
-                                                        <div
-                                                            class="p-3 bg-danger-500 rounded overflow-hidden position-relative text-white mb-g">
-                                                            <div class="___class_+?299___">
-                                                                <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                                                                    {{ $statistics['cancelled_application'] }}
-                                                                    <small class="m-0 l-h-n">Cancelled Applic.</small>
-                                                                </h3>
-                                                            </div>
-                                                            <i class="fal fa-ban position-absolute pos-right pos-bottom opacity-15  mb-n1 mr-n4"
-                                                                style="font-size: 6rem;"></i>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-sm-6 col-xl-3">
-                                                        <div
-                                                            class="p-3 bg-danger-500 rounded overflow-hidden position-relative text-white mb-g">
-                                                            <div class="___class_+?305___">
-                                                                <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                                                                    {{ $statistics['not_completed_feedback'] }}
-                                                                    <small class="m-0 l-h-n">Not Completed
-                                                                        Feedback</small>
-                                                                </h3>
-                                                            </div>
-                                                            <i class="fal fa-clock position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n4"
-                                                                style="font-size: 6rem;"></i>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-sm-6 col-xl-3">
-                                                        <div
-                                                            class="p-3 bg-primary-500 rounded overflow-hidden position-relative text-white mb-g">
-                                                            <div class="___class_+?311___">
-                                                                <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                                                                    {{ $statistics['completed_participation_process'] }}
-                                                                    <small class="m-0 l-h-n">Completed</small>
-                                                                </h3>
-                                                            </div>
-                                                            <i class="fal fa-globe position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n4"
-                                                                style="font-size: 6rem;"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        <hr class="mt-2 mb-3">
-                                        <div class="card"
-                                            {{ $event->is_modular == 0 ? 'style=display:none;' : '' }}>
-                                            <div class="card-header bg-primary-50"><b>Application By Module</b></div>
-                                            <div class="card-body">
-                                                <div class="row d-flex align-items-center justify-content-center">
-
-                                                    @foreach ($event->event_modules as $event_module)
-                                                        <div class="col-sm-6 col-xl-3">
-                                                            <div
-                                                                class="p-3 bg-primary-500 rounded overflow-hidden position-relative text-white mb-g">
-                                                                <div class="___class_+?263___">
-                                                                    <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                                                                        {{ $event_module->totalApplication }}
-                                                                        <small
-                                                                            class="m-0 l-h-n">{{ $event_module->name }}</small>
-                                                                    </h3>
+                                                    </table>
+                                                    <div class="modal fade" id="edit-module-modal" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="card-header">
+                                                                    <h5 class="card-title w-150">Edit
+                                                                        Module</h5>
                                                                 </div>
-                                                                <i class="fal fa-users position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1"
-                                                                    style="font-size:6rem"></i>
+                                                                <div class="modal-body">
+                                                                    <form action="{{ url('/events/module/update') }}"
+                                                                        method="post" name="form">
+                                                                        @csrf
+                                                                        <p><span class="text-danger">*</span>
+                                                                            Required Field</p>
+                                                                        <hr class="mt-1 mb-2">
+                                                                        <div id="form">
+                                                                            <input type="number" name="module_id"
+                                                                                id="module_id" style="display:none">
+                                                                            <div class="form-group">
+                                                                                <label class="form-label"
+                                                                                    for="module_name"><span
+                                                                                        class="text-danger">*</span>Name</label>
+                                                                                <input type="text" class="form-control"
+                                                                                    id="module_name" name="module_name">
+                                                                                @error('module_name')
+                                                                                    <p style="color: red">
+                                                                                        <strong> *
+                                                                                            {{ $message }}
+                                                                                        </strong>
+                                                                                    </p>
+                                                                                @enderror
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label class="form-label"
+                                                                                    for="module_fee_amount"><span
+                                                                                        class="text-danger">*</span>Fee
+                                                                                    Amount (RM)</label>
+                                                                                <input type="number" step=".01"
+                                                                                    class="form-control"
+                                                                                    id="module_fee_amount"
+                                                                                    name="module_fee_amount">
+                                                                                @error('module_fee_amount')
+                                                                                    <p style="color: red">
+                                                                                        <strong> *
+                                                                                            {{ $message }}
+                                                                                        </strong>
+                                                                                    </p>
+                                                                                @enderror
+                                                                            </div>
+                                                                        </div>
+                                                                        <hr class="mt-1 mb-2">
+                                                                        <div class="footer">
+                                                                            <button type="button"
+                                                                                class="btn btn-danger ml-auto float-right mr-2"
+                                                                                data-dismiss="modal" id="close-edit-fee"><i
+                                                                                    class="fal fa-window-close"></i>
+                                                                                Close</button>
+                                                                            <button type="submit"
+                                                                                class="btn btn-primary ml-auto float-right mr-2"><i
+                                                                                    class="ni ni-plus"></i>
+                                                                                Update</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    @endforeach
-                                                </div>
+                                                    </div>
 
+                                                    <a href="javascript:;" name="addModule" id="addModule"
+                                                        class="btn btn-primary btn-sm ml-auto float-right my-2">Add
+                                                        More Module</a>
+                                                </div>
+                                                <hr class="mt-2 mb-3">
+                                                <div class="card">
+                                                    <div class="card-header bg-primary-50"><b>Participation Statistics</b>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="row d-flex align-items-center justify-content-center">
+                                                            <div class="col-sm-6 col-xl-3">
+                                                                <div
+                                                                    class="p-3 bg-primary-500 rounded overflow-hidden position-relative text-white mb-g">
+                                                                    <div class="___class_+?263___">
+                                                                        <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                                                            {{ $statistics['wait_for_application_approval'] }}
+                                                                            <small class="m-0 l-h-n">Wait for Applic.
+                                                                                Approv.</small>
+                                                                        </h3>
+                                                                    </div>
+                                                                    <i class="fal fa-users position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1"
+                                                                        style="font-size:6rem"></i>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6 col-xl-3">
+                                                                <div
+                                                                    class="p-3 bg-warning-500 rounded overflow-hidden position-relative text-white mb-g">
+                                                                    <div class="___class_+?269___">
+                                                                        <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                                                            {{ $statistics['wait_for_applicant_making_payment'] }}
+                                                                            <small class="m-0 l-h-n">In progress of
+                                                                                Make.
+                                                                                Pay.</small>
+                                                                        </h3>
+                                                                    </div>
+                                                                    <i class="fal fa-briefcase position-absolute pos-right pos-bottom opacity-15  mb-n1 mr-n4"
+                                                                        style="font-size: 6rem;"></i>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6 col-xl-3">
+                                                                <div
+                                                                    class="p-3 bg-success-500 rounded overflow-hidden position-relative text-white mb-g">
+                                                                    <div class="___class_+?275___">
+                                                                        <h3 class="display-4 d-block l-h-n m-0 fw-500">
+
+                                                                            {{ $statistics['wait_for_payment_verification'] }}
+                                                                            <small class="m-0 l-h-n">Wait for Pay.
+                                                                                Confirm.</small>
+                                                                        </h3>
+                                                                    </div>
+                                                                    <i class="ni ni-doc position-absolute pos-right pos-bottom opacity-15 mb-n5 mr-n6"
+                                                                        style="font-size: 8rem;"></i>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6 col-xl-3">
+                                                                <div
+                                                                    class="p-3 bg-info-500 rounded overflow-hidden position-relative text-white mb-g">
+                                                                    <div class="___class_+?281___">
+                                                                        <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                                                            {{ $statistics['ready_for_event'] }}
+                                                                            <small class="m-0 l-h-n">Ready for
+                                                                                Event</small>
+                                                                        </h3>
+                                                                    </div>
+                                                                    <i class="fal fa-calendar position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n4"
+                                                                        style="font-size: 6rem;"></i>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6 col-xl-3">
+                                                                <div
+                                                                    class="p-3 bg-primary-500 rounded overflow-hidden position-relative text-white mb-g">
+                                                                    <div class="___class_+?287___">
+                                                                        <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                                                            {{ $statistics['attended_participant'] }}
+                                                                            <small class="m-0 l-h-n">Attend</small>
+                                                                        </h3>
+                                                                    </div>
+                                                                    <i class="fal fa-check position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n4"
+                                                                        style="font-size: 6rem;"></i>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6 col-xl-3">
+                                                                <div
+                                                                    class="p-3 bg-danger-500 rounded overflow-hidden position-relative text-white mb-g">
+                                                                    <div class="___class_+?293___">
+                                                                        <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                                                            {{ $statistics['not_attended_participant'] }}
+                                                                            <small class="m-0 l-h-n">Not
+                                                                                Attend</small>
+                                                                        </h3>
+                                                                    </div>
+                                                                    <i class="fal fa-times position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n4"
+                                                                        style="font-size: 6rem;"></i>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6 col-xl-3">
+                                                                <div
+                                                                    class="p-3 bg-danger-500 rounded overflow-hidden position-relative text-white mb-g">
+                                                                    <div class="___class_+?299___">
+                                                                        <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                                                            {{ $statistics['cancelled_application'] }}
+                                                                            <small class="m-0 l-h-n">Cancelled
+                                                                                Applic.</small>
+                                                                        </h3>
+                                                                    </div>
+                                                                    <i class="fal fa-ban position-absolute pos-right pos-bottom opacity-15  mb-n1 mr-n4"
+                                                                        style="font-size: 6rem;"></i>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-6 col-xl-3">
+                                                                <div
+                                                                    class="p-3 bg-danger-500 rounded overflow-hidden position-relative text-white mb-g">
+                                                                    <div class="___class_+?305___">
+                                                                        <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                                                            {{ $statistics['not_completed_feedback'] }}
+                                                                            <small class="m-0 l-h-n">Not Completed
+                                                                                Feedback</small>
+                                                                        </h3>
+                                                                    </div>
+                                                                    <i class="fal fa-clock position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n4"
+                                                                        style="font-size: 6rem;"></i>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-6 col-xl-3">
+                                                                <div
+                                                                    class="p-3 bg-primary-500 rounded overflow-hidden position-relative text-white mb-g">
+                                                                    <div class="___class_+?311___">
+                                                                        <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                                                            {{ $statistics['completed_participation_process'] }}
+                                                                            <small class="m-0 l-h-n">Completed</small>
+                                                                        </h3>
+                                                                    </div>
+                                                                    <i class="fal fa-globe position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n4"
+                                                                        style="font-size: 6rem;"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <hr class="mt-2 mb-3">
+                                                <div class="card"
+                                                    {{ $event->is_modular == 0 ? 'style=display:none;' : '' }}>
+                                                    <div class="card-header bg-primary-50"><b>Application By Module</b>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="row d-flex align-items-center justify-content-center">
+
+                                                            @foreach ($event->event_modules as $event_module)
+                                                                <div class="col-sm-6 col-xl-3">
+                                                                    <div
+                                                                        class="p-3 bg-primary-500 rounded overflow-hidden position-relative text-white mb-g">
+                                                                        <div class="___class_+?263___">
+                                                                            <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                                                                {{ $event_module->totalApplication }}
+                                                                                <small
+                                                                                    class="m-0 l-h-n">{{ $event_module->name }}</small>
+                                                                            </h3>
+                                                                        </div>
+                                                                        <i class="fal fa-users position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1"
+                                                                            style="font-size:6rem"></i>
+                                                                    </div>
+                                                                </div>
+                                                            @endforeach
+                                                        </div>
+
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1469,7 +1478,8 @@
                                                                             name="event_id" id="event_id" hidden />
                                                                         <div class="form-group">
                                                                             <label class="form-label mx-2"
-                                                                                for="inputGroupFile01">Upload New</label>
+                                                                                for="inputGroupFile01">Upload
+                                                                                New</label>
                                                                             <div class="input-group" style="width:100%">
                                                                                 <div class="custom-file">
                                                                                     <input type="file"
@@ -1480,7 +1490,9 @@
                                                                                 </div>
                                                                             </div>
                                                                             @error('poster_input')
-                                                                                <p style="color: red">{{ $message }}</p>
+                                                                                <p style="color: red">
+                                                                                    {{ $message }}
+                                                                                </p>
                                                                             @enderror
                                                                             <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
                                                                                 style="content-align:right">
@@ -1578,6 +1590,7 @@
                     </div>
                 </div>
             </div>
+        </div>
     </main>
 @endsection
 @section('script')

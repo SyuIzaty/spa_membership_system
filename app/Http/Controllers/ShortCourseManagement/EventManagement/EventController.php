@@ -246,7 +246,8 @@ class EventController extends Controller
                 'trainer_phone.required' => "Please insert trainer's phone number",
                 'trainer_phone.min' => "The trainer's phone number should have at least 10 numbers",
                 'trainer_email.required' => "Please insert trainer's email",
-                'module' => "At least one event module is required for modular event",
+                'module.present' => "At least one event module is required for modular event",
+                'module.array' => "At least one event module is required for modular event",
             ]);
         }
 
@@ -357,17 +358,19 @@ class EventController extends Controller
         ]);
 
 
-        $indexModule=0;
+        $indexModule = 0;
 
-        foreach($request->module as $module) {
-            $create = EventModule::create([
-                'name' => $module['event_module'],
-                'shortcourse_id' => null,
-                'event_id' => $createEvent->id,
-                'fee_amount' => $module['event_module_fee_amount'],
-                'created_by' => Auth::user()->id,
-            ]);
-            $indexModule++;
+        if ($request->event_type == 1) {
+            foreach ($request->module as $module) {
+                $create = EventModule::create([
+                    'name' => $module['event_module'],
+                    'shortcourse_id' => null,
+                    'event_id' => $createEvent->id,
+                    'fee_amount' => $module['event_module_fee_amount'],
+                    'created_by' => Auth::user()->id,
+                ]);
+                $indexModule++;
+            }
         }
 
         // Redirect to show

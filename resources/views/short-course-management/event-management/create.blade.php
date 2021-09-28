@@ -156,18 +156,18 @@
                                                                     style="padding-top: 10px;padding-bottom:10px;">
                                                                     <div class="column" style="width: 60%;">
                                                                         <input id="event_module-{{ $loop->index }}"
-                                                                            name="module[{{ $loop->index }}][event_module]"
+                                                                            name="module[{{ $loop->index }}]['event_module']"
                                                                             type="text" class="form-control"
-                                                                            value="{{ $field[event_module] }}"
+                                                                            value="{{ $field['event_module'] }}"
                                                                             placeholder="Insert Module Name">
                                                                     </div>
 
                                                                     <div class="column" style="width: 20%;">
                                                                         <input
                                                                             id="event_module_fee_amount-{{ $loop->index }}"
-                                                                            name="module[{{ $loop->index }}][event_module_fee_amount]"
+                                                                            name="module[{{ $loop->index }}]['event_module_fee_amount']"
                                                                             type="text"
-                                                                            value="{{ $field[event_module_fee_amount] }}"
+                                                                            value="{{ $field['event_module_fee_amount'] }}"
                                                                             class="form-control">
                                                                     </div>
 

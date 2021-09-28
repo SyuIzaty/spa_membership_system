@@ -239,18 +239,37 @@ class ShortCourseController extends Controller
         return Redirect()->back()->with('successUpdate', 'A Module has been deleted from the Short Course Successfully');
     }
 
-    public function storeShortCourseEvent(Request $request){
-        $validated = $request->validate([
-            'shortcourse_name_new' => 'required',
-            'shortcourse_type' => 'required',
-            'objective' => 'required',
-            'description' => 'required',
-        ], [
-            'shortcourse_name_new.required' => 'Please insert the new short course name',
-            'shortcourse_type.required' => 'Please choose a short course type',
-            'objective.required' => 'Please insert the new short course objective',
-            'description.required' => 'Please insert the new short course description',
-        ]);
+    public function storeShortCourseEvent(Request $request)
+    {
+
+        if ($request->shortcourse_type == 0) {
+            $validated = $request->validate([
+                'shortcourse_name_new' => 'required',
+                'shortcourse_type' => 'required',
+                'objective' => 'required',
+                'description' => 'required',
+            ], [
+                'shortcourse_name_new.required' => 'Please insert the new short course name',
+                'shortcourse_type.required' => 'Please choose a short course type',
+                'objective.required' => 'Please insert the new short course objective',
+                'description.required' => 'Please insert the new short course description',
+            ]);
+        } else {
+            $validated = $request->validate([
+                'shortcourse_name_new' => 'required',
+                'shortcourse_type' => 'required',
+                'objective' => 'required',
+                'description' => 'required',
+                'shortcourse_modules' => 'present|array',
+            ], [
+                'shortcourse_name_new.required' => 'Please insert the new short course name',
+                'shortcourse_type.required' => 'Please choose a short course type',
+                'objective.required' => 'Please insert the new short course objective',
+                'description.required' => 'Please insert the new short course description',
+                'shortcourse_modules.present' => "At least one event module is required for modular event",
+                'shortcourse_modules.array' => "At least one event module is required for modular event",
+            ]);
+        }
 
         $createShortCourse = ShortCourse::create([
             'name' => $request->shortcourse_name_new,
@@ -260,16 +279,18 @@ class ShortCourseController extends Controller
             'created_by' => Auth::user()->id,
         ]);
 
-        $index=0;
+        $index = 0;
 
-        foreach ($request->shortcourse_modules as $shortcourse_module){
-            $createModule = EventModule::create([
-                'name' => $shortcourse_module,
-                'shortcourse_id' => $createShortCourse->id,
-                'fee_amount' => $request->module_fee_amounts[$index],
-                'created_by' => Auth::user()->id,
-            ]);
-            $index++;
+        if ($request->shortcourse_type == 1) {
+            foreach ($request->shortcourse_modules as $shortcourse_module) {
+                $createModule = EventModule::create([
+                    'name' => $shortcourse_module,
+                    'shortcourse_id' => $createShortCourse->id,
+                    'fee_amount' => $request->module_fee_amounts[$index],
+                    'created_by' => Auth::user()->id,
+                ]);
+                $index++;
+            }
         }
 
         $shortcourse = ShortCourse::find($createShortCourse->id)->load([
@@ -289,6 +310,5 @@ class ShortCourseController extends Controller
         $topics = Topic::all();
 
         return redirect()->back();
-
     }
 }
