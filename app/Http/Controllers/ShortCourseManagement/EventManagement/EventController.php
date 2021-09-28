@@ -128,7 +128,7 @@ class EventController extends Controller
 
         $venues = Venue::orderBy('name')->get()->load(['venue_type']);
 
-        $shortcourses = ShortCourse::orderByDesc('id')->get()->load(['topics_shortcourses.topic']);
+        $shortcourses = ShortCourse::orderByDesc('id')->get()->load(['topics_shortcourses.topic', 'event_modules']);
 
         $index = 0;
         foreach ($shortcourses as $shortcourse) {
@@ -152,54 +152,103 @@ class EventController extends Controller
     }
     public function storeNew(Request $request)
     {
+        if ($request->event_type == 0) {
+            $validated = $request->validate([
+                'shortcourse_id' => 'required',
+                'shortcourse_name' => 'required|min:3',
+                'shortcourse_description' => 'required|min:3',
+                'shortcourse_objective' => 'required|min:3',
+                'datetime_start' => 'required',
+                'datetime_end' => 'required',
+                'venue_id' => 'required',
+                'venue_type_id' => 'required',
+                'venue_name' => 'required|min:3',
+                'fee_name' => 'required|min:3',
+                'fee_id' => 'required',
+                'fee_amount' => 'required|numeric',
+                'event_feedback_set_id' => 'required',
+                'trainer_ic' => 'required',
+                'trainer_fullname' => 'required|min:3',
+                'trainer_phone' => 'required|min:10',
+                'trainer_email' => 'required|email:rfc',
 
-        $validated = $request->validate([
-            'shortcourse_id' => 'required',
-            'shortcourse_name' => 'required|min:3',
-            'shortcourse_description' => 'required|min:3',
-            'shortcourse_objective' => 'required|min:3',
-            'datetime_start' => 'required',
-            'datetime_end' => 'required',
-            'venue_id' => 'required',
-            'venue_type_id' => 'required',
-            'venue_name' => 'required|min:3',
-            'fee_name' => 'required|min:3',
-            'fee_id' => 'required',
-            'fee_amount' => 'required|numeric',
-            'event_feedback_set_id' => 'required',
-            'trainer_ic' => 'required',
-            'trainer_fullname' => 'required|min:3',
-            'trainer_phone' => 'required|min:10',
-            'trainer_email' => 'required|email:rfc',
+            ], [
+                'shortcourse_id.required' => 'Please choose short course of the event',
+                'shortcourse_name.required' => 'Please insert event name',
+                'shortcourse_name.min' => 'The name should have at least 3 characters',
+                'shortcourse_description.required' => 'Please insert event description',
+                'shortcourse_description.min' => 'The description should have at least 3 characters',
+                'shortcourse_objective.required' => 'Please insert event objective',
+                'shortcourse_objective.min' => 'The objective should have at least 3 characters',
+                'datetime_start.required' => 'Please insert event datetime start',
+                'datetime_end.required' => 'Please insert event datetime end',
+                'venue_id.required' => 'Please choose event venue',
+                'venue_type_id.required' => 'Please insert venue type',
+                'venue_name.required' => 'Please insert venue name',
+                'venue_name.min' => 'The name should have at least 3 characters',
+                'fee_name.required' => 'Please insert fee name',
+                'fee_name.min' => 'The name should have at least 3 characters',
+                'fee_id.required' => 'Please insert fee id',
+                'fee_amount.required' => 'Please insert fee amount',
+                'fee_amount.numeric' => 'Please insert number only',
+                'event_feedback_set_id.required' => 'Please choose event feedback set',
+                'trainer_ic.required' => 'Please insert trainer IC',
+                'trainer_fullname.required' => "Please insert trainer's fullname",
+                'trainer_fullname.min' => "The trainer's fullname should have at least 3 characters",
+                'trainer_phone.required' => "Please insert trainer's phone number",
+                'trainer_phone.min' => "The trainer's phone number should have at least 10 numbers",
+                'trainer_email.required' => "Please insert trainer's email",
+            ]);
+        } else {
 
-        ], [
-            'shortcourse_id.required' => 'Please choose short course of the event',
-            'shortcourse_name.required' => 'Please insert event name',
-            'shortcourse_name.min' => 'The name should have at least 3 characters',
-            'shortcourse_description.required' => 'Please insert event description',
-            'shortcourse_description.min' => 'The description should have at least 3 characters',
-            'shortcourse_objective.required' => 'Please insert event objective',
-            'shortcourse_objective.min' => 'The objective should have at least 3 characters',
-            'datetime_start.required' => 'Please insert event datetime start',
-            'datetime_end.required' => 'Please insert event datetime end',
-            'venue_id.required' => 'Please choose event venue',
-            'venue_type_id.required' => 'Please insert venue type',
-            'venue_name.required' => 'Please insert venue name',
-            'venue_name.min' => 'The name should have at least 3 characters',
-            'fee_name.required' => 'Please insert fee name',
-            'fee_name.min' => 'The name should have at least 3 characters',
-            'fee_id.required' => 'Please insert fee id',
-            'fee_amount.required' => 'Please insert fee amount',
-            'fee_amount.numeric' => 'Please insert number only',
-            'event_feedback_set_id.required' => 'Please choose event feedback set',
-            'trainer_ic.required' => 'Please insert trainer IC',
-            'trainer_fullname.required' => "Please insert trainer's fullname",
-            'trainer_fullname.min' => "The trainer's fullname should have at least 3 characters",
-            'trainer_phone.required' => "Please insert trainer's phone number",
-            'trainer_phone.min' => "The trainer's phone number should have at least 10 numbers",
-            'trainer_email.required' => "Please insert trainer's email",
-
-        ]);
+            $validated = $request->validate([
+                'shortcourse_id' => 'required',
+                'shortcourse_name' => 'required|min:3',
+                'shortcourse_description' => 'required|min:3',
+                'shortcourse_objective' => 'required|min:3',
+                'datetime_start' => 'required',
+                'datetime_end' => 'required',
+                'venue_id' => 'required',
+                'venue_type_id' => 'required',
+                'venue_name' => 'required|min:3',
+                'fee_name' => 'required|min:3',
+                'fee_id' => 'required',
+                'fee_amount' => 'required|numeric',
+                'event_feedback_set_id' => 'required',
+                'trainer_ic' => 'required',
+                'trainer_fullname' => 'required|min:3',
+                'trainer_phone' => 'required|min:10',
+                'trainer_email' => 'required|email:rfc',
+                'module' => 'present|array',
+            ], [
+                'shortcourse_id.required' => 'Please choose short course of the event',
+                'shortcourse_name.required' => 'Please insert event name',
+                'shortcourse_name.min' => 'The name should have at least 3 characters',
+                'shortcourse_description.required' => 'Please insert event description',
+                'shortcourse_description.min' => 'The description should have at least 3 characters',
+                'shortcourse_objective.required' => 'Please insert event objective',
+                'shortcourse_objective.min' => 'The objective should have at least 3 characters',
+                'datetime_start.required' => 'Please insert event datetime start',
+                'datetime_end.required' => 'Please insert event datetime end',
+                'venue_id.required' => 'Please choose event venue',
+                'venue_type_id.required' => 'Please insert venue type',
+                'venue_name.required' => 'Please insert venue name',
+                'venue_name.min' => 'The name should have at least 3 characters',
+                'fee_name.required' => 'Please insert fee name',
+                'fee_name.min' => 'The name should have at least 3 characters',
+                'fee_id.required' => 'Please insert fee id',
+                'fee_amount.required' => 'Please insert fee amount',
+                'fee_amount.numeric' => 'Please insert number only',
+                'event_feedback_set_id.required' => 'Please choose event feedback set',
+                'trainer_ic.required' => 'Please insert trainer IC',
+                'trainer_fullname.required' => "Please insert trainer's fullname",
+                'trainer_fullname.min' => "The trainer's fullname should have at least 3 characters",
+                'trainer_phone.required' => "Please insert trainer's phone number",
+                'trainer_phone.min' => "The trainer's phone number should have at least 10 numbers",
+                'trainer_email.required' => "Please insert trainer's email",
+                'module' => "At least one event module is required for modular event",
+            ]);
+        }
 
         if ($request->shortcourse_id == -1) {
             //TODO: Create new shortcourse
@@ -244,6 +293,7 @@ class EventController extends Controller
             'name' => $request->shortcourse_name,
             'description' => $request->shortcourse_description,
             'objective' => $request->shortcourse_objective,
+            'is_modular' => $request->event_type,
             'event_feedback_set_id' => $request->event_feedback_set_id,
             'datetime_start' => $request->datetime_start,
             'datetime_end' => $request->datetime_end,
@@ -306,6 +356,20 @@ class EventController extends Controller
             'is_active' => 1,
         ]);
 
+
+        $indexModule=0;
+
+        foreach($request->module as $module) {
+            $create = EventModule::create([
+                'name' => $module['event_module'],
+                'shortcourse_id' => null,
+                'event_id' => $createEvent->id,
+                'fee_amount' => $module['event_module_fee_amount'],
+                'created_by' => Auth::user()->id,
+            ]);
+            $indexModule++;
+        }
+
         // Redirect to show
         $event = Event::find($createEvent->id)->load([
             'events_participants',
@@ -333,6 +397,7 @@ class EventController extends Controller
         foreach ($event->events_trainers as $event_trainer) {
             $event_trainer->trainer->user = User::find($event_trainer->trainer->user_id);
         }
+
 
         return Redirect('/event/' . $event->id)->with(compact('event', 'venues', 'shortcourses'));
     }
@@ -1115,7 +1180,7 @@ class EventController extends Controller
             'module_fee_amount' => 'required'
         ]);
 
-        $event_module=EventModule::find($request->module_id)->update([
+        $event_module = EventModule::find($request->module_id)->update([
             'name' => $request->module_name,
             'fee_amount' => $request->module_fee_amount,
             'updated_by' => Auth::user()->id

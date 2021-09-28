@@ -150,31 +150,41 @@
                                                     </td>
                                                     <td class="col px-4">
                                                         <div id="form_event_module">
+                                                            @foreach (old('module', []) as $i => $field)
+                                                                <div class="row justify-content-between ml-auto my-2"
+                                                                    id="module-row-{{ $loop->index }}"
+                                                                    style="padding-top: 10px;padding-bottom:10px;">
+                                                                    <div class="column" style="width: 60%;">
+                                                                        <input id="event_module-{{ $loop->index }}"
+                                                                            name="module[{{ $loop->index }}][event_module]"
+                                                                            type="text" class="form-control"
+                                                                            value="{{ $field[event_module] }}"
+                                                                            placeholder="Insert Module Name">
+                                                                    </div>
 
-                                                            <div class="row" style="justify-content: center;">
-                                                                <div class="column" style="width: 60%;">
-                                                                    <input id="event_module" name="event_module" type="text"
-                                                                        class="form-control"
-                                                                        placeholder="Insert Module Name">
-                                                                </div>
+                                                                    <div class="column" style="width: 20%;">
+                                                                        <input
+                                                                            id="event_module_fee_amount-{{ $loop->index }}"
+                                                                            name="module[{{ $loop->index }}][event_module_fee_amount]"
+                                                                            type="text"
+                                                                            value="{{ $field[event_module_fee_amount] }}"
+                                                                            class="form-control">
+                                                                    </div>
 
-                                                                <div class="column" style="width: 20%;">
-                                                                    <input id="event_module_fee_amount"
-                                                                        name="event_module_fee_amount" type="text"
-                                                                        class="form-control" value='0.00'>
+                                                                    <div class="d-flex justify-content-center column"
+                                                                        style="width: 15%;">
+                                                                        <a href="javascript:;"
+                                                                            data-module_id="{{ $loop->index }}"
+                                                                            name="cancel-event-module-0"
+                                                                            id="cancel-event-module-0"
+                                                                            class="btn btn-sm btn-danger btn_remove mx-1">X</a>
+                                                                    </div>
                                                                 </div>
-
-                                                                <div class="d-flex flex-row-reverse column"
-                                                                    style="width: 15%;">
-                                                                    <a href="javascript:;" name="cancel-event-module"
-                                                                        id="cancel-event-module"
-                                                                        class="btn btn-sm btn-danger btn_remove mx-1">X</a>
-                                                                </div>
-                                                            </div>
+                                                            @endforeach
                                                         </div>
 
                                                         <a href="javascript:;" name="addEventModule" id="addEventModule"
-                                                            class="btn btn-primary btn-sm ml-auto float-right my-2">Add
+                                                            class="btn btn-primary btn-sm ml-auto float-left my-2">Add
                                                             More Module</a>
                                                     </td>
 
@@ -715,8 +725,8 @@
                 shortcourse_description = selected_shortcourse.description;
                 shortcourse_objective = selected_shortcourse.objective;
                 event_type = selected_shortcourse.is_modular;
+                event_modules = selected_shortcourse.event_modules;
 
-                nodeNames = [];
                 if (selected_shortcourse != null) {
 
                     $('#shortcourse_name').val(selected_shortcourse.name);
@@ -730,6 +740,16 @@
                     if (event_type == 1) {
                         //
                         $("#form-add-shortcourse-second-part-event-type").show();
+                        // $( "#foo" ).trigger( "click" );
+                        $("#form_event_module").empty();
+                        event_modules.forEach((x, index) => {
+                            $("#addEventModule").trigger("click");
+                            $(`#form_event_module input[name="module[${index}][event_module]"]`).val(x
+                                .name);
+                            $(`#form_event_module input[name="module[${index}][event_module_fee_amount]"]`)
+                                .val(x
+                                    .fee_amount);
+                        });
                     } else {
 
                         $("#form-add-shortcourse-second-part-event-type").hide();
@@ -752,7 +772,7 @@
         });
 
         $('#event_type').change(function(event) {
-            var event_type=$('#event_type').find(':selected').val();
+            var event_type = $('#event_type').find(':selected').val();
             if (event_type == 1) {
                 $("#form-add-shortcourse-second-part-event-type").show();
             } else {
@@ -764,32 +784,57 @@
 
         $(document).ready(function() {
             var i = 0;
+            var indexModule = 0;
             $('#addEventModule').click(function() {
-                i++;
+                var count = $("#form_event_module > div").length;
+                indexModule++;
                 $('#form_event_module').append(`
-                    <div class="row" style="justify-content: center;" id="module-row-${i}">
+                    <div class="row justify-content-between ml-auto my-2" id="module-row-${count}" style="padding-top: 10px;padding-bottom:10px;">
                         <div class="column" style="width: 60%;">
-                            <input id="event_module-${i}" name="event_module[]" type="text"
+                            <input id="event_module-${count}" name="module[${count}][event_module]" type="text"
                                 class="form-control" placeholder="Insert Module Name">
                         </div>
 
                         <div class="column" style="width: 20%;">
-                            <input id="event_module_fee_amount-${i}" name="event_module_fee_amount[]"
+                            <input id="event_module_fee_amount-${count}" name="module[${count}][event_module_fee_amount]"
                                 type="text" class="form-control" value='0.00'>
                         </div>
 
-                        <div class="d-flex flex-row-reverse column" style="width: 15%;">
-                            <a href="javascript:;" name="cancel-event-module"
-                                data-module_id="${i}"
-                                id="cancel-event-module"
+                        <div class="d-flex justify-content-center column" style="width: 15%;">
+                            <a href="javascript:;" name="cancel-event-module-${count}"
+                                data-module_id="${count}"
+                                id="cancel-event-module-${count}"
                                 class="btn btn-sm btn-danger btn_remove mx-1">X</a>
                         </div>
                     </div>
                     `);
 
-                $(document).on('click', `#cancel-event-module`, function(event) {
+                $(document).unbind().on('click', `[id^=cancel-event-module-]`, function(event) {
                     var module_id = event.target.dataset.module_id;
-                    $(`#module-row-${module_id}`).remove();
+                    var prevCount = $("#form_event_module > div").length;
+                    var currPosition = parseInt(module_id);
+                    var futureVal1 = '';
+                    var futureVal2 = '';
+
+                    while (currPosition < (prevCount - 1)) {
+                        futureVal1 = $(
+                                `#form_event_module input[name="module[${currPosition+1}][event_module]"]`
+                            )
+                            .val();
+                        futureVal2 = $(
+                                `#form_event_module input[name="module[${currPosition+1}][event_module_fee_amount]"]`
+                            )
+                            .val();
+
+                        $(`#form_event_module input[name="module[${currPosition}][event_module]"]`)
+                            .val(futureVal1);
+                        $(`#form_event_module input[name="module[${currPosition}][event_module_fee_amount]"]`)
+                            .val(futureVal2);
+
+                        currPosition++;
+
+                    };
+                    $(`#module-row-${prevCount-1}`).remove();
                 });
             });
 
@@ -810,6 +855,8 @@
 
                 $(document).on('click', '#cancel-module', function(event) {
                     var row_id = event.target.dataset.value;
+
+
                     $(`#new-row${row_id}`).remove();
                     $("#addModule").show();
                 });
