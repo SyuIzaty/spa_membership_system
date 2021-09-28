@@ -309,7 +309,7 @@
                                                     </div>
                                                 </div>
                                                 <a href="javascript:;" name="addModule" id="addModule"
-                                                    class="btn btn-primary btn-sm ml-auto float-right my-2">Add
+                                                    class="btn btn-primary btn-sm ml-auto float-right my-2" {{ $shortcourse->is_modular==0 ? 'style=display:none' : '' }}>Add
                                                     More Module</a>
                                                 <hr class="mt-2 mb-3">
                                                 <table class="table table-striped table-bordered">

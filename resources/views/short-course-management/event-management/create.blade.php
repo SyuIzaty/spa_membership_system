@@ -187,7 +187,29 @@
                                                             class="btn btn-primary btn-sm ml-auto float-left my-2">Add
                                                             More Module</a>
                                                     </td>
+                                                </tr>
+                                                <tr class="row" id="form-add-shortcourse-second-part-modular-selection-mode"
+                                                    {{ old('shortcourse_id') || old('event_type') == 1 ? null : 'style=display:none' }}>
+                                                    <td class="col col-lg-2 px-4">
+                                                        {{ Form::label('title', 'Module Selection Mode **', ['style' => 'font-weight:bold']) }}
+                                                    </td>
+                                                    <td class="col px-4">
+                                                        <select class="form-control is_modular_single_selection" name="is_modular_single_selection"
+                                                            id="is_modular_single_selection">
+                                                            <option value=0 name="is_modular_single_selection"
+                                                                {{ old('is_modular_single_selection') == 0 ? 'selected' : null }}>
+                                                                Multiple Selection
+                                                            </option>
 
+                                                            <option value=1 name="is_modular_single_selection"
+                                                                {{ old('is_modular_single_selection') == 1 ? 'selected' : null }}>
+                                                                Single Selection
+                                                            </option>
+                                                        </select>
+                                                        @error('is_modular_single_selection')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
+                                                    </td>
                                                 </tr>
                                                 <tr class="row">
                                                     <td class="col col-lg-2 px-4">
@@ -740,6 +762,7 @@
                     if (event_type == 1) {
                         //
                         $("#form-add-shortcourse-second-part-event-type").show();
+                        $("#form-add-shortcourse-second-part-modular-selection-mode").show();
                         // $( "#foo" ).trigger( "click" );
                         $("#form_event_module").empty();
                         event_modules.forEach((x, index) => {
@@ -753,6 +776,7 @@
                     } else {
 
                         $("#form-add-shortcourse-second-part-event-type").hide();
+                        $("#form-add-shortcourse-second-part-modular-selection-mode").hide();
                     }
 
                     $("tr[id=form-add-shortcourse-second-part]").show();
@@ -766,6 +790,7 @@
                     $("tr[id=form-add-shortcourse-second-part]").hide();
 
                     $("#form-add-shortcourse-second-part-event-type").hide();
+                        $("#form-add-shortcourse-second-part-modular-selection-mode").hide();
                 }
             }
 
@@ -775,9 +800,11 @@
             var event_type = $('#event_type').find(':selected').val();
             if (event_type == 1) {
                 $("#form-add-shortcourse-second-part-event-type").show();
+                        $("#form-add-shortcourse-second-part-modular-selection-mode").show();
             } else {
 
                 $("#form-add-shortcourse-second-part-event-type").hide();
+                        $("#form-add-shortcourse-second-part-modular-selection-mode").hide();
             }
         });
 
@@ -896,7 +923,7 @@
                 }
             });
 
-            $('.shortcourse, .user, .venue, .topic1, .fee, .venue_type, .event_feedback_set, .event_type')
+            $('.shortcourse, .user, .venue, .topic1, .fee, .venue_type, .event_feedback_set, .event_type, .is_modular_single_selection')
                 .select2();
 
             $('.shortcourse_type').select2({

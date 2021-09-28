@@ -290,19 +290,38 @@ class EventController extends Controller
             // ]);
         }
 
-        $createEvent = Event::create([
-            'name' => $request->shortcourse_name,
-            'description' => $request->shortcourse_description,
-            'objective' => $request->shortcourse_objective,
-            'is_modular' => $request->event_type,
-            'event_feedback_set_id' => $request->event_feedback_set_id,
-            'datetime_start' => $request->datetime_start,
-            'datetime_end' => $request->datetime_end,
-            'registration_due_date' => $request->datetime_start,
-            'venue_id' => $request->venue_id == -1 ? $createVenue->id : $request->venue_id,
-            'venue_description' => $request->venue_description,
-            'created_by' => Auth::user()->id,
-        ]);
+        if($request->event_type==0){
+            $createEvent = Event::create([
+                'name' => $request->shortcourse_name,
+                'description' => $request->shortcourse_description,
+                'objective' => $request->shortcourse_objective,
+                'is_modular' => $request->event_type,
+                'event_feedback_set_id' => $request->event_feedback_set_id,
+                'datetime_start' => $request->datetime_start,
+                'datetime_end' => $request->datetime_end,
+                'registration_due_date' => $request->datetime_start,
+                'venue_id' => $request->venue_id == -1 ? $createVenue->id : $request->venue_id,
+                'venue_description' => $request->venue_description,
+                'created_by' => Auth::user()->id,
+            ]);
+        }else{
+            $createEvent = Event::create([
+                'name' => $request->shortcourse_name,
+                'description' => $request->shortcourse_description,
+                'objective' => $request->shortcourse_objective,
+                'is_modular' => $request->event_type,
+                'is_modular_single_selection' => $request->is_modular_single_selection,
+                'event_feedback_set_id' => $request->event_feedback_set_id,
+                'datetime_start' => $request->datetime_start,
+                'datetime_end' => $request->datetime_end,
+                'registration_due_date' => $request->datetime_start,
+                'venue_id' => $request->venue_id == -1 ? $createVenue->id : $request->venue_id,
+                'venue_description' => $request->venue_description,
+                'created_by' => Auth::user()->id,
+            ]);
+        }
+
+
 
         $createEventShortCourse = EventShortCourse::create([
             'event_id' => $createEvent->id,
@@ -530,7 +549,7 @@ class EventController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|max:255',
-            'is_modular' => 'required',
+            'event_type' => 'required',
             'datetime_start' => 'required',
             'datetime_end' => 'required',
             'venue' => 'required',
@@ -547,7 +566,9 @@ class EventController extends Controller
 
         $update = Event::find($id)->update([
             'name' => $request->name,
-            'is_modular' => $request->is_modular,
+            'is_modular' => $request->event_type,
+
+            'is_modular_single_selection' => $request->is_modular_single_selection,
             'datetime_start' => $request->datetime_start,
             'datetime_end' => $request->datetime_end,
             'venue_id' => $request->venue,

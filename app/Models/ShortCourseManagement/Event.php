@@ -13,6 +13,7 @@ class Event extends Model
     protected $fillable = [
         'name',
         'is_modular',
+        'is_modular_single_selection',
         'description',
         'target_audience',
         'tentative',

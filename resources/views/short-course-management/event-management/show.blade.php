@@ -137,6 +137,42 @@
                                                                     </div>
                                                                 </td>
                                                             </tr>
+                                                            <tr id="is_modular_single_selection_row"
+                                                                {{ $event->is_modular == 0 ? 'style=display:none;' : '' }}>
+                                                                <td>Module Selection Mode</td>
+                                                                <td name="is_modular_single_selection_show"
+                                                                    id="is_modular_single_selection_show">
+                                                                    {{ $event->is_modular_single_selection == 1 ? 'Single Selection' : 'Multiple Selection' }}
+                                                                </td>
+                                                                <td name="is_modular_single_selection_edit"
+                                                                    id="is_modular_single_selection_edit"
+                                                                    style="display: none">
+                                                                    <div class="form-group">
+                                                                        <select
+                                                                            class="form-control is_modular_single_selection "
+                                                                            name="is_modular_single_selection"
+                                                                            id="is_modular_single_selection"
+                                                                            data-select2-id="is_modular_single_selection"
+                                                                            tabindex="-1" aria-hidden="true">
+                                                                            <option value="0"
+                                                                                {{ $event->is_modular_single_selection == 0 ? 'Selected' : '' }}>
+                                                                                Multiple Selection
+                                                                            </option>
+                                                                            <option value="1"
+                                                                                {{ $event->is_modular_single_selection == 1 ? 'Selected' : '' }}>
+                                                                                Single Selection
+                                                                            </option>
+                                                                        </select>
+                                                                        @error('is_modular_single_selection')
+                                                                            <p style="color: red">
+                                                                                <strong> *
+                                                                                    {{ $message }}
+                                                                                </strong>
+                                                                            </p>
+                                                                        @enderror
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
                                                             <tr>
                                                                 <td>Date Start</td>
                                                                 <td name="datetime_start_show" id="datetime_start_show">
@@ -1605,7 +1641,7 @@
                 document.getElementById("add-shortcourse").addEventListener("click", function(event) {
                     event.preventDefault()
                 });
-                $('.venue, .event_feedback_set, .event_type').select2();
+                $('.venue, .event_feedback_set, .event_type, .is_modular_single_selection').select2();
                 $('.user').select2({
                     dropdownParent: $('#crud-modal-add-trainer, #crud-modal-add-contact_person')
                 });
@@ -1622,6 +1658,9 @@
 
                     $("#event_type_show").hide();
                     $("#event_type_edit").show();
+
+                    $("#is_modular_single_selection_show").hide();
+                    $("#is_modular_single_selection_edit").show();
 
                     $("#datetime_start_show").hide();
                     $("#datetime_start_edit").show();
@@ -1655,6 +1694,10 @@
                     $("#event_type_show").show();
                     $("#event_type_edit").hide();
 
+
+                    $("#is_modular_single_selection_show").show();
+                    $("#is_modular_single_selection_edit").hide();
+
                     $("#datetime_start_show").show();
                     $("#datetime_start_edit").hide();
 
@@ -1678,6 +1721,19 @@
                     $("#save-basic").hide();
                     $("#edit-basic-close").hide();
                 });
+
+                // Selection Type
+                {
+                    $('#event_type').on('change', function(event) {
+                        console.log(event.target.value);
+                        if (event.target.value == 1) {
+                            $('#is_modular_single_selection_row').show();
+                        } else {
+                            $('#is_modular_single_selection_row').hide();
+                        }
+
+                    })
+                }
 
             }
 
