@@ -30,16 +30,14 @@ class ApplicantByModuleExport implements FromCollection, WithColumnFormatting, W
     public function __construct($data)
     {
         $this->event = $data;
-        $this->shortcourse = $data->events_shortcourses[0]->shortcourse;
     }
 
     public function collection()
     {
 
         $this->first_row = 1;
-
         $participantList = EventModuleEventParticipant::join('scm_event_module', 'scm_event_module_event_participant.event_module_id', '=', 'scm_event_module.id')
-            ->where('scm_event_module.shortcourse_id', '=', $this->shortcourse->id)->orderBy('event_module_id')->get(['scm_event_module_event_participant.*'])->load(['event_participant.participant', 'event_module']);
+            ->where('scm_event_module.event_id', '=', $this->event->id)->orderBy('event_module_id')->get(['scm_event_module_event_participant.*'])->load(['event_participant.participant', 'event_module']);
 
         return collect($participantList);
     }
@@ -53,8 +51,8 @@ class ApplicantByModuleExport implements FromCollection, WithColumnFormatting, W
 
     public function styles(Worksheet $sheet)
     {
-        $sheet->getStyle('A1:D1')->getFont()->setBold(true);
-        $sheet->getStyle('A1:D1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('F7E7E4');
+        $sheet->getStyle('A1:F1')->getFont()->setBold(true);
+        $sheet->getStyle('A1:F1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('F7E7E4');
     }
 
     // public function headings(): array
@@ -85,6 +83,8 @@ class ApplicantByModuleExport implements FromCollection, WithColumnFormatting, W
             'Modules Name',
             'Participant IC',
             'Participant Name',
+            'Participant Contact Number',
+            'Participant Email',
             'Application DateTime'
         ];
     }
@@ -95,6 +95,8 @@ class ApplicantByModuleExport implements FromCollection, WithColumnFormatting, W
             $collection->event_module->name,
             $collection->event_participant->participant->ic,
             $collection->event_participant->participant->name,
+            $collection->event_participant->participant->phone,
+            $collection->event_participant->participant->email,
             $collection->event_participant->participant->created_at
         ];
 

@@ -1193,7 +1193,7 @@ class EventController extends Controller
 
     public function exportApplicantByModule($event_id)
     {
-        $event = Event::find($event_id)->load(['events_participants', 'venue', 'event_status_category', 'events_shortcourses.shortcourse']);
+        $event = Event::find($event_id)->load(['events_participants', 'venue', 'event_status_category', 'event_modules.event_modules_event_participants']);
         $data = $event;
         return Excel::download(new ApplicantByModuleExport($data), 'ApplicantByModuleExport_' . $event->id . '.xlsx');
     }
