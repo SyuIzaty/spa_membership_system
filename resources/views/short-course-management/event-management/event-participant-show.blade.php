@@ -279,6 +279,7 @@
                                                                                         <th>Name</th>
                                                                                         <th>Phone</th>
                                                                                         <th>Email</th>
+                                                                                        <th>Status</th>
                                                                                         <th {{$event->is_modular==1? '':"hidden"}}>Module</th>
                                                                                         <th>Date Apply</th>
                                                                                         <th>Action</th>
@@ -1154,6 +1155,11 @@
                             },
                             {
                                 className: 'text-center',
+                                data: 'currentStatus',
+                                name: 'currentStatus'
+                            },
+                            {
+                                className: 'text-center',
                                 data: 'created_at_diffForHumans',
                                 name: 'created_at_diffForHumans',
                             },
@@ -1217,6 +1223,11 @@
                                 className: 'text-center',
                                 data: 'participant.email',
                                 name: 'participant.email'
+                            },
+                            {
+                                className: 'text-center',
+                                data: 'currentStatus',
+                                name: 'currentStatus'
                             },
                             {
                                 className: 'text-center',

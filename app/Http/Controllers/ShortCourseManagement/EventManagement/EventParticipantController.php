@@ -26,7 +26,7 @@ class EventParticipantController extends Controller
         $event = Event::find($id)->load(['events_participants', 'events_shortcourses.shortcourse.event_modules']);
 
         $currentApplicants = $event->events_participants
-            ->where('is_approved_application', 1)->where('is_disqualified','!=', 1)
+            ->where('is_approved_application', 1)->where('is_disqualified', '!=', 1)
             ->count();
 
         $event->total_seat_available = $event->max_participant - $currentApplicants;
@@ -50,15 +50,37 @@ class EventParticipantController extends Controller
             $eventsParticipants[$index]->created_at_diffForHumans = $eventsParticipants[$index]->created_at->diffForHumans();
             $eventsParticipants[$index]->organisationsString = '';
             foreach ($eventParticipant->participant->organisations_participants as $organisation_participant) {
-                $eventsParticipants[$index]->organisationsString = ($eventsParticipants[$index]->organisationsString) . ($organisation_participant->organisation->name) . '<br>';
+                $eventsParticipants[$index]->organisationsString = ($eventsParticipants[$index]->organisationsString) . ($organisation_participant->organisation->name) . '<br/><br/>';
             }
 
             $eventsParticipants[$index]->selected_module = '';
-            $moduleIndex=1;
+            $moduleIndex = 1;
             foreach ($eventParticipant->event_modules_event_participants as $event_module_event_participant) {
-                $eventsParticipants[$index]->selected_modules = ($eventsParticipants[$index]->selected_modules) . $moduleIndex . ') '.($event_module_event_participant->event_module->name) . '<br>';
+                $eventsParticipants[$index]->selected_modules = ($eventsParticipants[$index]->selected_modules) . $moduleIndex . ') ' . ($event_module_event_participant->event_module->name) . '<br/><br/>';
                 $moduleIndex++;
             }
+
+            //current status
+            if ($eventParticipant->is_disqualified == 1) {
+                $eventsParticipants[$index]->currentStatus = 'Disqualified';
+            } else if ($eventParticipant->is_done_email_completed == 1) {
+                $eventsParticipants[$index]->currentStatus = '1) Feedback Status - Email Question (Done) <br/><br/> 2) Feedback Status - Completed (Done)';
+            } else if ($eventParticipant->is_done_email_completed == 0 && $eventParticipant->is_question_sended == 1) {
+                $eventsParticipants[$index]->currentStatus = '1) Feedback Status - Email Question (Done) <br/><br/>2) Feedback Status - Completed (Not Done Yet)';
+            } else if ($eventParticipant->is_question_sended == 0 && $eventParticipant->is_not_attend == 1) {
+                $eventsParticipants[$index]->currentStatus = '1) Payment Status - Verification (Done) <br/><br/>2) Attendance Status (Not Attend)';
+            } else if ($eventParticipant->is_question_sended == 0 && $eventParticipant->is_not_attend == 0) {
+                $eventsParticipants[$index]->currentStatus = '1) Payment Status - Verification (Done) <br/><br/>2) Attendance Status (Attend)';
+            } else if ($eventParticipant->is_not_attend == null && $eventParticipant->is_verified_payment_proof == 1) {
+                $eventsParticipants[$index]->currentStatus = '1) Payment Status - Verification (Done) <br/><br/>2) Attendance Status (Not Specified Yet)';
+            } else if ($eventParticipant->is_not_attend == null && $eventParticipant->is_verified_payment_proof == null) {
+                $eventsParticipants[$index]->currentStatus = '1) Payment Status - Verification (Rejected)';
+            } else if ($eventParticipant->is_verified_payment_proof == 0 && $eventParticipant->is_approved_application == 1) {
+                $eventsParticipants[$index]->currentStatus = '1) Application Status (Accepted) <br/><br/>2) Payment Status - Verification (Requested)';
+            } else {
+                $eventsParticipants[$index]->currentStatus = 'N/A';
+            }
+
             $index++;
         }
 
@@ -72,7 +94,7 @@ class EventParticipantController extends Controller
             ->addColumn('action', function ($eventsParticipants) {
                 return '<a href="javascript:;" id="edit-application" data-toggle="modal" data-event_participant_id="' . $eventsParticipants->id . '" data-participant_ic="' . $eventsParticipants->participant->ic . '" class="btn btn-sm btn-success btn-edit-application">Edit</a>';
             })
-            ->rawColumns(['action', 'checkApplicant','selected_modules'])
+            ->rawColumns(['action', 'checkApplicant', 'selected_modules', 'currentStatus'])
             ->make(true);
     }
 
