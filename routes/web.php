@@ -421,3 +421,10 @@ Route::get('/add-form', 'CovidController@addForm');
 // Asset Public
 Route::get('/asset-search', 'AssetController@assetSearch')->name('assetSearch');
 Route::get('get-file-image/{filename}', 'AssetController@getImage');
+
+// Computer Grant Management
+Route::get('/application-form', 'ComputerGrantController@index');
+Route::post('store-application', 'ComputerGrantController@store');
+Route::post('/datalist', 'ComputerGrantController@datalist');
+Route::get('/application-detail/{id}', 'ComputerGrantController@applicationDetail');
+
