@@ -81,8 +81,8 @@ class ApplicantByModuleExport implements FromCollection, WithColumnFormatting, W
     {
         return [
             'Modules Name',
-            'Participant IC',
             'Participant Name',
+            'Participant IC',
             'Participant Contact Number',
             'Participant Email',
             'Application DateTime'
@@ -93,8 +93,8 @@ class ApplicantByModuleExport implements FromCollection, WithColumnFormatting, W
     {
         $participants = [
             $collection->event_module->name,
-            $collection->event_participant->participant->ic,
             $collection->event_participant->participant->name,
+            $collection->event_participant->participant->ic,
             $collection->event_participant->participant->phone,
             $collection->event_participant->participant->email,
             $collection->event_participant->participant->created_at

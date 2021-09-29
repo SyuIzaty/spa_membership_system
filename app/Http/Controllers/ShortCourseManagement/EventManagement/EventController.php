@@ -101,17 +101,15 @@ class EventController extends Controller
                 ';
             })
             ->addColumn('document', function ($events) {
-                if (isset($events->events_shortcourses[0])) {
 
-                    if ($events->is_modular == 1) {
-                        return '
+                if ($events->is_modular == 1) {
+                    return '
                         <div style="display:flex;">
                         <a href="/event/participant-list/' . $events->id . '" class="btn btn-info btn-lg btn-icon waves-effect waves-themed"><i class="ni ni-note"></i></a><br/><br/>
                         <a data-page="/event/report/' . $events->id . '" class="btn btn-success btn-lg btn-icon waves-effect waves-themed" style="margin-left:5px" onclick="Print(this)"><i class="ni ni-graph"></i></a><br/><br/>
                         <a href="/event/exportApplicantByModule/' . $events->id . '" class="btn btn-primary btn-lg btn-icon waves-effect waves-themed" style="margin-left:5px"><i class="ni ni-users"></i></a>
                         </div>
                         ';
-                    }
                 }
                 return '
                 <div class="d-flex justify-content-center">
@@ -290,7 +288,7 @@ class EventController extends Controller
             // ]);
         }
 
-        if($request->event_type==0){
+        if ($request->event_type == 0) {
             $createEvent = Event::create([
                 'name' => $request->shortcourse_name,
                 'description' => $request->shortcourse_description,
@@ -304,7 +302,7 @@ class EventController extends Controller
                 'venue_description' => $request->venue_description,
                 'created_by' => Auth::user()->id,
             ]);
-        }else{
+        } else {
             $createEvent = Event::create([
                 'name' => $request->shortcourse_name,
                 'description' => $request->shortcourse_description,
@@ -537,7 +535,7 @@ class EventController extends Controller
             }
         }
         $currentApplicants = $event->events_participants
-            ->where('is_approved_application', 1)->where('is_disqualified','!=', 1)
+            ->where('is_approved_application', 1)->where('is_disqualified', '!=', 1)
             ->count();
         $event->total_seat_available = $event->max_participant - $currentApplicants;
         return view('short-course-management.event-management.show', compact('event', 'venues', 'shortcourses', 'users', 'statistics', 'eventStatusCategories', 'event_feedback_sets'));
@@ -866,7 +864,7 @@ class EventController extends Controller
             $index += 1;
         }
         $currentApplicants = $event->events_participants
-            ->where('is_approved_application', 1)->where('is_disqualified','!=', 1)
+            ->where('is_approved_application', 1)->where('is_disqualified', '!=', 1)
             ->count();
 
         $event->total_seat_available = $event->max_participant - $currentApplicants;
