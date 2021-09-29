@@ -107,7 +107,7 @@
                                 <div class="row d-flex align-items-center justify-content-center">
                                     <button href="javascript:;" id="new-application"
                                         class="btn btn-sm btn-primary btn btn-block call-to-action"
-                                        {{ $event->total_seat_available == 0 ? 'disabled' : null }}>Apply
+                                        {{ $event->total_seat_available <= 0 ? 'disabled' : null }}>Apply
                                         now!</button>
                                 </div>
                                 <x-ShortCourseManagement.AddParticipant :event=$event edit={{false}}/>

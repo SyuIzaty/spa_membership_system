@@ -290,10 +290,10 @@
                                                                             style="content-align:right">
                                                                             <button href="javascript:;" id="new-application"
                                                                                 class="btn btn-primary ml-auto mr-2 waves-effect waves-themed"
-                                                                                {{ $event->total_seat_available == 0 ? 'disabled' : null }}>
+                                                                                {{ $event->total_seat_available <= 0 ? 'disabled' : null }}>
                                                                                 <i class="ni ni-check"></i>
                                                                                 New
-                                                                                Application ({{$event->total_seat_available}} Seat Available Left)</button>
+                                                                                Application ({{$event->total_seat_available}} out of {{$event->max_participant}} Seat Available Left)</button>
                                                                         </div>
                                                                     </form>
                                                                 </div>

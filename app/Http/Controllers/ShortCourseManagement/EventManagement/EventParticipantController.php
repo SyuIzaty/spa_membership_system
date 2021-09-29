@@ -26,7 +26,7 @@ class EventParticipantController extends Controller
         $event = Event::find($id)->load(['events_participants', 'events_shortcourses.shortcourse.event_modules']);
 
         $currentApplicants = $event->events_participants
-            ->where('is_approved_application', 1)
+            ->where('is_approved_application', 1)->where('is_disqualified','!=', 1)
             ->count();
 
         $event->total_seat_available = $event->max_participant - $currentApplicants;

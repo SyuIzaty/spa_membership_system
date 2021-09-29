@@ -537,7 +537,7 @@ class EventController extends Controller
             }
         }
         $currentApplicants = $event->events_participants
-            ->where('is_approved_application', 1)
+            ->where('is_approved_application', 1)->where('is_disqualified','!=', 1)
             ->count();
         $event->total_seat_available = $event->max_participant - $currentApplicants;
         return view('short-course-management.event-management.show', compact('event', 'venues', 'shortcourses', 'users', 'statistics', 'eventStatusCategories', 'event_feedback_sets'));
@@ -866,7 +866,7 @@ class EventController extends Controller
             $index += 1;
         }
         $currentApplicants = $event->events_participants
-            ->where('is_approved_application', 1)
+            ->where('is_approved_application', 1)->where('is_disqualified','!=', 1)
             ->count();
 
         $event->total_seat_available = $event->max_participant - $currentApplicants;
