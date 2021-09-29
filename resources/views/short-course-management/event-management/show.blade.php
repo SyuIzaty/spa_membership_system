@@ -1111,11 +1111,12 @@
                                                     <table class="table table-striped table-bordered m-0">
                                                         <thead class="thead">
                                                             <tr class=" bg-primary-50">
-                                                                <th colspan="3"><b>List of Modules</b></th>
+                                                                <th colspan="4"><b>List of Modules</b></th>
                                                             </tr>
                                                             <tr>
                                                                 <th>Name</th>
                                                                 <th>Fee (RM)</th>
+                                                                <th>Total Application</th>
                                                                 <th>Action</th>
                                                             </tr>
                                                         </thead>
@@ -1126,7 +1127,10 @@
                                                                     </td>
                                                                     <td>{{ $event_module->fee_amount }}
                                                                     </td>
-                                                                    <td>
+                                                                    <td>{{ $event_module->totalApplication }}
+                                                                    </td>
+                                                                    <td class="d-flex justify-content-center">
+
                                                                         <a href="#"
                                                                             class="btn btn-sm btn-info float-right mr-2"
                                                                             name="edit-module" id="edit-module"
@@ -1141,7 +1145,8 @@
                                                                             action="/event/event_module/remove/{{ $event_module->id }}">
                                                                             @csrf
                                                                             <button type="submit"
-                                                                                class="btn btn-sm btn-danger float-right mr-2">
+                                                                                class="btn btn-sm btn-danger float-right mr-2"
+                                                                                {{$event_module->totalApplication==0?'':'disabled'}}>
                                                                                 <i class="ni ni-close"></i>
                                                                             </button>
                                                                         </form>
@@ -2165,6 +2170,9 @@
 
                                 <td>
                                     <input id="module_fee_amount" name="module_fee_amount" type="text" class="form-control" value='0.00'>
+                                </td>
+                                <td>
+                                    0
                                 </td>
                                 <td class="d-flex flex-row-reverse ">
                                     <a href="javascript:;" name="cancel-module" id="cancel-module" class="btn btn-sm btn-danger btn_remove mx-1">X</a>
