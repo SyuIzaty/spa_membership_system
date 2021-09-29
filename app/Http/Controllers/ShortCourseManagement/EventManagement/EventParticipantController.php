@@ -64,9 +64,9 @@ class EventParticipantController extends Controller
             if ($eventParticipant->is_disqualified == 1) {
                 $eventsParticipants[$index]->currentStatus = 'Disqualified';
             } else if ($eventParticipant->is_done_email_completed == 1) {
-                $eventsParticipants[$index]->currentStatus = '1) Feedback Status - Email Question (Done) <br/><br/> 2) Feedback Status - Completed (Done)';
+                $eventsParticipants[$index]->currentStatus = 'Feedback Status - Completion (Done)';
             } else if ($eventParticipant->is_done_email_completed == 0 && $eventParticipant->is_question_sended == 1) {
-                $eventsParticipants[$index]->currentStatus = '1) Feedback Status - Email Question (Done) <br/><br/>2) Feedback Status - Completed (Not Done Yet)';
+                $eventsParticipants[$index]->currentStatus = '1) Feedback Status - Email Question (Done) <br/><br/>2) Feedback Status - Completion (Not Done Yet)';
             } else if ($eventParticipant->is_question_sended == 0 && $eventParticipant->is_not_attend == 1) {
                 $eventsParticipants[$index]->currentStatus = '1) Payment Status - Verification (Done) <br/><br/>2) Attendance Status (Not Attend)';
             } else if ($eventParticipant->is_question_sended == 0 && $eventParticipant->is_not_attend == 0) {
@@ -74,9 +74,9 @@ class EventParticipantController extends Controller
             } else if ($eventParticipant->is_not_attend == null && $eventParticipant->is_verified_payment_proof == 1) {
                 $eventsParticipants[$index]->currentStatus = '1) Payment Status - Verification (Done) <br/><br/>2) Attendance Status (Not Specified Yet)';
             } else if ($eventParticipant->is_not_attend == null && $eventParticipant->is_verified_payment_proof == null) {
-                $eventsParticipants[$index]->currentStatus = '1) Payment Status - Verification (Rejected)';
+                $eventsParticipants[$index]->currentStatus = 'Payment Status - Verification (Rejected)';
             } else if ($eventParticipant->is_verified_payment_proof == 0 && $eventParticipant->is_approved_application == 1) {
-                $eventsParticipants[$index]->currentStatus = '1) Application Status (Accepted) <br/><br/>2) Payment Status - Verification (Requested)';
+                $eventsParticipants[$index]->currentStatus = '1) Application Status (Accepted) <br/><br/>2) Payment Status - Verification (Request for Verification)';
             } else {
                 $eventsParticipants[$index]->currentStatus = 'N/A';
             }

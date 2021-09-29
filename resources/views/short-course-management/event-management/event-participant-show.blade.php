@@ -294,7 +294,7 @@
                                                                                 {{ $event->total_seat_available <= 0 ? 'disabled' : null }}>
                                                                                 <i class="ni ni-check"></i>
                                                                                 New
-                                                                                Application ({{$event->total_seat_available}} out of {{$event->max_participant}} Seat Available Left)</button>
+                                                                                Application ({{$event->total_seat_available}} out of {{$event->max_participant}} Available Seat Left)</button>
                                                                         </div>
                                                                     </form>
                                                                 </div>
