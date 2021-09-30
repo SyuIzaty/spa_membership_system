@@ -269,7 +269,7 @@
                                                                         @csrf
                                                                         <div class="table-responsive">
                                                                             <table id="table-all-applicant"
-                                                                                name="table-all-applicant"
+                                                                                name="table-update-progress-1-1"
                                                                                 class="table table-bordered table-hover table-striped w-100">
                                                                                 <thead>
                                                                                     <tr class="bg-primary-50 text-center">
@@ -2390,6 +2390,22 @@
                     var nextTableId = null;
 
                     switch (tag[0].id) {
+                        case 'delete-application':
+                            title = 'Hard delete this application?';
+                            text = "This application will be hard deleted and can't be retrieved forever!";
+                            confirmButtonText = 'Yes, hard delete this application!';
+                            cancelButtonText = 'No, d';
+                            currentTableId = '#table-all-applicant';
+                            nextTableId = '#table-all-no-payment-yet';
+                            break;
+                        case 'restore-application':
+                            title = 'Restore this application?';
+                            text = "This application will be restored!";
+                            confirmButtonText = 'Yes, restore this application!';
+                            cancelButtonText = 'No';
+                            currentTableId = '#table-all-applicant';
+                            nextTableId = '#table-all-no-payment-yet';
+                            break;
                         case 'approve-application':
                             title = 'Approved this application?';
                             text = "This applicant will be asked to pay for the participation fee!";
@@ -2412,7 +2428,7 @@
                             confirmButtonText = 'Yes, disqualify this application!';
                             cancelButtonText = 'No';
                             currentTableId = '#table-all-no-payment-yet';
-                            nextTableId = '#table-disqualified';
+                            nextTableId = '#table-all-applicant';
                             break;
                         case 'verify-payment-proof':
                             title = 'Verify this payment proof?';

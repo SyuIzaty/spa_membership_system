@@ -92,6 +92,10 @@ class EventParticipantController extends Controller
                     '" class="applicants_checkbox">';
             })
             ->addColumn('action', function ($eventsParticipants) {
+                if ($eventsParticipants->is_disqualified == 1) {
+                    return '<a href="javascript:;" id="restore-application" data-remote="/update-progress/restore-application/' . $eventsParticipants->id . '" class="btn btn-sm btn-success btn-update-progress">Restore</a>
+                            <a href="javascript:;" id="delete-application" data-remote="/update-progress/delete-application/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger btn-update-progress">Hard Delete</a>';
+                }
                 return '<a href="javascript:;" id="edit-application" data-toggle="modal" data-event_participant_id="' . $eventsParticipants->id . '" data-participant_ic="' . $eventsParticipants->participant->ic . '" class="btn btn-sm btn-success btn-edit-application">Edit</a>';
             })
             ->rawColumns(['action', 'checkApplicant', 'selected_modules', 'currentStatus'])
@@ -1096,6 +1100,39 @@ class EventParticipantController extends Controller
         $eventParticipant = EventParticipant::where('id', $eventParticipant_id)->first()->load(['participant', 'event.venue', 'fee']);
 
         switch ($progress_name) {
+
+            case 'delete-application':
+                $exist1 = EventModuleEventParticipant::withoutTrashed()->where('event_participant_id', $eventParticipant_id)->get();
+                if ($exist1) {
+                    foreach ($exist1 as $exist)
+                        $exist->forceDelete();
+                }
+                $exist2 = EventParticipant::withTrashed()->find($eventParticipant_id)->forceDelete();
+                break;
+            case 'restore-application':
+                $update = EventParticipant::find($eventParticipant_id)->update([
+                    'is_disqualified' => 0,
+                    'disqualified_datetime' => null,
+                ]);
+                $message =  [
+                    'opening' => 'Assalamualaikum wbt & Salam Sejahtera, Tuan/Puan/Encik/Cik ' . ($eventParticipant->participant->name),
+                    'introduction' => 'Pemohonan anda untuk menyertai salah satu program kami <b>TELAH DIAKTIFKAN SEMULA</b> oleh pihak INTEC bagi program, ',
+                    'detail' => 'Program: ' . ($eventParticipant->event->name)
+                        . '<br/>Tarikh: ' . ($eventParticipant->event->datetime_start) . ' sehingga ' . ($eventParticipant->event->datetime_end)
+                        . '<br/>Tempat: ' . ($eventParticipant->event->venue->name)
+                        . '<br/> <br/>Sila buat pembayaran yuran sebanyak <b>RM'
+                        . ($eventParticipant->fee->amount) . ' (' . ($eventParticipant->fee->name)
+                        . ')</b>, kemudian tekan butang di bawah untuk ke sesawang profil bagi mengemaskini status pembayaran untuk disahkan.',
+                    'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
+                    'sha1_ic' => ($eventParticipant->participant->sha1_ic),
+                ];
+
+                Mail::send('short-course-management.email.email-payment-verified', $message, function ($message) use ($eventParticipant) {
+                    $message->subject('Pengesahan Pendaftaran (Berjaya)');
+                    $message->from(Auth::user()->email);
+                    $message->to($eventParticipant->participant->email);
+                });
+                break;
             case 'approve-application':
                 $update = EventParticipant::find($eventParticipant_id)->update([
                     'is_approved_application' => 1,
