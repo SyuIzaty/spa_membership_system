@@ -188,13 +188,15 @@
                                                             More Module</a>
                                                     </td>
                                                 </tr>
-                                                <tr class="row" id="form-add-shortcourse-second-part-modular-selection-mode"
+                                                <tr class="row"
+                                                    id="form-add-shortcourse-second-part-modular-selection-mode"
                                                     {{ old('shortcourse_id') || old('event_type') == 1 ? null : 'style=display:none' }}>
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Module Selection Mode **', ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
-                                                        <select class="form-control is_modular_single_selection" name="is_modular_single_selection"
+                                                        <select class="form-control is_modular_single_selection"
+                                                            name="is_modular_single_selection"
                                                             id="is_modular_single_selection">
                                                             <option value=0 name="is_modular_single_selection"
                                                                 {{ old('is_modular_single_selection') == 0 ? 'selected' : null }}>
@@ -506,8 +508,54 @@
                                                         </p>
                                                     @enderror
                                                 </div>
-                                                {{-- </div>
-                                                    <div class="grid-center"> --}}
+
+                                                <div class="topics" id="topics"
+                                                    style="display: inline-block; width:100%;">
+                                                    <table class="table table-striped table-bordered m-0" id="topic_field">
+                                                        <thead class="thead">
+                                                            <tr class=" bg-primary-50">
+                                                                <th colspan="3"><b>List of Topics</b>
+                                                                </th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Name</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr hidden></tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <a href="javascript:;" name="addTopic" id="addTopic"
+                                                        class="btn btn-primary btn-sm ml-auto float-right my-2">Add
+                                                        More Topic</a>
+                                                </div>
+
+                                                <div class="modules" id="modules"
+                                                    style="display: inline-block; width:100%;" hidden>
+                                                    <table class="table table-striped table-bordered m-0"
+                                                        id="module_field">
+                                                        <thead class="thead">
+                                                            <tr class=" bg-primary-50">
+                                                                <th colspan="3"><b>List of Modules</b>
+                                                                </th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Name</th>
+                                                                <th>Fee (RM)</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr hidden></tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <a href="javascript:;" name="addModule" id="addModule"
+                                                        class="btn btn-primary btn-sm ml-auto float-right my-2">Add
+                                                        More Module</a>
+                                                </div>
+
+
                                                 <div class="form-group">
                                                     <label for="objective"><span class="text-danger">*</span>
                                                         Objective</label>
@@ -535,34 +583,7 @@
                                                     @enderror
                                                 </div>
 
-                                                {{-- </div>
-                                                    <div class="grid-right"> --}}
 
-                                                <div class="modules" id="modules"
-                                                    style="display: inline-block; width:100%;" hidden>
-                                                    <table class="table table-striped table-bordered m-0"
-                                                        id="module_field">
-                                                        <thead class="thead">
-                                                            <tr class=" bg-primary-50">
-                                                                <th colspan="3"><b>List of Modules</b>
-                                                                </th>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>Name</th>
-                                                                <th>Fee (RM)</th>
-                                                                <th>Action</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr hidden></tr>
-                                                        </tbody>
-                                                    </table>
-                                                    <a href="javascript:;" name="addModule" id="addModule"
-                                                        class="btn btn-primary btn-sm ml-auto float-right my-2">Add
-                                                        More Module</a>
-                                                </div>
-                                                {{-- </div> --}}
-                                                {{-- </div> --}}
                                                 <hr class="mt-1 mb-2">
                                                 <div class="footer" id="add_contact_person_footer">
                                                     <button type="button" class="btn btn-danger ml-auto float-right mr-2"
@@ -790,7 +811,7 @@
                     $("tr[id=form-add-shortcourse-second-part]").hide();
 
                     $("#form-add-shortcourse-second-part-event-type").hide();
-                        $("#form-add-shortcourse-second-part-modular-selection-mode").hide();
+                    $("#form-add-shortcourse-second-part-modular-selection-mode").hide();
                 }
             }
 
@@ -800,11 +821,11 @@
             var event_type = $('#event_type').find(':selected').val();
             if (event_type == 1) {
                 $("#form-add-shortcourse-second-part-event-type").show();
-                        $("#form-add-shortcourse-second-part-modular-selection-mode").show();
+                $("#form-add-shortcourse-second-part-modular-selection-mode").show();
             } else {
 
                 $("#form-add-shortcourse-second-part-event-type").hide();
-                        $("#form-add-shortcourse-second-part-modular-selection-mode").hide();
+                $("#form-add-shortcourse-second-part-modular-selection-mode").hide();
             }
         });
 
@@ -874,6 +895,7 @@
                             </td>
                             <td>
                                 <input id="module_fee_amount" name="module_fee_amounts[]" type="number" class="form-control" value='0.00'>
+                            </td>
                             <td>
                                 <a href="javascript:;" name="cancel-module" data-value="${i}" id="cancel-module" class="btn btn-sm btn-danger btn_remove mx-1">X</a>
                             </td>
@@ -887,28 +909,40 @@
                     $(`#new-row${row_id}`).remove();
                     $("#addModule").show();
                 });
+            });
 
-                $(document).on('click', '#save-module', function() {
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
+            $('#addTopic').click(function() {
+                i++;
+                $('#topic_field tbody tr:last').after(`
+                        <tr id="new-row${i}">
+                            <td>
+                                <select class="form-control topic" name="shortcourse_topics[]"
+                                    id="add_topic">
+                                    <option value="-1" disabled selected>Select Topic
+                                    </option>
+                                    @foreach ($topics as $topic)
+                                        <option value="{{ $topic->id }}">
+                                            {{ $topic->id }} -
+                                            {{ $topic->name }}</option>
+                                    @endforeach
+                                </select>
+                            </td>
+                            <td>
+                                <a href="javascript:;" name="cancel-topic" data-value="${i}" id="cancel-topic" class="btn btn-sm btn-danger btn_remove mx-1">X</a>
+                            </td>
+                        </tr>
+                    `);
 
-                    var $shortcourse_module = $('#add_module').val();
-                    var data = {
-                        shortcourse_module: $shortcourse_module
-                    }
-                    var url = '/shortcourse/module/attached/' + shortcourse_id;
+                $(document).on('click', '#cancel-topic', function(event) {
+                    var row_id = event.target.dataset.value;
 
-                    $.post(url, data).done(function() {
-                            window.location.reload();
-                        })
-                        .fail(function() {
-                            $('#new-row').show();
-                            $("#addModule").remove();
-                            alert('Unable to add module');
-                        });
+
+                    $(`#new-row${row_id}`).remove();
+                    $("#addTopic").show();
+                });
+
+                $('.topic').select2({
+                    dropdownParent: $('#crud-modal')
                 });
             });
 

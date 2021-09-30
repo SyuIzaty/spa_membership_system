@@ -241,7 +241,6 @@ class ShortCourseController extends Controller
 
     public function storeShortCourseEvent(Request $request)
     {
-
         if ($request->shortcourse_type == 0) {
             $validated = $request->validate([
                 'shortcourse_name_new' => 'required',
@@ -278,6 +277,19 @@ class ShortCourseController extends Controller
             'is_modular' => $request->shortcourse_type,
             'created_by' => Auth::user()->id,
         ]);
+
+        if ($request->shortcourse_topics) {
+            foreach ($request->shortcourse_topics as $shortcourse_topic) {
+                if ($shortcourse_topic != "-1") {
+                    $createTopicShortCourse = TopicShortCourse::create([
+                        'topic_id' => $shortcourse_topic,
+                        'shortcourse_id' => $createShortCourse->id,
+                        'is_active' => 1,
+                        'created_by' => Auth::user()->id,
+                    ]);
+                }
+            }
+        }
 
         $index = 0;
 
