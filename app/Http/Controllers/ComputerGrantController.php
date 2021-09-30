@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+
 use DateTime;
 use App\Staff;
 use App\ComputerGrant;
@@ -11,6 +12,9 @@ use App\ComputerGrantPurchaseProof;
 use App\ComputerGrantStatus;
 use App\ComputerGrantType;
 use Carbon\Carbon;
+use File;
+use Response;
+
 
 
 class ComputerGrantController extends Controller
@@ -28,9 +32,32 @@ class ComputerGrantController extends Controller
         $dateNow = new DateTime('now');
         $ticket = $dateNow->format('dmY') . str_pad($user->id, STR_PAD_LEFT);
 
+        $activeData = ComputerGrant::where('staff_id', Auth::user()->id)->where('active', "Y")->get();
+
+        $totalApplication = ComputerGrant::where('active', "Y")->count();
+
+        return view('computer-grant.grant-form', compact('user','user_details','ticket','totalApplication','activeData'));
+    }
+
+    public function grantList()
+    {
+        return view('computer-grant.grant-list');
+    }
+
+    public function applicationDetail($id)
+    {
+        $user = Auth::user();
+        $user_details = Staff::where('staff_id',$user->id)->first();
+
+        $activeData = ComputerGrant::with(['getStatus','getType','staff'])->where('id',$id)->where('active', "Y")->first();
+
         $deviceType = ComputerGrantType::all();
 
-        return view('computer-grant.grant-form', compact('user','user_details','ticket','deviceType'));
+        $proof = ComputerGrantPurchaseProof::where('permohonan_id', $id)->get();
+
+        return view('computer-grant.application-detail', compact('user','user_details','activeData','deviceType','proof'));
+
+
     }
 
     public function datalist()
@@ -41,7 +68,7 @@ class ComputerGrantController extends Controller
 
             ->addColumn('details',function($data)
             {
-                return '<div>' .($data->staff->staff_dept). '/' 
+                return '<div>' .($data->staff->staff_dept). '/'
                 .($data->staff->staff_position).'</div>';
             })
 
@@ -62,14 +89,15 @@ class ComputerGrantController extends Controller
 
             ->addColumn('type',function($data)
             {
-                return $data->getType->first()->description ?? 'N/A';
+
+                return isset($data->type) ? $data->getType->first()->description : 'N/A';
             })
 
             ->addColumn('purchase',function($data)
             {
                 if (($data->brand) && ($data->model) && ($data->serial_no) != NULL)
                 {
-                    return '<div>' .($data->brand). '/ ' 
+                    return '<div>' .($data->brand). '/ '
                     .($data->model). '/ ' .($data->serial_no). '</div>';
                 }
 
@@ -81,13 +109,13 @@ class ComputerGrantController extends Controller
 
             ->addColumn('expiryDate',function($data)
             {
-                if ($data->status == 4)
+                if ($data->expiry_date != '')
                 {
-                    $datetime = new DateTime($data->updated_at);
-                    
-                    $date = $datetime->format('d-m-Y');
+                    $date = new DateTime($data->expiry_date);
 
-                     return $newDate = date("d-m-Y", strtotime(date("d-m-Y", strtotime($date)) . " + 5 year"));
+                    $expiry = $date->format('d-m-Y');
+
+                    return $expiry;
                 }
 
                 else
@@ -98,62 +126,56 @@ class ComputerGrantController extends Controller
 
             ->addColumn('remainingPeriod',function($data)
             {
-                // if ($data->status == 4)
-                // {
-                //     $datetime = new DateTime($data->updated_at);
-                    
-                //     $date = $datetime->format('d-m-Y');
+                if ($data->status == 2)
+                {
+                    $dateNow = new DateTime('now');
+                    $date = new DateTime($data->updated_at);
 
-                //     $newDate = date("d-m-Y", strtotime(date("d-m-Y", strtotime($date)) . " + 1 year"));
+                    $newDate = date_add($date, date_interval_create_from_date_string('5 year'));
 
-                //     // $diff = $date->diff($newDate)->format('%a');  //find difference
-                //     // $days = intval($diff);   //rounding days
-                //     // return $days;
+                    $interval = $dateNow->diff($newDate);
+                    $days = $interval->format('%a');
 
-                //     $date1 = date("Y-m-d", strtotime($date));  //current date or any date
-                //     $date2 = date("Y-m-d", strtotime($newDate));  //Future date
-                //     $diff = $date2->diff($date1)->format("%a");  //find difference
-                //     $days = intval($diff);   //rounding days
-                //     return $days;
+                    return '<div>' .$days. ' days </div>';
+                }
 
-                // }
-
-                // else
-                // {
+                else
+                {
                     return 'N/A';
-                // }
+                }
             })
 
             ->addColumn('penalty',function($data)
             {
-                return 'N/A';
+                if ($data->status == 2)
+                {
+                    $dateNow = new DateTime('now');
+                    $date = new DateTime($data->updated_at);
+
+                    $newDate = date_add($date, date_interval_create_from_date_string('5 year'));
+
+                    $interval = $dateNow->diff($newDate);
+                    $days = $interval->format('%y');
+
+                    $penalty = $days * 300;
+
+                    return '<div> RM ' .$penalty. '</div>';
+                }
+
+                else
+                {
+                    return 'N/A';
+                }
             })
 
             ->addColumn('action', function ($data) {
-
-                // return '<a href="/application-detail/' .$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>'; 
+                return '<a href="/application-detail/' .$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
             })
 
-            ->rawColumns(['details','type','amount','purchase','action'])
+            ->rawColumns(['details','type','amount','purchase','action','remainingPeriod', 'penalty'])
             ->make(true);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -179,46 +201,250 @@ class ComputerGrantController extends Controller
         $newApplication->office_no    = $request->office_no;
         $newApplication->status       = '1';
         $newApplication->grant_amount = '1500.00';
+        $newApplication->active = 'Y';
         $newApplication->created_by = Auth::user()->id;
         $newApplication->updated_by = Auth::user()->id;
         $newApplication->save();
 
-        return redirect('/application-form');
+        return redirect('application-detail/'.$newApplication->id);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function update(Request $request)
     {
-        //
+        $updateApplication = ComputerGrant::where('id', $request->id)->first();
+        $updateApplication->update([
+            'type'      =>$request->type,
+            'serial_no' =>$request->serial_no,
+            'brand'     =>$request->brand,
+            'model'     =>$request->model,
+            'price'     =>$request->price,
+            'status'    =>'3'
+        ]);
+
+        $receipt = $request->file('receipt');
+        $paths = storage_path()."/computerGrant/";
+
+        $image = $request->file('upload_image');
+        $paths = storage_path()."/computerGrant/";
+
+
+        $originalsName = $receipt->getClientOriginalName();
+        $fileSizes = $receipt->getSize();
+        $fileNames = $originalsName;
+        $receipt->storeAs('/computerGrant', $fileNames);
+        ComputerGrantPurchaseProof::create([
+            'permohonan_id'  => $request->id,
+            'type'  => '1', //Receipt
+            'upload' => $originalsName,
+            'web_path'  => "app/computerGrant/".$fileNames,
+            'created_by' => Auth::user()->id
+        ]);
+
+
+        $originalsName = $image->getClientOriginalName();
+        $fileSizes = $image->getSize();
+        $fileNames = $originalsName;
+        $image->storeAs('/computerGrant', $fileNames);
+        ComputerGrantPurchaseProof::create([
+            'permohonan_id'  => $request->id,
+            'type'  => '2', //Device image
+            'upload' => $originalsName,
+            'web_path'  => "app/computerGrant/".$fileNames,
+            'created_by' => Auth::user()->id
+        ]);
+
+        return redirect('application-detail/'.$request->id);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    //Start Admin
+    public function allGrantList()
     {
-        //
+        return view('computer-grant.all-grant-list');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function allDatalists()
     {
-        //
+        $data = ComputerGrant::all();
+
+        return datatables()::of($data)
+
+            ->addColumn('details',function($data)
+            {
+                return '<div>' .($data->staff->staff_dept). '/'
+                .($data->staff->staff_position).'</div>';
+            })
+
+            ->editColumn('status',function($data)
+            {
+                return $data->getStatus->first()->description ?? '';
+            })
+
+            ->editColumn('price',function($data)
+            {
+                return $data->price ?? 'N/A';
+            })
+
+            ->addColumn('amount',function($data)
+            {
+                return '<div> RM' .$data->grant_amount. '/ 60 months </div>';
+            })
+
+            ->addColumn('type',function($data)
+            {
+
+                return isset($data->type) ? $data->getType->first()->description : 'N/A';
+            })
+
+            ->addColumn('purchase',function($data)
+            {
+                if (($data->brand) && ($data->model) && ($data->serial_no) != NULL)
+                {
+                    return '<div>' .($data->brand). '/ '
+                    .($data->model). '/ ' .($data->serial_no). '</div>';
+                }
+
+                else
+                {
+                    return 'N/A';
+                }
+            })
+
+            ->addColumn('expiryDate',function($data)
+            {
+                if ($data->expiry_date != '')
+                {
+                    $date = new DateTime($data->expiry_date);
+
+                    $expiry = $date->format('d-m-Y');
+
+                    return $expiry;
+                }
+
+                else
+                {
+                    return 'N/A';
+                }
+            })
+
+            ->addColumn('remainingPeriod',function($data)
+            {
+                if ($data->status == 2)
+                {
+                    $dateNow = new DateTime('now');
+                    $date = new DateTime($data->updated_at);
+
+                    $newDate = date_add($date, date_interval_create_from_date_string('5 year'));
+
+                    $interval = $dateNow->diff($newDate);
+                    $days = $interval->format('%a');
+
+                    return '<div>' .$days. ' days </div>';
+                }
+
+                else
+                {
+                    return 'N/A';
+                }
+            })
+
+            ->addColumn('penalty',function($data)
+            {
+                if ($data->status == 2)
+                {
+                    $dateNow = new DateTime('now');
+                    $date = new DateTime($data->updated_at);
+
+                    $newDate = date_add($date, date_interval_create_from_date_string('5 year'));
+
+                    $interval = $dateNow->diff($newDate);
+                    $days = $interval->format('%y');
+
+                    $penalty = $days * 300;
+
+                    return '<div> RM ' .$penalty. '</div>';
+                }
+
+                else
+                {
+                    return 'N/A';
+                }
+            })
+
+            ->addColumn('action', function ($data) {
+                return '<a href="/view-application-detail/' .$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+            })
+
+            ->rawColumns(['details','type','amount','purchase','action','remainingPeriod', 'penalty'])
+            ->make(true);
     }
+
+    public function viewApplicationDetail($id)
+    {
+        $activeData = ComputerGrant::with(['getStatus','getType','staff'])->where('id',$id)->where('active', "Y")->first();
+
+        $user_details = Staff::where('staff_id',$activeData->staff_id)->first();
+
+        $deviceType = ComputerGrantType::all();
+
+        $status = ComputerGrantStatus::all();
+
+        $proof = ComputerGrantPurchaseProof::where('permohonan_id', $id)->get();
+
+        return view('computer-grant.view-application-detail', compact('user_details','activeData','deviceType','proof'));
+
+    }
+
+
+        public function verifyApplication(Request $request)
+    {
+
+        $updateApplication = ComputerGrant::where('id', $request->id)->first();
+        $updateApplication->update([
+            'status'     =>'2',
+            'updated_by' => Auth::user()->id
+
+        ]);
+
+        $datetime = new DateTime($updateApplication->updated_at);
+        $date = date_add($datetime, date_interval_create_from_date_string('5 year'));
+        $updateApplication->update([
+            'expiry_date'     => $date,
+        ]);
+
+        return redirect('view-application-detail/'.$request->id);
+
+
+    }
+
+    //End Admin
+
+    public function getReceipt($receipt)
+    {
+        $path = storage_path().'/'.'app'.'/computerGrant/'.$receipt;
+
+        $receipt = File::get($path);
+        $filetype = File::mimeType($path);
+
+        $response = Response::make($receipt, 200);
+        $response->header("Content-Type", $filetype);
+
+        return $response;
+    }
+
+    public function getImage($image)
+    {
+        $path = storage_path().'/'.'app'.'/computerGrant/'.$image;
+
+        $image = File::get($path);
+        $filetype = File::mimeType($path);
+
+        $response = Response::make($image, 200);
+        $response->header("Content-Type", $filetype);
+
+        return $response;
+    }
+
+
 
     /**
      * Remove the specified resource from storage.
