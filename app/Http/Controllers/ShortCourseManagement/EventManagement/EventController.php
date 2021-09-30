@@ -50,26 +50,33 @@ class EventController extends Controller
         $index = 0;
         foreach ($events as $event) {
             if (isset($event->events_participants)) {
-                $totalValidParticipants = $event->events_participants
+
+                $totalParticipantsDisqualified = $event->events_participants
                     ->where('event_id', $event->id)
-                    ->where('is_approved_application', 1)
-                    ->where('is_verified_payment_proof', 1)
-                    ->where('is_disqualified', 0)
+                    ->where('is_disqualified', 1)
                     ->count();
                 $totalParticipantsNotApprovedYet = $event->events_participants
                     ->where('event_id', $event->id)
                     ->where('is_disqualified', 0)
                     ->where('is_verified_payment_proof', 0)
                     ->count();
+                $totalValidParticipants = $event->events_participants
+                    ->where('event_id', $event->id)
+                    ->where('is_approved_application', 1)
+                    ->where('is_verified_payment_proof', 1)
+                    ->where('is_disqualified', 0)
+                    ->count();
                 $totalRejected = $event->events_participants
                     ->where('event_id', $event->id)
                     ->where('is_disqualified', 1)
                     ->count();
             } else {
+                $totalParticipantsDisqualified = 0;
                 $totalValidParticipants = 0;
                 $totalParticipantsNotApprovedYet = 0;
                 $totalRejected = 0;
             }
+            $events[$index]->totalParticipantsDisqualified = $totalParticipantsDisqualified;
             $events[$index]->totalValidParticipants = $totalValidParticipants;
             $events[$index]->totalParticipantsNotApprovedYet = $totalParticipantsNotApprovedYet;
             $events[$index]->totalRejected = $totalRejected;

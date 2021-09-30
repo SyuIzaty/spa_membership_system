@@ -94,7 +94,7 @@ class EventParticipantController extends Controller
             ->addColumn('action', function ($eventsParticipants) {
                 if ($eventsParticipants->is_disqualified == 1) {
                     return '<a href="javascript:;" id="restore-application" data-remote="/update-progress/restore-application/' . $eventsParticipants->id . '" class="btn btn-sm btn-success btn-update-progress">Restore</a>
-                            <a href="javascript:;" id="delete-application" data-remote="/update-progress/delete-application/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger btn-update-progress">Hard Delete</a>';
+                            <a href="javascript:;" id="delete-application" data-remote="/update-progress/delete-application/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger btn-update-progress">Delete</a>';
                 }
                 return '<a href="javascript:;" id="edit-application" data-toggle="modal" data-event_participant_id="' . $eventsParticipants->id . '" data-participant_ic="' . $eventsParticipants->participant->ic . '" class="btn btn-sm btn-success btn-edit-application">Edit</a>';
             })
@@ -1102,12 +1102,22 @@ class EventParticipantController extends Controller
         switch ($progress_name) {
 
             case 'delete-application':
-                $exist1 = EventModuleEventParticipant::withoutTrashed()->where('event_participant_id', $eventParticipant_id)->get();
+                $exist1 = EventModuleEventParticipant::where('event_participant_id', $eventParticipant_id)->get();
                 if ($exist1) {
-                    foreach ($exist1 as $exist)
-                        $exist->forceDelete();
+                    foreach ($exist1 as $exist){
+
+                        // $exist->forceDelete();
+                        $exist->updated_by = Auth::user()->id;
+                        $exist->deleted_by = Auth::user()->id;
+                        $exist->save();
+                        $exist->delete();
+                    }
                 }
-                $exist2 = EventParticipant::withTrashed()->find($eventParticipant_id)->forceDelete();
+                $exist2 = EventParticipant::find($eventParticipant_id);
+                $exist2->updated_by = Auth::user()->id;
+                $exist2->deleted_by = Auth::user()->id;
+                $exist2->save();
+                $exist2->delete();
                 break;
             case 'restore-application':
                 $update = EventParticipant::find($eventParticipant_id)->update([

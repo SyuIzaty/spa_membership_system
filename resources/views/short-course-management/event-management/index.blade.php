@@ -38,8 +38,9 @@
                                             <th>NAME</th>
                                             <th>DATE START</th>
                                             <th>DATE END</th>
-                                            <th>PARTICIPANT (VALID)</th>
+                                            <th>PARTICIPANT (DISQUALIFIED)</th>
                                             <th>PARTICIPANT (NOT VALID YET)</th>
+                                            <th>PARTICIPANT (VALID)</th>
                                             <th>STATUS</th>
                                             <th>DOCUMENT</th>
                                             <th>ACTION</th>
@@ -123,12 +124,16 @@
                         name: 'datetime_end_toDayDateTimeString'
                     },
                     {
-                        data: 'totalValidParticipants',
-                        name: 'totalValidParticipants'
+                        data: 'totalParticipantsDisqualified',
+                        name: 'totalParticipantsDisqualified'
                     },
                     {
                         data: 'totalParticipantsNotApprovedYet',
                         name: 'totalParticipantsNotApprovedYet'
+                    },
+                    {
+                        data: 'totalValidParticipants',
+                        name: 'totalValidParticipants'
                     },
                     {
                         data: 'event_status_category.name',

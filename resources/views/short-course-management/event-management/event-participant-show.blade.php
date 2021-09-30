@@ -2391,10 +2391,10 @@
 
                     switch (tag[0].id) {
                         case 'delete-application':
-                            title = 'Hard delete this application?';
-                            text = "This application will be hard deleted and can't be retrieved forever!";
-                            confirmButtonText = 'Yes, hard delete this application!';
-                            cancelButtonText = 'No, d';
+                            title = 'Delete this application?';
+                            text = "This application will be deleted and can't be retrieved forever!";
+                            confirmButtonText = 'Yes, delete this application!';
+                            cancelButtonText = 'No';
                             currentTableId = '#table-all-applicant';
                             nextTableId = '#table-all-no-payment-yet';
                             break;
