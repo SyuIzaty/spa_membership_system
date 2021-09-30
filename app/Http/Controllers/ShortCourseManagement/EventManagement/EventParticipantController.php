@@ -50,13 +50,13 @@ class EventParticipantController extends Controller
             $eventsParticipants[$index]->created_at_diffForHumans = $eventsParticipants[$index]->created_at->diffForHumans();
             $eventsParticipants[$index]->organisationsString = '';
             foreach ($eventParticipant->participant->organisations_participants as $organisation_participant) {
-                $eventsParticipants[$index]->organisationsString = ($eventsParticipants[$index]->organisationsString) . ($organisation_participant->organisation->name) . '<br/><br/>';
+                $eventsParticipants[$index]->organisationsString = ($eventsParticipants[$index]->organisationsString) . ($organisation_participant->organisation->name) . '<br/>';
             }
 
             $eventsParticipants[$index]->selected_module = '';
             $moduleIndex = 1;
             foreach ($eventParticipant->event_modules_event_participants as $event_module_event_participant) {
-                $eventsParticipants[$index]->selected_modules = ($eventsParticipants[$index]->selected_modules) . $moduleIndex . ') ' . ($event_module_event_participant->event_module->name) . '<br/><br/>';
+                $eventsParticipants[$index]->selected_modules = ($eventsParticipants[$index]->selected_modules) . $moduleIndex . ') ' . ($event_module_event_participant->event_module->name) . '<br/>';
                 $moduleIndex++;
             }
 
@@ -64,9 +64,9 @@ class EventParticipantController extends Controller
             if ($eventParticipant->is_disqualified == 1) {
                 $eventsParticipants[$index]->currentStatus = 'Disqualified';
             } else if ($eventParticipant->is_done_email_completed == 1) {
-                $eventsParticipants[$index]->currentStatus = 'Feedback Status - Completion (Done)';
+                $eventsParticipants[$index]->currentStatus = 'Feedback Status (Done)';
             } else if ($eventParticipant->is_done_email_completed == 0 && $eventParticipant->is_question_sended == 1) {
-                $eventsParticipants[$index]->currentStatus = 'Feedback Status - Completion (Not Done Yet)';
+                $eventsParticipants[$index]->currentStatus = 'Feedback Status (Not Done Yet)';
             } else if ($eventParticipant->is_question_sended == 0 && $eventParticipant->is_not_attend == 1) {
                 $eventsParticipants[$index]->currentStatus = 'Attendance Status (Not Attend)';
             } else if ($eventParticipant->is_question_sended == 0 && $eventParticipant->is_not_attend == 0) {
