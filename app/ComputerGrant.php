@@ -12,23 +12,28 @@ class ComputerGrant extends Model
     protected $primarykey = 'id';
     protected $fillable = [
         'ticket_no', 'staff_id', 'hp_no', 'office_no', 'status', 'grant_amount', 'type',
-        'price', 'brand', 'model', 'serial_no', 'created_by', 'updated_by', 'deleted_by'
+        'price', 'brand', 'model', 'serial_no', 'expiry_date', 'active', 'created_by', 'updated_by', 'deleted_by'
     ];
 
     public function getStatus()
     {
-        return $this->hasMany('App\ComputerGrantStatus','id','status');  
+        return $this->hasMany('App\ComputerGrantStatus','id','status');
     }
 
     public function getType()
     {
-        return $this->hasOne('App\ComputerGrantType','id','type');  
+        return $this->hasOne('App\ComputerGrantType','id','type');
     }
 
     public function staff()
     {
         return $this->hasOne('App\Staff','staff_id','staff_id');
     }
+
+    public function getProof(){
+        return $this->hasMany('App\ComputerGrantPurchaseProof', 'permohonan_id', 'id');
+    }
+
 
 
 }

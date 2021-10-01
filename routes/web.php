@@ -426,7 +426,18 @@ Route::get('get-file-image/{filename}', 'AssetController@getImage');
 
 // Computer Grant Management
 Route::get('/application-form', 'ComputerGrantController@index');
+Route::get('/all-grant-list', 'ComputerGrantController@allGrantList');
+Route::get('/grant-list', 'ComputerGrantController@grantList');
 Route::post('store-application', 'ComputerGrantController@store');
 Route::post('/datalist', 'ComputerGrantController@datalist');
+Route::post('/alldatalist', 'ComputerGrantController@allDataLists');
 Route::get('/application-detail/{id}', 'ComputerGrantController@applicationDetail');
+Route::get('/view-application-detail/{id}', 'ComputerGrantController@viewApplicationDetail');
+Route::post('/update-application', 'ComputerGrantController@update');
+Route::post('/verify-application', 'ComputerGrantController@verifyApplication');
+Route::get('get-receipt/{receipt}','ComputerGrantController@getReceipt');
+Route::get('get-image/{image}','ComputerGrantController@getImage');
+
+
+
 

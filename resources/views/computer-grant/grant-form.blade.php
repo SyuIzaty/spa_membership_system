@@ -29,16 +29,31 @@
                         @endif
 
                         @error('hp_no')
-                        <div class="alert alert-success" style="color: #000000; background-color: #ffdf89;"> <i class="icon fal fa-check-circle"></i> {{ $message }}</div>         
+                        <div class="alert alert-success" style="color: #000000; background-color: #ffdf89;"> <i class="icon fal fa-check-circle"></i> {{ $message }}</div>
                         @enderror
 
                         @error('office_no')
-                        <div class="alert alert-success" style="color: #000000; background-color: #ffdf89;"> <i class="icon fal fa-check-circle"></i> {{ $message }}</div>         
+                        <div class="alert alert-success" style="color: #000000; background-color: #ffdf89;"> <i class="icon fal fa-check-circle"></i> {{ $message }}</div>
                         @enderror
 
 
                         <div class="panel-container show">
                             <div class="panel-content">
+
+                                @if ($totalApplication >= 100)
+
+                                    <div class="alert alert-success" style="color: #000000; background-color: #fc572e;"> <i class="icon fal fa-check-circle"></i>
+                                        Sorry, you are unable to apply for new grant due to registration has reached the total quota.
+                                    </div>
+
+
+                                @elseif ($activeData->isNotEmpty())
+
+                                <div class="alert alert-success" style="color: #000000; background-color: #ffa489;"> <i class="icon fal fa-check-circle"></i>
+                                    Sorry, you are unable to apply for new grant due to your grant application is in progress. Kindly view your grant application in table below.
+                                </div>
+
+                                @else
 
                                 {!! Form::open(['action' => 'ComputerGrantController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                                     <div class="table-responsive">
@@ -68,9 +83,9 @@
                                                 </tr>
                                                 <tr>
                                                     <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Staff H/P No. : </th>
-                                                    <td colspan="2"><input class="form-control" id="hp_no" name="hp_no" value="{{ old('hp_no') }}" placeholder="0111234567" required></td>
+                                                    <td colspan="2"><input class="form-control" id="hp_no" name="hp_no" value="{{ old('hp_no') }}" placeholder="0111234567" required ></td>
                                                     <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Staff Office No. : </th>
-                                                    <td colspan="2"><input class="form-control" id="office_no" name="office_no" value="{{ old('office_no') }}" placeholder="0311001100" required></td>
+                                                    <td colspan="2"><input class="form-control" id="office_no" name="office_no" value="{{ old('office_no') }}" placeholder="0111234567" required ></td>
                                                 </tr>
                                                 <tr>
                                                     <th width="20%" style="vertical-align: middle">Grant Period Eligibility : </th>
@@ -81,62 +96,13 @@
                                             </thead>
                                         </table>
                                     </div>
-
-                                    {{-- <div class="table-responsive">
-                                        <table id="muatnaik" class="table table-bordered table-hover table-striped w-100">
-                                            <thead>
-                                                <tr>
-                                                    <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-upload"></i> DETAILS OF PURCHASE</label></td>
-                                                </tr>
-                                                <tr>
-                                                    <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Type of Device : </th>
-                                                    <td colspan="2">
-                                                        <select class="form-control kategori" name="type" id="type" required >
-                                                            <option value="">Choose Type of Device</option>
-                                                            @foreach ($deviceType as $d) 
-                                                                <option value="{{ $d->id }}" {{ old('type') ==  $d->id  ? 'selected' : '' }}>{{ $d->description }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </td>                                                    
-                                                    <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Serial No : </th>
-                                                    <td colspan="2"><input class="form-control" id="serial_no" name="serial_no" value="{{ old('serial_no') }}" required></td>
-                                                </tr>
-                                                <tr>
-                                                    <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Brand : </th>
-                                                    <td colspan="2"><input class="form-control" id="brand" name="brand" value="{{ old('brand') }}" required></td>
-                                                    <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Model : </th>
-                                                    <td colspan="2"><input class="form-control" id="model" name="model" value="{{ old('model') }}" required></td>
-                                                </tr>
-                                                <tr>
-                                                    <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Purchase Receipt : </th>
-                                                    <td colspan="2">
-                                                        <input type="file" class="form-control" id="receipt" name="receipt">
-                                                        @error('receipt')
-                                                            <p style="color: red">{{ $message }}</p>
-                                                        @enderror
-                                                    </td>
-                                                    <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Image of Device : </th>
-                                                    <td colspan="2">
-                                                        <input type="file" class="form-control" id="upload_image" name="upload_image">
-                                                        @error('upload_image')
-                                                            <p style="color: red">{{ $message }}</p>
-                                                        @enderror
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th width="20%" style="vertical-align: top"><span class="text-danger">*</span> Price : </th>
-                                                    <td colspan="4"><input class="form-control" id="price" name="price" value="{{ old('price') }}" required></td>
-                                                </tr>
-                                            </thead>
-                                        </table>
-                                    </div> --}}
-
                                     <div class="table-responsive">
                                         <div class="form-group">
                                             <button style="margin-top: 5px;" class="btn btn-danger float-right" id="submit" name="submit"><i class="fal fa-check"></i> Submit</button></td>
                                         </div>
                                     </div>
-                                {!! Form::close() !!}
+                                    {!! Form::close() !!}
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -178,6 +144,8 @@
                                         <th class="text-center">Balance Penalty</th>
                                         <th class="text-center">Action</th>
                                     </tr>
+                                </thead>
+                                <tbody>
                                     <tr>
                                         <td class="hasinput"></td>
                                         <td class="hasinput"></td>
@@ -191,10 +159,10 @@
                                         <td class="hasinput"></td>
                                         <td class="hasinput"></td>
                                     </tr>
-                                </thead>
+                                </tbody>
                             </table>
                         </div>
-        
+
                     </div>
                 </div>
             </div>
@@ -229,14 +197,14 @@
                     { className: 'text-center', data: 'purchase', name: 'purchase' },
                     { className: 'text-center', data: 'expiryDate', name: 'expiryDate' },
                     { className: 'text-center', data: 'remainingPeriod', name: 'remainingPeriod' },
-                    { className: 'text-center', data: 'penalty', name: 'remainingPeriod' },
+                    { className: 'text-center', data: 'penalty', name: 'penalty' },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
                 "order": [[ 1, "asc" ]],
                 "initComplete": function(settings, json) {
 
-                } 
+                }
         });
     });
 
