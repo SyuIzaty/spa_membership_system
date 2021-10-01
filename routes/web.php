@@ -403,6 +403,8 @@ Route::get('/participant/search-by-ic-general/{ic}', 'ShortCourseManagement\Peop
 Route::post('/events/data/event-management/shortcourse/event-participant/{participant_id}', 'ShortCourseManagement\EventManagement\EventParticipantController@dataEventParticipantList');
 Route::get('/event-participant/{event_participant_id}/payment_proof', 'ShortCourseManagement\EventManagement\EventParticipantController@showPaymentProof');
 Route::post('/event-participant-payment_proof', 'ShortCourseManagement\EventManagement\EventParticipantController@removePaymentProof');
+Route::get('/event-participant/print-certificate/{id}', 'ShortCourseManagement\EventManagement\EventParticipantController@printCertificate');
+Route::get('/get-certificate-background', 'ShortCourseManagement\EventManagement\EventParticipantController@getCertificateBackground');
 
 Route::post('/events/data/shortcourse', 'ShortCourseManagement\EventManagement\EventController@dataPublicView');
 Route::get('/shortcourse/{id}', 'ShortCourseManagement\EventManagement\EventController@showPublicView');

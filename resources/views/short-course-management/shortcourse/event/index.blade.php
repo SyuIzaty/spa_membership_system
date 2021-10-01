@@ -19,7 +19,7 @@
                                             class="card-img" style="align-self:center; object-fit:cover;">
                                     @else
                                         <img src="{{ asset($event->thumbnail_path) }}" class="card-img" style="
-                                                    background-image:url('{{ asset('storage /shortcourse/poster/default/intec_poster.jpg') }}');
+                                                    background-image:url('{{ asset('storage/shortcourse/poster/default/intec_poster.jpg') }}');
                                                     background-repeat: no-repeat;
                                                     background-size: 137px 194px;">
                                     @endif

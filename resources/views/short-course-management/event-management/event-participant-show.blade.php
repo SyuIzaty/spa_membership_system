@@ -29,7 +29,8 @@
                         <div class="panel-content">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item active">
-                                    <a data-toggle="tab" class="nav-link" href="#all-applicant" role="tab">All Application</a>
+                                    <a data-toggle="tab" class="nav-link" href="#all-applicant" role="tab">All
+                                        Application</a>
                                 </li>
                                 <li class="nav-item">
                                     <a data-toggle="tab" class="nav-link" href="#pending-payments" role="tab">Pending
@@ -280,7 +281,9 @@
                                                                                         <th>Phone</th>
                                                                                         <th>Email</th>
                                                                                         <th>Status</th>
-                                                                                        <th {{$event->is_modular==1? '':"hidden"}}>Module</th>
+                                                                                        <th
+                                                                                            {{ $event->is_modular == 1 ? '' : 'hidden' }}>
+                                                                                            Module</th>
                                                                                         <th>Date Apply</th>
                                                                                         <th>Action</th>
                                                                                     </tr>
@@ -294,13 +297,18 @@
                                                                                 {{ $event->total_seat_available <= 0 ? 'disabled' : null }}>
                                                                                 <i class="ni ni-check"></i>
                                                                                 New
-                                                                                Application ({{$event->total_seat_available}} out of {{$event->max_participant}} Available Seat Left)</button>
+                                                                                Application
+                                                                                ({{ $event->total_seat_available }} out
+                                                                                of
+                                                                                {{ $event->max_participant }} Available
+                                                                                Seat Left)</button>
                                                                         </div>
                                                                     </form>
                                                                 </div>
                                                                 <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
                                                                     style="content-align:right">
-                                                                    <x-ShortCourseManagement.AddParticipant :event=$event edit={{true}}/>
+                                                                    <x-ShortCourseManagement.AddParticipant :event=$event
+                                                                        edit={{ true }} />
                                                                 </div>
                                                                 </form>
                                                             </div>
@@ -333,8 +341,9 @@
                                                                         data-action="panel-fullscreen" data-toggle="tooltip"
                                                                         data-offset="0,10"
                                                                         data-original-title="Fullscreen"></button>
-                                                                    <button class="btn btn-panel" data-action="panel-close"
-                                                                        data-toggle="tooltip" data-offset="0,10"
+                                                                    <button class="btn btn-panel"
+                                                                        data-action="panel-close" data-toggle="tooltip"
+                                                                        data-offset="0,10"
                                                                         data-original-title="Close"></button>
                                                                 </div>
                                                             </div>
@@ -413,7 +422,8 @@
                                                                             <button type="submit" name="update-progress"
                                                                                 value="disqualified-application-no-payment"
                                                                                 class="btn btn-danger ml-auto mr-2 waves-effect waves-themed"><i
-                                                                                    class="ni ni-close"></i> Disqualified
+                                                                                    class="ni ni-close"></i>
+                                                                                Disqualified
                                                                                 All
                                                                                 Ticked</button>
                                                                         </div>
@@ -959,7 +969,7 @@
 @section('script')
     <script>
         var event_id = '<?php echo $event->id; ?>';
-        var eventJson=@json($event);
+        var eventJson = @json($event);
 
         // Processes
         { // Pre-Event
@@ -1105,153 +1115,151 @@
                 // all applicants
 
                 {
-                    if(eventJson.is_modular==0){
+                    if (eventJson.is_modular == 0) {
                         var tableAllApplicant = $('#table-all-applicant').DataTable({
-                        columnDefs: [{
-                            targets: [1],
-                            render: function(data, type, row) {
-                                return !data ? 'N/A' : data;
-                            }
-                        }],
-                        processing: true,
-                        serverSide: true,
-                        ajax: {
-                            url: "/event/" + event_id + "/events-participants/data-all-applicant",
-                            type: 'POST',
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        },
-                        columns: [
-                            {
-                                className: 'text-center',
-                                data: 'id',
-                                name: 'id',
+                            columnDefs: [{
+                                targets: [1],
+                                render: function(data, type, row) {
+                                    return !data ? 'N/A' : data;
+                                }
+                            }],
+                            processing: true,
+                            serverSide: true,
+                            ajax: {
+                                url: "/event/" + event_id + "/events-participants/data-all-applicant",
+                                type: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                }
                             },
-                            {
-                                className: 'text-center',
-                                data: 'organisationsString',
-                                name: 'organisationsString'
-                            },
-                            {
-                                className: 'text-center',
-                                data: 'participant.ic',
-                                name: 'participant.ic'
-                            },
-                            {
-                                className: 'text-center',
-                                data: 'participant.name',
-                                name: 'participant.name'
-                            },
-                            {
-                                className: 'text-center',
-                                data: 'participant.phone',
-                                name: 'participant.phone'
-                            },
-                            {
-                                className: 'text-center',
-                                data: 'participant.email',
-                                name: 'participant.email'
-                            },
-                            {
-                                className: 'text-center',
-                                data: 'currentStatus',
-                                name: 'currentStatus'
-                            },
-                            {
-                                className: 'text-center',
-                                data: 'created_at_diffForHumans',
-                                name: 'created_at_diffForHumans',
-                            },
-                            {
-                                className: 'text-center',
-                                data: 'action',
-                                name: 'action',
-                                orderable: false,
-                                searchable: false
-                            }
-                        ],
-                        orderCellsTop: true,
-                        "order": [
-                            [0, "desc"]
-                        ],
-                    });
-                    }else{
+                            columns: [{
+                                    className: 'text-center',
+                                    data: 'id',
+                                    name: 'id',
+                                },
+                                {
+                                    className: 'text-center',
+                                    data: 'organisationsString',
+                                    name: 'organisationsString'
+                                },
+                                {
+                                    className: 'text-center',
+                                    data: 'participant.ic',
+                                    name: 'participant.ic'
+                                },
+                                {
+                                    className: 'text-center',
+                                    data: 'participant.name',
+                                    name: 'participant.name'
+                                },
+                                {
+                                    className: 'text-center',
+                                    data: 'participant.phone',
+                                    name: 'participant.phone'
+                                },
+                                {
+                                    className: 'text-center',
+                                    data: 'participant.email',
+                                    name: 'participant.email'
+                                },
+                                {
+                                    className: 'text-center',
+                                    data: 'currentStatus',
+                                    name: 'currentStatus'
+                                },
+                                {
+                                    className: 'text-center',
+                                    data: 'created_at_diffForHumans',
+                                    name: 'created_at_diffForHumans',
+                                },
+                                {
+                                    className: 'text-center',
+                                    data: 'action',
+                                    name: 'action',
+                                    orderable: false,
+                                    searchable: false
+                                }
+                            ],
+                            orderCellsTop: true,
+                            "order": [
+                                [0, "desc"]
+                            ],
+                        });
+                    } else {
                         var tableAllApplicant = $('#table-all-applicant').DataTable({
-                        columnDefs: [{
-                            targets: [1],
-                            render: function(data, type, row) {
-                                return !data ? 'N/A' : data;
-                            }
-                        }],
-                        processing: true,
-                        serverSide: true,
-                        ajax: {
-                            url: "/event/" + event_id + "/events-participants/data-all-applicant",
-                            type: 'POST',
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        },
-                        columns: [
-                            {
-                                className: 'text-center',
-                                data: 'id',
-                                name: 'id',
+                            columnDefs: [{
+                                targets: [1],
+                                render: function(data, type, row) {
+                                    return !data ? 'N/A' : data;
+                                }
+                            }],
+                            processing: true,
+                            serverSide: true,
+                            ajax: {
+                                url: "/event/" + event_id + "/events-participants/data-all-applicant",
+                                type: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                }
                             },
-                            {
-                                className: 'text-center',
-                                data: 'organisationsString',
-                                name: 'organisationsString'
-                            },
-                            {
-                                className: 'text-center',
-                                data: 'participant.ic',
-                                name: 'participant.ic'
-                            },
-                            {
-                                className: 'text-center',
-                                data: 'participant.name',
-                                name: 'participant.name'
-                            },
-                            {
-                                className: 'text-center',
-                                data: 'participant.phone',
-                                name: 'participant.phone'
-                            },
-                            {
-                                className: 'text-center',
-                                data: 'participant.email',
-                                name: 'participant.email'
-                            },
-                            {
-                                className: 'text-center',
-                                data: 'currentStatus',
-                                name: 'currentStatus'
-                            },
-                            {
-                                className: 'text-center',
-                                data: 'selected_modules',
-                                name: 'selected_modules',
-                            },
-                            {
-                                className: 'text-center',
-                                data: 'created_at_diffForHumans',
-                                name: 'created_at_diffForHumans',
-                            },
-                            {
-                                className: 'text-center',
-                                data: 'action',
-                                name: 'action',
-                                orderable: false,
-                                searchable: false
-                            }
-                        ],
-                        orderCellsTop: true,
-                        "order": [
-                            [0, "desc"]
-                        ],
-                    });
+                            columns: [{
+                                    className: 'text-center',
+                                    data: 'id',
+                                    name: 'id',
+                                },
+                                {
+                                    className: 'text-center',
+                                    data: 'organisationsString',
+                                    name: 'organisationsString'
+                                },
+                                {
+                                    className: 'text-center',
+                                    data: 'participant.ic',
+                                    name: 'participant.ic'
+                                },
+                                {
+                                    className: 'text-center',
+                                    data: 'participant.name',
+                                    name: 'participant.name'
+                                },
+                                {
+                                    className: 'text-center',
+                                    data: 'participant.phone',
+                                    name: 'participant.phone'
+                                },
+                                {
+                                    className: 'text-center',
+                                    data: 'participant.email',
+                                    name: 'participant.email'
+                                },
+                                {
+                                    className: 'text-center',
+                                    data: 'currentStatus',
+                                    name: 'currentStatus'
+                                },
+                                {
+                                    className: 'text-center',
+                                    data: 'selected_modules',
+                                    name: 'selected_modules',
+                                },
+                                {
+                                    className: 'text-center',
+                                    data: 'created_at_diffForHumans',
+                                    name: 'created_at_diffForHumans',
+                                },
+                                {
+                                    className: 'text-center',
+                                    data: 'action',
+                                    name: 'action',
+                                    orderable: false,
+                                    searchable: false
+                                }
+                            ],
+                            orderCellsTop: true,
+                            "order": [
+                                [0, "desc"]
+                            ],
+                        });
                     }
 
 
@@ -2376,6 +2384,12 @@
                 }
             }
 
+            {
+                $('table[id*="table-all-applicant"]').on('click', '#generate-certificate', function(e) {
+                    var event_participant_id = e.target.dataset.event_participant_id;
+                    console.log('Generating certificate for '+event_participant_id);
+                });
+            }
             // Update Progress
             {
                 $('table[name*="table-update-progress"]').on('click', '.btn-update-progress[data-remote]', function(e) {

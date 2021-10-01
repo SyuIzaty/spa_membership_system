@@ -10,10 +10,11 @@ use App\Models\ShortCourseManagement\Participant;
 use App\Models\ShortCourseManagement\Fee;
 use App\Models\ShortCourseManagement\EventParticipantPaymentProof;
 use App\Models\ShortCourseManagement\EventModuleEventParticipant;
+use Barryvdh\DomPDF\Facade as PDF;
 use Auth;
 use DateTime;
 use File;
-use Response;;
+use Response;
 
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
@@ -93,8 +94,17 @@ class EventParticipantController extends Controller
             })
             ->addColumn('action', function ($eventsParticipants) {
                 if ($eventsParticipants->is_disqualified == 1) {
-                    return '<a href="javascript:;" id="restore-application" data-remote="/update-progress/restore-application/' . $eventsParticipants->id . '" class="btn btn-sm btn-success btn-update-progress">Restore</a>
-                            <a href="javascript:;" id="delete-application" data-remote="/update-progress/delete-application/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger btn-update-progress">Delete</a>';
+                    return '
+                    <div class="d-flex justify-content-between flex-row">
+                        <a href="javascript:;" id="restore-application" data-remote="/update-progress/restore-application/' . $eventsParticipants->id . '" class="btn btn-sm btn-success btn-update-progress mx-2">Restore</a>
+                        <a href="javascript:;" id="delete-application" data-remote="/update-progress/delete-application/' . $eventsParticipants->id . '" class="btn btn-sm btn-danger btn-update-progress mx-2">Delete</a>
+                    </div>';
+                } else if ($eventsParticipants->is_done_email_completed == 1) {
+                    return '
+                    <div class="d-flex justify-content-between flex-row">
+                        <a href="/event-participant/print-certificate/' . $eventsParticipants->id . '" id="generate-certificate" data-event_participant_id="' . $eventsParticipants->id . '" class="btn btn-sm btn-primary mx-2">Certificate</a>
+                        <a href="javascript:;" id="edit-application" data-toggle="modal" data-event_participant_id="' . $eventsParticipants->id . '" data-participant_ic="' . $eventsParticipants->participant->ic . '" class="btn btn-sm btn-success btn-edit-application mx-2">Edit</a>
+                    </div>';
                 }
                 return '<a href="javascript:;" id="edit-application" data-toggle="modal" data-event_participant_id="' . $eventsParticipants->id . '" data-participant_ic="' . $eventsParticipants->participant->ic . '" class="btn btn-sm btn-success btn-edit-application">Edit</a>';
             })
@@ -1095,6 +1105,51 @@ class EventParticipantController extends Controller
         return $update;
     }
 
+    public function printCertificate($id)
+    {
+        $html = "";
+
+        $html = $this->certificateView($id, $html);
+
+        return PDF::loadHtml($html)->stream('Certificate.pdf');
+    }
+    public function getCertificateBackground()
+    {
+        $path = storage_path() . '/app/shortcourse/general/Participation-CO-01.jpg';
+
+        $file = File::get($path);
+        $filetype = File::mimeType($path);
+
+        $response = Response::make($file, 200);
+        $response->header("Content-Type", $filetype);
+        return $response;
+    }
+    public function certificateView($id, $html)
+    {
+        $eventParticipant = EventParticipant::where('id', $id)->with(['participant', 'event'])->first();
+
+
+        // $path = storage_path() . '/' . $event_participant_payment_proof->payment_proof_path . $payment_proof_path;
+
+        // $file = File::get($path);
+        // $filetype = File::mimeType($path);
+
+        // $response = Response::make($file, 200);
+        // $response->header("Content-Type", $filetype)
+
+        $fdate = $eventParticipant->event->datetime_start;
+        $tdate = $eventParticipant->event->datetime_end;
+        $datetime1 = new DateTime($fdate);
+        $datetime2 = new DateTime($tdate);
+        $interval = $datetime1->diff($datetime2);
+        $days_diff = $interval->format('%a');
+
+        $eventParticipant->event->days_diff=$days_diff;
+
+
+        return $html .= view('short-course-management.pdf.event-certificate', compact('eventParticipant'));
+    }
+
     private function _progressFlow($eventParticipant_id, $progress_name)
     {
         $eventParticipant = EventParticipant::where('id', $eventParticipant_id)->first()->load(['participant', 'event.venue', 'fee']);
@@ -1104,7 +1159,7 @@ class EventParticipantController extends Controller
             case 'delete-application':
                 $exist1 = EventModuleEventParticipant::where('event_participant_id', $eventParticipant_id)->get();
                 if ($exist1) {
-                    foreach ($exist1 as $exist){
+                    foreach ($exist1 as $exist) {
 
                         // $exist->forceDelete();
                         $exist->updated_by = Auth::user()->id;
