@@ -460,6 +460,8 @@
                         {{-- End Inventory --}}
 
                         {{-- Start Computer Grant Management --}}
+                        @role('Lecturer|Computer Grant (IT Admin)|Computer Grant (Finance Admin)')
+
                             <li class="nav-title">COMPUTER GRANT MANAGEMENT</li>
                                 {{-- User --}}
                                 <li>
@@ -469,26 +471,30 @@
                                     </a>
                                 </li>
                                 {{-- IT Admin --}}
+                                @role('Computer Grant (IT Admin)')
                                 <li>
                                     <a href="/all-grant-list" title="All Grant" data-filter-tags="all">
                                         <i class="fal fa-list"></i>
                                         <span class="nav-link-text" data-i18n="nav.all">All Grant</span>
                                     </a>
                                 </li>
+                                @endrole
                                 {{-- All --}}
                                 <li>
-                                    <a href="#" title="Grant FAQ" data-filter-tags="faq">
+                                    <a href="/faq" title="Grant FAQ" data-filter-tags="faq">
                                         <i class="fal fa-info"></i>
                                         <span class="nav-link-text" data-i18n="nav.faq">FAQ</span>
                                     </a>
                                 </li>
                                 {{-- Finance Admin --}}
+                                @role('Computer Grant (Finance Admin)')
                                 <li>
-                                    <a href="grant-claim" title="Grant Claim" data-filter-tags="claim">
+                                    <a href="/all-grant-list" title="Grant Claim" data-filter-tags="claim">
                                         <i class="fal fa-dollar-sign"></i>
                                         <span class="nav-link-text" data-i18n="nav.claim">Grant Claim</span>
                                     </a>
                                 </li>
+                                @endrole
                                 {{-- All --}}
                                 <li>
                                     <a href="#" title="Log" data-filter-tags="log">
@@ -496,6 +502,7 @@
                                         <span class="nav-link-text" data-i18n="nav.log">Activity Log</span>
                                     </a>
                                 </li>
+                        @endrole
                         {{-- End Computer Grant Management --}}
 
                         {{-- Start Covid --}}

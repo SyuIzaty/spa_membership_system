@@ -386,6 +386,25 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/category/update', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\CategoryController@update');
     Route::post('/category', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\CategoryController@store');
     Route::get('/category/delete/{id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\CategoryController@delete');
+
+    // Computer Grant Management
+    Route::get('/application-form', 'ComputerGrantController@index');
+    Route::get('/all-grant-list', 'ComputerGrantController@allGrantList');
+    Route::get('/grant-list', 'ComputerGrantController@grantList');
+    Route::post('store-application', 'ComputerGrantController@store');
+    Route::post('/datalist', 'ComputerGrantController@datalist');
+    Route::post('/alldatalist', 'ComputerGrantController@allDataLists');
+    Route::get('/application-detail/{id}', 'ComputerGrantController@applicationDetail');
+    Route::get('/view-application-detail/{id}', 'ComputerGrantController@viewApplicationDetail');
+    Route::post('/update-application', 'ComputerGrantController@update');
+    Route::post('/verify-application', 'ComputerGrantController@verifyApplication');
+    Route::post('/verify-purchase', 'ComputerGrantController@verifyPurchase');
+    Route::post('/verify-reimbursement', 'ComputerGrantController@verifyReimbursement');
+    Route::get('get-receipt/{receipt}','ComputerGrantController@getReceipt');
+    Route::get('get-image/{image}','ComputerGrantController@getImage');
+    Route::get('get-file/{file}','ComputerGrantController@getFile');
+    Route::get('/applicationPDF/{id}','ComputerGrantController@applicationPDF');
+    Route::get('/faq', 'ComputerGrantController@faq');
 });
 
 //SCM - Public View

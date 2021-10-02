@@ -25,6 +25,7 @@
                                     <thead>
                                         <tr class="bg-primary-50 text-center">
                                             <th class="text-center">Ticket No.</th>
+                                            <th class="text-center">Staff ID.</th>
                                             <th class="text-center">Staff Department/Position</th>
                                             <th class="text-center">Grant Status</th>
                                             <th class="text-center">Total Price</th>
@@ -39,6 +40,7 @@
                                     </thead>
                                     <tbody>
                                         <tr>
+                                            <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
@@ -76,6 +78,7 @@
             },
             columns: [
                     { className: 'text-center', data: 'ticket_no', name: 'ticket_no' },
+                    { className: 'text-center', data: 'staff_id', name: 'staff_id' },
                     { className: 'text-center', data: 'details', name: 'details' },
                     { className: 'text-center', data: 'status', name: 'status' },
                     { className: 'text-center', data: 'price', name: 'price' },

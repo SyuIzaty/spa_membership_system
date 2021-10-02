@@ -85,7 +85,7 @@
                                                     <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Staff H/P No. : </th>
                                                     <td colspan="2"><input class="form-control" id="hp_no" name="hp_no" value="{{ old('hp_no') }}" placeholder="0111234567" required ></td>
                                                     <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Staff Office No. : </th>
-                                                    <td colspan="2"><input class="form-control" id="office_no" name="office_no" value="{{ old('office_no') }}" placeholder="0111234567" required ></td>
+                                                    <td colspan="2"><input class="form-control" id="office_no" name="office_no" value="{{ old('office_no') }}" placeholder="0312345678" required ></td>
                                                 </tr>
                                                 <tr>
                                                     <th width="20%" style="vertical-align: middle">Grant Period Eligibility : </th>

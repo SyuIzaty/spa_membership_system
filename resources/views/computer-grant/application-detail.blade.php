@@ -43,6 +43,16 @@
                                     <table id="info" class="table table-bordered table-hover table-striped w-100">
                                         <thead>
                                             <tr>
+                                                <td colspan="3" class="bg-warning text-center" align="center"><h5>Status:  <b>{{ strtoupper($activeData->getStatus->first()->description) }}</b></h5></td>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table id="info" class="table table-bordered table-hover table-striped w-100">
+                                        <thead>
+                                            <tr>
                                                 <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> APPLICANT INFORMATION</label></td>
                                             </tr>
                                             <tr>
@@ -80,8 +90,23 @@
                                     </table>
                                 </div>
 
-                                @if ($activeData->status == 2)
+                                @if ($activeData->status != 1)
+                                <div class="table-responsive">
+                                    <table id="info" class="table table-bordered table-hover table-striped w-100">
+                                        <thead>
+                                            <tr>
+                                                <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> IT ADMIN & CE APPROVAL</label></td>
+                                            </tr>
+                                            <tr>
+                                                <th width="20%" style="vertical-align: top">Verified Application : </th>
+                                                <td colspan="4"><a target="_blank" href="/get-file/{{$verified_doc->upload}}">{{$verified_doc->upload}}</a></td>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                @endif
 
+                                @if ($activeData->status == 2)
                                 <div class="table-responsive">
                                     <table id="upload" class="table table-bordered table-hover table-striped w-100">
                                         <thead>
@@ -130,7 +155,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <th width="20%" style="vertical-align: top"><span class="text-danger">*</span> Price : </th>
+                                                <th width="20%" style="vertical-align: top"><span class="text-danger">*</span> Price : RM</th>
                                                 <td colspan="4"><input class="form-control" id="price" name="price" value="{{ old('price') }}" required></td>
                                             </tr>
                                         </thead>
@@ -154,34 +179,33 @@
                                                 <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-file"></i> DETAILS OF PURCHASE</label></td>
                                             </tr>
                                             <tr>
-                                                <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Type of Device : </th>
+                                                <th width="20%" style="vertical-align: middle">Type of Device : </th>
                                                 <td colspan="2" style="vertical-align: middle">{{$activeData->getType->first()->description}}</td>
-                                                <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Serial No : </th>
+                                                <th width="20%" style="vertical-align: middle">Serial No : </th>
                                                 <td colspan="2" style="vertical-align: middle">{{$activeData->serial_no}}</td>
                                             </tr>
                                             <tr>
-                                                <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Brand : </th>
+                                                <th width="20%" style="vertical-align: middle">Brand : </th>
                                                 <td colspan="2" style="vertical-align: middle">{{$activeData->brand}}</td>
-                                                <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Model : </th>
+                                                <th width="20%" style="vertical-align: middle">Model : </th>
                                                 <td colspan="2" style="vertical-align: middle">{{$activeData->model}}</td>
                                             </tr>
                                             <tr>
-                                                <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Purchase Receipt : </th>
+                                                <th width="20%" style="vertical-align: middle">Purchase Receipt : </th>
                                                 <td colspan="2">
                                                     @if ($proof->isNotEmpty())
                                                         <a target="_blank" href="/get-receipt/{{$proof->where('type',1)->first()->upload}}">{{$proof->where('type',1)->first()->upload}}</a>
                                                     @endif
                                                 </td>
-                                                <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Device Image : </th>
+                                                <th width="20%" style="vertical-align: middle">Device Image : </th>
                                                 <td colspan="2">
                                                     @if ($proof->isNotEmpty())
                                                         <a target="_blank" href="/get-image/{{$proof->where('type',2)->first()->upload}}">{{$proof->where('type',2)->first()->upload}}</a>
-                                                        <input type="file" class="form-control" id="upload_image" name="upload_image">
                                                     @endif
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <th width="20%" style="vertical-align: top"><span class="text-danger">*</span> Price : </th>
+                                                <th width="20%" style="vertical-align: top">Price : RM</th>
                                                 <td colspan="4" style="vertical-align: middle">{{$activeData->price}}</td>
                                             </tr>
                                         </thead>
