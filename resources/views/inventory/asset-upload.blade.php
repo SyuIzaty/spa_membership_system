@@ -188,10 +188,55 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @foreach ($status as $statuss)
+                                                        <tr align="center">
+                                                            <td>0</td>
+                                                            <td>INACTIVE</td>
+                                                        </tr>
+                                                        <tr align="center">
+                                                            <td>1</td>
+                                                            <td>ACTIVE</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <a href="javascript:void(0);" class="card-title collapsed" data-toggle="collapse" data-target="#acquisition" aria-expanded="false">
+                                                <i class="fal fa-adjust width-2 fs-xl"></i>
+                                                Acquisition Type
+                                                <span class="ml-auto">
+                                                    <span class="collapsed-reveal">
+                                                        <i class="fal fa-minus fs-xl"></i>
+                                                    </span>
+                                                    <span class="collapsed-hidden">
+                                                        <i class="fal fa-plus fs-xl"></i>
+                                                    </span>
+                                                </span>
+                                            </a>
+                                        </div>
+                                        <div id="acquisition" class="collapse" data-parent="#acquisition">
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                <table class="table table-bordered" style="width: 100%" id="acquisition_list">
+                                                    <thead>
+                                                        <tr class="bg-primary-50 text-center">
+                                                            <td>ACQUISITION CODE</td>
+                                                            <td>ACQUISITION NAME</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Acquisition Code"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Acquisition Name"></td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($acquisition as $acq)
                                                             <tr align="center">
-                                                                <td>{{ $statuss->id ?? '--' }}</td>
-                                                                <td>{{ $statuss->status_name ?? '--' }}</td>
+                                                                <td>{{ $acq->id ?? '--' }}</td>
+                                                                <td>{{ $acq->acquisition_type ?? '--' }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -413,6 +458,43 @@
         });
 
         var table = $('#status_list').DataTable({
+            columnDefs: [],
+                orderCellsTop: true,
+                "order": [[ 0, "asc" ]],
+                "initComplete": function(settings, json) {
+                }
+        });
+
+    });
+
+    $(document).ready(function() {
+
+        $('#acquisition_list thead tr .hasinput').each(function(i)
+        {
+            $('input', this).on('keyup change', function()
+            {
+                if (table.column(i).search() !== this.value)
+                {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+
+            $('select', this).on('keyup change', function()
+            {
+                if (table.column(i).search() !== this.value)
+                {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+
+        var table = $('#acquisition_list').DataTable({
             columnDefs: [],
                 orderCellsTop: true,
                 "order": [[ 0, "asc" ]],

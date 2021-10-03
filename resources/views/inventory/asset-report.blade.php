@@ -57,9 +57,8 @@
                                     <select class="selectfilter form-control" name="status" id="status">
                                         <option value="">Select Status</option>
                                         <option>All</option>
-                                        @foreach($status as $statuss)
-                                            <option value="{{$statuss->id}}" {{ $request->status == $statuss->id  ? 'selected' : '' }}>{{ $statuss->status_name }}</option>
-                                        @endforeach
+                                        <option value="1" {{ $request->status == '1' ? 'selected':''}} >ACTIVE</option>
+                                        <option value="0" {{ $request->status == '0' ? 'selected':''}} >INACTIVE</option>
                                     </select>
                                 </div>
                             </div>
@@ -80,7 +79,9 @@
                                             <th>MODEL</th>
                                             <th>BRAND</th>
                                             <th>STATUS</th>
-                                            <th>SELL/DISPOSE DATE</th>
+                                            <th>INACTIVE DATE</th>
+                                            <th>INACTIVE REASON</th>
+                                            <th>INACTIVE REMARK</th>
                                             <th>AVAILABILITY</th>
                                             <th>SET</th>
                                             <th>PRICE (RM)</th>
@@ -89,6 +90,7 @@
                                             <th>INVOICE NO.</th>
                                             <th>PURCHASE DATE</th>
                                             <th>VENDOR</th>
+                                            <th>ACQUISITION TYPE</th>
                                             <th>CUSTODIAN</th>
                                             <th>LOCATION</th>
                                             <th>CREATED BY</th>
@@ -139,7 +141,7 @@
             "dom" : "Bltp",
             "lengthMenu": [[10, 25, 50, 0], [10, 25, 50, "All"]],
             iDisplayLength: 10,
-            columnDefs: [{ "visible": false,"targets":[21]}],
+            columnDefs: [{ "visible": false,"targets":[24]}],
             columns: [
                     { data: 'id', name: 'id' },
                     { data: 'department', name: 'department' },
@@ -153,6 +155,8 @@
                     { data: 'brand', name: 'brand' },
                     { data: 'status', name: 'status' },
                     { data: 'inactive_date', name: 'inactive_date' },
+                    { data: 'inactive_reason', name: 'inactive_reason' },
+                    { data: 'inactive_remark', name: 'inactive_remark' },
                     { data: 'availability', name: 'availability' },
                     { data: 'set_package', name: 'set_package' },
                     { data: 'total_price', name: 'total_price' },
@@ -161,6 +165,7 @@
                     { data: 'io_no', name: 'io_no' },
                     { data: 'purchase_date', name: 'purchase_date' },
                     { data: 'vendor_name', name: 'vendor_name' },
+                    { data: 'acquisition_type', name: 'acquisition_type' },
                     { data: 'custodian_id', name: 'custodian_id' },
                     { data: 'storage_location', name: 'storage_location' },
                     { data: 'created_by', name: 'created_by' },

@@ -26,6 +26,12 @@ class IndividualAssetExport implements FromCollection, WithHeadings, WithMapping
 
     public function map($verify): array
     {
+        if($verify->assets->status == '0') {
+            $status = 'INACTIVE';
+        } else {
+            $status = 'ACTIVE';
+        }
+
         return [
             $verify->assets->id ?? '--',
             $verify->assets->codeType->code_name ?? '--',
@@ -36,16 +42,19 @@ class IndividualAssetExport implements FromCollection, WithHeadings, WithMapping
             $verify->assets->serial_no ?? '--',
             $verify->assets->model ?? '--',
             $verify->assets->brand ?? '--',
-            $verify->assets->assetStatus->status_name ?? '--',
+            $status ?? '--',
             $verify->assets->inactive_date ?? '--',
+            $verify->assets->inactive_reason ?? '--',
+            $verify->assets->inactive_remark ?? '--',
             $verify->assets->availabilities->name ?? '--',
             $verify->assets->set_package ?? '--',
             $verify->assets->total_price ?? '--',
             $verify->assets->lo_no ?? '--',
             $verify->assets->do_no ?? '--',
             $verify->assets->io_no ?? '--',
-            $verify->assets->purchase_date ?? '--',
+            isset($verify->assets->purchase_date) ? date(' d/m/Y ', strtotime($verify->assets->purchase_date) ) : '--',
             $verify->assets->vendor_name ?? '--',
+            $verify->assets->acquisitionType->acquisition_type ?? '--',
             $verify->assets->remark ?? '--',
             $verify->assets->custodians->name ?? '--',
             $verify->assets->storage_location ?? '--',
@@ -68,7 +77,9 @@ class IndividualAssetExport implements FromCollection, WithHeadings, WithMapping
             'MODEL',
             'BRAND',
             'STATUS',
-            'SELL/DISPOSE DATE',
+            'INACTIVE DATE',
+            'INACTIVE REASON',
+            'INACTIVE REMARK',
             'AVAILABILITY',
             'SET',
             'PRICE',
@@ -77,6 +88,7 @@ class IndividualAssetExport implements FromCollection, WithHeadings, WithMapping
             'IO_NO',
             'PURCHASE_DATE',
             'VENDOR',
+            'ACQUISITION TYPE',
             'REMARK',
             'CUSTODIAN',
             'LOCATION',
@@ -91,8 +103,8 @@ class IndividualAssetExport implements FromCollection, WithHeadings, WithMapping
         return [
             AfterSheet::class => function(AfterSheet $event) {
                 $all = Custodian::get()->count() + 1;
-                $cellRange = 'A1:Y'.$all.'';
-                $head_title = 'A1:Y1';
+                $cellRange = 'A1:AB'.$all.'';
+                $head_title = 'A1:AB1';
                 $event->sheet->getDelegate()->getStyle($head_title)->getFont()->setBold(true)->setName('Arial');
                 $event->sheet->getDelegate()->getStyle($head_title)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('F7E7E4');
                 $event->sheet->getStyle($cellRange)->applyFromArray([

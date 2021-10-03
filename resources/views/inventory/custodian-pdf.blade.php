@@ -20,6 +20,7 @@
                             <th>Asset Name</th>
                             <th>Custodian</th>
                             <th>Change Reason</th>
+                            <th>Location</th>
                             <th>Assign Date</th>
                             <th>Status</th>
                             <th>Verification</th>
@@ -35,6 +36,7 @@
                             <td>{{ $trails->assets->asset_name ?? '--' }}</td>
                             <td>{{ $trails->custodian->name ?? '--' }}</td>
                             <td>{{ $trails->reason_remark ?? '--' }}</td>
+                            <td>{{ $trails->location ?? '--'}}</td>
                             <td>{{ date('d-m-Y | h:i A', strtotime($trails->created_at)) ?? '--' }}</td>
                             <td>{{ $trails->custodianStatus->status_name ?? '--' }}</td>
                             <td>

@@ -155,6 +155,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/asset-upload', 'AssetController@bulkUpload');
     Route::post('import-asset','AssetController@importAsset');
     Route::get('/assetTemplates','AssetController@assetTemplate');
+    Route::get('/asset-trail/{id}', 'AssetController@assetTrail');
+    Route::get('/asset-dashboard', 'AssetController@dashboard');
 
     // Stock
     Route::get('/stock-index', 'StockController@stockIndex');

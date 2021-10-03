@@ -87,7 +87,7 @@
                                                                                 </td>
                                                                                 <td width="15%"><label class="form-label" for="finance_code"> Asset Code (Finance):</label></td>
                                                                                 <td colspan="3">
-                                                                                    <input class="form-control" id="finance_code" name="finance_code" value="{{ $asset->finance_code }}">
+                                                                                    <input class="form-control" id="finance_code" name="finance_code" value="{{ $asset->finance_code ?? old('finance_code') }}">
                                                                                     @error('finance_code')
                                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                     @enderror
@@ -98,10 +98,10 @@
                                                                             <div class="form-group">
                                                                                 <td width="15%"><label class="form-label" for="asset_code_type"><span class="text-danger">*</span> Code Type:</label></td>
                                                                                 <td colspan="3">
-                                                                                    <select class="form-control asset_code_type" name="asset_code_type" id="asset_code_type">
+                                                                                    <select class="form-control asset_code_type" name="asset_code_type" id="asset_code_type" required>
                                                                                         <option value="">Please Select</option>
                                                                                         @foreach ($codeType as $codeTypes) 
-                                                                                            <option value="{{ $codeTypes->id }}" {{ $asset->asset_code_type == $codeTypes->id ? 'selected="selected"' : '' }}>{{ $codeTypes->id }} - {{ $codeTypes->code_name }}</option>
+                                                                                            <option value="{{ $codeTypes->id }}" {{ old('asset_code_type', ($asset->asset_code_type ? $asset->codeType->id : '' )) == $codeTypes->id ? 'selected' : '' }}>{{ $codeTypes->id }} - {{ $codeTypes->code_name }}</option>
                                                                                         @endforeach
                                                                                     </select>
                                                                                     @error('asset_code_type')
@@ -110,7 +110,7 @@
                                                                                 </td>
                                                                                 <td width="15%"><label class="form-label" for="asset_name"><span class="text-danger">*</span> Asset Name:</label></td>
                                                                                 <td colspan="3">
-                                                                                    <input class="form-control" id="asset_name" name="asset_name" value="{{ $asset->asset_name }}" style="text-transform: uppercase">
+                                                                                    <input class="form-control" id="asset_name" name="asset_name" value="{{ $asset->asset_name ?? old('asset_name') }}" style="text-transform: uppercase" required>
                                                                                     @error('asset_name')
                                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                     @enderror
@@ -121,14 +121,14 @@
                                                                             <div class="form-group">
                                                                                 <td width="15%"><label class="form-label" for="serial_no"><span class="text-danger">*</span> Serial No. : </label></td>
                                                                                 <td colspan="3">
-                                                                                    <input class="form-control" id="serial_no" name="serial_no" value="{{ $asset->serial_no }}" style="text-transform: uppercase">
+                                                                                    <input class="form-control" id="serial_no" name="serial_no" value="{{ $asset->serial_no ?? old('serial_no') }}" style="text-transform: uppercase" required>
                                                                                     @error('serial_no')
                                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                     @enderror
                                                                                 </td>
-                                                                                <td width="15%"><label class="form-label" for="model"><span class="text-danger">*</span> Model:</label></td>
+                                                                                <td width="15%"><label class="form-label" for="model"> Model:</label></td>
                                                                                 <td colspan="3">
-                                                                                    <input class="form-control" id="model" name="model" value="{{ $asset->model }}" style="text-transform: uppercase">
+                                                                                    <input class="form-control" id="model" name="model" value="{{ $asset->model ?? old('model') }}" style="text-transform: uppercase">
                                                                                     @error('model')
                                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                     @enderror
@@ -139,14 +139,14 @@
                                                                             <div class="form-group">
                                                                                 <td width="15%"><label class="form-label" for="brand"> Brand : </label></td>
                                                                                 <td colspan="3">
-                                                                                    <input class="form-control" id="brand" name="brand" value="{{ $asset->brand }}" style="text-transform: uppercase">
+                                                                                    <input class="form-control" id="brand" name="brand" value="{{ $asset->brand ?? old('brand') }}" style="text-transform: uppercase">
                                                                                     @error('brand')
                                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                     @enderror
                                                                                 </td>
-                                                                                <td width="15%"><label class="form-label" for="storage_location"> Location/Storage:</label></td>
+                                                                                <td width="15%"><label class="form-label" for="storage_location"> Location:</label></td>
                                                                                 <td colspan="3">
-                                                                                    <input class="form-control" id="storage_location" name="storage_location" value="{{ $asset->storage_location }}">
+                                                                                    <input class="form-control" id="storage_location" style="cursor:context-menu" name="storage_location" value="{{ $asset->storage_location }}" readonly>
                                                                                     @error('storage_location')
                                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                     @enderror
@@ -157,12 +157,10 @@
                                                                             <div class="form-group">
                                                                                 <td width="15%"><label class="form-label" for="status"><span class="text-danger">*</span> Status:</label></td>
                                                                                 <td colspan="3">
-                                                                                    <select class="form-control status" name="status" id="status">
+                                                                                    <select class="form-control" id="status" name="status" required>
                                                                                         <option value="">Select Status</option>
-                                                                                        @foreach ($status as $statuss) 
-                                                                                            <option value="{{ $statuss->id }}" {{ old('status', ($asset->status ? $asset->assetStatus->id : '')) ==  $statuss->id  ? 'selected' : '' }}>
-                                                                                                {{ $statuss->status_name }}</option>
-                                                                                        @endforeach
+                                                                                        <option value="1" {{ old('status', $asset->status) == '1' ? 'selected':''}} >ACTIVE</option>
+                                                                                        <option value="0" {{ old('status', $asset->status) == '0' ? 'selected':''}} >INACTIVE</option>
                                                                                     </select>
                                                                                     @error('status')
                                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
@@ -178,7 +176,7 @@
                                                                                     <select class="form-control availability" name="availability" id="availability">
                                                                                         <option value="">Select Availability</option>
                                                                                         @foreach ($availability as $available) 
-                                                                                            <option value="{{ $available->id }}" {{ $asset->availability == $available->id ? 'selected="selected"' : '' }}>{{ $available->name }}</option>
+                                                                                            <option value="{{ $available->id }}" {{ old('availability', ($asset->availability ? $asset->availabilities->id : '')) == $available->id ? 'selected' : '' }}>{{ $available->name }}</option>
                                                                                         @endforeach
                                                                                     </select>
                                                                                     @error('availability')
@@ -193,11 +191,35 @@
                                                                                 </td>
                                                                             </div>
                                                                         </tr>
+                                                                        <tr class="inactive">
+                                                                            <div class="form-group">
+                                                                                <td width="15%"><label class="form-label" for="inactive_reason"><span class="text-danger">*</span> Reason:</label></td>
+                                                                                <td colspan="3">
+                                                                                    <select class="form-control inactive_reason" name="inactive_reason" id="inactive_reason">
+                                                                                        <option value="">Select Reason</option>
+                                                                                        @foreach ($status as $statuss) 
+                                                                                            <option value="{{ $statuss->id }}" {{ old('inactive_reason', ($asset->inactive_reason ? $asset->assetStatus->id : '')) ==  $statuss->id  ? 'selected' : '' }}>
+                                                                                                {{ $statuss->status_name }}</option>
+                                                                                        @endforeach
+                                                                                    </select>
+                                                                                    @error('inactive_reason')
+                                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                    @enderror
+                                                                                </td>
+                                                                                <td width="15%"><label class="form-label" for="inactive_remark"> Remark:</label></td>
+                                                                                <td colspan="3">
+                                                                                    <textarea rows="5" class="form-control" id="inactive_remark" name="inactive_remark" >{{ $asset->inactive_remark ?? old('inactive_remark') }}</textarea>
+                                                                                    @error('inactive_remark')
+                                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                    @enderror
+                                                                                </td>
+                                                                            </div>
+                                                                        </tr>
                                                                         <tr>
                                                                             <div class="form-group">
                                                                                 <td width="15%"><label class="form-label" for="custodian_id"> Current Custodian : </label></td>
                                                                                 <td colspan="3">
-                                                                                    <input class="form-control" id="custodian_id" style="cursor:context-menu" name="custodian_id" value="{{ $asset->custodians->name }}" readonly>
+                                                                                    <input class="form-control" id="custodian_id" style="cursor:context-menu" name="custodian_id" value="{{ $asset->custodians->name ?? '' }}" readonly>
                                                                                 </td>
                                                                                 <td width="15%"><label class="form-label" for="created_by"> Created By : </label></td>
                                                                                 <td colspan="3">
@@ -452,14 +474,14 @@
                                                                         <p style="margin-bottom: -15px"><span class="text-danger">*</span> Required fields</p>
                                                                         <tr>
                                                                             <div class="form-group">
-                                                                                <td width="15%"><label class="form-label" for="purchase_date"><span class="text-danger">*</span> Purchase Date : </label></td>
+                                                                                <td width="15%"><label class="form-label" for="purchase_date"> Purchase Date : </label></td>
                                                                                 <td colspan="3">
-                                                                                    <input type="date" class="form-control" id="purchase_date" name="purchase_date" value="{{ date('Y-m-d', strtotime($asset->purchase_date)) }}" />
+                                                                                    <input type="date" class="form-control" id="purchase_date" name="purchase_date" value="{{ isset($asset->purchase_date) ? date('Y-m-d', strtotime($asset->purchase_date)) : old('purchase_date') }}"/>
                                                                                     @error('purchase_date')
                                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                     @enderror
                                                                                 </td>
-                                                                                <td width="15%"><label class="form-label" for="vendor_name"><span class="text-danger">*</span> Vendor :</label></td>
+                                                                                <td width="15%"><label class="form-label" for="vendor_name"> Vendor :</label></td>
                                                                                 <td colspan="3">
                                                                                     <input class="form-control" id="vendor_name" name="vendor_name" value="{{ $asset->vendor_name }}">
                                                                                     @error('vendor_name')
@@ -506,8 +528,20 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <div class="form-group">
+                                                                                <td width="15%"><label class="form-label" for="acquisition_type"> Acquisition Type :</label></td>
+                                                                                <td colspan="3">
+                                                                                    <select class="form-control acquisition_type" name="acquisition_type" id="acquisition_type">
+                                                                                        <option value="">Please Select</option>
+                                                                                        @foreach ($acquisition as $acq) 
+                                                                                            <option value="{{ $acq->id }}" {{ old('asset_code_type', ($asset->acquisition_type ? $asset->acquisitionType->id : '' )) == $acq->id ? 'selected' : '' }}>{{ $acq->acquisition_type }}</option>
+                                                                                        @endforeach
+                                                                                    </select>
+                                                                                    @error('acquisition_type')
+                                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                    @enderror
+                                                                                </td>
                                                                                 <td width="15%"><label class="form-label" for="remark"> Remark : </label></td>
-                                                                                <td colspan="6">
+                                                                                <td colspan="3">
                                                                                     <textarea rows="5" class="form-control" id="remark" name="remark" >{{ $asset->remark }}</textarea>
                                                                                     @error('remark')
                                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
@@ -560,13 +594,17 @@
                                                                 <td>{{ $trails->finance_code ?? '--' }}</td>
                                                                 <td>{{ $trails->asset_name ?? '--' }}</td>
                                                                 <td>{{ $trails->serial_no ?? '--' }}</td>
-                                                                <td>{{ date('d-m-Y', strtotime($trails->purchase_date)) ?? '--' }}</td>
+                                                                <td>{{ isset($trails->purchase_date) ? date('d-m-Y', strtotime($trails->purchase_date)) : '--' }}</td>
                                                                 <td>{{ $trails->vendor_name ?? '--' }}</td>
                                                                 <td>{{ $trails->lo_no ?? '--' }}</td>
                                                                 <td>{{ $trails->do_no ?? '--' }}</td>
                                                                 <td>{{ $trails->io_no ?? '--' }}</td>
                                                                 <td>{{ $trails->total_price ?? '--' }}</td>
-                                                                <td>{{ $trails->assetStatus->status_name ?? '--' }}</td>
+                                                                @if($trails->status == '0')
+                                                                    <td>INACTIVE<br>({{ $trails->assetStatus->status_name ?? '--' }})</td>
+                                                                @else 
+                                                                    <td>ACTIVE</td>
+                                                                @endif
                                                                 <td>{{ $trails->staffs->name ?? '--' }}</td>
                                                                 <td>{{ date('d/m/Y', strtotime($trails->created_at)) }}<br>{{ date('h:i A', strtotime($trails->created_at)) }}</td>
                                                                 <td><a href="/asset-trail/{{ $trails->id }}" class="btn btn-sm btn-info"><i class="fal fa-eye"></i></a></td>
@@ -596,6 +634,7 @@
                                                                 <th style="width: 50px;">No.</th>
                                                                 <th>Custodian</th>
                                                                 <th>Change Reason</th>
+                                                                <th>Location</th>
                                                                 <th>Assign Date</th>
                                                                 <th>Assign By</th>
                                                                 <th>Verification</th>
@@ -610,6 +649,7 @@
                                                                 <td>{{ $no++ }}</td>
                                                                 <td class="custodian">{{$list->custodian->name}}</td>
                                                                 <td class="reason">{{ isset($list->reason_remark) ? $list->reason_remark : '--'}}</td>
+                                                                <td class="location">{{$list->location ?? '--'}}</td>
                                                                 <td class="date">{{ date('d-m-Y | h:i A', strtotime($list->created_at)) }}</td>
                                                                 <td class="user">{{ strtoupper($list->user->name) }}</td>
                                                                 <td class="user">
@@ -622,7 +662,7 @@
                                                                 <td class="date">{{ isset($list->verification_date) ? date('d-m-Y | h:i A', strtotime($list->verification_date)) : '--' }}</td>
                                                                 <td class="user">{{ isset($list->status) ? strtoupper($list->custodianStatus->status_name) : '--' }}</td>
                                                                 <td>
-                                                                    <a href="" data-target="#crud-modal2" data-toggle="modal" data-id="{{$list->id}}" data-custodian="{{$list->custodian->name}}" data-reason="{{$list->reason_remark}}" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
+                                                                    <a href="" data-target="#crud-modal2" data-toggle="modal" data-id="{{$list->id}}" data-custodian="{{$list->custodian->name}}" data-reason="{{$list->reason_remark}}" data-location="{{$list->location}}" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
                                                                     <meta name="csrf-token" content="{{ csrf_token() }}">
                                                                 </td>
                                                             </tr>
@@ -688,6 +728,15 @@
                                                 @enderror
                                             </td>
                                         </div>
+                                        <div class="form-group">
+                                            <td width="15%"><label class="form-label" for="location"> Location :</label></td>
+                                            <td colspan="7">
+                                                <input class="form-control" id="location" name="location" value="{{ old('location') }}">
+                                                @error('location')
+                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                @enderror
+                                            </td>
+                                        </div>
                                      
                                     <div class="footer">
                                         <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
@@ -738,6 +787,16 @@
                                             <td colspan="7">
                                                 <textarea rows="5" class="reason form-control" id="reason" name="reason_remark" required>{{ old('reason_remark') }}</textarea>
                                                 @error('reason_remark')
+                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                @enderror
+                                            </td>
+                                            </td>
+                                        </div>
+                                        <div class="form-group">
+                                            <td width="15%"><label class="form-label" for="location"> Location :</label></td>
+                                            <td colspan="7">
+                                                <input rows="5" class="location form-control" id="locations" name="location">
+                                                @error('location')
                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                 @enderror
                                             </td>
@@ -827,7 +886,7 @@
 
     $(document).ready(function()
     {
-        $('#status, #availability, #asset_types, #asset_code_type').select2();
+        $('#status, #availability, #asset_types, #asset_code_type, #acquisition_type, #inactive_reason').select2();
 
         $('.department, .custodian_id').select2({ 
             dropdownParent: $("#crud-modal") 
@@ -853,10 +912,12 @@
             var id = button.data('id') 
             var custodian = button.data('custodian')
             var reason = button.data('reason')
+            var location = button.data('location')
 
             $('.modal-body #ids').val(id); 
             $('.modal-body #custodian').val(custodian); 
             $('.modal-body #reason').val(reason); 
+            $('.modal-body #locations').val(location); 
         });
 
         $('#crud-modal3').on('show.bs.modal', function(event) {
@@ -982,7 +1043,7 @@
 
         $( "#status" ).change(function() {
             var val = $("#status").val();
-            if(val=="2" || val=="3" || val=="4" || val=="5"){
+            if(val=="0"){
                 $(".inactive").show();
             } else {
                 $(".inactive").hide();
@@ -991,7 +1052,9 @@
 
         $('#status').val(); 
         $("#status").change(); 
-        $('#inactive_date').val('{{ old('inactive_date') }}');
+        $('#inactive_date').val();
+        $('#inactive_reason').val();
+        $('#inactive_remark').val();
 
     })
 

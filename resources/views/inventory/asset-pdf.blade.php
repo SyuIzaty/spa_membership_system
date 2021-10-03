@@ -60,10 +60,14 @@
                             <div class="form-group">
                                 <td width="15%"><label class="form-label" for="status"> Status:</label></td>
                                 <td colspan="3">
-                                    {{ isset($asset->assetStatus->status_name) ? strtoupper($asset->assetStatus->status_name) : '--' }}
+                                    @if ($asset->status == '0')
+                                        INACTIVE
+                                    @else
+                                        ACTIVE
+                                    @endif
                                     <br><br>
-                                    @if($asset->status == '2' || $asset->status == '3' || $asset->status == '4' || $asset->status == '5')
-                                        {{$asset->assetStatus->status_name}} Date : {{ date('d-m-Y', strtotime($asset->inactive_date)) ?? '--' }}
+                                    @if($asset->status == '0')
+                                        Date : {{ date('d-m-Y', strtotime($asset->inactive_date)) ?? '--' }}
                                     @endif
                                 </td>
                                 <td width="15%"><label class="form-label" for="status"> Availability:</label></td>
@@ -78,6 +82,16 @@
                                 </td>
                             </div>
                         </tr>
+                        @if($asset->status == '0')
+                        <tr>
+                            <div class="form-group">
+                                <td width="15%"><label class="form-label" for="inactive_reason"> Reason : </label></td>
+                                <td colspan="3">{{ $asset->assetStatus->status_name ?? '--' }}</td>
+                                <td width="15%"><label class="form-label" for="inactive_remark"> Remark : </label></td>
+                                <td colspan="3">{{ $asset->inactive_remark ?? '--' }}</td>
+                            </div>
+                        </tr>
+                        @endif
                         <tr>
                             <div class="form-group">
                                 <td width="15%"><label class="form-label" for="custodian_id"> Current Custodian : </label></td>
@@ -144,7 +158,7 @@
                         <tr>
                             <div class="form-group">
                                 <td width="15%"><label class="form-label" for="purchase_date"> Purchase Date : </label></td>
-                                <td colspan="3">{{ date('d-m-Y', strtotime($asset->purchase_date)) ?? '--' }}</td>
+                                <td colspan="3">{{ isset($asset->purchase_date) ? date('d-m-Y', strtotime($asset->purchase_date)) : '--' }}</td>
                                 <td width="15%"><label class="form-label" for="vendor_name"> Vendor :</label></td>
                                 <td colspan="3">{{ $asset->vendor_name ??'--' }}</td>
                             </div>
@@ -167,8 +181,10 @@
                         </tr>
                         <tr>
                             <div class="form-group">
+                                <td width="15%"><label class="form-label" for="remark"> Acquisition Type : </label></td>
+                                <td colspan="3">{{ $asset->acquisitionType->acquisition_type ?? '--' }}</td>
                                 <td width="15%"><label class="form-label" for="remark"> Remark : </label></td>
-                                <td colspan="6">{{ $asset->remark ?? '--' }}</td>
+                                <td colspan="3">{{ $asset->remark ?? '--' }}</td>
                             </div>
                         </tr>
                     </thead>

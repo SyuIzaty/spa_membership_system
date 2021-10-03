@@ -4,7 +4,7 @@
 <main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
     <div class="subheader">
         <h1 class="subheader-title">
-            <i class='subheader-icon fal fa-cogs'></i> ASSET DETAILS
+            <i class='subheader-icon fal fa-cogs'></i> ASSET TRAIL DETAILS
         </h1>
     </div>
 
@@ -90,12 +90,6 @@
                                                             <td width="15%"><label class="form-label" for="status"> Availability:</label></td>
                                                             <td colspan="3">
                                                                 {{ isset($asset->availabilities->name) ? strtoupper($asset->availabilities->name) : '--' }}
-                                                                @if($asset->availability == '1')
-                                                                    @if(isset($borrow))
-                                                                        <br><br>
-                                                                        <p> Current Borrower : {{$borrow->borrower->staff_name}} ({{$borrow->borrower->staff_id}})</p>
-                                                                    @endif
-                                                                @endif
                                                             </td>
                                                         </div>
                                                     </tr>
@@ -205,101 +199,6 @@
                                     </div>
                                 </div>
                                 
-                                <div class="col-md-12">
-                                    <div class="accordion accordion-outline" id="js_demo_accordion-3">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <a href="javascript:void(0);" class="card-title collapsed" data-toggle="collapse" data-target="#image" aria-expanded="false">
-                                                    <i class="fal fa-camera width-2 fs-xl"></i>
-                                                    ASSET IMAGE
-                                                    <span class="ml-auto">
-                                                        <span class="collapsed-reveal">
-                                                            <i class="fal fa-minus fs-xl"></i>
-                                                        </span>
-                                                        <span class="collapsed-hidden">
-                                                            <i class="fal fa-plus fs-xl"></i>
-                                                        </span>
-                                                    </span>
-                                                </a>
-                                            </div>
-                                            <div id="image" class="collapse" data-parent="#image">
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="col-sm-12">
-                                                            <table id="assets" class="table table-bordered table-hover table-striped w-100 mb-1" style="table-layout: fixed">
-                                                                <thead>
-                                                                    <tr align="center">
-                                                                        @if(isset($image->first()->upload_image))
-                                                                            @foreach($image as $images)
-                                                                            <td colspan="5">
-                                                                                <a data-fancybox="gallery" href="/get-file-image/{{ $images->upload_image }}"><img src="/get-file-image/{{ $images->upload_image }}" style="width:150px; height:130px;" class="img-fluid mr-2"></a><br><br>
-                                                                                <a href="{{ action('AssetController@deleteImage', ['id' => $images->id, 'asset_id' => $images->asset_id]) }}" class="btn btn-danger btn-sm"><i class="fal fa-trash"></i> Delete</a>
-                                                                            </td>
-                                                                            @endforeach
-                                                                        @else
-                                                                            <span>No Image Uploaded</span>
-                                                                        @endif
-                                                                    </tr>
-                                                                </thead>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="accordion accordion-outline" id="js_demo_accordion-3">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <a href="javascript:void(0);" class="card-title collapsed" data-toggle="collapse" data-target="#code" aria-expanded="false">
-                                                    <i class="fal fa-barcode width-2 fs-xl"></i>
-                                                    BARCODE & QRCODE
-                                                    <span class="ml-auto">
-                                                        <span class="collapsed-reveal">
-                                                            <i class="fal fa-minus fs-xl"></i>
-                                                        </span>
-                                                        <span class="collapsed-hidden">
-                                                            <i class="fal fa-plus fs-xl"></i>
-                                                        </span>
-                                                    </span>
-                                                </a>
-                                            </div>
-                                            <div id="code" class="collapse" data-parent="#code">
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="col-sm-12">
-                                                            <table id="assets" class="table table-bordered table-hover table-striped w-100 mb-1" style="table-layout: fixed">
-                                                                <thead>
-                                                                    <tr class="bg-primary-50">
-                                                                        <div class="form-group">
-                                                                            <td colspan="4" align="center" style="vertical-align: middle">Barcode</td>
-                                                                            <td colspan="4" align="center" style="vertical-align: middle">QRCode</td>
-                                                                        </div>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <div class="form-group">
-                                                                            <td colspan="4" align="center" style="vertical-align: middle">
-                                                                                @php echo DNS1D::getBarcodeSVG($asset->asset_code, 'C39',1.0,33,'black', false); @endphp <br>
-                                                                                {{-- {{ $asset->asset_code}} --}}
-                                                                            </td>
-                                                                            <td colspan="4" align="center" style="vertical-align: middle">
-                                                                                {!! QrCode::generate($asset->asset_code); !!} <br>
-                                                                                {{-- {{ $asset->asset_code }} --}}
-                                                                            </td>
-                                                                        </div>
-                                                                    </tr>
-                                                                </thead>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                                 <a style="margin-right: 10px" href="{{ url()->previous() }}" class="btn btn-success ml-auto float-right"><i class="fal fa-arrow-alt-left"></i> Back</a>
                             </div>
                         </div>

@@ -40,13 +40,17 @@
                             <td>{{ $trails->finance_code ?? '--' }}</td>
                             <td>{{ $trails->asset_name ?? '--' }}</td>
                             <td>{{ $trails->serial_no ?? '--' }}</td>
-                            <td>{{ date('d-m-Y', strtotime($trails->purchase_date)) ?? '--' }}</td>
+                            <td>{{ isset($trails->purchase_date) ? date('d-m-Y', strtotime($trails->purchase_date)) : '--' }}</td>
                             <td>{{ $trails->vendor_name ?? '--' }}</td>
                             <td>{{ $trails->lo_no ?? '--' }}</td>
                             <td>{{ $trails->do_no ?? '--' }}</td>
                             <td>{{ $trails->io_no ?? '--' }}</td>
                             <td>{{ $trails->total_price ?? '--' }}</td>
-                            <td>{{ $trails->assetStatus->status_name ?? '--' }}</td>
+                            @if($trails->status == '0')
+                                <td>INACTIVE<br>({{ $trails->assetStatus->status_name ?? '--' }})</td>
+                            @else 
+                                <td>ACTIVE</td>
+                            @endif
                             <td>{{ $trails->staffs->name ?? '--' }}</td>
                             <td>{{ date('d/m/Y', strtotime($trails->created_at)) }}<br>{{ date('h:i A', strtotime($trails->created_at)) }}</td>
                         </tr>

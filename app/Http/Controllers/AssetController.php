@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Borrow;
+use App\Asset;
+use App\AssetImage;
+use App\AssetSet;
+use App\Custodian;
 use App\AssetType;
 use App\AssetCodeType;
 use App\AssetStatus;
@@ -12,16 +17,13 @@ use App\AssetAvailability;
 use App\AssetCustodian;
 use App\AssetDepartment;
 use App\CustodianStatus;
+use App\AssetAcquisition;
+use App\AssetSetTrail;
 use App\Exports\IndividualAssetExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Mail;
 use App\Imports\AssetImport;
-use App\Borrow;
-use App\Asset;
-use App\AssetSet;
-use App\Custodian;
 use Carbon\Carbon;
-use App\AssetImage;
 use Session;
 use Response;
 use Auth;
@@ -30,6 +32,24 @@ use DB;
 
 class AssetController extends Controller
 {
+    public function dashboard()
+    {
+        if( Auth::user()->hasRole('Inventory Admin') )
+        { 
+            $id = AssetCustodian::groupBy('department_id')->pluck('department_id');
+        }
+        else
+        {
+            $id = AssetCustodian::where('custodian_id', Auth::user()->id)->groupBy('department_id')->pluck('department_id');
+        }
+         
+        $assetType = AssetType::orderBy('asset_type')->get();
+        $assetStatus = AssetStatus::all();
+        $assetAcquisition = AssetAcquisition::all();
+         
+        return view('inventory.dashboard', compact('id','assetType', 'assetStatus', 'assetAcquisition'));
+    }
+
     // Asset List
     public function assetIndex()
     {  
@@ -61,10 +81,12 @@ class AssetController extends Controller
         $custodian = User::orderBy('name')->get();
         $availability = AssetAvailability::all();
         $codeType = AssetCodeType::all();
-        $status = AssetStatus::all();
         $asset = new Asset();
         $assetSet = new AssetSet();
-        return view('inventory.asset-new', compact('department', 'members', 'asset', 'availability', 'assetSet', 'custodian','codeType','status'));
+        $status = AssetStatus::all();
+        $acquisition = AssetAcquisition::all();
+
+        return view('inventory.asset-new', compact('department', 'members', 'asset', 'availability', 'assetSet', 'custodian','codeType','status','acquisition'));
     }
 
     public function findAssetType(Request $request)
@@ -89,34 +111,31 @@ class AssetController extends Controller
 
     public function newAssetStore(Request $request)
     {
-        // dd($request);
         $user = Auth::user();
         $code = Carbon::now()->format('Y').mt_rand(100000, 999999);
 
-        if($request->status == '2' || $request->status == '3' || $request->status == '4' || $request->status == '5') {
+        if($request->status == '0') {
             $request->validate([
+                'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$request->id,
                 'department_id'     => 'required',
                 'asset_type'        => 'required',
                 'asset_name'        => 'required',
                 'serial_no'         => 'required',
-                'model'             => 'required',
-                'purchase_date'     => 'required',
-                'vendor_name'       => 'required',
                 'custodian_id'      => 'required',
                 'status'            => 'required',
-                'inactive_date'     => 'required',
                 'set_package'       => 'required',
                 'asset_code_type'   => 'required',
+                'inactive_date'     => 'required',
+                'inactive_reason'   => 'required',
             ]);
+
         } else {
             $request->validate([
+                'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$request->id,
                 'department_id'     => 'required',
                 'asset_type'        => 'required',
                 'asset_name'        => 'required',
                 'serial_no'         => 'required',
-                'model'             => 'required',
-                'purchase_date'     => 'required',
-                'vendor_name'       => 'required',
                 'custodian_id'      => 'required',
                 'status'            => 'required',
                 'set_package'       => 'required',
@@ -135,6 +154,8 @@ class AssetController extends Controller
             'brand'                 => strtoupper($request->brand),
             'status'                => $request->status,
             'inactive_date'         => $request->inactive_date,
+            'inactive_reason'       => $request->inactive_reason,
+            'inactive_remark'       => $request->inactive_remark,
             'availability'          => $request->availability,
             'purchase_date'         => $request->purchase_date,
             'vendor_name'           => $request->vendor_name,
@@ -143,6 +164,7 @@ class AssetController extends Controller
             'io_no'                 => $request->io_no,
             'total_price'           => $request->total_price,
             'remark'                => $request->remark,
+            'acquisition_type'      => $request->acquisition_type,
             'set_package'           => $request->set_package,
             'storage_location'      => $request->storage_location,
             'custodian_id'          => $request->custodian_id, 
@@ -161,6 +183,8 @@ class AssetController extends Controller
             'brand'                 => strtoupper($request->brand),
             'status'                => $request->status,
             'inactive_date'         => $request->inactive_date,
+            'inactive_reason'       => $request->inactive_reason,
+            'inactive_remark'       => $request->inactive_remark,
             'availability'          => $request->availability,
             'purchase_date'         => $request->purchase_date,
             'vendor_name'           => $request->vendor_name,
@@ -169,6 +193,7 @@ class AssetController extends Controller
             'io_no'                 => $request->io_no,
             'total_price'           => $request->total_price,
             'remark'                => $request->remark,
+            'acquisition_type'      => $request->acquisition_type,
             'set_package'           => $request->set_package,
             'storage_location'      => $request->storage_location,
             'custodian_id'          => $request->custodian_id, 
@@ -207,9 +232,23 @@ class AssetController extends Controller
             }
         }
 
+        foreach($request->input('asset_types') as $key => $value) {
+            if(isset($value) && !empty($value))
+            {
+                AssetSetTrail::create([
+                    'asset_trail_id'    => $trail->id,
+                    'asset_type'        => $value,
+                    'serial_no'         => strtoupper($request->serial_nos[$key]),
+                    'model'             => strtoupper($request->models[$key]),
+                    'brand'             => strtoupper($request->brands[$key]),
+                ]);
+            }
+        }
+
         $cust = Custodian::create([
             'asset_id'         => $asset->id,
             'custodian_id'     => $asset->custodian_id,
+            'location'         => $asset->storage_location,
             'assigned_by'      => $user->id,
             'verification'     => '0',
             'status'           => '1',
@@ -267,12 +306,22 @@ class AssetController extends Controller
 
         ->addColumn('purchase_date', function ($asset) {
 
-            return date(' d/m/Y ', strtotime($asset->purchase_date)) ?? '<div style="color:red;" >--</div>';
+            return isset($asset->purchase_date) ? date(' d/m/Y ', strtotime($asset->purchase_date)) : '<div style="color:red;" >--</div>';
         })
 
         ->editColumn('asset_name', function ($asset) {
 
             return $asset->asset_name ?? '<div style="color:red;" >--</div>';
+        })
+
+        ->editColumn('serial_no', function ($asset) {
+
+            return $asset->serial_no ?? '<div style="color:red;" >--</div>';
+        })
+
+        ->editColumn('model', function ($asset) {
+
+            return $asset->model ?? '<div style="color:red;" >--</div>';
         })
 
         ->editColumn('finance_code', function ($asset) {
@@ -307,15 +356,18 @@ class AssetController extends Controller
 
         ->editColumn('status', function ($asset) {
 
-            if($asset->status=='2' || $asset->status=='3' || $asset->status=='4' || $asset->status=='5')
+            if($asset->status=='0')
             {
                 $color = '#CC0000';
-                return '<div style="text-transform: uppercase; color:' . $color . '"><b>'.$asset->assetStatus->status_name.'</b></div>';
+                $reason = $asset->assetStatus->status_name ?? '--';
+                return '<div style="text-transform: uppercase; color:' . $color . '"><b>INACTIVE</b><br>('.$reason.')</div>';
             }
-            else 
+            elseif($asset->status=='1')
             {
                 $color = '#3CBC3C';
-                return '<div style="text-transform: uppercase; color:' . $color . '"><b>'.$asset->assetStatus->status_name.'</b></div>';
+                return '<div style="text-transform: uppercase; color:' . $color . '"><b>ACTIVE</b></div>';
+            } else {
+                return '<div style="color:red;" >--</div>';
             }
         })
 
@@ -337,7 +389,7 @@ class AssetController extends Controller
             }
         })
         
-        ->rawColumns(['action', 'status', 'custodian_id', 'department_id', 'purchase_date', 'asset_type', 'asset_name', 'availability', 'created_by', 'asset_code_type', 'finance_code'])
+        ->rawColumns(['action', 'status', 'custodian_id', 'department_id', 'purchase_date', 'asset_type', 'asset_name', 'availability', 'created_by', 'asset_code_type', 'finance_code', 'model', 'serial_no'])
         ->make(true);
     }
 
@@ -352,10 +404,11 @@ class AssetController extends Controller
         $setType = AssetType::where('department_id', $asset->type->department_id)->get();
         $codeType = AssetCodeType::all();
         $status = AssetStatus::all();
+        $acquisition = AssetAcquisition::all();
         $assetTrail = AssetTrail::where('asset_id', $id)->orderBy('created_at', 'desc')->get();
         $borrow = Borrow::where('asset_id', $id)->whereNull('actual_return_date')->where('status','1')->first();
 
-        return view('inventory.asset-detail', compact('borrow', 'asset', 'image', 'department', 'availability', 'set', 'setType', 'custodian', 'codeType', 'status', 'assetTrail'))->with('no', 1)->with('num', 1);
+        return view('inventory.asset-detail', compact('borrow', 'asset', 'image', 'department', 'availability', 'set', 'setType', 'custodian', 'codeType', 'status', 'assetTrail', 'acquisition'))->with('no', 1)->with('num', 1);
     }
 
     public function deleteImage($id, $asset_id)
@@ -408,18 +461,19 @@ class AssetController extends Controller
         
         if($request->status != $asset->status) {
         // request status != asset status
-            if($request->status == '2' || $request->status == '3' || $request->status == '4' || $request->status == '5') {
-            // check between 2 or 3
+            if($request->status == '0') {
+            // check between 1 or 0
                 if($asset->status == '1') {
                 // check former status 1 or not
                     $request->validate([
+                        'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$asset->id,
                         'asset_name'        => 'required',
                         'serial_no'         => 'required',
-                        'model'             => 'required',
                         'set_package'       => 'required',
                         'status'            => 'required',
-                        'asset_code_type'   => 'required',
                         'inactive_date'     => 'required',
+                        'inactive_reason'   => 'required',
+                        'asset_code_type'   => 'required',
                     ]);
         
                     $asset->update([
@@ -430,22 +484,22 @@ class AssetController extends Controller
                         'brand'                 => strtoupper($request->brand),
                         'status'                => $request->status,
                         'availability'          => $request->availability,
-                        'storage_location'      => $request->storage_location,
                         'set_package'           => $request->set_package,
                         'asset_code_type'       => $request->asset_code_type,
                         'inactive_date'         => $request->inactive_date,
+                        'inactive_reason'       => $request->inactive_reason,
+                        'inactive_remark'       => $request->inactive_remark,
                     ]);
 
                 } else {
-                  // former status 2 or 3
+                  // former status 0
                     $request->validate([
+                        'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$asset->id,
                         'asset_name'        => 'required',
                         'serial_no'         => 'required',
-                        'model'             => 'required',
                         'set_package'       => 'required',
                         'status'            => 'required',
                         'asset_code_type'   => 'required',
-                        'inactive_date'     => 'required',
                     ]);
         
                     $asset->update([
@@ -456,18 +510,19 @@ class AssetController extends Controller
                         'brand'                 => strtoupper($request->brand),
                         'status'                => $request->status,
                         'availability'          => $request->availability,
-                        'storage_location'      => $request->storage_location,
                         'set_package'           => $request->set_package,
                         'asset_code_type'       => $request->asset_code_type,
-                        'inactive_date'         => $request->inactive_date,
+                        'inactive_date'         => null,
+                        'inactive_reason'       => null,
+                        'inactive_remark'       => null,
                     ]);
                 }
             } else {
               // request status == 1
                 $request->validate([
+                    'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$asset->id,
                     'asset_name'        => 'required',
                     'serial_no'         => 'required',
-                    'model'             => 'required',
                     'set_package'       => 'required',
                     'status'            => 'required',
                     'asset_code_type'   => 'required',
@@ -481,25 +536,28 @@ class AssetController extends Controller
                     'brand'                 => strtoupper($request->brand),
                     'status'                => $request->status,
                     'availability'          => $request->availability,
-                    'storage_location'      => $request->storage_location,
                     'set_package'           => $request->set_package,
                     'asset_code_type'       => $request->asset_code_type,
                     'inactive_date'         => null,
+                    'inactive_reason'       => null,
+                    'inactive_remark'       => null,
                 ]);
 
             }      
         } else {
           // request status == asset status
-             if($request->status == '2' || $request->status == '3' || $request->status == '4' || $request->status == '5') {
-             // check between 2 or 3
+             if($request->status == '0') {
+              // request status == 0
                 $request->validate([
+                    'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$asset->id,
                     'asset_name'        => 'required',
                     'serial_no'         => 'required',
-                    'model'             => 'required',
                     'set_package'       => 'required',
                     'status'            => 'required',
                     'asset_code_type'   => 'required',
                     'inactive_date'     => 'required',
+                    'inactive_reason'   => 'required',
+                    'asset_code_type'   => 'required',
                 ]);
     
                 $asset->update([
@@ -510,18 +568,19 @@ class AssetController extends Controller
                     'brand'                 => strtoupper($request->brand),
                     'status'                => $request->status,
                     'availability'          => $request->availability,
-                    'storage_location'      => $request->storage_location,
                     'set_package'           => $request->set_package,
                     'asset_code_type'       => $request->asset_code_type,
                     'inactive_date'         => $request->inactive_date,
+                    'inactive_reason'       => $request->inactive_reason,
+                    'inactive_remark'       => $request->inactive_remark,
                 ]);
 
              } else {
                 // request status == 1
                 $request->validate([
+                    'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$asset->id,
                     'asset_name'        => 'required',
                     'serial_no'         => 'required',
-                    'model'             => 'required',
                     'set_package'       => 'required',
                     'status'            => 'required',
                     'asset_code_type'   => 'required',
@@ -535,7 +594,6 @@ class AssetController extends Controller
                     'brand'                 => strtoupper($request->brand),
                     'status'                => $request->status,
                     'availability'          => $request->availability,
-                    'storage_location'      => $request->storage_location,
                     'set_package'           => $request->set_package,
                     'asset_code_type'       => $request->asset_code_type,
                 ]);
@@ -545,7 +603,7 @@ class AssetController extends Controller
 
         if($request->asset_name != $assets->asset_name || $request->asset_code_type != $assets->asset_code_type || $request->serial_no != $assets->serial_no || $request->status != $assets->status)
         {
-           AssetTrail::create([
+           $trail = AssetTrail::create([
                 'asset_id'              => $asset->id,
                 'asset_type'            => $asset->asset_type,
                 'asset_code'            => $asset->asset_code,
@@ -557,6 +615,8 @@ class AssetController extends Controller
                 'brand'                 => strtoupper($asset->brand),
                 'status'                => $asset->status,
                 'inactive_date'         => $asset->inactive_date,
+                'inactive_reason'       => $asset->inactive_reason,
+                'inactive_remark'       => $asset->inactive_remark,
                 'availability'          => $asset->availability,
                 'purchase_date'         => $asset->purchase_date,
                 'vendor_name'           => $asset->vendor_name,
@@ -565,6 +625,7 @@ class AssetController extends Controller
                 'io_no'                 => $asset->io_no,
                 'total_price'           => $asset->total_price,
                 'remark'                => $asset->remark,
+                'acquisition_type'      => $asset->acquisition_type,
                 'set_package'           => $asset->set_package,
                 'storage_location'      => $asset->storage_location,
                 'custodian_id'          => $asset->custodian_id, 
@@ -603,6 +664,19 @@ class AssetController extends Controller
                 ]);
             }
         }
+
+        foreach($request->input('asset_types') as $key => $value) {
+            if(isset($value) && !empty($value))
+            {
+                AssetSetTrail::create([
+                    'asset_id'      => $trail->id,
+                    'asset_type'    => $value,
+                    'serial_no'     => strtoupper($request->serial_nos[$key]),
+                    'model'         => strtoupper($request->models[$key]),
+                    'brand'         => strtoupper($request->brands[$key]),
+                ]);
+            }
+        }
         
         Session::flash('notification', 'Asset Details Successfully Updated');
         return redirect('asset-detail/'.$request->id);
@@ -613,11 +687,6 @@ class AssetController extends Controller
         $asset = Asset::where('id', $request->id)->first();
         $assets = Asset::where('id', $request->id)->first();
 
-        $request->validate([
-            'purchase_date'     => 'required',
-            'vendor_name'       => 'required',
-        ]);
-
         $asset->update([
             'vendor_name'            => $request->vendor_name, 
             'purchase_date'          => $request->purchase_date, 
@@ -626,11 +695,12 @@ class AssetController extends Controller
             'io_no'                  => $request->io_no,
             'total_price'            => $request->total_price,
             'remark'                 => $request->remark,
+            'acquisition_type'       => $request->acquisition_type,
         ]);
 
         if($request->vendor_name != $assets->vendor_name || $request->purchase_date != $assets->purchase_date || $request->lo_no != $assets->lo_no || 
             $request->do_no != $assets->do_no || $request->io_no != $assets->io_no || $request->total_price != $assets->total_price || 
-            $request->remark != $assets->remark)
+            $request->remark != $assets->remark || $request->acquisition_type != $assets->acquisition_type)
         {
            AssetTrail::create([
                 'asset_id'              => $asset->id,
@@ -644,6 +714,8 @@ class AssetController extends Controller
                 'brand'                 => strtoupper($asset->brand),
                 'status'                => $asset->status,
                 'inactive_date'         => $asset->inactive_date,
+                'inactive_reason'       => $asset->inactive_reason,
+                'inactive_remark'       => $asset->inactive_remark,
                 'availability'          => $asset->availability,
                 'purchase_date'         => $asset->purchase_date,
                 'vendor_name'           => $asset->vendor_name,
@@ -652,6 +724,7 @@ class AssetController extends Controller
                 'io_no'                 => $asset->io_no,
                 'total_price'           => $asset->total_price,
                 'remark'                => $asset->remark,
+                'acquisition_type'      => $asset->acquisition_type,
                 'set_package'           => $asset->set_package,
                 'storage_location'      => $asset->storage_location,
                 'custodian_id'          => $asset->custodian_id, 
@@ -683,6 +756,7 @@ class AssetController extends Controller
             'asset_id'              => $request->id, 
             'custodian_id'          => $request->custodian_id, 
             'reason_remark'         => $request->reason_remark, 
+            'location'              => $request->location, 
             'assigned_by'           => $user->id,
             'verification'          => '0',
             'status'                => '1',
@@ -690,6 +764,7 @@ class AssetController extends Controller
 
         $asset->update([
             'custodian_id'            => $request->custodian_id, 
+            'storage_location'        => $request->location, 
         ]);
 
         if(isset($custodian->staff->staff_email))
@@ -721,6 +796,7 @@ class AssetController extends Controller
 
         $custodian->update([
             'reason_remark'         => $request->reason_remark, 
+            'location'              => $request->location, 
         ]);
 
         Session::flash('noty', 'Custodian Updated Successfully');
@@ -749,6 +825,14 @@ class AssetController extends Controller
         $asset = Asset::where('id', $id)->first();
          
         return view('inventory.custodian-pdf', compact('asset'));
+    }
+
+    public function assetTrail($id)
+    {
+        $asset = AssetTrail::where('id', $id)->first(); 
+        $set = AssetSetTrail::where('asset_trail_id', $id)->get();
+
+        return view('inventory.asset-trail', compact('asset', 'set'))->with('num', 1);
     }
 
     // My Asset 
@@ -813,7 +897,7 @@ class AssetController extends Controller
             $code       = $verify->assets->asset_code ?? '--';
             $finance    = $verify->assets->finance_code ?? '--';
 
-            return '<div style="line-height:25px"><b>ASSET CODE</b> : '.$code.'<br><b>FINANCE CODE</b> : '.$finance.'<br><b>NAME</b> : '.$name.'<br><b>SERIAL NO.</b> : '.$serial.'<br><b>MODEL</b> : '.$model.'<br><b>STORAGE</b> : '.$storage.'</div>' ?? '--';
+            return '<div style="line-height:25px"><b>ASSET CODE</b> : '.$code.'<br><b>FINANCE CODE</b> : '.$finance.'<br><b>NAME</b> : '.$name.'<br><b>SERIAL NO.</b> : '.$serial.'<br><b>MODEL</b> : '.$model.'<br><b>LOCATION</b> : '.$storage.'</div>' ?? '--';
         })
 
         ->editColumn('department', function ($verify) {
@@ -960,7 +1044,6 @@ class AssetController extends Controller
         }
 
         $availability = AssetAvailability::select('id', 'name')->get();
-        $status = AssetStatus::select('id', 'status_name')->get();
 
         if( Auth::user()->hasRole('Inventory Admin') )
         { 
@@ -983,7 +1066,7 @@ class AssetController extends Controller
         $selectedstatus = $request->status; 
         $list = [];
 
-        return view('inventory.asset-report', compact('request', 'department', 'type', 'availability', 'selectedstatus', 'selecteddepartment', 'selectedavailability', 'selectedtype', 'list', 'status'));
+        return view('inventory.asset-report', compact('request', 'department', 'type', 'availability', 'selectedstatus', 'selecteddepartment', 'selectedavailability', 'selectedtype', 'list'));
     }
 
     public function exports($department = null, $availability = null, $type = null, $status = null)
@@ -1088,7 +1171,7 @@ class AssetController extends Controller
 
         ->editColumn('purchase_date', function ($asset) {
            
-            return date(' d-m-Y ', strtotime($asset->purchase_date) ) ?? '<div style="color:red;" > -- </div>';
+            return isset($asset->purchase_date) ? date(' d-m-Y ', strtotime($asset->purchase_date)) : '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('inactive_date', function ($asset) {
@@ -1123,7 +1206,11 @@ class AssetController extends Controller
 
         ->editColumn('status', function ($asset) {
 
-            return isset($asset->assetStatus->status_name) ? strtoupper($asset->assetStatus->status_name) : '<div style="color:red;" > -- </div>';
+            if($asset->status == '0') {
+                return 'INACTIVE';
+            } else {
+                return 'ACTIVE';
+            }
         })
 
         ->editColumn('set_package', function ($asset) {
@@ -1149,8 +1236,25 @@ class AssetController extends Controller
 
             return strtoupper($asset->codeType->code_name) ?? '<div style="color:red;" >--</div>';
         })
+
+        ->editColumn('inactive_reason', function ($asset) {
+
+            return $asset->assetStatus->status_name ?? '<div style="color:red;" >--</div>';
+        })
+
+        ->editColumn('inactive_remark', function ($asset) {
+
+            return $asset->inactive_remark ?? '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('acquisition_type', function ($asset) {
+
+            return $asset->acquisitionType->acquisition_type ?? '<div style="color:red;" >--</div>';
+        })
     
-       ->rawColumns(['inactive_date','finance_code','department', 'asset_code_type', 'asset_code', 'asset_name', 'asset_type', 'set_package', 'status', 'serial_no', 'model', 'brand', 'total_price', 'lo_no', 'io_no', 'do_no', 'purchase_date', 'vendor_name', 'custodian_id', 'created_by', 'remark', 'availability', 'storage_location'])
+       ->rawColumns(['inactive_date','finance_code','department', 'asset_code_type', 'asset_code', 'asset_name', 'asset_type', 'set_package', 'status', 'serial_no',
+        'model', 'brand', 'total_price', 'lo_no', 'io_no', 'do_no', 'purchase_date', 'vendor_name', 'custodian_id', 'created_by', 'remark', 'availability', 'storage_location',
+        'inactive_remark', 'inactive_reason', 'acquisition_type'])
        ->make(true);
     }
 
@@ -1178,13 +1282,25 @@ class AssetController extends Controller
     public function bulkUpload(Request $request)
     {
         $code = AssetCodeType::all();
-        $type = AssetType::all();
-        $status = AssetStatus::all();
+        $acquisition = AssetAcquisition::all();
         $availability = AssetAvailability::all();
         $custodian = User::orderBy('name')->get();
         $data_department = AssetDepartment::all();
 
-        return view('inventory.asset-upload', compact('code','type','status','availability','custodian','data_department'));
+        if( Auth::user()->hasRole('Inventory Admin') )
+        { 
+            $type = AssetType::all();
+        }
+        else
+        {
+            $as = AssetCustodian::where('custodian_id', Auth::user()->id)->pluck('department_id');
+
+            $type = AssetType::whereHas('department', function($query) use ($as){
+                    $query->whereIn('id', $as)->get();
+            });
+        }
+
+        return view('inventory.asset-upload', compact('code','type','acquisition','availability','custodian','data_department'));
     }
 
     public function assetTemplate()
@@ -1202,7 +1318,7 @@ class AssetController extends Controller
 
         Excel::import(new AssetImport, request()->file('import_file'));
 
-        return back()->with('success','Asset Data Imported Successfully');
+        return back();
     }
 
     /**

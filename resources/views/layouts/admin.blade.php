@@ -353,7 +353,7 @@
                             <li class="nav-title">INVENTORY MANAGEMENT</li>
                             @can('view inventory')
                                 <li>
-                                    <a href="#" title="Application Intel" data-filter-tags="application intel">
+                                    <a href="/asset-dashboard" title="Application Intel" data-filter-tags="application intel">
                                         <i class="fal fa-chart-pie"></i>
                                         <span class="nav-link-text" data-i18n="nav.application_intel">Inventory Dashboard</span>
                                     </a>
@@ -761,6 +761,7 @@
     <script src="{{ asset('js/notifications/sweetalert2/sweetalert2.bundle.js') }}"></script>
     <script src="{{ asset('js/sweetalert.min.js') }} "></script>
     <script src="{{ asset('js/statistics/chartjs/chartjs.bundle.js') }}"></script>
+    <script src="{{ asset('js/statistics/easypiechart/easypiechart.bundle.js') }}"></script>
     {{-- <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script> --}}
     {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script> --}}

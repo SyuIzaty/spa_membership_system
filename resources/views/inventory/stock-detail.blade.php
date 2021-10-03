@@ -257,9 +257,9 @@
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="L.O. Number"></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Invoice Number"></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Purchase Date"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Reason"></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Supply Type"></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Supply To"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Reason"></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Created By"></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Created At"></td>
                                                             <td class="hasinput"></td>

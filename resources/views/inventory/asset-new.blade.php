@@ -112,8 +112,8 @@
 
                                                         <tr>
                                                             <div class="form-group">
-                                                                <td width="10%"><label class="form-label" for="model"><span class="text-danger">*</span> Model :</label></td>
-                                                                <td colspan="3"><input value="{{ old('model') }}" class="form-control" id="model" name="model" style="text-transform: uppercase" required>
+                                                                <td width="10%"><label class="form-label" for="model"> Model :</label></td>
+                                                                <td colspan="3"><input value="{{ old('model') }}" class="form-control" id="model" name="model" style="text-transform: uppercase">
                                                                     @error('model')
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                     @enderror
@@ -131,20 +131,19 @@
                                                             <div class="form-group">
                                                                 <td width="10%"><label class="form-label" for="status"><span class="text-danger">*</span> Status :</label></td>
                                                                 <td colspan="3">
-                                                                    <select class="form-control status" name="status" id="status" required>
+                                                                    <select class="form-control status" id="status" name="status" required>
                                                                         <option value="">Select Status</option>
-                                                                        @foreach ($status as $statuss) 
-                                                                            <option value="{{ $statuss->id }}" {{ old('status') ==  $statuss->id  ? 'selected' : '' }}>{{ $statuss->status_name }}</option>
-                                                                        @endforeach
+                                                                        <option value="1" {{ old('status') == '1' ? 'selected':''}} >ACTIVE</option>
+                                                                        <option value="0" {{ old('status') == '0' ? 'selected':''}} >INACTIVE</option>
                                                                     </select>
                                                                     @error('status')
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                    @enderror
+                                                                    @enderror    
                                                                     <br><br>
                                                                     <input type="date" class="form-control inactive" id="inactive_date" name="inactive_date" value="{{ old('inactive_date') }}">
                                                                     @error('inactive_date')
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                    @enderror
+                                                                    @enderror 
                                                                 </td>
                                                                 <td width="10%"><label class="form-label" for="availability"> Availability :</label></td>
                                                                 <td colspan="3">
@@ -155,6 +154,29 @@
                                                                         @endforeach
                                                                     </select>
                                                                     @error('availability')
+                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                    @enderror
+                                                                </td>
+                                                            </div>
+                                                        </tr>
+                                                        <tr class="inactive">
+                                                            <div class="form-group">
+                                                                <td width="10%"><label class="form-label" for="model"><span class="text-danger">*</span> Reason :</label></td>
+                                                                <td colspan="3">
+                                                                    <select class="form-control inactive_reason" name="inactive_reason" id="inactive_reason">
+                                                                        <option value="">Select Reason</option>
+                                                                        @foreach ($status as $statuss) 
+                                                                            <option value="{{ $statuss->id }}" {{ old('inactive_reason') ==  $statuss->id  ? 'selected' : '' }}>{{ $statuss->status_name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    @error('inactive_reason')
+                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                    @enderror
+                                                                </td>
+                                                                <td width="10%"><label class="form-label" for="inactive_remark"> Remark :</label></td>
+                                                                <td colspan="3">
+                                                                    <textarea rows="5" class="form-control" id="inactive_remark" name="inactive_remark"></textarea>
+                                                                    @error('inactive_remark')
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                     @enderror
                                                                 </td>
@@ -219,15 +241,15 @@
 
                                                         <tr>
                                                             <div class="form-group">
-                                                                <td width="10%"><label class="form-label" for="purchase_date"><span class="text-danger">*</span> Purchase Date :</label></td>
+                                                                <td width="10%"><label class="form-label" for="purchase_date"> Purchase Date :</label></td>
                                                                 <td colspan="3">
-                                                                    <input type="date" class="form-control" id="purchase_date" name="purchase_date" value="{{ old('purchase_date') }}" required>
+                                                                    <input type="date" class="form-control" id="purchase_date" name="purchase_date" value="{{ old('purchase_date') }}">
                                                                     @error('purchase_date')
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                     @enderror
                                                                 </td>
-                                                                <td width="10%"><label class="form-label" for="vendor_name"><span class="text-danger">*</span> Vendor :</label></td>
-                                                                <td colspan="3"><input value="{{ old('vendor_name') }}" class="form-control" id="vendor_name" name="vendor_name" required>
+                                                                <td width="10%"><label class="form-label" for="vendor_name"> Vendor :</label></td>
+                                                                <td colspan="3"><input value="{{ old('vendor_name') }}" class="form-control" id="vendor_name" name="vendor_name">
                                                                     @error('vendor_name')
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                     @enderror
@@ -271,8 +293,20 @@
 
                                                         <tr>
                                                             <div class="form-group">
+                                                                <td width="10%"><label class="form-label" for="acquisition_type"> Acquisition Type :</label></td>
+                                                                <td colspan="3">
+                                                                    <select class="form-control" name="acquisition_type" id="acquisition_type" >
+                                                                        <option value="">Select Acquisition</option>
+                                                                        @foreach ($acquisition as $acq) 
+                                                                            <option value="{{ $acq->id }}" {{ old('acquisition_type') ==  $acq->id  ? 'selected' : '' }}>{{ $acq->acquisition_type }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    @error('acquisition_type')
+                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                    @enderror
+                                                                </td>
                                                                 <td width="10%"><label class="form-label" for="remark"> Remark :</label></td>
-                                                                <td colspan="6">
+                                                                <td colspan="3">
                                                                     <textarea rows="5" class="form-control" id="remark" name="remark"></textarea>
                                                                     @error('remark')
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
@@ -305,7 +339,7 @@
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                     @enderror
                                                                 </td>
-                                                                <td width="10%"><label class="form-label" for="storage_location"> Asset Storage :</label></td>
+                                                                <td width="10%"><label class="form-label" for="storage_location"> Location :</label></td>
                                                                 <td colspan="3"><input value="{{ old('storage_location') }}" class="form-control" id="storage_location" name="storage_location">
                                                                     @error('storage_location')
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
@@ -341,7 +375,7 @@
 @section('script')
 <script>
   $(document).ready( function() {
-        $('#department_id, #asset_type, #asset_types, #custodian_id, #status, #availability, #asset_code_type').select2();
+        $('#department_id, #asset_type, #asset_types, #custodian_id, #status, #availability, #asset_code_type, #acquisition_type, #inactive_reason').select2();
 
          // Add Set
          $('#addhead').click(function(){
@@ -481,7 +515,7 @@
 
         $( "#status" ).change(function() {
             var val = $("#status").val();
-            if(val=="2" || val=="3" || val=="4" || val=="5"){
+            if(val=="0"){
                 $(".inactive").show();
             } else {
                 $(".inactive").hide();
@@ -491,6 +525,9 @@
         $('#status').val('{{ old('status') }}'); 
         $("#status").change(); 
         $('#inactive_date').val('{{ old('inactive_date') }}');
+        $('#inactive_reason').val('{{ old('inactive_reason') }}');
+        $("#inactive_reason").change(); 
+        $('#inactive_remark').val('{{ old('inactive_remark') }}');
     })
 
 </script>

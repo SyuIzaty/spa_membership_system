@@ -104,10 +104,14 @@
                                                                         <div class="form-group">
                                                                             <td width="15%"><label class="form-label" for="status"> Status :</label></td>
                                                                             <td colspan="3">
-                                                                                {{ isset($data->assetStatus->status_name) ? strtoupper($data->assetStatus->status_name) : '--' }}
-                                                                                <br>
-                                                                                @if($data->status == '2' || $data->status == '3' || $data->status == '4' || $data->status == '5')
-                                                                                     Date : {{ date('d-m-Y', strtotime($data->inactive_date)) ?? '--' }}
+                                                                                @if ($data->status == '0')
+                                                                                    INACTIVE
+                                                                                @else
+                                                                                    ACTIVE
+                                                                                @endif
+                                                                                <br><br>
+                                                                                @if($data->status == '0')
+                                                                                    Date : {{ date('d-m-Y', strtotime($data->inactive_date)) ?? '--' }}
                                                                                 @endif
                                                                             </td>
                                                                             <td width="15%"><label class="form-label" for="status"> Availability :</label></td>
@@ -122,6 +126,16 @@
                                                                             </td>
                                                                         </div>
                                                                     </tr>
+                                                                    @if($data->status == '0')
+                                                                    <tr>
+                                                                        <div class="form-group">
+                                                                            <td width="15%"><label class="form-label" for="inactive_reason"> Reason : </label></td>
+                                                                            <td colspan="3">{{ $data->assetStatus->status_name ?? '--' }}</td>
+                                                                            <td width="15%"><label class="form-label" for="inactive_remark"> Remark : </label></td>
+                                                                            <td colspan="3">{{ $data->inactive_remark ?? '--' }}</td>
+                                                                        </div>
+                                                                    </tr>
+                                                                    @endif
                                                                     <tr>
                                                                         <div class="form-group">
                                                                             <td width="15%"><label class="form-label" for="storage_location"> Storage :</label></td>
@@ -206,8 +220,10 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <div class="form-group">
+                                                                            <td width="15%"><label class="form-label" for="remark"> Acquisition Type : </label></td>
+                                                                            <td colspan="3">{{ $data->acquisitionType->acquisition_type ?? '--' }}</td>
                                                                             <td width="15%"><label class="form-label" for="remark"> Remark : </label></td>
-                                                                            <td colspan="6">{{ $data->remark ?? '--' }}</td>
+                                                                            <td colspan="3">{{ $data->remark ?? '--' }}</td>
                                                                         </div>
                                                                     </tr>
                                                                 </thead>
