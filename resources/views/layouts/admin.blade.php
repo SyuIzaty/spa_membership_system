@@ -348,6 +348,115 @@
                         @endcan
                         {{-- End Aduan --}}
 
+                        {{-- Start Training --}}
+                        <li class="nav-title">TRAINING RECORD MANAGEMENT</li>
+
+                        <li>
+                            <a href="/training-dashboard" title="Application Intel" data-filter-tags="application intel">
+                                <i class="fal fa-chart-pie"></i>
+                                <span class="nav-link-text" data-i18n="nav.application_intel">Analysis Dashboard</span>
+                            </a>
+                        </li>
+
+                        <li class="open">
+                            <a href="#" title="Asset" data-filter-tags="asset">
+                                <i class="fal fa-location-arrow"></i>
+                                <span class="nav-link-text" data-i18n="nav.asset">Training Request</span>
+                            </a>
+                        </li>
+
+                        <li class="open">
+                            <a href="#" title="Asset" data-filter-tags="asset">
+                                <i class="fal fa-expand-arrows-alt"></i>
+                                <span class="nav-link-text" data-i18n="nav.asset">Training Hour</span>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="/claim-list" title="Detail" data-filter-tags="detail">
+                                        <span class="nav-link-text" data-i18n="nav.detail"> Approval Process</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" title="Detail" data-filter-tags="detail">
+                                        <span class="nav-link-text" data-i18n="nav.detail"> Bulk Application Form</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/record-staff" title="Detail" data-filter-tags="detail">
+                                        <span class="nav-link-text" data-i18n="nav.detail"> Training Record</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="open">
+                            <a href="#" title="Asset" data-filter-tags="asset">
+                                <i class="fal fa-bookmark"></i>
+                                <span class="nav-link-text" data-i18n="nav.asset">Training Evaluation</span>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="/evaluation-question" title="Asset" data-filter-tags="asset">
+                                        <span class="nav-link-text" data-i18n="nav.asset">Evaluation Question</span>
+                                    </a>
+                                    <a href="#" title="Asset" data-filter-tags="asset">
+                                        <span class="nav-link-text" data-i18n="nav.asset">Evaluation Report</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="open">
+                            <a href="#" title="Asset" data-filter-tags="asset">
+                                <i class="fal fa-cogs"></i>
+                                <span class="nav-link-text" data-i18n="nav.asset">Parameter Setting</span>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="/training-list" title="Report" data-filter-tags="report">
+                                        <span class="nav-link-text" data-i18n="nav.report"> Training List</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/hour-list" title="Detail" data-filter-tags="detail">
+                                        <span class="nav-link-text" data-i18n="nav.detail"> Training Hour</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/type-list" title="Report" data-filter-tags="report">
+                                        <span class="nav-link-text" data-i18n="nav.report"> Training Type</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/category-list" title="Report" data-filter-tags="report">
+                                        <span class="nav-link-text" data-i18n="nav.report"> Training Category</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-title">MYTRAINING</li>
+
+                        <li class="open">
+                            <a href="#" title="Asset" data-filter-tags="asset">
+                                <i class="fal fa-expand-arrows-alt"></i>
+                                <span class="nav-link-text" data-i18n="nav.asset">Training Hour</span>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="/claim-form" title="Detail" data-filter-tags="detail">
+                                        <span class="nav-link-text" data-i18n="nav.detail"> Application Form</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/claim-record" title="Report" data-filter-tags="report">
+                                        <span class="nav-link-text" data-i18n="nav.report"> Training Record</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        {{-- End Training --}}
+
                         {{-- Start Inventory --}}
                         @can('view inventory menu')
                             <li class="nav-title">INVENTORY MANAGEMENT</li>

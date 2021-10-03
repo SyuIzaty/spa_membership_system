@@ -1,0 +1,201 @@
+@extends('layouts.admin')
+
+@section('content')
+
+<main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div id="panel-1" class="panel">
+                <div class="panel-hdr" style="background-color:rgb(97 63 115)">
+                    <h2>
+                    </h2>
+                    <div class="panel-toolbar">
+                        <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
+                        <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
+                        <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10" data-original-title="Close"></button>
+                    </div>
+
+                </div>
+
+                <div class="panel-container show">
+                    <div class="panel-content">
+                        @if(isset($data) && !empty($data))
+                            <a data-page="/claim-slip/{{Auth::user()->id}}/{{ $req_year }}/{{$req_type}}" onclick="Print(this)" class="btn btn-danger btn-sm float-right mr-2" style="color: white"><i class="fal fa-download"></i></a>
+                        @endif
+                        <br><br>
+                        <center><img src="{{ asset('img/intec_logo.png') }}" style="height: 120px; width: 270px;"></center><br>
+                        <h4 style="text-align: center">
+                            <b>INTEC EDUCATION COLLEGE TRAINING HOUR RECORDS</b>
+                        </h4>
+                        {{-- <div>
+                            <p style="padding-left: 40px; padding-right: 40px">
+                                *<i><b>IMPORTANT!</b></i> : All staff are required to fill in the fields below for training hour claim request and make sure all detail are correct provided with attachment. 
+                                Your claim request will be shown on Claim Record after being approved by Human Resource.
+                            </p>
+                        </div> --}}
+
+                        <div class="panel-container show">
+                            <div class="panel-content">
+                                <div class="card-primary card-outline">
+                                    {{-- <div class="card"> --}}
+                                        <div class="card-body">
+                                            {{-- <div class="table-responsive"> --}}
+                                                <table class="table table-bordered">
+                                                    <tbody>
+                                                        <tr>
+                                                            <form action="{{ route('claimRecord') }}" method="GET" id="form_find">
+                                                                <div class="row">
+                                                                    <div class="col-lg-6 col-sm-6 mb-2">
+                                                                        <div class="form-group">
+                                                                            <label><span class="text-danger">**</span> Year : </label>
+                                                                            <select class="form-control custom-year" name="year" id="year">
+                                                                                <option value="" selected disabled> Please select </option>
+                                                                                @foreach ($year as $years)
+                                                                                    <option value="{{ $years->date }}" {{ $req_year == $years->date  ? 'selected' : '' }}>{{  $years->date }}</option>
+                                                                                @endforeach
+                                                                            </select> 
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-6 col-sm-6">
+                                                                        <div class="form-group">
+                                                                            <label><span class="text-danger">**</span> Type : </label>
+                                                                            <select class="form-control custom-type" name="type" id="type">
+                                                                                <option value="" selected disabled> Please select </option>
+                                                                                <option value=""> ALL </option>
+                                                                                @foreach ($type as $types)
+                                                                                    <option value="{{ $types->id }}" {{ $req_type == $types->id  ? 'selected' : '' }}>{{  strtoupper($types->type_name) }}</option>
+                                                                                @endforeach
+                                                                            </select> 
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </tr><br>
+                                                        <tr>
+                                                            <th width="15%">Name : </th>
+                                                            <td colspan="4">{{ $staff->staff_name ?? '--' }}</td>
+                                                            <th width="15%">ID/IC Number : </th>
+                                                            <td colspan="4">{{ $staff->staff_id ?? '--' }} ( {{ $staff->staff_ic ?? '--' }} )</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th width="15%">Email : </th>
+                                                            <td colspan="4">{{ $staff->staff_email ?? '--' }}</td>
+                                                            <th width="15%">Phone : </th>
+                                                            <td colspan="4">{{ $staff->staff_phone ?? '--' }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th width="15%">Position : </th>
+                                                            <td colspan="4">{{ $staff->staff_position ?? '--' }}</td>
+                                                            <th width="15%">Department : </th>
+                                                            <td colspan="4">{{ $staff->staff_dept ?? '--' }}</td>
+                                                        </tr>
+                                                        @if(isset($data) && !empty($data))
+                                                            <div class="table-responsive">
+                                                                <table class="table mt-5 table-striped">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th class="text-center border-top-0 table-scale-border-bottom fw-700"></th>
+                                                                            <th class="text-center border-top-0 table-scale-border-bottom fw-700">Evaluate</th>
+                                                                            <th class="border-top-0 table-scale-border-bottom fw-700">Title</th>
+                                                                            <th class="border-top-0 table-scale-border-bottom fw-700">Start Date</th>
+                                                                            <th class="border-top-0 table-scale-border-bottom fw-700">End Date</th>
+                                                                            <th class="border-top-0 table-scale-border-bottom fw-700">Venue</th>
+                                                                            <th class="border-top-0 table-scale-border-bottom fw-700">Type</th>
+                                                                            <th class="border-top-0 table-scale-border-bottom fw-700">Category</th>
+                                                                            <th class="border-top-0 table-scale-border-bottom fw-700">Status</th>
+                                                                            <th class="text-right border-top-0 table-scale-border-bottom fw-700">Approve Hours</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @foreach ($data as $key => $details)
+                                                                            <tr style="text-transform: uppercase">
+                                                                                <td class="text-center fw-700">{{ $no++ }}</td>
+                                                                                <td class="text-center fw-700">
+                                                                                    <a href="#" class="btn btn-success btn-xs" target="_blank"><i class="fal fa-link"></i></a>
+                                                                                    {{-- <button class="btn btn-xs btn-secondary" disabled style="pointer-events: none"><i class="fal fa-link"></i></button> --}}
+                                                                                </td>
+                                                                                <td class="text-left strong">{{ $details->title ?? '--'}}</td>
+                                                                                <td class="text-left">{{ $details->start_date ?? '--'}}</td>
+                                                                                <td class="text-left">{{ $details->end_date ?? '--'}}</td>
+                                                                                <td class="text-left">{{ $details->venue ?? '--'}}</td>
+                                                                                <td class="text-left">{{ $details->types->type_name ?? '--'}}</td>
+                                                                                <td class="text-left">{{ $details->categories->category_name ?? '--'}}</td>
+                                                                                <td class="text-left">{{ $details->claimStatus->status_name ?? '--'}}</td>
+                                                                                <td class="text-right">{{ $details->approved_hour ?? '--'}}</td>
+                                                                            </tr>
+                                                                        @endforeach
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>    
+                                                            <div class="row">
+                                                                <div class="col-sm-4 ml-sm-auto">
+                                                                    <table class="table table-clean">
+                                                                        <tbody>
+                                                                            <tr class="table-scale-border-top border-left-0 border-right-0 border-bottom-0">
+                                                                                <td class="text-left keep-print-font">
+                                                                                    <h5 class="m-0 fw-700 h4 keep-print-font color-primary-700">Total Current Training Hours</h5>
+                                                                                </td>
+                                                                                <td class="text-right keep-print-font">
+                                                                                    <h5 class="m-0 fw-700 h4 keep-print-font text-danger">{{ $data2 }}</h5>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="text-left keep-print-font">
+                                                                                    <h5 class="m-0 fw-700 h4 keep-print-font color-primary-700">Overall Required Training Hours</h5>
+                                                                                </td>
+                                                                                <td class="text-right keep-print-font">
+                                                                                    <h5 class="m-0 fw-700 h4 keep-print-font">{{ $hours->training_hour ?? '--' ?? '--' }}</h5>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        @endif
+                                                    </tbody>
+                                                </table>
+                                            {{-- </div> --}}
+                                            <i><span class="text-danger">**</span><b> Notes : </b>Please select either year or type to view training hour record</i>
+                                        
+                                    {{-- </div> --}}
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</main>
+
+@endsection
+
+@section('script')
+<script>
+
+    $("#year, #type").change(function(){
+        $("#form_find").submit();
+    })
+
+    $(document).ready(function()
+    {
+        $('.custom-year, .custom-type').select2();
+    });
+
+    function Print(button)
+    {
+        var url = $(button).data('page');
+        var printWindow = window.open( '{{url("/")}}'+url+'', 'Print', 'left=200, top=200, width=950, height=500, toolbar=0, resizable=0');
+        printWindow.addEventListener('load', function(){
+            printWindow.print();
+        }, true);
+    }
+
+</script>
+@endsection
+
