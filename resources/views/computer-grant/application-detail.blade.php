@@ -28,14 +28,9 @@
                             </div>
                         @endif
 
-                        @error('hp_no')
+                        @error('price')
                         <div class="alert alert-success" style="color: #000000; background-color: #ffdf89;"> <i class="icon fal fa-check-circle"></i> {{ $message }}</div>
                         @enderror
-
-                        @error('office_no')
-                        <div class="alert alert-success" style="color: #000000; background-color: #ffdf89;"> <i class="icon fal fa-check-circle"></i> {{ $message }}</div>
-                        @enderror
-
 
                         <div class="panel-container show">
                             <div class="panel-content">

@@ -570,47 +570,64 @@
 
                         {{-- Start Computer Grant Management --}}
                         @role('Lecturer|Computer Grant (IT Admin)|Computer Grant (Finance Admin)')
+                        <li class="nav-title">COMPUTER GRANT MANAGEMENT</li>
+                            {{-- User --}}
+                            @role('Lecturer|Computer Grant (IT Admin)')
+                            <li class="open">
+                                <a href="#" title="Grant" data-filter-tags="grant">
+                                    <i class="fal fa-archive"></i>
+                                    <span class="nav-link-text" data-i18n="nav.grant">Grant</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/grant-list" title="Grant List" data-filter-tags="list">
+                                            <span class="nav-link-text" data-i18n="nav.list">Grant List</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/log" title="Activity Log" data-filter-tags="log">
+                                            <span class="nav-link-text" data-i18n="nav.log">Activity Log</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            @endrole
 
-                            <li class="nav-title">COMPUTER GRANT MANAGEMENT</li>
-                                {{-- User --}}
-                                <li>
-                                    <a href="/grant-list" title="Grant" data-filter-tags="grant">
-                                        <i class="fal fa-laptop"></i>
-                                        <span class="nav-link-text" data-i18n="nav.grant">Grant</span>
-                                    </a>
-                                </li>
-                                {{-- IT Admin --}}
-                                @role('Computer Grant (IT Admin)')
-                                <li>
-                                    <a href="/all-grant-list" title="All Grant" data-filter-tags="all">
-                                        <i class="fal fa-list"></i>
-                                        <span class="nav-link-text" data-i18n="nav.all">All Grant</span>
-                                    </a>
-                                </li>
-                                @endrole
-                                {{-- All --}}
-                                <li>
-                                    <a href="/faq" title="Grant FAQ" data-filter-tags="faq">
-                                        <i class="fal fa-info"></i>
-                                        <span class="nav-link-text" data-i18n="nav.faq">FAQ</span>
-                                    </a>
-                                </li>
-                                {{-- Finance Admin --}}
-                                @role('Computer Grant (Finance Admin)')
-                                <li>
-                                    <a href="/all-grant-list" title="Grant Claim" data-filter-tags="claim">
-                                        <i class="fal fa-dollar-sign"></i>
-                                        <span class="nav-link-text" data-i18n="nav.claim">Grant Claim</span>
-                                    </a>
-                                </li>
-                                @endrole
-                                {{-- All --}}
-                                <li>
-                                    <a href="#" title="Log" data-filter-tags="log">
-                                        <i class="fal fa-clipboard-list"></i>
-                                        <span class="nav-link-text" data-i18n="nav.log">Activity Log</span>
-                                    </a>
-                                </li>
+                            {{-- All --}}
+                            <li>
+                                <a href="/faq" title="Grant FAQ" data-filter-tags="faq">
+                                    <i class="fal fa-info"></i>
+                                    <span class="nav-link-text" data-i18n="nav.faq">FAQ</span>
+                                </a>
+                            </li>
+
+                            {{-- IT Admin --}}
+                            @role('Computer Grant (IT Admin)')
+                            <li>
+                                <a href="/all-grant-list" title="All Grant" data-filter-tags="all">
+                                    <i class="fal fa-list"></i>
+                                    <span class="nav-link-text" data-i18n="nav.all">All Grant</span>
+                                </a>
+                            </li>
+                            @endrole
+                            {{-- Finance Admin --}}
+                            @role('Computer Grant (Finance Admin)')
+                            <li>
+                                <a href="/all-grant-list" title="Grant Claim" data-filter-tags="claim">
+                                    <i class="fal fa-dollar-sign"></i>
+                                    <span class="nav-link-text" data-i18n="nav.claim">Grant Claim</span>
+                                </a>
+                            </li>
+                            @endrole
+
+                            @role('Computer Grant (IT Admin)|Computer Grant (Finance Admin)')
+                            <li>
+                                <a href="/all-log" title="Activity Log" data-filter-tags="allLog">
+                                    <i class="fal fa-clipboard-list"></i>
+                                    <span class="nav-link-text" data-i18n="nav.allLog">Activity Log</span>
+                                </a>
+                            </li>
+                            @endrole
                         @endrole
                         {{-- End Computer Grant Management --}}
 

@@ -38,6 +38,9 @@ class ComputerGrant extends Model
         return $this->hasMany('App\ComputerGrantFile', 'permohonan_id', 'id');
     }
 
+    public function getLog(){
+        return $this->hasMany('App\ComputerGrantLog', 'permohonan_id', 'id');
+    }
 
 
 

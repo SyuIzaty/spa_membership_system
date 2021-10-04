@@ -12,6 +12,7 @@ use App\ComputerGrantPurchaseProof;
 use App\ComputerGrantStatus;
 use App\ComputerGrantType;
 use App\ComputerGrantFile;
+use App\ComputerGrantLog;
 use Carbon\Carbon;
 use File;
 use Response;
@@ -33,7 +34,7 @@ class ComputerGrantController extends Controller
         $dateNow = new DateTime('now');
         $ticket = $dateNow->format('dmY') . str_pad($user->id, STR_PAD_LEFT);
 
-        $activeData = ComputerGrant::where('staff_id', Auth::user()->id)->get();
+        $activeData = ComputerGrant::where('staff_id', Auth::user()->id)->whereDate('expiry_date', '>' , Carbon::now())->get();
 
         $totalApplication = ComputerGrant::count();
 
@@ -208,11 +209,24 @@ class ComputerGrantController extends Controller
         $newApplication->updated_by = Auth::user()->id;
         $newApplication->save();
 
+        ComputerGrantLog::create([
+            'permohonan_id'  => $newApplication->id,
+            'activity'  => 'Apply new grant application',
+            'created_by' => Auth::user()->id
+        ]);
+
+
         return redirect('application-detail/'.$newApplication->id);
     }
 
     public function update(Request $request)
     {
+        $validated = $request->validate([
+            'price'           => 'required|numeric',
+        ], [
+            'price.numeric'     => 'The price must be numeric only',
+        ]);
+
         $updateApplication = ComputerGrant::where('id', $request->id)->first();
         $updateApplication->update([
             'type'      =>$request->type,
@@ -254,6 +268,13 @@ class ComputerGrantController extends Controller
             'web_path'  => "app/computerGrant/".$fileNames,
             'created_by' => Auth::user()->id
         ]);
+
+        ComputerGrantLog::create([
+            'permohonan_id'  => $request->id,
+            'activity'  => 'Upload purchase proof',
+            'created_by' => Auth::user()->id
+        ]);
+
 
         return redirect('application-detail/'.$request->id);
     }
@@ -402,9 +423,9 @@ class ComputerGrantController extends Controller
     {
         $updateApplication = ComputerGrant::where('id', $request->id)->first();
         $updateApplication->update([
-            'status'     =>'2',
+            'status'      => '2',
             'approved_by' => Auth::user()->id,
-            'updated_by' => Auth::user()->id,
+            'updated_by'  => Auth::user()->id,
             'approved_at' => Carbon::now()->toDateTimeString()
         ]);
 
@@ -428,6 +449,13 @@ class ComputerGrantController extends Controller
             'created_by' => Auth::user()->id
         ]);
 
+        ComputerGrantLog::create([
+            'permohonan_id'  => $request->id,
+            'activity'  => 'Approve application',
+            'created_by' => Auth::user()->id
+        ]);
+
+
         return redirect('view-application-detail/'.$request->id);
     }
 
@@ -438,6 +466,13 @@ class ComputerGrantController extends Controller
             'status'     =>'4',
             'updated_by' => Auth::user()->id
         ]);
+
+        ComputerGrantLog::create([
+            'permohonan_id'  => $request->id,
+            'activity'  => 'Approve purchase',
+            'created_by' => Auth::user()->id
+        ]);
+
         return redirect('view-application-detail/'.$request->id);
     }
 
@@ -448,6 +483,13 @@ class ComputerGrantController extends Controller
             'status'     =>'5',
             'updated_by' => Auth::user()->id
         ]);
+
+        ComputerGrantLog::create([
+            'permohonan_id'  => $request->id,
+            'activity'  => 'Reimbursement completed',
+            'created_by' => Auth::user()->id
+        ]);
+
         return redirect('view-application-detail/'.$request->id);
     }
 
@@ -504,6 +546,72 @@ class ComputerGrantController extends Controller
     public function faq()
     {
         return view('computer-grant.faq');
+    }
+
+    public function log()
+    {
+        return view('computer-grant.log');
+    }
+
+    public function allLog()
+    {
+        return view('computer-grant.all-log');
+    }
+
+
+    public function logList()
+    {
+        $user = Auth::user();
+
+        $log = ComputerGrantLog::wherehas('grant', function($query){
+               $query->where('staff_id', Auth::user()->id);})->get();
+
+        return datatables()::of($log)
+
+            ->addColumn('ticket',function($log)
+            {
+                return $log->grant->first()->ticket_no ?? '';
+            })
+
+            ->addColumn('date',function($log)
+            {
+                return $log->created_at->format('d/m/Y g:ia') ?? '';
+            })
+
+            ->addColumn('admin',function($log)
+            {
+                return $log->staff->staff_name ?? '';
+            })
+
+            ->rawColumns(['ticket','date','admin'])
+            ->make(true);
+
+    }
+
+    public function alllogList()
+    {
+        $allLog = ComputerGrantLog::with('grant', 'staff')->get();
+
+        return datatables()::of($allLog)
+
+        ->editColumn('ticket',function($allLog)
+        {
+            return $allLog->grant->first()->ticket_no ?? '';
+        })
+
+        ->addColumn('date',function($allLog)
+        {
+            return $allLog->created_at ?? '';
+        })
+
+
+        ->editColumn('admin',function($allLog)
+        {
+            return $allLog->staff->staff_name ?? '';
+        })
+
+        ->rawColumns(['ticket','date', 'admin'])
+        ->make(true);
     }
 
 

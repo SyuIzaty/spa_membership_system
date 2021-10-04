@@ -407,6 +407,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('get-file/{file}','ComputerGrantController@getFile');
     Route::get('/applicationPDF/{id}','ComputerGrantController@applicationPDF');
     Route::get('/faq', 'ComputerGrantController@faq');
+    Route::get('/log', 'ComputerGrantController@log');
+    Route::post('/loglist', 'ComputerGrantController@logList');
+    Route::get('/all-log', 'ComputerGrantController@allLog');
+    Route::post('/allloglist', 'ComputerGrantController@allLogList');
 });
 
 //SCM - Public View
@@ -535,4 +539,4 @@ Route::post('reorder-question', 'TrainingController@reorderQuestion')->name('reo
 Route::get('/question-pdf/{id}', 'TrainingController@questionPdf')->name('questionPdf');
 
 // Training : Dashboard
-Route::get('/training-dashboard', 'TrainingController@dashboard'); // not comp. 
+Route::get('/training-dashboard', 'TrainingController@dashboard'); // not comp.
