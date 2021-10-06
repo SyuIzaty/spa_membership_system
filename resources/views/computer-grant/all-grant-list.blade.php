@@ -35,7 +35,7 @@
                                             <th class="text-center">Expiry Date</th>
                                             <th class="text-center">Remaining Grant Period</th>
                                             <th class="text-center">Balance Penalty</th>
-                                            <th class="text-center">Action</th>
+                                            <th class="text-center">View</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -88,7 +88,7 @@
                     { className: 'text-center', data: 'expiryDate', name: 'expiryDate' },
                     { className: 'text-center', data: 'remainingPeriod', name: 'remainingPeriod' },
                     { className: 'text-center', data: 'penalty', name: 'penalty' },
-                    { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
+                    { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false},
                 ],
                 orderCellsTop: true,
                 "order": [[ 1, "asc" ]],

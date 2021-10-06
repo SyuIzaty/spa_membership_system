@@ -401,6 +401,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/update-application', 'ComputerGrantController@update');
     Route::post('/verify-application', 'ComputerGrantController@verifyApplication');
     Route::post('/verify-purchase', 'ComputerGrantController@verifyPurchase');
+    Route::post('reject-purchase', 'ComputerGrantController@rejectPurchase');
     Route::post('/verify-reimbursement', 'ComputerGrantController@verifyReimbursement');
     Route::get('get-receipt/{receipt}','ComputerGrantController@getReceipt');
     Route::get('get-image/{image}','ComputerGrantController@getImage');
@@ -411,6 +412,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/loglist', 'ComputerGrantController@logList');
     Route::get('/all-log', 'ComputerGrantController@allLog');
     Route::post('/allloglist', 'ComputerGrantController@allLogList');
+    Route::post('/getQuota', 'ComputerGrantController@quota');
+    Route::get('/quota-list', 'ComputerGrantController@quotaList');
+    Route::post('/add-quota', 'ComputerGrantController@addQuota');
+    Route::post('/edit-quota', 'ComputerGrantController@editQuota');
+
 });
 
 //SCM - Public View
@@ -448,20 +454,6 @@ Route::get('/add-form', 'CovidController@addForm');
 // Asset Public
 Route::get('/asset-search', 'AssetController@assetSearch')->name('assetSearch');
 Route::get('get-file-image/{filename}', 'AssetController@getImage');
-
-// Computer Grant Management
-Route::get('/application-form', 'ComputerGrantController@index');
-Route::get('/all-grant-list', 'ComputerGrantController@allGrantList');
-Route::get('/grant-list', 'ComputerGrantController@grantList');
-Route::post('store-application', 'ComputerGrantController@store');
-Route::post('/datalist', 'ComputerGrantController@datalist');
-Route::post('/alldatalist', 'ComputerGrantController@allDataLists');
-Route::get('/application-detail/{id}', 'ComputerGrantController@applicationDetail');
-Route::get('/view-application-detail/{id}', 'ComputerGrantController@viewApplicationDetail');
-Route::post('/update-application', 'ComputerGrantController@update');
-Route::post('/verify-application', 'ComputerGrantController@verifyApplication');
-Route::get('get-receipt/{receipt}','ComputerGrantController@getReceipt');
-Route::get('get-image/{image}','ComputerGrantController@getImage');
 
 // Training : Training
 Route::get('/training-list', 'TrainingController@trainingList');

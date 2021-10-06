@@ -91,7 +91,7 @@
                                 </div>
 
                                 @role('Computer Grant (IT Admin)')
-                                <a class="btn btn-warning ml-auto float-right" data-page="/applicationPDF/{{ $activeData->id }}" onclick="Print(this)" style="color: rgb(0, 0, 0); margin-top: 5px; margin-bottom: 15px;">
+                                <a class="btn btn-info ml-auto float-right" data-page="/applicationPDF/{{ $activeData->id }}" onclick="Print(this)" style="color: rgb(0, 0, 0); margin-top: 5px; margin-bottom: 15px;">
                                     <i class="fal fa-download"></i> Export Application
                                 </a>
                                 @endrole
@@ -190,19 +190,24 @@
                                 @endif
 
                                 @if ($activeData->status == 3)
-                                @role('Computer Grant (IT Admin)')
-                                {!! Form::open(['action' => 'ComputerGrantController@verifyPurchase', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
-                                <input type="hidden" id="id" name="id" value="{{ $activeData->id }}" required>
 
-                                <div class="table-responsive">
-                                    <div class="form-group">
-                                        <button style="margin-top: 5px;" class="btn btn-danger float-right" id="submit" name="submit"><i class="fal fa-check"></i> Verify Purchase</button></td>
-                                    </div>
-                                </div>
-                                @endrole
+                                @role('Computer Grant (IT Admin)')
+
+                                {!! Form::open(['action' => 'ComputerGrantController@verifyPurchase', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                                    <input type="hidden" id="id" name="id" value="{{ $activeData->id }}" required>
+                                    <button type="submit" class="btn btn-primary ml-auto float-right waves-effect waves-themed" style="margin-bottom:10px;"><i class="fal fa-check"></i> Verify Purchase</button>
                                 {!! Form::close() !!}
 
+                                <form id="form-id">
+                                    @csrf
+                                    <input type="hidden" id="id" name="id" value="{{ $activeData->id }}" required>
+                                    <button type="submit" class="btn btn-warning ml-auto float-right mr-2 waves-effect waves-themed" id="reject" style="margin-bottom:10px;"><i class="fal fa-times-circle"></i> Reject</button>
+                                </form>
+
+                                @endrole
+
                                 @elseif ($activeData->status == 4)
+
                                 @role('Computer Grant (Finance Admin)')
                                 {!! Form::open(['action' => 'ComputerGrantController@verifyReimbursement', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                                 <input type="hidden" id="id" name="id" value="{{ $activeData->id }}" required>
@@ -212,8 +217,8 @@
                                         <button style="margin-top: 5px;" class="btn btn-danger float-right" id="submit" name="submit"><i class="fal fa-check"></i> Complete Reimbursement</button></td>
                                     </div>
                                 </div>
-                                @endrole
                                 {!! Form::close() !!}
+                                @endrole
                                 @endif
 
                             </div>
@@ -238,6 +243,39 @@ function Print(button)
             printWindow.print();
             }, true);
         }
+
+        $("#reject").on('click', function(e) {
+            e.preventDefault();
+
+            var datas = $('#form-id').serialize();
+
+            Swal.fire({
+                title: 'Reject?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Reject!',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.value) {
+                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ url('reject-purchase')}}",
+                        data: datas,
+                        dataType: "json",
+                        success: function (response) {
+                        console.log(response);
+                        if(response){
+                        Swal.fire(response.success);
+                        location.reload();
+                    }
+                        }
+                    });
+                }
+            })
+        });
 
 </script>
 @endsection

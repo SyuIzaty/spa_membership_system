@@ -628,6 +628,16 @@
                                 </a>
                             </li>
                             @endrole
+
+                            @role('Computer Grant (IT Admin)')
+                            <li>
+                                <a href="/quota-list" title="Quota List" data-filter-tags="quota">
+                                    <i class="fal fa-list-ol"></i>
+                                    <span class="nav-link-text" data-i18n="nav.quota">Grant Quota List</span>
+                                </a>
+                            </li>
+                            @endrole
+
                         @endrole
                         {{-- End Computer Grant Management --}}
 

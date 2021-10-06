@@ -40,14 +40,14 @@
                         <div class="panel-container show">
                             <div class="panel-content">
 
-                                @if ($totalApplication >= 100)
+                                @if ($totalApplication >= $quota->quota)
 
                                     <div class="alert alert-success" style="color: #000000; background-color: #fc572e;"> <i class="icon fal fa-check-circle"></i>
                                         Sorry, you are unable to apply for new grant due to registration has reached the total quota.
                                     </div>
 
 
-                                @elseif ($activeData->isNotEmpty())
+                                @elseif (isset($activeData) || isset($newApplication))
 
                                 <div class="alert alert-success" style="color: #000000; background-color: #ffa489;"> <i class="icon fal fa-check-circle"></i>
                                     Sorry, you are unable to apply for new grant due to your grant application is in progress. Kindly view your grant application in table below.

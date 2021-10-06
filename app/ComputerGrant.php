@@ -12,7 +12,7 @@ class ComputerGrant extends Model
     protected $primarykey = 'id';
     protected $fillable = [
         'ticket_no', 'staff_id', 'hp_no', 'office_no', 'status', 'grant_amount', 'type',
-        'price', 'brand', 'model', 'serial_no', 'expiry_date', 'approved_by', 'approved_at', 'created_by', 'updated_by', 'deleted_by'
+        'price', 'brand', 'model', 'serial_no', 'active', 'expiry_date', 'approved_by', 'approved_at', 'created_by', 'updated_by', 'deleted_by'
     ];
 
     public function getStatus()

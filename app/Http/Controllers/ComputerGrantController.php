@@ -13,6 +13,7 @@ use App\ComputerGrantStatus;
 use App\ComputerGrantType;
 use App\ComputerGrantFile;
 use App\ComputerGrantLog;
+use App\ComputerGrantQuota;
 use Carbon\Carbon;
 use File;
 use Response;
@@ -34,11 +35,15 @@ class ComputerGrantController extends Controller
         $dateNow = new DateTime('now');
         $ticket = $dateNow->format('dmY') . str_pad($user->id, STR_PAD_LEFT);
 
-        $activeData = ComputerGrant::where('staff_id', Auth::user()->id)->whereDate('expiry_date', '>' , Carbon::now())->get();
+        $activeData = ComputerGrant::where('staff_id', Auth::user()->id)->whereDate('expiry_date', '>' , Carbon::now())->first();
 
-        $totalApplication = ComputerGrant::count();
+        $newApplication = ComputerGrant::where('staff_id', Auth::user()->id)->where('active', 'Y')->first();
 
-        return view('computer-grant.grant-form', compact('user','user_details','ticket','totalApplication','activeData'));
+        $totalApplication = ComputerGrant::whereYear('approved_at', Carbon::now()->year)->count();
+
+        $quota = ComputerGrantQuota::where('year', Carbon::now()->year)->first();
+
+        return view('computer-grant.grant-form', compact('user','user_details','ticket','totalApplication','activeData','quota','newApplication'));
     }
 
     public function grantList()
@@ -205,6 +210,7 @@ class ComputerGrantController extends Controller
         $newApplication->office_no    = $request->office_no;
         $newApplication->status       = '1';
         $newApplication->grant_amount = '1500.00';
+        $newApplication->active = 'Y';
         $newApplication->created_by = Auth::user()->id;
         $newApplication->updated_by = Auth::user()->id;
         $newApplication->save();
@@ -424,6 +430,7 @@ class ComputerGrantController extends Controller
         $updateApplication = ComputerGrant::where('id', $request->id)->first();
         $updateApplication->update([
             'status'      => '2',
+            'active'      => 'N',
             'approved_by' => Auth::user()->id,
             'updated_by'  => Auth::user()->id,
             'approved_at' => Carbon::now()->toDateTimeString()
@@ -475,6 +482,29 @@ class ComputerGrantController extends Controller
 
         return redirect('view-application-detail/'.$request->id);
     }
+
+    public function rejectPurchase(Request $request)
+    {
+        $updateApplication = ComputerGrant::where('id', $request->id)->first();
+        $updateApplication->update([
+            'type'      => null,
+            'serial_no' => null,
+            'brand'     => null,
+            'model'     => null,
+            'price'     => null,
+            'status'     =>'2',
+            'updated_by' => Auth::user()->id
+        ]);
+
+        ComputerGrantLog::create([
+            'permohonan_id'  => $request->id,
+            'activity'  => 'Reject purchase',
+            'created_by' => Auth::user()->id
+        ]);
+
+        return response() ->json(['success' => 'Rejected!']);
+    }
+
 
     public function verifyReimbursement(Request $request)
     {
@@ -614,6 +644,50 @@ class ComputerGrantController extends Controller
         ->make(true);
     }
 
+    public function quotaList()
+    {
+        $quota = ComputerGrantQuota::get();
+
+        return view('computer-grant.quota', compact('quota'));
+    }
+
+
+    public function quota()
+    {
+        $quota = ComputerGrantQuota::all();
+
+        return datatables()::of($quota)
+
+            ->addColumn('action', function ($quota) {
+                return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$quota->id.'" data-year="'.$quota->year.'" data-quota="'.$quota->quota.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+            })
+
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+
+    public function addQuota(Request $request)
+    {
+        ComputerGrantQuota::create([
+            'year'  => $request->year,
+            'quota'  => $request->quota,
+            'created_by' => Auth::user()->id
+        ]);
+
+        return redirect()->back()->with('message','Add Successfully');
+    }
+
+    public function editQuota(Request $request)
+    {
+        $update = ComputerGrantQuota::where('id', $request->id)->first();
+        $update->update([
+            'year'  => $request->year,
+            'quota'  => $request->quota,
+            'updated_by' => Auth::user()->id
+        ]);
+        
+        return redirect()->back()->with('message','Update Successfully');
+    }
 
     /**
      * Remove the specified resource from storage.
