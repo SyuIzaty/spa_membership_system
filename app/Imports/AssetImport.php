@@ -2,14 +2,13 @@
 
 namespace App\Imports;
 
+use Auth;
 use App\Files;
-use Carbon\Carbon;
 use App\Asset;
 use Session;
-use Illuminate\Support\Facades\Mail;
 use App\Custodian;
 use App\AssetTrail;
-use Auth;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
@@ -51,7 +50,6 @@ class AssetImport implements ToModel, WithHeadingRow, WithValidation
 
     public function model(array $row)
     {
-        
         if(!Asset::where('finance_code', '=', $row['finance_asset_code'])->exists() || !Asset::where('asset_name', '=', $row['asset_name'])->exists() || !Asset::where('serial_no', '=', $row['serial_no'])->exists()) {
 
             $code = Carbon::now()->format('Y').mt_rand(100000, 999999);
@@ -118,20 +116,6 @@ class AssetImport implements ToModel, WithHeadingRow, WithValidation
                 'verification'     => '0',
                 'status'           => '1',
             ]);
-
-            if(isset($custodian->staff->staff_email))
-            {
-                $data = [
-                    'receiver_name'     => $custodian->staff->staff_name,
-                    'assign_date'       => date(' j F Y ', strtotime( $custodian->created_at )),
-                    'details'           => $asset->asset_code.' : '.$asset->asset_name,
-                ];
-
-                Mail::send('inventory.verify-mail', $data, function($message) use ($custodian) {
-                    $message->to($custodian->staff->staff_email)->subject('Asset Custodian Verification');
-                    $message->from(Auth::user()->email);
-                });
-            }
 
             Session::flash('success', 'Asset Data Imported Successfully');
         } else {
