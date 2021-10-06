@@ -630,12 +630,25 @@
                             @endrole
 
                             @role('Computer Grant (IT Admin)')
-                            <li>
-                                <a href="/quota-list" title="Quota List" data-filter-tags="quota">
-                                    <i class="fal fa-list-ol"></i>
-                                    <span class="nav-link-text" data-i18n="nav.quota">Grant Quota List</span>
+                            <li class="open">
+                                <a href="#" title="Grant" data-filter-tags="grant">
+                                    <i class="fal fa-cogs"></i>
+                                    <span class="nav-link-text" data-i18n="nav.grant">Setting</span>
                                 </a>
+                                <ul>
+                                    <li>
+                                        <a href="/quota-list" title="Grant Quota" data-filter-tags="quota">
+                                            <span class="nav-link-text" data-i18n="nav.quota">Grant Quota</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/faq-list" title="FAQ Grant" data-filter-tags="createFAQ">
+                                            <span class="nav-link-text" data-i18n="nav.createFAQ">FAQ Grant</span>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
+                            
                             @endrole
 
                         @endrole

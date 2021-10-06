@@ -14,6 +14,7 @@ use App\ComputerGrantType;
 use App\ComputerGrantFile;
 use App\ComputerGrantLog;
 use App\ComputerGrantQuota;
+use App\ComputerGrantFAQ;
 use Carbon\Carbon;
 use File;
 use Response;
@@ -575,7 +576,8 @@ class ComputerGrantController extends Controller
 
     public function faq()
     {
-        return view('computer-grant.faq');
+        $faq = ComputerGrantFAQ::get();
+        return view('computer-grant.faq', compact('faq'));
     }
 
     public function log()
@@ -644,6 +646,8 @@ class ComputerGrantController extends Controller
         ->make(true);
     }
 
+    //Quota
+
     public function quotaList()
     {
         $quota = ComputerGrantQuota::get();
@@ -689,14 +693,61 @@ class ComputerGrantController extends Controller
         return redirect()->back()->with('message','Update Successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    //FAQ
+
+    public function faqList()
     {
-        //
+        $faq = ComputerGrantFAQ::get();
+
+        return view('computer-grant.create-faq', compact('faq'));
+    }
+
+    public function getFAQ()
+    {
+        $faq = ComputerGrantFAQ::get();
+
+        return datatables()::of($faq)
+
+            ->addColumn('edit', function ($faq) {
+                return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$faq->id.'" data-question="'.$faq->question.'" data-answer="'.$faq->answer.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+            })
+
+            ->addColumn('delete', function ($faq) {
+                return '<button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-faq/'.$faq->id.'"><i class="fal fa-trash"></i></button>';
+                
+            })
+
+            ->rawColumns(['edit','delete'])
+            ->make(true);
+    }
+
+    public function addFAQ(Request $request)
+    {
+        ComputerGrantFAQ::create([
+            'question'   => $request->question,
+            'answer'     => $request->answer,
+            'created_by' => Auth::user()->id
+        ]);
+
+        return redirect()->back()->with('message','Add Successfully');
+    }
+
+    public function editFAQ(Request $request)
+    {
+        $update = ComputerGrantFAQ::where('id', $request->id)->first();
+        $update->update([
+            'question'   => $request->question,
+            'answer'     => $request->answer,
+            'updated_by' => Auth::user()->id
+        ]);
+        
+        return redirect()->back()->with('message','Update Successfully');
+    }
+
+    public function deleteFAQ($id)
+    {
+        $exist = ComputerGrantFAQ::find($id);
+        $exist->delete();
+        $exist->update(['deleted_by' => Auth::user()->id]);
     }
 }

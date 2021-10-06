@@ -408,6 +408,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('get-file/{file}','ComputerGrantController@getFile');
     Route::get('/applicationPDF/{id}','ComputerGrantController@applicationPDF');
     Route::get('/faq', 'ComputerGrantController@faq');
+    Route::get('/faq-list', 'ComputerGrantController@faqList');
+    Route::post('/getFAQ', 'ComputerGrantController@getFAQ');
+    Route::post('/add-FAQ', 'ComputerGrantController@addFAQ');
+    Route::post('/edit-FAQ', 'ComputerGrantController@editFAQ');
     Route::get('/log', 'ComputerGrantController@log');
     Route::post('/loglist', 'ComputerGrantController@logList');
     Route::get('/all-log', 'ComputerGrantController@allLog');
@@ -416,6 +420,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/quota-list', 'ComputerGrantController@quotaList');
     Route::post('/add-quota', 'ComputerGrantController@addQuota');
     Route::post('/edit-quota', 'ComputerGrantController@editQuota');
+    Route::delete('/delete-faq/{id}','ComputerGrantController@deleteFAQ'); 
 
 });
 
