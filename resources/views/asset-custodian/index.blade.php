@@ -63,14 +63,14 @@
                                         <td>{{ $no++}}</td>
                                         <td>{{ strtoupper($depart->department_name) }}</td>
                                         <td style="font-size: 30px; color: rgb(0, 0, 0); text-align: center; font-style: italic; font-family: fantasy;">{{ $depart->total }}</td>
-                                        <td>
+                                        <td><div class="btn-group">
                                             <form action="{{route('deleteDepartment', $depart->id)}}" method="POST" class="delete_form"> 
                                                 @method('DELETE')  
                                                 @csrf
                                                 <a href="/custodian-list/{{$depart->id}}" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
                                                 <button type="submit" class="btn btn-danger btn-sm delete-alert"><i class="fal fa-trash"></i></button>               
                                             </form>
-                                        </td>
+                                        </div></td>
                                     </tr>
                                     @endforeach
                                 </tbody>

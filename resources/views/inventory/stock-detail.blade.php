@@ -303,16 +303,16 @@
                                                         <td>{{ isset($list->reason) ? $list->reason : '--'}}</td>
                                                         <td>{{ isset($list->user->name) ? strtoupper($list->user->name) : '--' }}</td>
                                                         <td>{{ isset($list->created_at) ? date('Y-m-d |  h:i A', strtotime($list->created_at)) : '--' }}</td>
-                                                        <td>
+                                                        <td><div class="btn-group">
                                                             @if($list->status == '1')
                                                                 <a href="" data-target="#crud-modalIn" data-toggle="modal" data-id="{{$list->id}}" data-stock="{{$list->stock_in}}" data-lo="{{$list->lo_no}}" data-io="{{$list->io_no}}" 
-                                                                    data-price="{{$list->unit_price}}" data-purchase="{{$list->purchase_date}}" data-trans="{{$list->trans_date}}" data-remark="{{$list->remark}}" class="btn btn-sm btn-success"><i class="fal fa-pencil"></i></a>
+                                                                    data-price="{{$list->unit_price}}" data-purchase="{{$list->purchase_date}}" data-trans="{{$list->trans_date}}" data-remark="{{$list->remark}}" class="btn btn-sm btn-success mr-1"><i class="fal fa-pencil"></i></a>
                                                             @else
                                                                 <a href="" data-target="#crud-modalOut" data-toggle="modal" data-id="{{$list->id}}" data-stock="{{$list->stock_out}}" data-reason="{{$list->reason}}" data-supply="{{$list->supply_to}}" 
-                                                                    data-extsupply="{{$list->ext_supply_to}}" data-trans="{{$list->trans_date}}" data-type="{{$list->supply_type}}"  class="btn btn-sm btn-danger"><i class="fal fa-pencil"></i></a>
+                                                                    data-extsupply="{{$list->ext_supply_to}}" data-trans="{{$list->trans_date}}" data-type="{{$list->supply_type}}"  class="btn btn-sm btn-danger mr-1"><i class="fal fa-pencil"></i></a>
                                                             @endif
                                                             <a href="{{ action('StockController@deleteTrans', ['id' => $list->id, 'stock_id' => $list->stock_id]) }}" class="btn btn-warning btn-sm"><i class="fal fa-trash"></i></a>
-                                                        </td>
+                                                        </div></td>
                                                     </tr>
                                                     @endforeach
                                                     </tbody>

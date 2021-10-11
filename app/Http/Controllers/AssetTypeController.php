@@ -58,12 +58,12 @@ class AssetTypeController extends Controller
             $exist = Asset::where('asset_type', $assetType->id)->first();
             if(isset($exist)) {
 
-                return '<a href="" data-target="#crud-modals" data-toggle="modal" data-type="'.$assetType->id.'" data-department="'.$assetType->department_id.'" data-asset="'.$assetType->asset_type.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>';
+                return '<div class="btn-group"><a href="" data-target="#crud-modals" data-toggle="modal" data-type="'.$assetType->id.'" data-department="'.$assetType->department_id.'" data-asset="'.$assetType->asset_type.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a></div>';
 
             } else {
 
-                return '<a href="" data-target="#crud-modals" data-toggle="modal" data-type="'.$assetType->id.'" data-department="'.$assetType->department_id.'" data-asset="'.$assetType->asset_type.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
-                        <button class="btn btn-sm btn-danger btn-delete" data-remote="/asset-type/' . $assetType->id . '"><i class="fal fa-trash"></i></button>';
+                return '<div class="btn-group"><a href="" data-target="#crud-modals" data-toggle="modal" data-type="'.$assetType->id.'" data-department="'.$assetType->department_id.'" data-asset="'.$assetType->asset_type.'" class="btn btn-sm btn-warning mr-1"><i class="fal fa-pencil"></i></a>
+                        <button class="btn btn-sm btn-danger btn-delete" data-remote="/asset-type/' . $assetType->id . '"><i class="fal fa-trash"></i></button></div>';
             }
         })
 

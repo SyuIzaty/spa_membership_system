@@ -299,8 +299,8 @@ class AssetController extends Controller
         return datatables()::of($asset)
         ->addColumn('action', function ($asset) {
 
-            return '<a href="/asset-detail/' . $asset->id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
-                <button class="btn btn-sm btn-danger btn-delete" data-remote="/asset-index/' . $asset->id . '"><i class="fal fa-trash"></i></button>'; 
+            return '<div class="btn-group"><a href="/asset-detail/' . $asset->id.'" class="btn btn-sm btn-primary mr-1"><i class="fal fa-eye"></i></a>
+                <button class="btn btn-sm btn-danger btn-delete" data-remote="/asset-index/' . $asset->id . '"><i class="fal fa-trash"></i></button></div>'; 
           
         })
 
@@ -870,7 +870,7 @@ class AssetController extends Controller
 
         ->addColumn('action', function ($verify) {
 
-            return '<a href="/asset-info/' . $verify->asset_id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>'; 
+            return '<div class="btn-group"><a href="/asset-info/' . $verify->asset_id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a></div>'; 
         })
 
         ->editColumn('id', function ($verify) {
@@ -960,7 +960,7 @@ class AssetController extends Controller
 
         ->addColumn('action', function ($verify) {
 
-            return '<a href="/asset-info/' . $verify->asset_id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>'; 
+            return '<div class="btn-group"><a href="/asset-info/' . $verify->asset_id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a></div>'; 
         })
 
         ->editColumn('id', function ($verify) {

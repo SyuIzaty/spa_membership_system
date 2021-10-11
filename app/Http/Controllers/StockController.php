@@ -99,8 +99,8 @@ class StockController extends Controller
         return datatables()::of($stock)
         ->addColumn('action', function ($stock) {
 
-            return '<a href="/stock-detail/' . $stock->id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
-                    <button class="btn btn-sm btn-danger btn-delete" data-remote="/stock-index/' . $stock->id . '"><i class="fal fa-trash"></i></button>'; 
+            return '<div class="btn-group"><a href="/stock-detail/' . $stock->id.'" class="btn btn-sm btn-primary mr-1"><i class="fal fa-eye"></i></a>
+                    <button class="btn btn-sm btn-danger btn-delete" data-remote="/stock-index/' . $stock->id . '"><i class="fal fa-trash"></i></button></div>'; 
         })
 
         ->addColumn('created_at', function ($stock) {

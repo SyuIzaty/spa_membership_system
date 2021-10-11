@@ -336,11 +336,11 @@
                                                                                                 <td>{{ $sets->serial_no }}</td>
                                                                                                 <td>{{ $sets->model }}</td>
                                                                                                 <td>{{ $sets->brand }}</td>
-                                                                                                <td>
-                                                                                                    <a href="" data-target="#crud-modal3" data-toggle="modal" data-id="{{$sets->id}}" data-asset="{{$sets->asset_id}}" data-type="{{$sets->asset_type}}" data-serial="{{$sets->serial_no}}" data-model="{{$sets->model}}" data-brand="{{$sets->brand}}" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
+                                                                                                <td><div class="btn-group">
+                                                                                                    <a href="" data-target="#crud-modal3" data-toggle="modal" data-id="{{$sets->id}}" data-asset="{{$sets->asset_id}}" data-type="{{$sets->asset_type}}" data-serial="{{$sets->serial_no}}" data-model="{{$sets->model}}" data-brand="{{$sets->brand}}" class="btn btn-sm btn-warning mr-1"><i class="fal fa-pencil"></i></a>
                                                                                                     <a href="{{ action('AssetController@deleteSet', ['id' => $sets->id, 'asset_id' => $sets->asset_id]) }}" class="btn btn-danger btn-sm"><i class="fal fa-trash"></i></a>
                                                                                                     <meta name="csrf-token" content="{{ csrf_token() }}">
-                                                                                                </td>
+                                                                                                </div></td>
                                                                                             </tr>
                                                                                         @endforeach
                                                                                     @else

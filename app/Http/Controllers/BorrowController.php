@@ -127,8 +127,8 @@ class BorrowController extends Controller
         return datatables()::of($borrow)
         ->addColumn('action', function ($borrow) {
 
-            return '<a href="/borrow-detail/' . $borrow->id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
-                <button class="btn btn-sm btn-danger btn-delete" data-remote="/borrow-index/' . $borrow->id . '"><i class="fal fa-trash"></i></button>'; 
+            return '<div class="btn-group"><a href="/borrow-detail/' . $borrow->id.'" class="btn btn-sm btn-primary mr-1"><i class="fal fa-eye"></i></a>
+                <button class="btn btn-sm btn-danger btn-delete" data-remote="/borrow-index/' . $borrow->id . '"><i class="fal fa-trash"></i></button></div>'; 
         })
 
         ->addColumn('borrow_date', function ($borrow) {
@@ -275,7 +275,7 @@ class BorrowController extends Controller
         return datatables()::of($borrow)
         ->addColumn('action', function ($borrow) {
            
-            return '<a href="/borrow-detail/' . $borrow->id.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>'; 
+            return '<div class="btn-group"><a href="/borrow-detail/' . $borrow->id.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a></div>'; 
         })
 
         ->addColumn('borrow_date', function ($borrow) {
