@@ -42,15 +42,15 @@
                                         <?php
                                             $department = \App\AssetDepartment::where('id', $ids)->first();
                                         ?>
-                                        <li class="nav-item">
-                                            <a class="nav-link mb-2" id="nav-home-tab-{{$department->id}}" data-toggle="tab" href="#nav-home-{{$department->id}}" role="tab" aria-controls="{{$department->id}}" aria-selected="false">
+                                        <li class="nav-item {{ $loop->first ? 'active' : '' }}">
+                                            <a class="nav-link mb-2" id="nav-home-tab-{{$department->id}}" data-toggle="tab" href="#nav-home-{{$department->id}}" role="tab" aria-controls="{{$department->id}}">
                                                 <i class="fal fa-unlink mr-1"></i>{{ $department->department_name }}
                                             </a>
                                         </li>
                                     @endforeach
                                 </ul>
                                 <div class="tab-content border border-top-0 p-3">
-                                    @foreach($id as $ids)
+                                    @foreach($id as $count => $ids)
                                         <?php
                                             // Status
                                             $assetCountActive = \App\Asset::where('status', '1')->whereHas('type', function($query) use ($ids){
@@ -82,7 +82,7 @@
                                                                 });
                                                             })->sum('total_price'); 
                                         ?>
-                                        <div class="tab-pane" id="nav-home-{{$department->id}}" role="tabpanel">
+                                        <div class="tab-pane {{ $loop->first ? 'active in' : '' }}" id="nav-home-{{$department->id}}" role="tabpanel">
                                             <div class="row col-md-12">
                                                 <div class="col-sm-12 col-xl-4 mb-1">
                                                     <div class="p-3 bg-info-300 rounded overflow-hidden position-relative text-white  ">
@@ -304,19 +304,19 @@
                         <div id="stk" class="show" data-parent="#stk">
                             <div class="card-body">
                                 <ul class="nav nav-tabs nav-tabs-clean" role="tablist">
-                                    @foreach($id as $count => $ids)
+                                    @foreach($id as $item => $ids)
                                         <?php
                                             $dprt = \App\AssetDepartment::where('id', $ids)->first();
                                         ?>
-                                        <li class="nav-item">
-                                            <a class="nav-link mb-2" id="nav-home2-tab-{{$dprt->id}}" data-toggle="tab" href="#nav-home2-{{$dprt->id}}" role="tab" aria-controls="{{$dprt->id}}" aria-selected="false">
+                                        <li class="nav-item {{ $loop->first ? 'active' : '' }}">
+                                            <a class="nav-link mb-2" id="nav-home2-tab-{{$dprt->id}}" data-toggle="tab" href="#nav-home2-{{$dprt->id}}" role="tab" aria-controls="{{$dprt->id}}">
                                                 <i class="fal fa-unlink mr-1"></i>{{ $dprt->department_name }}
                                             </a>
                                         </li>
                                     @endforeach
                                 </ul>
                                 <div class="tab-content border border-top-0 p-3">
-                                    @foreach($id as $ids)
+                                    @foreach($id as $item => $ids)
                                         <?php
                                             // Status
                                             $stockCountActive = \App\Stock::where('status', '1')->whereHas('departments', function($query) use ($ids){
@@ -335,7 +335,7 @@
                                             $stockInactive = $stockAll == 0 ? 0 : ($stockCountInactive / $stockAll * 100);
                                             $dprt = \App\AssetDepartment::where('id', $ids)->first();
                                         ?>
-                                        <div class="tab-pane" id="nav-home2-{{$dprt->id}}" role="tabpanel">
+                                        <div class="tab-pane {{ $loop->first ? 'active in' : '' }}" id="nav-home2-{{$dprt->id}}" role="tabpanel">
                                             <div class="row">
                                                 {{-- Start Status --}}
                                                 <div class="card mb-4 col-sm-12 col-xl-2">
@@ -377,6 +377,103 @@
                                                     </div>
                                                 </div>
                                                 {{-- End Status --}}
+
+                                                <div class="mb-4 col-sm-12 col-xl-10">
+                                                    <?php
+
+                                                        $stock = \App\Stock::select('id', 'stock_name')->groupBy('id')->whereHas('departments', function($query) use($ids) {
+                                                                $query->where('id', $ids );
+                                                        })->pluck('id', 'stock_name')->toArray();
+                                                        
+                                                        $stocks = \App\Stock::select('id', 'stock_name')->groupBy('id')->whereHas('departments', function($query) use($ids) {
+                                                                $query->where('id', $ids );
+                                                        })->get();
+
+                                                        $listBal = [];
+                                                        $total = '';
+
+                                                        $integerIDs = collect([]);
+                                                        foreach($stocks as $key => $stockss) {
+                                                            $data = \App\Stock::where('id', $stockss['id'])->first(); 
+                                                            
+                                                            $total_bal = 0;
+                                                            foreach($data->transaction as $list){
+                                                                $total_bal += ($list->stock_in - $list->stock_out);
+                                                            }
+                                                            $listBal[] = $total_bal;
+                                                        }
+
+                                                        $chart = new \App\Stock;
+                                                        $chart->labels = (array_keys($stock));
+                                                        $chart->dataset = (array_values($listBal)); 
+                                                    ?>
+                                                    <canvas id="charts{{$ids}}" class="rounded shadow"></canvas>
+                                                    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3"></script>
+                                                    <script>
+                                                        var ctx = document.getElementById('charts{{$ids}}').getContext('2d');
+                                                        var chart = new Chart(ctx, {
+                                                            type: 'bar',
+                                                            data: {
+                                                                labels:  {!!json_encode($chart->labels)!!} ,
+                                                                datasets: [
+                                                                    {
+                                                                        label: 'STOCK BALANCE',
+                                                                        backgroundColor: [
+                                                                            'rgba(255, 99, 132, 0.2)',
+                                                                            'rgba(255, 159, 64, 0.2)',
+                                                                            'rgba(255, 205, 86, 0.2)',
+                                                                            'rgba(75, 192, 192, 0.2)',
+                                                                            'rgba(54, 162, 235, 0.2)',
+                                                                            'rgba(153, 102, 255, 0.2)',
+                                                                            'rgba(201, 203, 207, 0.2)'
+                                                                        ],
+                                                                        borderColor: [
+                                                                            'rgb(255, 99, 132)',
+                                                                            'rgb(255, 159, 64)',
+                                                                            'rgb(255, 205, 86)',
+                                                                            'rgb(75, 192, 192)',
+                                                                            'rgb(54, 162, 235)',
+                                                                            'rgb(153, 102, 255)',
+                                                                            'rgb(201, 203, 207)'
+                                                                        ],
+                                                                        borderWidth: 1,
+                                                                        data:  {!! json_encode($chart->dataset)!!} ,
+                                                                    },
+                                                                ]
+                                                            },
+                                                            options: {
+                                                                scales: {
+                                                                    yAxes: [{
+                                                                        ticks: {
+                                                                            beginAtZero: true
+                                                                        }
+                                                                    }]
+                                                                },
+                                                                responsive: true,
+                                                                maintainAspectRatio: false,
+                                                                legend: {
+                                                                    position: "top",
+                                                                    labels: {
+                                                                        fontColor: '#122C4B',
+                                                                        fontFamily: "'Muli', sans-serif",
+                                                                        padding: 15,
+                                                                        boxWidth: 10,
+                                                                        fontSize: 14,
+                                                                    }
+                                                                },
+                                                                layout: {
+                                                                    padding: {
+                                                                        left: 10,
+                                                                        right: 10,
+                                                                        bottom: 30,
+                                                                        top: 30
+                                                                    }
+                                                                }
+                                                            }
+                                                        });
+                                                    </script>
+                                                </div>
+
                                             </div>
                                         </div>
                                     @endforeach
@@ -392,8 +489,6 @@
 
 @section('script')
     <script>
-        // $(document).ready(function(){
-        //     $('.nav-item').find('li > a:first').click();  
-        // })
+        //
     </script>
 @endsection

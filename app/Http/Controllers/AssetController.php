@@ -466,7 +466,7 @@ class AssetController extends Controller
                 if($asset->status == '1') {
                 // check former status 1 or not
                     $request->validate([
-                        'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$asset->id,
+                        'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$request->id,
                         'asset_name'        => 'required',
                         'serial_no'         => 'required',
                         'set_package'       => 'required',
@@ -494,7 +494,7 @@ class AssetController extends Controller
                 } else {
                   // former status 0
                     $request->validate([
-                        'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$asset->id,
+                        'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$request->id,
                         'asset_name'        => 'required',
                         'serial_no'         => 'required',
                         'set_package'       => 'required',
@@ -520,7 +520,7 @@ class AssetController extends Controller
             } else {
               // request status == 1
                 $request->validate([
-                    'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$asset->id,
+                    'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$request->id,
                     'asset_name'        => 'required',
                     'serial_no'         => 'required',
                     'set_package'       => 'required',
@@ -549,7 +549,7 @@ class AssetController extends Controller
              if($request->status == '0') {
               // request status == 0
                 $request->validate([
-                    'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$asset->id,
+                    'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$request->id,
                     'asset_name'        => 'required',
                     'serial_no'         => 'required',
                     'set_package'       => 'required',
@@ -578,7 +578,7 @@ class AssetController extends Controller
              } else {
                 // request status == 1
                 $request->validate([
-                    'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$asset->id,
+                    'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$request->id,
                     'asset_name'        => 'required',
                     'serial_no'         => 'required',
                     'set_package'       => 'required',
