@@ -63,9 +63,11 @@ class ComputerGrantController extends Controller
 
         $proof = ComputerGrantPurchaseProof::where('permohonan_id', $id)->get();
 
-        $verified_doc = ComputerGrantFile::where('permohonan_id', $id)->first();
+        $verified_doc = ComputerGrantFile::where('permohonan_id', $id)->where('user', 'ADM')->get();
 
-        return view('computer-grant.application-detail', compact('user','user_details','activeData','deviceType','proof','verified_doc'));
+        $agreement_doc = ComputerGrantFile::where('permohonan_id', $id)->where('user', 'APC')->get();
+
+        return view('computer-grant.application-detail', compact('user','user_details','activeData','deviceType','proof','verified_doc','agreement_doc'));
 
 
     }
@@ -139,11 +141,9 @@ class ComputerGrantController extends Controller
                 if ($data->status != 1)
                 {
                     $dateNow = new DateTime('now');
-                    $date = new DateTime($data->approved_at);
+                    $date = new DateTime($data->expiry_date);
 
-                    $newDate = date_add($date, date_interval_create_from_date_string('5 year'));
-
-                    $interval = $dateNow->diff($newDate);
+                    $interval = $dateNow->diff($date);
                     $days = $interval->format('%a');
 
                     return '<div>' .$days. ' days </div>';
@@ -159,15 +159,15 @@ class ComputerGrantController extends Controller
             {
                 if ($data->status != 1)
                 {
-                    $dateNow = new DateTime('now');
-                    $date = new DateTime($data->approved_at);
+                    $dateNow = strtotime(Carbon::now());
+                    $expiryDate = strtotime($data->expiry_date);
 
-                    $newDate = date_add($date, date_interval_create_from_date_string('5 year'));
+                    $yearNow = date('Y', $dateNow);
+                    $yearExpire = date('Y', $expiryDate);
 
-                    $interval = $dateNow->diff($newDate);
-                    $days = $interval->format('%y');
+                    $year = $yearExpire - $yearNow;
 
-                    $penalty = $days * 300;
+                    $penalty = $year * 300;
 
                     return '<div> RM ' .$penalty. '</div>';
                 }
@@ -292,9 +292,19 @@ class ComputerGrantController extends Controller
         return view('computer-grant.all-grant-list');
     }
 
+   
     public function allDatalists()
     {
-        $data = ComputerGrant::all();
+        if( Auth::user()->hasRole('Computer Grant (Finance Admin)') )
+        {
+            $data = ComputerGrant::where('status', '4')->orWhere('status', '5')->get();
+        }
+
+        else if(Auth::user()->hasRole('Computer Grant (IT Admin)'))
+        {
+            $data = ComputerGrant::all();
+        }
+
 
         return datatables()::of($data)
 
@@ -361,11 +371,9 @@ class ComputerGrantController extends Controller
                 if ($data->status != 1)
                 {
                     $dateNow = new DateTime('now');
-                    $date = new DateTime($data->approved_at);
+                    $date = new DateTime($data->expiry_date);
 
-                    $newDate = date_add($date, date_interval_create_from_date_string('5 year'));
-
-                    $interval = $dateNow->diff($newDate);
+                    $interval = $dateNow->diff($date);
                     $days = $interval->format('%a');
 
                     return '<div>' .$days. ' days </div>';
@@ -379,17 +387,17 @@ class ComputerGrantController extends Controller
 
             ->addColumn('penalty',function($data)
             {
-                if ($data->status != 1)
+                if (($data->status == 2) || ($data->status == 3) || ($data->status == 4) || ($data->status == 5))
                 {
-                    $dateNow = new DateTime('now');
-                    $date = new DateTime($data->approved_at);
+                    $dateNow = strtotime(Carbon::now());
+                    $expiryDate = strtotime($data->expiry_date);
 
-                    $newDate = date_add($date, date_interval_create_from_date_string('5 year'));
+                    $yearNow = date('Y', $dateNow);
+                    $yearExpire = date('Y', $expiryDate);
 
-                    $interval = $dateNow->diff($newDate);
-                    $days = $interval->format('%y');
+                    $year = $yearExpire - $yearNow;
 
-                    $penalty = $days * 300;
+                    $penalty = $year * 300;
 
                     return '<div> RM ' .$penalty. '</div>';
                 }
@@ -401,7 +409,16 @@ class ComputerGrantController extends Controller
             })
 
             ->addColumn('action', function ($data) {
-                return '<a href="/view-application-detail/' .$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+
+                if ($data->status == 7)
+                {
+                    return '<button class="btn btn-sm btn-danger btn-delete" data-remote="/verifyCancellation/' . $data->id . '"><i class="fal fa-trash"></i></button>';
+                }
+
+                else
+                {
+                    return '<a href="/view-application-detail/' .$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+                }
             })
 
             ->rawColumns(['details','type','amount','purchase','action','remainingPeriod', 'penalty'])
@@ -418,11 +435,13 @@ class ComputerGrantController extends Controller
 
         $status = ComputerGrantStatus::all();
 
-        $verified_doc = ComputerGrantFile::where('permohonan_id', $id)->first();
+        $verified_doc = ComputerGrantFile::where('permohonan_id', $id)->where('user', 'ADM')->get();
+
+        $agreement_doc = ComputerGrantFile::where('permohonan_id', $id)->where('user', 'APC')->get();
 
         $proof = ComputerGrantPurchaseProof::where('permohonan_id', $id)->get();
 
-        return view('computer-grant.view-application-detail', compact('user_details','activeData','deviceType','proof','verified_doc'));
+        return view('computer-grant.view-application-detail', compact('user_details','activeData','deviceType','proof','verified_doc', 'agreement_doc'));
 
     }
 
@@ -446,17 +465,24 @@ class ComputerGrantController extends Controller
         $image = $request->file('upload_image');
         $paths = storage_path()."/computerGrantFile/";
 
-        $originalsName = $image->getClientOriginalName();
-        $fileSizes = $image->getSize();
-        $fileNames = $originalsName;
-        $image->storeAs('/computerGrantFile', $fileNames);
-        ComputerGrantFile::create([
-            'permohonan_id'  => $request->id,
-            'upload' => $originalsName,
-            'web_path'  => "app/computerGrantFile/".$fileNames,
-            'created_by' => Auth::user()->id
-        ]);
+        if (isset($image)) { 
+            for($y = 0; $y < count($image); $y++)
+            {
+                $originalsName = $image[$y]->getClientOriginalName();
+                $fileSizes = $image[$y]->getSize();
+                $fileNames = $originalsName;
+                $image[$y]->storeAs('/computerGrantFile', $fileNames);
+                ComputerGrantFile::create([
+                    'permohonan_id'  => $request->id,
+                    'user'           => 'ADM', //for Admin
+                    'upload'         => $originalsName,
+                    'web_path'       => "app/computerGrantFile/".$fileNames,
+                    'created_by'     => Auth::user()->id
+                ]);
+            }
+        }
 
+    
         ComputerGrantLog::create([
             'permohonan_id'  => $request->id,
             'activity'  => 'Approve application',
@@ -750,4 +776,81 @@ class ComputerGrantController extends Controller
         $exist->delete();
         $exist->update(['deleted_by' => Auth::user()->id]);
     }
+
+    public function agreementPDF($id)
+    {
+        $application = ComputerGrant::with(['staff'])->where('id',$id)->first();
+
+        return view('computer-grant.agreement-pdf', compact('application'));
+    }
+
+
+    public function uploadAgreement(Request $request)
+    {
+
+        $image = $request->file('upload_image');
+        $paths = storage_path()."/computerGrantFile/";
+
+        if (isset($image)) { 
+            for($y = 0; $y < count($image); $y++)
+            {
+                $originalsName = $image[$y]->getClientOriginalName();
+                $fileSizes = $image[$y]->getSize();
+                $fileNames = $originalsName;
+                $image[$y]->storeAs('/computerGrantFile', $fileNames);
+                ComputerGrantFile::create([
+                    'permohonan_id'  => $request->id,
+                    'user'           => 'APC', //for Admin
+                    'upload'         => $originalsName,
+                    'web_path'       => "app/computerGrantFile/".$fileNames,
+                    'created_by'     => Auth::user()->id
+                ]);
+            }
+        }
+
+        ComputerGrantLog::create([
+            'permohonan_id'  => $request->id,
+            'activity'  => 'Upload signed agreement for grant acceptance',
+            'created_by' => Auth::user()->id
+        ]);
+
+
+        return redirect('application-detail/'.$request->id);
+    }
+
+    public function requestCancellation(Request $request)
+    {
+        $updateApplication = ComputerGrant::where('id', $request->id)->first();
+        $updateApplication->update([
+            'status'     =>'7',
+            'updated_by' => Auth::user()->id
+        ]);
+
+        ComputerGrantLog::create([
+            'permohonan_id'  => $request->id,
+            'activity'  => 'Request for application cancellation',
+            'created_by' => Auth::user()->id
+        ]);
+
+        return response() ->json(['success' => 'Request for Cancellation Sent!']);
+    }
+
+    public function verifyCancellation($id)
+    {
+        $exist = ComputerGrant::find($id);
+        $exist->delete();
+        $exist->update(['status' => '6', 'active' => 'N', 'deleted_by' => Auth::user()->id]);
+
+        ComputerGrantLog::create([
+            'permohonan_id'  => $id,
+            'activity'  => 'Request for cancellation verified',
+            'created_by' => Auth::user()->id
+        ]);
+
+        return Redirect()->back()->with('message', 'Successful');
+
+
+        // return response() ->json(['success' => 'Request for Cancellation Verified!']);
+    }
+
 }

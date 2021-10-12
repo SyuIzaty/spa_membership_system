@@ -2,6 +2,16 @@
 
 @section('content')
 
+<style>
+.flex-container {
+  display: flex;
+}
+
+.flex-container > div {
+  /* margin: 10px; */
+  padding: 20px;
+}
+</style>
 <main id="js-page-content" role="main" class="page-content">
     <div class="row">
         <div class="col-xl-12" style="padding: 100px; margin-bottom: 20px; font-size: 15px; color: black;">
@@ -48,45 +58,39 @@
                         </thead>
                     </table>
                 </div>
+                <br>
+                <p>I, {{strtoupper($application->staff->staff_name)}} CONFIRMED THAT THE PERSONAL DETAILS AND PURCHASE PROOF GIVEN ARE GENUINE. I AGREE TO ACCEPT THIS APPLICATION AND ABIDE ALL REGULATIONS.</p>
 
-                <table style="table-layout:fixed; width:800px; word-wrap: break-word; margin-top: 100px"> 
-                    <tr>
-                        <td>....................................</td>
-                        <td></td>
-                        <td>....................................</td>
-                        <td></td>
-                        <td>....................................</td>
-                    </tr>
-                    <tr>
-                        <td>{{strtoupper($application->staff->staff_name)}}</td>
-                        <td></td>
-                        <td>MOHD YUZI BIN ZALI</td>
-                        <td></td>
-                        <td>PROFESSOR DR ROSHAYANI BINTI DATO’ ARSHAD</td>
-                    </tr>
+                <!-- <div class="flex-container"> -->
+                        <div style="float: left; margin-top: 100px;">
+                            .......................................................................................
 
-                    <tr>
-                        <td>{{$application->staff->staff_position}}</td>
-                        <td></td>
-                        <td>HEAD OF INFORMATION TECHNOLOGY UNIT (IITU)</td>
-                        <td></td>
-                        <td>CHIEF EXECUTIVE</td>
-                    </tr>
+                            <p style="margin-top: 10px;">{{strtoupper($application->staff->staff_name)}}</p>
+                            <p>{{$application->staff->staff_position}}</p>
+                            <br>
+                            <p>Date:</p>
+                        </div>
+                        <div style="float: right; margin-top: 100px;">
+                            .......................................................................................
 
-                    <tr>
-                        <td>Date:</td>
-                        <td></td>
-                        <td>Date:</td>
-                        <td></td>
-                        <td>Date:</td>
+                            <p style="margin-top: 10px;">MOHD YUZI BIN ZALI</p>
+                            <p>HEAD OF INFORMATION TECHNOLOGY UNIT (IITU)</p>
+                            <br>
+                            <p>Date:</p>
+                        </div>
+                <!-- </div> -->
+                
 
-                    </tr>
-                </table>
+                {{-- <div style="font-style: italic; font-size: 10px">
+                    <p style="float: left">@ Copyright INTEC Education College</p>
+                    <p style="float: right">Review Date : {{ date(' j F Y | h:i:s A ', strtotime($student->created_at)) }}</p><br>
+                </div> --}}
         </div>
     </div>
 </main>
 @endsection
 
 @section('script')
-
+<script>
+</script>
 @endsection

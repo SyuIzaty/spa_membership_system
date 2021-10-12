@@ -84,8 +84,16 @@
                                         </thead>
                                     </table>
                                 </div>
+                                
+                                @if (($activeData->status == 1) || ($activeData->status == 2) || ($activeData->status == 3))
+                                <form id="form-id">
+                                    @csrf
+                                    <input type="hidden" id="id" name="id" value="{{ $activeData->id }}" required>
+                                    <button type="submit" class="btn btn-danger ml-auto float-right mr-2 waves-effect waves-themed" id="cancel" style="margin-bottom:10px;"><i class="fal fa-times-circle"></i> Request for Cancellation</button>
+                                </form>  
+                                @endif
 
-                                @if ($activeData->status != 1)
+                                @if (($activeData->status == 2) || ($activeData->status == 3) || ($activeData->status == 4) || ($activeData->status == 5))
                                 <div class="table-responsive">
                                     <table id="info" class="table table-bordered table-hover table-striped w-100">
                                         <thead>
@@ -94,7 +102,13 @@
                                             </tr>
                                             <tr>
                                                 <th width="20%" style="vertical-align: top">Verified Application : </th>
-                                                <td colspan="4"><a target="_blank" href="/get-file/{{$verified_doc->upload}}">{{$verified_doc->upload}}</a></td>
+                                                <td colspan="4">
+                                                    <ul>
+                                                        @foreach ( $verified_doc as $v )
+                                                        <li>  <a target="_blank" href="/get-file/{{$v->upload}}">{{$v->upload}}</a> </li>
+                                                        @endforeach
+                                                    </ul> 
+                                                </td>                                           
                                             </tr>
                                         </thead>
                                     </table>
@@ -164,7 +178,7 @@
                                 </div>
                                 {!! Form::close() !!}
 
-                                @elseif (($activeData->status == '3') || ($activeData->status == '4') || ($activeData->status == '5') || ($activeData->status == '6'))
+                                @elseif (($activeData->status == '3') || ($activeData->status == '4') || ($activeData->status == '5'))
 
                                 <div class="table-responsive">
                                     <table id="upload" class="table table-bordered table-hover table-striped w-100">
@@ -206,7 +220,89 @@
                                         </thead>
                                     </table>
                                 </div>
+
+                                <!-- <a class="btn btn-info ml-auto float-right" data-page="/agreementPDF/{{ $activeData->id }}" onclick="Print(this)" style="color: rgb(0, 0, 0); margin-top: 5px; margin-bottom: 15px;">
+                                    <i class="fal fa-download"></i> Export Application
+                                </a> -->
                                 @endif
+
+                                @if ($activeData->status == '4')
+                                    @if ($agreement_doc->isEmpty())
+                                        {!! Form::open(['action' => 'ComputerGrantController@uploadAgreement', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                                        <input type="hidden" id="id" name="id" value="{{ $activeData->id }}" required>
+
+                                        <div class="table-responsive">
+                                            <table id="info" class="table table-bordered table-hover table-striped w-100">
+                                                <thead>
+                                                    <tr>
+                                                        <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> GRANT ACCEPTANCE</label></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="5">Kindly download verified files above, then upload the signed files.</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th width="20%" style="vertical-align: top"><span class="text-danger">*</span> Upload Signed Agreement files: </th>
+                                                        <td colspan="4"><input type="file" class="form-control" id="upload_image" name="upload_image[]" multiple required>
+
+                                                            @error('upload_image')
+                                                                <p style="color: red">{{ $message }}</p>
+                                                            @enderror
+                                                        </td>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+
+                                        <div class="table-responsive">
+                                            <div class="form-group">
+                                                <button style="margin-top: 5px;" class="btn btn-danger float-right" id="submit" name="submit"><i class="fal fa-check"></i> Submit Agreement</button></td>
+                                            </div>
+                                        </div>
+                                        {!! Form::close() !!}
+
+                                        @else
+                                        <div class="table-responsive">
+                                            <table id="info" class="table table-bordered table-hover table-striped w-100">
+                                                <thead>
+                                                    <tr>
+                                                        <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> GRANT ACCEPTANCE</label></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th width="20%" style="vertical-align: top">Signed Agreement : </th>
+                                                        <td colspan="4">
+                                                            <ul>
+                                                                @foreach ( $agreement_doc as $a )
+                                                                <li>  <a target="_blank" href="/get-file/{{$a->upload}}">{{$a->upload}}</a> </li>
+                                                                @endforeach
+                                                            </ul> 
+                                                        </td>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    @endif
+                                @endif
+                                    @if (($activeData->status == '5') || ($activeData->status == '6'))
+                                        <div class="table-responsive">
+                                            <table id="info" class="table table-bordered table-hover table-striped w-100">
+                                                <thead>
+                                                    <tr>
+                                                        <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> GRANT ACCEPTANCE</label></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th width="20%" style="vertical-align: top">Signed Agreement : </th>
+                                                        <td colspan="4">
+                                                            <ul>
+                                                                @foreach ( $agreement_doc as $a )
+                                                                <li>  <a target="_blank" href="/get-file/{{$a->upload}}">{{$a->upload}}</a> </li>
+                                                                @endforeach
+                                                            </ul> 
+                                                        </td>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    @endif
                             </div>
                         </div>
                     </div>
@@ -280,6 +376,16 @@
 
 @section('script')
 <script>
+    
+    function Print(button)
+        {
+            var url = $(button).data('page');
+            var printWindow = window.open( '{{url("/")}}'+url+'', 'Print', 'left=200, top=200, width=950, height=500, toolbar=0, resizable=0');
+            printWindow.addEventListener('load', function(){
+            printWindow.print();
+            }, true);
+        }
+
     $(document).ready(function()
     {
         var table = $('#application').DataTable({
@@ -310,6 +416,40 @@
                 }
         });
     });
+
+    $("#cancel").on('click', function(e) {
+            e.preventDefault();
+
+            var datas = $('#form-id').serialize();
+
+            Swal.fire({
+                title: 'Are you sure you want to cancel this application?',
+                text: "Data cannot be restored!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Cancel!',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.value) {
+                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ url('requestCancellation')}}",
+                        data: datas,
+                        dataType: "json",
+                        success: function (response) {
+                        console.log(response);
+                        if(response){
+                        Swal.fire(response.success);
+                        location.reload();
+                    }
+                        }
+                    });
+                }
+            })
+        });
 
 </script>
 @endsection

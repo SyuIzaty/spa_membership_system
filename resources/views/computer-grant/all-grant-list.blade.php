@@ -20,6 +20,11 @@
                     </div>
                     <div class="panel-container show">
                         <div class="panel-content">
+                            @if(session()->has('message'))
+                                <div class="alert alert-success">
+                                    {{ session()->get('message') }}
+                                </div>
+                            @endif
                             <div class="table-responsive">
                                 <table id="application" class="table table-bordered table-hover table-striped w-100">
                                     <thead>
@@ -35,7 +40,7 @@
                                             <th class="text-center">Expiry Date</th>
                                             <th class="text-center">Remaining Grant Period</th>
                                             <th class="text-center">Balance Penalty</th>
-                                            <th class="text-center">View</th>
+                                            <th class="text-center">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -96,6 +101,39 @@
 
                 }
         });
+
+        $('#application').on('click', '.btn-delete[data-remote]', function (e) {
+            e.preventDefault();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            var url = $(this).data('remote');
+
+            Swal.fire({
+                title: 'Are you sure you want to verify this application cancellation?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Verify!',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.value) {
+                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                    $.ajax({
+                    url: url,
+                    type: 'DELETE',
+                    dataType: 'json',
+                    data: {method: '_DELETE', submit: true}
+                    }).always(function (data) {
+                        $('#application').DataTable().draw(false);
+                    });
+                }
+            })
+        });
+
     });
 
 </script>

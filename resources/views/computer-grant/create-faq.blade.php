@@ -70,7 +70,7 @@
                                 </div>
                                 <textarea class="form-control max" aria-label="With textarea" name="question" id="question" required></textarea>
                             </div>
-                            <span style="font-size: 10px; color: red;"><i>*Limit to 300 characters only</i></span>
+                            <span style="font-size: 10px; color: red;"><i>*Limit to 500 characters only</i></span>
                         </div>
 
                         <div class="form-group">
@@ -80,7 +80,7 @@
                                 </div>
                                 <textarea class="form-control max" aria-label="With textarea" name="answer" id="answer" required></textarea>
                             </div>
-                            <span style="font-size: 10px; color: red;"><i>*Limit to 300 characters only</i></span>
+                            <span style="font-size: 10px; color: red;"><i>*Limit to 500 characters only</i></span>
                         </div>
 
                         <div class="footer">
@@ -110,7 +110,7 @@
                                 </div>
                                 <textarea class="form-control max" aria-label="With textarea" name="question" id="question" required></textarea>
                             </div>
-                            <span style="font-size: 10px; color: red;"><i>*Limit to 300 characters only</i></span>
+                            <span style="font-size: 10px; color: red;"><i>*Limit to 500 characters only</i></span>
                         </div>
 
 
@@ -121,7 +121,7 @@
                                 </div>
                                 <textarea class="form-control max" aria-label="With textarea" name="answer" id="answer" required></textarea>
                             </div>
-                            <span style="font-size: 10px; color: red;"><i>*Limit to 300 characters only</i></span>
+                            <span style="font-size: 10px; color: red;"><i>*Limit to 500 characters only</i></span>
                         </div>
 
                         <div class="footer">
@@ -211,7 +211,7 @@
 
     //limit word in textarea
     jQuery(document).ready(function($) {
-        var max = 300;
+        var max = 500;
         $('textarea.max').keypress(function(e) {
             if (e.which < 0x20) {
                 // e.which < 0x20, then it's not a printable character
@@ -226,6 +226,7 @@
             }
         });
     }); //end if ready(fn)
+    
 
 </script>
 @endsection

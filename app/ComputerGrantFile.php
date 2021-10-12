@@ -11,6 +11,6 @@ class ComputerGrantFile extends Model
     protected $table = 'cgm_fail';
     protected $primarykey = 'id';
     protected $fillable = [
-        'permohonan_id', 'type', 'upload', 'web_path', 'created_by', 'updated_by', 'deleted_by'
+        'permohonan_id', 'user', 'type', 'upload', 'web_path', 'created_by', 'updated_by', 'deleted_by'
     ];
 }
