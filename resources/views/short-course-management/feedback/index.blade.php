@@ -1,4 +1,4 @@
-@extends('layouts.covid')
+@extends('layouts.public')
 
 @section('content')
     <main id="js-page-content" role="main" class="page-content"
