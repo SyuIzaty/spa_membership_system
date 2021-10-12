@@ -96,7 +96,6 @@
                                                                     <thead>
                                                                         <tr>
                                                                             <th class="text-center border-top-0 table-scale-border-bottom fw-700"></th>
-                                                                            <th class="text-center border-top-0 table-scale-border-bottom fw-700">Evaluate</th>
                                                                             <th class="border-top-0 table-scale-border-bottom fw-700">Title</th>
                                                                             <th class="border-top-0 table-scale-border-bottom fw-700">Start Date</th>
                                                                             <th class="border-top-0 table-scale-border-bottom fw-700">End Date</th>
@@ -105,53 +104,63 @@
                                                                             <th class="border-top-0 table-scale-border-bottom fw-700">Category</th>
                                                                             <th class="border-top-0 table-scale-border-bottom fw-700">Status</th>
                                                                             <th class="text-right border-top-0 table-scale-border-bottom fw-700">Approve Hours</th>
+                                                                            <th class="text-right border-top-0 table-scale-border-bottom fw-700">Evaluation Form</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
                                                                         @foreach ($data as $key => $details)
                                                                             <tr style="text-transform: uppercase">
                                                                                 <td class="text-center fw-700">{{ $no++ }}</td>
-                                                                                <td class="text-center fw-700">
-                                                                                    <a href="#" class="btn btn-success btn-xs" target="_blank"><i class="fal fa-link"></i></a>
-                                                                                    {{-- <button class="btn btn-xs btn-secondary" disabled style="pointer-events: none"><i class="fal fa-link"></i></button> --}}
-                                                                                </td>
                                                                                 <td class="text-left strong">{{ $details->title ?? '--'}}</td>
-                                                                                <td class="text-left">{{ $details->start_date ?? '--'}}</td>
-                                                                                <td class="text-left">{{ $details->end_date ?? '--'}}</td>
+                                                                                <td class="text-left">{{ date(' d/m/Y ', strtotime($details->start_date) )}}</td>
+                                                                                <td class="text-left">{{ date(' d/m/Y ', strtotime($details->end_date) )}}</td>
                                                                                 <td class="text-left">{{ $details->venue ?? '--'}}</td>
                                                                                 <td class="text-left">{{ $details->types->type_name ?? '--'}}</td>
                                                                                 <td class="text-left">{{ $details->categories->category_name ?? '--'}}</td>
                                                                                 <td class="text-left">{{ $details->claimStatus->status_name ?? '--'}}</td>
                                                                                 <td class="text-right">{{ $details->approved_hour ?? '--'}}</td>
+                                                                                <td class="text-right fw-700">
+                                                                                    @if($details->training_id == '0') {{-- others --}}
+                                                                                        <button class="btn btn-xs btn-secondary" disabled style="pointer-events: none"><i class="fal fa-link"></i></button>
+                                                                                    @else {{-- list --}}
+                                                                                        @if($details->type == '1' || $details->type == '2') {{-- internal --}}
+                                                                                            <a href="#" class="btn btn-success btn-xs" target="_blank"><i class="fal fa-link"></i></a> {{-- question --}}
+                                                                                            {{-- <a href="#" class="btn btn-info btn-xs" target="_blank"><i class="fal fa-link"></i></a> --}} {{-- answer --}}
+                                                                                        @else  {{-- external --}}
+                                                                                            <button class="btn btn-xs btn-secondary" disabled style="pointer-events: none"><i class="fal fa-link"></i></button>
+                                                                                        @endif
+                                                                                    @endif
+                                                                                </td>
                                                                             </tr>
                                                                         @endforeach
                                                                     </tbody>
                                                                 </table>
-                                                            </div>    
-                                                            <div class="row">
-                                                                <div class="col-sm-4 ml-sm-auto">
-                                                                    <table class="table table-clean">
-                                                                        <tbody>
-                                                                            <tr class="table-scale-border-top border-left-0 border-right-0 border-bottom-0">
-                                                                                <td class="text-left keep-print-font">
-                                                                                    <h5 class="m-0 fw-700 h4 keep-print-font color-primary-700">Total Current Training Hours</h5>
-                                                                                </td>
-                                                                                <td class="text-right keep-print-font">
-                                                                                    <h5 class="m-0 fw-700 h4 keep-print-font text-danger">{{ $data2 }}</h5>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td class="text-left keep-print-font">
-                                                                                    <h5 class="m-0 fw-700 h4 keep-print-font color-primary-700">Overall Required Training Hours</h5>
-                                                                                </td>
-                                                                                <td class="text-right keep-print-font">
-                                                                                    <h5 class="m-0 fw-700 h4 keep-print-font">{{ $hours->training_hour ?? '--' ?? '--' }}</h5>
-                                                                                </td>
-                                                                            </tr>
-                                                                        </tbody>
-                                                                    </table>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-sm-4 ml-sm-auto">
+                                                                        <table class="table table-clean">
+                                                                            <tbody>
+                                                                                <tr class="table-scale-border-top border-left-0 border-right-0 border-bottom-0">
+                                                                                    <td class="text-left keep-print-font">
+                                                                                        <h5 class="m-0 fw-700 h4 keep-print-font color-primary-700">Total Current Training Hours</h5>
+                                                                                    </td>
+                                                                                    <td class="text-right keep-print-font">
+                                                                                        <h5 class="m-0 fw-700 h4 keep-print-font text-danger">{{ $data2 }}</h5>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="text-left keep-print-font">
+                                                                                        <h5 class="m-0 fw-700 h4 keep-print-font color-primary-700">Overall Required Training Hours</h5>
+                                                                                    </td>
+                                                                                    <td class="text-right keep-print-font">
+                                                                                        <h5 class="m-0 fw-700 h4 keep-print-font">{{ $hours->training_hour ?? '--' ?? '--' }}</h5>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
+                                                            </div> 
                                                         @endif
                                                     </tbody>
                                                 </table>

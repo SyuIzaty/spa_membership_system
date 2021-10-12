@@ -68,7 +68,7 @@
                                             {{-- <option value="" selected disabled> Please select </option> --}}
                                             {{-- <option value="ALL"> ALL </option> --}}
                                             @foreach ($year as $years)
-                                                <option value="{{ $years->year }}" {{ $selectedYear == $years->year ? 'selected' : '' }}>{{ $years->year }} -> {{ $selectedYear }}</option>
+                                                <option value="{{ $years->year }}" {{ $selectedYear == $years->year ? 'selected' : '' }}>{{ $selectedYear }} -> {{ $years->year }}</option>
                                             @endforeach
                                         </select> 
                                     </div>
@@ -93,7 +93,6 @@
                             
                             <div class="col">
                                 <div class="tab-content" id="v-pills-tabContent">
-
                                     <div class="tab-pane active" id="pendings" role="tabpanel" style="margin-top: 5px"><br>
                                         <div class="col-sm-12 mb-4">
                                             @if (Session::has('message'))
@@ -103,7 +102,7 @@
                                                 <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('notification') }}</div>
                                             @endif
                                             <div class="table-responsive">
-                                                <table id="pending" class="table table-bordered table-hover table-striped w-100">
+                                                <table id="pen" class="table table-bordered table-hover table-striped w-100">
                                                     <thead>
                                                         <tr class="text-center bg-primary-50">
                                                             <th>#ID</th>
@@ -125,16 +124,16 @@
                                                             <td class="hasinput">
                                                                 <select id="data_types_P" name="data_types_P" class="form-control">
                                                                     <option value="">All</option>
-                                                                    @foreach($data_type as $data_types)
-                                                                        <option value="{{$data_types->type_name}}">{{strtoupper($data_types->type_name)}}</option>
+                                                                    @foreach($data_type as $data_typesP)
+                                                                        <option value="{{$data_typesP->type_name}}">{{strtoupper($data_typesP->type_name)}}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </td>
                                                             <td class="hasinput">
                                                                 <select id="data_categorys_P" name="data_categorys_P" class="form-control">
                                                                     <option value="">All</option>
-                                                                    @foreach($data_category as $data_categorys)
-                                                                        <option value="{{$data_categorys->category_name}}">{{strtoupper($data_categorys->category_name)}}</option>
+                                                                    @foreach($data_category as $data_categorysP)
+                                                                        <option value="{{$data_categorysP->category_name}}">{{strtoupper($data_categorysP->category_name)}}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </td>
@@ -154,7 +153,7 @@
                                     <div class="tab-pane" id="approves" role="tabpanel" style="margin-top: 5px"><br>
                                         <div class="col-sm-12 mb-4">
                                              <div class="table-responsive">
-                                                <table id="approve" class="table table-bordered table-hover table-striped w-100">
+                                                <table id="app" class="table table-bordered table-hover table-striped w-100">
                                                     <thead>
                                                         <tr class="text-center bg-primary-50">
                                                             <th>#ID</th>
@@ -176,16 +175,16 @@
                                                             <td class="hasinput">
                                                                 <select id="data_types_A" name="data_types_A" class="form-control">
                                                                     <option value="">All</option>
-                                                                    @foreach($data_type as $data_types)
-                                                                        <option value="{{$data_types->type_name}}">{{strtoupper($data_types->type_name)}}</option>
+                                                                    @foreach($data_type as $data_typesA)
+                                                                        <option value="{{$data_typesA->type_name}}">{{strtoupper($data_typesA->type_name)}}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </td>
                                                             <td class="hasinput">
                                                                 <select id="data_categorys_A" name="data_categorys_A" class="form-control">
                                                                     <option value="">All</option>
-                                                                    @foreach($data_category as $data_categorys)
-                                                                        <option value="{{$data_categorys->category_name}}">{{strtoupper($data_categorys->category_name)}}</option>
+                                                                    @foreach($data_category as $data_categorysA)
+                                                                        <option value="{{$data_categorysA->category_name}}">{{strtoupper($data_categorysA->category_name)}}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </td>
@@ -205,7 +204,7 @@
                                     <div class="tab-pane" id="rejects" role="tabpanel" style="margin-top: 5px"><br>
                                         <div class="col-sm-12 mb-4">
                                             <div class="table-responsive">
-                                                <table id="reject" class="table table-bordered table-hover table-striped w-100">
+                                                <table id="rej" class="table table-bordered table-hover table-striped w-100">
                                                     <thead>
                                                         <tr class="text-center bg-primary-50">
                                                             <th>#ID</th>
@@ -227,16 +226,16 @@
                                                             <td class="hasinput">
                                                                 <select id="data_types_R" name="data_types_R" class="form-control">
                                                                     <option value="">All</option>
-                                                                    @foreach($data_type as $data_types)
-                                                                        <option value="{{$data_types->type_name}}">{{strtoupper($data_types->type_name)}}</option>
+                                                                    @foreach($data_type as $data_typesR)
+                                                                        <option value="{{$data_typesR->type_name}}">{{strtoupper($data_typesR->type_name)}}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </td>
                                                             <td class="hasinput">
                                                                 <select id="data_categorys_R" name="data_categorys_R" class="form-control">
                                                                     <option value="">All</option>
-                                                                    @foreach($data_category as $data_categorys)
-                                                                        <option value="{{$data_categorys->category_name}}">{{strtoupper($data_categorys->category_name)}}</option>
+                                                                    @foreach($data_category as $data_categorysR)
+                                                                        <option value="{{$data_categorysR->category_name}}">{{strtoupper($data_categorysR->category_name)}}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </td>
@@ -507,7 +506,7 @@
             $('.modal-body .staffs').html(staffs); 
         })
 
-        $('#pending thead tr .hasinput').each(function(i)
+        $('#pen thead tr .hasinput').each(function(i)
         {
             $('input', this).on('keyup change', function()
             {
@@ -535,7 +534,7 @@
         var year = document.getElementById("year");
         var selectedYear = year.value;
 
-        var table = $('#pending').DataTable({
+        var table = $('#pen').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
@@ -571,7 +570,7 @@
                 } 
         });
 
-        $('#pending').on('click', '.btn-delete[data-remote]', function (e) {
+        $('#pen').on('click', '.btn-delete[data-remote]', function (e) {
             e.preventDefault();
             $.ajaxSetup({
                 headers: {
@@ -597,13 +596,17 @@
                     dataType: 'json',
                     data: {method: '_DELETE', submit: true}
                     }).always(function (data) {
-                        $('#pending').DataTable().draw(false);
+                        $('#pen').DataTable().draw(false);
                     });
                 }
             })
         });
 
-        $('#approve thead tr .hasinput').each(function(i)
+    });
+
+    $(document).ready(function()
+    {
+        $('#app thead tr .hasinput').each(function(i)
         {
             $('input', this).on('keyup change', function()
             {
@@ -628,7 +631,10 @@
             });
         });
 
-        var table = $('#approve').DataTable({
+        var year = document.getElementById("year");
+        var selectedYear = year.value;
+
+        var table = $('#app').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
@@ -664,7 +670,42 @@
                 } 
         });
 
-        $('#reject thead tr .hasinput').each(function(i)
+        $('#app').on('click', '.btn-delete[data-remote]', function (e) {
+                e.preventDefault();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                var url = $(this).data('remote');
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.value) {
+                        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                        $.ajax({
+                        url: url,
+                        type: 'DELETE',
+                        dataType: 'json',
+                        data: {method: '_DELETE', submit: true}
+                        }).always(function (data) {
+                            $('#app').DataTable().draw(false);
+                        });
+                    }
+                })
+        });
+    });
+
+    $(document).ready(function()
+    {
+        $('#rej thead tr .hasinput').each(function(i)
         {
             $('input', this).on('keyup change', function()
             {
@@ -689,7 +730,10 @@
             });
         });
 
-        var table = $('#reject').DataTable({
+        var year = document.getElementById("year");
+        var selectedYear = year.value;
+
+        var table = $('#rej').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
@@ -725,7 +769,7 @@
                 } 
         });
 
-        $('#approve').on('click', '.btn-delete[data-remote]', function (e) {
+        $('#rej').on('click', '.btn-delete[data-remote]', function (e) {
                 e.preventDefault();
                 $.ajaxSetup({
                     headers: {
@@ -751,48 +795,12 @@
                         dataType: 'json',
                         data: {method: '_DELETE', submit: true}
                         }).always(function (data) {
-                            $('#approve').DataTable().draw(false);
+                            $('#rej').DataTable().draw(false);
                         });
                     }
                 })
         });
-
-        $('#reject').on('click', '.btn-delete[data-remote]', function (e) {
-                e.preventDefault();
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                var url = $(this).data('remote');
-
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.value) {
-                        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-                        $.ajax({
-                        url: url,
-                        type: 'DELETE',
-                        dataType: 'json',
-                        data: {method: '_DELETE', submit: true}
-                        }).always(function (data) {
-                            $('#reject').DataTable().draw(false);
-                        });
-                    }
-                })
-        });
-
     });
-
-    
-
 
 </script>
 

@@ -26,10 +26,11 @@ use App\Exports\ClaimExport;
 use App\Exports\LatestClaimExport;
 use App\Exports\LatestRecordExport;
 use App\Exports\RecordExport;
+use App\Imports\BulkClaimImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Mail;
+use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade as PDF;
 
 class TrainingController extends Controller
@@ -91,10 +92,24 @@ class TrainingController extends Controller
  
              } else {
  
-                 return '<a href="/training-info/' . $train->id.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
-                         <button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-training/' . $train->id . '"><i class="fal fa-trash"></i></button>';
+                 return '<div class="btn-group"><a href="/training-info/' . $train->id.'" class="btn btn-sm btn-warning mr-1"><i class="fal fa-pencil"></i></a>
+                         <button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-training/' . $train->id . '"><i class="fal fa-trash"></i></button></div>';
              }
          })
+
+         ->addColumn('open', function ($train) {
+ 
+            $duration = TrainingList::where('id', $train->id)->whereDate('start_date','<=',Carbon::now())->whereDate('end_date','>=',Carbon::now())->first();
+
+            if(isset($duration)) {
+
+                return '<a target="_blank" href="/training-open-attendance/' . $train->id.'" class="btn btn-sm btn-info"><i class="fal fa-cog"></i></a>';
+
+            } else {
+
+                return '<button class="btn btn-sm btn-info" disabled style="pointer-events: none"><i class="fal fa-cog"></i></button>';
+            }
+        })
          
         ->editColumn('type', function ($train) {
 
@@ -117,14 +132,14 @@ class TrainingController extends Controller
 
         ->editColumn('date', function ($train) {
 
-            $start = isset($train->start_date) ? date(' Y-m-d ', strtotime($train->start_date)) : '--';
-            $end = isset($train->end_date) ? date(' Y-m-d ', strtotime($train->end_date)) : '--';
+            $start = isset($train->start_date) ? date(' Y-m-d ', strtotime($train->start_date)) : 'Y-m-d';
+            $end = isset($train->end_date) ? date(' Y-m-d ', strtotime($train->end_date)) : 'Y-m-d';
 
-            if($start != '' ) {
+            if($train->start_date != null) {
                 return $start.' - '.$end;
             } else {
                 return '--';
-            } // check semula
+            }  
         })
 
         ->editColumn('title', function ($train) {
@@ -137,29 +152,56 @@ class TrainingController extends Controller
             return $train->venue ?? '--';
         })
 
-        ->editColumn('evaluation', function ($train) {
+        ->editColumn('claim_hour', function ($train) {
              
-            $evaluate = $train->evaluations->evaluation ?? '--';
-
-            return '<p style="text-transform : uppercase">'.$evaluate.'</p>' ?? '--';
+            return $train->claim_hour ?? '--';
         })
 
-        ->editColumn('attendee', function ($train) {
-             
-            return 'not counted yet';
-            // return $value ?? 'NO PARTICIPANT'
+        ->editColumn('participant', function ($train) {
+            
+            $data = TrainingClaim::where('status', '2')->where('training_id', $train->id)->count();
+
+            if($data == '0') {
+                return '<p style="color : red"><b>NO PARTICIPANT</b></p>';
+            } else {
+                return $data;
+            }
         })
 
-        ->rawColumns(['action','evaluation','venue', 'attendee', 'title', 'date', 'category', 'type'])
+        ->rawColumns(['action','evaluation','venue', 'participant', 'title', 'date', 'category', 'type', 'open'])
         ->make(true);
      }
  
      public function storeTraining(Request $request)
      {
-         $request->validate([
-             'title'        => 'required',
-             'evaluation'   => 'required',
-         ]);
+        if($request->type == '3' && $request->type == '4') {
+            // external
+            $request->validate([
+                'title'         => 'required',
+                'type'          => 'required',
+                'category'      => 'required',
+                'start_date'    => 'required',
+                'end_date'      => 'required',
+                'start_time'    => 'required',
+                'end_time'      => 'required',
+                'venue'         => 'required',
+                'claim_hour'    => 'required',
+            ]);
+        } else {
+            // internal
+            $request->validate([
+                'title'         => 'required',
+                'type'          => 'required',
+                'category'      => 'required',
+                'start_date'    => 'required',
+                'end_date'      => 'required',
+                'start_time'    => 'required',
+                'end_time'      => 'required',
+                'venue'         => 'required',
+                'claim_hour'    => 'required',
+                'evaluation'    => 'required',
+            ]);
+        }
 
         $image = $request->upload_image;
         $paths = storage_path()."/training/";
@@ -177,6 +219,9 @@ class TrainingController extends Controller
                 'category'         => $request->category, 
                 'start_date'       => $request->start_date, 
                 'end_date'         => $request->end_date, 
+                'start_time'       => $request->start_time, 
+                'end_time'         => $request->end_time, 
+                'claim_hour'       => $request->claim_hour, 
                 'venue'            => $request->venue, 
                 'evaluation'       => $request->evaluation, 
                 'upload_image'     => $originalsName,
@@ -189,6 +234,9 @@ class TrainingController extends Controller
                 'category'         => $request->category, 
                 'start_date'       => $request->start_date, 
                 'end_date'         => $request->end_date, 
+                'start_time'       => $request->start_time, 
+                'end_time'         => $request->end_time, 
+                'claim_hour'       => $request->claim_hour, 
                 'venue'            => $request->venue, 
                 'evaluation'       => $request->evaluation, 
             ]);
@@ -202,46 +250,194 @@ class TrainingController extends Controller
      {
          $train = TrainingList::where('id', $request->id)->first();
          
-         $request->validate([
-            'title'         => 'required',
-            'evaluation'    => 'required',
-        ]);
+         if($request->type == '3' && $request->type == '4') {
+            // external
+            $request->validate([
+                'title'         => 'required',
+                'type'          => 'required',
+                'category'      => 'required',
+                'start_date'    => 'required',
+                'end_date'      => 'required',
+                'start_time'    => 'required',
+                'end_time'      => 'required',
+                'venue'         => 'required',
+                'claim_hour'    => 'required',
+            ]);
+        } else {
+            // internal
+            $request->validate([
+                'title'         => 'required',
+                'type'          => 'required',
+                'category'      => 'required',
+                'start_date'    => 'required',
+                'end_date'      => 'required',
+                'start_time'    => 'required',
+                'end_time'      => 'required',
+                'venue'         => 'required',
+                'claim_hour'    => 'required',
+                'evaluation'    => 'required',
+            ]);
+        }
 
         $image = $request->upload_image;
         $paths = storage_path()."/training/";
 
-        if (isset($image)) { 
-
-            $originalsName = $image->getClientOriginalName();
-            $fileSizes = $image->getSize();
-            $fileNames = $originalsName;
-            $image->storeAs('/training', $fileNames);
-
-            $train->update([
-                'title'            => strtoupper($request->title), 
-                'type'             => $request->type, 
-                'category'         => $request->category, 
-                'start_date'       => $request->start_date, 
-                'end_date'         => $request->end_date, 
-                'venue'            => $request->venue, 
-                'evaluation'       => $request->evaluation, 
-                'upload_image'     => $originalsName,
-                'web_path'         => "app/training/".$fileNames,
-            ]);
+        if($request->type != $train->type) {
+        // different type or not
+            if($train->type == '3' || $train->type == '4') {
+            // check former type external
+                if (isset($image)) { 
+                // upload image
+                    $originalsName = $image->getClientOriginalName();
+                    $fileSizes = $image->getSize();
+                    $fileNames = $originalsName;
+                    $image->storeAs('/training', $fileNames);
+        
+                    $train->update([
+                        'title'            => strtoupper($request->title), 
+                        'type'             => $request->type, 
+                        'category'         => $request->category, 
+                        'start_date'       => $request->start_date, 
+                        'end_date'         => $request->end_date, 
+                        'start_time'       => $request->start_time, 
+                        'end_time'         => $request->end_time, 
+                        'claim_hour'       => $request->claim_hour, 
+                        'venue'            => $request->venue, 
+                        'upload_image'     => $originalsName,
+                        'web_path'         => "app/training/".$fileNames,
+                        'evaluation'       => $request->evaluation, 
+                    ]);
+                } else {
+                    $train->update([
+                        'title'            => strtoupper($request->title), 
+                        'type'             => $request->type, 
+                        'category'         => $request->category, 
+                        'start_date'       => $request->start_date, 
+                        'end_date'         => $request->end_date, 
+                        'start_time'       => $request->start_time, 
+                        'end_time'         => $request->end_time, 
+                        'claim_hour'       => $request->claim_hour, 
+                        'venue'            => $request->venue, 
+                        'evaluation'       => $request->evaluation, 
+                    ]);
+                }
+            } else {
+            // check former type internal
+                if (isset($image)) { 
+                // upload image
+                    $originalsName = $image->getClientOriginalName();
+                    $fileSizes = $image->getSize();
+                    $fileNames = $originalsName;
+                    $image->storeAs('/training', $fileNames);
+        
+                    $train->update([
+                        'title'            => strtoupper($request->title), 
+                        'type'             => $request->type, 
+                        'category'         => $request->category, 
+                        'start_date'       => $request->start_date, 
+                        'end_date'         => $request->end_date, 
+                        'start_time'       => $request->start_time, 
+                        'end_time'         => $request->end_time, 
+                        'claim_hour'       => $request->claim_hour, 
+                        'venue'            => $request->venue, 
+                        'evaluation'       => null, 
+                        'upload_image'     => $originalsName,
+                        'web_path'         => "app/training/".$fileNames,
+                    ]);
+                } else {
+                    $train->update([
+                        'title'            => strtoupper($request->title), 
+                        'type'             => $request->type, 
+                        'category'         => $request->category, 
+                        'start_date'       => $request->start_date, 
+                        'end_date'         => $request->end_date, 
+                        'start_time'       => $request->start_time, 
+                        'end_time'         => $request->end_time, 
+                        'claim_hour'       => $request->claim_hour, 
+                        'venue'            => $request->venue, 
+                        'evaluation'       => null, 
+                    ]);
+                }
+            }
         } else {
-            $train->update([
-                'title'            => strtoupper($request->title), 
-                'type'             => $request->type, 
-                'category'         => $request->category, 
-                'start_date'       => $request->start_date, 
-                'end_date'         => $request->end_date, 
-                'venue'            => $request->venue, 
-                'evaluation'       => $request->evaluation, 
-            ]);
+        // same type
+            if($request->type == '3' || $request->type == '4') {
+            // external
+                if (isset($image)) { 
+
+                    $originalsName = $image->getClientOriginalName();
+                    $fileSizes = $image->getSize();
+                    $fileNames = $originalsName;
+                    $image->storeAs('/training', $fileNames);
+        
+                    $train->update([
+                        'title'            => strtoupper($request->title), 
+                        'type'             => $request->type, 
+                        'category'         => $request->category, 
+                        'start_date'       => $request->start_date, 
+                        'end_date'         => $request->end_date, 
+                        'start_time'       => $request->start_time, 
+                        'end_time'         => $request->end_time, 
+                        'claim_hour'       => $request->claim_hour, 
+                        'venue'            => $request->venue, 
+                        'upload_image'     => $originalsName,
+                        'web_path'         => "app/training/".$fileNames,
+                    ]);
+                } else {
+                    $train->update([
+                        'title'            => strtoupper($request->title), 
+                        'type'             => $request->type, 
+                        'category'         => $request->category, 
+                        'start_date'       => $request->start_date, 
+                        'end_date'         => $request->end_date, 
+                        'start_time'       => $request->start_time, 
+                        'end_time'         => $request->end_time, 
+                        'claim_hour'       => $request->claim_hour, 
+                        'venue'            => $request->venue, 
+                    ]);
+                }
+            } else {
+            // internal
+                if (isset($image)) { 
+
+                    $originalsName = $image->getClientOriginalName();
+                    $fileSizes = $image->getSize();
+                    $fileNames = $originalsName;
+                    $image->storeAs('/training', $fileNames);
+        
+                    $train->update([
+                        'title'            => strtoupper($request->title), 
+                        'type'             => $request->type, 
+                        'category'         => $request->category, 
+                        'start_date'       => $request->start_date, 
+                        'end_date'         => $request->end_date, 
+                        'start_time'       => $request->start_time, 
+                        'end_time'         => $request->end_time, 
+                        'claim_hour'       => $request->claim_hour, 
+                        'venue'            => $request->venue, 
+                        'evaluation'       => $request->evaluation, 
+                        'upload_image'     => $originalsName,
+                        'web_path'         => "app/training/".$fileNames,
+                    ]);
+                } else {
+                    $train->update([
+                        'title'            => strtoupper($request->title), 
+                        'type'             => $request->type, 
+                        'category'         => $request->category, 
+                        'start_date'       => $request->start_date, 
+                        'end_date'         => $request->end_date, 
+                        'start_time'       => $request->start_time, 
+                        'end_time'         => $request->end_time, 
+                        'claim_hour'       => $request->claim_hour, 
+                        'venue'            => $request->venue, 
+                        'evaluation'       => $request->evaluation, 
+                    ]);
+                }
+            }
         }
- 
-         Session::flash('notification', 'Training Info Successfully Updated');
-         return redirect('training-info/'.$train->id);
+
+        Session::flash('notification', 'Training Info Successfully Updated');
+        return redirect('training-info/'.$train->id);
      }
  
      public function deleteTraining($id)
@@ -258,8 +454,17 @@ class TrainingController extends Controller
         $data_evaluation = TrainingEvaluation::all();
         $data_type = TrainingType::all();
         $data_category = TrainingCategory::all();
+        $participant = TrainingClaim::where('training_id', $id)->where('status', '2')->get();
 
-        return view('training.parameter.training-info', compact('train','data_evaluation','data_type','data_category'));
+        return view('training.parameter.training-info', compact('train','data_evaluation','data_type','data_category','participant'))->with('no', 1);
+     }
+
+     public function trainingPdf($id)
+     {
+         $train = TrainingList::where('id', $id)->first();
+         $participant = TrainingClaim::where('training_id', $id)->where('status', '2')->get();
+
+         return view('training.parameter.training-pdf', compact('train','participant'))->with('no', 1);
      }
 
      public function getImage($file)
@@ -273,6 +478,56 @@ class TrainingController extends Controller
         $response->header("Content-Type", $filetype);
 
         return $response;
+    }
+
+    // Open Attendance
+
+    public function openAttendance($id, Request $request)
+    {  
+        $data = $data2 = $data3 =  '';
+
+        if($request->ids)
+        {
+            $result = new Staff();
+
+            if($request->ids != "")
+            {
+                $result = $result->where('staff_id', $request->ids)->orWhere('staff_ic', $request->ids);
+            }
+            
+            $data = $result->first();
+        }
+
+        $training = TrainingList::where('id', $id)->first();
+             
+        return view('training.parameter.training-open', compact('data','request','training'));
+    }
+
+    public function confirmAttendance(Request $request)
+    {
+        $staff = Staff::where('staff_id', $request->staff_id)->first();
+        $training = TrainingList::where('id', $request->train_id)->first();
+
+        TrainingClaim::create([
+            'staff_id'          => $staff->staff_id,
+            'training_id'       => $training->id,
+            'title'             => $training->title,
+            'type'              => $training->type,
+            'category'          => $training->category,
+            'start_date'        => $training->start_date,
+            'end_date'          => $training->end_date, 
+            'start_time'        => $training->start_time,
+            'end_time'          => $training->end_time, 
+            'venue'             => $training->venue,
+            'claim_hour'        => $training->claim_hour, 
+            'approved_hour'     => $training->claim_hour, 
+            'status'            => '2',
+            'form_type'         => 'AF',
+            'assigned_by'       => Auth::user()->id,
+        ]);
+
+        Session::flash('message');
+        return redirect('training-open-attendance/'.$request->train_id);
     }
 
     // Type
@@ -296,8 +551,8 @@ class TrainingController extends Controller
 
             } else {
 
-                return '<a href="" data-target="#crud-modals" data-toggle="modal" data-training="'.$type->id.'" data-type="'.$type->type_name.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
-                        <button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-type/' . $type->id . '"><i class="fal fa-trash"></i></button>';
+                return '<div class="btn-group"><a href="" data-target="#crud-modals" data-toggle="modal" data-training="'.$type->id.'" data-type="'.$type->type_name.'" class="btn btn-sm btn-warning mr-1"><i class="fal fa-pencil"></i></a>
+                        <button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-type/' . $type->id . '"><i class="fal fa-trash"></i></button></div>';
             }
         })
 
@@ -364,8 +619,8 @@ class TrainingController extends Controller
 
             } else {
 
-                return '<a href="" data-target="#crud-modals" data-toggle="modal" data-training="'.$cat->id.'" data-category="'.$cat->category_name.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
-                        <button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-category/' . $cat->id . '"><i class="fal fa-trash"></i></button>';
+                return '<div class="btn-group"><a href="" data-target="#crud-modals" data-toggle="modal" data-training="'.$cat->id.'" data-category="'.$cat->category_name.'" class="btn btn-sm btn-warning mr-1"><i class="fal fa-pencil"></i></a>
+                        <button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-category/' . $cat->id . '"><i class="fal fa-trash"></i></button></div>';
             }
         })
 
@@ -434,8 +689,8 @@ class TrainingController extends Controller
 
             } else {
 
-                return '<a href="" data-target="#crud-modals" data-toggle="modal" data-training="'.$hour->id.'" data-year="'.$hour->year.'" data-hour="'.$hour->training_hour.'" class="btn btn-sm btn-warning"><i class="fal fa-pencil"></i></a>
-                        <button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-hour/' . $hour->id . '"><i class="fal fa-trash"></i></button>';
+                return '<div class="btn-group"><a href="" data-target="#crud-modals" data-toggle="modal" data-training="'.$hour->id.'" data-year="'.$hour->year.'" data-hour="'.$hour->training_hour.'" class="btn btn-sm btn-warning mr-1"><i class="fal fa-pencil"></i></a>
+                        <button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-hour/' . $hour->id . '"><i class="fal fa-trash"></i></button></div>';
             }
         })
 
@@ -529,7 +784,7 @@ class TrainingController extends Controller
 
     public function findTraining(Request $request)
     {
-        $data = TrainingList::select('id', 'title', 'type','category','start_date','end_date','venue')
+        $data = TrainingList::select('id', 'title', 'type','category','start_date','end_date','start_time','end_time','venue','claim_hour')
             ->where('id',$request->id)
             ->first();
 
@@ -538,7 +793,6 @@ class TrainingController extends Controller
 
     public function claimStore(Request $request)
     {
-    
         if($request->training_id != '0') {
 
             $exist = TrainingClaim::where('training_id', $request->training_id)->where('staff_id', Auth::user()->id)->first();
@@ -575,6 +829,7 @@ class TrainingController extends Controller
                     'link'              => $request->link,
                     'claim_hour'        => $request->claim_hour, 
                     'status'            => '1',
+                    'form_type'         => 'SF',
                 ]);
 
                 $file = $request->file_name;
@@ -625,6 +880,7 @@ class TrainingController extends Controller
                 'link'              => $request->link,
                 'claim_hour'        => $request->claim_hour, 
                 'status'            => '1',
+                'form_type'         => 'SF',
             ]);
 
             $file = $request->file_name;
@@ -647,6 +903,157 @@ class TrainingController extends Controller
         }
         
         return redirect('/claim-form');
+    }
+
+    // Bulk Claim Form
+
+    public function bulkClaimForm()
+    {
+        $training_type = TrainingType::all();
+        $training_cat = TrainingCategory::all();
+        $training_list = TrainingList::all();
+        $staff = Staff::whereNotNull('staff_id')->orderBy('staff_dept','asc')->orderBy('staff_name','asc')->get();
+
+        return view('training.claim.bulk-claim-form', compact('training_type', 'training_cat', 'staff', 'training_list'));
+    }
+
+    public function bulkClaimTemplate()
+    {
+        $file = storage_path()."/template/STAFF_CLAIM_LISTS.xlsx";
+        $headers = array('Content-Type: application/xlsx',);
+        return Response::download($file, 'STAFF_CLAIM_LISTS.xlsx',$headers);
+    }
+
+    public function bulkClaimStore(Request $request)
+    {
+        // dd($request->training_id);
+        
+        if($request->training_id != '0') {
+
+            $train = TrainingList::where('id', $request->training_id)->first();
+            
+                if($request->rad_view == '0') {
+                // form view
+
+                    $request->validate([
+                        'training_id'   => 'required',
+                        'type'          => 'required',
+                        'category'      => 'required',
+                        'start_date'    => 'required',
+                        'start_time'    => 'required',
+                        'end_date'      => 'required',
+                        'end_time'      => 'required',
+                        'venue'         => 'required',
+                        'claim_hour'    => 'required',
+                        'staff_id'      => 'required',
+                    ]);
+
+                    foreach($request->input('staff_id') as $key => $value) {
+                        $claim = TrainingClaim::create([
+                            'staff_id'          => $value,
+                            'training_id'       => $train->id,
+                            'title'             => $train->title,
+                            'type'              => $request->type,
+                            'category'          => $request->category,
+                            'start_date'        => $request->start_date,
+                            'end_date'          => $request->end_date, 
+                            'start_time'        => $request->start_time,
+                            'end_time'          => $request->end_time, 
+                            'venue'             => $request->venue,
+                            'claim_hour'        => $request->claim_hour, 
+                            'status'            => '2',
+                            'form_type'         => 'AF',
+                            'approved_hour'     => $request->claim_hour, 
+                            'assigned_by'       => Auth::user()->id,
+                        ]);
+                    }
+
+                } else {
+                // upload view (rad_view == 1)
+                    
+                    $this->validate($request, [
+                        'import_file'   => 'required',
+                        'training_id'   => 'required',
+                        'type'          => 'required',
+                        'category'      => 'required',
+                        'start_date'    => 'required',
+                        'start_time'    => 'required',
+                        'end_date'      => 'required',
+                        'end_time'      => 'required',
+                        'venue'         => 'required',
+                        'claim_hour'    => 'required',
+                    ]);
+            
+                    Excel::import(new BulkClaimImport($train->id, $train->title, $request->type, $request->category, $request->start_date, $request->end_date, $request->start_time, 
+                    $request->end_time, $request->venue, $request->claim_hour), request()->file('import_file'));
+                }
+
+            Session::flash('message');
+           
+        } else { // if others @ 0
+
+            if($request->rad_view == '0') {
+                // form view
+
+                    $request->validate([
+                        'training_id'   => 'required',
+                        'title'         => 'required',
+                        'type'          => 'required',
+                        'category'      => 'required',
+                        'start_date'    => 'required',
+                        'start_time'    => 'required',
+                        'end_date'      => 'required',
+                        'end_time'      => 'required',
+                        'venue'         => 'required',
+                        'claim_hour'    => 'required',
+                        'staff_id'      => 'required',
+                    ]);
+
+                    foreach($request->input('staff_id') as $key => $value) {
+                        $claim = TrainingClaim::create([
+                            'staff_id'          => $value,
+                            'training_id'       => $train->id,
+                            'title'             => strtoupper($request->title),
+                            'type'              => $request->type,
+                            'category'          => $request->category,
+                            'start_date'        => $request->start_date,
+                            'end_date'          => $request->end_date, 
+                            'start_time'        => $request->start_time,
+                            'end_time'          => $request->end_time, 
+                            'venue'             => $request->venue,
+                            'claim_hour'        => $request->claim_hour, 
+                            'status'            => '2',
+                            'form_type'         => 'AF',
+                            'approved_hour'     => $request->claim_hour, 
+                            'assigned_by'       => Auth::user()->id,
+                        ]);
+                    }
+
+            } else {
+                // upload view (rad_view == 1)
+                    
+                    $this->validate($request, [
+                        'import_file'   => 'required',
+                        'training_id'   => 'required',
+                        'title'         => 'required',
+                        'type'          => 'required',
+                        'category'      => 'required',
+                        'start_date'    => 'required',
+                        'start_time'    => 'required',
+                        'end_date'      => 'required',
+                        'end_time'      => 'required',
+                        'venue'         => 'required',
+                        'claim_hour'    => 'required',
+                    ]);
+            
+                    Excel::import(new BulkClaimImport($train->id, $request->title, $request->type, $request->category, $request->start_date, $request->end_date, $request->start_time, 
+                    $request->end_time, $request->venue, $request->claim_hour), request()->file('import_file'));
+            }
+
+            Session::flash('message');
+        }
+        
+        return redirect('/bulk-claim-form');
     }
 
     // Claim Data
@@ -692,8 +1099,8 @@ class TrainingController extends Controller
 
         ->addColumn('action', function ($pendingClaim) {
             
-            return '<a href="/claim-info/' . $pendingClaim->id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
-                    <button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-claim/' . $pendingClaim->id . '"><i class="fal fa-trash"></i></button>';   
+            return '<div class="btn-group"><a href="/claim-info/' . $pendingClaim->id.'" class="btn btn-sm btn-primary mr-1"><i class="fal fa-eye"></i></a>
+                    <button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-claim/' . $pendingClaim->id . '"><i class="fal fa-trash"></i></button></div>';   
         })
 
         ->addColumn('approve', function ($pendingClaim) {
@@ -851,28 +1258,6 @@ class TrainingController extends Controller
         return view('training.claim.claim-info', compact('claim','attachment'));
     }
 
-    public function claimAttachment($filename,$type)
-    {
-        $path = storage_path().'/'.'app'.'/claim/'.$filename;
-
-        if($type == "Download")
-        {
-            if (file_exists($path)) {
-                return Response::file($path);
-            }
-        }
-        else
-        {
-            $file = File::get($path);
-            $filetype = File::mimeType($path);
-
-            $response = Response::make($file, 200);
-            $response->header("Content-Type", $type);
-
-            return $response;
-        }
-    }
-
     public function data_approve_claim(Request $request)
     {
         if($request->year != '') {
@@ -899,8 +1284,8 @@ class TrainingController extends Controller
 
         ->addColumn('action', function ($approveClaim) {
             
-            return '<a href="/claim-info/' . $approveClaim->id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
-                    <button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-claim/' . $approveClaim->id . '"><i class="fal fa-trash"></i></button>';   
+            return '<div class="btn-group"><a href="/claim-info/' . $approveClaim->id.'" class="btn btn-sm btn-primary mr-1"><i class="fal fa-eye"></i></a>
+                    <button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-claim/' . $approveClaim->id . '"><i class="fal fa-trash"></i></button></div>';   
         })
 
         ->editColumn('staff_id', function ($approveClaim) {
@@ -987,8 +1372,8 @@ class TrainingController extends Controller
 
         ->addColumn('action', function ($rejectClaim) {
             
-            return '<a href="/claim-info/' . $rejectClaim->id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
-                    <button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-claim/' . $rejectClaim->id . '"><i class="fal fa-trash"></i></button>';   
+            return '<div class="btn-group"><a href="/claim-info/' . $rejectClaim->id.'" class="btn btn-sm btn-primary mr-1"><i class="fal fa-eye"></i></a>
+                    <button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-claim/' . $rejectClaim->id . '"><i class="fal fa-trash"></i></button></div>';   
         })
 
         ->editColumn('staff_id', function ($rejectClaim) {
@@ -1057,6 +1442,67 @@ class TrainingController extends Controller
     public function exportLatestClaim($year)
     {
         return Excel::download(new LatestClaimExport($year),'LatestClaim.xlsx');
+    }
+
+    public function claimAttachment($filename,$type)
+    {
+        $path = storage_path().'/'.'app'.'/claim/'.$filename;
+
+        if($type == "Download")
+        {
+            if (file_exists($path)) {
+                return Response::file($path);
+            }
+        }
+        else
+        {
+            $file = File::get($path);
+            $filetype = File::mimeType($path);
+
+            $response = Response::make($file, 200);
+            $response->header("Content-Type", $type);
+
+            return $response;
+        }
+    }
+
+    public function fileStore(Request $request)
+    {
+        $file = $request->file('file');
+        $path=storage_path()."/claim/";
+
+        if (isset($file)) { 
+            $originalName = $file->getClientOriginalName();
+            $fileSize = $file->getSize();
+            $fileName = $originalName;
+            $file->storeAs('/claim', $fileName);
+            ClaimAttachment::create([
+                'claim_id'      => $request->ids,
+                'file_name'     => $originalName,
+                'file_size'     => $fileSize,
+                'web_path'      => "app/claim/".$fileName,
+            ]);
+        }
+
+        return response()->json(['success'=>$originalName]);
+    }
+
+    public function fileDestroy(Request $request)
+    {
+        $filename =  $request->get('filename');
+        ClaimAttachment::where('filename',$filename)->delete();
+        $path=storage_path().'"app/claim/'.$filename;
+        if (file_exists($path)) {
+            unlink($path);
+        }
+        return $filename;  
+    }
+
+    public function deleteFile($id)
+    {
+        $attach = ClaimAttachment::find($id);
+        $attach->delete();
+        return redirect()->back()->with('message', 'Attachment Deleted Successfully');
     }
 
     // Claim Record
@@ -1438,10 +1884,9 @@ class TrainingController extends Controller
     
     public function questionPdf($id)
     {
-        $evaluate = TrainingEvaluationQuestion::orderby('sequence','ASC')->where('evaluation_id', $id)->get();
-        // dd($evaluate);
+        $header = TrainingEvaluationHead::orderBy('sequence', 'ASC')->where('evaluation_id', $id)->get();
 
-        return view('training.evaluation.question-pdf', compact('evaluate'));
+        return view('training.evaluation.question-pdf', compact('header'));
     }
 
 

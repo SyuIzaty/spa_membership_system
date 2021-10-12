@@ -31,7 +31,7 @@
                                         <label> Year Selection : </label>
                                         <select class="selectfilter form-control" name="year" id="year">
                                             @foreach ($year as $years)
-                                                <option value="{{ $years->year }}" {{ $selectedYear == $years->year ? 'selected' : '' }}>{{ $years->year }} -> {{ $selectedYear }}</option>
+                                                <option value="{{ $years->year }}" {{ $selectedYear == $years->year ? 'selected' : '' }}>{{ $selectedYear }} -> {{ $years->year }}</option>
                                             @endforeach
                                         </select> 
                                     </div>
@@ -222,6 +222,7 @@
                                                                     <th>Category</th>
                                                                     <th>Claim Hour</th>
                                                                     <th>Status</th>
+                                                                    <th>Action</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -245,6 +246,7 @@
                                                                                 ( {{ $detail->reject_reason ?? '--' }} )
                                                                             @endif
                                                                         </td>
+                                                                        <td class="text-center"><a href="/claim-info/{{ $detail->id }}" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a></td>
                                                                     </tr>
                                                                 @endforeach
                                                             </tbody>

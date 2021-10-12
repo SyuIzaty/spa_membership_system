@@ -16,10 +16,6 @@
                         EvaluationID : #{{ $evaluate->id }}
                     </h2>
                     <div class="panel-toolbar">
-                        <div class="custom-control custom-switch mr-2">
-                            <input type="checkbox" class="custom-control-input" id="customSwitch2" checked="">
-                            <label class="custom-control-label" for="customSwitch2">Default</label>
-                        </div> 
                         <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
                         <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
                         <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10" data-original-title="Close"></button>
@@ -30,24 +26,19 @@
                     <div class="panel-content">
                         <div class="row">
                                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                    <a class="nav-link mb-2 active" id="current-tab" data-toggle="pill" href="#current" role="tab" aria-controls="current" aria-selected="false" style="border: 1px solid;">
+                                    <a class="nav-link mb-2 active" id="current-tab" data-toggle="pill" href="#current" role="tab" style="border: 1px solid;">
                                         <i class="fal fa-info-circle"></i>
                                         <span class="hidden-sm-down ml-1"> EVALUATION HEADER </span>
                                     </a>
                                     @foreach ($evaluation as $count => $eval)
-                                        <a class="nav-link mb-2" id="nav-home-tab-{{$eval->id}}" data-toggle="pill" href="#nav-home-{{$eval->id}}" role="tab" aria-controls="{{$eval->id}}" aria-selected="false" style="border: 1px solid;">
-                                            {{-- @if($count == 0) class="nav-item nav-link" @else()class="nav-item nav-link "@endif --}}
+                                        <a class="nav-link mb-2" id="nav-home-tab-{{$eval->sequence}}" data-toggle="pill" href="#nav-home-{{$eval->sequence}}" role="tab" style="border: 1px solid;">
                                             <i class="fal fa-eraser"></i>
                                             <span class="hidden-sm-down ml-1">{{ strtoupper($eval->question_head) }}</span>
                                         </a>
                                     @endforeach
-                                    {{-- @if(isset($evaluation)) --}}
-                                        {{-- <a class="nav-link mb-2" id="preview-tab" data-toggle="pill" href="#preview" role="tab" aria-controls="preview" aria-selected="false" style="border: 1px solid;">
-                                            <i class="fal fa-eye"></i>
-                                            <span class="hidden-sm-down ml-1"> PREVIEW </span>
-                                        </a> --}}
+                                    @if($evaluation->first())
                                         <a class="nav-link mb-2" data-page="/question-pdf/{{ $id }}" onclick="Print(this)" style="font-weight: 500; cursor: pointer; color: #886ab5; border: 1px solid"><i class="fal fa-eye"></i> PREVIEW</a>
-                                    {{-- @endif --}}
+                                    @endif
                                 </div>
                              
                             <div class="col">
@@ -69,9 +60,7 @@
                                                             <tr>
                                                                 <input type="hidden" name="te_id" value="{{ $id }}">
                                                                 <td><input type="text" name="head[]" placeholder="Question Header" class="form-control head" /></td>
-                                                                <td style="width: 20%">
-                                                                    <input type="color" value="#ffffff" class="form-control" id="color" name="color[]">
-                                                                </td>
+                                                                <td style="width: 20%"><input type="color" value="#ffffff" class="form-control" id="color" name="color[]"></td>
                                                                 <td><button type="button" name="addhead" id="addhead" class="btn btn-success btn-sm"><i class="fal fa-plus"></i></button></td>
                                                             </tr>
                                                         </table>
@@ -112,8 +101,7 @@
                                     </div>
 
                                     @foreach ($evaluation as $count => $eval)
-                                        <div class="tab-pane" id="nav-home-{{$eval->id}}" role="tabpanel">
-                                            {{-- <div @if($count == 0) class="tab-pane" @else class="tab-pane" @endif id="nav-home-{{$eval->id}}" role="tabpanel"> --}}
+                                        <div class="tab-pane" id="nav-home-{{$eval->sequence}}" role="tabpanel">
                                             <div class="col-sm-12 mb-4">
                                                 <div class="card card-primary card-outline">
                                                     <div class="card-header">
@@ -148,14 +136,11 @@
                                                             <br><br>
                                                         {!! Form::close() !!}
                                                         <br><br>
-                                                        {{-- @if (Session::has('messageQuestion'))
-                                                            <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('messageQuestion') }}</div>
-                                                        @endif --}}
-                                                        <table class="table table-bordered editable mt-5" id="editable">
+                                                        <table class="table table-bordered editable mt-5 w-100" id="editable">
                                                             <thead class="bg-primary-50">
                                                                 <tr>
                                                                     <td style="width: 5px">No</td>
-                                                                    <td>Question</td>
+                                                                    <td style="width: 900px">Question</td>
                                                                     <td>Type</td>
                                                                 </tr>
                                                             </thead>
@@ -206,142 +191,6 @@
                 "initComplete": function(settings, json) {
                 }
         });
-
-        // Add Header
-            $('#addhead').click(function(){
-                i++;
-                $('#head_field').append(`
-                <tr id="row${i}" class="head-added">
-                <td><input type="text" name="head[]" placeholder="Question Header" class="form-control head" /></td>
-                <td>
-                    <input type="color" value="#ffffff" class="form-control" id="color" name="color[]">
-                </td>
-                <td><button type="button" name="remove" id="${i}" class="btn btn-sm btn-danger btn_remove"><i class="fal fa-trash"></i></button></td>
-                </tr>
-                `);
-                $('.eval_rate, .evaluatee').select2();
-            });
-
-            var postURL = "<?php echo url('addmore'); ?>";
-            var i=1;
-
-            $.ajaxSetup({
-                headers:{
-                'X-CSRF-Token' : $("input[name=_token]").val()
-                }
-            });
-
-            $(document).on('click', '.btn_remove', function(){
-                var button_id = $(this).attr("id");
-                $('#row'+button_id+'').remove();
-            });
-
-            $.ajaxSetup({
-                headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            $('.headedit').Tabledit({
-                url:'{{ route("updateHeader") }}',
-                dataType:"json",
-                columns:{
-                    identifier:[1, 'id'],
-                    editable:[[2, 'question'],[5,'color']]
-                },
-                restoreButton:false,
-
-                onSuccess:function(data, textStatus, jqXHR){
-                    if(data.action == 'delete'){
-                        $('#'+data.id).remove();
-                    }
-                }
-            });
-
-            $('.category_color').each(function(){
-                var selected = $(this).data('selected');
-                var color = `<input type="hidden" name="color" data-type="changed" class="select_color" value="${selected}"><input type="color" class="color form-control" value="${selected}">`;
-                $(this).html(color);
-                $(this).children('select').val(selected).change();
-            });
-
-            $('.color').on('change',function(){
-                var selected = $(this).val();
-                $(this).siblings('.select_color').val(selected);
-            });
-
-            $('.tabledit-edit-button').on('click',function(){
-                $('input[data-type="changed"]').each(function(){
-                    if($(this).hasClass('tabledit-input')){
-                        $(this).removeClass('tabledit-input');
-                    }
-                });
-                $(this).closest('tr').find('.select,.select_color').addClass('tabledit-input');
-            });
-
-            $('table.editable thead').each(function(){
-                $(this).find('tr:eq(1)').each(function(){
-                    $(this).children('td').eq(3).html('');
-                });
-            });
-
-            $('#editable tbody').sortable({
-                placeholder : "ui-state-highlight",
-                opacity: 0.9,
-                update: function(event, ui)
-                {
-                    var te_id = $(this).data('teid');
-                    var sequence = new Array();
-                    $(this).children('tr').each(function(){
-                        sequence.push($(this).attr('id'));
-                    });
-
-                    $.ajax({
-                        url:'{{ route("reorderQuestion") }}',
-                        method:"POST",
-                        data:{sequence:sequence, action:'update',te_id:te_id},
-                        success:function()
-                        {
-                            location.reload();
-                        }
-                    })
-                }
-            });
-
-            $('.headedit').find('tr').each(function() {
-                var $tda = $(this).find('td'),
-                total = $tda.eq(5).text();
-                if(total >= 1){
-                    $tda.eq(6).html("<p class='badge border border-danger text-danger'>Exist</p>");
-                }
-            })
-
-            $('#headedit tbody').sortable({
-                placeholder : "ui-state-highlight",
-                opacity: 0.9,
-                update: function(event, ui)
-                {
-                    var e_id = $(this).data('eid');
-                    var sequence = new Array();
-
-                    $(this).children('tr').each(function(){
-                        sequence.push($(this).attr('id'));
-                    });
-
-                    $.ajax({
-                        url:'{{ route("reorderHeader") }}',
-                        method:"POST",
-                        data:{sequence:sequence, action:'update', e_id:e_id},
-                        success:function()
-                        {
-                            location.reload();
-                        }
-                    })
-                }
-            });
-
-        // End Header
-
 
         // Add Question
 
@@ -406,15 +255,166 @@
 
             $('.eval_rate').select2();
 
-            $('.editable').find('tr').each(function() {
-                var $tds = $(this).find('td'),
-                all = $tds.eq(5).text();
-                if(all >= 1){
-                    $tds.eq(7).html("<p class='badge border border-danger text-danger'>Exist</p>");
+            // $('.editable').find('tr').each(function() {
+            //     var $tds = $(this).find('td'),
+            //     all = $tds.eq(5).text();
+            //     if(all >= 1){
+            //         $tds.eq(7).html("<p class='badge border border-danger text-danger'>Exist</p>");
+            //     }
+            // });
+
+            // $('.editable').find('tr').each(function() {
+            //     var $tds = $(this).find('td'),
+            //     all = $tds.eq(5).text();
+            //     result = $tds.eq(6).text();
+            //     if(all >= 1){
+            //         $tds.eq(7).html("<p class='badge border border-danger text-danger'>Exist</p>");
+            //     }
+            //     if(result >= 1){
+            //         $tds.eq(7).html("<p class='badge border border-danger text-danger'>Exist</p>");
+            //     }
+            // });
+
+
+        // End: Table Question
+
+        // Add Header
+            $('#addhead').click(function(){
+                i++;
+                $('#head_field').append(`
+                <tr id="row${i}" class="head-added">
+                <td><input type="text" name="head[]" placeholder="Question Header" class="form-control head" /></td>
+                <td><input type="color" value="#ffffff" class="form-control" id="color" name="color[]"></td>
+                <td><button type="button" name="remove" id="${i}" class="btn btn-sm btn-danger btn_remove"><i class="fal fa-trash"></i></button></td>
+                </tr>
+                `);
+                $('.eval_rate').select2();
+            });
+
+            var postURL = "<?php echo url('addmore'); ?>";
+            var i=1;
+
+            $.ajaxSetup({
+                headers:{
+                'X-CSRF-Token' : $("input[name=_token]").val()
                 }
             });
 
-        // End: Table Question
+            $(document).on('click', '.btn_remove', function(){
+                var button_id = $(this).attr("id");
+                $('#row'+button_id+'').remove();
+            });
+
+            $.ajaxSetup({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $('.headedit').Tabledit({
+                url:'{{ route("updateHeader") }}',
+                dataType:"json",
+                columns:{
+                    identifier:[1, 'id'],
+                    editable:[[2, 'question'],[5, 'color']]
+                },
+                restoreButton:false,
+
+                onSuccess:function(data, textStatus, jqXHR){
+                    if(data.action == 'delete'){
+                        $('#'+data.id).remove();
+                        location.reload();
+                    }
+                }
+            });
+
+            $('.category_color').each(function(){
+                var selected = $(this).data('selected');
+                var color = `<input type="hidden" name="color" data-type="changed" class="select_color" value="${selected}"><input type="color" class="color form-control" value="${selected}">`;
+                $(this).html(color);
+                $(this).children('select').val(selected).change();
+            });
+
+            $('.color').on('change',function(){
+                var selected = $(this).val();
+                $(this).siblings('.select_color').val(selected);
+            });
+
+            $('.tabledit-edit-button').on('click',function(){
+                $('input[data-type="changed"]').each(function(){
+                    if($(this).hasClass('tabledit-input')){
+                        $(this).removeClass('tabledit-input');
+                    }
+                });
+                $(this).closest('tr').find('.select_color').addClass('tabledit-input');
+            });
+
+            $('table.editable thead').each(function(){
+                $(this).find('tr:eq(1)').each(function(){
+                    $(this).children('td').eq(3).html('');
+                });
+            });
+
+            $('#editable tbody').sortable({
+                placeholder : "ui-state-highlight",
+                opacity: 0.9,
+                update: function(event, ui)
+                {
+                    var te_id = $(this).data('teid');
+                    var sequence = new Array();
+                    $(this).children('tr').each(function(){
+                        sequence.push($(this).attr('id'));
+                    });
+
+                    $.ajax({
+                        url:'{{ route("reorderQuestion") }}',
+                        method:"POST",
+                        data:{sequence:sequence, action:'update',te_id:te_id},
+                        success:function()
+                        {
+                            location.reload();
+                        }
+                    })
+                }
+            });
+
+            // $('.headedit').find('tr').each(function() {
+            //     var $tda = $(this).find('td'),
+            //     total = $tda.eq(5).text();
+            //     result = $tda.eq(6).text();
+            //     if(total >= 1){
+            //         $tda.eq(8).html("<p class='badge border border-danger text-danger'>Exist</p>");
+            //     }
+            //     if(result >= 1){
+            //         $tda.eq(8).html("<p class='badge border border-danger text-danger'>Exist</p>");
+            //     }
+            // })
+
+            $('#headedit tbody').sortable({
+                placeholder : "ui-state-highlight",
+                opacity: 0.9,
+                update: function(event, ui)
+                {
+                    var e_id = $(this).data('eid');
+                    var sequence = new Array();
+
+                    $(this).children('tr').each(function(){
+                        sequence.push($(this).attr('id'));
+                    });
+
+                    $.ajax({
+                        url:'{{ route("reorderHeader") }}',
+                        method:"POST",
+                        data:{sequence:sequence, action:'update', e_id:e_id},
+                        success:function()
+                        {
+                            location.reload();
+                        }
+                    })
+                }
+            });
+
+        // End Header
 
             $('#add').click(function(){
                 i++;

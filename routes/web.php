@@ -468,6 +468,7 @@ Route::post('update-training', 'TrainingController@updateTraining');
 Route::delete('delete-training/{id}', 'TrainingController@deleteTraining')->name('deleteTraining');
 Route::get('/training-info/{id}', 'TrainingController@trainingInfo');
 Route::get('get-train-image/{filename}', 'TrainingController@getImage');
+Route::get('/training-pdf/{id}','TrainingController@trainingPdf');
 
 // Training : Type
 Route::get('/type-list', 'TrainingController@typeList');
@@ -508,6 +509,20 @@ Route::get('/claim-slip/{id?}/{year?}/{type?}','TrainingController@claimSlip');
 Route::get('/export-claim', 'TrainingController@exportClaim');
 Route::get('/export-latest-claim/{year?}', 'TrainingController@exportLatestClaim');
 Route::get('/findTraining', 'TrainingController@findTraining');
+
+
+Route::post('store-file','TrainingController@fileStore');
+Route::post('delete-file','TrainingController@fileDestroy');
+Route::get('deleteFile/{id}', 'TrainingController@deleteFile')->name('deleteFile');
+
+// Training : Bulk Claim
+Route::get('/bulk-claim-form', 'TrainingController@bulkClaimForm');
+Route::post('store-bulk-claim', 'TrainingController@bulkClaimStore');
+Route::get('/bulkClaimTemplate','TrainingController@bulkClaimTemplate');
+
+// Training : Open Attendance
+Route::get('/training-open-attendance/{id}', 'TrainingController@openAttendance')->name('openAttendance');
+Route::post('training-confirm-attendance', 'TrainingController@confirmAttendance');
 
 // Training : Record
 Route::get('/claim-all-slip/{id?}/{year?}','TrainingController@claimAll');

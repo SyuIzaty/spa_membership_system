@@ -47,15 +47,15 @@
                                                                 <div class="form-group">
                                                                     <td width="25%"><label class="form-label" for="title"><span class="text-danger">*</span> Title : </label></td>
                                                                     <td colspan="3">
-                                                                        <input class="form-control" id="title" name="title" value="{{ $train->title }}">
+                                                                        <input class="form-control" id="title" name="title" value="{{ $train->title }}" required>
                                                                     </td>
                                                                 </div>
                                                             </tr>
                                                             <tr>
                                                                 <div class="form-group">
-                                                                    <td width="25%"><label class="form-label" for="start_date"> Start Date : </label></td>
+                                                                    <td width="25%"><label class="form-label" for="start_date"><span class="text-danger">*</span>  Start Date : </label></td>
                                                                     <td colspan="3">
-                                                                        <input type="date" class="form-control" id="start_date" name="start_date" value="{{ isset($train->start_date) ? date('Y-m-d', strtotime($train->start_date)) : old('start_date') }}">
+                                                                        <input type="date" class="form-control" id="start_date" name="start_date" value="{{ isset($train->start_date) ? date('Y-m-d', strtotime($train->start_date)) : old('start_date') }}" required>
                                                                         @error('start_date')
                                                                             <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                         @enderror
@@ -64,9 +64,9 @@
                                                             </tr>
                                                             <tr>
                                                                 <div class="form-group">
-                                                                    <td width="25%"><label class="form-label" for="end_date"> End Date : </label></td>
+                                                                    <td width="25%"><label class="form-label" for="end_date"><span class="text-danger">*</span>  End Date : </label></td>
                                                                     <td colspan="3">
-                                                                        <input type="date" class="form-control" id="end_date" name="end_date" value="{{ isset($train->end_date) ? date('Y-m-d', strtotime($train->end_date)) : old('end_date') }}">
+                                                                        <input type="date" class="form-control" id="end_date" name="end_date" value="{{ isset($train->end_date) ? date('Y-m-d', strtotime($train->end_date)) : old('end_date') }}" required>
                                                                         @error('end_date')
                                                                             <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                         @enderror
@@ -75,9 +75,31 @@
                                                             </tr>
                                                             <tr>
                                                                 <div class="form-group">
-                                                                    <td width="25%"><label class="form-label" for="type"> Type : </label></td>
+                                                                    <td width="25%"><label class="form-label" for="start_time"><span class="text-danger">*</span>  Start Time : </label></td>
                                                                     <td colspan="3">
-                                                                        <select class="form-control" name="type" id="type">
+                                                                        <input type="time" class="form-control" id="start_time" name="start_time" value="{{ isset($train->start_time) ? date('h:i', strtotime($train->start_time)) : old('start_time') }}" required>
+                                                                        @error('start_time')
+                                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                        @enderror
+                                                                    </td>
+                                                                </div>
+                                                            </tr>
+                                                            <tr>
+                                                                <div class="form-group">
+                                                                    <td width="25%"><label class="form-label" for="end_time"><span class="text-danger">*</span>  End Time : </label></td>
+                                                                    <td colspan="3">
+                                                                        <input type="time" class="form-control" id="end_time" name="end_time" value="{{ isset($train->end_time) ? date('h:i', strtotime($train->end_time)) : old('end_time') }}" required>
+                                                                        @error('end_time')
+                                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                        @enderror
+                                                                    </td>
+                                                                </div>
+                                                            </tr>
+                                                            <tr>
+                                                                <div class="form-group">
+                                                                    <td width="25%"><label class="form-label" for="type"><span class="text-danger">*</span>  Type : </label></td>
+                                                                    <td colspan="3">
+                                                                        <select class="form-control" name="type" id="type" required>
                                                                             <option value="">Please Select</option>
                                                                             @foreach ($data_type as $types) 
                                                                                 <option value="{{ $types->id }}" {{ $train->type == $types->id ? 'selected="selected"' : '' }}>{{ strtoupper($types->type_name) }}</option>
@@ -91,9 +113,9 @@
                                                             </tr>
                                                             <tr>
                                                                 <div class="form-group">
-                                                                    <td width="25%"><label class="form-label" for="category"> Category : </label></td>
+                                                                    <td width="25%"><label class="form-label" for="category"><span class="text-danger">*</span>  Category : </label></td>
                                                                     <td colspan="3">
-                                                                        <select class="form-control" name="category" id="category">
+                                                                        <select class="form-control" name="category" id="category" required>
                                                                             <option value="">Please Select</option>
                                                                             @foreach ($data_category as $categories) 
                                                                                 <option value="{{ $categories->id }}" {{ $train->category == $categories->id ? 'selected="selected"' : '' }}>{{ strtoupper($categories->category_name) }}</option>
@@ -107,13 +129,21 @@
                                                             </tr>
                                                             <tr>
                                                                 <div class="form-group">
-                                                                    <td width="25%"><label class="form-label" for="venue"> Venue : </label></td>
+                                                                    <td width="25%"><label class="form-label" for="venue"><span class="text-danger">*</span>  Venue : </label></td>
                                                                     <td colspan="3">
-                                                                        <input class="form-control" id="venue" name="venue" value="{{ $train->venue }}">
+                                                                        <input class="form-control" id="venue" name="venue" value="{{ $train->venue }}" required>
                                                                     </td>
                                                                 </div>
                                                             </tr>
                                                             <tr>
+                                                                <div class="form-group">
+                                                                    <td width="25%"><label class="form-label" for="claim_hour"><span class="text-danger">*</span>  Claim Hours : </label></td>
+                                                                    <td colspan="3">
+                                                                        <input type="number" step="any" class="form-control" id="claim_hour" name="claim_hour" value="{{ $train->claim_hour }}" required>
+                                                                    </td>
+                                                                </div>
+                                                            </tr>
+                                                            <tr class="eval">
                                                                 <div class="form-group">
                                                                     <td width="25%"><label class="form-label" for="evaluation"><span class="text-danger">*</span> Evaluation : </label></td>
                                                                     <td colspan="3">
@@ -144,7 +174,14 @@
                                                                 <div class="form-group">
                                                                     <td width="25%"><label class="form-label"> Total Participant : </label></td>
                                                                     <td colspan="3">
-                                                                        No Participant
+                                                                        <?php
+                                                                            $data = \App\TrainingClaim::where('status', '2')->where('training_id', $train->id)->count();
+                                                                        ?>
+                                                                        @if($data == '0') 
+                                                                            <p style="color : red"><b>NO PARTICIPANT</b></p>
+                                                                        @else 
+                                                                            <p><b>{{ $data }}</b></p>
+                                                                        @endif
                                                                     </td>
                                                                 </div>
                                                             </tr>
@@ -204,107 +241,46 @@
                                     <div class="card card-primary card-outline">
                                         <div class="card-header">
                                             <h5 class="card-title w-100"><i class="fal fa-users width-2 fs-xl"></i>LIST OF PARTICIPANT
-                                                {{-- @if($training_history->first() != null) --}}
-                                                <a data-page="#" class="float-right" style="cursor: pointer" onclick="Print(this)"><i class="fal fa-file-pdf" style="color: red; font-size: 20px"></i></a>
-                                            {{-- @endif --}}
+                                                @if($participant->first() != null)
+                                                    <a data-page="/training-pdf/{{ $train->id }}" class="float-right" style="cursor: pointer" onclick="Print(this)"><i class="fal fa-file-pdf" style="color: red; font-size: 20px"></i></a>
+                                                @endif
                                             </h5>
                                         </div>
                                         <div class="card-body">
                                             <div class="table-responsive">
-                                                {{-- <table id="log" class="table table-bordered table-hover table-striped w-100">
+                                                <table id="log" class="table table-bordered table-hover table-striped w-100">
                                                     <thead>
-                                                        <tr align="center" class="bg-primary-50">
-                                                            <th style="vertical-align: middle">#ID</th>
-                                                            <th style="vertical-align: middle">StockIn (+)</th>
-                                                            <th style="vertical-align: middle">StockOut (-)</th>
-                                                            <th style="vertical-align: middle">Balance (=)</th>
-                                                            <th style="vertical-align: middle">UnitPrice (RM)</th>
-                                                            <th style="vertical-align: middle">Status</th>
-                                                            <th style="vertical-align: middle">Transaction Date</th>
-                                                            <th style="vertical-align: middle">Remark</th>
-                                                            <th style="vertical-align: middle">L.O. Number</th>
-                                                            <th style="vertical-align: middle">Invoice Number</th>
-                                                            <th style="vertical-align: middle">Purchase Date</th>
-                                                            <th style="vertical-align: middle">Supply Type</th>
-                                                            <th style="vertical-align: middle">Supply To</th>
-                                                            <th style="vertical-align: middle">Reason</th>
-                                                            <th style="vertical-align: middle">Created By</th>
-                                                            <th style="vertical-align: middle">Created Date</th>
-                                                            <th style="vertical-align: middle">Action</th>
+                                                        <tr class="bg-primary-50 text-center">
+                                                            <th>NO</th>
+                                                            <th>TICKET #ID</th>
+                                                            <th>ID</th>
+                                                            <th>NAME</th>
+                                                            <th>POSITION</th>
+                                                            <th>DEPARTMENT</th>
                                                         </tr>
                                                         <tr>
                                                             <td class="hasinput"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Stock In"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Stock Out"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Balance"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Unit Price"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Status"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Transaction Date"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Remark"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="L.O. Number"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Invoice Number"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Purchase Date"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Reason"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Supply Type"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Supply To"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Created By"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Created At"></td>
-                                                            <td class="hasinput"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Ticket"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Name"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Position"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Department"></td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                    @php $total_bal = 0; @endphp
-
-                                                    @foreach($stock->transaction as $list)
-                                                    <tr align="center" class="data-row">
-                                                        <td>{{ isset($list->id) ? $list->id : '--'}}</td>
-                                                        <td>{{ isset($list->stock_in) ? $list->stock_in : '--'}}</td>
-                                                        <td>{{ isset($list->stock_out) ? $list->stock_out : '--'}}</td>
-                                                        <td>{{ $total_bal += ($list->stock_in - $list->stock_out) }}</td>
-                                                        <td>{{ isset($list->unit_price) ? $list->unit_price : '--'}}</td>
-                                                        @if($list->status == '1')
-                                                            <td style="background-color: #1dc9b7">
-                                                                <div style="text-transform: uppercase; color: #000000"><b>IN</b></div>
-                                                            </td>
-                                                        @else
-                                                            <td style="background-color: #fd3995">
-                                                                <div style="text-transform: uppercase; color: #000000"><b>OUT</b></div>
-                                                            </td>
-                                                        @endif
-                                                        </td>
-                                                        <td>{{ isset($list->trans_date) ? date('Y-m-d', strtotime($list->trans_date)) : '--' }}</td>
-                                                        <td>{{ isset($list->remark) ? $list->remark : '--'}}</td>
-                                                        <td>{{ isset($list->lo_no) ? $list->lo_no : '--'}}</td>
-                                                        <td>{{ isset($list->io_no) ? $list->io_no : '--'}}</td>
-                                                        <td>{{ isset($list->purchase_date) ? date('Y-m-d', strtotime($list->purchase_date)) : '--' }}</td>
-                                                        @if($list->supply_type == 'INT')
-                                                            <td>INTERNAL</td>
-                                                        @else
-                                                            <td>EXTERNAL</td>
-                                                        @endif
-                                                        @if($list->supply_type == 'INT')
-                                                            <td>{{ isset($list->users->name) ? strtoupper($list->users->name) : '--' }}</td>
-                                                        @else
-                                                            <td>{{ isset($list->ext_supply_to) ? strtoupper($list->ext_supply_to) : '--' }}</td>
-                                                        @endif
-                                                        <td>{{ isset($list->reason) ? $list->reason : '--'}}</td>
-                                                        <td>{{ isset($list->user->name) ? strtoupper($list->user->name) : '--' }}</td>
-                                                        <td>{{ isset($list->created_at) ? date('Y-m-d |  h:i A', strtotime($list->created_at)) : '--' }}</td>
-                                                        <td>
-                                                            @if($list->status == '1')
-                                                                <a href="" data-target="#crud-modalIn" data-toggle="modal" data-id="{{$list->id}}" data-stock="{{$list->stock_in}}" data-lo="{{$list->lo_no}}" data-io="{{$list->io_no}}" 
-                                                                    data-price="{{$list->unit_price}}" data-purchase="{{$list->purchase_date}}" data-trans="{{$list->trans_date}}" data-remark="{{$list->remark}}" class="btn btn-sm btn-success"><i class="fal fa-pencil"></i></a>
-                                                            @else
-                                                                <a href="" data-target="#crud-modalOut" data-toggle="modal" data-id="{{$list->id}}" data-stock="{{$list->stock_out}}" data-reason="{{$list->reason}}" data-supply="{{$list->supply_to}}" 
-                                                                    data-extsupply="{{$list->ext_supply_to}}" data-trans="{{$list->trans_date}}" data-type="{{$list->supply_type}}"  class="btn btn-sm btn-danger"><i class="fal fa-pencil"></i></a>
-                                                            @endif
-                                                            <a href="{{ action('StockController@deleteTrans', ['id' => $list->id, 'stock_id' => $list->stock_id]) }}" class="btn btn-warning btn-sm"><i class="fal fa-trash"></i></a>
-                                                        </td>
-                                                    </tr>
-                                                    @endforeach
+                                                        @foreach ($participant as $key => $parts)
+                                                            <tr style="text-transform: uppercase">
+                                                                <td class="text-center">{{ $no++ }}</td>
+                                                                <td class="text-center">{{ $parts->id }}</td>
+                                                                <td class="text-center">{{ $parts->staff_id ?? '--' }}</td>
+                                                                <td>{{ $parts->staffs->staff_name ?? '--' }}</td>
+                                                                <td class="text-center">{{ $parts->staffs->staff_position ?? '--' }}</td>
+                                                                <td class="text-center">{{ $parts->staffs->staff_dept ?? '--' }}</td>
+                                                            </tr>
+                                                        @endforeach
                                                     </tbody>
-                                                </table> --}}
-                                            </div><br>
+                                                </table>
+                                            </div> 
                                         </div>
                                     </div>
                                 </div>
@@ -328,7 +304,45 @@
     $(document).ready(function()
     {
         $('#evaluation, #type, #category').select2();
-    });
+
+        $('#log thead tr .hasinput').each(function(i)
+        {
+            $('input', this).on('keyup change', function()
+            {
+                if (table.column(i).search() !== this.value)
+                {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+
+        var table = $('#log').DataTable({
+            columnDefs: [],
+                orderCellsTop: true,
+                "order": [[ 3, "desc" ]],
+                "initComplete": function(settings, json) {
+                }
+        });
+
+        $(".eval").hide();
+
+        $("#type").change(function() {
+            var val = $("#type").val();
+            if(val=="1" || val=="2"){
+                $(".eval").show();
+            } else {
+                $(".eval").hide();
+            }
+        });
+
+        $('#type').val(); 
+        $("#type").change(); 
+        $('#evaluation').val().change();
+ 
+    })
 
     function Print(button)
     {

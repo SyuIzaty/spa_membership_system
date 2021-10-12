@@ -55,8 +55,8 @@
                                                                     <tr style="text-transform: uppercase">
                                                                         <td class="text-center fw-700">{{ $no++ }}</td>
                                                                         <td class="text-left strong">{{ $details->title ?? '--'}}</td>
-                                                                        <td class="text-center">{{ $details->start_date ?? '--'}}</td>
-                                                                        <td class="text-center">{{ $details->end_date ?? '--'}}</td>
+                                                                        <td class="text-center">{{ date(' d/m/Y ', strtotime($details->start_date) )}}</td>
+                                                                        <td class="text-center">{{ date(' d/m/Y ', strtotime($details->end_date) )}}</td>
                                                                         <td class="text-center">{{ $details->venue ?? '--'}}</td>
                                                                         <td class="text-center">{{ $details->types->type_name ?? '--'}}</td>
                                                                         <td class="text-center">{{ $details->categories->category_name ?? '--'}}</td>
@@ -67,10 +67,10 @@
                                                             </tbody>
                                                         </table>
                                                         <br><br>
-                                                        <table class="table m-0 table-bordered" style="width: 37.5%" align="right">
+                                                        <table class="table m-0 table-bordered" style="width: 30.5%" align="right">
                                                             <tr>
                                                                 <td colspan="1" class="text-right table-scale-border-bottom table-scale-border-top">Total Current Training Hours : </td>
-                                                                <td colspan="1" class="text-right fw-700 table-scale-border-bottom table-scale-border-top" style="width : 29%">{{ $data2 }}</td>
+                                                                <td colspan="1" class="text-right fw-700 table-scale-border-bottom table-scale-border-top" style="width : 25%">{{ $data2 }}</td>
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="1" class="text-right table-scale-border-bottom">Overall Required Training Hours : </td>

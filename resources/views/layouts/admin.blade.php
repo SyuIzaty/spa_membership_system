@@ -28,6 +28,7 @@
     <!--<link rel="stylesheet" media="screen, print" href="css/your_styles.css">-->
     <link rel="stylesheet" media="screen, print" href="{{ asset('css/datagrid/datatables/datatables.bundle.css') }}">
     <link rel="stylesheet" href="{{ asset('css/notifications/sweetalert2/sweetalert2.bundle.css') }}">
+    <link rel="stylesheet" media="screen, print" href="{{ asset('css/formplugins/dropzone/dropzone.css') }}"> 
     {{-- <link rel="stylesheet" media="screen, print" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"> --}}
 
     {{-- <link rel="stylesheet" media="screen, print" href="{{asset('css/select2.min.css')}}"> --}}
@@ -348,6 +349,7 @@
                         @endcan
                         {{-- End Aduan --}}
 
+                        @role('Super Admin')
                         {{-- Start Training --}}
                         <li class="nav-title">TRAINING RECORD MANAGEMENT</li>
 
@@ -377,13 +379,13 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" title="Detail" data-filter-tags="detail">
-                                        <span class="nav-link-text" data-i18n="nav.detail"> Bulk Application Form</span>
+                                    <a href="/record-staff" title="Detail" data-filter-tags="detail">
+                                        <span class="nav-link-text" data-i18n="nav.detail"> Training Record</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/record-staff" title="Detail" data-filter-tags="detail">
-                                        <span class="nav-link-text" data-i18n="nav.detail"> Training Record</span>
+                                    <a href="/bulk-claim-form" title="Detail" data-filter-tags="detail">
+                                        <span class="nav-link-text" data-i18n="nav.detail"> Bulk Application Form</span>
                                     </a>
                                 </li>
                             </ul>
@@ -437,26 +439,27 @@
                         <li class="nav-title">MYTRAINING</li>
 
                         <li class="open">
-                            <a href="#" title="Asset" data-filter-tags="asset">
+                            <a href="#" title="Claim" data-filter-tags="claim">
                                 <i class="fal fa-expand-arrows-alt"></i>
-                                <span class="nav-link-text" data-i18n="nav.asset">Training Hour</span>
+                                <span class="nav-link-text" data-i18n="nav.claim">Training Hour</span>
                             </a>
                             <ul>
                                 <li>
-                                    <a href="/claim-form" title="Detail" data-filter-tags="detail">
-                                        <span class="nav-link-text" data-i18n="nav.detail"> Application Form</span>
+                                    <a href="/claim-form" title="App" data-filter-tags="app">
+                                        <span class="nav-link-text" data-i18n="nav.app"> Application Form</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/claim-record" title="Report" data-filter-tags="report">
-                                        <span class="nav-link-text" data-i18n="nav.report"> Training Record</span>
+                                    <a href="/claim-record" title="Record" data-filter-tags="record">
+                                        <span class="nav-link-text" data-i18n="nav.record"> Training Record</span>
                                     </a>
                                 </li>
                             </ul>
                         </li>
 
                         {{-- End Training --}}
-
+                        @endrole
+                        
                         {{-- Start Inventory --}}
                         @can('view inventory menu')
                             <li class="nav-title">INVENTORY MANAGEMENT</li>
@@ -911,6 +914,7 @@
     <script src="{{ asset('js/sweetalert.min.js') }} "></script>
     <script src="{{ asset('js/statistics/chartjs/chartjs.bundle.js') }}"></script>
     <script src="{{ asset('js/statistics/easypiechart/easypiechart.bundle.js') }}"></script>
+    <script src="{{ asset('js/formplugins/dropzone/dropzone.js') }}"></script>
     {{-- <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script> --}}
     {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script> --}}

@@ -26,14 +26,14 @@
                         </h4>
                         <div>
                             <p style="padding-left: 40px; padding-right: 40px">
-                                *<i><b>IMPORTANT!</b></i> : All staff are required to fill in the fields below for training hour claim request and make sure all detail are correct provided with attachment. 
-                                Your claim request will be shown on Claim Record after being approved by Human Resource.
+                                *<i><b>IMPORTANT!</b></i> : This form is used by admin to submit training hour on behalf of staff. Admin have to make sure all detail of training and participant provided are correct. 
+                                This claim will be shown on Claim Record of each staff after submitted.
                             </p>
                         </div>
 
                         <div class="panel-container show">
                             <div class="panel-content">
-                                {!! Form::open(['action' => 'TrainingController@claimStore', 'method' => 'POST', 'id' => 'data', 'enctype' => 'multipart/form-data']) !!}
+                                {!! Form::open(['action' => 'TrainingController@bulkClaimStore', 'method' => 'POST', 'id' => 'data', 'enctype' => 'multipart/form-data']) !!}
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     @if(Session::has('message'))
                                         <script type="text/javascript">
@@ -67,31 +67,16 @@
                                         <div class="table-responsive">
                                             <p style="font-style: italic"><span class="text-danger">*</span> Required Fields</p>
                                             <table class="table table-bordered table-hover table-striped w-100">
+                                                <ol class="breadcrumb breadcrumb-md breadcrumb-arrow">
+                                                    <li>
+                                                        <a href="#" disabled style="pointer-events: none" class="bg-primary">
+                                                            <i class="fal fa-info-circle"></i>
+                                                            <span class="hidden-md-down">Training Info</span>
+                                                        </a>
+                                                    </li>
+                                                    <p></p>
+                                                </ol>
                                                 <thead>
-                                                    <tr>
-                                                        <div class="form-group">
-                                                            <td width="20%" style="vertical-align: middle"><label class="form-label"> Full Name :</label></td>
-                                                            <td colspan="3">
-                                                                {{ $staff->staff_name ?? '--'}}
-                                                            </td>
-                                                            <td width="20%" style="vertical-align: middle"><label class="form-label"> Staff ID :</label></td>
-                                                            <td colspan="3">
-                                                                {{ $staff->staff_id ?? '--'}}
-                                                            </td>
-                                                        </div>
-                                                    </tr>
-                                                    <tr>
-                                                        <div class="form-group">
-                                                            <td width="20%" style="vertical-align: middle"><label class="form-label"> Position :</label></td>
-                                                            <td colspan="3">
-                                                                {{ $staff->staff_position ?? '--'}}
-                                                            </td>
-                                                            <td width="20%" style="vertical-align: middle"><label class="form-label"> Department :</label></td>
-                                                            <td colspan="3">
-                                                                {{ $staff->staff_dept ?? '--'}}
-                                                            </td>
-                                                        </div>
-                                                    </tr>
                                                     <tr>
                                                         <div class="form-group">
                                                             <td width="20%" style="vertical-align: middle"><label class="form-label"><span class="text-danger">*</span> Training Title :</label></td>
@@ -195,32 +180,58 @@
                                                             </td>
                                                         </div>
                                                     </tr>
-                                                    <tr>
-                                                        <div class="form-group">
-                                                            <td width="20%" style="vertical-align: middle"><label class="form-label"> Link :</label></td>
-                                                            <td colspan="3">
-                                                                <input class="form-control" id="link" name="link" value="{{ old('link') }}">
-                                                                @error('link')
-                                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                @enderror
-                                                            </td>
-                                                            <td width="20%" style="vertical-align: middle"><label class="form-label"><span class="text-danger">*</span> Attachment : <i class="fal fa-info-circle fs-xs mr-1" data-toggle="tooltip" data-placement="right" title="" data-original-title="Attachment in the form of training report / certificate / attendance (.pdf)"></i></label></td>
-                                                            <td colspan="3">
-                                                                <input type="file" class="form-control" id="file_name" name="file_name" accept="application/pdf" required>
-                                                                @error('file_name')
-                                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                @enderror
-                                                            </td>
-                                                        </div>
-                                                    </tr>
                                                 </thead>
                                             </table>
-                                            
+                                            <br>
+                                            <table class="table table-bordered table-hover table-striped w-100">
+                                                <ol class="breadcrumb breadcrumb-md breadcrumb-arrow mb-4">
+                                                    <li>
+                                                        <a href="#" disabled style="pointer-events: none" class="bg-primary">
+                                                            <i class="fal fa-list"></i>
+                                                            <span class="hidden-md-down">Participant List</span>
+                                                        </a>
+                                                    </li>
+                                                    <li style="margin-top: 10px; margin-left: 10px">
+                                                        <input type="radio" name="rad_view" id="rad_view" value="0" {{ old('rad_view') == "0" ? 'checked' : '' }}> Form
+                                                        <input class="ml-5" type="radio" name="rad_view" id="rad_view" value="1" {{ old('rad_view') == "1" ? 'checked' : '' }}> Upload
+                                                    </li>
+                                                </ol>
+                                                    {{-- start form view --}}
+                                                        <table class="table table-bordered text-center form_view" id="head_field">
+                                                            <tr>
+                                                                <td><label class="form-label" for="staff_id"><span class="text-danger">*</span> Staff Detail</label></td>
+                                                                <td>Action</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <select name="staff_id[]" id="staff_id" class="staff_id form-control">
+                                                                        <option value="">Please select</option>
+                                                                        @foreach ($staff as $staffID) 
+                                                                            <option value="{{ $staffID->staff_id }}" {{ old('staff_id') ? 'selected' : '' }}>{{ $staffID->staff_id }} - {{ $staffID->staff_name }} [ {{ $staffID->staff_dept }} ]</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    @error('staff_id')
+                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                    @enderror
+                                                                </td>
+                                                                <td style="vertical-align: middle"><button type="button" name="addhead" id="addhead" class="btn btn-success btn-sm"><i class="fal fa-plus"></i></button></td>
+                                                            </tr>
+                                                        </table>
+                                                    {{-- end form view --}}
+                                                    {{-- start upload view --}}
+                                                        <table class="table table-bordered upload_view">
+                                                            <tr> 
+                                                                <td width="20%"><label class="form-label" for="import_file"><span class="text-danger">*</span> File :</label></td>
+                                                                <td colspan="5"><input type="file" name="import_file" class="form-control mb-3"></td>
+                                                            </tr>
+                                                        </table>
+                                                    {{-- end upload view --}}
+                                            </table>
                                         </div>
                                     </div>
                                     <div class="footer">
-                                        <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-location-arrow"></i> Submit Claim</button>	
-                                        <button style="margin-right:5px" type="reset" class="btn btn-danger ml-auto float-right"><i class="fal fa-redo"></i> Reset</button><br><br>
+                                        <button type="submit" id="submithead" class="btn btn-primary ml-auto float-right"><i class="fal fa-location-arrow"></i> Submit Claim</button>
+                                        <a href="/bulkClaimTemplate" class="btn btn-info float-right mr-2 upload_view"><i class="fal fa-download"></i> Download Template</a><br><br>
                                     </div>
                                 {!! Form::close() !!}
                             </div>
@@ -241,7 +252,7 @@
 <script>
 
     $(document).ready( function() {
-        $('#type, #category, #training_id').select2();
+        $('#type, #category, #training_id, #staff_id').select2();
 
         $( "#training_id" ).change(function() {
             var val = $("#training_id").val();
@@ -255,6 +266,27 @@
                 });
             }
         });
+
+        $(".form_view").hide();
+        $(".upload_view").hide();
+
+        $("input[name=rad_view]").change(function () {        
+            if ($(this).val() == "0") {
+                $(".form_view").show();
+                $(".upload_view").hide();
+            }
+            else if ($(this).val() == "1") {
+                $(".upload_view").show();
+                $(".form_view").hide();
+            }
+            else {
+                $(".form_view").hide();
+                $(".upload_view").hide();
+            }
+        });
+    
+        $('input[name="rad_view"]:checked').val('{{ old('rad_view') }}');
+        $('input[name="rad_view"]:checked').change(); 
 
         if($('.training_id').val()!=''){
             updateCr($('.training_id'));
@@ -299,6 +331,81 @@
         $('#training_id').val('{{ old('training_id') }}'); 
         $("#training_id").change(); 
         $('#title').val('{{ old('title') }}');
+
+        // Add Custodian
+        $('#addhead').click(function(){
+            i++;
+            $('#head_field').append(`
+            <tr id="row${i}" class="head-added">
+            <td>
+                <select name="staff_id[]" class="staffs_id form-control">
+                    <option value="">Please select</option>
+                    @foreach ($staff as $staffID) 
+                        <option value="{{ $staffID->id }}" {{ old('staff_id') ? 'selected' : '' }}>{{ $staffID->staff_id }} - {{ $staffID->staff_name }} [ {{ $staffID->staff_dept }} ]</option>
+                    @endforeach
+                </select>
+            </td>
+            <td><button type="button" name="remove" id="${i}" class="btn btn-sm btn-danger btn_remove"><i class="fal fa-trash"></i></button></td>
+            </tr>
+            `); 
+            $('.staffs_id').select2();
+        });
+
+        var postURL = "<?php echo url('addmore'); ?>";
+        var i=1;
+
+        $.ajaxSetup({
+            headers:{
+            'X-CSRF-Token' : $("input[name=_token]").val()
+            }
+        });
+
+        $(document).on('click', '.btn_remove', function(){
+            var button_id = $(this).attr("id");
+            $('#row'+button_id+'').remove();
+        });
+
+        $.ajaxSetup({
+            headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $('#submit').click(function(){
+            $.ajax({
+                url:postURL,
+                method:"POST",
+                data:$('#add_name').serialize(),
+                type:'json',
+                success:function(data)
+                {
+                    if(data.error){
+                        printErrorMsg(data.error);
+                    }else{
+                        i=1;
+                        $('.dynamic-added').remove();
+                    }
+                }
+            });
+        });
+
+        $('#submithead').click(function(){
+            $.ajax({
+                url:postURL,
+                method:"POST",
+                data:$('#add_name').serialize(),
+                type:'json',
+                success:function(data)
+                {
+                    if(data.error){
+                        printErrorMsg(data.error);
+                    }else{
+                        i=1;
+                        $('.head-added').remove();
+                    }
+                }
+            });
+        });
 
     })
 

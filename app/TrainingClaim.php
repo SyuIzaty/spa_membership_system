@@ -12,7 +12,7 @@ class TrainingClaim extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
         'staff_id', 'training_id', 'title', 'type', 'category', 'start_date', 'start_time', 'end_date', 'end_time', 'venue', 'link', 'claim_hour', 'approved_hour', 'status', 'reject_reason',
-        'assigned_by'
+        'assigned_by','form_type'
     ];
 
     public function staffs()

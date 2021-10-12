@@ -4,22 +4,25 @@
 <main id="js-page-content" role="main" class="page-content">
     <div class="row">
         <div class="col-xl-12" style="padding: 50px; margin-bottom: 20px">
-                
-                <center><img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="280" alt="INTEC"></center>
-                    <h4 style="text-align: center">
-                        <b>INTEC EDUCATION COLLEGE {{ strtoupper($evaluate->first()->trainingEvaluation->evaluation) }} FORM</b>
-                    </h4><br>
-                    <div class="panel-container show">
-                        <div class="panel-content">
-                            <div class="card-primary card-outline">
-                                <div class="card-body">
-                                    @foreach($evaluate->groupby('head_id') as $detail => $questions)
-                                        <table class="table table-bordered">
-                                            <tr>
-                                                <td colspan="8" class="bg-primary-50 font-weight-bold">
-                                                    {{ $questions->first()->trainingEvaluationHeads->question_head }}
-                                                </td>
-                                            </tr>
+            <center><img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="280" alt="INTEC"></center>
+                <h4 style="text-align: center">
+                    <b>INTEC EDUCATION COLLEGE {{ strtoupper($header->first()->trainingEvaluation->evaluation) }} FORM SET</b>
+                </h4><br>
+                <div class="panel-container show">
+                    <div class="panel-content">
+                        <div class="card-primary card-outline">
+                            <div class="card-body">
+                                @foreach($header as $detail => $headers)
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <td colspan="8" class="bg-primary-50 font-weight-bold">
+                                                {{ $headers->question_head }}
+                                            </td>
+                                        </tr>
+                                        <?php 
+                                            $data = \App\TrainingEvaluationHead::where('id', $headers->id)->first();
+                                        ?>
+                                        @foreach($data->trainingEvaluationQuestions->groupBy('head_id') as $questions)
                                             @if( $questions->first()->eval_rate === "R" )
                                                 <tr class="font-weight-bold text-center">
                                                     <td style="width: 2%">No</td>
@@ -55,17 +58,17 @@
                                                     @endif
                                                 </tr>
                                             @endforeach
-                                        </table>
-                                    @endforeach
-                                     
-                                </div>
+                                        @endforeach
+                                    </table>
+                                @endforeach
                             </div>
                         </div>
-                        <br>
-                        <div style="font-style: italic; font-size: 10px">
-                            <p style="float: left">@ Copyright INTEC Education College</p>  
-                            <p style="float: right">Printed Date : {{ date(' d/m/Y ', strtotime( \Carbon\Carbon::now()) )}}</p><br>
-                        </div>
+                    </div>
+                    <br>
+                    <div style="font-style: italic; font-size: 10px">
+                        <p style="float: left">@ Copyright INTEC Education College</p>  
+                        <p style="float: right">Printed Date : {{ date(' d/m/Y ', strtotime( \Carbon\Carbon::now()) )}}</p><br>
+                    </div>
         </div>
     </div>
 </main>
