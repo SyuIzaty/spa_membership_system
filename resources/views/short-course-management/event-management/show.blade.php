@@ -1494,7 +1494,7 @@
                                                     <div class="col-sm-6">
                                                         <div class="d-flex justify-content-center">
                                                             @if (!isset($event->thumbnail_path))
-                                                                <img src="{{ asset('storage/shortcourse/poster/default/intec_poster.jpg') }}"
+                                                                <img src="{{ asset('img/shortcourse/poster/default/intec_poster.jpg') }}"
                                                                     class="card-img" style="object-fit: fill;">
                                                             @else
                                                                 <img src="{{ asset($event->thumbnail_path) }}"

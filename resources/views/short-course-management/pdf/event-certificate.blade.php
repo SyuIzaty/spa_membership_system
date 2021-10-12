@@ -16,7 +16,7 @@
 
 
         body {
-            background-image: url('{{ asset('storage/shortcourse/general/Participation-CO-01.jpg') }}');
+            background-image: url('{{ asset('img/shortcourse/general/Participation-CO-01.jpg') }}');
             background-position: top left;
             background-repeat: no-repeat;
             background-size: 100%;

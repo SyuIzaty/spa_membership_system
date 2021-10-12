@@ -15,11 +15,11 @@
                             <div class="row no-gutters">
                                 <div class="col-md-5 d-flex justify-content-center">
                                     @if (!isset($event->thumbnail_path))
-                                        <img src="{{ asset('storage/shortcourse/poster/default/intec_poster.jpg') }}"
+                                        <img src="{{ asset('img/shortcourse/poster/default/intec_poster.jpg') }}"
                                             class="card-img" style="align-self:center; object-fit:cover;">
                                     @else
                                         <img src="{{ asset($event->thumbnail_path) }}" class="card-img" style="
-                                                    background-image:url('{{ asset('storage/shortcourse/poster/default/intec_poster.jpg') }}');
+                                                    background-image:url('{{ asset('img/shortcourse/poster/default/intec_poster.jpg') }}');
                                                     background-repeat: no-repeat;
                                                     background-size: 137px 194px;">
                                     @endif
