@@ -420,7 +420,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/quota-list', 'ComputerGrantController@quotaList');
     Route::post('/add-quota', 'ComputerGrantController@addQuota');
     Route::post('/edit-quota', 'ComputerGrantController@editQuota');
-    Route::delete('/delete-faq/{id}','ComputerGrantController@deleteFAQ'); 
+    Route::delete('/delete-faq/{id}','ComputerGrantController@deleteFAQ');
+    Route::get('/agreementPDF/{id}','ComputerGrantController@agreementPDF');
+    Route::post('/upload-agreement', 'ComputerGrantController@uploadAgreement');
+    Route::post('requestCancellation', 'ComputerGrantController@requestCancellation');
+    Route::delete('verifyCancellation/{id}', 'ComputerGrantController@verifyCancellation');
 
 });
 
