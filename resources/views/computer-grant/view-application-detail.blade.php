@@ -92,8 +92,13 @@
 
                                 @role('Computer Grant (IT Admin)')
                                 <a class="btn btn-info ml-auto float-right" data-page="/applicationPDF/{{ $activeData->id }}" onclick="Print(this)" style="color: rgb(0, 0, 0); margin-top: 5px; margin-bottom: 15px;">
-                                    <i class="fal fa-download"></i> Export Application
+                                    <i class="fal fa-download"></i> Export Application Doc
                                 </a>
+
+                                <a class="btn btn-primary mr-2 float-right" data-page="/agreementPDF/{{ $activeData->id }}" onclick="Print(this)" style="color: rgb(0, 0, 0); margin-top: 5px; margin-bottom: 15px;">
+                                    <i class="fal fa-download"></i> Export Agreement Doc
+                                </a>
+
                                 @endrole
 
                                 @if ($activeData->status == 1)
@@ -108,8 +113,8 @@
                                                 <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> IT ADMIN & CE APPROVAL</label></td>
                                             </tr>
                                             <tr>
-                                                <th width="20%" style="vertical-align: top"><span class="text-danger">*</span> Upload Application : </th>
-                                                <td colspan="4"><input type="file" class="form-control" id="upload_image" name="upload_image" required>
+                                                <th width="20%" style="vertical-align: top"><span class="text-danger">*</span> Upload Signed Approval and Agreement Files : </th>
+                                                <td colspan="4"><input type="file" class="form-control" id="upload_image" name="upload_image[]" multiple required>
 
                                                     @error('upload_image')
                                                         <p style="color: red">{{ $message }}</p>
@@ -129,7 +134,7 @@
                                 @endrole
                                 @endif
 
-                                @if ($activeData->status != '1')
+                                @if (($activeData->status == 2) || ($activeData->status == 3) || ($activeData->status == 4) || ($activeData->status == 5))
                                 <div class="table-responsive">
                                     <table id="info" class="table table-bordered table-hover table-striped w-100">
                                         <thead>
@@ -137,15 +142,21 @@
                                                 <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> IT ADMIN & CE APPROVAL</label></td>
                                             </tr>
                                             <tr>
-                                                <th width="20%" style="vertical-align: top"><span class="text-danger">*</span> Verified Application : </th>
-                                                <td colspan="4"><a target="_blank" href="/get-file/{{$verified_doc->upload}}">{{$verified_doc->upload}}</a></td>
+                                                <th width="20%" style="vertical-align: top">Verified Application : </th>
+                                                <td colspan="4">
+                                                    <ul>
+                                                        @foreach ( $verified_doc as $v )
+                                                        <li>  <a target="_blank" href="/get-file/{{$v->upload}}">{{$v->upload}}</a> </li>
+                                                        @endforeach
+                                                    </ul>
+                                                </td>
                                             </tr>
                                         </thead>
                                     </table>
                                 </div>
                                 @endif
 
-                                @if ($activeData->status == '3' || $activeData->status == '4' || $activeData->status == '5' || $activeData->status == '6'  )
+                                @if ($activeData->status == '3' || $activeData->status == '4' || $activeData->status == '5')
 
                                 <div class="table-responsive">
                                     <table id="upload" class="table table-bordered table-hover table-striped w-100">
@@ -155,25 +166,25 @@
                                                 <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-file"></i> DETAILS OF PURCHASE</label></td>
                                             </tr>
                                             <tr>
-                                                <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Type of Device : </th>
+                                                <th width="20%" style="vertical-align: middle">Type of Device : </th>
                                                 <td colspan="2" style="vertical-align: middle">{{$activeData->getType->first()->description}}</td>
-                                                <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Serial No : </th>
+                                                <th width="20%" style="vertical-align: middle">Serial No : </th>
                                                 <td colspan="2" style="vertical-align: middle">{{$activeData->serial_no}}</td>
                                             </tr>
                                             <tr>
-                                                <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Brand : </th>
+                                                <th width="20%" style="vertical-align: middle">Brand : </th>
                                                 <td colspan="2" style="vertical-align: middle">{{$activeData->brand}}</td>
-                                                <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Model : </th>
+                                                <th width="20%" style="vertical-align: middle">Model : </th>
                                                 <td colspan="2" style="vertical-align: middle">{{$activeData->model}}</td>
                                             </tr>
                                             <tr>
-                                                <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Purchase Receipt : </th>
+                                                <th width="20%" style="vertical-align: middle">Purchase Receipt : </th>
                                                 <td colspan="2">
                                                     @if ($proof->isNotEmpty())
                                                         <a target="_blank" href="/get-receipt/{{$proof->where('type',1)->first()->upload}}">{{$proof->where('type',1)->first()->upload}}</a>
                                                     @endif
                                                 </td>
-                                                <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Device Image : </th>
+                                                <th width="20%" style="vertical-align: middle">Device Image : </th>
                                                 <td colspan="2">
                                                     @if ($proof->isNotEmpty())
                                                         <a target="_blank" href="/get-image/{{$proof->where('type',2)->first()->upload}}">{{$proof->where('type',2)->first()->upload}}</a>
@@ -181,8 +192,30 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <th width="20%" style="vertical-align: top"><span class="text-danger">*</span> Price : RM</th>
+                                                <th width="20%" style="vertical-align: top">Price : RM</th>
                                                 <td colspan="4" style="vertical-align: middle">{{$activeData->price}}</td>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                @endif
+
+                                @if ($agreement_doc->isNotEmpty())
+                                <div class="table-responsive">
+                                    <table id="info" class="table table-bordered table-hover table-striped w-100">
+                                        <thead>
+                                            <tr>
+                                                <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> GRANT ACCEPTANCE</label></td>
+                                            </tr>
+                                            <tr>
+                                                <th width="20%" style="vertical-align: top">Signed Agreement : </th>
+                                                <td colspan="4">
+                                                    <ul>
+                                                        @foreach ( $agreement_doc as $a )
+                                                        <li>  <a target="_blank" href="/get-file/{{$a->upload}}">{{$a->upload}}</a> </li>
+                                                        @endforeach
+                                                    </ul> 
+                                                </td>
                                             </tr>
                                         </thead>
                                     </table>
@@ -221,6 +254,14 @@
                                 @endrole
                                 @endif
 
+                                @if ($activeData->status == 7)
+                                <form id="formId">
+                                    @csrf
+                                    <input type="hidden" id="id" name="id" value="{{ $activeData->id }}" required>
+                                    <button type="submit" class="btn btn-danger ml-auto float-right mr-2 waves-effect waves-themed" id="cancel"><i class="fal fa-times-circle"></i> Verify Cancellation</button>
+                                </form>  
+                                @endif
+
                             </div>
                         </div>
                     </div>
@@ -235,7 +276,7 @@
 @section('script')
 <script>
 
-function Print(button)
+    function Print(button)
         {
             var url = $(button).data('page');
             var printWindow = window.open( '{{url("/")}}'+url+'', 'Print', 'left=200, top=200, width=950, height=500, toolbar=0, resizable=0');
@@ -250,7 +291,7 @@ function Print(button)
             var datas = $('#form-id').serialize();
 
             Swal.fire({
-                title: 'Reject?',
+                title: 'Are you sure you want to reject this purchase proof?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -263,6 +304,39 @@ function Print(button)
                     $.ajax({
                         type: "POST",
                         url: "{{ url('reject-purchase')}}",
+                        data: datas,
+                        dataType: "json",
+                        success: function (response) {
+                        console.log(response);
+                        if(response){
+                        Swal.fire(response.success);
+                        location.reload();
+                    }
+                        }
+                    });
+                }
+            })
+        });
+
+        $("#cancel").on('click', function(e) {
+            e.preventDefault();
+
+            var datas = $('#formId').serialize();
+
+            Swal.fire({
+                title: 'Are you sure you want to verify this application cancellation?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Verify!',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.value) {
+                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ url('verifyCancellation')}}",
                         data: datas,
                         dataType: "json",
                         success: function (response) {
