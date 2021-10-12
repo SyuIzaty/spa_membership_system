@@ -28,7 +28,7 @@
     <!--<link rel="stylesheet" media="screen, print" href="css/your_styles.css">-->
     <link rel="stylesheet" media="screen, print" href="{{ asset('css/datagrid/datatables/datatables.bundle.css') }}">
     <link rel="stylesheet" href="{{ asset('css/notifications/sweetalert2/sweetalert2.bundle.css') }}">
-    <link rel="stylesheet" media="screen, print" href="{{ asset('css/formplugins/dropzone/dropzone.css') }}"> 
+    <link rel="stylesheet" media="screen, print" href="{{ asset('css/formplugins/dropzone/dropzone.css') }}">
     {{-- <link rel="stylesheet" media="screen, print" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"> --}}
 
     {{-- <link rel="stylesheet" media="screen, print" href="{{asset('css/select2.min.css')}}"> --}}
@@ -169,34 +169,34 @@
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="/shortcourses" title="Course Catalogue"
+                                        <a href="/shortcourses" title="Course"
                                             data-filter-tags="course-catalogue">
                                             <i class="ni ni-book-open"></i>
                                             <span class="nav-link-text" data-i18n="nav.course-catalogue">Course
-                                                Catalogue</span>
+                                                </span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="/venues" title="Venue Catalogue" data-filter-tags="venue-catalogue">
+                                        <a href="/venues" title="Venue" data-filter-tags="venue-catalogue">
                                             <i class="ni ni-book-open"></i>
                                             <span class="nav-link-text" data-i18n="nav.venue-catalogue">Venue
-                                                Catalogue</span>
+                                                </span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="/topics" title="Topic Catalogue" data-filter-tags="topic-catalogue">
+                                        <a href="/topics" title="Topic" data-filter-tags="topic-catalogue">
                                             <i class="ni ni-book-open"></i>
                                             <span class="nav-link-text"
-                                                data-i18n="nav.topic-catalogue">Topic-SubCategory-Category
-                                                Catalogue</span>
+                                                data-i18n="nav.topic-catalogue">Topic-Category
+                                                </span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="/feedback-sets" title="Feedback Set Catalogue"
+                                        <a href="/feedback-sets" title="Feedback Set"
                                             data-filter-tags="feedback-set-catalogue">
                                             <i class="ni ni-book-open"></i>
                                             <span class="nav-link-text" data-i18n="nav.feedback-set-catalogue">Feedback Set
-                                                Catalogue</span>
+                                                </span>
                                         </a>
                                     </li>
                                 </ul>
@@ -459,7 +459,7 @@
 
                         {{-- End Training --}}
                         @endrole
-                        
+
                         {{-- Start Inventory --}}
                         @can('view inventory menu')
                             <li class="nav-title">INVENTORY MANAGEMENT</li>
@@ -651,7 +651,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            
+
                             @endrole
 
                         @endrole
