@@ -27,7 +27,7 @@
                                     <hr class="mt-2 mb-3">
                                     <div class="row">
                                         <div class="col-md-12 grid-margin stretch-card">
-                                            <center><img src="{{asset(img/intec_logo.png)}}"
+                                            <center><img src="{{asset('img/intec_logo.png')}}"
                                                     style="height: 120px; width: 270px;"></center>
                                             <br />
                                             <h4 style="text-align: center">
