@@ -343,7 +343,7 @@
                                                         </tr>
                                                         <tr scope="row">
                                                             <th scope="col">Name</th>
-                                                            <th scope="col">Amount</th>
+                                                            <th scope="col">Amount (RM)</th>
                                                             <th scope="col">Fee Type</th>
                                                             <th scope="col">Promo Code</th>
                                                             <th scope="col">Action</th>
@@ -426,7 +426,7 @@
                                                                             <div class="form-group">
                                                                                 <label class="form-label"
                                                                                     for="amount"><span
-                                                                                        class="text-danger">*</span>amount</label>
+                                                                                        class="text-danger">*</span>amount (RM)</label>
                                                                                 <input type="number" step=".01"
                                                                                     class="form-control" id="amount_add"
                                                                                     name="amount_add">
@@ -538,7 +538,7 @@
                                                                         <div class="form-group">
                                                                             <label class="form-label"
                                                                                 for="amount"><span
-                                                                                    class="text-danger">*</span>amount</label>
+                                                                                    class="text-danger">*</span>amount (RM)</label>
                                                                             <input type="number" step=".01"
                                                                                 class="form-control" id="amount_edit"
                                                                                 name="amount_edit">

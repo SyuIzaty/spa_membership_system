@@ -171,24 +171,22 @@
                                     <li>
                                         <a href="/topics" title="Topic" data-filter-tags="topic-catalogue">
                                             <i class="ni ni-book-open"></i>
-                                            <span class="nav-link-text"
-                                                data-i18n="nav.topic-catalogue">Topic-Category
-                                                </span>
+                                            <span class="nav-link-text" data-i18n="nav.topic-catalogue">Topic-Category
+                                            </span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="/shortcourses" title="Course"
-                                            data-filter-tags="course-catalogue">
+                                        <a href="/shortcourses" title="Course" data-filter-tags="course-catalogue">
                                             <i class="ni ni-book-open"></i>
                                             <span class="nav-link-text" data-i18n="nav.course-catalogue">Course
-                                                </span>
+                                            </span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="/venues" title="Venue" data-filter-tags="venue-catalogue">
                                             <i class="ni ni-book-open"></i>
                                             <span class="nav-link-text" data-i18n="nav.venue-catalogue">Venue
-                                                </span>
+                                            </span>
                                         </a>
                                     </li>
                                     <li>
@@ -196,7 +194,14 @@
                                             data-filter-tags="feedback-set-catalogue">
                                             <i class="ni ni-book-open"></i>
                                             <span class="nav-link-text" data-i18n="nav.feedback-set-catalogue">Feedback Set
-                                                </span>
+                                            </span>
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="/trainers" title="Trainer" data-filter-tags="trainer">
+                                            <i class="ni ni-earphones-alt"></i>
+                                            <span class="nav-link-text" data-i18n="nav.trainer">Trainer</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -216,12 +221,6 @@
                                     <span class="nav-link-text" data-i18n="nav.people">People</span>
                                 </a>
                                 <ul>
-                                    <li>
-                                        <a href="/trainers" title="Trainer" data-filter-tags="trainer">
-                                            <i class="ni ni-earphones-alt"></i>
-                                            <span class="nav-link-text" data-i18n="nav.trainer">Trainer</span>
-                                        </a>
-                                    </li>
                                     <li>
                                         <a href="/participants" title="Participant" data-filter-tags="participant">
                                             <i class="ni ni-users"></i>
@@ -350,114 +349,116 @@
                         {{-- End Aduan --}}
 
                         @role('Super Admin')
-                        {{-- Start Training --}}
-                        <li class="nav-title">TRAINING RECORD MANAGEMENT</li>
+                            {{-- Start Training --}}
+                            <li class="nav-title">TRAINING RECORD MANAGEMENT</li>
 
-                        <li>
-                            <a href="/training-dashboard" title="Application Intel" data-filter-tags="application intel">
-                                <i class="fal fa-chart-pie"></i>
-                                <span class="nav-link-text" data-i18n="nav.application_intel">Analysis Dashboard</span>
-                            </a>
-                        </li>
+                            <li>
+                                <a href="/training-dashboard" title="Application Intel"
+                                    data-filter-tags="application intel">
+                                    <i class="fal fa-chart-pie"></i>
+                                    <span class="nav-link-text" data-i18n="nav.application_intel">Analysis Dashboard</span>
+                                </a>
+                            </li>
 
-                        <li class="open">
-                            <a href="#" title="Asset" data-filter-tags="asset">
-                                <i class="fal fa-location-arrow"></i>
-                                <span class="nav-link-text" data-i18n="nav.asset">Training Request</span>
-                            </a>
-                        </li>
+                            <li class="open">
+                                <a href="#" title="Asset" data-filter-tags="asset">
+                                    <i class="fal fa-location-arrow"></i>
+                                    <span class="nav-link-text" data-i18n="nav.asset">Training Request</span>
+                                </a>
+                            </li>
 
-                        <li class="open">
-                            <a href="#" title="Asset" data-filter-tags="asset">
-                                <i class="fal fa-expand-arrows-alt"></i>
-                                <span class="nav-link-text" data-i18n="nav.asset">Training Hour</span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a href="/claim-list" title="Detail" data-filter-tags="detail">
-                                        <span class="nav-link-text" data-i18n="nav.detail"> Approval Process</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/record-staff" title="Detail" data-filter-tags="detail">
-                                        <span class="nav-link-text" data-i18n="nav.detail"> Training Record</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/bulk-claim-form" title="Detail" data-filter-tags="detail">
-                                        <span class="nav-link-text" data-i18n="nav.detail"> Bulk Application Form</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="open">
-                            <a href="#" title="Asset" data-filter-tags="asset">
-                                <i class="fal fa-bookmark"></i>
-                                <span class="nav-link-text" data-i18n="nav.asset">Training Evaluation</span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a href="/evaluation-question" title="Asset" data-filter-tags="asset">
-                                        <span class="nav-link-text" data-i18n="nav.asset">Evaluation Question</span>
-                                    </a>
-                                    <a href="#" title="Asset" data-filter-tags="asset">
-                                        <span class="nav-link-text" data-i18n="nav.asset">Evaluation Report</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                            <li class="open">
+                                <a href="#" title="Asset" data-filter-tags="asset">
+                                    <i class="fal fa-expand-arrows-alt"></i>
+                                    <span class="nav-link-text" data-i18n="nav.asset">Training Hour</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/claim-list" title="Detail" data-filter-tags="detail">
+                                            <span class="nav-link-text" data-i18n="nav.detail"> Approval Process</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/record-staff" title="Detail" data-filter-tags="detail">
+                                            <span class="nav-link-text" data-i18n="nav.detail"> Training Record</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/bulk-claim-form" title="Detail" data-filter-tags="detail">
+                                            <span class="nav-link-text" data-i18n="nav.detail"> Bulk Application
+                                                Form</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="open">
+                                <a href="#" title="Asset" data-filter-tags="asset">
+                                    <i class="fal fa-bookmark"></i>
+                                    <span class="nav-link-text" data-i18n="nav.asset">Training Evaluation</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/evaluation-question" title="Asset" data-filter-tags="asset">
+                                            <span class="nav-link-text" data-i18n="nav.asset">Evaluation Question</span>
+                                        </a>
+                                        <a href="#" title="Asset" data-filter-tags="asset">
+                                            <span class="nav-link-text" data-i18n="nav.asset">Evaluation Report</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
 
-                        <li class="open">
-                            <a href="#" title="Asset" data-filter-tags="asset">
-                                <i class="fal fa-cogs"></i>
-                                <span class="nav-link-text" data-i18n="nav.asset">Parameter Setting</span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a href="/training-list" title="Report" data-filter-tags="report">
-                                        <span class="nav-link-text" data-i18n="nav.report"> Training List</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/hour-list" title="Detail" data-filter-tags="detail">
-                                        <span class="nav-link-text" data-i18n="nav.detail"> Training Hour</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/type-list" title="Report" data-filter-tags="report">
-                                        <span class="nav-link-text" data-i18n="nav.report"> Training Type</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/category-list" title="Report" data-filter-tags="report">
-                                        <span class="nav-link-text" data-i18n="nav.report"> Training Category</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                            <li class="open">
+                                <a href="#" title="Asset" data-filter-tags="asset">
+                                    <i class="fal fa-cogs"></i>
+                                    <span class="nav-link-text" data-i18n="nav.asset">Parameter Setting</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/training-list" title="Report" data-filter-tags="report">
+                                            <span class="nav-link-text" data-i18n="nav.report"> Training List</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/hour-list" title="Detail" data-filter-tags="detail">
+                                            <span class="nav-link-text" data-i18n="nav.detail"> Training Hour</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/type-list" title="Report" data-filter-tags="report">
+                                            <span class="nav-link-text" data-i18n="nav.report"> Training Type</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/category-list" title="Report" data-filter-tags="report">
+                                            <span class="nav-link-text" data-i18n="nav.report"> Training Category</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
 
-                        <li class="nav-title">MYTRAINING</li>
+                            <li class="nav-title">MYTRAINING</li>
 
-                        <li class="open">
-                            <a href="#" title="Claim" data-filter-tags="claim">
-                                <i class="fal fa-expand-arrows-alt"></i>
-                                <span class="nav-link-text" data-i18n="nav.claim">Training Hour</span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a href="/claim-form" title="App" data-filter-tags="app">
-                                        <span class="nav-link-text" data-i18n="nav.app"> Application Form</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/claim-record" title="Record" data-filter-tags="record">
-                                        <span class="nav-link-text" data-i18n="nav.record"> Training Record</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                            <li class="open">
+                                <a href="#" title="Claim" data-filter-tags="claim">
+                                    <i class="fal fa-expand-arrows-alt"></i>
+                                    <span class="nav-link-text" data-i18n="nav.claim">Training Hour</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/claim-form" title="App" data-filter-tags="app">
+                                            <span class="nav-link-text" data-i18n="nav.app"> Application Form</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/claim-record" title="Record" data-filter-tags="record">
+                                            <span class="nav-link-text" data-i18n="nav.record"> Training Record</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
 
-                        {{-- End Training --}}
+                            {{-- End Training --}}
                         @endrole
 
                         {{-- Start Inventory --}}
@@ -467,7 +468,8 @@
                                 <li>
                                     <a href="/asset-dashboard" title="Application Intel" data-filter-tags="application intel">
                                         <i class="fal fa-chart-pie"></i>
-                                        <span class="nav-link-text" data-i18n="nav.application_intel">Inventory Dashboard</span>
+                                        <span class="nav-link-text" data-i18n="nav.application_intel">Inventory
+                                            Dashboard</span>
                                     </a>
                                 </li>
                                 <li class="open">
@@ -558,7 +560,8 @@
                                 <ul>
                                     <li>
                                         <a href="/verify-list" title="Pending" data-filter-tags="pending">
-                                            <span class="nav-link-text" data-i18n="nav.pending">Pending Verification</span>
+                                            <span class="nav-link-text" data-i18n="nav.pending">Pending
+                                                Verification</span>
                                         </a>
                                     </li>
                                     <li>
@@ -573,27 +576,27 @@
 
                         {{-- Start Computer Grant Management --}}
                         @role('Lecturer|Computer Grant (IT Admin)|Computer Grant (Finance Admin)')
-                        <li class="nav-title">COMPUTER GRANT MANAGEMENT</li>
+                            <li class="nav-title">COMPUTER GRANT MANAGEMENT</li>
                             {{-- User --}}
                             @role('Lecturer|Computer Grant (IT Admin)')
-                            <li class="open">
-                                <a href="#" title="Grant" data-filter-tags="grant">
-                                    <i class="fal fa-archive"></i>
-                                    <span class="nav-link-text" data-i18n="nav.grant">Grant</span>
-                                </a>
-                                <ul>
-                                    <li>
-                                        <a href="/grant-list" title="Grant List" data-filter-tags="list">
-                                            <span class="nav-link-text" data-i18n="nav.list">Grant List</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/log" title="Activity Log" data-filter-tags="log">
-                                            <span class="nav-link-text" data-i18n="nav.log">Activity Log</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+                                <li class="open">
+                                    <a href="#" title="Grant" data-filter-tags="grant">
+                                        <i class="fal fa-archive"></i>
+                                        <span class="nav-link-text" data-i18n="nav.grant">Grant</span>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="/grant-list" title="Grant List" data-filter-tags="list">
+                                                <span class="nav-link-text" data-i18n="nav.list">Grant List</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/log" title="Activity Log" data-filter-tags="log">
+                                                <span class="nav-link-text" data-i18n="nav.log">Activity Log</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
                             @endrole
 
                             {{-- All --}}
@@ -606,51 +609,51 @@
 
                             {{-- IT Admin --}}
                             @role('Computer Grant (IT Admin)')
-                            <li>
-                                <a href="/all-grant-list" title="All Grant" data-filter-tags="all">
-                                    <i class="fal fa-list"></i>
-                                    <span class="nav-link-text" data-i18n="nav.all">All Grant</span>
-                                </a>
-                            </li>
+                                <li>
+                                    <a href="/all-grant-list" title="All Grant" data-filter-tags="all">
+                                        <i class="fal fa-list"></i>
+                                        <span class="nav-link-text" data-i18n="nav.all">All Grant</span>
+                                    </a>
+                                </li>
                             @endrole
                             {{-- Finance Admin --}}
                             @role('Computer Grant (Finance Admin)')
-                            <li>
-                                <a href="/all-grant-list" title="Grant Claim" data-filter-tags="claim">
-                                    <i class="fal fa-dollar-sign"></i>
-                                    <span class="nav-link-text" data-i18n="nav.claim">Grant Claim</span>
-                                </a>
-                            </li>
+                                <li>
+                                    <a href="/all-grant-list" title="Grant Claim" data-filter-tags="claim">
+                                        <i class="fal fa-dollar-sign"></i>
+                                        <span class="nav-link-text" data-i18n="nav.claim">Grant Claim</span>
+                                    </a>
+                                </li>
                             @endrole
 
                             @role('Computer Grant (IT Admin)|Computer Grant (Finance Admin)')
-                            <li>
-                                <a href="/all-log" title="Activity Log" data-filter-tags="allLog">
-                                    <i class="fal fa-clipboard-list"></i>
-                                    <span class="nav-link-text" data-i18n="nav.allLog">Activity Log</span>
-                                </a>
-                            </li>
+                                <li>
+                                    <a href="/all-log" title="Activity Log" data-filter-tags="allLog">
+                                        <i class="fal fa-clipboard-list"></i>
+                                        <span class="nav-link-text" data-i18n="nav.allLog">Activity Log</span>
+                                    </a>
+                                </li>
                             @endrole
 
                             @role('Computer Grant (IT Admin)')
-                            <li class="open">
-                                <a href="#" title="Grant" data-filter-tags="grant">
-                                    <i class="fal fa-cogs"></i>
-                                    <span class="nav-link-text" data-i18n="nav.grant">Setting</span>
-                                </a>
-                                <ul>
-                                    <li>
-                                        <a href="/quota-list" title="Grant Quota" data-filter-tags="quota">
-                                            <span class="nav-link-text" data-i18n="nav.quota">Grant Quota</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/faq-list" title="FAQ Grant" data-filter-tags="createFAQ">
-                                            <span class="nav-link-text" data-i18n="nav.createFAQ">FAQ Grant</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+                                <li class="open">
+                                    <a href="#" title="Grant" data-filter-tags="grant">
+                                        <i class="fal fa-cogs"></i>
+                                        <span class="nav-link-text" data-i18n="nav.grant">Setting</span>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="/quota-list" title="Grant Quota" data-filter-tags="quota">
+                                                <span class="nav-link-text" data-i18n="nav.quota">Grant Quota</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/faq-list" title="FAQ Grant" data-filter-tags="createFAQ">
+                                                <span class="nav-link-text" data-i18n="nav.createFAQ">FAQ Grant</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
 
                             @endrole
 
