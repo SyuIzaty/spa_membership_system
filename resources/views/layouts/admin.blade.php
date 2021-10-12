@@ -169,6 +169,14 @@
                                 </a>
                                 <ul>
                                     <li>
+                                        <a href="/topics" title="Topic" data-filter-tags="topic-catalogue">
+                                            <i class="ni ni-book-open"></i>
+                                            <span class="nav-link-text"
+                                                data-i18n="nav.topic-catalogue">Topic-Category
+                                                </span>
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a href="/shortcourses" title="Course"
                                             data-filter-tags="course-catalogue">
                                             <i class="ni ni-book-open"></i>
@@ -180,14 +188,6 @@
                                         <a href="/venues" title="Venue" data-filter-tags="venue-catalogue">
                                             <i class="ni ni-book-open"></i>
                                             <span class="nav-link-text" data-i18n="nav.venue-catalogue">Venue
-                                                </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/topics" title="Topic" data-filter-tags="topic-catalogue">
-                                            <i class="ni ni-book-open"></i>
-                                            <span class="nav-link-text"
-                                                data-i18n="nav.topic-catalogue">Topic-Category
                                                 </span>
                                         </a>
                                     </li>
@@ -217,15 +217,15 @@
                                 </a>
                                 <ul>
                                     <li>
-                                        <a href="/participants" title="Participant" data-filter-tags="participant">
-                                            <i class="ni ni-users"></i>
-                                            <span class="nav-link-text" data-i18n="nav.participant">Participant</span>
-                                        </a>
-                                    </li>
-                                    <li>
                                         <a href="/trainers" title="Trainer" data-filter-tags="trainer">
                                             <i class="ni ni-earphones-alt"></i>
                                             <span class="nav-link-text" data-i18n="nav.trainer">Trainer</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/participants" title="Participant" data-filter-tags="participant">
+                                            <i class="ni ni-users"></i>
+                                            <span class="nav-link-text" data-i18n="nav.participant">Participant</span>
                                         </a>
                                     </li>
                                 </ul>
