@@ -746,7 +746,7 @@ class EventParticipantController extends Controller
                         . '<br/>Tarikh: ' . ($existEvent->datetime_start) . ' sehingga ' . ($existEvent->datetime_end)
                         . '<br/>Tempat: ' . ($existEvent->venue->name)
                         . '<br/> <br/>Sila buat pembayaran yuran sebanyak <b>RM'
-                        . ($existFee->amount) . ' (' . ($existFee->name)
+                        . ($existEventParticipant->fee_amount_applied) . ' (' . ($existFee->name)
                         . ')</b>, kemudian tekan butang di bawah untuk ke sesawang profil bagi mengemaskini status pembayaran untuk disahkan.',
                     'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
                     'sha1_ic' => ($existParticipant->sha1_ic),
@@ -1186,7 +1186,7 @@ class EventParticipantController extends Controller
                         . '<br/>Tarikh: ' . ($eventParticipant->event->datetime_start) . ' sehingga ' . ($eventParticipant->event->datetime_end)
                         . '<br/>Tempat: ' . ($eventParticipant->event->venue->name)
                         . '<br/> <br/>Sila buat pembayaran yuran sebanyak <b>RM'
-                        . ($eventParticipant->fee->amount) . ' (' . ($eventParticipant->fee->name)
+                        . ($eventParticipant->fee_amount_applied) . ' (' . ($eventParticipant->fee->name)
                         . ')</b>, kemudian tekan butang di bawah untuk ke sesawang profil bagi mengemaskini status pembayaran untuk disahkan.',
                     'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
                     'sha1_ic' => ($eventParticipant->participant->sha1_ic),
@@ -1210,7 +1210,7 @@ class EventParticipantController extends Controller
                         . '<br/>Tarikh: ' . ($eventParticipant->event->datetime_start) . ' sehingga ' . ($eventParticipant->event->datetime_end)
                         . '<br/>Tempat: ' . ($eventParticipant->event->venue->name)
                         . '<br/> <br/>Sila buat pembayaran yuran sebanyak <b>RM'
-                        . ($eventParticipant->fee->amount) . ' (' . ($eventParticipant->fee->name)
+                        . ($eventParticipant->fee_amount_applied) . ' (' . ($eventParticipant->fee->name)
                         . ')</b>, kemudian tekan butang di bawah untuk ke sesawang profil bagi mengemaskini status pembayaran untuk disahkan.',
                     'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
                     'sha1_ic' => ($eventParticipant->participant->sha1_ic),
@@ -1306,7 +1306,7 @@ class EventParticipantController extends Controller
                         . '<br/>Tarikh: ' . ($eventParticipant->event->datetime_start) . ' sehingga ' . ($eventParticipant->event->datetime_end)
                         . '<br/>Tempat: ' . ($eventParticipant->event->venue->name)
                         . '<br/> <br/>Sila buat pembayaran yuran sebanyak <b>RM'
-                        . ($eventParticipant->fee->amount) . ' (' . ($eventParticipant->fee->name)
+                        . ($eventParticipant->fee_amount_applied) . ' (' . ($eventParticipant->fee->name)
                         . ')</b>, kemudian tekan butang di bawah untuk ke sesawang profil bagi memasukkan bukti pembayaran yang baharu untuk disahkan.',
                     'conclusion' => 'Kami amat menghargai segala usaha anda. Semoga urusan anda dipermudahkan. Terima kasih.',
                     'sha1_ic' => ($eventParticipant->participant->sha1_ic),
