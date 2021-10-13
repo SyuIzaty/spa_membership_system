@@ -14,6 +14,11 @@
             text-align: center;
         } */
 
+        @media print {
+            .noprint {
+                display: none;
+            }
+        }
 
         body {
             background-image: url('{{ asset('img/shortcourse/general/Participation-CO-01.jpg') }}');
@@ -37,7 +42,8 @@
     <p style="font-size: 25px; margin-left: 7%; margin-top: 70px;">
         {{ isset($eventParticipant->event->datetime_start) ? date('j F Y', strtotime($eventParticipant->event->datetime_start)) : '' }}
     </p>
-    <p style="font-size: 25px; margin-left: 7%;" {{ $eventParticipant->event->days_diff > 0 ? '' : 'hidden' }}>until</p>
+    <p style="font-size: 25px; margin-left: 7%;"> {{ $eventParticipant->event->days_diff > 0 ? 'until' : '' }}
+    </p>
     <p style="font-size: 25px; margin-left: 7%;">
         {{ $eventParticipant->event->days_diff > 0 ? date('j F Y', strtotime($eventParticipant->event->datetime_end)) : '' }}
     </p>
