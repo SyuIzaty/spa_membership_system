@@ -139,16 +139,27 @@
 
                             <input id="is_modular" name="is_modular" type="number" value={{ $event->is_modular }}
                                 hidden>
+                            <input id="is_modular_single_selection" name="is_modular_single_selection" type="number"
+                                value={{ $event->is_modular_single_selection }} hidden>
+                            <input id="modular_num_of_selection_min" name="modular_num_of_selection_min" type="number"
+                                value={{ $event->modular_num_of_selection_min }} hidden>
+                            <input id="modular_num_of_selection_max" name="modular_num_of_selection_max" type="number"
+                                value={{ $event->modular_num_of_selection_max }} hidden>
                             <div class="form-group add-participant__module"
                                 {{ $event->is_modular == 1 ? '' : 'style=display:none' }}>
                                 <hr class="mt-1 mb-2">
 
-                                <label class="form-label" for="modules"><span
-                                        class="text-danger">*</span>Modules</label>
                                 @if ($event->is_modular_single_selection == 0)
+
+                                    <label class="form-label" for="modules"><span
+                                            class="text-danger">*</span>Modules
+                                        <small>(You may choose
+                                            {{ $event->modular_num_of_selection_min == $event->modular_num_of_selection_max ? '' : $event->modular_num_of_selection_min . ' to ' }}
+                                            {{ $event->modular_num_of_selection_max }} modules
+                                            only)</small></label>
                                     @foreach ($event->event_modules as $event_module)
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input"
+                                            <input type="checkbox" class="custom-control-input module-limiter"
                                                 id="module-{{ $event_module->id }}" name="modules[]"
                                                 value={{ $event_module->id }}
                                                 data-fee_amount="{{ $event_module->fee_amount }}">
@@ -158,6 +169,10 @@
                                         </div>
                                     @endforeach
                                 @else
+                                    <label class="form-label" for="modules"><span
+                                            class="text-danger">*</span>Modules
+                                        <small>(You may choose a modules
+                                            only)</small></label>
                                     @foreach ($event->event_modules as $event_module)
                                         <div class="custom-control custom-checkbox">
                                             <input type="radio" class="custom-control-input"
@@ -339,6 +354,23 @@
     var event = @json($event);
 
     $(document).ready(function() {
+
+        if (event.is_modular_single_selection == 0) {
+
+            var checks = document.querySelectorAll(".module-limiter");
+            var max = event.modular_num_of_selection_max;
+            for (var i = 0; i < checks.length; i++) {
+                checks[i].onclick = selectiveCheck;
+            }
+
+            function selectiveCheck(e) {
+                var checkedChecks = document.querySelectorAll(".module-limiter:checked");
+                if (checkedChecks.length >= max + 1) {
+
+                    return false;
+                }
+            }
+        }
 
         $('#crud-modal-new-application').on('show.bs.modal', function(event) {
             var ic = document.getElementById('ic_input').value;
@@ -651,12 +683,14 @@
             var firstname = $('.modal-body #firstname').val();
             var lastname = $('.modal-body #lastname').val();
             $('.modal-body #fullname').val(firstname + ' ' + lastname);
+            $('.modal-body #fullname').trigger("change");
         });
 
         $('.modal-body #lastname').change(function() {
             var firstname = $('.modal-body #firstname').val();
             var lastname = $('.modal-body #lastname').val();
             $('.modal-body #fullname').val(firstname + ' ' + lastname);
+            $('.modal-body #fullname').trigger("change");
 
         });
 

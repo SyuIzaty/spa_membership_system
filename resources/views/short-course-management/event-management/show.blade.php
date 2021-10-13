@@ -1824,8 +1824,8 @@
                         } else {
                             $('#modular_num_of_selection_max_row').show();
                             $('#modular_num_of_selection_min_row').show();
-                            $('#modular_num_of_selection_max').val(0);
-                            $('#modular_num_of_selection_min').val(0);
+                            $('#modular_num_of_selection_max').val(2);
+                            $('#modular_num_of_selection_min').val(1);
                         }
                     });
                 }

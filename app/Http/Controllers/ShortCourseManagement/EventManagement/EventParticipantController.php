@@ -583,9 +583,14 @@ class EventParticipantController extends Controller
                 'representative_fullname.min' => "The representative's fullname should have at least 3 characters",
             ]);
         }
-
         if ($request->is_modular == 1 && !$request->modules) {
             return Redirect()->back()->with('failedNewApplication', 'New Application Failed. At least a module should be selected for Modular Short Course. Please try again.');
+        }
+        $min_module= (int)($request->modular_num_of_selection_min);
+        $max_module= (int)($request->modular_num_of_selection_max);
+
+        if ($request->is_modular == 1 && $request->is_modular_single_selection == 0 && (count($request->modules) < $min_module || count($request->modules) > $max_module)) {
+            return Redirect()->back()->with('failedNewApplication', 'New Application Failed. The module selection must be in the range of ' . ($request->modular_num_of_selection_min) . ' to ' . ($request->modular_num_of_selection_max));
         }
         if (($request->input_type == 'add' && $request->file('payment_proof_input')) || $request->input_type == 'edit') {
             $existParticipant = Participant::where([
