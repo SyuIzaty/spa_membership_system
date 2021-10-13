@@ -70,13 +70,13 @@ class EventParticipantController extends Controller
                 $eventsParticipants[$index]->currentStatus = 'Feedback Status (Not Done Yet)';
             } else if ($eventParticipant->is_question_sended == 0 && $eventParticipant->is_not_attend == 1) {
                 $eventsParticipants[$index]->currentStatus = 'Attendance Status (Not Attend)';
-            } else if ($eventParticipant->is_question_sended == 0 && $eventParticipant->is_not_attend == 0) {
+            } else if ($eventParticipant->is_question_sended == 0 && ($eventParticipant->is_not_attend == 0 && !is_null($eventParticipant->is_not_attend))) {
                 $eventsParticipants[$index]->currentStatus = 'Attendance Status (Attend)';
             } else if ($eventParticipant->is_not_attend == null && $eventParticipant->is_verified_payment_proof == 1) {
                 $eventsParticipants[$index]->currentStatus = 'Payment Status - Verification (Done)';
-            } else if ($eventParticipant->is_not_attend == null && $eventParticipant->is_verified_payment_proof == null) {
+            } else if ($eventParticipant->is_not_attend == null && is_null($eventParticipant->is_verified_payment_proof)) {
                 $eventsParticipants[$index]->currentStatus = 'Payment Status - Verification (Rejected)';
-            } else if ($eventParticipant->is_verified_payment_proof == 0 && $eventParticipant->is_approved_application == 1) {
+            } else if (($eventParticipant->is_verified_payment_proof == 0 && !is_null($eventParticipant->is_verified_payment_proof)) && $eventParticipant->is_approved_application == 1) {
                 $eventsParticipants[$index]->currentStatus = 'Payment Status - Verification (Request for Verification)';
             } else {
                 $eventsParticipants[$index]->currentStatus = 'N/A';
@@ -1144,7 +1144,7 @@ class EventParticipantController extends Controller
         $interval = $datetime1->diff($datetime2);
         $days_diff = $interval->format('%a');
 
-        $eventParticipant->event->days_diff=$days_diff;
+        $eventParticipant->event->days_diff = $days_diff;
 
 
         return $html .= view('short-course-management.pdf.event-certificate', compact('eventParticipant'));
