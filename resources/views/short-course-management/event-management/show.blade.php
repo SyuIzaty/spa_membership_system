@@ -175,7 +175,7 @@
                                                             </tr>
 
                                                             <tr id="modular_num_of_selection_min_row"
-                                                                {{ $event->is_modular_single_selection == 1 ? 'style=display:none;' : '' }}>
+                                                                {{ ($event->is_modular_single_selection == 1 || is_null($event->is_modular_single_selection)) ? 'style=display:none;' : '' }}>
                                                                 <td>Minimum Number of Selection</td>
                                                                 <td name="modular_num_of_selection_min_show"
                                                                     id="modular_num_of_selection_min_show">
@@ -201,7 +201,7 @@
                                                                 </td>
                                                             </tr>
                                                             <tr id="modular_num_of_selection_max_row"
-                                                                {{ $event->is_modular_single_selection == 1 ? 'style=display:none;' : '' }}>
+                                                                {{ ($event->is_modular_single_selection == 1 || is_null($event->is_modular_single_selection)) ? 'style=display:none;' : '' }}>
                                                                 <td>Maximum Number of Selection</td>
                                                                 <td name="modular_num_of_selection_max_show"
                                                                     id="modular_num_of_selection_max_show">
@@ -1728,10 +1728,6 @@
 
                     $("#modular_num_of_selection_max_show").hide();
                     $("#modular_num_of_selection_max_edit").show();
-
-
-                    $('#modular_num_of_selection_max').val(0);
-                    $('#modular_num_of_selection_min').val(0);
 
 
                     $("#datetime_start_show").hide();
