@@ -173,6 +173,59 @@
                                                                     </div>
                                                                 </td>
                                                             </tr>
+
+                                                            <tr id="modular_num_of_selection_min_row"
+                                                                {{ $event->is_modular_single_selection == 1 ? 'style=display:none;' : '' }}>
+                                                                <td>Minimum Number of Selection</td>
+                                                                <td name="modular_num_of_selection_min_show"
+                                                                    id="modular_num_of_selection_min_show">
+                                                                    {{ $event->modular_num_of_selection_min ? $event->modular_num_of_selection_min : 'Not Specified' }}
+                                                                </td>
+                                                                <td name="modular_num_of_selection_min_edit"
+                                                                    id="modular_num_of_selection_min_edit"
+                                                                    style="display: none">
+                                                                    <div class="form-group">
+                                                                        <input id="modular_num_of_selection_min"
+                                                                            name="modular_num_of_selection_min"
+                                                                            type="number"
+                                                                            value="{{ $event->modular_num_of_selection_min ? $event->modular_num_of_selection_min : 0 }}"
+                                                                            class="form-control">
+                                                                        @error('modular_num_of_selection_min')
+                                                                            <p style="color: red">
+                                                                                <strong> *
+                                                                                    {{ $message }}
+                                                                                </strong>
+                                                                            </p>
+                                                                        @enderror
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="modular_num_of_selection_max_row"
+                                                                {{ $event->is_modular_single_selection == 1 ? 'style=display:none;' : '' }}>
+                                                                <td>Maximum Number of Selection</td>
+                                                                <td name="modular_num_of_selection_max_show"
+                                                                    id="modular_num_of_selection_max_show">
+                                                                    {{ $event->modular_num_of_selection_max ? $event->modular_num_of_selection_max : 'Not Specified' }}
+                                                                </td>
+                                                                <td name="modular_num_of_selection_max_edit"
+                                                                    id="modular_num_of_selection_max_edit"
+                                                                    style="display: none">
+                                                                    <div class="form-group">
+                                                                        <input id="modular_num_of_selection_max"
+                                                                            name="modular_num_of_selection_max"
+                                                                            type="number"
+                                                                            value="{{ $event->modular_num_of_selection_max ? $event->modular_num_of_selection_max : 0 }}"
+                                                                            class="form-control">
+                                                                        @error('modular_num_of_selection_max')
+                                                                            <p style="color: red">
+                                                                                <strong> *
+                                                                                    {{ $message }}
+                                                                                </strong>
+                                                                            </p>
+                                                                        @enderror
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
                                                             <tr>
                                                                 <td>Date Start</td>
                                                                 <td name="datetime_start_show" id="datetime_start_show">
@@ -426,7 +479,8 @@
                                                                             <div class="form-group">
                                                                                 <label class="form-label"
                                                                                     for="amount"><span
-                                                                                        class="text-danger">*</span>amount (RM)</label>
+                                                                                        class="text-danger">*</span>amount
+                                                                                    (RM)</label>
                                                                                 <input type="number" step=".01"
                                                                                     class="form-control" id="amount_add"
                                                                                     name="amount_add">
@@ -538,7 +592,8 @@
                                                                         <div class="form-group">
                                                                             <label class="form-label"
                                                                                 for="amount"><span
-                                                                                    class="text-danger">*</span>amount (RM)</label>
+                                                                                    class="text-danger">*</span>amount
+                                                                                (RM)</label>
                                                                             <input type="number" step=".01"
                                                                                 class="form-control" id="amount_edit"
                                                                                 name="amount_edit">
@@ -1146,7 +1201,7 @@
                                                                             @csrf
                                                                             <button type="submit"
                                                                                 class="btn btn-sm btn-danger float-right mr-2"
-                                                                                {{$event_module->totalApplication==0?'':'disabled'}}>
+                                                                                {{ $event_module->totalApplication == 0 ? '' : 'disabled' }}>
                                                                                 <i class="ni ni-close"></i>
                                                                             </button>
                                                                         </form>
@@ -1667,6 +1722,18 @@
                     $("#is_modular_single_selection_show").hide();
                     $("#is_modular_single_selection_edit").show();
 
+                    $("#modular_num_of_selection_min_show").hide();
+                    $("#modular_num_of_selection_min_edit").show();
+
+
+                    $("#modular_num_of_selection_max_show").hide();
+                    $("#modular_num_of_selection_max_edit").show();
+
+
+                    $('#modular_num_of_selection_max').val(0);
+                    $('#modular_num_of_selection_min').val(0);
+
+
                     $("#datetime_start_show").hide();
                     $("#datetime_start_edit").show();
 
@@ -1703,6 +1770,14 @@
                     $("#is_modular_single_selection_show").show();
                     $("#is_modular_single_selection_edit").hide();
 
+
+                    $("#modular_num_of_selection_min_show").show();
+                    $("#modular_num_of_selection_min_edit").hide();
+
+
+                    $("#modular_num_of_selection_max_show").show();
+                    $("#modular_num_of_selection_max_edit").hide();
+
                     $("#datetime_start_show").show();
                     $("#datetime_start_edit").hide();
 
@@ -1730,14 +1805,33 @@
                 // Selection Type
                 {
                     $('#event_type').on('change', function(event) {
-                        console.log(event.target.value);
                         if (event.target.value == 1) {
                             $('#is_modular_single_selection_row').show();
+                            $('#is_modular_single_selection').val('1'); // Select the option with a value of '1'
+                            $('#is_modular_single_selection').trigger('change');
                         } else {
+                            $('#is_modular_single_selection').val(null);
                             $('#is_modular_single_selection_row').hide();
+                            $('#modular_num_of_selection_max_row').hide();
+                            $('#modular_num_of_selection_min_row').hide();
+                            $('#modular_num_of_selection_max').val(null);
+                            $('#modular_num_of_selection_min').val(null);
                         }
 
-                    })
+                    });
+                    $('#is_modular_single_selection').on('change', function(event) {
+                        if (event.target.value == 1) {
+                            $('#modular_num_of_selection_max_row').hide();
+                            $('#modular_num_of_selection_min_row').hide();
+                            $('#modular_num_of_selection_max').val(null);
+                            $('#modular_num_of_selection_min').val(null);
+                        } else {
+                            $('#modular_num_of_selection_max_row').show();
+                            $('#modular_num_of_selection_min_row').show();
+                            $('#modular_num_of_selection_max').val(0);
+                            $('#modular_num_of_selection_min').val(0);
+                        }
+                    });
                 }
 
             }

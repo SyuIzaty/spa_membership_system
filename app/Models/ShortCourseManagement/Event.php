@@ -14,6 +14,8 @@ class Event extends Model
         'name',
         'is_modular',
         'is_modular_single_selection',
+        'modular_num_of_selection_max',
+        'modular_num_of_selection_min',
         'description',
         'target_audience',
         'tentative',

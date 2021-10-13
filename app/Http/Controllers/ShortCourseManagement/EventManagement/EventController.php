@@ -568,19 +568,60 @@ class EventController extends Controller
             'event_feedback_set.required' => 'Please insert set of feedback to be used for the event',
             'max_participant.required' => 'Please insert total seat of the event',
         ]);
+        if ($request->event_type == "1") {
+            $validated = $request->validate([
+                'is_modular_single_selection' => 'required',
+            ]);
 
-        $update = Event::find($id)->update([
-            'name' => $request->name,
-            'is_modular' => $request->event_type,
+            if ($request->is_modular_single_selection == "0") {
+                $validated = $request->validate([
+                    'modular_num_of_selection_min' => 'required',
+                    'modular_num_of_selection_max' => 'required',
+                ]);
 
-            'is_modular_single_selection' => $request->is_modular_single_selection,
-            'datetime_start' => $request->datetime_start,
-            'datetime_end' => $request->datetime_end,
-            'venue_id' => $request->venue,
-            'venue_description' => $request->venue_description,
-            'event_feedback_set_id' => $request->event_feedback_set,
-            'max_participant' => $request->max_participant,
-        ]);
+                $update = Event::find($id)->update([
+                    'name' => $request->name,
+                    'is_modular' => $request->event_type,
+                    'is_modular_single_selection' => $request->is_modular_single_selection,
+                    'modular_num_of_selection_min' => $request->modular_num_of_selection_min,
+                    'modular_num_of_selection_max' => $request->modular_num_of_selection_max,
+                    'datetime_start' => $request->datetime_start,
+                    'datetime_end' => $request->datetime_end,
+                    'venue_id' => $request->venue,
+                    'venue_description' => $request->venue_description,
+                    'event_feedback_set_id' => $request->event_feedback_set,
+                    'max_participant' => $request->max_participant,
+                ]);
+            } else {
+                $update = Event::find($id)->update([
+                    'name' => $request->name,
+                    'is_modular' => $request->event_type,
+                    'is_modular_single_selection' => $request->is_modular_single_selection,
+                    'modular_num_of_selection_min' => null,
+                    'modular_num_of_selection_max' => null,
+                    'datetime_start' => $request->datetime_start,
+                    'datetime_end' => $request->datetime_end,
+                    'venue_id' => $request->venue,
+                    'venue_description' => $request->venue_description,
+                    'event_feedback_set_id' => $request->event_feedback_set,
+                    'max_participant' => $request->max_participant,
+                ]);
+            }
+        } else {
+            $update = Event::find($id)->update([
+                'name' => $request->name,
+                'is_modular' => $request->event_type,
+                'is_modular_single_selection' => null,
+                'modular_num_of_selection_min' => null,
+                'modular_num_of_selection_max' => null,
+                'datetime_start' => $request->datetime_start,
+                'datetime_end' => $request->datetime_end,
+                'venue_id' => $request->venue,
+                'venue_description' => $request->venue_description,
+                'event_feedback_set_id' => $request->event_feedback_set,
+                'max_participant' => $request->max_participant,
+            ]);
+        }
 
         return Redirect()->back()->with('successUpdateGeneral', 'Basic Information Updated Successfully');
     }
