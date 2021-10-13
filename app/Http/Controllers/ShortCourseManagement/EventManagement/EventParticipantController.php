@@ -522,7 +522,10 @@ class EventParticipantController extends Controller
 
             $validated = $request->validate([
                 'ic_input' => 'required',
+                'firstname' => 'required|min:2',
+                'lastname' => 'required|min:2',
                 'fullname' => 'required|min:3',
+                'gender' => 'required',
                 'phone' => 'required|min:10',
                 'email' => 'required|email:rfc',
                 'fee_id' => 'required',
@@ -532,8 +535,13 @@ class EventParticipantController extends Controller
 
             ], [
                 'ic_input.required' => 'Please insert IC of the participant',
+                'firstname.required' => 'Please insert firstname of the participant',
+                'lastname.required' => 'Please insert lastname of the participant',
                 'fullname.required' => 'Please insert fullname of the participant',
+                'firstname.min' => 'The firstname should have at least 2 characters',
+                'lastname.min' => 'The lastname should have at least 2 characters',
                 'fullname.min' => 'The fullname should have at least 3 characters',
+                'gender.required' => 'Please insert gender of the participant',
                 'phone.required' => 'Please insert phone number of the participant',
                 'phone.min' => 'The phone number should have at least 10 characters',
                 'email.required' => "Please insert email address of the participant",
@@ -547,7 +555,10 @@ class EventParticipantController extends Controller
 
             $validated = $request->validate([
                 'ic_input' => 'required',
+                'firstname' => 'required|min:2',
+                'lastname' => 'required|min:2',
                 'fullname' => 'required|min:3',
+                'gender' => 'required',
                 'phone' => 'required|min:10',
                 'email' => 'required|email:rfc',
                 'fee_id' => 'required',
@@ -556,8 +567,13 @@ class EventParticipantController extends Controller
 
             ], [
                 'ic_input.required' => 'Please insert IC of the participant',
+                'firstname.required' => 'Please insert firstname of the participant',
+                'lastname.required' => 'Please insert lastname of the participant',
                 'fullname.required' => 'Please insert fullname of the participant',
+                'firstname.min' => 'The firstname should have at least 2 characters',
+                'lastname.min' => 'The lastname should have at least 2 characters',
                 'fullname.min' => 'The fullname should have at least 3 characters',
+                'gender.required' => 'Please insert gender of the participant',
                 'phone.required' => 'Please insert phone number of the participant',
                 'phone.min' => 'The phone number should have at least 10 characters',
                 'email.required' => "Please insert email address of the participant",
@@ -579,8 +595,11 @@ class EventParticipantController extends Controller
                 $sha1_ic = sha1($request->ic_input);
                 $existParticipant = Participant::create([
                     'name' => $request->fullname,
+                    'first_name' => $request->firstname,
+                    'last_name' => $request->lastname,
                     'ic' => $request->ic_input,
                     'sha1_ic' => $sha1_ic,
+                    'gender' => $request->gender,
                     'phone' => $request->phone,
                     'email' => $request->email,
                     'created_by' => Auth::user() ? Auth::user()->id : 'public_user',
@@ -588,8 +607,11 @@ class EventParticipantController extends Controller
             } else {
                 $sha1_ic = sha1($request->ic_input);
                 $existParticipant->name = $request->fullname;
+                $existParticipant->first_name = $request->firstname;
+                $existParticipant->last_name = $request->lastname;
                 $existParticipant->ic = $request->ic_input;
                 $existParticipant->sha1_ic = $sha1_ic;
+                $existParticipant->gender = $request->gender;
                 $existParticipant->phone = $request->phone;
                 $existParticipant->email = $request->email;
                 $existParticipant->updated_by = Auth::user() ? Auth::user()->id : 'public_user';

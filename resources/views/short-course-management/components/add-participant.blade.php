@@ -48,9 +48,36 @@
                         <input type="hidden" id="input_type" name="input_type">
                         <hr class="mt-1 mb-2">
                         <div class="form-group">
+                            <label class="form-label" for="firstname"><span class="text-danger">*</span>First
+                                Name</label>
+                            <input class="form-control" id="firstname" name="firstname">
+                            @error('firstname')
+                                <p style="color: red">
+                                    <strong> *
+                                        {{ $message }}
+                                    </strong>
+                                </p>
+                            @enderror
+                        </div>
+                        <hr class="mt-1 mb-2">
+                        <div class="form-group">
+                            <label class="form-label" for="lastname"><span class="text-danger">*</span>Last
+                                Name</label>
+                            <input class="form-control" id="lastname" name="lastname">
+                            @error('lastname')
+                                <p style="color: red">
+                                    <strong> *
+                                        {{ $message }}
+                                    </strong>
+                                </p>
+                            @enderror
+                        </div>
+
+                        <hr class="mt-1 mb-2">
+                        <div class="form-group">
                             <label class="form-label" for="fullname"><span class="text-danger">*</span>Full
                                 Name</label>
-                            <input class="form-control" id="fullname" name="fullname">
+                            <input class="form-control" id="fullname" name="fullname" readonly>
                             @error('fullname')
                                 <p style="color: red">
                                     <strong> *
@@ -58,6 +85,29 @@
                                     </strong>
                                 </p>
                             @enderror
+                        </div>
+                        <hr class="mt-1 mb-2">
+                        {{-- <div class="input-group-prepend"> --}}
+
+                        <div class="form-group">
+                            <label class="form-label" for="gender"><span
+                                    class="text-danger">*</span>Gender</label>
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" id="male" name="gender" value="M"
+                                            class="custom-control-input">
+                                        <label class="custom-control-label" for="male">Male</label>
+                                    </div>
+                                </div>
+                                <div class="input-group-text">
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" id="female" name="gender" value="F"
+                                            class="custom-control-input">
+                                        <label class="custom-control-label" for="female">Female</label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <hr class="mt-1 mb-2">
                         <div class="form-group">
@@ -77,24 +127,6 @@
                             <label class="form-label" for="email"><span class="text-danger">*</span>Email</label>
                             <input class="form-control" id="email" name="email">
                             @error('email')
-                                <p style="color: red">
-                                    <strong> *
-                                        {{ $message }}
-                                    </strong>
-                                </p>
-                            @enderror
-                        </div>
-                        <hr class="mt-1 mb-2">
-                        <div class="form-group" id="payment_proof_form">
-                            <label class="form-label" for="payment_proof_input"><span
-                                    class="text-danger">*</span>Payment
-                                Proof</label>
-                            <div class="custom-file px-2 d-flex flex-column">
-                                <input type="file" class="custom-file-label" name="payment_proof_input[]"
-                                    accept="image/png, image/jpeg" multiple="" id="payment_proof_input" />
-                            </div>
-
-                            @error('payment_proof_input')
                                 <p style="color: red">
                                     <strong> *
                                         {{ $message }}
@@ -209,6 +241,25 @@
                                     </strong>
                                 </p>
                             @enderror
+
+                            <hr class="mt-1 mb-2">
+                            <div class="form-group" id="payment_proof_form">
+                                <label class="form-label" for="payment_proof_input"><span
+                                        class="text-danger">*</span>Payment
+                                    Proof</label>
+                                <div class="custom-file px-2 d-flex flex-column">
+                                    <input type="file" class="custom-file-label" name="payment_proof_input[]"
+                                        accept="image/png, image/jpeg" multiple="" id="payment_proof_input" />
+                                </div>
+
+                                @error('payment_proof_input')
+                                    <p style="color: red">
+                                        <strong> *
+                                            {{ $message }}
+                                        </strong>
+                                    </p>
+                                @enderror
+                            </div>
                         </div>
                         <div class="custom-control custom-checkbox" style="display:none">
                             <input type="checkbox" class="custom-control-input" id="represent-by-himself"
@@ -303,12 +354,25 @@
 
         $('#ic_input').change(function() {
             var ic_input = $('.modal-body #ic_input').val();
+            $('.modal-body #firstname').val(null);
+            $('.modal-body #lastname').val(null);
             $('.modal-body #fullname').val(null);
+            document.getElementById("male").checked = false;
+            document.getElementById("female").checked = false;
             $('.modal-body #phone').val(null);
             $('.modal-body #payment_proof_input').val(null);
             $('.modal-body #email').val(null);
             $('.modal-body #representative_ic_input').val(ic_input);
             $('.modal-body #representative_fullname').val(null);
+
+
+            var event_modules_event_participants = $('[id^="module-"]');
+            if (event_modules_event_participants) {
+                for (var i = 0; i < event_modules_event_participants.length; i++) {
+                    $('.modal-body #' + event_modules_event_participants.eq(i)[0].id)
+                        .prop('checked', false);
+                }
+            }
 
             $('#search-by-ic').trigger("click");
         });
@@ -333,8 +397,13 @@
                         });
                     }
                     if (edit) {
+                        $('.modal-body #firstname').attr('readonly', false);
+                        $('.modal-body #lastname').attr('readonly', false);
+                        // $('.modal-body #fullname').attr('readonly', false);
+                        $('.modal-body #gender').attr('readonly', false);
 
-                        $('.modal-body #fullname').attr('readonly', false);
+                        // document.getElementById("male").disabled = false;
+                        // document.getElementById("female").disabled = false;
                         $('.modal-body #phone').attr('readonly', false);
 
                         $('.modal-body #email').attr('readonly', false);
@@ -352,7 +421,12 @@
                             'Already Apply - Edit Details');
                     } else {
 
+                        $('.modal-body #firstname').attr('readonly', true);
+                        $('.modal-body #lastname').attr('readonly', true);
                         $('.modal-body #fullname').attr('readonly', true);
+                        $('.modal-body #gender').attr('readonly', true);
+                        // document.getElementById("male").disabled = true;
+                        // document.getElementById("female").disabled = true;
                         $('.modal-body #phone').attr('readonly', true);
 
                         $('.modal-body #email').attr('readonly', true);
@@ -370,7 +444,12 @@
 
                 } else {
                     // TODO: Not Apply Yet
-                    $('.modal-body #fullname').removeAttr('readonly', true);
+                    $('.modal-body #firstname').removeAttr('readonly', true);
+                    $('.modal-body #lastname').removeAttr('readonly', true);
+                    // $('.modal-body #fullname').removeAttr('readonly', true);
+                    $('.modal-body #gender').removeAttr('readonly', true);
+                    // document.getElementById("male").disabled = true;
+                    //     document.getElementById("female").disabled = true;
                     $('.modal-body #phone').removeAttr('readonly', true);
                     $('.modal-body #payment_proof_input').removeAttr('readonly',
                         true);
@@ -387,14 +466,38 @@
                 }
 
                 if (data.participant) {
+                    $('.modal-body #firstname').val(data.participant.firstname);
+                    $('.modal-body #lastname').val(data.participant.lastname);
                     $('.modal-body #fullname').val(data.participant.name);
+                    if (data.participant.gender == "M") {
+                        document.getElementById("male").checked = true;
+                        document.getElementById("female").checked = false;
+                    } else if (data.participant.gender == "F") {
+                        document.getElementById("male").checked = false;
+                        document.getElementById("female").checked = true;
+                    } else {
+                        document.getElementById("male").checked = false;
+                        document.getElementById("female").checked = false;
+                    }
                     $('.modal-body #phone').val(data.participant.phone);
                     $('.modal-body #email').val(data.participant.email);
                 } else {
+                    $('.modal-body #firstname').val(null);
+                    $('.modal-body #lastname').val(null);
                     $('.modal-body #fullname').val(null);
+                    document.getElementById("male").checked = false;
+                    document.getElementById("female").checked = false;
                     $('.modal-body #phone').val(null);
                     $('.modal-body #email').val(null);
                     $('.modal-body #payment_proof_input').val(null);
+
+                    var event_modules_event_participants = $('[id^="module-"]');
+                    if (event_modules_event_participants) {
+                        for (var i = 0; i < event_modules_event_participants.length; i++) {
+                            $('.modal-body #' + event_modules_event_participants.eq(i)[0].id)
+                                .prop('checked', false);
+                        }
+                    }
 
                 }
                 var fees = @json($event->fees);
@@ -445,11 +548,22 @@
 
             }).fail(
                 function() {
+                    $('.modal-body #firstname').val(null);
+                    $('.modal-body #lastname').val(null);
                     $('.modal-body #fullname').val(null);
+                    document.getElementById("male").checked = false;
+                    document.getElementById("female").checked = false;
                     $('.modal-body #phone').val(null);
                     $('.modal-body #email').val(null);
                     $('.modal-body #payment_proof_input').val(null);
 
+                    var event_modules_event_participants = $('[id^="module-"]');
+                    if (event_modules_event_participants) {
+                        for (var i = 0; i < event_modules_event_participants.length; i++) {
+                            $('.modal-body #' + event_modules_event_participants.eq(i)[0].id)
+                                .prop('checked', false);
+                        }
+                    }
 
                     $("select[id=fee_id]").hide();
                     $("div[id=fee_id_show]").show();
@@ -533,6 +647,19 @@
             });
         });
 
+        $('.modal-body #firstname').change(function() {
+            var firstname = $('.modal-body #firstname').val();
+            var lastname = $('.modal-body #lastname').val();
+            $('.modal-body #fullname').val(firstname + ' ' + lastname);
+        });
+
+        $('.modal-body #lastname').change(function() {
+            var firstname = $('.modal-body #firstname').val();
+            var lastname = $('.modal-body #lastname').val();
+            $('.modal-body #fullname').val(firstname + ' ' + lastname);
+
+        });
+
 
         $('.modal-body #fullname').change(function() {
             var fullname = $('.modal-body #fullname').val();
@@ -573,12 +700,25 @@
 
             });
 
-            $('#close-new-application').click(function() {
+            // $('#close-new-application').click(function() {
+            $('#crud-modal-new-application').on('hide.bs.modal', function(event) {
                 $('.modal-body #ic').val(null);
+                $('.modal-body #firstname').val(null);
+                $('.modal-body #lastname').val(null);
                 $('.modal-body #fullname').val(null);
+                document.getElementById("male").checked = false;
+                document.getElementById("female").checked = false;
                 $('.modal-body #phone').val(null);
                 $('.modal-body #payment_proof_input').val(null);
                 $('.modal-body #email').val(null);
+
+                var event_modules_event_participants = $('[id^="module-"]');
+                if (event_modules_event_participants) {
+                    for (var i = 0; i < event_modules_event_participants.length; i++) {
+                        $('.modal-body #' + event_modules_event_participants.eq(i)[0].id)
+                            .prop('checked', false);
+                    }
+                }
             });
         }
 
@@ -631,14 +771,21 @@
                     });
                 }
                 $('#crud-modal-new-application').modal('show');
+
+                $('.modal-body #application_update_submit').empty();
+                $('.modal-body #application_message').empty();
+                $('.modal-body #application_update_submit').append(
+                    '<i class = "ni ni-plus"></i> Apply');
+                $('.modal-body #application_update_submit').hide();
+                $('.modal-body #application_message').append(
+                    'Applicant Details');
             });
         }
     });
 
     $(document).ready(function() { //Edit Application
         {
-            $('table[name*="table-all-applicant"]').on('click', '#edit-application', function(e) {
-
+            $('#table-all-applicant').on('click', '#edit-application', function(e) {
                 var target = e.target;
                 var ic = target.getAttribute("data-participant_ic");
 
