@@ -120,20 +120,10 @@
                                                 </form>
                                                 <hr class="mt-2 mb-3">
 
-                                                <table class="table table-striped table-bordered">
+                                                <table class="table table-striped table-bordered" style="margin-top:5rem;">
                                                     <thead class="table-primary">
                                                         <tr class=" bg-primary-50">
                                                             <th colspan="3"><b>Settings</b></th>
-                                                        </tr>
-                                                        <tr>
-                                                        <tr>
-                                                            <th class="text-center" scope="col">
-                                                                Value
-                                                            </th>
-                                                            <th class="text-center" scope="col" style="width:20%">
-                                                                Action
-
-                                                            </th>
                                                         </tr>
 
                                                     </thead>
@@ -142,7 +132,7 @@
                                                             <td class="text-center"
                                                                 id="event_feedback_set_status_category_name"
                                                                 name="event_feedback_set_status_category_name">
-                                                                Active
+                                                                Permanently delete Feedback.
                                                             </td>
                                                             <td class="text-center">
                                                                 <button

@@ -144,20 +144,10 @@
                                                 </form>
                                                 <hr class="mt-2 mb-3">
 
-                                                <table class="table table-striped table-bordered">
+                                                <table class="table table-striped table-bordered" style="margin-top:5rem;">
                                                     <thead class="table-primary">
                                                         <tr class=" bg-primary-50">
                                                             <th colspan="3"><b>Settings</b></th>
-                                                        </tr>
-                                                        <tr>
-                                                        <tr>
-                                                            <th class="text-center" scope="col">
-                                                                Value
-                                                            </th>
-                                                            <th class="text-center" scope="col" style="width:20%">
-                                                                Action
-
-                                                            </th>
                                                         </tr>
 
                                                     </thead>
@@ -165,7 +155,7 @@
                                                         <tr>
                                                             <td class="text-center" id="venue_status_category_name"
                                                                 name="venue_status_category_name">
-                                                                Active
+                                                                Permanently delete venue.
                                                             </td>
                                                             <td class="text-center">
                                                                 <button

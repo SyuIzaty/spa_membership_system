@@ -1661,7 +1661,7 @@
                                                         <tr>
                                                             <td class="text-center" id="event_status_category_name"
                                                                 name="event_status_category_name">
-                                                                {{ $event->event_status_category->name }}</td>
+                                                                Current event status: {{ $event->event_status_category->name }}</td>
                                                             <td class="text-center">
 
 
@@ -1686,7 +1686,7 @@
                                                         <tr>
                                                             <td class="text-center" id="event_status_category_name"
                                                                 name="event_status_category_name">
-                                                                Active
+                                                                Permanently delete event.
                                                             </td>
                                                             <td class="text-center">
                                                                 <button

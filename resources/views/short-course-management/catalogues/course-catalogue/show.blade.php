@@ -199,9 +199,8 @@
                                                 <a href="javascript:;" name="addTopic" id="addTopic"
                                                     class="btn btn-primary btn-sm ml-auto float-right my-2">Add
                                                     More Topic</a>
-                                                <hr class="mt-2 mb-3">
                                                 <table class="table table-striped table-bordered m-0" id="module_field"
-                                                    {{ $shortcourse->is_modular==0 ? 'style=display:none' : '' }}>
+                                                    {{ $shortcourse->is_modular == 0 ? 'style=display:none' : '' }}>
                                                     <thead class="thead">
                                                         <tr class=" bg-primary-50">
                                                             <th colspan="3"><b>List of Modules</b></th>
@@ -309,11 +308,11 @@
                                                     </div>
                                                 </div>
                                                 <a href="javascript:;" name="addModule" id="addModule"
-                                                    class="btn btn-primary btn-sm ml-auto float-right my-2" {{ $shortcourse->is_modular==0 ? 'style=display:none' : '' }}>Add
+                                                    class="btn btn-primary btn-sm ml-auto float-right my-2"
+                                                    {{ $shortcourse->is_modular == 0 ? 'style=display:none' : '' }}>Add
                                                     More Module</a>
-                                                <hr class="mt-2 mb-3">
-                                                <table class="table table-striped table-bordered">
-                                                    <thead class="table-primary">
+                                                <table class="table table-striped table-bordered" style="margin-top:5rem;">
+                                                    {{-- <thead class="table-primary">
 
                                                         <tr class=" bg-primary-50">
                                                             <th colspan="3"><b>Settings</b></th>
@@ -328,12 +327,18 @@
                                                             </th>
                                                         </tr>
 
+                                                    </thead> --}}
+
+                                                    <thead class="thead">
+                                                        <tr class=" bg-primary-50">
+                                                            <th colspan="3"><b>Settings</b></th>
+                                                        </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
                                                             <td class="text-center" id="shortcourse_status_category_name"
                                                                 name="shortcourse_status_category_name">
-                                                                Active
+                                                                Permanently delete shortcourse.
                                                             </td>
                                                             <td class="text-center">
                                                                 <button
@@ -377,10 +382,6 @@
                                                                         Active
                                                                     </td>
                                                                     <td class="text-center">
-                                                                        <button
-                                                                            {{ $shortcourse->totalEvents == 0 ? null : 'disabled' }}
-                                                                            href="javascript:;" id="delete_shortcourse"
-                                                                            class="btn btn-danger mr-auto ml-2 waves-effect waves-themed font-weight-bold">DELETE</button>
                                                                     </td>
                                                                 </tr>
                                                             </tbody>

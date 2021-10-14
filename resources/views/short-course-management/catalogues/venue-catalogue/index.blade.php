@@ -167,7 +167,6 @@
 
             $('#create').click(function() {
                 // $('#venue_name').val('Unnamed Venue');
-
                 // $("#submitVenue").trigger("click");
 
                 $('#crud-modal').modal('show');
