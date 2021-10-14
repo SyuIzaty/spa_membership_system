@@ -175,7 +175,7 @@
                                                             </tr>
 
                                                             <tr id="modular_num_of_selection_min_row"
-                                                                {{ ($event->is_modular_single_selection == 1 || is_null($event->is_modular_single_selection)) ? 'style=display:none;' : '' }}>
+                                                                {{ $event->is_modular_single_selection == 1 || is_null($event->is_modular_single_selection) ? 'style=display:none;' : '' }}>
                                                                 <td>Minimum Number of Selection</td>
                                                                 <td name="modular_num_of_selection_min_show"
                                                                     id="modular_num_of_selection_min_show">
@@ -201,7 +201,7 @@
                                                                 </td>
                                                             </tr>
                                                             <tr id="modular_num_of_selection_max_row"
-                                                                {{ ($event->is_modular_single_selection == 1 || is_null($event->is_modular_single_selection)) ? 'style=display:none;' : '' }}>
+                                                                {{ $event->is_modular_single_selection == 1 || is_null($event->is_modular_single_selection) ? 'style=display:none;' : '' }}>
                                                                 <td>Maximum Number of Selection</td>
                                                                 <td name="modular_num_of_selection_max_show"
                                                                     id="modular_num_of_selection_max_show">
@@ -389,85 +389,205 @@
                                                     </table>
                                                 </form>
 
-                                                <table class="table table-striped table-bordered m-0">
-                                                    <thead class="thead">
-                                                        <tr class=" bg-primary-50" scope="row">
-                                                            <th colspan="5"><b>List of Fees</b></th>
-                                                        </tr>
-                                                        <tr scope="row">
-                                                            <th scope="col">Name</th>
-                                                            <th scope="col">Amount (RM)</th>
-                                                            <th scope="col">Fee Type</th>
-                                                            <th scope="col">Promo Code</th>
-                                                            <th scope="col">Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($event->fees as $fee)
-                                                            <tr scope="row">
-                                                                <td>
-                                                                    {{ $fee->name }}
-                                                                </td>
-                                                                <td>{{ $fee->amount }}</td>
-                                                                <td>{{ $fee->is_base_fee }}</td>
-                                                                <td>{{ $fee->promo_code ? $fee->promo_code : 'N\A' }}
-                                                                </td>
-                                                                <td>
-                                                                    <form method="post"
-                                                                        action="/event/fee/delete/{{ $fee->id }}"
-                                                                        @php
-                                                                            if ($fee->is_base_fee === 1) {
-                                                                                echo 'disabled hidden';
-                                                                            }
-                                                                        @endphp>
-                                                                        @csrf
-                                                                        <button type="submit"
-                                                                            class="btn btn-sm btn-danger float-right mr-2">
-                                                                            <i class="ni ni-trash"></i>
-                                                                        </button>
-                                                                    </form>
-                                                                    <a href="#" class="btn btn-sm btn-info float-right mr-2"
-                                                                        name="edit-fee" id="edit-fee"
-                                                                        data-target="#edit-fee-modal" data-toggle="modal"
-                                                                        data-id={{ $fee->id }}
-                                                                        data-name='{{ $fee->name }}'
-                                                                        data-amount={{ $fee->amount }}
-                                                                        data-is_base_fee={{ $fee->is_base_fee }}
-                                                                        data-promo_code='{{ $fee->promo_code }}'>
-                                                                        <i class="fal fa-pencil"></i>
-                                                                    </a>
-                                                                </td>
+                                                <div style="display:flex; flex-direction:column;">
+                                                    <table class="table table-striped table-bordered m-0">
+                                                        <thead class="thead">
+                                                            <tr class=" bg-primary-50" scope="row">
+                                                                <th colspan="5"><b>List of Fees</b></th>
                                                             </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                                <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
-                                                    style="content-align:right">
-                                                    <a href="javascript:;" data-toggle="modal" id="new-fee"
-                                                        class="btn btn-primary ml-auto mt-2 mr-2 waves-effect waves-themed"><i
-                                                            class="ni ni-plus"> </i> Create New Fee</a>
-                                                    <div class="modal fade" id="crud-modal-new-fee" aria-hidden="true">
+                                                            <tr scope="row">
+                                                                <th scope="col">Name</th>
+                                                                <th scope="col">Amount (RM)</th>
+                                                                <th scope="col">Fee Type</th>
+                                                                <th scope="col">Promo Code</th>
+                                                                <th scope="col">Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach ($event->fees as $fee)
+                                                                <tr scope="row">
+                                                                    <td>
+                                                                        {{ $fee->name }}
+                                                                    </td>
+                                                                    <td>{{ $fee->amount }}</td>
+                                                                    <td>{{ $fee->is_base_fee }}</td>
+                                                                    <td>{{ $fee->promo_code ? $fee->promo_code : 'N\A' }}
+                                                                    </td>
+                                                                    <td>
+                                                                        <form method="post"
+                                                                            action="/event/fee/delete/{{ $fee->id }}"
+                                                                            @php
+                                                                                if ($fee->is_base_fee === 1) {
+                                                                                    echo 'disabled hidden';
+                                                                                }
+                                                                            @endphp>
+                                                                            @csrf
+                                                                            <button type="submit"
+                                                                                class="btn btn-sm btn-danger float-right mr-2">
+                                                                                <i class="ni ni-trash"></i>
+                                                                            </button>
+                                                                        </form>
+                                                                        <a href="#"
+                                                                            class="btn btn-sm btn-info float-right mr-2"
+                                                                            name="edit-fee" id="edit-fee"
+                                                                            data-target="#edit-fee-modal"
+                                                                            data-toggle="modal" data-id={{ $fee->id }}
+                                                                            data-name='{{ $fee->name }}'
+                                                                            data-amount={{ $fee->amount }}
+                                                                            data-is_base_fee={{ $fee->is_base_fee }}
+                                                                            data-promo_code='{{ $fee->promo_code }}'>
+                                                                            <i class="fal fa-pencil"></i>
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                    <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
+                                                        style="content-align:right">
+                                                        <a href="javascript:;" data-toggle="modal" id="new-fee"
+                                                            class="btn btn-primary ml-auto mt-2 mr-2 waves-effect waves-themed"><i
+                                                                class="ni ni-plus"> </i> Create New Fee</a>
+                                                        <div class="modal fade" id="crud-modal-new-fee"
+                                                            aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="card-header">
+                                                                        <h5 class="card-title w-150">Add New
+                                                                            Fee</h5>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <form
+                                                                            action="{{ url('/event/fee/create/' . $event->id) }}"
+                                                                            method="post" name="form">
+                                                                            @csrf
+                                                                            <p><span class="text-danger">*</span>
+                                                                                Required Field</p>
+                                                                            <hr class="mt-1 mb-2">
+                                                                            <div id="form-fee">
+                                                                                <div class="form-group">
+                                                                                    <label class="form-label"
+                                                                                        for="name"><span
+                                                                                            class="text-danger">*</span>name</label>
+                                                                                    <input class="form-control"
+                                                                                        id="name-fee-add" name="name">
+                                                                                    @error('name')
+                                                                                        <p style="color: red">
+                                                                                            <strong> *
+                                                                                                {{ $message }}
+                                                                                            </strong>
+                                                                                        </p>
+                                                                                    @enderror
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label class="form-label"
+                                                                                        for="amount"><span
+                                                                                            class="text-danger">*</span>amount
+                                                                                        (RM)</label>
+                                                                                    <input type="number" step=".01"
+                                                                                        class="form-control"
+                                                                                        id="amount_add" name="amount_add">
+                                                                                    @error('amount_add')
+                                                                                        <p style="color: red">
+                                                                                            <strong> *
+                                                                                                {{ $message }}
+                                                                                            </strong>
+                                                                                        </p>
+                                                                                    @enderror
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label class="form-label"
+                                                                                        for="is_base_fee_select_add"><span
+                                                                                            class="text-danger">*</span>Fee
+                                                                                        Type</label>
+                                                                                    <input type="hidden"
+                                                                                        name="is_base_fee_select_add_input"
+                                                                                        id="is_base_fee_select_add_input"
+                                                                                        value=0>
+                                                                                    <select
+                                                                                        class="form-control is_base_fee_select_add"
+                                                                                        name="is_base_fee_select_add"
+                                                                                        id="is_base_fee_select_add"
+                                                                                        tabindex="-1" aria-hidden="true"
+                                                                                        disabled>
+                                                                                        <option value=1>Normal Price
+                                                                                        </option>
+                                                                                        <option value=0 selected>Discounted
+                                                                                            Price
+                                                                                        </option>
+                                                                                    </select>
+                                                                                    @error('is_base_fee_select_add')
+                                                                                        <p style="color: red">
+                                                                                            <strong> *
+                                                                                                {{ $message }}
+                                                                                            </strong>
+                                                                                        </p>
+                                                                                    @enderror
+                                                                                </div>
+                                                                                <div class="form-group"
+                                                                                    id="form_group-promo_code_add"
+                                                                                    name="form_group-promo_code_add">
+                                                                                    <label class="form-label"
+                                                                                        for="promo_code"><span
+                                                                                            class="text-danger">*</span>Promo
+                                                                                        Code</label>
+                                                                                    <input class="form-control"
+                                                                                        id="promo_code_add"
+                                                                                        name="promo_code">
+                                                                                    @error('promo_code')
+                                                                                        <p style="color: red">
+                                                                                            <strong> *
+                                                                                                {{ $message }}
+                                                                                            </strong>
+                                                                                        </p>
+                                                                                    @enderror
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr class="mt-1 mb-2">
+                                                                            <div class="footer">
+                                                                                <button type="button"
+                                                                                    class="btn btn-danger ml-auto float-right mr-2"
+                                                                                    data-dismiss="modal"
+                                                                                    id="close-new-fee"><i
+                                                                                        class="fal fa-window-close"></i>
+                                                                                    Close</button>
+                                                                                <button type="submit"
+                                                                                    class="btn btn-primary ml-auto float-right mr-2"><i
+                                                                                        class="ni ni-plus"></i>
+                                                                                    Apply</button>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal fade" id="edit-fee-modal" aria-hidden="true">
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
                                                                 <div class="card-header">
-                                                                    <h5 class="card-title w-150">Add New
+                                                                    <h5 class="card-title w-150">Edit Current
                                                                         Fee</h5>
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <form
-                                                                        action="{{ url('/event/fee/create/' . $event->id) }}"
+                                                                        action="{{ url('/events/fee/update/' . $event->id) }}"
                                                                         method="post" name="form">
                                                                         @csrf
                                                                         <p><span class="text-danger">*</span>
                                                                             Required Field</p>
                                                                         <hr class="mt-1 mb-2">
                                                                         <div id="form-fee">
+
+                                                                            <input type="number" name="fee_id" id="fee_id"
+                                                                                style="display:none">
                                                                             <div class="form-group">
                                                                                 <label class="form-label"
                                                                                     for="name"><span
                                                                                         class="text-danger">*</span>name</label>
-                                                                                <input class="form-control"
-                                                                                    id="name-fee-add" name="name">
+                                                                                <input type="text" class="form-control"
+                                                                                    id="name_fee_edit" name="name_fee_edit">
+
                                                                                 @error('name')
                                                                                     <p style="color: red">
                                                                                         <strong> *
@@ -482,9 +602,9 @@
                                                                                         class="text-danger">*</span>amount
                                                                                     (RM)</label>
                                                                                 <input type="number" step=".01"
-                                                                                    class="form-control" id="amount_add"
-                                                                                    name="amount_add">
-                                                                                @error('amount_add')
+                                                                                    class="form-control" id="amount_edit"
+                                                                                    name="amount_edit">
+                                                                                @error('amount_edit')
                                                                                     <p style="color: red">
                                                                                         <strong> *
                                                                                             {{ $message }}
@@ -494,25 +614,26 @@
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label class="form-label"
-                                                                                    for="is_base_fee_select_add"><span
+                                                                                    for="is_base_fee_select_edit"><span
                                                                                         class="text-danger">*</span>Fee
                                                                                     Type</label>
-                                                                                <input type="hidden"
-                                                                                    name="is_base_fee_select_add_input"
-                                                                                    id="is_base_fee_select_add_input"
-                                                                                    value=0>
+                                                                                <input type="number"
+                                                                                    name="is_base_fee_select_edit_input"
+                                                                                    id="is_base_fee_select_edit_input"
+                                                                                    style="display:none">
+
                                                                                 <select
-                                                                                    class="form-control is_base_fee_select_add"
-                                                                                    name="is_base_fee_select_add"
-                                                                                    id="is_base_fee_select_add"
+                                                                                    class="form-control is_base_fee_select_edit"
+                                                                                    name="is_base_fee_select_edit"
+                                                                                    id="is_base_fee_select_edit"
+                                                                                    data-select2-id="is_base_fee_select_edit"
                                                                                     tabindex="-1" aria-hidden="true"
-                                                                                    disabled>
+                                                                                    disabled="true">
                                                                                     <option value=1>Normal Price</option>
-                                                                                    <option value=0 selected>Discounted
-                                                                                        Price
+                                                                                    <option value=0>Discounted Price
                                                                                     </option>
                                                                                 </select>
-                                                                                @error('is_base_fee_select_add')
+                                                                                @error('is_base_fee_select_edit')
                                                                                     <p style="color: red">
                                                                                         <strong> *
                                                                                             {{ $message }}
@@ -521,14 +642,15 @@
                                                                                 @enderror
                                                                             </div>
                                                                             <div class="form-group"
-                                                                                id="form_group-promo_code_add"
-                                                                                name="form_group-promo_code_add">
+                                                                                id="form_group-promo_code-edit"
+                                                                                name="form_group-promo_code-edit"
+                                                                                style="display: none">
                                                                                 <label class="form-label"
                                                                                     for="promo_code"><span
-                                                                                        class="text-danger">*</span>Promo
-                                                                                    Code</label>
+                                                                                        class="text-danger">*</span>promo
+                                                                                    code</label>
                                                                                 <input class="form-control"
-                                                                                    id="promo_code_add" name="promo_code">
+                                                                                    id="promo_code-edit" name="promo_code">
                                                                                 @error('promo_code')
                                                                                     <p style="color: red">
                                                                                         <strong> *
@@ -542,7 +664,7 @@
                                                                         <div class="footer">
                                                                             <button type="button"
                                                                                 class="btn btn-danger ml-auto float-right mr-2"
-                                                                                data-dismiss="modal" id="close-new-fee"><i
+                                                                                data-dismiss="modal" id="close-edit-fee"><i
                                                                                     class="fal fa-window-close"></i>
                                                                                 Close</button>
                                                                             <button type="submit"
@@ -556,568 +678,75 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="modal fade" id="edit-fee-modal" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="card-header">
-                                                                <h5 class="card-title w-150">Edit Current
-                                                                    Fee</h5>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <form
-                                                                    action="{{ url('/events/fee/update/' . $event->id) }}"
-                                                                    method="post" name="form">
-                                                                    @csrf
-                                                                    <p><span class="text-danger">*</span>
-                                                                        Required Field</p>
-                                                                    <hr class="mt-1 mb-2">
-                                                                    <div id="form-fee">
-
-                                                                        <input type="number" name="fee_id" id="fee_id"
-                                                                            style="display:none">
-                                                                        <div class="form-group">
-                                                                            <label class="form-label" for="name"><span
-                                                                                    class="text-danger">*</span>name</label>
-                                                                            <input type="text" class="form-control"
-                                                                                id="name_fee_edit" name="name_fee_edit">
-
-                                                                            @error('name')
-                                                                                <p style="color: red">
-                                                                                    <strong> *
-                                                                                        {{ $message }}
-                                                                                    </strong>
-                                                                                </p>
-                                                                            @enderror
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label class="form-label"
-                                                                                for="amount"><span
-                                                                                    class="text-danger">*</span>amount
-                                                                                (RM)</label>
-                                                                            <input type="number" step=".01"
-                                                                                class="form-control" id="amount_edit"
-                                                                                name="amount_edit">
-                                                                            @error('amount_edit')
-                                                                                <p style="color: red">
-                                                                                    <strong> *
-                                                                                        {{ $message }}
-                                                                                    </strong>
-                                                                                </p>
-                                                                            @enderror
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label class="form-label"
-                                                                                for="is_base_fee_select_edit"><span
-                                                                                    class="text-danger">*</span>Fee
-                                                                                Type</label>
-                                                                            <input type="number"
-                                                                                name="is_base_fee_select_edit_input"
-                                                                                id="is_base_fee_select_edit_input"
-                                                                                style="display:none">
-
-                                                                            <select
-                                                                                class="form-control is_base_fee_select_edit"
-                                                                                name="is_base_fee_select_edit"
-                                                                                id="is_base_fee_select_edit"
-                                                                                data-select2-id="is_base_fee_select_edit"
-                                                                                tabindex="-1" aria-hidden="true"
-                                                                                disabled="true">
-                                                                                <option value=1>Normal Price</option>
-                                                                                <option value=0>Discounted Price</option>
-                                                                            </select>
-                                                                            @error('is_base_fee_select_edit')
-                                                                                <p style="color: red">
-                                                                                    <strong> *
-                                                                                        {{ $message }}
-                                                                                    </strong>
-                                                                                </p>
-                                                                            @enderror
-                                                                        </div>
-                                                                        <div class="form-group"
-                                                                            id="form_group-promo_code-edit"
-                                                                            name="form_group-promo_code-edit"
-                                                                            style="display: none">
-                                                                            <label class="form-label"
-                                                                                for="promo_code"><span
-                                                                                    class="text-danger">*</span>promo
-                                                                                code</label>
-                                                                            <input class="form-control"
-                                                                                id="promo_code-edit" name="promo_code">
-                                                                            @error('promo_code')
-                                                                                <p style="color: red">
-                                                                                    <strong> *
-                                                                                        {{ $message }}
-                                                                                    </strong>
-                                                                                </p>
-                                                                            @enderror
-                                                                        </div>
-                                                                    </div>
-                                                                    <hr class="mt-1 mb-2">
-                                                                    <div class="footer">
-                                                                        <button type="button"
-                                                                            class="btn btn-danger ml-auto float-right mr-2"
-                                                                            data-dismiss="modal" id="close-edit-fee"><i
-                                                                                class="fal fa-window-close"></i>
-                                                                            Close</button>
-                                                                        <button type="submit"
-                                                                            class="btn btn-primary ml-auto float-right mr-2"><i
-                                                                                class="ni ni-plus"></i>
-                                                                            Apply</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                                 <hr class="mt-2 mb-3">
-                                                <table class="table table-striped table-bordered m-0">
-                                                    <thead class="thead">
-                                                        <tr class=" bg-primary-50">
-                                                            <th colspan="3"><b>List of Trainers</b></th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>ID</th>
-                                                            <th>Name</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
 
-                                                        @foreach ($event->events_trainers as $event_trainer)
-                                                            <tr>
-                                                                <td>{{ $event_trainer->trainer->user->id }}</td>
-                                                                <td>{{ $event_trainer->trainer->user->name }}</td>
-                                                                <td>
-                                                                    <form method="post"
-                                                                        action="/event/trainer/detached/{{ $event_trainer->id }}">
-                                                                        @csrf
-                                                                        <button type="submit"
-                                                                            class="btn btn-sm btn-danger float-right mr-2">
-                                                                            <i class="ni ni-close"></i>
-                                                                        </button>
-                                                                    </form>
-                                                                </td>
+                                                <div style="display:flex; flex-direction:column;">
+                                                    <table class="table table-striped table-bordered m-0">
+                                                        <thead class="thead">
+                                                            <tr class=" bg-primary-50">
+                                                                <th colspan="3"><b>List of Trainers</b></th>
                                                             </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                                <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
-                                                    style="content-align:right">
-                                                    <a href="javascript:;" data-toggle="modal" id="add-trainer"
-                                                        class="btn btn-primary ml-auto mt-2 mr-2 waves-effect waves-themed"><i
-                                                            class="ni ni-plus"> </i> Add Trainer</a>
-                                                    <div class="modal fade" id="crud-modal-add-trainer"
-                                                        aria-hidden="true">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="card-header">
-                                                                    <h5 class="card-title w-150">Add Trainer</h5>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <form
-                                                                        action="{{ url('/event/trainer/attached/' . $event->id) }}"
-                                                                        method="post" name="form">
-                                                                        @csrf
-                                                                        <p><span class="text-danger">*</span>
-                                                                            Required Field</p>
-                                                                        <hr class="mt-1 mb-2">
-                                                                        <div class="form-group">
-                                                                            <label for="trainer_ic"><span
-                                                                                    class="text-danger">*</span>
-                                                                                Trainer's IC</label>
-                                                                            <div class="form-group"
-                                                                                id="search-by-trainer_ic-div">
-                                                                                <input class="form-control"
-                                                                                    id="trainer_ic_input"
-                                                                                    name="trainer_ic_input">
-                                                                            </div>
-                                                                            <a href="javascript:;" data-toggle="#"
-                                                                                id="search-by-trainer_ic"
-                                                                                class="btn btn-primary mb-2" hidden><i
-                                                                                    class="ni ni-magnifier"></i></a>
-                                                                            @error('trainer_ic_input')
-                                                                                <p style="color: red">
-                                                                                    <strong> *
-                                                                                        {{ $message }}
-                                                                                    </strong>
-                                                                                </p>
-                                                                            @enderror
-                                                                        </div>
-                                                                        <hr class="mt-1 mb-2">
-                                                                        <div id="form-add-trainer-second-part">
-                                                                            <div class="form-group">
-                                                                                <label for="user_id"><span
-                                                                                        class="text-danger">*</span>
-                                                                                    Trainer's User ID</label>
-                                                                                {{ Form::text('trainer_user_id_text', '', ['class' => 'form-control', 'placeholder' => "Trainer's User ID", 'id' => 'trainer_user_id_text', 'disabled', 'readonly']) }}
-                                                                                <select class="form-control user"
-                                                                                    name="trainer_user_id"
-                                                                                    id="trainer_user_id"
-                                                                                    style="display:none">
-                                                                                    <option disabled>Select User ID</option>
-                                                                                    <option value='-1' name="create_new">
-                                                                                        Create
-                                                                                        New</option>
-                                                                                    @foreach ($users as $user)
-                                                                                        <option value='{{ $user->id }}'
-                                                                                            name="{{ $user->name }}">
-                                                                                            {{ $user->id }} -
-                                                                                            {{ $user->name }}</option>
-                                                                                    @endforeach
-                                                                                </select>
-                                                                                @error('trainer_user_id')
-                                                                                    <p style="color: red">{{ $message }}
-                                                                                    </p>
-                                                                                @enderror
-                                                                            </div>
-                                                                            <hr class="mt-1 mb-2">
+                                                            <tr>
+                                                                <th>ID</th>
+                                                                <th>Name</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
 
-                                                                            <input class="form-control-plaintext"
-                                                                                id="trainer_id" name="trainer_id" hidden>
-                                                                            <div class="form-group">
-                                                                                <label class="form-label"
-                                                                                    for="trainer_fullname"><span
-                                                                                        class="text-danger">*</span>Fullname</label>
-                                                                                <input class="form-control"
-                                                                                    id="trainer_fullname"
-                                                                                    name="trainer_fullname">
-                                                                                @error('trainer_fullname')
-                                                                                    <p style="color: red">
-                                                                                        <strong> *
-                                                                                            {{ $message }}
-                                                                                        </strong>
-                                                                                    </p>
-                                                                                @enderror
-                                                                            </div>
-                                                                            <hr class="mt-1 mb-2">
-                                                                            <div class="form-group">
-                                                                                <label class="form-label"
-                                                                                    for="trainer_phone"><span
-                                                                                        class="text-danger">*</span>Phone (e.g.: +60134567891)</label>
-                                                                                <input class="form-control"
-                                                                                    id="trainer_phone" name="trainer_phone">
-                                                                                @error('trainer_phone')
-                                                                                    <p style="color: red">
-                                                                                        <strong> *
-                                                                                            {{ $message }}
-                                                                                        </strong>
-                                                                                    </p>
-                                                                                @enderror
-                                                                            </div>
-
-                                                                            <hr class="mt-1 mb-2">
-                                                                            <div class="form-group">
-                                                                                <label class="form-label"
-                                                                                    for="trainer_email"><span
-                                                                                        class="text-danger">*</span>Email</label>
-                                                                                <input class="form-control"
-                                                                                    id="trainer_email" name="trainer_email">
-                                                                                @error('trainer_email')
-                                                                                    <p style="color: red">
-                                                                                        <strong> *
-                                                                                            {{ $message }}
-                                                                                        </strong>
-                                                                                    </p>
-                                                                                @enderror
-                                                                            </div>
-                                                                        </div>
-                                                                        <hr class="mt-1 mb-2">
-                                                                        <div class="footer"
-                                                                            id="add_trainer_footer">
-                                                                            <button type="button"
-                                                                                class="btn btn-danger ml-auto float-right mr-2"
-                                                                                data-dismiss="modal"
-                                                                                id="close-add-trainer"><i
-                                                                                    class="fal fa-window-close"></i>
-                                                                                Close</button>
+                                                            @foreach ($event->events_trainers as $event_trainer)
+                                                                <tr>
+                                                                    <td>{{ $event_trainer->trainer->user->id }}</td>
+                                                                    <td>{{ $event_trainer->trainer->user->name }}</td>
+                                                                    <td>
+                                                                        <form method="post"
+                                                                            action="/event/trainer/detached/{{ $event_trainer->id }}">
+                                                                            @csrf
                                                                             <button type="submit"
-                                                                                class="btn btn-primary ml-auto float-right mr-2"><i
-                                                                                    class="ni ni-plus"></i>
-                                                                                Add</button>
-                                                                        </div>
-                                                                    </form>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <hr class="mt-2 mb-3">
-                                                <table class="table table-striped table-bordered m-0">
-                                                    <thead class="thead">
-                                                        <tr class=" bg-primary-50">
-                                                            <th colspan="3"><b>List of Contact Persons</b></th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>ID</th>
-                                                            <th>Name</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($event->events_contact_persons as $event_contact_person)
-                                                            <tr>
-                                                                <td>{{ $event_contact_person->contact_person->user->id }}
-                                                                </td>
-                                                                <td>{{ $event_contact_person->contact_person->user->name }}
-                                                                </td>
-                                                                <td>
-                                                                    <form method="post"
-                                                                        action="/event/contact_person/detached/{{ $event_contact_person->id }}">
-                                                                        @csrf
-                                                                        <button type="submit"
-                                                                            class="btn btn-sm btn-danger float-right mr-2">
-                                                                            <i class="ni ni-close"></i>
-                                                                        </button>
-                                                                    </form>
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                                <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
-                                                    style="content-align:right">
-                                                    <a href="javascript:;" data-toggle="modal" id="add-contact_person"
-                                                        class="btn btn-primary ml-auto mt-2 mr-2 waves-effect waves-themed"><i
-                                                            class="ni ni-plus"> </i> Add Contact Person</a>
-                                                    <div class="modal fade" id="crud-modal-add-contact_person"
-                                                        aria-hidden="true">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="card-header">
-                                                                    <h5 class="card-title w-150">Add Contact Person</h5>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <form
-                                                                        action="{{ url('/event/contact_person/attached/' . $event->id) }}"
-                                                                        method="post" name="form">
-                                                                        @csrf
-
-                                                                        <p><span class="text-danger">*</span>
-                                                                            Required Field</p>
-                                                                        <hr class="mt-1 mb-2">
-                                                                        <div class="form-group">
-                                                                            <label for="contact_person_ic"><span
-                                                                                    class="text-danger">*</span>
-                                                                                Contact Person's IC</label>
-                                                                            <div class="form-group"
-                                                                                id="search-by-contact_person_ic-div">
-                                                                                <input class="form-control w-100"
-                                                                                    id="contact_person_ic_input"
-                                                                                    name="contact_person_ic_input">
-                                                                            </div>
-                                                                            <a href="javascript:;" data-toggle="#"
-                                                                                id="search-by-contact_person_ic"
-                                                                                class="btn btn-primary mb-2"
-                                                                                style="width:10%" hidden><i
-                                                                                    class="ni ni-magnifier"></i></a>
-                                                                            @error('contact_person_ic_input')
-                                                                                <p style="color: red">
-                                                                                    <strong> *
-                                                                                        {{ $message }}
-                                                                                    </strong>
-                                                                                </p>
-                                                                            @enderror
-                                                                        </div>
-                                                                        <hr class="mt-1 mb-2">
-                                                                        <div id="form-add-contact_person-second-part">
+                                                                                class="btn btn-sm btn-danger float-right mr-2">
+                                                                                <i class="ni ni-close"></i>
+                                                                            </button>
+                                                                        </form>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                    <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
+                                                        style="content-align:right">
+                                                        <a href="javascript:;" data-toggle="modal" id="add-trainer"
+                                                            class="btn btn-primary ml-auto mt-2 mr-2 waves-effect waves-themed"><i
+                                                                class="ni ni-plus"> </i> Add Trainer</a>
+                                                        <div class="modal fade" id="crud-modal-add-trainer"
+                                                            aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="card-header">
+                                                                        <h5 class="card-title w-150">Add Trainer</h5>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <form
+                                                                            action="{{ url('/event/trainer/attached/' . $event->id) }}"
+                                                                            method="post" name="form">
+                                                                            @csrf
+                                                                            <p><span class="text-danger">*</span>
+                                                                                Required Field</p>
+                                                                            <hr class="mt-1 mb-2">
                                                                             <div class="form-group">
-                                                                                <label for="user_id"><span
+                                                                                <label for="trainer_ic"><span
                                                                                         class="text-danger">*</span>
-                                                                                    Contact Person's User ID</label>
-                                                                                {{ Form::text('contact_person_user_id_text', '', ['class' => 'form-control', 'placeholder' => "Contact Person's User ID", 'id' => 'contact_person_user_id_text', 'disabled', 'readonly']) }}
-                                                                                <select class="form-control user"
-                                                                                    name="contact_person_user_id"
-                                                                                    id="contact_person_user_id" disabled
-                                                                                    style="display:none">
-                                                                                    <option disabled>Select User ID</option>
-                                                                                    <option value='-1' name="create_new">
-                                                                                        Create
-                                                                                        New</option>
-                                                                                    @foreach ($users as $user)
-                                                                                        <option value='{{ $user->id }}'
-                                                                                            name="{{ $user->name }}">
-                                                                                            {{ $user->id }} -
-                                                                                            {{ $user->name }}</option>
-                                                                                    @endforeach
-                                                                                </select>
-                                                                                @error('contact_person_user_id')
-                                                                                    <p style="color: red">{{ $message }}
-                                                                                    </p>
-                                                                                @enderror
-                                                                            </div>
-                                                                            <hr class="mt-1 mb-2">
-
-                                                                            <input class="form-control-plaintext"
-                                                                                id="contact_person_id"
-                                                                                name="contact_person_id" hidden>
-                                                                            <div class="form-group">
-                                                                                <label class="form-label"
-                                                                                    for="contact_person_fullname"><span
-                                                                                        class="text-danger">*</span>Fullname</label>
-                                                                                <input class="form-control"
-                                                                                    id="contact_person_fullname"
-                                                                                    name="contact_person_fullname">
-                                                                                @error('contact_person_fullname')
-                                                                                    <p style="color: red">
-                                                                                        <strong> *
-                                                                                            {{ $message }}
-                                                                                        </strong>
-                                                                                    </p>
-                                                                                @enderror
-                                                                            </div>
-                                                                            <hr class="mt-1 mb-2">
-                                                                            <div class="form-group">
-                                                                                <label class="form-label"
-                                                                                    for="contact_person_phone"><span
-                                                                                        class="text-danger">*</span>Phone (e.g.: +60134567891)</label>
-                                                                                <input class="form-control"
-                                                                                    id="contact_person_phone"
-                                                                                    name="contact_person_phone">
-                                                                                @error('contact_person_phone')
-                                                                                    <p style="color: red">
-                                                                                        <strong> *
-                                                                                            {{ $message }}
-                                                                                        </strong>
-                                                                                    </p>
-                                                                                @enderror
-                                                                            </div>
-
-                                                                            <hr class="mt-1 mb-2">
-                                                                            <div class="form-group">
-                                                                                <label class="form-label"
-                                                                                    for="contact_person_email"><span
-                                                                                        class="text-danger">*</span>Email</label>
-                                                                                <input class="form-control"
-                                                                                    id="contact_person_email"
-                                                                                    name="contact_person_email">
-                                                                                @error('contact_person_email')
-                                                                                    <p style="color: red">
-                                                                                        <strong> *
-                                                                                            {{ $message }}
-                                                                                        </strong>
-                                                                                    </p>
-                                                                                @enderror
-                                                                            </div>
-                                                                        </div>
-                                                                        <hr class="mt-1 mb-2">
-                                                                        <div class="footer"
-                                                                            id="add_contact_person_footer">
-                                                                            <button type="button"
-                                                                                class="btn btn-danger ml-auto float-right mr-2"
-                                                                                data-dismiss="modal"
-                                                                                id="close-add-contact_person"><i
-                                                                                    class="fal fa-window-close"></i>
-                                                                                Close</button>
-                                                                            <button type="submit"
-                                                                                class="btn btn-primary ml-auto float-right mr-2"><i
-                                                                                    class="ni ni-plus"></i>
-                                                                                Add</button>
-                                                                        </div>
-                                                                    </form>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <hr class="mt-2 mb-3">
-                                                <table class="table table-striped table-bordered m-0">
-                                                    <thead class="thead">
-                                                        <tr class=" bg-primary-50">
-                                                            <th colspan="4"><b>List of Short Courses</b></th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>ID</th>
-                                                            <th>Name</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($event->events_shortcourses as $events_shortcourses)
-                                                            <tr>
-                                                                <td>{{ $events_shortcourses->shortcourse->id }}
-                                                                </td>
-                                                                <td>{{ $events_shortcourses->shortcourse->name }}
-                                                                </td>
-                                                                <td>
-                                                                    <form method="post"
-                                                                        action="/event/shortcourse/detached/{{ $events_shortcourses->id }}">
-                                                                        @csrf
-                                                                        <button type="submit"
-                                                                            class="btn btn-sm btn-danger float-right mr-2">
-                                                                            <i class="ni ni-close"></i>
-                                                                        </button>
-                                                                    </form>
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-
-                                                <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
-                                                    style="content-align:right">
-                                                    <button href="javascript:;" data-toggle="modal" id="add-shortcourse"
-                                                        class="btn btn-primary ml-auto mt-2 mr-2 waves-effect waves-themed"
-                                                        {{ count($event->events_shortcourses) == 0 ? null : 'disabled' }}><i
-                                                            class="ni ni-plus"> </i> Add Short Course</button>
-
-                                                    <div class="modal fade" id="crud-modal-add-shortcourse"
-                                                        aria-hidden="true">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="card-header">
-                                                                    <h5 class="card-title w-150">Add Short Course</h5>
-                                                                </div>
-                                                                <div class="modal-body">
-
-                                                                    <form
-                                                                        action="{{ url('/event/shortcourse/attached/' . $event->id) }}"
-                                                                        method="post" name="form">
-                                                                        @csrf
-                                                                        <input type="hidden" name="id_5" id="id_5">
-                                                                        <p><span class="text-danger">*</span>
-                                                                            Required Field</p>
-                                                                        <hr class="mt-1 mb-2">
-                                                                        <div class="form-group">
-                                                                            <label for="user_id"><span
-                                                                                    class="text-danger">*</span>
-                                                                                Short Course Name</label>
-                                                                            <div class="form-group">
-                                                                                <select class="form-control shortcourse"
-                                                                                    name="shortcourse_id"
-                                                                                    id="shortcourse_id"
-                                                                                    data-select2-id="shortcourse_id"
-                                                                                    tabindex="-1" aria-hidden="true">
-                                                                                    <option value=''>Choose a Short
-                                                                                        Course
-                                                                                    </option>
-                                                                                    @foreach ($shortcourses as $shortcourse)
-                                                                                        <option
-                                                                                            value="{{ $shortcourse->id }}">
-                                                                                            {{ $shortcourse->name }}
-                                                                                        </option>
-                                                                                    @endforeach
-                                                                                </select>
-                                                                            </div>
-                                                                            @error('shortcourse_id')
-                                                                                <p style="color: red">
-                                                                                    <strong> *
-                                                                                        {{ $message }}
-                                                                                    </strong>
-                                                                                </p>
-                                                                            @enderror
-                                                                        </div>
-                                                                        <hr class="mt-1 mb-2">
-                                                                        <div id="form-add-shortcourse-second-part"
-                                                                            style="display: none">
-                                                                            <div class="form-group">
-                                                                                <label class="form-label"
-                                                                                    for="objective"><span
-                                                                                        class="text-danger">*</span>Objective</label>
-                                                                                <div class="form-control-plaintext"
-                                                                                    rows="10" id="objective"
-                                                                                    name="objective">
+                                                                                    Trainer's IC</label>
+                                                                                <div class="form-group"
+                                                                                    id="search-by-trainer_ic-div">
+                                                                                    <input class="form-control"
+                                                                                        id="trainer_ic_input"
+                                                                                        name="trainer_ic_input">
                                                                                 </div>
-                                                                                @error('objective')
+                                                                                <a href="javascript:;" data-toggle="#"
+                                                                                    id="search-by-trainer_ic"
+                                                                                    class="btn btn-primary mb-2" hidden><i
+                                                                                        class="ni ni-magnifier"></i></a>
+                                                                                @error('trainer_ic_input')
                                                                                     <p style="color: red">
                                                                                         <strong> *
                                                                                             {{ $message }}
@@ -1125,15 +754,187 @@
                                                                                     </p>
                                                                                 @enderror
                                                                             </div>
+                                                                            <hr class="mt-1 mb-2">
+                                                                            <div id="form-add-trainer-second-part">
+                                                                                <div class="form-group">
+                                                                                    <label for="user_id"><span
+                                                                                            class="text-danger">*</span>
+                                                                                        Trainer's User ID</label>
+                                                                                    {{ Form::text('trainer_user_id_text', '', ['class' => 'form-control', 'placeholder' => "Trainer's User ID", 'id' => 'trainer_user_id_text', 'disabled', 'readonly']) }}
+                                                                                    <select class="form-control user"
+                                                                                        name="trainer_user_id"
+                                                                                        id="trainer_user_id"
+                                                                                        style="display:none">
+                                                                                        <option disabled>Select User ID
+                                                                                        </option>
+                                                                                        <option value='-1'
+                                                                                            name="create_new">
+                                                                                            Create
+                                                                                            New</option>
+                                                                                        @foreach ($users as $user)
+                                                                                            <option
+                                                                                                value='{{ $user->id }}'
+                                                                                                name="{{ $user->name }}">
+                                                                                                {{ $user->id }} -
+                                                                                                {{ $user->name }}
+                                                                                            </option>
+                                                                                        @endforeach
+                                                                                    </select>
+                                                                                    @error('trainer_user_id')
+                                                                                        <p style="color: red">
+                                                                                            {{ $message }}
+                                                                                        </p>
+                                                                                    @enderror
+                                                                                </div>
+                                                                                <hr class="mt-1 mb-2">
 
+                                                                                <input class="form-control-plaintext"
+                                                                                    id="trainer_id" name="trainer_id"
+                                                                                    hidden>
+                                                                                <div class="form-group">
+                                                                                    <label class="form-label"
+                                                                                        for="trainer_fullname"><span
+                                                                                            class="text-danger">*</span>Fullname</label>
+                                                                                    <input class="form-control"
+                                                                                        id="trainer_fullname"
+                                                                                        name="trainer_fullname">
+                                                                                    @error('trainer_fullname')
+                                                                                        <p style="color: red">
+                                                                                            <strong> *
+                                                                                                {{ $message }}
+                                                                                            </strong>
+                                                                                        </p>
+                                                                                    @enderror
+                                                                                </div>
+                                                                                <hr class="mt-1 mb-2">
+                                                                                <div class="form-group">
+                                                                                    <label class="form-label"
+                                                                                        for="trainer_phone"><span
+                                                                                            class="text-danger">*</span>Phone
+                                                                                        (ex: +60134567891)</label>
+                                                                                    <input class="form-control"
+                                                                                        id="trainer_phone"
+                                                                                        name="trainer_phone">
+                                                                                    @error('trainer_phone')
+                                                                                        <p style="color: red">
+                                                                                            <strong> *
+                                                                                                {{ $message }}
+                                                                                            </strong>
+                                                                                        </p>
+                                                                                    @enderror
+                                                                                </div>
+
+                                                                                <hr class="mt-1 mb-2">
+                                                                                <div class="form-group">
+                                                                                    <label class="form-label"
+                                                                                        for="trainer_email"><span
+                                                                                            class="text-danger">*</span>Email</label>
+                                                                                    <input class="form-control"
+                                                                                        id="trainer_email"
+                                                                                        name="trainer_email">
+                                                                                    @error('trainer_email')
+                                                                                        <p style="color: red">
+                                                                                            <strong> *
+                                                                                                {{ $message }}
+                                                                                            </strong>
+                                                                                        </p>
+                                                                                    @enderror
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr class="mt-1 mb-2">
+                                                                            <div class="footer"
+                                                                                id="add_trainer_footer">
+                                                                                <button type="button"
+                                                                                    class="btn btn-danger ml-auto float-right mr-2"
+                                                                                    data-dismiss="modal"
+                                                                                    id="close-add-trainer"><i
+                                                                                        class="fal fa-window-close"></i>
+                                                                                    Close</button>
+                                                                                <button type="submit"
+                                                                                    class="btn btn-primary ml-auto float-right mr-2"><i
+                                                                                        class="ni ni-plus"></i>
+                                                                                    Add</button>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr class="mt-2 mb-3">
+
+                                                <div style="display:flex; flex-direction:column;">
+                                                    <table class="table table-striped table-bordered m-0">
+                                                        <thead class="thead">
+                                                            <tr class=" bg-primary-50">
+                                                                <th colspan="3"><b>List of Contact Persons</b></th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>ID</th>
+                                                                <th>Name</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach ($event->events_contact_persons as $event_contact_person)
+                                                                <tr>
+                                                                    <td>{{ $event_contact_person->contact_person->user->id }}
+                                                                    </td>
+                                                                    <td>{{ $event_contact_person->contact_person->user->name }}
+                                                                    </td>
+                                                                    <td>
+                                                                        <form method="post"
+                                                                            action="/event/contact_person/detached/{{ $event_contact_person->id }}">
+                                                                            @csrf
+                                                                            <button type="submit"
+                                                                                class="btn btn-sm btn-danger float-right mr-2">
+                                                                                <i class="ni ni-close"></i>
+                                                                            </button>
+                                                                        </form>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                    <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
+                                                        style="content-align:right">
+                                                        <a href="javascript:;" data-toggle="modal" id="add-contact_person"
+                                                            class="btn btn-primary ml-auto mt-2 mr-2 waves-effect waves-themed"><i
+                                                                class="ni ni-plus"> </i> Add Contact Person</a>
+                                                        <div class="modal fade" id="crud-modal-add-contact_person"
+                                                            aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="card-header">
+                                                                        <h5 class="card-title w-150">Add Contact Person
+                                                                        </h5>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <form
+                                                                            action="{{ url('/event/contact_person/attached/' . $event->id) }}"
+                                                                            method="post" name="form">
+                                                                            @csrf
+
+                                                                            <p><span class="text-danger">*</span>
+                                                                                Required Field</p>
+                                                                            <hr class="mt-1 mb-2">
                                                                             <div class="form-group">
-                                                                                <label class="form-label"
-                                                                                    for="description"><span
-                                                                                        class="text-danger">*</span>Description</label>
-                                                                                <div class="form-control-plaintext"
-                                                                                    rows="10" id="description"
-                                                                                    name="description"></div>
-                                                                                @error('description')
+                                                                                <label for="contact_person_ic"><span
+                                                                                        class="text-danger">*</span>
+                                                                                    Contact Person's IC</label>
+                                                                                <div class="form-group"
+                                                                                    id="search-by-contact_person_ic-div">
+                                                                                    <input class="form-control w-100"
+                                                                                        id="contact_person_ic_input"
+                                                                                        name="contact_person_ic_input">
+                                                                                </div>
+                                                                                <a href="javascript:;" data-toggle="#"
+                                                                                    id="search-by-contact_person_ic"
+                                                                                    class="btn btn-primary mb-2"
+                                                                                    style="width:10%" hidden><i
+                                                                                        class="ni ni-magnifier"></i></a>
+                                                                                @error('contact_person_ic_input')
                                                                                     <p style="color: red">
                                                                                         <strong> *
                                                                                             {{ $message }}
@@ -1141,21 +942,255 @@
                                                                                     </p>
                                                                                 @enderror
                                                                             </div>
-                                                                        </div>
-                                                                        <hr class="mt-1 mb-2">
-                                                                        <div class="footer">
-                                                                            <button type="button"
-                                                                                class="btn btn-danger ml-auto float-right mr-2"
-                                                                                data-dismiss="modal"
-                                                                                id="close-add-shortcourse"><i
-                                                                                    class="fal fa-window-close"></i>
-                                                                                Close</button>
+                                                                            <hr class="mt-1 mb-2">
+                                                                            <div id="form-add-contact_person-second-part">
+                                                                                <div class="form-group">
+                                                                                    <label for="user_id"><span
+                                                                                            class="text-danger">*</span>
+                                                                                        Contact Person's User ID</label>
+                                                                                    {{ Form::text('contact_person_user_id_text', '', ['class' => 'form-control', 'placeholder' => "Contact Person's User ID", 'id' => 'contact_person_user_id_text', 'disabled', 'readonly']) }}
+                                                                                    <select class="form-control user"
+                                                                                        name="contact_person_user_id"
+                                                                                        id="contact_person_user_id" disabled
+                                                                                        style="display:none">
+                                                                                        <option disabled>Select User ID
+                                                                                        </option>
+                                                                                        <option value='-1'
+                                                                                            name="create_new">
+                                                                                            Create
+                                                                                            New</option>
+                                                                                        @foreach ($users as $user)
+                                                                                            <option
+                                                                                                value='{{ $user->id }}'
+                                                                                                name="{{ $user->name }}">
+                                                                                                {{ $user->id }} -
+                                                                                                {{ $user->name }}
+                                                                                            </option>
+                                                                                        @endforeach
+                                                                                    </select>
+                                                                                    @error('contact_person_user_id')
+                                                                                        <p style="color: red">
+                                                                                            {{ $message }}
+                                                                                        </p>
+                                                                                    @enderror
+                                                                                </div>
+                                                                                <hr class="mt-1 mb-2">
+
+                                                                                <input class="form-control-plaintext"
+                                                                                    id="contact_person_id"
+                                                                                    name="contact_person_id" hidden>
+                                                                                <div class="form-group">
+                                                                                    <label class="form-label"
+                                                                                        for="contact_person_fullname"><span
+                                                                                            class="text-danger">*</span>Fullname</label>
+                                                                                    <input class="form-control"
+                                                                                        id="contact_person_fullname"
+                                                                                        name="contact_person_fullname">
+                                                                                    @error('contact_person_fullname')
+                                                                                        <p style="color: red">
+                                                                                            <strong> *
+                                                                                                {{ $message }}
+                                                                                            </strong>
+                                                                                        </p>
+                                                                                    @enderror
+                                                                                </div>
+                                                                                <hr class="mt-1 mb-2">
+                                                                                <div class="form-group">
+                                                                                    <label class="form-label"
+                                                                                        for="contact_person_phone"><span
+                                                                                            class="text-danger">*</span>Phone
+                                                                                        (ex: +60134567891)</label>
+                                                                                    <input class="form-control"
+                                                                                        id="contact_person_phone"
+                                                                                        name="contact_person_phone">
+                                                                                    @error('contact_person_phone')
+                                                                                        <p style="color: red">
+                                                                                            <strong> *
+                                                                                                {{ $message }}
+                                                                                            </strong>
+                                                                                        </p>
+                                                                                    @enderror
+                                                                                </div>
+
+                                                                                <hr class="mt-1 mb-2">
+                                                                                <div class="form-group">
+                                                                                    <label class="form-label"
+                                                                                        for="contact_person_email"><span
+                                                                                            class="text-danger">*</span>Email</label>
+                                                                                    <input class="form-control"
+                                                                                        id="contact_person_email"
+                                                                                        name="contact_person_email">
+                                                                                    @error('contact_person_email')
+                                                                                        <p style="color: red">
+                                                                                            <strong> *
+                                                                                                {{ $message }}
+                                                                                            </strong>
+                                                                                        </p>
+                                                                                    @enderror
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr class="mt-1 mb-2">
+                                                                            <div class="footer"
+                                                                                id="add_contact_person_footer">
+                                                                                <button type="button"
+                                                                                    class="btn btn-danger ml-auto float-right mr-2"
+                                                                                    data-dismiss="modal"
+                                                                                    id="close-add-contact_person"><i
+                                                                                        class="fal fa-window-close"></i>
+                                                                                    Close</button>
+                                                                                <button type="submit"
+                                                                                    class="btn btn-primary ml-auto float-right mr-2"><i
+                                                                                        class="ni ni-plus"></i>
+                                                                                    Add</button>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr class="mt-2 mb-3">
+
+                                                <div style="display:flex; flex-direction:column;">
+                                                    <table class="table table-striped table-bordered m-0">
+                                                        <thead class="thead">
+                                                            <tr class=" bg-primary-50">
+                                                                <th colspan="4"><b>List of Short Courses</b></th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>ID</th>
+                                                                <th>Name</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach ($event->events_shortcourses as $events_shortcourses)
+                                                                <tr>
+                                                                    <td>{{ $events_shortcourses->shortcourse->id }}
+                                                                    </td>
+                                                                    <td>{{ $events_shortcourses->shortcourse->name }}
+                                                                    </td>
+                                                                    <td>
+                                                                        <form method="post"
+                                                                            action="/event/shortcourse/detached/{{ $events_shortcourses->id }}">
+                                                                            @csrf
                                                                             <button type="submit"
-                                                                                class="btn btn-primary ml-auto float-right mr-2"><i
-                                                                                    class="ni ni-plus"></i>
-                                                                                Add</button>
-                                                                        </div>
-                                                                    </form>
+                                                                                class="btn btn-sm btn-danger float-right mr-2">
+                                                                                <i class="ni ni-close"></i>
+                                                                            </button>
+                                                                        </form>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+
+                                                    <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right"
+                                                        style="content-align:right">
+                                                        <button href="javascript:;" data-toggle="modal" id="add-shortcourse"
+                                                            class="btn btn-primary ml-auto mt-2 mr-2 waves-effect waves-themed"
+                                                            {{ count($event->events_shortcourses) == 0 ? null : 'disabled' }}><i
+                                                                class="ni ni-plus"> </i> Add Short Course</button>
+
+                                                        <div class="modal fade" id="crud-modal-add-shortcourse"
+                                                            aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="card-header">
+                                                                        <h5 class="card-title w-150">Add Short Course</h5>
+                                                                    </div>
+                                                                    <div class="modal-body">
+
+                                                                        <form
+                                                                            action="{{ url('/event/shortcourse/attached/' . $event->id) }}"
+                                                                            method="post" name="form">
+                                                                            @csrf
+                                                                            <input type="hidden" name="id_5" id="id_5">
+                                                                            <p><span class="text-danger">*</span>
+                                                                                Required Field</p>
+                                                                            <hr class="mt-1 mb-2">
+                                                                            <div class="form-group">
+                                                                                <label for="user_id"><span
+                                                                                        class="text-danger">*</span>
+                                                                                    Short Course Name</label>
+                                                                                <div class="form-group">
+                                                                                    <select
+                                                                                        class="form-control shortcourse"
+                                                                                        name="shortcourse_id"
+                                                                                        id="shortcourse_id"
+                                                                                        data-select2-id="shortcourse_id"
+                                                                                        tabindex="-1" aria-hidden="true">
+                                                                                        <option value=''>Choose a Short
+                                                                                            Course
+                                                                                        </option>
+                                                                                        @foreach ($shortcourses as $shortcourse)
+                                                                                            <option
+                                                                                                value="{{ $shortcourse->id }}">
+                                                                                                {{ $shortcourse->name }}
+                                                                                            </option>
+                                                                                        @endforeach
+                                                                                    </select>
+                                                                                </div>
+                                                                                @error('shortcourse_id')
+                                                                                    <p style="color: red">
+                                                                                        <strong> *
+                                                                                            {{ $message }}
+                                                                                        </strong>
+                                                                                    </p>
+                                                                                @enderror
+                                                                            </div>
+                                                                            <hr class="mt-1 mb-2">
+                                                                            <div id="form-add-shortcourse-second-part"
+                                                                                style="display: none">
+                                                                                <div class="form-group">
+                                                                                    <label class="form-label"
+                                                                                        for="objective"><span
+                                                                                            class="text-danger">*</span>Objective</label>
+                                                                                    <div class="form-control-plaintext"
+                                                                                        rows="10" id="objective"
+                                                                                        name="objective">
+                                                                                    </div>
+                                                                                    @error('objective')
+                                                                                        <p style="color: red">
+                                                                                            <strong> *
+                                                                                                {{ $message }}
+                                                                                            </strong>
+                                                                                        </p>
+                                                                                    @enderror
+                                                                                </div>
+
+                                                                                <div class="form-group">
+                                                                                    <label class="form-label"
+                                                                                        for="description"><span
+                                                                                            class="text-danger">*</span>Description</label>
+                                                                                    <div class="form-control-plaintext"
+                                                                                        rows="10" id="description"
+                                                                                        name="description"></div>
+                                                                                    @error('description')
+                                                                                        <p style="color: red">
+                                                                                            <strong> *
+                                                                                                {{ $message }}
+                                                                                            </strong>
+                                                                                        </p>
+                                                                                    @enderror
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr class="mt-1 mb-2">
+                                                                            <div class="footer">
+                                                                                <button type="button"
+                                                                                    class="btn btn-danger ml-auto float-right mr-2"
+                                                                                    data-dismiss="modal"
+                                                                                    id="close-add-shortcourse"><i
+                                                                                        class="fal fa-window-close"></i>
+                                                                                    Close</button>
+                                                                                <button type="submit"
+                                                                                    class="btn btn-primary ml-auto float-right mr-2"><i
+                                                                                        class="ni ni-plus"></i>
+                                                                                    Add</button>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>

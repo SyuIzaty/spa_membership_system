@@ -175,7 +175,7 @@
                                 @else
                                     <label class="form-label" for="modules"><span
                                             class="text-danger">*</span>Modules
-                                        <small>(You may choose a modules
+                                        <small>(You may choose a module
                                             only)</small></label>
                                     @foreach ($event->event_modules as $event_module)
                                         <div class="custom-control custom-checkbox">
