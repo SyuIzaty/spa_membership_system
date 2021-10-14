@@ -173,8 +173,10 @@
             });
 
             $('#create').click(function() {
-                $('#shortcourse_name').val('Unnamed Shortcourse');
-                $("#submitShortCourse").trigger("click");
+                // $('#shortcourse_name').val('Unnamed Shortcourse');
+                // $("#submitShortCourse").trigger("click");
+
+                $('#crud-modal').modal('show');
             });
         })
     </script>

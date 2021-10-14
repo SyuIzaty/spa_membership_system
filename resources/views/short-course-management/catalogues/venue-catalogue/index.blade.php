@@ -166,9 +166,11 @@
             });
 
             $('#create').click(function() {
-                $('#venue_name').val('Unnamed Venue');
+                // $('#venue_name').val('Unnamed Venue');
 
-                $("#submitVenue").trigger("click");
+                // $("#submitVenue").trigger("click");
+
+                $('#crud-modal').modal('show');
             });
         });
     </script>
