@@ -21,7 +21,7 @@
                                         <img src="{{ asset($event->thumbnail_path) }}" class="card-img" style="
                                                     background-image:url('{{ asset('img/shortcourse/poster/default/intec_poster.jpg') }}');
                                                     background-repeat: no-repeat;
-                                                    background-size: 137px 194px;">
+                                                    background-size: contain;">
                                     @endif
                                 </div>
                                 <div class="col-md-7 d-flex flex-column justify-content-between">
