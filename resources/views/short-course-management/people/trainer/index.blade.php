@@ -150,7 +150,7 @@
                                                         <hr class="mt-1 mb-2">
                                                         <div class="form-group">
                                                             <label class="form-label" for="trainer_phone"><span
-                                                                    class="text-danger">*</span>Phone</label>
+                                                                    class="text-danger">*</span>Phone (e.g.: +60134567891)</label>
                                                             <input class="form-control" id="trainer_phone"
                                                                 name="trainer_phone">
                                                             @error('trainer_phone')

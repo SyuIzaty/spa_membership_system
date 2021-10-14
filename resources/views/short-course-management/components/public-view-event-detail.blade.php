@@ -1,3 +1,6 @@
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
 <div class="row">
     <div class="col-xl-12">
 
@@ -33,17 +36,16 @@
                     <div class="col-sm-6">
 
                         {{-- <div class="d-flex justify-content-center"> --}}
-                            @if (!isset($event->thumbnail_path))
-                                <img src="{{ asset('img/shortcourse/poster/default/intec_poster.jpg') }}"
-                                    class="card-img" style="object-fit: fill;">
-                            @else
-                                <img src="{{ asset($event->thumbnail_path) }}" class="card-img"
-                                style="
+                        @if (!isset($event->thumbnail_path))
+                            <img src="{{ asset('img/shortcourse/poster/default/intec_poster.jpg') }}"
+                                class="card-img" style="object-fit: fill;">
+                        @else
+                            <img src="{{ asset($event->thumbnail_path) }}" class="card-img" style="
                                 height:100%;
                                 background-image:url('{{ asset('img/shortcourse/poster/default/intec_poster.jpg') }}');
                                 background-repeat: no-repeat;
                                 background-size: contain;">
-                            @endif
+                        @endif
                         {{-- </div> --}}
 
                     </div>
@@ -114,7 +116,7 @@
                                         {{ $event->total_seat_available <= 0 ? 'disabled' : null }}>Apply
                                         now!</button>
                                 </div>
-                                <x-ShortCourseManagement.AddParticipant :event=$event edit={{false}}/>
+                                <x-ShortCourseManagement.AddParticipant :event=$event edit={{ false }} />
 
                             </div>
                         </div>
@@ -130,9 +132,11 @@
                                             <table class="table table-borderless table-hover"
                                                 style="margin-bottom: 0rem">
                                                 <tbody>
-                                                    <tr>
-                                                        <td><i class="ni ni-call-end"></i></td>
-                                                        <td>{{ $event_contact_person->contact_person->phone }}
+                                                    <tr id={{ 'contact-' . $event_contact_person->id }}
+                                                        data-number={{ $event_contact_person->contact_person->phone }}
+                                                        style="cursor: pointer;">
+                                                        <td data-number={{ $event_contact_person->contact_person->phone }}><i class="fa fa-whatsapp" data-number={{ $event_contact_person->contact_person->phone }}></i></td>
+                                                        <td style="cursor: pointer;" data-number={{ $event_contact_person->contact_person->phone }}>{{ $event_contact_person->contact_person->phone }}
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -171,13 +175,15 @@
 
                     <ul class="nav nav-tabs nav-tabs-clean" style="padding: 0 15px 0 15px;" role="tablist">
                         <li class="nav-item">
-                            <a data-toggle="tab" class="nav-link active" href="#preview-objective" role="tab">Objective</a>
+                            <a data-toggle="tab" class="nav-link active" href="#preview-objective"
+                                role="tab">Objective</a>
                         </li>
                         <li class="nav-item">
                             <a data-toggle="tab" class="nav-link" href="#preview-outline" role="tab">Outline</a>
                         </li>
                         <li class="nav-item">
-                            <a data-toggle="tab" class="nav-link" href="#preview-tentative" role="tab">Tentative</a>
+                            <a data-toggle="tab" class="nav-link" href="#preview-tentative"
+                                role="tab">Tentative</a>
                         </li>
                     </ul>
                     <div class="tab-content col-md-12 p-5">
@@ -196,3 +202,19 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() { //Edit Application
+        $(document).on('click', '[id^="contact-"]', function(e) {
+            const link=generateLink(e.target.dataset.number);
+            window.location.href=link;
+        });
+
+    })
+
+    function generateLink(number) {
+        let message = "Hai. ";
+        let url = "https://wa.me/";
+        let end_url = `${url}${number}?text=${message}`;
+        return end_url;
+    }
+</script>

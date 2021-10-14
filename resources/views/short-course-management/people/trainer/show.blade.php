@@ -132,7 +132,7 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td>Phone</td>
+                                                                <td>Phone (e.g.: +60134567891)</td>
                                                                 <td name="phone_show" id="phone_show">
                                                                     {{ $trainer->phone }}
                                                                 </td>

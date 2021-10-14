@@ -111,7 +111,8 @@
                         </div>
                         <hr class="mt-1 mb-2">
                         <div class="form-group">
-                            <label class="form-label" for="phone"><span class="text-danger">*</span>Phone</label>
+                            <label class="form-label" for="phone"><span class="text-danger">*</span>Phone (e.g.:
+                                +60134567891)</label>
                             <input class="form-control" id="phone" name="phone">
                             @error('phone')
                                 <p style="color: red">
@@ -140,11 +141,14 @@
                             <input id="is_modular" name="is_modular" type="number" value={{ $event->is_modular }}
                                 hidden>
                             <input id="is_modular_single_selection" name="is_modular_single_selection" type="number"
-                                value={{ $event->is_modular_single_selection }} hidden>
+                                hidden
+                                value={{ !is_null($event->is_modular_single_selection) ? $event->is_modular_single_selection : '' }}>
                             <input id="modular_num_of_selection_min" name="modular_num_of_selection_min" type="number"
-                                value={{ $event->modular_num_of_selection_min }} hidden>
+                                hidden
+                                value={{ !is_null($event->modular_num_of_selection_min) ? $event->modular_num_of_selection_min : '' }}>
                             <input id="modular_num_of_selection_max" name="modular_num_of_selection_max" type="number"
-                                value={{ $event->modular_num_of_selection_max }} hidden>
+                                hidden
+                                value={{ !is_null($event->modular_num_of_selection_max) ? $event->modular_num_of_selection_max : '' }}>
                             <div class="form-group add-participant__module"
                                 {{ $event->is_modular == 1 ? '' : 'style=display:none' }}>
                                 <hr class="mt-1 mb-2">

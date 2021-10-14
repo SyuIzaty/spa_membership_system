@@ -425,7 +425,7 @@
                                                 </tr>
                                                 <tr class="row" id="form-add-trainer-second-part">
                                                     <td class="col col-lg-2 px-4">
-                                                        {{ Form::label('title', "Trainer's Phone ** e.g.:0132345678", ['style' => 'font-weight:bold']) }}
+                                                        {{ Form::label('title', "Trainer's Phone ** e.g.:+60134567891", ['style' => 'font-weight:bold']) }}
                                                     </td>
                                                     <td class="col px-4">
                                                         {{ Form::text('trainer_phone', old('trainer_phone'), ['class' => 'form-control', 'placeholder' => "Trainer's Phone", 'id' => 'trainer_phone']) }}
