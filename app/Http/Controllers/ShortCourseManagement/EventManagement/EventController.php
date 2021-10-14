@@ -204,6 +204,7 @@ class EventController extends Controller
                 'trainer_phone.min' => "The trainer's phone number should have at least 10 numbers",
                 'trainer_email.required' => "Please insert trainer's email",
             ]);
+            $request->is_modular_single_selection=null;
         } else {
 
             $validated = $request->validate([
@@ -213,6 +214,7 @@ class EventController extends Controller
                 'shortcourse_objective' => 'required|min:3',
                 'datetime_start' => 'required',
                 'datetime_end' => 'required',
+                'is_modular_single_selection' => 'required',
                 'venue_id' => 'required',
                 'venue_type_id' => 'required',
                 'venue_name' => 'required|min:3',
@@ -235,6 +237,7 @@ class EventController extends Controller
                 'shortcourse_objective.min' => 'The objective should have at least 3 characters',
                 'datetime_start.required' => 'Please insert event datetime start',
                 'datetime_end.required' => 'Please insert event datetime end',
+                'is_modular_single_selection.required' => 'Please insert module selection mode',
                 'venue_id.required' => 'Please choose event venue',
                 'venue_type_id.required' => 'Please insert venue type',
                 'venue_name.required' => 'Please insert venue name',
@@ -254,6 +257,16 @@ class EventController extends Controller
                 'module.present' => "At least one event module is required for modular event",
                 'module.array' => "At least one event module is required for modular event",
             ]);
+            // dd($request->modular_num_of_selection_min);
+            if ($request->is_modular_single_selection == 0 && !is_null($request->is_modular_single_selection)) {
+                $validated = $request->validate([
+                    'modular_num_of_selection_min' => 'required',
+                    'modular_num_of_selection_max' => 'required',
+                ]);
+            }else{
+                $request->modular_num_of_selection_min=null;
+                $request->modular_num_of_selection_max=null;
+            }
         }
 
         if ($request->shortcourse_id == -1) {
@@ -275,10 +288,6 @@ class EventController extends Controller
                 }
             }
         }
-
-
-
-
 
         if ($request->venue_id == -1) {
             $createVenue = Venue::create([
@@ -316,6 +325,8 @@ class EventController extends Controller
                 'objective' => $request->shortcourse_objective,
                 'is_modular' => $request->event_type,
                 'is_modular_single_selection' => $request->is_modular_single_selection,
+                'modular_num_of_selection_min' => $request->modular_num_of_selection_min,
+                'modular_num_of_selection_max' => $request->modular_num_of_selection_max,
                 'event_feedback_set_id' => $request->event_feedback_set_id,
                 'datetime_start' => $request->datetime_start,
                 'datetime_end' => $request->datetime_end,
@@ -774,6 +785,9 @@ class EventController extends Controller
                 ]);
             }
             if ($existUser) {
+                $existUser->name = $request->trainer_fullname;
+                $existUser->save();
+
                 $existTrainer = Trainer::create([
                     'user_id' => $existUser->id,
                     'ic' => $request->trainer_ic_input,
@@ -782,6 +796,15 @@ class EventController extends Controller
                     'created_by' => Auth::user()->id,
                 ]);
             }
+        } else {
+
+            $existUser = User::where('id', $request->trainer_user_id)->first();
+            $existUser->name = $request->trainer_fullname;
+            $existUser->save();
+
+            $existTrainer->phone = $request->trainer_phone;
+            $existTrainer->email = $request->trainer_email;
+            $existTrainer->save();
         }
 
         $createEventTrainer = EventTrainer::create([

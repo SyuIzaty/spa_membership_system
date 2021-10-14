@@ -27,7 +27,7 @@
                                     <hr class="mt-2 mb-3">
                                     <div class="row">
                                         <div class="col-md-12 grid-margin stretch-card">
-                                            <center><img src="{{asset('img/intec_logo.png')}}"
+                                            <center><img src="{{ asset('img/intec_logo.png') }}"
                                                     style="height: 120px; width: 270px;"></center>
                                             <br />
                                             <h4 style="text-align: center">
@@ -190,25 +190,57 @@
                                                 </tr>
                                                 <tr class="row"
                                                     id="form-add-shortcourse-second-part-modular-selection-mode"
-                                                    {{ old('shortcourse_id') || old('event_type') == 1 ? null : 'style=display:none' }}>
+                                                    {{ old('shortcourse_id') && old('event_type') == 1 ? null : 'style=display:none' }}>
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', 'Module Selection Mode **', ['style' => 'font-weight:bold']) }}
+
                                                     </td>
                                                     <td class="col px-4">
                                                         <select class="form-control is_modular_single_selection"
                                                             name="is_modular_single_selection"
                                                             id="is_modular_single_selection">
-                                                            <option value=0 name="is_modular_single_selection"
-                                                                {{ old('is_modular_single_selection') == 0 ? 'selected' : null }}>
-                                                                Multiple Selection
-                                                            </option>
 
                                                             <option value=1 name="is_modular_single_selection"
                                                                 {{ old('is_modular_single_selection') == 1 ? 'selected' : null }}>
                                                                 Single Selection
                                                             </option>
+
+                                                            <option value=0 name="is_modular_single_selection"
+                                                                {{ (old('is_modular_single_selection')==0 && !is_null(old('is_modular_single_selection'))) ? 'selected' : null }}>
+                                                                Multiple Selection
+                                                            </option>
                                                         </select>
                                                         @error('is_modular_single_selection')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
+                                                    </td>
+                                                </tr>
+
+                                                <tr class="row"
+                                                    id="form-add-shortcourse-second-part-modular-multiple-selection-mode-min"
+                                                    {{ old('shortcourse_id') && old('event_type') == 1 && (old('is_modular_single_selection') == 0 && !is_null(old('is_modular_single_selection'))) ? null : 'style=display:none' }}>
+                                                    <td class="col col-lg-2 px-4">
+                                                        {{ Form::label('title', 'Minimum Number of Selection **', ['style' => 'font-weight:bold']) }}
+                                                    </td>
+                                                    <td class="col px-4">
+                                                        {{ Form::number('modular_num_of_selection_min', old('modular_num_of_selection_min') ? old('modular_num_of_selection_min') : 1, ['class' => 'form-control', 'placeholder' => 'Minimum Number of Selection']) }}
+
+                                                        @error('modular_num_of_selection_min')
+                                                            <p style="color: red">{{ $message }}</p>
+                                                        @enderror
+                                                    </td>
+                                                </tr>
+
+                                                <tr class="row"
+                                                    id="form-add-shortcourse-second-part-modular-multiple-selection-mode-max"
+                                                    {{ old('shortcourse_id') && old('event_type') == 1 && (old('is_modular_single_selection') == 0 && !is_null(old('is_modular_single_selection'))) ? null : 'style=display:none' }}>
+                                                    <td class="col col-lg-2 px-4">
+                                                        {{ Form::label('title', 'Maximum Number of Selection **', ['style' => 'font-weight:bold']) }}
+                                                    </td>
+                                                    <td class="col px-4">
+                                                        {{ Form::number('modular_num_of_selection_max', old('modular_num_of_selection_max') ? old('modular_num_of_selection_max') : 2, ['class' => 'form-control', 'placeholder' => 'Maximum Number of Selection']) }}
+
+                                                        @error('modular_num_of_selection_max')
                                                             <p style="color: red">{{ $message }}</p>
                                                         @enderror
                                                     </td>
@@ -385,6 +417,7 @@
                                                 <tr class="row" id="form-add-trainer-second-part">
                                                     <td class="col col-lg-2 px-4">
                                                         {{ Form::label('title', "Trainer's User ID **", ['style' => 'font-weight:bold']) }}
+
                                                     </td>
                                                     <td class="col px-4">
                                                         <input type="text" name="trainer_user_id_hidden"
@@ -396,13 +429,13 @@
                                                             style="display:none">
                                                             <option disabled>Select User ID</option>
                                                             <option value='-1' name="create_new"
-                                                                {{ old('trainer_user_id') == -1 ? 'selected' : null }}>
+                                                                {{ old('trainer_user_id_hidden') == -1 ? 'selected' : null }}>
                                                                 Create
                                                                 New</option>
                                                             @foreach ($users as $user)
                                                                 <option value='{{ $user->id }}'
                                                                     name="{{ $user->name }}"
-                                                                    {{ old('trainer_user_id') == $user->id ? 'selected' : null }}>
+                                                                    {{ old('trainer_user_id_hidden') == $user->id ? 'selected' : null }}>
                                                                     {{ $user->id }} -
                                                                     {{ $user->name }}</option>
                                                             @endforeach
@@ -781,6 +814,8 @@
                     $('#event_type').trigger('change');
 
                     if (event_type == 1) {
+
+
                         //
                         $("#form-add-shortcourse-second-part-event-type").show();
                         $("#form-add-shortcourse-second-part-modular-selection-mode").show();
@@ -794,10 +829,22 @@
                                 .val(x
                                     .fee_amount);
                         });
+                        var is_modular_single_selection = selected_shortcourse.is_modular_single_selection;
+                        if (is_modular_single_selection == 1) {
+
+                            $("#form-add-shortcourse-second-part-modular-multiple-selection-mode-min").hide();
+                            $("#form-add-shortcourse-second-part-modular-multiple-selection-mode-max").hide();
+                        } else if(is_modular_single_selection == 0){
+
+                            $("#form-add-shortcourse-second-part-modular-multiple-selection-mode-min").show();
+                            $("#form-add-shortcourse-second-part-modular-multiple-selection-mode-max").show();
+                        }
                     } else {
 
                         $("#form-add-shortcourse-second-part-event-type").hide();
                         $("#form-add-shortcourse-second-part-modular-selection-mode").hide();
+                        $("#form-add-shortcourse-second-part-modular-multiple-selection-mode-min").hide();
+                        $("#form-add-shortcourse-second-part-modular-multiple-selection-mode-max").hide();
                     }
 
                     $("tr[id=form-add-shortcourse-second-part]").show();
@@ -812,6 +859,8 @@
 
                     $("#form-add-shortcourse-second-part-event-type").hide();
                     $("#form-add-shortcourse-second-part-modular-selection-mode").hide();
+                    $("#form-add-shortcourse-second-part-modular-multiple-selection-mode-min").hide();
+                    $("#form-add-shortcourse-second-part-modular-multiple-selection-mode-max").hide();
                 }
             }
 
@@ -826,8 +875,21 @@
 
                 $("#form-add-shortcourse-second-part-event-type").hide();
                 $("#form-add-shortcourse-second-part-modular-selection-mode").hide();
+                $("#form-add-shortcourse-second-part-modular-multiple-selection-mode-min").hide();
+                $("#form-add-shortcourse-second-part-modular-multiple-selection-mode-max").hide();
             }
         });
+        $('#is_modular_single_selection').change(function(event) {
+            var is_modular_single_selection = $('#is_modular_single_selection').find(':selected').val();
+            if (is_modular_single_selection == 1) {
+                $("#form-add-shortcourse-second-part-modular-multiple-selection-mode-min").hide();
+                $("#form-add-shortcourse-second-part-modular-multiple-selection-mode-max").hide();
+            } else {
+                $("#form-add-shortcourse-second-part-modular-multiple-selection-mode-min").show();
+                $("#form-add-shortcourse-second-part-modular-multiple-selection-mode-max").show();
+            }
+        });
+
 
 
         $(document).ready(function() {

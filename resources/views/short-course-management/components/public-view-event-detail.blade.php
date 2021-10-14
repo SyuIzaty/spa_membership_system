@@ -44,7 +44,8 @@
                                 height:100%;
                                 background-image:url('{{ asset('img/shortcourse/poster/default/intec_poster.jpg') }}');
                                 background-repeat: no-repeat;
-                                background-size: contain;">
+                                background-size: contain;
+                                background-position: center;">
                         @endif
                         {{-- </div> --}}
 
