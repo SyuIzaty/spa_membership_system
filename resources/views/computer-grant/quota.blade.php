@@ -1,6 +1,8 @@
 @extends('layouts.admin')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/daterangepicker.css') }}">
+
     <main id="js-page-content" role="main" class="page-content">
         <div class="subheader">
             <h1 class="subheader-title">
@@ -29,13 +31,17 @@
                                 <table id="quotaList" class="table table-bordered table-hover table-striped w-100">
                                     <thead>
                                         <tr class="bg-primary-50 text-center">
-                                            <th class="text-center">Year</th>
                                             <th class="text-center">Quota</th>
+                                            <th class="text-center">Effective Date</th>
+                                            <th class="text-center">Duration (Year)</th>
+                                            <th class="text-center">Status</th>
                                             <th class="text-center">Edit</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
+                                            <td class="hasinput"></td>
+                                            <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
@@ -57,27 +63,46 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="card-header">
-                        <h5 class="card-title w-100">Add New Year and Quota </h5>
+                        <h5 class="card-title w-100">Add</h5>
                     </div>
                     <div class="modal-body">
                     {!! Form::open(['action' => 'ComputerGrantController@addQuota', 'method' => 'POST']) !!}
                         <div class="form-group">
-                            <label class="form-label"><span class="text-danger">*</span>Year</label>
-                            <select class="custom-select form-control" name="year" id="year" required>
-                                @for ($year = 2021; $year <= 2030; $year++)
-                                <option value="{{ $year }}">{{ $year }}</option>
+                            <label class="form-label" for="datepicker-modal-2"><span class="text-danger">*</span> Date Range</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text fs-xl"><i class="fal fa-calendar"></i></span>
+                                </div>
+                                <input type="text" name="dates" class="form-control" placeholder="Select a date">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label"><span class="text-danger">*</span> Quota</label>
+                            <select class="custom-select form-control" name="quota" id="quota" required>
+                                @for ($quota = 100; $quota <= 500; $quota++)
+                                <option value="{{ $quota }}">{{ $quota }}</option>
                                 @endfor
                              </select>
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label"><span class="text-danger">*</span>Quota</label>
-                            <select class="custom-select form-control" name="quota" id="quota" required>
-                             @for ($quota = 100; $quota <= 500; $quota++)
-                             <option value="{{ $quota }}">{{ $quota }}</option>
-                             @endfor
+                            <label class="form-label"><span class="text-danger">*</span> Duration (Year)</label>
+                            <select class="custom-select form-control" name="duration" id="duration" required>
+                                @for ($duration = 1; $duration <= 10; $duration++)
+                                <option value="{{ $duration }}">{{ $duration }}</option>
+                                @endfor
                              </select>
                         </div>
+
+                        <div class="form-group">
+                            <label class="form-label"><span class="text-danger">*</span> Status</label>
+                            <select class="custom-select form-control" name="status" id="status" required>
+                                <option value="Y">Active</option>
+                                <option value="N">Inactive</option>
+                             </select>
+                        </div>
+
 
                         <div class="footer">
                             <button type="submit" id="btn_search" class="btn btn-primary ml-auto float-right waves-effect waves-themed"><i class="fal fa-save"></i> Add</button>
@@ -93,27 +118,45 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="card-header">
-                        <h5 class="card-title w-100">Edit Year and Quota </h5>
+                        <h5 class="card-title w-100">Edit</h5>
                     </div>
                     <div class="modal-body">
                         {!! Form::open(['action' => 'ComputerGrantController@editQuota', 'method' => 'POST']) !!}
                         <input type="hidden" name="id" id="id">
 
                         <div class="form-group">
-                            <label class="form-label"><span class="text-danger">*</span>Year</label>
-                            <select class="custom-select form-control" name="year" id="year" required>
-                                @for ($year = 2021; $year <= 2030; $year++)
-                                    <option value="{{ $year }}">{{ $year }}</option>
+                            <label class="form-label" for="datepicker-modal-2"><span class="text-danger">*</span> Date Range</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text fs-xl"><i class="fal fa-calendar"></i></span>
+                                </div>
+                                <input type="text" name="dates" id="date" class="form-control" placeholder="Select a date">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label"><span class="text-danger">*</span> Quota</label>
+                            <select class="custom-select form-control" name="quota" id="quota" required>
+                             @for ($quota = 100; $quota <= 500; $quota++)
+                                <option value="{{ $quota }}">{{ $quota }}</option>
+                             @endfor
+                             </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label"><span class="text-danger">*</span> Duration (Year)</label>
+                            <select class="custom-select form-control" name="duration" id="duration" required>
+                                @for ($duration = 1; $duration <= 10; $duration++)
+                                <option value="{{ $duration }}">{{ $duration }}</option>
                                 @endfor
                              </select>
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label"><span class="text-danger">*</span>Quota</label>
-                            <select class="custom-select form-control" name="quota" id="quota" required>
-                             @for ($quota = 100; $quota <= 500; $quota++)
-                                <option value="{{ $quota }}">{{ $quota }}</option>
-                             @endfor
+                            <label class="form-label"><span class="text-danger">*</span> Status</label>
+                            <select class="custom-select form-control" name="status" id="status" required>
+                                <option value="Y">Active</option>
+                                <option value="N">Inactive</option>
                              </select>
                         </div>
 
@@ -131,19 +174,29 @@
     </main>
 @endsection
 @section('script')
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
 <script>
+    $('input[name="dates"]').daterangepicker();
+
     $(document).ready(function()
     {
 
         $('#edit').on('show.bs.modal', function(event) {
         var button = $(event.relatedTarget) 
-        var id = button.data('id') // data-id
-        var year = button.data('year') // data-year
-        var quota = button.data('quota') // data-quota
+        var id = button.data('id')
+        var quota = button.data('quota')
+        var date = button.data('dates')
+        var duration = button.data('duration')
+        var status = button.data('status')
 
         $('.modal-body #id').val(id);
-        $('.modal-body #year').val(year);
         $('.modal-body #quota').val(quota);
+        $('.modal-body #date').val(date);
+        $('.modal-body #duration').val(duration);
+        $('.modal-body #status').val(status);
+
 
         });
 
@@ -156,8 +209,10 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
             columns: [
-                    { className: 'text-center', data: 'year', name: 'year' },
                     { className: 'text-center', data: 'quota', name: 'quota' },
+                    { className: 'text-center', data: 'effective_date', name: 'effective_date' },
+                    { className: 'text-center', data: 'duration', name: 'duration' },
+                    { className: 'text-center', data: 'status', name: 'status' },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false},
                 ],
                 orderCellsTop: true,

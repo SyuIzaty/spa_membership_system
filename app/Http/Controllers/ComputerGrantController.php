@@ -33,18 +33,24 @@ class ComputerGrantController extends Controller
         $user = Auth::user();
         $user_details = Staff::where('staff_id',$user->id)->first();
 
-        $dateNow = new DateTime('now');
-        $ticket = $dateNow->format('dmY') . str_pad($user->id, STR_PAD_LEFT);
-
-        $activeData = ComputerGrant::where('staff_id', Auth::user()->id)->whereDate('expiry_date', '>' , Carbon::now())->first();
+        $ticket = Carbon::now()->format('dmY') . str_pad($user->id, STR_PAD_LEFT);
 
         $newApplication = ComputerGrant::where('staff_id', Auth::user()->id)->where('active', 'Y')->first();
 
-        $totalApplication = ComputerGrant::whereYear('approved_at', Carbon::now()->year)->count();
+        $quota = ComputerGrantQuota::where('active', 'Y')->first();
 
-        $quota = ComputerGrantQuota::where('year', Carbon::now()->year)->first();
+        $getdate = $quota->effective_date;
+        $explodedate = explode(' - ', $getdate);
+        $start_date = Carbon::parse($explodedate[0])->format('Y-m-d');
+        $end_date = Carbon::parse($explodedate[1])->format('Y-m-d');
 
-        return view('computer-grant.grant-form', compact('user','user_details','ticket','totalApplication','activeData','quota','newApplication'));
+        $totalApplication = ComputerGrant::whereBetween('created_at', [$start_date, $end_date])->where('deleted_by', NULL)->count();
+
+        $getData = ComputerGrant::with('getQuota')->where('staff_id', Auth::user()->id)->where('active', 'N', NULL)->get();
+
+        $dateNow = now()->format('Y-m-d H:i:s');
+
+        return view('computer-grant.grant-form', compact('user','user_details','ticket','newApplication','quota','start_date','end_date','totalApplication','quota','getData','dateNow'));
     }
 
     public function grantList()
@@ -68,12 +74,12 @@ class ComputerGrantController extends Controller
         $agreement_doc = ComputerGrantFile::where('permohonan_id', $id)->where('user', 'APC')->get();
 
         return view('computer-grant.application-detail', compact('user','user_details','activeData','deviceType','proof','verified_doc','agreement_doc'));
-
-
     }
 
     public function datalist()
     {
+        $quota = ComputerGrantQuota::where('active', 'Y')->first();
+
         $data = ComputerGrant::with(['getStatus','getType','staff'])->where('staff_id', Auth::user()->id)->select('cgm_permohonan.*');
 
         return datatables()::of($data)
@@ -86,7 +92,7 @@ class ComputerGrantController extends Controller
 
             ->editColumn('status',function($data)
             {
-                return $data->getStatus->first()->description ?? '';
+                return $data->getStatus->description ?? '';
             })
 
             ->editColumn('price',function($data)
@@ -121,13 +127,14 @@ class ComputerGrantController extends Controller
 
             ->addColumn('expiryDate',function($data)
             {
-                if ($data->expiry_date != '')
+
+                if ($data->approved_at != NULL)
                 {
-                    $date = new DateTime($data->expiry_date);
+                    $datetime = new DateTime($data->approved_at);
+                    $getExpiryDate = date_add($datetime, date_interval_create_from_date_string($data->getQuota->duration. 'year'));
+                    $expiryDate = $getExpiryDate->format('d-m-Y');
 
-                    $expiry = $date->format('d-m-Y');
-
-                    return $expiry;
+                    return $expiryDate;
                 }
 
                 else
@@ -140,8 +147,12 @@ class ComputerGrantController extends Controller
             {
                 if ($data->status != 1)
                 {
+                    $datetime = new DateTime($data->approved_at);
+                    $getExpiryDate = date_add($datetime, date_interval_create_from_date_string($data->getQuota->duration. 'year'));
+                    $expiryDate = $getExpiryDate->format('Y-m-d H:i:s');
+
                     $dateNow = new DateTime('now');
-                    $date = new DateTime($data->expiry_date);
+                    $date = new DateTime($expiryDate);
 
                     $interval = $dateNow->diff($date);
                     $days = $interval->format('%a');
@@ -157,10 +168,14 @@ class ComputerGrantController extends Controller
 
             ->addColumn('penalty',function($data)
             {
-                if ($data->status != 1)
+                if ($data->status == 2 || $data->status == 3 || $data->status == 4 || $data->status == 5 || $data->status == 6)
                 {
+                    $datetime = new DateTime($data->approved_at);
+                    $getExpiryDate = date_add($datetime, date_interval_create_from_date_string($data->getQuota->duration. 'year'));
+                    $expiry = $getExpiryDate->format('Y-m-d H:i:s');
+
                     $dateNow = strtotime(Carbon::now());
-                    $expiryDate = strtotime($data->expiry_date);
+                    $expiryDate = strtotime($expiry);
 
                     $yearNow = date('Y', $dateNow);
                     $yearExpire = date('Y', $expiryDate);
@@ -182,20 +197,25 @@ class ComputerGrantController extends Controller
                 return '<a href="/application-detail/' .$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
             })
 
-            ->rawColumns(['details','type','amount','purchase','action','remainingPeriod', 'penalty'])
+            ->addColumn('log', function ($data) {
+                return '<a href="/log/' .$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-list-alt"></i></a>';
+            })
+
+            ->rawColumns(['details','type','amount','purchase','action','remainingPeriod', 'penalty','log'])
             ->make(true);
     }
 
     public function store(Request $request)
     {
+        $quota = ComputerGrantQuota::where('active', 'Y')->first();
+
         $validated = $request->validate([
             'hp_no'           => 'required|regex:/(01)[0-8]{8}/',
-            'office_no'       => 'required|regex:/(03)[0-8]{8}/'
+            'office_no'       => 'nullable|regex:/(03)[0-8]{8}/'
         ], [
             'hp_no.regex'     => 'The phone number does not match the format',
 
             'office_no.regex' => 'The phone number does not match the format',
-
         ]);
 
         $user = Auth::user();
@@ -211,9 +231,10 @@ class ComputerGrantController extends Controller
         $newApplication->office_no    = $request->office_no;
         $newApplication->status       = '1';
         $newApplication->grant_amount = '1500.00';
-        $newApplication->active = 'Y';
-        $newApplication->created_by = Auth::user()->id;
-        $newApplication->updated_by = Auth::user()->id;
+        $newApplication->active       = 'Y';
+        $newApplication->quota        = $quota->id;
+        $newApplication->created_by   = Auth::user()->id;
+        $newApplication->updated_by   = Auth::user()->id;
         $newApplication->save();
 
         ComputerGrantLog::create([
@@ -221,7 +242,6 @@ class ComputerGrantController extends Controller
             'activity'  => 'Apply new grant application',
             'created_by' => Auth::user()->id
         ]);
-
 
         return redirect('application-detail/'.$newApplication->id);
     }
@@ -250,23 +270,19 @@ class ComputerGrantController extends Controller
         $image = $request->file('upload_image');
         $paths = storage_path()."/computerGrant/";
 
-
-        $originalsName = $receipt->getClientOriginalName();
         $fileSizes = $receipt->getSize();
-        $fileNames = $originalsName;
+        $fileNames = $request->id."_Receipt_".date('d-m-Y_hia');
         $receipt->storeAs('/computerGrant', $fileNames);
         ComputerGrantPurchaseProof::create([
             'permohonan_id'  => $request->id,
             'type'  => '1', //Receipt
-            'upload' => $originalsName,
+            'upload' => $fileNames,
             'web_path'  => "app/computerGrant/".$fileNames,
             'created_by' => Auth::user()->id
         ]);
 
-
-        $originalsName = $image->getClientOriginalName();
         $fileSizes = $image->getSize();
-        $fileNames = $originalsName;
+        $fileNames = $request->id."_Device Image_".date('d-m-Y_hia');
         $image->storeAs('/computerGrant', $fileNames);
         ComputerGrantPurchaseProof::create([
             'permohonan_id'  => $request->id,
@@ -287,24 +303,16 @@ class ComputerGrantController extends Controller
     }
 
     //Start Admin
-    public function allGrantList()
+    
+    public function allGrantList($id) 
     {
-        return view('computer-grant.all-grant-list');
+        $data = ComputerGrantStatus::where('id', $id)->first();
+        return view('computer-grant.all-grant-list', compact('data','id'));
     }
 
-   
-    public function allDatalists()
+    public function allDatalists($id)
     {
-        if( Auth::user()->hasRole('Computer Grant (Finance Admin)') )
-        {
-            $data = ComputerGrant::where('status', '4')->orWhere('status', '5')->get();
-        }
-
-        else if(Auth::user()->hasRole('Computer Grant (IT Admin)'))
-        {
-            $data = ComputerGrant::all();
-        }
-
+        $data = ComputerGrant::where('status',$id)->get();
 
         return datatables()::of($data)
 
@@ -316,7 +324,7 @@ class ComputerGrantController extends Controller
 
             ->editColumn('status',function($data)
             {
-                return $data->getStatus->first()->description ?? '';
+                return $data->getStatus->description ?? '';
             })
 
             ->editColumn('price',function($data)
@@ -351,13 +359,14 @@ class ComputerGrantController extends Controller
 
             ->addColumn('expiryDate',function($data)
             {
-                if ($data->expiry_date != '')
+
+                if ($data->approved_at != NULL)
                 {
-                    $date = new DateTime($data->expiry_date);
+                    $datetime = new DateTime($data->approved_at);
+                    $getExpiryDate = date_add($datetime, date_interval_create_from_date_string($data->getQuota->duration. 'year'));
+                    $expiryDate = $getExpiryDate->format('d-m-Y');
 
-                    $expiry = $date->format('d-m-Y');
-
-                    return $expiry;
+                    return $expiryDate;
                 }
 
                 else
@@ -370,8 +379,12 @@ class ComputerGrantController extends Controller
             {
                 if ($data->status != 1)
                 {
+                    $datetime = new DateTime($data->approved_at);
+                    $getExpiryDate = date_add($datetime, date_interval_create_from_date_string($data->getQuota->duration. 'year'));
+                    $expiryDate = $getExpiryDate->format('Y-m-d H:i:s');
+
                     $dateNow = new DateTime('now');
-                    $date = new DateTime($data->expiry_date);
+                    $date = new DateTime($expiryDate);
 
                     $interval = $dateNow->diff($date);
                     $days = $interval->format('%a');
@@ -387,10 +400,14 @@ class ComputerGrantController extends Controller
 
             ->addColumn('penalty',function($data)
             {
-                if (($data->status == 2) || ($data->status == 3) || ($data->status == 4) || ($data->status == 5))
+                if ($data->status == 2 || $data->status == 3 || $data->status == 4 || $data->status == 5 || $data->status == 6)
                 {
+                    $datetime = new DateTime($data->approved_at);
+                    $getExpiryDate = date_add($datetime, date_interval_create_from_date_string($data->getQuota->duration. 'year'));
+                    $expiry = $getExpiryDate->format('Y-m-d H:i:s');
+
                     $dateNow = strtotime(Carbon::now());
-                    $expiryDate = strtotime($data->expiry_date);
+                    $expiryDate = strtotime($expiry);
 
                     $yearNow = date('Y', $dateNow);
                     $yearExpire = date('Y', $expiryDate);
@@ -410,9 +427,9 @@ class ComputerGrantController extends Controller
 
             ->addColumn('action', function ($data) {
 
-                if ($data->status == 7)
+                if ($data->status == 6)
                 {
-                    return '<button class="btn btn-sm btn-danger btn-delete" data-remote="/verifyCancellation/' . $data->id . '"><i class="fal fa-trash"></i></button>';
+                    return '<button class="btn btn-sm btn-danger btn-delete" data-remote="/verifyCancellation/' . $data->id . '"><i class="fal fa-exclamation"></i></button>';
                 }
 
                 else
@@ -421,7 +438,11 @@ class ComputerGrantController extends Controller
                 }
             })
 
-            ->rawColumns(['details','type','amount','purchase','action','remainingPeriod', 'penalty'])
+            ->addColumn('log', function ($data) {
+                return '<a href="/log/' .$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-list-alt"></i></a>';
+            })
+
+            ->rawColumns(['details','type','amount','purchase','action','remainingPeriod', 'penalty','log'])
             ->make(true);
     }
 
@@ -456,32 +477,23 @@ class ComputerGrantController extends Controller
             'approved_at' => Carbon::now()->toDateTimeString()
         ]);
 
-        $datetime = new DateTime($updateApplication->updated_at);
-        $date = date_add($datetime, date_interval_create_from_date_string('5 year'));
-        $updateApplication->update([
-            'expiry_date'     => $date,
-        ]);
-
         $image = $request->file('upload_image');
         $paths = storage_path()."/computerGrantFile/";
 
-        if (isset($image)) { 
-            for($y = 0; $y < count($image); $y++)
-            {
-                $originalsName = $image[$y]->getClientOriginalName();
-                $fileSizes = $image[$y]->getSize();
-                $fileNames = $originalsName;
-                $image[$y]->storeAs('/computerGrantFile', $fileNames);
-                ComputerGrantFile::create([
-                    'permohonan_id'  => $request->id,
-                    'user'           => 'ADM', //for Admin
-                    'upload'         => $originalsName,
-                    'web_path'       => "app/computerGrantFile/".$fileNames,
-                    'created_by'     => Auth::user()->id
-                ]);
-            }
-        }
+        $timestamp = Carbon::now();
 
+      
+        $fileSizes = $image->getSize();
+        $fileNames = $request->id."_Application Form_".date('d-m-Y_hia');
+        $image->storeAs('/computerGrantFile', $fileNames);
+        ComputerGrantFile::create([
+            'permohonan_id'  => $request->id,
+            'user'           => 'ADM', //for Admin
+            'upload'         => $fileNames,
+            'web_path'       => "app/computerGrantFile/".$fileNames,
+            'created_by'     => Auth::user()->id
+        ]);
+        
     
         ComputerGrantLog::create([
             'permohonan_id'  => $request->id,
@@ -537,25 +549,26 @@ class ComputerGrantController extends Controller
     {
         $updateApplication = ComputerGrant::where('id', $request->id)->first();
         $updateApplication->update([
-            'status'     =>'5',
+            'status'     =>'6',
             'updated_by' => Auth::user()->id
         ]);
 
         ComputerGrantLog::create([
             'permohonan_id'  => $request->id,
-            'activity'  => 'Reimbursement completed',
+            'activity'  => 'Completed reimbursement',
             'created_by' => Auth::user()->id
         ]);
 
         return redirect('view-application-detail/'.$request->id);
     }
 
-
     //End Admin
 
     public function getReceipt($receipt)
     {
-        $path = storage_path().'/'.'app'.'/computerGrant/'.$receipt;
+        $file = ComputerGrantPurchaseProof::where('id', $image)->first();
+
+        $path = storage_path().'/'.'app'.'/computerGrant/'.$file;
 
         $receipt = File::get($path);
         $filetype = File::mimeType($path);
@@ -568,7 +581,9 @@ class ComputerGrantController extends Controller
 
     public function getImage($image)
     {
-        $path = storage_path().'/'.'app'.'/computerGrant/'.$image;
+        $file = ComputerGrantPurchaseProof::where('id', $image)->first();
+
+        $path = storage_path().'/'.'app'.'/computerGrant/'.$file;
 
         $image = File::get($path);
         $filetype = File::mimeType($path);
@@ -581,7 +596,8 @@ class ComputerGrantController extends Controller
 
     public function getFile($image)
     {
-        $path = storage_path().'/'.'app'.'/computerGrantFile/'.$image;
+        $file = ComputerGrantFile::where('id', $image)->first();
+        $path = storage_path().'/'.'app'.'/computerGrantFile/'.$file->upload;
 
         $image = File::get($path);
         $filetype = File::mimeType($path);
@@ -591,7 +607,6 @@ class ComputerGrantController extends Controller
 
         return $response;
     }
-
 
     public function applicationPDF(Request $request, $id)
     {
@@ -606,9 +621,9 @@ class ComputerGrantController extends Controller
         return view('computer-grant.faq', compact('faq'));
     }
 
-    public function log()
+    public function log($id)
     {
-        return view('computer-grant.log');
+        return view('computer-grant.log', compact('id'));
     }
 
     public function allLog()
@@ -617,12 +632,9 @@ class ComputerGrantController extends Controller
     }
 
 
-    public function logList()
+    public function logList($id)
     {
-        $user = Auth::user();
-
-        $log = ComputerGrantLog::wherehas('grant', function($query){
-               $query->where('staff_id', Auth::user()->id);})->get();
+        $log = ComputerGrantLog::where('permohonan_id',$id)->get();
 
         return datatables()::of($log)
 
@@ -643,10 +655,9 @@ class ComputerGrantController extends Controller
 
             ->rawColumns(['ticket','date','admin'])
             ->make(true);
-
     }
 
-    public function alllogList()
+    public function alllogList($id)
     {
         $allLog = ComputerGrantLog::with('grant', 'staff')->get();
 
@@ -661,7 +672,6 @@ class ComputerGrantController extends Controller
         {
             return $allLog->created_at ?? '';
         })
-
 
         ->editColumn('admin',function($allLog)
         {
@@ -689,19 +699,36 @@ class ComputerGrantController extends Controller
         return datatables()::of($quota)
 
             ->addColumn('action', function ($quota) {
-                return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$quota->id.'" data-year="'.$quota->year.'" data-quota="'.$quota->quota.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+                return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$quota->id.'" data-quota="'.$quota->quota.'" data-dates="'.$quota->effective_date.'" data-duration="'.$quota->duration.'" data-status="'.$quota->active.'"
+                class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
             })
 
-            ->rawColumns(['action'])
+            ->editColumn('status',function($quota)
+            {
+
+                if ($quota->active == 'Y')
+                {
+                    return 'Active';
+                }
+
+                else
+                {
+                    return 'Inactive';
+                }
+            })
+
+            ->rawColumns(['action','status'])
             ->make(true);
     }
 
     public function addQuota(Request $request)
     {
         ComputerGrantQuota::create([
-            'year'  => $request->year,
-            'quota'  => $request->quota,
-            'created_by' => Auth::user()->id
+            'quota'           => $request->quota,
+            'effective_date'  => $request->dates,
+            'duration'        => $request->duration,
+            'active'          => $request->status,
+            'created_by'      => Auth::user()->id
         ]);
 
         return redirect()->back()->with('message','Add Successfully');
@@ -711,9 +738,11 @@ class ComputerGrantController extends Controller
     {
         $update = ComputerGrantQuota::where('id', $request->id)->first();
         $update->update([
-            'year'  => $request->year,
-            'quota'  => $request->quota,
-            'updated_by' => Auth::user()->id
+            'quota'           => $request->quota,
+            'effective_date'  => $request->dates,
+            'duration'        => $request->duration,
+            'active'          => $request->status,
+            'updated_by'      => Auth::user()->id
         ]);
         
         return redirect()->back()->with('message','Update Successfully');
@@ -787,7 +816,6 @@ class ComputerGrantController extends Controller
 
     public function uploadAgreement(Request $request)
     {
-
         $image = $request->file('upload_image');
         $paths = storage_path()."/computerGrantFile/";
 
@@ -839,18 +867,15 @@ class ComputerGrantController extends Controller
     {
         $exist = ComputerGrant::find($id);
         $exist->delete();
-        $exist->update(['status' => '6', 'active' => 'N', 'deleted_by' => Auth::user()->id]);
+        $exist->update(['status' => '8', 'active' => 'N']);
 
         ComputerGrantLog::create([
             'permohonan_id'  => $id,
-            'activity'  => 'Request for cancellation verified',
+            'activity'  => 'Verify request for cancellation',
             'created_by' => Auth::user()->id
         ]);
 
         return Redirect()->back()->with('message', 'Successful');
-
-
-        // return response() ->json(['success' => 'Request for Cancellation Verified!']);
     }
 
 }

@@ -11,7 +11,7 @@
             <div class="col-xl-12">
                 <div id="panel-1" class="panel">
                     <div class="panel-hdr">
-                        <h2>List of Grant</h2>
+                        <h2>List of Grant for Status : {{$data->description}}</h2>
                         <div class="panel-toolbar">
                             <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
                             <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
@@ -41,10 +41,12 @@
                                             <th class="text-center">Remaining Grant Period</th>
                                             <th class="text-center">Balance Penalty</th>
                                             <th class="text-center">Action</th>
+                                            <th class="text-center">Activity Log</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
+                                            <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
@@ -71,13 +73,16 @@
 @endsection
 @section('script')
 <script>
+
     $(document).ready(function()
     {
+        var id= @json($id);
+        console.log(id);
         var table = $('#application').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
-                url: "/alldatalist",
+                url: "/alldatalist/" + id,
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
@@ -94,6 +99,7 @@
                     { className: 'text-center', data: 'remainingPeriod', name: 'remainingPeriod' },
                     { className: 'text-center', data: 'penalty', name: 'penalty' },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false},
+                    { className: 'text-center', data: 'log', name: 'log', orderable: false, searchable: false} 
                 ],
                 orderCellsTop: true,
                 "order": [[ 1, "asc" ]],

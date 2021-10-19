@@ -391,11 +391,11 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Computer Grant Management
     Route::get('/application-form', 'ComputerGrantController@index');
-    Route::get('/all-grant-list', 'ComputerGrantController@allGrantList');
+    Route::get('/all-grant-list/{id}', 'ComputerGrantController@allGrantList');
     Route::get('/grant-list', 'ComputerGrantController@grantList');
     Route::post('store-application', 'ComputerGrantController@store');
     Route::post('/datalist', 'ComputerGrantController@datalist');
-    Route::post('/alldatalist', 'ComputerGrantController@allDataLists');
+    Route::post('/alldatalist/{id}', 'ComputerGrantController@allDataLists');
     Route::get('/application-detail/{id}', 'ComputerGrantController@applicationDetail');
     Route::get('/view-application-detail/{id}', 'ComputerGrantController@viewApplicationDetail');
     Route::post('/update-application', 'ComputerGrantController@update');
@@ -412,8 +412,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/getFAQ', 'ComputerGrantController@getFAQ');
     Route::post('/add-FAQ', 'ComputerGrantController@addFAQ');
     Route::post('/edit-FAQ', 'ComputerGrantController@editFAQ');
-    Route::get('/log', 'ComputerGrantController@log');
-    Route::post('/loglist', 'ComputerGrantController@logList');
+    Route::get('/log/{id}', 'ComputerGrantController@log');
+    Route::post('/loglist/{id}', 'ComputerGrantController@logList');
     Route::get('/all-log', 'ComputerGrantController@allLog');
     Route::post('/allloglist', 'ComputerGrantController@allLogList');
     Route::post('/getQuota', 'ComputerGrantController@quota');

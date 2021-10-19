@@ -51,11 +51,12 @@
 <script>
     $(document).ready(function()
     {
+        var id= @json($id);
         var table = $('#log').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
-                url: "/loglist",
+                url: "/loglist/" + id,
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },

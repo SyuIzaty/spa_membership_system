@@ -575,27 +575,16 @@
                         {{-- End Inventory --}}
 
                         {{-- Start Computer Grant Management --}}
-                        @role('Lecturer|Computer Grant (IT Admin)|Computer Grant (Finance Admin)')
+                        @role('Lecturer|Computer Grant (IT Admin)|Computer Grant (Finance Admin)|Super Admin')
                             <li class="nav-title">COMPUTER GRANT MANAGEMENT</li>
+                            
                             {{-- User --}}
-                            @role('Lecturer|Computer Grant (IT Admin)')
-                                <li class="open">
-                                    <a href="#" title="Grant" data-filter-tags="grant">
+                            @role('Lecturer|Super Admin')
+                                <li>
+                                    <a href="/grant-list" title="Grant" data-filter-tags="grant">
                                         <i class="fal fa-archive"></i>
                                         <span class="nav-link-text" data-i18n="nav.grant">Grant</span>
                                     </a>
-                                    <ul>
-                                        <li>
-                                            <a href="/grant-list" title="Grant List" data-filter-tags="list">
-                                                <span class="nav-link-text" data-i18n="nav.list">Grant List</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/log" title="Activity Log" data-filter-tags="log">
-                                                <span class="nav-link-text" data-i18n="nav.log">Activity Log</span>
-                                            </a>
-                                        </li>
-                                    </ul>
                                 </li>
                             @endrole
 
@@ -609,30 +598,78 @@
 
                             {{-- IT Admin --}}
                             @role('Computer Grant (IT Admin)')
-                                <li>
-                                    <a href="/all-grant-list" title="All Grant" data-filter-tags="all">
-                                        <i class="fal fa-list"></i>
-                                        <span class="nav-link-text" data-i18n="nav.all">All Grant</span>
-                                    </a>
-                                </li>
-                            @endrole
-                            {{-- Finance Admin --}}
-                            @role('Computer Grant (Finance Admin)')
-                                <li>
-                                    <a href="/all-grant-list" title="Grant Claim" data-filter-tags="claim">
-                                        <i class="fal fa-dollar-sign"></i>
-                                        <span class="nav-link-text" data-i18n="nav.claim">Grant Claim</span>
-                                    </a>
-                                </li>
+                            <li class="open">
+                                <a href="#" title="List" data-filter-tags="list">
+                                    <i class="fal fa-list"></i>
+                                    <span class="nav-link-text" data-i18n="nav.list">Grant List</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        @inject('grant', 'App\ComputerGrant')
+                                        <a href="/all-grant-list/1" title="Pending" data-filter-tags="pending">
+                                            <span class="nav-link-text" data-i18n="nav.pending">Pending ({{ $grant->countPending() }})</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/all-grant-list/2" title="Approved for Purchase" data-filter-tags="approve">
+                                            <span class="nav-link-text" data-i18n="nav.approve">Purchase Approved ({{ $grant->countPurchase() }})</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/all-grant-list/3" title="Pending for Verification" data-filter-tags="verification">
+                                            <span class="nav-link-text" data-i18n="nav.verification">Pending Purchase Verification ({{ $grant->countPendingVerifyPurchase() }})</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/all-grant-list/4" title="Purchase Verified" data-filter-tags="verified">
+                                            <span class="nav-link-text" data-i18n="nav.verified">Purchase Verified ({{ $grant->countPurchaseVerified() }})</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/all-grant-list/5" title="Agreement Signed" data-filter-tags="signed">
+                                            <span class="nav-link-text" data-i18n="nav.signed">Signed Agreement ({{ $grant->countSigned() }})</span>
+                                        </a>
+                                    </li>  
+                                    <li>
+                                        <a href="/all-grant-list/6" title="Reimbursement Completed" data-filter-tags="reimbursement">
+                                            <span class="nav-link-text" data-i18n="nav.reimbursement">Reimbursement ({{ $grant->countReimbursement() }})</span>
+                                        </a>
+                                    </li>  
+                                    <li>
+                                        <a href="/all-grant-list/7" title="Request for Cancellation" data-filter-tags="cancel">
+                                            <span class="nav-link-text" data-i18n="nav.cancel">Request Cancellation ({{ $grant->countRequestCancel() }})</span>
+                                        </a>
+                                    </li>  
+                                    <li>
+                                        <a href="/all-grant-list/8" title="Request for Cancellation Verified" data-filter-tags="cancelverified">
+                                            <span class="nav-link-text" data-i18n="nav.cancelverified">Cancellation Verified ({{ $grant->countCancelVerified() }})</span>
+                                        </a>
+                                    </li>   
+                                </ul>
+                            </li>
                             @endrole
 
-                            @role('Computer Grant (IT Admin)|Computer Grant (Finance Admin)')
-                                <li>
-                                    <a href="/all-log" title="Activity Log" data-filter-tags="allLog">
-                                        <i class="fal fa-clipboard-list"></i>
-                                        <span class="nav-link-text" data-i18n="nav.allLog">Activity Log</span>
-                                    </a>
-                                </li>
+                            {{-- Finance Admin --}}
+                            @role('Computer Grant (Finance Admin)')
+                            <li class="open">
+                                <a href="#" title="Grant Claim" data-filter-tags="claim">
+                                    <i class="fal fa-dollar-sign"></i>
+                                    <span class="nav-link-text" data-i18n="nav.claim">Grant Claim</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        @inject('grant', 'App\ComputerGrant')
+                                        <a href="/all-grant-list/5" title="Pending" data-filter-tags="signed">
+                                            <span class="nav-link-text" data-i18n="nav.signed">Pending Reimbursement ({{ $grant->countSigned() }})</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/all-grant-list/6" title="Completed" data-filter-tags="completed">
+                                            <span class="nav-link-text" data-i18n="nav.completed">Completed ({{ $grant->countReimbursement() }})</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                             @endrole
 
                             @role('Computer Grant (IT Admin)')
@@ -654,7 +691,6 @@
                                         </li>
                                     </ul>
                                 </li>
-
                             @endrole
 
                         @endrole

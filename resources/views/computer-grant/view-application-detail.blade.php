@@ -78,11 +78,11 @@
                                                 <th width="20%" style="vertical-align: middle"></span> Staff H/P No. : </th>
                                                 <td colspan="2" style="vertical-align: middle">{{$activeData->hp_no}}</td>
                                                 <th width="20%" style="vertical-align: middle"></span> Staff Office No. : </th>
-                                                <td colspan="2" style="vertical-align: middle">{{$activeData->office_no}}</td>
+                                                <td colspan="2" style="vertical-align: middle">{{isset($activeData->office_no) ? $activeData->office_no : '-'}}</td>
                                             </tr>
                                             <tr>
                                                 <th width="20%" style="vertical-align: middle">Grant Period Eligibility : </th>
-                                                <td colspan="2" style="vertical-align: middle; color: red; text-transform: uppercase;"><b>1825 Days (Maximum is 60 Months = 1825 days)</b></td>
+                                                <td colspan="2" style="vertical-align: middle; color: red; text-transform: uppercase;"><b>5 Years (60 Months)</b></td>
                                                 <th width="20%" style="vertical-align: middle">Grant Amount Eligibility : </th>
                                                 <td colspan="2" style="vertical-align: middle; color: red;"><b>RM 1,500</b></td>
                                             </tr>
@@ -92,12 +92,14 @@
 
                                 @role('Computer Grant (IT Admin)')
                                 <a class="btn btn-info ml-auto float-right" data-page="/applicationPDF/{{ $activeData->id }}" onclick="Print(this)" style="color: rgb(0, 0, 0); margin-top: 5px; margin-bottom: 15px;">
-                                    <i class="fal fa-download"></i> Export Application Doc
+                                    <i class="fal fa-download"></i> Application Doc
                                 </a>
 
-                                <a class="btn btn-primary mr-2 float-right" data-page="/agreementPDF/{{ $activeData->id }}" onclick="Print(this)" style="color: rgb(0, 0, 0); margin-top: 5px; margin-bottom: 15px;">
-                                    <i class="fal fa-download"></i> Export Agreement Doc
-                                </a>
+                                @if ($activeData->approved_at != NULL)
+                                    <a class="btn btn-primary mr-2 float-right" data-page="/agreementPDF/{{ $activeData->id }}" onclick="Print(this)" style="color: rgb(0, 0, 0); margin-top: 5px; margin-bottom: 15px;">
+                                        <i class="fal fa-download"></i> Declaration Doc
+                                    </a>
+                                @endif
 
                                 @endrole
 
@@ -113,8 +115,8 @@
                                                 <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> IT ADMIN & CE APPROVAL</label></td>
                                             </tr>
                                             <tr>
-                                                <th width="20%" style="vertical-align: top"><span class="text-danger">*</span> Upload Signed Approval and Agreement Files : </th>
-                                                <td colspan="4"><input type="file" class="form-control" id="upload_image" name="upload_image[]" multiple required>
+                                                <th width="20%" style="vertical-align: top"><span class="text-danger">*</span> Upload Signed Application : </th>
+                                                <td colspan="4"><input type="file" class="form-control" accept=".pdf" id="upload_image" name="upload_image" required>
 
                                                     @error('upload_image')
                                                         <p style="color: red">{{ $message }}</p>
@@ -134,7 +136,7 @@
                                 @endrole
                                 @endif
 
-                                @if (($activeData->status == 2) || ($activeData->status == 3) || ($activeData->status == 4) || ($activeData->status == 5))
+                                @if (($activeData->status != 1))
                                 <div class="table-responsive">
                                     <table id="info" class="table table-bordered table-hover table-striped w-100">
                                         <thead>
@@ -146,7 +148,7 @@
                                                 <td colspan="4">
                                                     <ul>
                                                         @foreach ( $verified_doc as $v )
-                                                        <li>  <a target="_blank" href="/get-file/{{$v->upload}}">{{$v->upload}}</a> </li>
+                                                        <li>  <a target="_blank" href="/get-file/{{$v->id}}">{{$v->upload}}</a> </li>
                                                         @endforeach
                                                     </ul>
                                                 </td>
@@ -156,7 +158,7 @@
                                 </div>
                                 @endif
 
-                                @if ($activeData->status == '3' || $activeData->status == '4' || $activeData->status == '5')
+                                @if ($activeData->status == '3' || $activeData->status == '4' || $activeData->status == '5' || $activeData->status == '6')
 
                                 <div class="table-responsive">
                                     <table id="upload" class="table table-bordered table-hover table-striped w-100">
@@ -181,13 +183,13 @@
                                                 <th width="20%" style="vertical-align: middle">Purchase Receipt : </th>
                                                 <td colspan="2">
                                                     @if ($proof->isNotEmpty())
-                                                        <a target="_blank" href="/get-receipt/{{$proof->where('type',1)->first()->upload}}">{{$proof->where('type',1)->first()->upload}}</a>
+                                                        <a target="_blank" href="/get-receipt/{{$proof->where('type',1)->first()->id}}">{{$proof->where('type',1)->first()->upload}}</a>
                                                     @endif
                                                 </td>
                                                 <th width="20%" style="vertical-align: middle">Device Image : </th>
                                                 <td colspan="2">
                                                     @if ($proof->isNotEmpty())
-                                                        <a target="_blank" href="/get-image/{{$proof->where('type',2)->first()->upload}}">{{$proof->where('type',2)->first()->upload}}</a>
+                                                        <a target="_blank" href="/get-image/{{$proof->where('type',2)->first()->id}}">{{$proof->where('type',2)->first()->upload}}</a>
                                                     @endif
                                                 </td>
                                             </tr>
@@ -208,11 +210,11 @@
                                                 <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> GRANT ACCEPTANCE</label></td>
                                             </tr>
                                             <tr>
-                                                <th width="20%" style="vertical-align: top">Signed Agreement : </th>
+                                                <th width="20%" style="vertical-align: top">Signed Declaration : </th>
                                                 <td colspan="4">
                                                     <ul>
                                                         @foreach ( $agreement_doc as $a )
-                                                        <li>  <a target="_blank" href="/get-file/{{$a->upload}}">{{$a->upload}}</a> </li>
+                                                        <li>  <a target="_blank" href="/get-file/{{$a->id}}">{{$a->upload}}</a> </li>
                                                         @endforeach
                                                     </ul> 
                                                 </td>
@@ -239,18 +241,19 @@
 
                                 @endrole
 
-                                @elseif ($activeData->status == 4)
+                                @elseif ($activeData->status == 5)
 
                                 @role('Computer Grant (Finance Admin)')
-                                {!! Form::open(['action' => 'ComputerGrantController@verifyReimbursement', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
-                                <input type="hidden" id="id" name="id" value="{{ $activeData->id }}" required>
+                                <form id="reimburse">
+                                    @csrf                                
+                                    <input type="hidden" id="id" name="id" value="{{ $activeData->id }}" required>
 
-                                <div class="table-responsive">
-                                    <div class="form-group">
-                                        <button style="margin-top: 5px;" class="btn btn-danger float-right" id="submit" name="submit"><i class="fal fa-check"></i> Complete Reimbursement</button></td>
+                                    <div class="table-responsive">
+                                        <div class="form-group">
+                                            <button style="margin-top: 5px;" class="btn btn-danger float-right" type="submit" id="reimbursement"><i class="fal fa-check"></i> Complete Reimbursement</button></td>
+                                        </div>
                                     </div>
-                                </div>
-                                {!! Form::close() !!}
+                                </form>
                                 @endrole
                                 @endif
 
@@ -337,6 +340,39 @@
                     $.ajax({
                         type: "POST",
                         url: "{{ url('verifyCancellation')}}",
+                        data: datas,
+                        dataType: "json",
+                        success: function (response) {
+                        console.log(response);
+                        if(response){
+                        Swal.fire(response.success);
+                        location.reload();
+                    }
+                        }
+                    });
+                }
+            })
+        });
+
+        $("#reimbursement").on('click', function(e) {
+            e.preventDefault();
+
+            var datas = $('#reimburse').serialize();
+
+            Swal.fire({
+                title: 'Complete reimbursement?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes!',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.value) {
+                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ url('verify-reimbursement')}}",
                         data: datas,
                         dataType: "json",
                         success: function (response) {

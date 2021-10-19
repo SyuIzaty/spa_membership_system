@@ -73,11 +73,11 @@
                                                 <th width="20%" style="vertical-align: middle"></span> Staff H/P No. : </th>
                                                 <td colspan="2" style="vertical-align: middle">{{$activeData->hp_no}}</td>
                                                 <th width="20%" style="vertical-align: middle"></span> Staff Office No. : </th>
-                                                <td colspan="2" style="vertical-align: middle">{{$activeData->office_no}}</td>
+                                                <td colspan="2" style="vertical-align: middle">{{isset($activeData->office_no) ? $activeData->office_no : '-'}}</td>
                                             </tr>
                                             <tr>
                                                 <th width="20%" style="vertical-align: middle">Grant Period Eligibility : </th>
-                                                <td colspan="2" style="vertical-align: middle; color: red;"><b>1825 Days (Maximum is 60 Months = 1825 days)</b></td>
+                                                <td colspan="2" style="vertical-align: middle; color: red;"><b>5 Years (60 Months)</b></td>
                                                 <th width="20%" style="vertical-align: middle">Grant Amount Eligibility : </th>
                                                 <td colspan="2" style="vertical-align: middle; color: red;"><b>RM 1,500</b></td>
                                             </tr>
@@ -93,7 +93,7 @@
                                 </form>  
                                 @endif
 
-                                @if (($activeData->status == 2) || ($activeData->status == 3) || ($activeData->status == 4) || ($activeData->status == 5))
+                                @if (($activeData->status == 2) || ($activeData->status == 3) || ($activeData->status == 4) || ($activeData->status == 5) || ($activeData->status == 6))
                                 <div class="table-responsive">
                                     <table id="info" class="table table-bordered table-hover table-striped w-100">
                                         <thead>
@@ -241,7 +241,7 @@
                                                         <td colspan="5">Kindly download verified files above, then upload the signed files.</td>
                                                     </tr>
                                                     <tr>
-                                                        <th width="20%" style="vertical-align: top"><span class="text-danger">*</span> Upload Signed Agreement files: </th>
+                                                        <th width="20%" style="vertical-align: top"><span class="text-danger">*</span> Upload Signed Declaration files: </th>
                                                         <td colspan="4"><input type="file" class="form-control" id="upload_image" name="upload_image[]" multiple required>
 
                                                             @error('upload_image')
@@ -255,7 +255,7 @@
 
                                         <div class="table-responsive">
                                             <div class="form-group">
-                                                <button style="margin-top: 5px;" class="btn btn-danger float-right" id="submit" name="submit"><i class="fal fa-check"></i> Submit Agreement</button></td>
+                                                <button style="margin-top: 5px;" class="btn btn-danger float-right" id="submit" name="submit"><i class="fal fa-check"></i> Submit Declaration</button></td>
                                             </div>
                                         </div>
                                         {!! Form::close() !!}
@@ -268,7 +268,7 @@
                                                         <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> GRANT ACCEPTANCE</label></td>
                                                     </tr>
                                                     <tr>
-                                                        <th width="20%" style="vertical-align: top">Signed Agreement : </th>
+                                                        <th width="20%" style="vertical-align: top">Signed Declaration : </th>
                                                         <td colspan="4">
                                                             <ul>
                                                                 @foreach ( $agreement_doc as $a )
@@ -290,7 +290,7 @@
                                                         <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> GRANT ACCEPTANCE</label></td>
                                                     </tr>
                                                     <tr>
-                                                        <th width="20%" style="vertical-align: top">Signed Agreement : </th>
+                                                        <th width="20%" style="vertical-align: top">Signed Declaration : </th>
                                                         <td colspan="4">
                                                             <ul>
                                                                 @foreach ( $agreement_doc as $a )
@@ -341,11 +341,13 @@
                                         <th class="text-center">Expiry Date</th>
                                         <th class="text-center">Remaining Grant Period</th>
                                         <th class="text-center">Balance Penalty</th>
-                                        <th class="text-center">Action</th>
+                                        <th class="text-center">View</th>
+                                        <th class="text-center">Activity Log</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
+                                        <td class="hasinput"></td>
                                         <td class="hasinput"></td>
                                         <td class="hasinput"></td>
                                         <td class="hasinput"></td>
@@ -407,7 +409,8 @@
                     { className: 'text-center', data: 'expiryDate', name: 'expiryDate' },
                     { className: 'text-center', data: 'remainingPeriod', name: 'remainingPeriod' },
                     { className: 'text-center', data: 'penalty', name: 'penalty' },
-                    { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
+                    { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false},
+                    { className: 'text-center', data: 'log', name: 'log', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
                 "order": [[ 1, "asc" ]],

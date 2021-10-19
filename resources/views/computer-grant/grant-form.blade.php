@@ -39,69 +39,145 @@
 
                         <div class="panel-container show">
                             <div class="panel-content">
+    
+                                @if ($getData->isNotEmpty()) 
+                                    @foreach ($getData as $g)
+                                        @php
+                                            $datetime = new DateTime($g->approved_at);
+                                            $getExpiryDate = date_add($datetime, date_interval_create_from_date_string($g->getQuota->duration. 'year'));
+                                            $expiryDate = $getExpiryDate->format('Y-m-d H:i:s');
+                                        @endphp
 
-                                @if ($totalApplication >= $quota->quota)
+                                        @if ($expiryDate > $dateNow) 
+                                        
+                                        <div class="alert alert-success" style="color: #000000; background-color: #ffa489;"> <i class="icon fal fa-check-circle"></i>
+                                            Sorry, you are unable to apply for new grant due to your grant application is still active. Kindly view your grant application in table below.
+                                        </div>
+
+                                        @else
+
+                                        {!! Form::open(['action' => 'ComputerGrantController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                                            <div class="table-responsive">
+                                                <table id="info" class="table table-bordered table-hover table-striped w-100">
+                                                    <thead>
+                                                        <tr>
+                                                            <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> APPLICANT INFORMATION</label></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th width="20%" style="vertical-align: middle">Ticket No : </th>
+                                                            <td colspan="2" style="vertical-align: middle">{{$ticket}}</td>
+                                                            <th width="20%" style="vertical-align: middle">Staff Email : </th>
+                                                            <td colspan="2" style="vertical-align: middle">{{isset($user_details->staff_email) ? $user_details->staff_email : '-'}}</td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <th width="20%" style="vertical-align: middle">Staff Name : </th>
+                                                            <td colspan="2" style="vertical-align: middle">{{strtoupper($user->name)}}</td>
+                                                            <th width="20%" style="vertical-align: middle">Staff ID : </th>
+                                                            <td colspan="2" style="vertical-align: middle">{{$user->username}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th width="20%" style="vertical-align: middle">Staff Department : </th>
+                                                            <td colspan="2" style="vertical-align: middle">{{isset($user_details->staff_dept) ? $user_details->staff_dept : '-' }}</td>
+                                                            <th width="20%" style="vertical-align: middle">Staff Designation : </th>
+                                                            <td colspan="2" style="vertical-align: middle">{{isset($user_details->staff_position) ? $user_details->staff_position : '-' }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Staff H/P No. : </th>
+                                                            <td colspan="2"><input class="form-control" id="hp_no" name="hp_no" value="{{ old('hp_no') }}" placeholder="0111234567" required ></td>
+                                                            <th width="20%" style="vertical-align: middle">Staff Office No. : </th>
+                                                            <td colspan="2"><input class="form-control" id="office_no" name="office_no" value="{{ old('office_no') }}" placeholder="0312345678"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th width="20%" style="vertical-align: middle">Grant Period Eligibility : </th>
+                                                            <td colspan="2" style="vertical-align: middle; color: red;"><b>5 Years (60 Months)</b></td>
+                                                            <th width="20%" style="vertical-align: middle">Grant Amount Eligibility : </th>
+                                                            <td colspan="2" style="vertical-align: middle; color: red;"><b>RM 1,500</b></td>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                            <div class="table-responsive">
+                                                <div class="form-group">
+                                                    <button style="margin-top: 5px;" class="btn btn-danger float-right" id="submit" name="submit"><i class="fal fa-check"></i> Submit</button></td>
+                                                </div>
+                                            </div>
+                                        {!! Form::close() !!}
+                                        @endif
+                                    @endforeach
+
+                                @elseif (isset($newApplication))
+                                
+                                    <div class="alert alert-success" style="color: #000000; background-color: #ffa489;"> <i class="icon fal fa-check-circle"></i>
+                                        Sorry, you are unable to apply for new grant due to your grant application is in progress. Kindly view your grant application in table below.
+                                    </div>                                
+
+                                @elseif ($start_date > $dateNow)
+
+                                <div class="alert alert-success" style="color: #000000; background-color: #fc572e;"> <i class="icon fal fa-check-circle"></i>
+                                    Sorry, you are unable to apply for new grant due to application has not been opened yet.
+                                </div>
+
+                                @elseif ($end_date < $dateNow)
+
+                                <div class="alert alert-success" style="color: #000000; background-color: #fc572e;"> <i class="icon fal fa-check-circle"></i>
+                                    Sorry, you are unable to apply for new grant due to application has been closed.
+                                </div>
+
+                                @elseif ($totalApplication >= $quota->quota)
 
                                     <div class="alert alert-success" style="color: #000000; background-color: #fc572e;"> <i class="icon fal fa-check-circle"></i>
                                         Sorry, you are unable to apply for new grant due to registration has reached the total quota.
                                     </div>
 
-
-                                @elseif (isset($activeData) || isset($newApplication))
-
-                                <div class="alert alert-success" style="color: #000000; background-color: #ffa489;"> <i class="icon fal fa-check-circle"></i>
-                                    Sorry, you are unable to apply for new grant due to your grant application is in progress. Kindly view your grant application in table below.
-                                </div>
-
                                 @else
-
                                 {!! Form::open(['action' => 'ComputerGrantController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
-                                    <div class="table-responsive">
-                                        <table id="info" class="table table-bordered table-hover table-striped w-100">
-                                            <thead>
-                                                <tr>
-                                                    <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> APPLICANT INFORMATION</label></td>
-                                                </tr>
-                                                <tr>
-                                                    <th width="20%" style="vertical-align: middle">Ticket No : </th>
-                                                    <td colspan="2" style="vertical-align: middle">{{$ticket}}</td>
-                                                    <th width="20%" style="vertical-align: middle">Staff Email : </th>
-                                                    <td colspan="2" style="vertical-align: middle">{{isset($user_details->staff_email) ? $user_details->staff_email : '-'}}</td>
-                                                </tr>
+                                            <div class="table-responsive">
+                                                <table id="info" class="table table-bordered table-hover table-striped w-100">
+                                                    <thead>
+                                                        <tr>
+                                                            <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> APPLICANT INFORMATION</label></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th width="20%" style="vertical-align: middle">Ticket No : </th>
+                                                            <td colspan="2" style="vertical-align: middle">{{$ticket}}</td>
+                                                            <th width="20%" style="vertical-align: middle">Staff Email : </th>
+                                                            <td colspan="2" style="vertical-align: middle">{{isset($user_details->staff_email) ? $user_details->staff_email : '-'}}</td>
+                                                        </tr>
 
-                                                <tr>
-                                                    <th width="20%" style="vertical-align: middle">Staff Name : </th>
-                                                    <td colspan="2" style="vertical-align: middle">{{strtoupper($user->name)}}</td>
-                                                    <th width="20%" style="vertical-align: middle">Staff ID : </th>
-                                                    <td colspan="2" style="vertical-align: middle">{{$user->username}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th width="20%" style="vertical-align: middle">Staff Department : </th>
-                                                    <td colspan="2" style="vertical-align: middle">{{isset($user_details->staff_dept) ? $user_details->staff_dept : '-' }}</td>
-                                                    <th width="20%" style="vertical-align: middle">Staff Designation : </th>
-                                                    <td colspan="2" style="vertical-align: middle">{{isset($user_details->staff_position) ? $user_details->staff_position : '-' }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Staff H/P No. : </th>
-                                                    <td colspan="2"><input class="form-control" id="hp_no" name="hp_no" value="{{ old('hp_no') }}" placeholder="0111234567" required ></td>
-                                                    <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Staff Office No. : </th>
-                                                    <td colspan="2"><input class="form-control" id="office_no" name="office_no" value="{{ old('office_no') }}" placeholder="0312345678" required ></td>
-                                                </tr>
-                                                <tr>
-                                                    <th width="20%" style="vertical-align: middle">Grant Period Eligibility : </th>
-                                                    <td colspan="2" style="vertical-align: middle; color: red;"><b>1825 Days (Maximum is 60 Months = 1825 days)</b></td>
-                                                    <th width="20%" style="vertical-align: middle">Grant Amount Eligibility : </th>
-                                                    <td colspan="2" style="vertical-align: middle; color: red;"><b>RM 1,500</b></td>
-                                                </tr>
-                                            </thead>
-                                        </table>
-                                    </div>
-                                    <div class="table-responsive">
-                                        <div class="form-group">
-                                            <button style="margin-top: 5px;" class="btn btn-danger float-right" id="submit" name="submit"><i class="fal fa-check"></i> Submit</button></td>
-                                        </div>
-                                    </div>
-                                    {!! Form::close() !!}
+                                                        <tr>
+                                                            <th width="20%" style="vertical-align: middle">Staff Name : </th>
+                                                            <td colspan="2" style="vertical-align: middle">{{strtoupper($user->name)}}</td>
+                                                            <th width="20%" style="vertical-align: middle">Staff ID : </th>
+                                                            <td colspan="2" style="vertical-align: middle">{{$user->username}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th width="20%" style="vertical-align: middle">Staff Department : </th>
+                                                            <td colspan="2" style="vertical-align: middle">{{isset($user_details->staff_dept) ? $user_details->staff_dept : '-' }}</td>
+                                                            <th width="20%" style="vertical-align: middle">Staff Designation : </th>
+                                                            <td colspan="2" style="vertical-align: middle">{{isset($user_details->staff_position) ? $user_details->staff_position : '-' }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Staff H/P No. : </th>
+                                                            <td colspan="2"><input class="form-control" id="hp_no" name="hp_no" value="{{ old('hp_no') }}" placeholder="0111234567" required ></td>
+                                                            <th width="20%" style="vertical-align: middle">Staff Office No. : </th>
+                                                            <td colspan="2"><input class="form-control" id="office_no" name="office_no" value="{{ old('office_no') }}" placeholder="0312345678"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th width="20%" style="vertical-align: middle">Grant Period Eligibility : </th>
+                                                            <td colspan="2" style="vertical-align: middle; color: red;"><b>5 Years (60 Months)</b></td>
+                                                            <th width="20%" style="vertical-align: middle">Grant Amount Eligibility : </th>
+                                                            <td colspan="2" style="vertical-align: middle; color: red;"><b>RM 1,500</b></td>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                            <div class="table-responsive">
+                                                <div class="form-group">
+                                                    <button style="margin-top: 5px;" class="btn btn-danger float-right" id="submit" name="submit"><i class="fal fa-check"></i> Submit</button></td>
+                                                </div>
+                                            </div>
+                                        {!! Form::close() !!}
                                 @endif
                             </div>
                         </div>
