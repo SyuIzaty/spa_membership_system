@@ -287,7 +287,7 @@ class ComputerGrantController extends Controller
         ComputerGrantPurchaseProof::create([
             'permohonan_id'  => $request->id,
             'type'  => '2', //Device image
-            'upload' => $originalsName,
+            'upload' => $fileNames,
             'web_path'  => "app/computerGrant/".$fileNames,
             'created_by' => Auth::user()->id
         ]);
@@ -535,6 +535,14 @@ class ComputerGrantController extends Controller
             'updated_by' => Auth::user()->id
         ]);
 
+        $exist = ComputerGrantPurchaseProof::where('permohonan_id',$request->id)->get();
+
+        foreach ($exist as $e)
+        {
+            $e->delete();
+            $e->update(['deleted_by' => Auth::user()->id]);
+        }
+
         ComputerGrantLog::create([
             'permohonan_id'  => $request->id,
             'activity'  => 'Reject purchase',
@@ -566,9 +574,9 @@ class ComputerGrantController extends Controller
 
     public function getReceipt($receipt)
     {
-        $file = ComputerGrantPurchaseProof::where('id', $image)->first();
+        $file = ComputerGrantPurchaseProof::where('id', $receipt)->first();
 
-        $path = storage_path().'/'.'app'.'/computerGrant/'.$file;
+        $path = storage_path().'/'.'app'.'/computerGrant/'.$file->upload;
 
         $receipt = File::get($path);
         $filetype = File::mimeType($path);
@@ -583,7 +591,7 @@ class ComputerGrantController extends Controller
     {
         $file = ComputerGrantPurchaseProof::where('id', $image)->first();
 
-        $path = storage_path().'/'.'app'.'/computerGrant/'.$file;
+        $path = storage_path().'/'.'app'.'/computerGrant/'.$file->upload;
 
         $image = File::get($path);
         $filetype = File::mimeType($path);

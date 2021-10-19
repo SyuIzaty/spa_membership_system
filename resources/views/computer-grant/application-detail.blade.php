@@ -38,7 +38,7 @@
                                     <table id="info" class="table table-bordered table-hover table-striped w-100">
                                         <thead>
                                             <tr>
-                                                <td colspan="3" class="bg-warning text-center" align="center"><h5>Status:  <b>{{ strtoupper($activeData->getStatus->first()->description) }}</b></h5></td>
+                                                <td colspan="3" class="bg-warning text-center" align="center"><h5>Status:  <b>{{ strtoupper($activeData->getStatus->description) }}</b></h5></td>
                                             </tr>
                                         </thead>
                                     </table>
@@ -203,13 +203,13 @@
                                                 <th width="20%" style="vertical-align: middle">Purchase Receipt : </th>
                                                 <td colspan="2">
                                                     @if ($proof->isNotEmpty())
-                                                        <a target="_blank" href="/get-receipt/{{$proof->where('type',1)->first()->upload}}">{{$proof->where('type',1)->first()->upload}}</a>
+                                                        <a target="_blank" href="/get-receipt/{{$proof->where('type',1)->first()->id}}">{{$proof->where('type',1)->first()->upload}}</a>
                                                     @endif
                                                 </td>
                                                 <th width="20%" style="vertical-align: middle">Device Image : </th>
                                                 <td colspan="2">
                                                     @if ($proof->isNotEmpty())
-                                                        <a target="_blank" href="/get-image/{{$proof->where('type',2)->first()->upload}}">{{$proof->where('type',2)->first()->upload}}</a>
+                                                        <a target="_blank" href="/get-image/{{$proof->where('type',2)->first()->id}}">{{$proof->where('type',2)->first()->upload}}</a>
                                                     @endif
                                                 </td>
                                             </tr>

@@ -43,7 +43,7 @@
                                     <table id="info" class="table table-bordered table-hover table-striped w-100">
                                         <thead>
                                             <tr>
-                                                <td colspan="3" class="bg-warning text-center" align="center"><h5>Status:  <b>{{strtoupper($activeData->getStatus->first()->description)}}</b></h5></td>
+                                                <td colspan="3" class="bg-warning text-center" align="center"><h5>Status:  <b>{{strtoupper($activeData->getStatus->description)}}</b></h5></td>
                                             </tr>
                                         </thead>
                                     </table>
