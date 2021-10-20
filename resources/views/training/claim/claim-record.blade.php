@@ -21,26 +21,18 @@
                 <div class="panel-container show">
                     <div class="panel-content">
                         @if(isset($data) && !empty($data))
-                            <a data-page="/claim-slip/{{Auth::user()->id}}/{{ $req_year }}/{{$req_type}}" onclick="Print(this)" class="btn btn-danger btn-sm float-right mr-2" style="color: white"><i class="fal fa-download"></i></a>
+                            <a data-page="/claim-slip/{{Auth::user()->id}}/{{ $req_year }}/{{$req_type}}" class="float-right mr-4 mt-2" style="cursor: pointer" onclick="Print(this)"><i class="fal fa-file-pdf fa-2x" style="color: red"></i></a>
                         @endif
                         <br><br>
                         <center><img src="{{ asset('img/intec_logo.png') }}" style="height: 120px; width: 270px;"></center><br>
                         <h4 style="text-align: center">
                             <b>INTEC EDUCATION COLLEGE TRAINING HOUR RECORDS</b>
                         </h4>
-                        {{-- <div>
-                            <p style="padding-left: 40px; padding-right: 40px">
-                                *<i><b>IMPORTANT!</b></i> : All staff are required to fill in the fields below for training hour claim request and make sure all detail are correct provided with attachment. 
-                                Your claim request will be shown on Claim Record after being approved by Human Resource.
-                            </p>
-                        </div> --}}
 
                         <div class="panel-container show">
                             <div class="panel-content">
                                 <div class="card-primary card-outline">
-                                    {{-- <div class="card"> --}}
                                         <div class="card-body">
-                                            {{-- <div class="table-responsive"> --}}
                                                 <table class="table table-bordered">
                                                     <tbody>
                                                         <tr>
@@ -120,16 +112,38 @@
                                                                                 <td class="text-left">{{ $details->claimStatus->status_name ?? '--'}}</td>
                                                                                 <td class="text-right">{{ $details->approved_hour ?? '--'}}</td>
                                                                                 <td class="text-right fw-700">
+                                                                                    <?php
+                                                                                        $exist = \App\TrainingEvaluationHeadResult::where('staff_id', Auth::user()->id)->where('training_id', $details->training_id)->first();
+                                                                                        $duration = \App\TrainingEvaluationHeadResult::where('staff_id', Auth::user()->id)->where('training_id', $details->training_id)->whereHas('trainingEvaluation', function($query){
+                                                                                                        $query->whereDate('open_date','<=',\Carbon\Carbon::now())->whereDate('close_date','>=',\Carbon\Carbon::now());
+                                                                                                    })->first();      
+                                                                                    ?>
                                                                                     @if($details->training_id == '0') {{-- others --}}
                                                                                         <button class="btn btn-xs btn-secondary" disabled style="pointer-events: none"><i class="fal fa-link"></i></button>
                                                                                     @else {{-- list --}}
-                                                                                        @if($details->type == '1' || $details->type == '2') {{-- internal --}}
-                                                                                            <a href="#" class="btn btn-success btn-xs" target="_blank"><i class="fal fa-link"></i></a> {{-- question --}}
-                                                                                            {{-- <a href="#" class="btn btn-info btn-xs" target="_blank"><i class="fal fa-link"></i></a> --}} {{-- answer --}}
+                                                                                        @if( ($details->type == '1' || $details->type == '2') && ($details->status == '1' || $details->status == '2') ) {{-- internal & pending/approve--}}
+                                                                                            @if(\App\TrainingList::where('id', $details->training_id)->whereNotNull('evaluation')->first())
+                                                                                            {{-- evaluation in training not null --}}
+                                                                                                @if(isset($exist))
+                                                                                                    @if(isset($duration))
+                                                                                                        {{-- exist and evaluation open but can edit --}}
+                                                                                                        <a href="/evaluation-form/{{ $details->training_id }}" class="btn btn-warning btn-xs" target="_blank"><i class="fal fa-link"></i></a>  
+                                                                                                    @else 
+                                                                                                        {{-- exist and evaluation close but can view --}}
+                                                                                                        <a href="/evaluation-form/{{ $details->training_id }}" class="btn btn-info btn-xs" target="_blank"><i class="fal fa-link"></i></a>  
+                                                                                                    @endif
+                                                                                                @else  
+                                                                                                {{-- new form  --}}
+                                                                                                    <a href="/evaluation-form/{{ $details->training_id }}" class="btn btn-success btn-xs" target="_blank"><i class="fal fa-link"></i></a> 
+                                                                                                @endif
+                                                                                            @else 
+                                                                                                <button class="btn btn-xs btn-secondary" disabled style="pointer-events: none"><i class="fal fa-link"></i></button>
+                                                                                            @endif
                                                                                         @else  {{-- external --}}
                                                                                             <button class="btn btn-xs btn-secondary" disabled style="pointer-events: none"><i class="fal fa-link"></i></button>
                                                                                         @endif
                                                                                     @endif
+
                                                                                 </td>
                                                                             </tr>
                                                                         @endforeach
@@ -164,11 +178,7 @@
                                                         @endif
                                                     </tbody>
                                                 </table>
-                                            {{-- </div> --}}
                                             <i><span class="text-danger">**</span><b> Notes : </b>Please select either year or type to view training hour record</i>
-                                        
-                                    {{-- </div> --}}
-                                    
                                 </div>
                             </div>
                         </div>

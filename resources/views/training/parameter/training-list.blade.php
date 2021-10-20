@@ -189,8 +189,18 @@
                             <tr>
                                 <div class="form-group">
                                     <td width="12%"><label class="form-label" for="venue"><span class="text-danger">*</span> Venue :</label></td>
-                                    <td colspan="4"><input value="{{ old('venue') }}" class="form-control" id="venue" name="venue" style="text-transform: uppercase" readonly>
+                                    <td colspan="4"><input value="{{ old('venue') }}" class="form-control" id="venue" name="venue" style="text-transform: uppercase" required>
                                         @error('venue')
+                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                        @enderror
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                <div class="form-group">
+                                    <td width="12%"><label class="form-label" for="venue"> Link :</label></td>
+                                    <td colspan="4"><input value="{{ old('link') }}" class="form-control" id="link" name="link">
+                                        @error('link')
                                             <p style="color: red"><strong> * {{ $message }} </strong></p>
                                         @enderror
                                     </td>

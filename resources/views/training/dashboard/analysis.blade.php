@@ -17,107 +17,119 @@
         </div>
 
         <div class="row">
-            <div class="col-sm-6 col-xl-4">
-                <div class="p-3 bg-warning-300 rounded overflow-hidden position-relative text-white mb-g">
-                    <div class="">
-                        <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                            {{-- {{ $applicant->where('applicant_status','00')->count() }} --}}
-                            <small class="m-0 l-h-n">Data 1</small>
-                        </h3>
-                    </div>
-                    <i class="fal fa-user position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1" style="font-size:6rem"></i>
-                </div>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-                <div class="p-3 bg-primary-300 rounded overflow-hidden position-relative text-white mb-g">
-                    <div class="">
-                        <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                            {{-- {{ $applicant->where('applicant_status','2')->count() }} --}}
-                            <small class="m-0 l-h-n">Data 2</small>
-                        </h3>
-                    </div>
-                    <i class="fal fa-clipboard-check position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1" style="font-size:6rem"></i>
-                </div>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-                <div class="p-3 bg-danger-300 rounded overflow-hidden position-relative text-white mb-g">
-                    <div class="">
-                        <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                            {{-- {{ $applicant->where('applicant_status','3G')->count() }} --}}
-                            <small class="m-0 l-h-n">Data 3</small>
-                        </h3>
-                    </div>
-                    <i class="fal fa-times position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1" style="font-size:6rem"></i>
-                </div>
-            </div>
-            <div class="col-md-12" style="margin-bottom: 30px">
+            <div class="col-md-8 mb-4">
                 <div class="card">
-                    <div class="card-header bg-primary-500">Training Request</div>
-                </div>
-                <div style="height:400px">
-                    <canvas id="chart1" class="rounded shadow"></canvas>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header bg-primary-500">Training Claim</div>
-                </div>
-                <div style="height:400px">
-                    <canvas id="offerApplicant" class="rounded shadow"></canvas>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header bg-primary-500">Training Evaluation</div>
+                    <div class="card-header bg-primary-500">Training Performance</div>
                     <div class="card-body">
-                        <div id='calendar'>
-                            <div class="col-md-6 col-lg-5 mr-lg-auto">
-                                <div class="d-flex mt-2 mb-1 fs-xs text-primary">
-                                    Current Usage
-                                </div>
-                                <div class="progress progress-xs mb-3">
-                                    <div class="progress-bar" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <div class="d-flex mt-2 mb-1 fs-xs text-info">
-                                    Net Usage
-                                </div>
-                                <div class="progress progress-xs mb-3">
-                                    <div class="progress-bar bg-info-500" role="progressbar" style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <div class="d-flex mt-2 mb-1 fs-xs text-warning">
-                                    Users blocked
-                                </div>
-                                <div class="progress progress-xs mb-3">
-                                    <div class="progress-bar bg-warning-500" role="progressbar" style="width: 40%;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <div class="d-flex mt-2 mb-1 fs-xs text-danger">
-                                    Custom cases
-                                </div>
-                                <div class="progress progress-xs mb-3">
-                                    <div class="progress-bar bg-danger-500" role="progressbar" style="width: 15%;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <div class="d-flex mt-2 mb-1 fs-xs text-success">
-                                    Test logs
-                                </div>
-                                <div class="progress progress-xs mb-3">
-                                    <div class="progress-bar bg-success-500" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <div class="d-flex mt-2 mb-1 fs-xs text-dark">
-                                    Uptime records
-                                </div>
-                                <div class="progress progress-xs mb-3">
-                                    <div class="progress-bar bg-fusion-500" role="progressbar" style="width: 10%;" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                        </div>
+                        <div id="barchart_material" style="height:400px"></div>
+                        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+                        <script type="text/javascript">
+                        google.charts.load('current', {'packages':['bar']});
+                        google.charts.setOnLoadCallback(drawChart);
+
+                        function drawChart() {
+                            var data = google.visualization.arrayToDataTable([
+                            ['Year', 'Sales', 'Expenses', 'Profit'],
+                            ['2015', 1170, 460, 250],
+                            ['2016', 660, 1120, 300],
+                            ['2017', 1030, 540, 350]
+                            ]);
+
+                            var options = {
+                            chart: {
+                                title: 'Company Performance',
+                                subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+                            },
+                            bars: 'horizontal' // Required for Material Bar Charts.
+                            };
+
+                            var chart = new google.charts.Bar(document.getElementById('barchart_material'));
+
+                            chart.draw(data, google.charts.Bar.convertOptions(options));
+                        }
+                        </script>
                     </div>
                 </div>
             </div>
-            {{-- <div class="col-md-6 col-sm-12">
-                <div class="table-responsive">
-                    <div id="chart1" style="height: 500px"></div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-header bg-primary-500">Staff Performance</div>
                 </div>
-            </div> --}}
+                <div style="height:400px">
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-header bg-primary-500">Training Category</div>
+                    <div class="card-body">
+                        <div id="piechart" style="height: 400px;"></div>
+                        {{-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> --}}
+                        <script type="text/javascript">
+                        google.charts.load('current', {'packages':['corechart']});
+                        google.charts.setOnLoadCallback(drawChart);
+
+                        function drawChart() {
+
+                            var data = google.visualization.arrayToDataTable([
+                            ['Task', 'Hours per Day'],
+                            ['Work',     11],
+                            ['Eat',      2],
+                            ['Commute',  2],
+                            ['Watch TV', 2],
+                            ['Sleep',    7]
+                            ]);
+
+                            var options = {
+                            title: 'My Daily Activities'
+                            };
+
+                            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+                            chart.draw(data, options);
+                        }
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-header bg-primary-500"> <i class="fal fa-cubes"></i> Top Internal Training</div>
+                    <div class="card-body">
+                        <table class="table m-0">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Training</th>
+                                    <th>Participant</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($trainingRank as $trainRank)
+                                    <?php
+                                        $color = array('#FFFF7D', '#FFFF97', '#FFFFAC', 'FFFFFF', 'FFFFFF');
+                                    ?>
+                                    <tr style="background-color:   }}">
+                                        <td class="text-center">{{ $no++ }}</td>
+                                        <td class="text-left">{{ $trainRank->trainings->title }}</td>
+                                        <td class="text-center">{{ $trainRank->total }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-header bg-primary-500">Top Staff with Most Training</div>
+                </div>
+                <div style="height:400px">
+                </div>
+            </div>
+             
+            
+            
         </div>
 
     </main>

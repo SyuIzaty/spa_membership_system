@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class TrainingEvaluationQuestion extends Model
 {
     use SoftDeletes;
-    protected $table = 'thr_evaluation_question';
+    protected $table = 'trm_evaluation_question';
     protected $primaryKey = 'id';
     protected $fillable = [
         'evaluation_id', 'head_id', 'question', 'sequence', 'eval_rate'
@@ -22,5 +22,10 @@ class TrainingEvaluationQuestion extends Model
     public function trainingEvaluation()
     {
         return $this->hasOne('App\TrainingEvaluation','id','evaluation_id');
+    }
+
+    public function trainingEvaluationResults()
+    {
+        return $this->hasMany('App\TrainingEvaluationResult','question');
     }
 }

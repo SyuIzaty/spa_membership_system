@@ -137,6 +137,14 @@
                                                             </tr>
                                                             <tr>
                                                                 <div class="form-group">
+                                                                    <td width="25%"><label class="form-label" for="link">  Link : </label></td>
+                                                                    <td colspan="3">
+                                                                        <input class="form-control" id="link" name="link" value="{{ $train->link }}" required>
+                                                                    </td>
+                                                                </div>
+                                                            </tr>
+                                                            <tr>
+                                                                <div class="form-group">
                                                                     <td width="25%"><label class="form-label" for="claim_hour"><span class="text-danger">*</span>  Claim Hours : </label></td>
                                                                     <td colspan="3">
                                                                         <input type="number" step="any" class="form-control" id="claim_hour" name="claim_hour" value="{{ $train->claim_hour }}" required>
@@ -257,6 +265,7 @@
                                                             <th>NAME</th>
                                                             <th>POSITION</th>
                                                             <th>DEPARTMENT</th>
+                                                            <th>EVALUATION</th>
                                                         </tr>
                                                         <tr>
                                                             <td class="hasinput"></td>
@@ -265,6 +274,7 @@
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Search Name"></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Search Position"></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Search Department"></td>
+                                                            <td class="hasinput"></td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -276,6 +286,22 @@
                                                                 <td>{{ $parts->staffs->staff_name ?? '--' }}</td>
                                                                 <td class="text-center">{{ $parts->staffs->staff_position ?? '--' }}</td>
                                                                 <td class="text-center">{{ $parts->staffs->staff_dept ?? '--' }}</td>
+                                                                <td class="text-center">
+                                                                    @if($train->id == '0') {{-- others --}}
+                                                                        <button class="btn btn-xs btn-secondary" disabled style="pointer-events: none"><i class="fal fa-link"></i></button>
+                                                                    @else {{-- list --}}
+                                                                        @if($train->type == '1' || $train->type == '2') {{-- internal --}}
+                                                                            @if(\App\TrainingList::where('id', $train->id)->whereNotNull('evaluation')->first()) {{-- evaluation in training not null --}}
+                                                                                {{-- exist and evaluation close but can view --}}
+                                                                                <a href="/training-evaluation/{{ $train->id }}/{{ $parts->staff_id }}" class="btn btn-info btn-xs" target="_blank"><i class="fal fa-link"></i></a>  
+                                                                            @else 
+                                                                                <button class="btn btn-xs btn-secondary" disabled style="pointer-events: none"><i class="fal fa-link"></i></button>
+                                                                            @endif
+                                                                        @else  {{-- external --}}
+                                                                            <button class="btn btn-xs btn-secondary" disabled style="pointer-events: none"><i class="fal fa-link"></i></button>
+                                                                        @endif
+                                                                    @endif
+                                                                </td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>

@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class TrainingList extends Model
 {
     use SoftDeletes;
-    protected $table = 'thr_training';
+    protected $table = 'trm_training';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'title', 'type', 'category', 'start_date', 'end_date', 'venue', 'evaluation', 'upload_image', 'web_path', 'start_time', 'end_time', 'claim_hour'
+        'title', 'type', 'category', 'start_date', 'end_date', 'venue', 'evaluation', 'upload_image', 'web_path', 'start_time', 'end_time', 'claim_hour', 'link'
     ];
 
     public function types()

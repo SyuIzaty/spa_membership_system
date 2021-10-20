@@ -473,6 +473,7 @@ Route::delete('delete-training/{id}', 'TrainingController@deleteTraining')->name
 Route::get('/training-info/{id}', 'TrainingController@trainingInfo');
 Route::get('get-train-image/{filename}', 'TrainingController@getImage');
 Route::get('/training-pdf/{id}','TrainingController@trainingPdf');
+Route::get('/training-evaluation/{id}/{staff}', 'TrainingController@trainingEvaluation');
 
 // Training : Type
 Route::get('/type-list', 'TrainingController@typeList');
@@ -489,12 +490,14 @@ Route::post('update-category', 'TrainingController@updateCategory');
 Route::delete('delete-category/{id}', 'TrainingController@deleteCategory')->name('deleteCategory');
 
 // Training : Hour
-Route::get('/hour-list', 'TrainingController@hourList');
+Route::get('/hour-list', 'TrainingController@hourList')->name('hourList');
 Route::post('data-hour', 'TrainingController@data_hour');
 Route::post('store-hour', 'TrainingController@storeHour');
 Route::post('update-hour', 'TrainingController@updateHour');
 Route::delete('delete-hour/{id}', 'TrainingController@deleteHour')->name('deleteHour');
 Route::post('assign-hour/{id}', 'TrainingController@assignHour');
+Route::post('assign-hour-individual', 'TrainingController@assignHourIndividual');
+Route::get('/findStaff', 'TrainingController@findStaff');
 
 // Training : Claim
 Route::get('/claim-form', 'TrainingController@claimForm');
@@ -513,8 +516,6 @@ Route::get('/claim-slip/{id?}/{year?}/{type?}','TrainingController@claimSlip');
 Route::get('/export-claim', 'TrainingController@exportClaim');
 Route::get('/export-latest-claim/{year?}', 'TrainingController@exportLatestClaim');
 Route::get('/findTraining', 'TrainingController@findTraining');
-
-
 Route::post('store-file','TrainingController@fileStore');
 Route::post('delete-file','TrainingController@fileDestroy');
 Route::get('deleteFile/{id}', 'TrainingController@deleteFile')->name('deleteFile');
@@ -542,17 +543,26 @@ Route::post('data-evaluation', 'TrainingController@data_evaluation');
 Route::post('store-evaluation', 'TrainingController@storeEvaluation');
 Route::post('update-evaluation', 'TrainingController@updateEvaluation');
 Route::delete('delete-evaluation/{id}', 'TrainingController@deleteEvaluation')->name('deleteEvaluation');
-
 Route::get('/question-info/{id}', 'TrainingController@questionInfo');
-
 Route::post('store-question-header','TrainingController@storeHeader')->name('storeHeader');
 Route::post('update-question-header','TrainingController@updateHeader')->name('updateHeader');
 Route::post('reorder-question-header', 'TrainingController@reorderHeader')->name('reorderHeader');
 Route::post('store-question','TrainingController@storeQuestion')->name('storeQuestion');
 Route::post('update-question','TrainingController@updateQuestion')->name('updateQuestion');
 Route::post('reorder-question', 'TrainingController@reorderQuestion')->name('reorderQuestion');
-
 Route::get('/question-pdf/{id}', 'TrainingController@questionPdf')->name('questionPdf');
+
+// Training : Evaluation Report
+Route::get('/evaluation-report', 'TrainingController@reportList');
+Route::post('data-evaluation-report', 'TrainingController@data_evaluation_report');
+
+Route::get('/report-info/{id}', 'TrainingController@reportInfo');
+Route::get('/report-response/{id}/{head}/{eval}','TrainingController@reportResponse');
+
+// Training : Evaluation Form
+Route::get('/evaluation-form/{id}', 'TrainingController@evaluationForm');
+Route::post('store-evaluation-form','TrainingController@storeEvaluationForm');
+Route::post('update-evaluation-form','TrainingController@updateEvaluationForm');
 
 // Training : Dashboard
 Route::get('/training-dashboard', 'TrainingController@dashboard'); // not comp.

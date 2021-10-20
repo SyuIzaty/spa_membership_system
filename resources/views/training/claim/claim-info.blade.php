@@ -150,7 +150,7 @@
                                                                     --
                                                                 @endif
                                                             </td>
-                                                            <td width="20%" style="vertical-align: middle"><label class="form-label"> Attachment : </label></td>
+                                                            <td width="20%" style="vertical-align: middle"><label class="form-label"> Attachment : <i class="fal fa-info-circle fs-xs mr-1" data-toggle="tooltip" data-placement="right" title="" data-original-title="Maximum attachment 5 (.pdf, .jpg, .jpeg, .png)"></i></label></td>
                                                             <td colspan="3">
                                                                 @if($attachment->first())
                                                                 <ol style="margin-left: -25px">
@@ -211,7 +211,7 @@
                                                                         <i class="fal fa-cloud-upload text-muted mb-3"></i> <br>
                                                                         <span class="text-uppercase">Drop files here or click to upload.</span>
                                                                         <br>
-                                                                        <span class="fs-sm text-muted">This is a dropzone. Selected files <strong>.jpeg,.jpg,.png</strong> are actually uploaded.</span>
+                                                                        <span class="fs-sm text-muted">This is a dropzone. Selected files <strong>.pdf,.jpeg,.jpg,.png</strong> are actually uploaded.</span>
                                                                     </div>
                                                                 </form>   
                                                                 <script type="text/javascript">

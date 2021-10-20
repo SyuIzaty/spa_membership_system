@@ -6,7 +6,7 @@
         <div class="col-md-2"></div>
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header" style="background-image: url({{asset('img/training-bg.jpg')}}); background-size: cover">
+                <div class="card-header bg-success-50">
                     <div class="d-flex justify-content-center" style="color: black">
                         <div class="p-2">
                             <center><img src="{{ asset('img/intec_logo.png') }}" style="max-width: 100%" class="responsive"/></center><br>
@@ -60,7 +60,7 @@
                                                                 <div class="form-group">
                                                                     <td colspan="6">
                                                                         @if(isset($training->upload_image))
-                                                                            <a data-fancybox="gallery" href="/get-train-image/{{ $training->upload_image }}"><img src="/get-train-image/{{ $training->upload_image }}" style="width:800px; height:400px" class="img-fluid"></a>
+                                                                            <a data-fancybox="gallery" href="/get-train-image/{{ $training->upload_image }}"><img src="/get-train-image/{{ $training->upload_image }}" style="width:800px; height:500px" class="img-fluid"></a>
                                                                         @else 
                                                                             <img src="{{ URL::to('/') }}/img/default.png" alt="default" style="width:800px; height:400px">
                                                                         @endif

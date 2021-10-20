@@ -390,9 +390,9 @@
                                                         })->get();
 
                                                         $listBal = [];
-                                                        $total = '';
+                                                        // $total = '';
 
-                                                        $integerIDs = collect([]);
+                                                        // $integerIDs = collect([]);
                                                         foreach($stocks as $key => $stockss) {
                                                             $data = \App\Stock::where('id', $stockss['id'])->first(); 
                                                             

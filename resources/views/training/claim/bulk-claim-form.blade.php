@@ -84,7 +84,7 @@
                                                                 <select name="training_id" id="training_id" class="training_id form-control" required>
                                                                     <option value="" selected disabled>Select Training</option>
                                                                     @foreach ($training_list as $lists) 
-                                                                        <option value="{{ $lists->id }}" {{ old('training_id') ? 'selected' : '' }}>{{ strtoupper($lists->title) }}</option>
+                                                                        <option value="{{ $lists->id }}" {{ old('training_id') ? 'selected' : '' }}>{{ strtoupper($lists->title) }}  [ {{ date(' d/m/Y ', strtotime($lists->start_date) ) ?? '--'}} -  {{ date(' d/m/Y ', strtotime($lists->end_date) ) ?? '--'}}]</option>
                                                                     @endforeach
                                                                     <option value="0" {{ old('training_id') == '0' ? 'selected':''}} >OTHERS</option>
                                                                 </select>
@@ -164,17 +164,28 @@
                                                     </tr>
                                                     <tr>
                                                         <div class="form-group">
+                                                            <td width="20%" style="vertical-align: middle"><label class="form-label"><span class="text-danger">*</span> Venue :</label></td>
+                                                            <td colspan="6">
+                                                                <input class="form-control" id="venue" name="venue" value="{{ old('venue') }}" required>
+                                                                @error('venue')
+                                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                @enderror
+                                                            </td>
+                                                        </div>
+                                                    </tr>
+                                                    <tr>
+                                                        <div class="form-group">
+                                                            <td width="20%" style="vertical-align: middle"><label class="form-label"> Link :</label></td>
+                                                            <td colspan="3">
+                                                                <input class="form-control" id="link" name="link" value="{{ old('link') }}">
+                                                                @error('link')
+                                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                @enderror
+                                                            </td>
                                                             <td width="20%" style="vertical-align: middle"><label class="form-label"><span class="text-danger">*</span> Claim Hours :</label></td>
                                                             <td colspan="3">
                                                                 <input type="number" step="any" class="form-control" id="claim_hour" name="claim_hour" value="{{ old('claim_hour') }}" required>
                                                                 @error('claim_hour')
-                                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                @enderror
-                                                            </td>
-                                                            <td width="20%" style="vertical-align: middle"><label class="form-label"><span class="text-danger">*</span> Venue :</label></td>
-                                                            <td colspan="3">
-                                                                <input class="form-control" id="venue" name="venue" value="{{ old('venue') }}" required>
-                                                                @error('venue')
                                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                 @enderror
                                                             </td>
@@ -221,7 +232,7 @@
                                                     {{-- start upload view --}}
                                                         <table class="table table-bordered upload_view">
                                                             <tr> 
-                                                                <td width="20%"><label class="form-label" for="import_file"><span class="text-danger">*</span> File :</label></td>
+                                                                <td width="20%"><label class="form-label" for="import_file"><span class="text-danger">*</span> File : <i class="fal fa-info-circle fs-xs mr-1" data-toggle="tooltip" data-placement="right" title="" data-original-title="Minimum 3 data and above"></i></td>
                                                                 <td colspan="5"><input type="file" name="import_file" class="form-control mb-3"></td>
                                                             </tr>
                                                         </table>
@@ -257,12 +268,12 @@
         $( "#training_id" ).change(function() {
             var val = $("#training_id").val();
             if(val=="0"){
-                $('#start_date, #end_date, #start_time, #end_time, #type, #category, #venue, #claim_hour').prop('disabled', false);
+                $('#start_date, #end_date, #start_time, #end_time, #type, #category, #venue, #claim_hour, #link').prop('disabled', false);
             } else {
-                $('#start_date, #end_date, #start_time, #end_time, #type, #category, #venue, #claim_hour').prop('disabled', true);
+                $('#start_date, #end_date, #start_time, #end_time, #type, #category, #venue, #claim_hour, #link').prop('disabled', true);
 
                 $('#data').on('submit', function() {
-                    $('#start_date, #end_date, #start_time, #end_time, #type, #category, #venue, #claim_hour').prop('disabled', false);
+                    $('#start_date, #end_date, #start_time, #end_time, #type, #category, #venue, #claim_hour, #link').prop('disabled', false);
                 });
             }
         });
@@ -312,6 +323,7 @@
                     $('#start_time').val(data.start_time);
                     $('#end_time').val(data.end_time);
                     $('#venue').val(data.venue);
+                    $('#link').val(data.link);
                     $('#claim_hour').val(data.claim_hour);
                 }
             });

@@ -21,7 +21,9 @@ use App\TrainingList;
 use App\TrainingEvaluation;
 use App\TrainingEvaluationHead;
 use App\TrainingEvaluationQuestion;
-use App\TrainingEvaluationRate;
+use App\TrainingEvaluationStatus;
+use App\TrainingEvaluationResult;
+use App\TrainingEvaluationHeadResult;
 use App\Exports\ClaimExport;
 use App\Exports\LatestClaimExport;
 use App\Exports\LatestRecordExport;
@@ -39,7 +41,11 @@ class TrainingController extends Controller
 
     public function dashboard()
     {
-       
+        $trainingRank = TrainingClaim::select('training_id', DB::raw('count(*) as total'))->groupBy('training_id')->whereHas('trainings',function($query) {
+            $query->whereIn('type', ['1','2']);
+        })->limit(5)->orderBy('total', 'desc')->get();
+
+        // dd($trainingRank);
 
         // $intake = Intakes::IntakeOpen()->pluck('id');
 
@@ -52,9 +58,9 @@ class TrainingController extends Controller
         $chart->labels = (array_keys($groups));
         $chart->dataset = (array_values($groups));
         
-        $claim = DB::table('thr_status as statuss')
+        $claim = DB::table('trm_status as statuss')
         ->select('statuss.status_name','claims.status', DB::raw('COUNT(claims.status) as count'))
-        ->leftJoin('thr_claim as claims','statuss.id','=','claims.status')
+        ->leftJoin('trm_claim as claims','statuss.id','=','claims.status')
         ->where(DB::raw('YEAR(claims.start_date)'), '=', $year)
         ->groupBy('statuss.id','claims.status')
         ->get();
@@ -64,7 +70,7 @@ class TrainingController extends Controller
             $result[++$key] = [$value->status_name, (int)$value->count];
         }
 
-        return view('training.dashboard.analysis',compact('year','chart'))->with('claim',json_encode($result));
+        return view('training.dashboard.analysis',compact('year','chart','trainingRank'))->with('claim',json_encode($result))->with('no', 1);
     }
 
      // Training List
@@ -140,11 +146,6 @@ class TrainingController extends Controller
             } else {
                 return '--';
             }  
-        })
-
-        ->editColumn('title', function ($train) {
-             
-            return '<p style="overflow-wrap: break-word">'.$train->title.'</p>' ?? '--';
         })
 
         ->editColumn('venue', function ($train) {
@@ -223,6 +224,7 @@ class TrainingController extends Controller
                 'end_time'         => $request->end_time, 
                 'claim_hour'       => $request->claim_hour, 
                 'venue'            => $request->venue, 
+                'link'              => $request->link, 
                 'evaluation'       => $request->evaluation, 
                 'upload_image'     => $originalsName,
                 'web_path'         => "app/training/".$fileNames,
@@ -238,6 +240,7 @@ class TrainingController extends Controller
                 'end_time'         => $request->end_time, 
                 'claim_hour'       => $request->claim_hour, 
                 'venue'            => $request->venue, 
+                'link'              => $request->link, 
                 'evaluation'       => $request->evaluation, 
             ]);
         }
@@ -303,6 +306,7 @@ class TrainingController extends Controller
                         'end_time'         => $request->end_time, 
                         'claim_hour'       => $request->claim_hour, 
                         'venue'            => $request->venue, 
+                        'link'              => $request->link, 
                         'upload_image'     => $originalsName,
                         'web_path'         => "app/training/".$fileNames,
                         'evaluation'       => $request->evaluation, 
@@ -318,6 +322,7 @@ class TrainingController extends Controller
                         'end_time'         => $request->end_time, 
                         'claim_hour'       => $request->claim_hour, 
                         'venue'            => $request->venue, 
+                        'link'              => $request->link, 
                         'evaluation'       => $request->evaluation, 
                     ]);
                 }
@@ -340,6 +345,7 @@ class TrainingController extends Controller
                         'end_time'         => $request->end_time, 
                         'claim_hour'       => $request->claim_hour, 
                         'venue'            => $request->venue, 
+                        'link'             => $request->link, 
                         'evaluation'       => null, 
                         'upload_image'     => $originalsName,
                         'web_path'         => "app/training/".$fileNames,
@@ -355,6 +361,7 @@ class TrainingController extends Controller
                         'end_time'         => $request->end_time, 
                         'claim_hour'       => $request->claim_hour, 
                         'venue'            => $request->venue, 
+                        'link'             => $request->link, 
                         'evaluation'       => null, 
                     ]);
                 }
@@ -380,6 +387,7 @@ class TrainingController extends Controller
                         'end_time'         => $request->end_time, 
                         'claim_hour'       => $request->claim_hour, 
                         'venue'            => $request->venue, 
+                        'link'             => $request->link, 
                         'upload_image'     => $originalsName,
                         'web_path'         => "app/training/".$fileNames,
                     ]);
@@ -394,6 +402,7 @@ class TrainingController extends Controller
                         'end_time'         => $request->end_time, 
                         'claim_hour'       => $request->claim_hour, 
                         'venue'            => $request->venue, 
+                        'link'             => $request->link, 
                     ]);
                 }
             } else {
@@ -414,7 +423,8 @@ class TrainingController extends Controller
                         'start_time'       => $request->start_time, 
                         'end_time'         => $request->end_time, 
                         'claim_hour'       => $request->claim_hour, 
-                        'venue'            => $request->venue, 
+                        'venue'            => $request->venue,
+                        'link'             => $request->link,  
                         'evaluation'       => $request->evaluation, 
                         'upload_image'     => $originalsName,
                         'web_path'         => "app/training/".$fileNames,
@@ -430,6 +440,7 @@ class TrainingController extends Controller
                         'end_time'         => $request->end_time, 
                         'claim_hour'       => $request->claim_hour, 
                         'venue'            => $request->venue, 
+                        'link'             => $request->link, 
                         'evaluation'       => $request->evaluation, 
                     ]);
                 }
@@ -478,6 +489,16 @@ class TrainingController extends Controller
         $response->header("Content-Type", $filetype);
 
         return $response;
+    }
+
+    public function trainingEvaluation($id, $staff)
+    {
+        $staff = Staff::where('staff_id', $staff)->first();
+        $training = TrainingList::where('id', $id)->first();
+        $trainingHead = TrainingEvaluationHead::orderBy('sequence', 'ASC')->where('evaluation_id', $training->evaluation)->get();
+        $trainingResult = TrainingEvaluationResult::where('staff_id', $staff->staff_id)->where('training_id', $id)->get(); 
+        
+        return view('training.parameter.training-evaluation',compact('training','trainingHead','trainingResult','staff'));
     }
 
     // Open Attendance
@@ -670,8 +691,10 @@ class TrainingController extends Controller
 
     public function hourList()
     {
-       
-        return view('training.parameter.hour-list');
+        $trail = new TrainingHourTrail();
+        $data_years = TrainingHourYear::all();
+
+        return view('training.parameter.hour-list', compact('data_years','trail'));
     }
 
     public function data_hour()
@@ -770,6 +793,33 @@ class TrainingController extends Controller
         return response()->json(['success'=>'Staff Assignation Successfull']);
     }
 
+    public function findStaff(Request $request)
+    {
+        $trails = TrainingHourTrail::where('year', $request->id )->get();
+        $list_staff = array_column($trails->toArray(), 'staff_id');
+        $data =  Staff::select('id', 'staff_id', 'staff_name')
+                ->whereNotIn('staff_id', $list_staff)
+                ->take(100)->get();
+
+        return response()->json($data);
+    }
+
+    public function assignHourIndividual(Request $request)
+    {
+        foreach($request->staff_id as $value){ 
+            $fields = [
+                'year'          => $request->year,
+                'staff_id'      => $value,
+                'status'        => '5'
+            ];
+
+            TrainingHourTrail::create($fields);      
+        }
+
+        Session::flash('success', 'Staff Assignation Successfull');
+        return redirect('hour-list');
+    }
+
     // Claim Form
 
     public function claimForm()
@@ -784,7 +834,7 @@ class TrainingController extends Controller
 
     public function findTraining(Request $request)
     {
-        $data = TrainingList::select('id', 'title', 'type','category','start_date','end_date','start_time','end_time','venue','claim_hour')
+        $data = TrainingList::select('id', 'title', 'type','category','start_date','end_date','start_time','end_time','venue','claim_hour','link')
             ->where('id',$request->id)
             ->first();
 
@@ -926,7 +976,6 @@ class TrainingController extends Controller
 
     public function bulkClaimStore(Request $request)
     {
-        // dd($request->training_id);
         
         if($request->training_id != '0') {
 
@@ -949,23 +998,44 @@ class TrainingController extends Controller
                     ]);
 
                     foreach($request->input('staff_id') as $key => $value) {
-                        $claim = TrainingClaim::create([
-                            'staff_id'          => $value,
-                            'training_id'       => $train->id,
-                            'title'             => $train->title,
-                            'type'              => $request->type,
-                            'category'          => $request->category,
-                            'start_date'        => $request->start_date,
-                            'end_date'          => $request->end_date, 
-                            'start_time'        => $request->start_time,
-                            'end_time'          => $request->end_time, 
-                            'venue'             => $request->venue,
-                            'claim_hour'        => $request->claim_hour, 
-                            'status'            => '2',
-                            'form_type'         => 'AF',
-                            'approved_hour'     => $request->claim_hour, 
-                            'assigned_by'       => Auth::user()->id,
-                        ]);
+
+                        $exists = TrainingClaim::where('training_id', $request->training_id)->where('staff_id', $value)->first();
+
+                        if(!isset($exists)) {
+                            $claim = TrainingClaim::create([
+                                'staff_id'          => $value,
+                                'training_id'       => $train->id,
+                                'title'             => $train->title,
+                                'type'              => $request->type,
+                                'category'          => $request->category,
+                                'start_date'        => $request->start_date,
+                                'end_date'          => $request->end_date, 
+                                'start_time'        => $request->start_time,
+                                'end_time'          => $request->end_time, 
+                                'venue'             => $request->venue,
+                                'link'              => $request->link,
+                                'claim_hour'        => $request->claim_hour, 
+                                'status'            => '2',
+                                'form_type'         => 'AF',
+                                'approved_hour'     => $request->claim_hour, 
+                                'assigned_by'       => Auth::user()->id,
+                            ]);
+
+                            $year = date('Y', strtotime($claim->start_date));
+                            $totalApprove = TrainingClaim::where( DB::raw('YEAR(start_date)'), '=', $year )->where('staff_id', $value)->where('status', '2')->sum('approved_hour');
+                            $totalHour = TrainingHourYear::where('year', $year)->first();
+                    
+                            if($totalApprove >= $totalHour->training_hour) {
+                                $exist = TrainingHourTrail::where('staff_id', $value)->where('year', $year)->where('status', '4')->first();
+                    
+                                if(!isset($exist)) {
+                    
+                                    TrainingHourTrail::where('staff_id', $value)->where('year', $year)->update([
+                                        'status'            => '4',
+                                    ]);
+                                }
+                            }
+                        }
                     }
 
                 } else {
@@ -1010,23 +1080,45 @@ class TrainingController extends Controller
                     ]);
 
                     foreach($request->input('staff_id') as $key => $value) {
-                        $claim = TrainingClaim::create([
-                            'staff_id'          => $value,
-                            'training_id'       => $train->id,
-                            'title'             => strtoupper($request->title),
-                            'type'              => $request->type,
-                            'category'          => $request->category,
-                            'start_date'        => $request->start_date,
-                            'end_date'          => $request->end_date, 
-                            'start_time'        => $request->start_time,
-                            'end_time'          => $request->end_time, 
-                            'venue'             => $request->venue,
-                            'claim_hour'        => $request->claim_hour, 
-                            'status'            => '2',
-                            'form_type'         => 'AF',
-                            'approved_hour'     => $request->claim_hour, 
-                            'assigned_by'       => Auth::user()->id,
-                        ]);
+
+                        $exists = TrainingClaim::where('training_id', $request->training_id)->where('staff_id', $value)->first();
+
+                        if(!isset($exists)) {
+
+                            $claim = TrainingClaim::create([
+                                'staff_id'          => $value,
+                                'training_id'       => $train->id,
+                                'title'             => strtoupper($request->title),
+                                'type'              => $request->type,
+                                'category'          => $request->category,
+                                'start_date'        => $request->start_date,
+                                'end_date'          => $request->end_date, 
+                                'start_time'        => $request->start_time,
+                                'end_time'          => $request->end_time, 
+                                'venue'             => $request->venue,
+                                'link'              => $request->link,
+                                'claim_hour'        => $request->claim_hour, 
+                                'status'            => '2',
+                                'form_type'         => 'AF',
+                                'approved_hour'     => $request->claim_hour, 
+                                'assigned_by'       => Auth::user()->id,
+                            ]);
+
+                            $year = date('Y', strtotime($claim->start_date));
+                            $totalApprove = TrainingClaim::where( DB::raw('YEAR(start_date)'), '=', $year )->where('staff_id', $value)->where('status', '2')->sum('approved_hour');
+                            $totalHour = TrainingHourYear::where('year', $year)->first();
+                    
+                            if($totalApprove >= $totalHour->training_hour) {
+                                $exist = TrainingHourTrail::where('staff_id', $value)->where('year', $year)->where('status', '4')->first();
+                    
+                                if(!isset($exist)) {
+                    
+                                    TrainingHourTrail::where('staff_id', $value)->where('year', $year)->update([
+                                        'status'            => '4',
+                                    ]);
+                                }
+                            }
+                        }
                     }
 
             } else {
@@ -1204,8 +1296,23 @@ class TrainingController extends Controller
             $message->from(Auth::user()->email);
         });
 
+        $year = date('Y', strtotime($claim->start_date));
+        $totalApprove = TrainingClaim::where( DB::raw('YEAR(start_date)'), '=', $year )->where('staff_id', Auth::user()->id)->where('status', '2')->sum('approved_hour');
+        $totalHour = TrainingHourYear::where('year', $year)->first();
+
+        if($totalApprove >= $totalHour->training_hour) {
+            $exist = TrainingHourTrail::where('staff_id', Auth::user()->id)->where('year', $year)->where('status', '4')->first();
+
+            if(!isset($exist)) {
+
+                TrainingHourTrail::where('staff_id', Auth::user()->id)->where('year', $year)->update([
+                    'status'            => '4',
+                ]);
+            }
+        }
+
         Session::flash('message', 'Claim request by '.$claim->staffs->staff_name.' has been APPROVED on '.date(' d/m/Y', strtotime(Carbon::now())));
-        return redirect('/pending-claim');
+        return redirect('/claim-list');
     }
 
     public function rejectClaim(Request $request)
@@ -1239,7 +1346,7 @@ class TrainingController extends Controller
         });
 
         Session::flash('notification', 'Claim request by '.$claim->staffs->staff_name.' has been REJECTED on '.date(' d/m/Y', strtotime(Carbon::now())));
-        return redirect('/pending-claim');
+        return redirect('/claim-list');
     }
 
     public function deleteClaim($id)
@@ -1544,7 +1651,6 @@ class TrainingController extends Controller
             } else { // if($request->type != "" && $request->year == "")
                 $data2 = $res->where('type', $request->type)->where('staff_id', Auth::user()->id)->where('status', '2')->sum('approved_hour');
             }
-            // dd($data2);
         }
          
         $staff = Staff::where('staff_id', Auth::user()->id)->first();
@@ -1574,7 +1680,7 @@ class TrainingController extends Controller
                 $res =  $res->where( DB::raw('YEAR(start_date)'), '=', $year );
             }
             
-            $data = $res->where('staff_id', Auth::user()->id)->get();
+            $data = $res->where('staff_id', $id)->get();
 
             if($type != "" && $year != "") {
                 $data2 = $res->where( DB::raw('YEAR(start_date)'), '=', $year )->where('type', $type)->where('staff_id', $id)->where('status', '2')->sum('approved_hour');
@@ -1598,7 +1704,7 @@ class TrainingController extends Controller
 
     public function data_record_staff()
     {
-        $staff = TrainingHourTrail::where('year', Carbon::now()->format('Y'))->select('thr_hour_trail.*');
+        $staff = TrainingHourTrail::where('year', Carbon::now()->format('Y'))->select('trm_hour_trail.*');
 
         return datatables()::of($staff)
 
@@ -1781,7 +1887,7 @@ class TrainingController extends Controller
         return redirect('evaluation-question');
     }
 
-    public function questionInfo($id)
+    public function questionInfo($id) // uncomp. result exist
     {
         $evaluate = TrainingEvaluation::where('id', $id)->first();
         $evaluation = TrainingEvaluationHead::TeId($id)->with(['trainingEvaluationQuestions'=>function($query){
@@ -1889,6 +1995,202 @@ class TrainingController extends Controller
         return view('training.evaluation.question-pdf', compact('header'));
     }
 
+    // Evaluation Form
+
+    public function evaluationForm($id)
+    {
+        $staff = Staff::where('staff_id', Auth::user()->id)->first();
+        $training = TrainingList::where('id', $id)->first();
+        $trainingHead = TrainingEvaluationHead::orderBy('sequence', 'ASC')->where('evaluation_id', $training->evaluation)->get();
+        $trainingResult = TrainingEvaluationResult::where('staff_id', Auth::user()->id)->where('training_id', $id)->get(); 
+        
+        return view('training.evaluation.question-form',compact('training','trainingHead','trainingResult','staff'));
+    }
+
+    public function storeEvaluationForm(Request $request)
+    {
+        $id = Auth::user()->id;
+        $complete = true;
+        
+        for ($i = 0; $i < $request->count; $i++)
+        {
+            $rating   = "rating".$i;
+            $question = "question".$i;
+
+            if(!isset($request->$rating))
+                $complete &= false;
+
+            $input = [
+                    'question'    => $request->$question,
+                    'rating'      => $request->$rating,
+                    'staff_id'    => $id,
+                    'training_id' => $request->train_id,
+                ];
+            
+            TrainingEvaluationResult::create($input);     
+        }
+        
+        if ($complete) 
+            $status_id = 'CP';
+        else 
+            $status_id = 'IP';
+
+        TrainingEvaluationHeadResult::create([
+            'staff_id'          => $id,
+            'training_id'       => $request->train_id,
+            'evaluation_id'     => $request->evaluate_id, 
+            'submission_status' => $status_id,
+        ]);
+    
+        Session::flash('message');
+        return redirect('evaluation-form/'.$request->train_id);
+    }
+
+    public function updateEvaluationForm(Request $request)
+    {
+        $id = Auth::user()->id;
+
+        for ($i = 0; $i < $request->count; $i++)
+        {
+            $teRes   = "id".$i;
+
+            TrainingEvaluationResult::where('id', $request->$teRes)->delete(); 
+        }
+        
+        $complete = true;
+        
+        for ($i = 0; $i < $request->count; $i++)
+        {
+            $rating   = "rating".$i;
+            $question = "question".$i;
+
+            if(!isset($request->$rating))
+                $complete &= false;
+
+            $input = [
+                    'question'    => $request->$question,
+                    'rating'      => $request->$rating,
+                    'staff_id'    => $id,
+                    'training_id' => $request->training_id,
+                ];
+            
+            TrainingEvaluationResult::create($input);     
+        }
+        
+        if ($complete) 
+            $status_id = 'CP';
+        else 
+            $status_id = 'IP';
+
+        $thRes = TrainingEvaluationHeadResult::where('staff_id', $id)->where('training_id', $request->training_id)->first();
+        
+        $thRes->update([
+            'staff_id'          => $id,
+            'training_id'       => $request->training_id,
+            'evaluation_id'     => $request->evaluation_id, 
+            'submission_status' => $status_id,
+        ]);
+    
+        Session::flash('notification');
+        return redirect('evaluation-form/'.$request->training_id);
+    }
+
+    // Evaluation Report
+
+    public function reportList()
+    {
+        return view('training.evaluation.report-list');
+    }
+
+    public function data_evaluation_report()
+    {
+        $report = TrainingList::whereIn('type', ['1','2'])->get();
+       
+        return datatables()::of($report)
+        ->addColumn('action', function ($report) {
+
+            return '<a href="/report-info/' . $report->id.'" class="btn btn-sm btn-primary ml-1"><i class="fal fa-eye"></i></a>';
+        })
+
+        ->editColumn('title', function ($report) {
+
+            return '<p style="text-transform : uppercase; overflow-wrap: break-word">'.$report->title.'</p>' ?? '--';
+        })
+
+        // ->editColumn('id', function ($report) {
+
+        //     return '#'.$report->id ?? '--';
+        // })
+
+        ->editColumn('start_date', function ($report) {
+
+            $start = isset($report->start_date) ? date(' Y-m-d ', strtotime($report->start_date)) : 'Y-m-d';
+            $end = isset($report->end_date) ? date(' Y-m-d ', strtotime($report->end_date)) : 'Y-m-d';
+
+            if($report->start_date != null) {
+                return $start.' - '.$end;
+            } else {
+                return '--';
+            }  
+        })
+
+        ->editColumn('type', function ($report) {
+
+            $type = $report->types->type_name ?? '--';
+
+            return '<p style="text-transform : uppercase">'.$type.'</p>' ?? '--';
+        })
+
+        ->editColumn('participant', function ($report) {
+
+            $data = TrainingClaim::where('status', '2')->where('training_id', $report->id)->count();
+
+            return $data ?? '0';
+        })
+
+        ->editColumn('respondant', function ($report) {
+
+            $data = TrainingEvaluationResult::where('training_id',$report->id)->groupBy('question')->count();
+
+            return $data ?? '0';
+        })
+
+        ->editColumn('percentage', function ($report) {
+
+            $dataResult = TrainingEvaluationResult::where('training_id',$report->id)->groupBy('question')->count();
+            $dataClaim = TrainingClaim::where('status', '2')->where('training_id', $report->id)->count();
+
+            if($dataClaim != 0) {
+                $division = ($dataResult / $dataClaim) * 100;
+                return ROUND(($division), 2).'%';  
+            } else {     
+                return '0%';
+            }
+        })
+
+        ->addIndexColumn()
+        ->rawColumns(['action', 'title', 'start_date', 'participant', 'respondant', 'percentage', 'id', 'type'])
+        ->make(true);
+    }
+
+    public function reportInfo($id)
+    {
+        $evaluationStatus = TrainingEvaluationStatus::all();
+        $training = TrainingList::where('id', $id)->first();
+        $trainingHead = TrainingEvaluationHead::orderBy('sequence', 'ASC')->where('evaluation_id', $training->evaluation)->get();
+        $trainingResult = TrainingEvaluationResult::select('question')->where('training_id', $id)->whereHas('trainingEvaluationQuestion',function($query) {
+            $query->where('eval_rate', 'R');
+        })->groupBy('question')->get(); 
+
+        return view('training.evaluation.report-info', compact('evaluationStatus','id','training','trainingHead','trainingResult'));
+    }
+
+    public function reportResponse($id, $head, $eval)  
+    {
+        $ques_response = TrainingEvaluationQuestion::orderby('sequence','ASC')->where('head_id', $head)->where('evaluation_id', $eval)->where('eval_rate','C')->get();
+
+        return view('training.evaluation.report-response',compact('ques_response','id'));
+    }
 
 /**
      * Display a listing of the resource.

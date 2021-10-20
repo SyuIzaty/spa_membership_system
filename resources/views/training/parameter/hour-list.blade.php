@@ -28,6 +28,9 @@
                         @if (Session::has('notification'))
                             <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('notification') }}</div>
                         @endif
+                        @if (Session::has('success'))
+                            <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('success') }}</div>
+                        @endif
                         <div class="table-responsive">
                             <table id="hour" class="table table-bordered table-hover table-striped w-100">
                                 <thead>
@@ -35,7 +38,7 @@
                                         <th>NO.</th>
                                         <th>YEAR</th>
                                         <th>HOURS</th>
-                                        <th>ASSIGN HOUR</th>
+                                        <th>BULK ASSIGN HOUR</th>
                                         <th>ACTION</th>
                                     </tr>
                                     <tr>
@@ -50,7 +53,8 @@
                         </div>
                     </div>
                     <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex pull-right">
-                        <a href="javascript:;" data-toggle="modal" id="new" class="btn btn-primary ml-auto float-right"><i class="fal fa-plus-square"></i> Add New Hour</a>
+                        <a href="javascript:;" data-toggle="modal" id="news" class="btn btn-success mr-1 ml-auto float-right"><i class="fal fa-users"></i> Assign Hour</a>
+                        <a href="javascript:;" data-toggle="modal" id="new" class="btn btn-primary float-right"><i class="fal fa-plus-square"></i> Add New Hour</a>
                     </div>
                 </div>
             </div>
@@ -134,6 +138,46 @@
         </div>
     </div>
 
+    <div class="modal fade" id="crud-modal-assign" aria-hidden="true" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i>INDIVIDUAL ASSIGN HOUR</h5>
+                </div>
+                <div class="modal-body">
+                    {!! Form::open(['action' => 'TrainingController@assignHourIndividual', 'method' => 'POST']) !!}
+                        <p><span class="text-danger">*</span> Required fields</p>
+                        <div class="form-group">
+                            <td width="10%"><label class="form-label" for="year"><span class="text-danger">*</span> Year :</label></td>
+                            <td width="10%">
+                                <select class="form-control data_year" name="year" id="year">
+                                    @foreach ($data_years as $data_year)
+                                        <option value="{{ $data_year->year }}"  {{ old('year') ==  $data_year->year  ? 'selected' : '' }}>{{ $data_year->year }}</option>
+                                    @endforeach
+                                </select> 
+                            </td>
+                        </div>
+
+                        <div class="form-group">
+                            <td width="10%"><label class="form-label" for="staff_id"><span class="text-danger">*</span> Staff :</label></td>
+                            <td width="10%">
+                                <select class="form-control staff_id" name="staff_id[]" multiple required>
+                                </select>
+                                @error('staff_id')
+                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                @enderror
+                            </td>
+                        </div>
+                        <div class="footer">
+                            <button type="submit" class="btn btn-primary ml-auto float-right btn-assigns" id="submit"><i class="fal fa-save"></i> Save</button>
+                            <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
+                        </div>
+                    {!! Form::close() !!}
+                </div>
+            </div>
+        </div>
+    </div>
+
 </main>
 @endsection
 
@@ -142,9 +186,50 @@
 <script>
     $(document).ready(function()
     {
+        if($('.data_year').val()!=''){
+            updateStaff($('.data_year'));
+        }
+        $(document).on('change','.data_year',function(){
+            updateStaff($(this));
+        });
+
+        function updateStaff(elem){
+        var eduid=elem.val();
+        var op=" "; 
+
+            $.ajax({
+                type:'get',
+                url:'{!!URL::to('findStaff')!!}',
+                data:{'id':eduid},
+                success:function(data)
+                {
+                    console.log(data)
+                    op+='<option value=""> Please Select </option>';
+                    for (var i=0; i<data.length; i++)
+                    {
+                        var selected = (data[i].staff_id=="{{old('staff_id', $trail->staff_id)}}") ? "selected='selected'" : '';
+                        op+='<option value="'+data[i].staff_id+'" '+selected+'>'+data[i].staff_name+'</option>';
+                    }
+
+                    $('.staff_id').html(op);
+                },
+                error:function(){
+                    console.log('success');
+                },
+            });
+        }
+
         $('#new').click(function () {
             $('#crud-modal').modal('show');
         });
+
+        $('#news').click(function () {
+            $('#crud-modal-assign').modal('show');
+        });
+
+        $('.staff_id, .data_year').select2({ 
+            dropdownParent: $("#crud-modal-assign") 
+        }); 
 
         $('#crud-modals').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget) 
@@ -272,7 +357,6 @@
             }
         })
     });
-
 
 </script>
 

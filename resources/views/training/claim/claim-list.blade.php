@@ -470,7 +470,7 @@
             var hour = button.data('hour') 
             var staff = button.data('staff') 
 
-            $('.modal-body .claim').val(claim); 
+            $('.modal-body #claim').val(claim); 
             $('.id').html(claim); 
             $('.modal-body .title').html(title); 
             $('.modal-body .type').html(type); 

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class TrainingHourTrail extends Model
 {
     use SoftDeletes;
-    protected $table = 'thr_hour_trail';
+    protected $table = 'trm_hour_trail';
     protected $primaryKey = 'id';
     protected $fillable = [
         'year', 'staff_id', 'status'

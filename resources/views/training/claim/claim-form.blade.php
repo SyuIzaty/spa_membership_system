@@ -99,7 +99,7 @@
                                                                 <select name="training_id" id="training_id" class="training_id form-control" required>
                                                                     <option value="" selected disabled>Select Training</option>
                                                                     @foreach ($training_list as $lists) 
-                                                                        <option value="{{ $lists->id }}" {{ old('training_id') ? 'selected' : '' }}>{{ strtoupper($lists->title) }}</option>
+                                                                        <option value="{{ $lists->id }}" {{ old('training_id') ? 'selected' : '' }}>{{ strtoupper($lists->title) }}  [ {{ date(' d/m/Y ', strtotime($lists->start_date) ) ?? '--'}} -  {{ date(' d/m/Y ', strtotime($lists->end_date) ) ?? '--'}}]</option>
                                                                     @endforeach
                                                                     <option value="0" {{ old('training_id') == '0' ? 'selected':''}} >OTHERS</option>
                                                                 </select>
@@ -219,7 +219,7 @@
                                         </div>
                                     </div>
                                     <div class="footer">
-                                        <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-location-arrow"></i> Submit Claim</button>	
+                                        <button type="submit" id="btnSubmit" class="btn btn-primary ml-auto float-right"><i class="fal fa-location-arrow"></i> Submit Claim</button>	
                                         <button style="margin-right:5px" type="reset" class="btn btn-danger ml-auto float-right"><i class="fal fa-redo"></i> Reset</button><br><br>
                                     </div>
                                 {!! Form::close() !!}
@@ -246,12 +246,12 @@
         $( "#training_id" ).change(function() {
             var val = $("#training_id").val();
             if(val=="0"){
-                $('#start_date, #end_date, #start_time, #end_time, #type, #category, #venue, #claim_hour').prop('disabled', false);
+                $('#start_date, #end_date, #start_time, #end_time, #type, #category, #venue, #claim_hour, #link').prop('disabled', false);
             } else {
-                $('#start_date, #end_date, #start_time, #end_time, #type, #category, #venue, #claim_hour').prop('disabled', true);
+                $('#start_date, #end_date, #start_time, #end_time, #type, #category, #venue, #claim_hour, #link').prop('disabled', true);
 
                 $('#data').on('submit', function() {
-                    $('#start_date, #end_date, #start_time, #end_time, #type, #category, #venue, #claim_hour').prop('disabled', false);
+                    $('#start_date, #end_date, #start_time, #end_time, #type, #category, #venue, #claim_hour, #link').prop('disabled', false);
                 });
             }
         });
@@ -280,6 +280,7 @@
                     $('#start_time').val(data.start_time);
                     $('#end_time').val(data.end_time);
                     $('#venue').val(data.venue);
+                    $('#link').val(data.link);
                     $('#claim_hour').val(data.claim_hour);
                 }
             });
@@ -301,6 +302,13 @@
         $('#title').val('{{ old('title') }}');
 
     })
+
+    $(document).ready(function () {
+        $("#data").submit(function () {
+            $("#btnSubmit").attr("disabled", true);
+            return true;
+        });
+    });
 
 </script>
 @endsection

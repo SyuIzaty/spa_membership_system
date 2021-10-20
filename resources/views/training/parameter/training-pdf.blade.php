@@ -18,9 +18,13 @@
                                     <tbody>
                                         <tr>
                                             <th width="15%">Title : </th>
-                                            <td colspan="4" style="text-transform: uppercase">{{ $train->title ?? '--' }}</td>
+                                            <td colspan="8" style="text-transform: uppercase">{{ $train->title ?? '--' }}</td>
+                                        </tr>
+                                        <tr>
                                             <th width="15%">Venue : </th>
                                             <td colspan="4" style="text-transform: uppercase">{{ $train->venue ?? '--' }}</td>
+                                            <th width="15%">Link : </th>
+                                            <td colspan="4">{{ $train->link ?? '--' }}</td>
                                         </tr>
                                         <tr>
                                             <th width="15%">Date : </th>
@@ -32,15 +36,11 @@
                                             <th width="15%">Type : </th>
                                             <td colspan="4" style="text-transform: uppercase">{{ $train->types->type_name ?? '--' }}</td>
                                             <th width="15%">Category : </th>
-                                            <td colspan="4" style="text-transform: uppercase">{{ $train->categories->category_name ?? '--' }} )</td>
+                                            <td colspan="4" style="text-transform: uppercase">{{ $train->categories->category_name ?? '--' }}</td>
                                         </tr>
                                         <tr>
                                             <th width="15%">Claim Hour(s) : </th>
-                                            <td colspan="4">{{ $train->claim_hour ?? '--' }}</td>
-                                            @if($train->type == '1' && $train->type == '2')
-                                            <th width="15%">Evaluation : </th>
-                                            <td colspan="4" style="text-transform: uppercase">{{ $train->evaluations->evaluation ?? '--' }}</td>
-                                            @endif
+                                            <td colspan="8">{{ $train->claim_hour ?? '--' }}</td>
                                         </tr>
                                         
                                         <div class="table-responsive">

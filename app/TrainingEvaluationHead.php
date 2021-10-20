@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class TrainingEvaluationHead extends Model
 {
     use SoftDeletes;
-    protected $table = 'thr_evaluation_head';
+    protected $table = 'trm_evaluation_head';
     protected $primaryKey = 'id';
     protected $fillable = [
         'evaluation_id', 'question_head', 'color', 'sequence'

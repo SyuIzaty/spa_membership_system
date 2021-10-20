@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class TrainingClaim extends Model
 {
     use SoftDeletes;
-    protected $table = 'thr_claim';
+    protected $table = 'trm_claim';
     protected $primaryKey = 'id';
     protected $fillable = [
         'staff_id', 'training_id', 'title', 'type', 'category', 'start_date', 'start_time', 'end_date', 'end_time', 'venue', 'link', 'claim_hour', 'approved_hour', 'status', 'reject_reason',
