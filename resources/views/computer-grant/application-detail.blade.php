@@ -101,13 +101,18 @@
                                                 <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> IT ADMIN & CE APPROVAL</label></td>
                                             </tr>
                                             <tr>
+                                                <td colspan="5" class="bg-warning-50" style="vertical-align: middle">Please print both documents and bring together with purchased device to IT Admin after submitting the purchase details</td>
+                                            </tr>
+                                            <tr>
                                                 <th width="20%" style="vertical-align: top">Verified Application : </th>
                                                 <td colspan="4">
-                                                    <ul>
-                                                        @foreach ( $verified_doc as $v )
-                                                        <li>  <a target="_blank" href="/get-file/{{$v->upload}}">{{$v->upload}}</a> </li>
-                                                        @endforeach
-                                                    </ul> 
+                                                    <a class="btn btn-info" data-page="/get-file/{{$verified_doc->id}}" onclick="Print(this)">
+                                                        <i class="fal fa-download"></i> Application Form
+                                                    </a>
+
+                                                    <a class="btn btn-primary" data-page="/agreementPDF/{{ $activeData->id }}" onclick="Print(this)">
+                                                        <i class="fal fa-download"></i> Declaration Form
+                                                    </a>
                                                 </td>                                           
                                             </tr>
                                         </thead>
@@ -124,6 +129,14 @@
                                             <tr>
                                                 <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-file"></i> DETAILS OF PURCHASE</label></td>
                                             </tr>
+
+                                            @if ($activeData->remark != NULL)
+                                                <tr>
+                                                    <th width="20%" class="bg-warning-50" style="vertical-align: top">Remark by IT Admin : </th>
+                                                    <td colspan="4" class="bg-warning-50" style="vertical-align: middle">{{$activeData->remark}}</td>
+                                                </tr>
+                                            @endif
+
                                             <tr>
                                                 <th width="20%" style="vertical-align: middle"><span class="text-danger">*</span> Type of Device : </th>
                                                 <td colspan="2">
@@ -220,33 +233,23 @@
                                         </thead>
                                     </table>
                                 </div>
-
-                                <!-- <a class="btn btn-info ml-auto float-right" data-page="/agreementPDF/{{ $activeData->id }}" onclick="Print(this)" style="color: rgb(0, 0, 0); margin-top: 5px; margin-bottom: 15px;">
-                                    <i class="fal fa-download"></i> Export Application
-                                </a> -->
                                 @endif
 
                                 @if ($activeData->status == '4')
-                                    @if ($agreement_doc->isEmpty())
-                                        {!! Form::open(['action' => 'ComputerGrantController@uploadAgreement', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                                        {!! Form::open(['action' => 'ComputerGrantController@declaration', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                                         <input type="hidden" id="id" name="id" value="{{ $activeData->id }}" required>
 
                                         <div class="table-responsive">
-                                            <table id="info" class="table table-bordered table-hover table-striped w-100">
+                                            <table id="verifikasi" class="table table-bordered table-hover table-striped w-100">
                                                 <thead>
                                                     <tr>
-                                                        <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> GRANT ACCEPTANCE</label></td>
+                                                        <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-check-square"></i> CONFIRMATION OF AGREEMENT</label></td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="5">Kindly download verified files above, then upload the signed files.</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th width="20%" style="vertical-align: top"><span class="text-danger">*</span> Upload Signed Declaration files: </th>
-                                                        <td colspan="4"><input type="file" class="form-control" id="upload_image" name="upload_image[]" multiple required>
-
-                                                            @error('upload_image')
-                                                                <p style="color: red">{{ $message }}</p>
-                                                            @enderror
+                                                        <td colspan="5">
+                                                            <p class="form-label" for="check">
+                                                            <input type="checkbox" name="check" id="agree" onclick="agreement()"/>
+                                                            &emsp;I, <b><u>{{ strtoupper($user->name) }}</u></b> CONFIRMED THAT THE PERSONAL DETAILS AND PURCHASE PROOF GIVEN ARE GENUINE. I AGREE TO ACCEPT THIS APPLICATION AND ABIDE ALL REGULATIONS.</p> 
                                                         </td>
                                                     </tr>
                                                 </thead>
@@ -255,26 +258,45 @@
 
                                         <div class="table-responsive">
                                             <div class="form-group">
-                                                <button style="margin-top: 5px;" class="btn btn-danger float-right" id="submit" name="submit"><i class="fal fa-check"></i> Submit Declaration</button></td>
+                                                <button style="margin-top: 5px;" class="btn btn-danger float-right" id="submit" name="submit" disabled><i class="fal fa-check"></i> Submit Declaration</button></td>
                                             </div>
                                         </div>
                                         {!! Form::close() !!}
+                                @endif
+                                @if (($activeData->status == '5') || ($activeData->status == '6'))
+                                    <div class="table-responsive">
+                                        <table id="verifikasi" class="table table-bordered table-hover table-striped w-100">
+                                            <thead>
+                                                <tr>
+                                                    <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-check-square"></i> CONFIRMATION OF AGREEMENT</label></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5">
+                                                        <p class="form-label" for="check">
+                                                        <input type="checkbox" checked disabled/>
+                                                        &emsp;I, <b><u>{{ strtoupper($user->name) }}</u></b> CONFIRMED THAT THE PERSONAL DETAILS AND PURCHASE PROOF GIVEN ARE GENUINE. I AGREE TO ACCEPT THIS APPLICATION AND ABIDE ALL REGULATIONS.</p> 
+                                                    </td>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                @endif
 
-                                        @else
+                                @if ($activeData->status == 4 || $activeData->status == 5 || $activeData->status == 6)
+
+                                    @if (isset($declaration_doc))
                                         <div class="table-responsive">
                                             <table id="info" class="table table-bordered table-hover table-striped w-100">
                                                 <thead>
                                                     <tr>
-                                                        <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> GRANT ACCEPTANCE</label></td>
+                                                        <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> SIGNED DECLARATION FORM</label></td>
                                                     </tr>
                                                     <tr>
-                                                        <th width="20%" style="vertical-align: top">Signed Declaration : </th>
+                                                        <th width="20%" style="vertical-align: top">Verified Application : </th>
                                                         <td colspan="4">
-                                                            <ul>
-                                                                @foreach ( $agreement_doc as $a )
-                                                                <li>  <a target="_blank" href="/get-file/{{$a->upload}}">{{$a->upload}}</a> </li>
-                                                                @endforeach
-                                                            </ul> 
+                                                            <a class="btn btn-info" target="_blank" href="/get-declaration/{{$declaration_doc->id}}">
+                                                                <i class="fal fa-download"></i> Declaration Form
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                 </thead>
@@ -282,27 +304,7 @@
                                         </div>
                                     @endif
                                 @endif
-                                    @if (($activeData->status == '5') || ($activeData->status == '6'))
-                                        <div class="table-responsive">
-                                            <table id="info" class="table table-bordered table-hover table-striped w-100">
-                                                <thead>
-                                                    <tr>
-                                                        <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> GRANT ACCEPTANCE</label></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th width="20%" style="vertical-align: top">Signed Declaration : </th>
-                                                        <td colspan="4">
-                                                            <ul>
-                                                                @foreach ( $agreement_doc as $a )
-                                                                <li>  <a target="_blank" href="/get-file/{{$a->upload}}">{{$a->upload}}</a> </li>
-                                                                @endforeach
-                                                            </ul> 
-                                                        </td>
-                                                    </tr>
-                                                </thead>
-                                            </table>
-                                        </div>
-                                    @endif
+
                             </div>
                         </div>
                     </div>
@@ -453,6 +455,16 @@
                 }
             })
         });
+
+        function agreement()
+        {
+            var agree = document.getElementById("agree")
+            var submit = document.getElementById("submit");
+            submit.disabled = agree.checked ? false : true;
+            if(!submit.disabled){
+                submit.focus();
+            }
+        }
 
 </script>
 @endsection

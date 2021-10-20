@@ -100,4 +100,4 @@
         </div>
     </div>
 </main>
-@endsectionq
+@endsection

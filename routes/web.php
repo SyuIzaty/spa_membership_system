@@ -406,6 +406,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('get-receipt/{receipt}','ComputerGrantController@getReceipt');
     Route::get('get-image/{image}','ComputerGrantController@getImage');
     Route::get('get-file/{file}','ComputerGrantController@getFile');
+    Route::get('get-declaration/{id}','ComputerGrantController@getDeclarationFile');
     Route::get('/applicationPDF/{id}','ComputerGrantController@applicationPDF');
     Route::get('/faq', 'ComputerGrantController@faq');
     Route::get('/faq-list', 'ComputerGrantController@faqList');
@@ -422,9 +423,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/edit-quota', 'ComputerGrantController@editQuota');
     Route::delete('/delete-faq/{id}','ComputerGrantController@deleteFAQ');
     Route::get('/agreementPDF/{id}','ComputerGrantController@agreementPDF');
-    Route::post('/upload-agreement', 'ComputerGrantController@uploadAgreement');
+    Route::post('/declaration', 'ComputerGrantController@declaration');
+    Route::post('/upload-declaration', 'ComputerGrantController@uploadAgreement');
     Route::post('requestCancellation', 'ComputerGrantController@requestCancellation');
-    Route::delete('verifyCancellation/{id}', 'ComputerGrantController@verifyCancellation');
+    Route::post('/verifyCancellation', 'ComputerGrantController@verifyCancellation');
 
 });
 
