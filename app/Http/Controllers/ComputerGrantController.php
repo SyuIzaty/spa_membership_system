@@ -212,12 +212,12 @@ class ComputerGrantController extends Controller
         $quota = ComputerGrantQuota::where('active', 'Y')->first();
 
         $validated = $request->validate([
-            'hp_no'           => 'required|regex:/(01)[0-8]{8}/',
-            'office_no'       => 'nullable|regex:/(03)[0-8]{8}/'
+            'hp_no'           => 'required|regex:/[0-9]/|min:8|max:11',
+            'office_no'       => 'nullable|regex:/[0-9]/|min:8|max:10'
         ], [
-            'hp_no.regex'     => 'The phone number does not match the format',
+            'hp_no.regex'     => 'Phone number does not match the format',
 
-            'office_no.regex' => 'The phone number does not match the format',
+            'office_no.regex' => 'Office number does not match the format',
         ]);
 
         $user = Auth::user();
