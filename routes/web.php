@@ -403,6 +403,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/verify-purchase', 'ComputerGrantController@verifyPurchase');
     Route::post('reject-purchase', 'ComputerGrantController@rejectPurchase');
     Route::post('/verify-reimbursement', 'ComputerGrantController@verifyReimbursement');
+    Route::post('/cancel-reimbursement', 'ComputerGrantController@undoReimbursement');
     Route::get('get-receipt/{receipt}','ComputerGrantController@getReceipt');
     Route::get('get-image/{image}','ComputerGrantController@getImage');
     Route::get('get-file/{file}','ComputerGrantController@getFile');

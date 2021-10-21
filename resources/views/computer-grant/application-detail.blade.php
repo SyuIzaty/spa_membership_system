@@ -235,6 +235,29 @@
                                 </div>
                                 @endif
 
+                                @if ($activeData->status == 4 || $activeData->status == 5 || $activeData->status == 6)
+
+                                    @if (isset($declaration_doc))
+                                        <div class="table-responsive">
+                                            <table id="info" class="table table-bordered table-hover table-striped w-100">
+                                                <thead>
+                                                    <tr>
+                                                        <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> SIGNED DECLARATION FORM</label></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th width="20%" style="vertical-align: top">Verified Declaration : </th>
+                                                        <td colspan="4">
+                                                            <a class="btn btn-primary" target="_blank" href="/get-declaration/{{$declaration_doc->id}}">
+                                                                <i class="fal fa-download"></i> Signed Declaration Form
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    @endif
+                                @endif
+
                                 @if ($activeData->status == '4')
                                         {!! Form::open(['action' => 'ComputerGrantController@declaration', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                                         <input type="hidden" id="id" name="id" value="{{ $activeData->id }}" required>
@@ -263,6 +286,7 @@
                                         </div>
                                         {!! Form::close() !!}
                                 @endif
+                                
                                 @if (($activeData->status == '5') || ($activeData->status == '6'))
                                     <div class="table-responsive">
                                         <table id="verifikasi" class="table table-bordered table-hover table-striped w-100">
@@ -281,30 +305,6 @@
                                         </table>
                                     </div>
                                 @endif
-
-                                @if ($activeData->status == 4 || $activeData->status == 5 || $activeData->status == 6)
-
-                                    @if (isset($declaration_doc))
-                                        <div class="table-responsive">
-                                            <table id="info" class="table table-bordered table-hover table-striped w-100">
-                                                <thead>
-                                                    <tr>
-                                                        <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> SIGNED DECLARATION FORM</label></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th width="20%" style="vertical-align: top">Verified Application : </th>
-                                                        <td colspan="4">
-                                                            <a class="btn btn-info" target="_blank" href="/get-declaration/{{$declaration_doc->id}}">
-                                                                <i class="fal fa-download"></i> Declaration Form
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                </thead>
-                                            </table>
-                                        </div>
-                                    @endif
-                                @endif
-
                             </div>
                         </div>
                     </div>
@@ -437,7 +437,18 @@
                 confirmButtonText: 'Yes, Cancel!',
                 cancelButtonText: 'No'
             }).then((result) => {
+                
                 if (result.value) {
+                    Swal.fire({
+                    title: 'Loading..',
+                    text: 'Please wait..',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    allowEnterKey: false,
+                    onOpen: () => {
+                        Swal.showLoading()
+                    }
+                })
                     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
                     $.ajax({
                         type: "POST",

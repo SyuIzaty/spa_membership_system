@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use DateTime;
+use App\User;
 use App\Staff;
 use App\ComputerGrant;
 use App\ComputerGrantPurchaseProof;
@@ -18,6 +19,7 @@ use App\ComputerGrantFAQ;
 use Carbon\Carbon;
 use File;
 use Response;
+use Illuminate\Support\Facades\Mail;
 
 
 
@@ -243,15 +245,37 @@ class ComputerGrantController extends Controller
             'created_by' => Auth::user()->id
         ]);
 
+        $admin = User::whereHas('roles', function($query){
+            $query->where('id', 'CGM002'); // IT Admin
+        })->get();
+
+        foreach($admin as $a)
+        {
+            $admin_email = $a->email;
+
+            $data = [
+                'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $a->name,
+                'emel'     => 'You have received new Computer Grant application from '.$user->name.' on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Please log in to the IDS system for further action.',
+            ];
+
+            Mail::send('computer-grant.email', $data, function ($message) use ($admin_email) {
+                $message->subject('New Computer Grant Application');
+                $message->from('ITadmin@intec.edu.my');
+                $message->to($admin_email);
+            });
+        }
+
         return redirect('application-detail/'.$newApplication->id);
     }
 
     public function update(Request $request)
     {
+        $user = Auth::user();
+
         $validated = $request->validate([
             'price'           => 'required|numeric',
         ], [
-            'price.numeric'     => 'The price must be numeric only',
+            'price.numeric'   => 'The price must be numeric only',
         ]);
 
         $updateApplication = ComputerGrant::where('id', $request->id)->first();
@@ -297,7 +321,26 @@ class ComputerGrantController extends Controller
             'activity'  => 'Upload purchase proof',
             'created_by' => Auth::user()->id
         ]);
+        
+        $admin = User::whereHas('roles', function($query){
+            $query->where('id', 'CGM002'); // IT Admin
+        })->get();
 
+        foreach($admin as $a)
+        {
+            $admin_email = $a->email;
+
+            $data = [
+                'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $a->name,
+                'emel'     => 'This email is to inform you that ' .$user->name.' uploaded purchased device details on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Please log in to the IDS system for further action.',
+            ];
+
+            Mail::send('computer-grant.email', $data, function ($message) use ($admin_email) {
+                $message->subject('Computer Grant Application: Purchased Details Uploaded');
+                $message->from('ITadmin@intec.edu.my');
+                $message->to($admin_email);
+            });
+        }
 
         return redirect('application-detail/'.$request->id);
     }
@@ -454,7 +497,6 @@ class ComputerGrantController extends Controller
         $proof = ComputerGrantPurchaseProof::where('permohonan_id', $id)->get();
 
         return view('computer-grant.view-application-detail', compact('user_details','activeData','deviceType','proof','verified_doc', 'declaration_doc'));
-
     }
 
         public function verifyApplication(Request $request)
@@ -492,6 +534,19 @@ class ComputerGrantController extends Controller
             'created_by' => Auth::user()->id
         ]);
 
+        $user = Staff::where('staff_id',$updateApplication->staff_id)->first();
+        $user_email = $user->staff_email;
+
+        $data = [
+            'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $user->staff_name,
+            'emel'     => 'Your Computer Grant application has been approved on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Kindly purchase the device and fill in the purchase details in the IDS system.',
+        ];
+
+        Mail::send('computer-grant.email', $data, function ($message) use ($user_email) {
+            $message->subject('Computer Grant Application: Approved for Purchase');
+            $message->from('ITadmin@intec.edu.my');
+            $message->to($user_email);
+        });
 
         return redirect('view-application-detail/'.$request->id);
     }
@@ -509,6 +564,20 @@ class ComputerGrantController extends Controller
             'activity'  => 'Approve purchase',
             'created_by' => Auth::user()->id
         ]);
+
+        $user = Staff::where('staff_id',$updateApplication->staff_id)->first();
+        $user_email = $user->staff_email;
+
+        $data = [
+            'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $user->staff_name,
+            'emel'     => 'Your proof of purchased device has been verified on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Please log in to IDS system to make agreement declaration.',
+        ];
+
+        Mail::send('computer-grant.email', $data, function ($message) use ($user_email) {
+            $message->subject('Computer Grant Application: Proof of Purchase Verified');
+            $message->from('ITadmin@intec.edu.my');
+            $message->to($user_email);
+        });
 
         return redirect('view-application-detail/'.$request->id);
     }
@@ -542,6 +611,20 @@ class ComputerGrantController extends Controller
             'activity'  => "Reject purchase. ".$remark,
             'created_by' => Auth::user()->id
         ]);
+
+        $user = Staff::where('staff_id',$updateApplication->staff_id)->first();
+        $user_email = $user->staff_email;
+
+        $data = [
+            'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $user->staff_name,
+            'emel'     => 'Your proof of purchased device has been rejected on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Please log in to the IDS system for further action.',
+        ];
+
+        Mail::send('computer-grant.email', $data, function ($message) use ($user_email) {
+            $message->subject('Computer Grant Application: Proof of Purchase Rejected');
+            $message->from('ITadmin@intec.edu.my');
+            $message->to($user_email);
+        });
 
         return redirect()->back()->with('message','Rejected!');
     }
@@ -861,6 +944,8 @@ class ComputerGrantController extends Controller
 
     public function declaration(Request $request)
     {
+        $user = Auth::user();
+
         $update = ComputerGrant::where('id', $request->id)->first();
         $update->update([
             'status'   => 5,
@@ -872,15 +957,38 @@ class ComputerGrantController extends Controller
             'activity'  => 'Sign Agreement',
             'created_by' => Auth::user()->id
         ]);
+
+        $admin = User::whereHas('roles', function($query){
+            $query->where('id', 'CGM001'); //Finance Admin
+        })->get();
+
+        foreach($admin as $a)
+        {
+            $admin_email = $a->email;
+
+            $data = [
+                'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $a->name,
+                'emel'     => 'You have received new Computer Grant application from '.$user->name.' on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Please log in to the IDS system for further action.',
+            ];
+
+            Mail::send('computer-grant.email', $data, function ($message) use ($admin_email) {
+                $message->subject('New Computer Grant Application');
+                $message->from('ITadmin@intec.edu.my');
+                $message->to($admin_email);
+            });
+        }
         
         return redirect()->back()->with('message','Agreement Signed Successfully');
     }
 
     public function requestCancellation(Request $request)
     {
+        $user = Auth::user();
+
         $updateApplication = ComputerGrant::where('id', $request->id)->first();
         $updateApplication->update([
             'status'     =>'7',
+            'active'     =>'N',
             'updated_by' => Auth::user()->id
         ]);
 
@@ -889,6 +997,26 @@ class ComputerGrantController extends Controller
             'activity'  => 'Request for application cancellation',
             'created_by' => Auth::user()->id
         ]);
+
+        $admin = User::whereHas('roles', function($query){
+            $query->where('id', 'CGM002'); // IT Admin
+        })->get();
+
+        foreach($admin as $a)
+        {
+            $admin_email = $a->email;
+
+            $data = [
+                'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $a->name,
+                'emel'     => $user->name.' have requested application cancellation on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Please log in to the IDS system for further action.',
+            ];
+
+            Mail::send('computer-grant.email', $data, function ($message) use ($admin_email) {
+                $message->subject('Computer Grant Application: Request Cancellation');
+                $message->from('ITadmin@intec.edu.my');
+                $message->to($admin_email);
+            });
+        }
 
         return response() ->json(['success' => 'Request for Cancellation Sent!']);
     }
@@ -907,7 +1035,38 @@ class ComputerGrantController extends Controller
             'created_by' => Auth::user()->id
         ]);
 
+        $user = Staff::where('staff_id',$updateApplication->staff_id)->first();
+        $user_email = $user->staff_email;
+
+        $data = [
+            'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $user->staff_name,
+            'emel'     => 'Your Computer Grant application cancellation request has been approved on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Please log in to IDS system for review.',
+        ];
+
+        Mail::send('computer-grant.email', $data, function ($message) use ($user_email) {
+            $message->subject('Computer Grant Application: Approved for Cancellation');
+            $message->from('ITadmin@intec.edu.my');
+            $message->to($user_email);
+        });
+
         return response() ->json(['success' => 'Successfully verified cancellation!']);
+    }
+
+    public function undoReimbursement(Request $request)
+    {
+        $updateApplication = ComputerGrant::where('id', $request->id)->first();
+        $updateApplication->update([
+            'status'      => 5,
+            'updated_by' => Auth::user()->id
+        ]);
+
+        ComputerGrantLog::create([
+            'permohonan_id'  => $request->id,
+            'activity'  => "Cancel Reimbursement",
+            'created_by' => Auth::user()->id
+        ]);
+
+        return response() ->json(['success' => 'Reimbursement cancelled!']);
     }
 
 }

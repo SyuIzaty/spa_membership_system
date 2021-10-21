@@ -270,10 +270,10 @@
                                                     <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> SIGNED DECLARATION FORM</label></td>
                                                 </tr>
                                                 <tr>
-                                                    <th width="20%" style="vertical-align: top">Verified Application : </th>
+                                                    <th width="20%" style="vertical-align: top">Verified Declaration : </th>
                                                     <td colspan="4">
-                                                        <a class="btn btn-info" target="_blank" href="/get-declaration/{{$declaration_doc->id}}">
-                                                            <i class="fal fa-download"></i> Declaration Form
+                                                        <a class="btn btn-primary" target="_blank" href="/get-declaration/{{$declaration_doc->id}}">
+                                                            <i class="fal fa-download"></i> Signed Declaration Form
                                                         </a>
                                                     </td>
                                                 </tr>
@@ -340,6 +340,23 @@
                                     </div>
                                 </form>
                                 @endrole
+
+
+                                @elseif ($activeData->status == 6)
+                                @role('Computer Grant (Finance Admin)')
+
+                                <form id="cancelreimburse">
+                                    @csrf                                
+                                    <input type="hidden" id="id" name="id" value="{{ $activeData->id }}" required>
+
+                                    <div class="table-responsive">
+                                        <div class="form-group">
+                                            <button style="margin-top: 5px;" class="btn btn-warning float-right" type="submit" id="cancelreimbursement"><i class="fal fa-check"></i> Cancel Reimbursement</button></td>
+                                        </div>
+                                    </div>
+                                </form>
+                                @endrole
+
                                 @endif
 
                                 @if ($activeData->status == 7)
@@ -387,7 +404,19 @@
                 confirmButtonText: 'Yes!',
                 cancelButtonText: 'No'
             }).then((result) => {
+                
                 if (result.value) {
+
+                    Swal.fire({
+                    title: 'Loading..',
+                    text: 'Please wait..',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    allowEnterKey: false,
+                    onOpen: () => {
+                        Swal.showLoading()
+                    }
+                })
                     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
                     $.ajax({
                         type: "POST",
@@ -421,10 +450,54 @@
                 cancelButtonText: 'No'
             }).then((result) => {
                 if (result.value) {
+
+                    Swal.fire({
+                    title: 'Loading..',
+                    text: 'Please wait..',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    allowEnterKey: false,
+                    onOpen: () => {
+                        Swal.showLoading()
+                    }
+                })
                     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
                     $.ajax({
                         type: "POST",
                         url: "{{ url('verify-reimbursement')}}",
+                        data: datas,
+                        dataType: "json",
+                        success: function (response) {
+                        console.log(response);
+                        if(response){
+                        Swal.fire(response.success);
+                        location.reload();
+                    }
+                        }
+                    });
+                }
+            })
+        });
+
+        $("#cancelreimbursement").on('click', function(e) {
+            e.preventDefault();
+
+            var datas = $('#cancelreimburse').serialize();
+
+            Swal.fire({
+                title: 'Cancel reimbursement?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes!',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.value) {
+                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ url('cancel-reimbursement')}}",
                         data: datas,
                         dataType: "json",
                         success: function (response) {
