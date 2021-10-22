@@ -86,6 +86,13 @@ class ComputerGrantController extends Controller
 
         return datatables()::of($data)
 
+            ->addColumn('name',function($data)
+            {
+                $user_details = Staff::where('staff_id',$data->staff_id)->first();
+
+                return strtoupper($user_details->staff_name);
+            })
+
             ->addColumn('details',function($data)
             {
                 return '<div>' .($data->staff->staff_dept). '/'
@@ -119,6 +126,24 @@ class ComputerGrantController extends Controller
                 {
                     return '<div>' .($data->brand). '/ '
                     .($data->model). '/ ' .($data->serial_no). '</div>';
+                }
+
+                else
+                {
+                    return 'N/A';
+                }
+            })
+
+            ->editColumn('approvalDate',function($data)
+            {
+
+                if ($data->approved_at != NULL)
+                {
+                    $date = new DateTime($data->approved_at);
+
+                    $approvalDate = $date->format('d-m-Y');
+
+                    return $approvalDate;
                 }
 
                 else
@@ -203,7 +228,7 @@ class ComputerGrantController extends Controller
                 return '<a href="/log/' .$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-list-alt"></i></a>';
             })
 
-            ->rawColumns(['details','type','amount','purchase','action','remainingPeriod', 'penalty','log'])
+            ->rawColumns(['name','details','type','amount','purchase','action','remainingPeriod', 'penalty','log'])
             ->make(true);
     }
 
@@ -234,7 +259,7 @@ class ComputerGrantController extends Controller
         $newApplication->status       = '1';
         $newApplication->grant_amount = '1500.00';
         $newApplication->active       = 'Y';
-        $newApplication->quota        = $quota->id;
+        $newApplication->grant_id        = $quota->id;
         $newApplication->created_by   = Auth::user()->id;
         $newApplication->updated_by   = Auth::user()->id;
         $newApplication->save();
@@ -359,6 +384,13 @@ class ComputerGrantController extends Controller
 
         return datatables()::of($data)
 
+            ->addColumn('name',function($data)
+            {
+                $user_details = Staff::where('staff_id',$data->staff_id)->first();
+
+                return strtoupper($user_details->staff_name);
+            })
+
             ->addColumn('details',function($data)
             {
                 return '<div>' .($data->staff->staff_dept). '/'
@@ -392,6 +424,24 @@ class ComputerGrantController extends Controller
                 {
                     return '<div>' .($data->brand). '/ '
                     .($data->model). '/ ' .($data->serial_no). '</div>';
+                }
+
+                else
+                {
+                    return 'N/A';
+                }
+            })
+
+            ->editColumn('approvalDate',function($data)
+            {
+
+                if ($data->approved_at != NULL)
+                {
+                    $date = new DateTime($data->approved_at);
+
+                    $approvalDate = $date->format('d-m-Y');
+
+                    return $approvalDate;
                 }
 
                 else
@@ -476,7 +526,7 @@ class ComputerGrantController extends Controller
                 return '<a href="/log/' .$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-list-alt"></i></a>';
             })
 
-            ->rawColumns(['details','type','amount','purchase','action','remainingPeriod', 'penalty','log'])
+            ->rawColumns(['staff_name','details','type','amount','purchase','action','remainingPeriod', 'penalty','log'])
             ->make(true);
     }
 
@@ -743,7 +793,7 @@ class ComputerGrantController extends Controller
 
     public function faq()
     {
-        $faq = ComputerGrantFAQ::get();
+        $faq = ComputerGrantFAQ::where('active', 'Y')->get();
         return view('computer-grant.faq', compact('faq'));
     }
 
@@ -828,7 +878,7 @@ class ComputerGrantController extends Controller
         return datatables()::of($quota)
 
             ->addColumn('action', function ($quota) {
-                return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$quota->id.'" data-quota="'.$quota->quota.'" data-dates="'.$quota->effective_date.'" data-duration="'.$quota->duration.'" data-status="'.$quota->active.'"
+                return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$quota->id.'" data-title="'.$quota->title.'" data-quota="'.$quota->quota.'" data-dates="'.$quota->effective_date.'" data-duration="'.$quota->duration.'" data-status="'.$quota->active.'"
                 class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
             })
 
@@ -837,22 +887,23 @@ class ComputerGrantController extends Controller
 
                 if ($quota->active == 'Y')
                 {
-                    return 'Active';
+                    return '<div style="color: green;"><b>Active</b></div>';
                 }
 
                 else
                 {
-                    return 'Inactive';
+                    return '<div style="color: red;"><b>Inactive</b></div>';
                 }
             })
 
-            ->rawColumns(['action','status'])
+            ->rawColumns(['status','action','status'])
             ->make(true);
     }
 
     public function addQuota(Request $request)
     {
         ComputerGrantQuota::create([
+            'title'           => $request->title,
             'quota'           => $request->quota,
             'effective_date'  => $request->dates,
             'duration'        => $request->duration,
@@ -867,6 +918,7 @@ class ComputerGrantController extends Controller
     {
         $update = ComputerGrantQuota::where('id', $request->id)->first();
         $update->update([
+            'title'           => $request->title,
             'quota'           => $request->quota,
             'effective_date'  => $request->dates,
             'duration'        => $request->duration,
@@ -892,8 +944,21 @@ class ComputerGrantController extends Controller
 
         return datatables()::of($faq)
 
+            ->editColumn('status', function ($faq) {
+
+                if ($faq->active == 'Y')
+                {
+                    return '<div style="color: green;"><b>Active</b></div>';
+                }
+
+                else
+                {
+                    return '<div style="color: red;"><b>Inactive</b></div>';
+                }
+            })
+
             ->addColumn('edit', function ($faq) {
-                return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$faq->id.'" data-question="'.$faq->question.'" data-answer="'.$faq->answer.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+                return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$faq->id.'" data-question="'.$faq->question.'" data-answer="'.$faq->answer.'" data-active="'.$faq->active.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
             })
 
             ->addColumn('delete', function ($faq) {
@@ -901,7 +966,7 @@ class ComputerGrantController extends Controller
                 
             })
 
-            ->rawColumns(['edit','delete'])
+            ->rawColumns(['status','edit','delete'])
             ->make(true);
     }
 
@@ -910,6 +975,7 @@ class ComputerGrantController extends Controller
         ComputerGrantFAQ::create([
             'question'   => $request->question,
             'answer'     => $request->answer,
+            'active'     => $request->status,
             'created_by' => Auth::user()->id
         ]);
 
@@ -922,6 +988,7 @@ class ComputerGrantController extends Controller
         $update->update([
             'question'   => $request->question,
             'answer'     => $request->answer,
+            'active'     => $request->status,
             'updated_by' => Auth::user()->id
         ]);
         

@@ -104,7 +104,7 @@
                                 @endif
                                 
                                 @role('Computer Grant (IT Admin)')
-                                    @if ($activeData->approved_at != NULL)
+                                    @if ($activeData->status == 3 || $activeData->status == 4 || $activeData->status == 5 || $activeData->status == 6)
                                         <a class="btn btn-primary mr-2 float-right" data-page="/agreementPDF/{{ $activeData->id }}" onclick="Print(this)" style="color: rgb(0, 0, 0); margin-top: 5px; margin-bottom: 15px;">
                                             <i class="fal fa-download"></i> Declaration Doc
                                         </a>
@@ -171,7 +171,7 @@
                                         <thead>
                                             <input type="hidden" id="id" name="id" value="{{ $activeData->id }}" required>
                                             <tr>
-                                                <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-file"></i> DETAILS OF PURCHASE</label></td>
+                                                <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-file"></i> PURCHASE DETAILS</label></td>
                                             </tr>
                                             
                                             <tr>

@@ -31,12 +31,14 @@
                                         <tr class="bg-primary-50 text-center">
                                             <th class="text-center">Question</th>
                                             <th class="text-center">Answer</th>
+                                            <th class="text-center">Status</th>
                                             <th class="text-center">Edit</th>
                                             <th class="text-center">Delete</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
+                                            <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
@@ -68,7 +70,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Question</span>
                                 </div>
-                                <textarea class="form-control max" aria-label="With textarea" name="question" id="question" required></textarea>
+                                <textarea class="form-control max" aria-label="With textarea" name="question" id="question" rows="5" cols="40" required></textarea>
                             </div>
                             <span style="font-size: 10px; color: red;"><i>*Limit to 500 characters only</i></span>
                         </div>
@@ -78,9 +80,17 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Answer</span>
                                 </div>
-                                <textarea class="form-control max" aria-label="With textarea" name="answer" id="answer" required></textarea>
+                                <textarea class="form-control max" aria-label="With textarea" name="answer" id="answer" rows="5" cols="40" required></textarea>
                             </div>
                             <span style="font-size: 10px; color: red;"><i>*Limit to 500 characters only</i></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label"><span class="text-danger">*</span> Status</label>
+                            <select class="custom-select form-control" name="status" id="status" required>
+                                <option value="Y">Active</option>
+                                <option value="N">Inactive</option>
+                             </select>
                         </div>
 
                         <div class="footer">
@@ -108,7 +118,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Question</span>
                                 </div>
-                                <textarea class="form-control max" aria-label="With textarea" name="question" id="question" required></textarea>
+                                <textarea class="form-control max" aria-label="With textarea" name="question" id="question" rows="5" cols="40" required></textarea>
                             </div>
                             <span style="font-size: 10px; color: red;"><i>*Limit to 500 characters only</i></span>
                         </div>
@@ -119,9 +129,17 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Answer</span>
                                 </div>
-                                <textarea class="form-control max" aria-label="With textarea" name="answer" id="answer" required></textarea>
+                                <textarea class="form-control max" aria-label="With textarea" name="answer" id="answer" rows="5" cols="40" required></textarea>
                             </div>
                             <span style="font-size: 10px; color: red;"><i>*Limit to 500 characters only</i></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label"><span class="text-danger">*</span> Status</label>
+                            <select class="custom-select form-control" name="status" id="status" required>
+                                <option value="Y">Active</option>
+                                <option value="N">Inactive</option>
+                             </select>
                         </div>
 
                         <div class="footer">
@@ -147,10 +165,12 @@
         var id = button.data('id') // data-id
         var question = button.data('question') // data-question
         var answer = button.data('answer') // data-answer
+        var active = button.data('active') // data-active
 
         $('.modal-body #id').val(id);
         $('.modal-body #question').val(question);
         $('.modal-body #answer').val(answer);
+        $('.modal-body #active').val(active);
 
         });
 
@@ -165,6 +185,7 @@
             columns: [
                     { className: 'text-center', data: 'question', name: 'question' },
                     { className: 'text-center', data: 'answer', name: 'answer' },
+                    { className: 'text-center', data: 'status', name: 'status' },
                     { className: 'text-center', data: 'edit', name: 'edit', orderable: false, searchable: false},
                     { className: 'text-center', data: 'delete', name: 'delete', orderable: false, searchable: false},
                 ],

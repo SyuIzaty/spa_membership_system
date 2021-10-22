@@ -10,5 +10,5 @@ class ComputerGrantFAQ extends Model
     use SoftDeletes;
     protected $table = 'cgm_faq';
     protected $primarykey = 'id';
-    protected $fillable = ['question', 'answer', 'created_by', 'updated_by', 'deleted_by'];
+    protected $fillable = ['question', 'answer', 'active', 'created_by', 'updated_by', 'deleted_by'];
 }

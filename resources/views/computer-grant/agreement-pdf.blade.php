@@ -75,6 +75,22 @@
                                 <th width="20%" style="vertical-align: middle">Grant Amount Eligibility : </th>
                                 <td colspan="2" style="vertical-align: middle; text-transform: capitalize;">RM 1,500</b></td>
                             </tr>
+                            <tr>
+                                <th width="20%" style="vertical-align: top">Device Type : </th>
+                                <td colspan="5" style="vertical-align: middle">{{$application->getType->description}}</td>
+                            </tr>
+                            <tr>
+                                <th width="20%" style="vertical-align: middle">Brand : </th>
+                                <td colspan="2" style="vertical-align: middle; text-transform: capitalize;">{{$application->brand}}</b></td>
+                                <th width="20%" style="vertical-align: middle">Serial No. : </th>
+                                <td colspan="2" style="vertical-align: middle; text-transform: capitalize;">{{$application->serial_no}}</b></td>
+                            </tr>
+                            <tr>
+                                <th width="20%" style="vertical-align: middle">Model : </th>
+                                <td colspan="2" style="vertical-align: middle; text-transform: capitalize;">{{$application->model}}</b></td>
+                                <th width="20%" style="vertical-align: middle">Price : </th>
+                                <td colspan="2" style="vertical-align: middle; text-transform: capitalize;">RM {{$application->price}}</b></td>
+                            </tr>
                         </thead>
                     </table>
                 </div>

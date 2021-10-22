@@ -25,12 +25,14 @@
                                     <thead>
                                         <tr class="bg-primary-50 text-center">
                                             <th class="text-center">Ticket No.</th>
+                                            <th class="text-center">Name</th>
                                             <th class="text-center">Staff Department/Position</th>
                                             <th class="text-center">Grant Status</th>
                                             <th class="text-center">Total Price</th>
                                             <th class="text-center">Grant Amount/Period</th>
                                             <th class="text-center">Type</th>
                                             <th class="text-center">Brand/Model/Serial No.</th>
+                                            <th class="text-center">Approval Date</th>
                                             <th class="text-center">Expiry Date</th>
                                             <th class="text-center">Remaining Grant Period</th>
                                             <th class="text-center">Balance Penalty</th>
@@ -40,6 +42,8 @@
                                     </thead>
                                     <tbody>
                                         <tr>
+                                            <td class="hasinput"></td>
+                                            <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
@@ -81,12 +85,14 @@
             },
             columns: [
                     { className: 'text-center', data: 'ticket_no', name: 'ticket_no' },
+                    { className: 'text-center', data: 'name', name: 'name' },
                     { className: 'text-center', data: 'details', name: 'details' },
                     { className: 'text-center', data: 'status', name: 'status' },
                     { className: 'text-center', data: 'price', name: 'price' },
                     { className: 'text-center', data: 'amount', name: 'amount' },
                     { className: 'text-center', data: 'type', name: 'type' },
                     { className: 'text-center', data: 'purchase', name: 'purchase' },
+                    { className: 'text-center', data: 'approvalDate', name: 'approvalDate' },
                     { className: 'text-center', data: 'expiryDate', name: 'expiryDate' },
                     { className: 'text-center', data: 'remainingPeriod', name: 'remainingPeriod' },
                     { className: 'text-center', data: 'penalty', name: 'penalty' },

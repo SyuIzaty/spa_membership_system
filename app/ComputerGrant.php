@@ -12,7 +12,7 @@ class ComputerGrant extends Model
     protected $primarykey = 'id';
     protected $fillable = [
         'ticket_no', 'staff_id', 'hp_no', 'office_no', 'status', 'grant_amount', 'type',
-        'price', 'brand', 'model', 'serial_no', 'active', 'quota', 'remark', 'expiry_date', 'approved_by', 'approved_at', 'created_by', 'updated_by', 'deleted_by'
+        'price', 'brand', 'model', 'serial_no', 'active', 'grant_id', 'remark', 'expiry_date', 'approved_by', 'approved_at', 'created_by', 'updated_by', 'deleted_by'
     ];
 
     public function getStatus()
@@ -44,7 +44,7 @@ class ComputerGrant extends Model
 
     public function getQuota()
     {
-        return $this->hasOne('App\ComputerGrantQuota','id','quota');
+        return $this->hasOne('App\ComputerGrantQuota','id','grant_id');
     }
 
     public function countPending()

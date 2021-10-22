@@ -630,7 +630,7 @@
                                     </li>  
                                     <li>
                                         <a href="/all-grant-list/6" title="Reimbursement Completed" data-filter-tags="reimbursement">
-                                            <span class="nav-link-text" data-i18n="nav.reimbursement">Reimbursement ({{ $grant->countReimbursement() }})</span>
+                                            <span class="nav-link-text" data-i18n="nav.reimbursement">Completed ({{ $grant->countReimbursement() }})</span>
                                         </a>
                                     </li>  
                                     <li>
@@ -684,7 +684,7 @@
                                         </li>
                                         <li>
                                             <a href="/faq-list" title="FAQ Grant" data-filter-tags="createFAQ">
-                                                <span class="nav-link-text" data-i18n="nav.createFAQ">FAQ Grant</span>
+                                                <span class="nav-link-text" data-i18n="nav.createFAQ">Grant FAQ</span>
                                             </a>
                                         </li>
                                     </ul>

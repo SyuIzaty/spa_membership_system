@@ -101,7 +101,7 @@
                                                 <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> IT ADMIN & CE APPROVAL</label></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="5" class="bg-warning-50" style="vertical-align: middle">Please print both documents and bring together with purchased device to IT Admin after submitting the purchase details</td>
+                                                <td colspan="5" class="bg-warning-50" style="vertical-align: middle">After submitting the purchase details below, please print the documents and bring together with purchased device to IT Admin.</td>
                                             </tr>
                                             <tr>
                                                 <th width="20%" style="vertical-align: top">Verified Application : </th>
@@ -110,9 +110,11 @@
                                                         <i class="fal fa-download"></i> Application Form
                                                     </a>
 
-                                                    <a class="btn btn-primary" data-page="/agreementPDF/{{ $activeData->id }}" onclick="Print(this)">
-                                                        <i class="fal fa-download"></i> Declaration Form
-                                                    </a>
+                                                    @if ($activeData->status == 3 || $activeData->status == 4 || $activeData->status == 5 || $activeData->status == 6)
+                                                        <a class="btn btn-primary" data-page="/agreementPDF/{{ $activeData->id }}" onclick="Print(this)">
+                                                            <i class="fal fa-download"></i> Declaration Form
+                                                        </a>
+                                                    @endif
                                                 </td>                                           
                                             </tr>
                                         </thead>
@@ -127,7 +129,7 @@
                                             {!! Form::open(['action' => 'ComputerGrantController@update', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                                             <input type="hidden" id="id" name="id" value="{{ $activeData->id }}" required>
                                             <tr>
-                                                <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-file"></i> DETAILS OF PURCHASE</label></td>
+                                                <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-file"></i> PURCHASE DETAILS</label></td>
                                             </tr>
 
                                             @if ($activeData->remark != NULL)
@@ -198,7 +200,7 @@
                                         <thead>
                                             <input type="hidden" id="id" name="id" value="{{ $activeData->id }}" required>
                                             <tr>
-                                                <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-file"></i> DETAILS OF PURCHASE</label></td>
+                                                <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-file"></i> PURCHASE DETAILS</label></td>
                                             </tr>
                                             <tr>
                                                 <th width="20%" style="vertical-align: middle">Type of Device : </th>
@@ -334,12 +336,14 @@
                                 <thead>
                                     <tr class="bg-primary-50 text-center">
                                         <th class="text-center">Ticket No.</th>
+                                        <th class="text-center">Name</th>
                                         <th class="text-center">Staff Department/Position</th>
                                         <th class="text-center">Grant Status</th>
                                         <th class="text-center">Total Price</th>
                                         <th class="text-center">Grant Amount/Period</th>
                                         <th class="text-center">Type</th>
                                         <th class="text-center">Brand/Model/Serial No.</th>
+                                        <th class="text-center">Approval Date</th>
                                         <th class="text-center">Expiry Date</th>
                                         <th class="text-center">Remaining Grant Period</th>
                                         <th class="text-center">Balance Penalty</th>
@@ -349,6 +353,8 @@
                                 </thead>
                                 <tbody>
                                     <tr>
+                                        <td class="hasinput"></td>
+                                        <td class="hasinput"></td>
                                         <td class="hasinput"></td>
                                         <td class="hasinput"></td>
                                         <td class="hasinput"></td>
@@ -402,12 +408,14 @@
             },
             columns: [
                     { className: 'text-center', data: 'ticket_no', name: 'ticket_no' },
+                    { className: 'text-center', data: 'name', name: 'name' },
                     { className: 'text-center', data: 'details', name: 'details' },
                     { className: 'text-center', data: 'status', name: 'status' },
                     { className: 'text-center', data: 'price', name: 'price' },
                     { className: 'text-center', data: 'amount', name: 'amount' },
                     { className: 'text-center', data: 'type', name: 'type' },
                     { className: 'text-center', data: 'purchase', name: 'purchase' },
+                    { className: 'text-center', data: 'approvalDate', name: 'approvalDate' },
                     { className: 'text-center', data: 'expiryDate', name: 'expiryDate' },
                     { className: 'text-center', data: 'remainingPeriod', name: 'remainingPeriod' },
                     { className: 'text-center', data: 'penalty', name: 'penalty' },

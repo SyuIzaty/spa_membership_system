@@ -31,6 +31,7 @@
                                 <table id="quotaList" class="table table-bordered table-hover table-striped w-100">
                                     <thead>
                                         <tr class="bg-primary-50 text-center">
+                                            <th class="text-center">Title</th>
                                             <th class="text-center">Quota</th>
                                             <th class="text-center">Effective Date</th>
                                             <th class="text-center">Duration (Year)</th>
@@ -40,6 +41,7 @@
                                     </thead>
                                     <tbody>
                                         <tr>
+                                            <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
@@ -67,6 +69,13 @@
                     </div>
                     <div class="modal-body">
                     {!! Form::open(['action' => 'ComputerGrantController@addQuota', 'method' => 'POST']) !!}
+
+                        <div class="form-group">
+                            <label class="form-label"><span class="text-danger">*</span> Title</label>
+                            <input type="text" id="title" name="title" class="form-control">
+                            <span style="font-size: 10px; color: red;"><i>*Limit to 80 characters only</i></span>
+                        </div>
+
                         <div class="form-group">
                             <label class="form-label" for="datepicker-modal-2"><span class="text-danger">*</span> Date Range</label>
                             <div class="input-group">
@@ -103,7 +112,6 @@
                              </select>
                         </div>
 
-
                         <div class="footer">
                             <button type="submit" id="btn_search" class="btn btn-primary ml-auto float-right waves-effect waves-themed"><i class="fal fa-save"></i> Add</button>
                             <button type="button" class="btn btn-success ml-auto float-right mr-2 waves-effect waves-themed" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
@@ -123,6 +131,12 @@
                     <div class="modal-body">
                         {!! Form::open(['action' => 'ComputerGrantController@editQuota', 'method' => 'POST']) !!}
                         <input type="hidden" name="id" id="id">
+
+                        <div class="form-group">
+                            <label class="form-label"><span class="text-danger">*</span> Title</label>
+                            <input type="text" id="title" name="title" class="form-control">
+                            <span style="font-size: 10px; color: red;"><i>*Limit to 80 characters only</i></span>
+                        </div>
 
                         <div class="form-group">
                             <label class="form-label" for="datepicker-modal-2"><span class="text-danger">*</span> Date Range</label>
@@ -186,12 +200,14 @@
         $('#edit').on('show.bs.modal', function(event) {
         var button = $(event.relatedTarget) 
         var id = button.data('id')
+        var title = button.data('title')
         var quota = button.data('quota')
         var date = button.data('dates')
         var duration = button.data('duration')
         var status = button.data('status')
 
         $('.modal-body #id').val(id);
+        $('.modal-body #title').val(title);
         $('.modal-body #quota').val(quota);
         $('.modal-body #date').val(date);
         $('.modal-body #duration').val(duration);
@@ -209,6 +225,7 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
             columns: [
+                    { className: 'text-center', data: 'title', name: 'title' },
                     { className: 'text-center', data: 'quota', name: 'quota' },
                     { className: 'text-center', data: 'effective_date', name: 'effective_date' },
                     { className: 'text-center', data: 'duration', name: 'duration' },
@@ -222,6 +239,24 @@
                 }
         });
     });
+
+    //limit word in textarea
+    jQuery(document).ready(function($) {
+        var max = 80;
+        $('#title').keypress(function(e) {
+            if (e.which < 0x20) {
+                // e.which < 0x20, then it's not a printable character
+                // e.which === 0 - Not a character
+                return;     // Do nothing
+            }
+            if (this.value.length == max) {
+                e.preventDefault();
+            } else if (this.value.length > max) {
+                // Maximum exceeded
+                this.value = this.value.substring(0, max);
+            }
+        });
+    }); //end if ready(fn)
 
 </script>
 @endsection
