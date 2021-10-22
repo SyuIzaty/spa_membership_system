@@ -183,8 +183,8 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
             columns: [
-                    { className: 'text-center', data: 'question', name: 'question' },
-                    { className: 'text-center', data: 'answer', name: 'answer' },
+                    { className: 'text-left', data: 'question', name: 'question' },
+                    { className: 'text-left', data: 'answer', name: 'answer' },
                     { className: 'text-center', data: 'status', name: 'status' },
                     { className: 'text-center', data: 'edit', name: 'edit', orderable: false, searchable: false},
                     { className: 'text-center', data: 'delete', name: 'delete', orderable: false, searchable: false},
