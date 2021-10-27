@@ -784,6 +784,21 @@ class ComputerGrantController extends Controller
         return $response;
     }
 
+    public function getFinanceForm()
+    {
+        $file = "Laptop_Grant_Application_Form_(Finance).docx";
+        
+        $path = storage_path().'/computergrant/'.$file;
+
+        $form = File::get($path);
+        $filetype = File::mimeType($path);
+
+        $response = Response::make($form, 200);
+        $response->header("Content-Type", $filetype);
+
+        return $response;
+    }
+
     public function applicationPDF(Request $request, $id)
     {
         $application = ComputerGrant::with(['staff'])->where('id',$id)->first();

@@ -28,9 +28,9 @@
     <div class="row">
         <div class="col-xl-12" style="padding: 100px; margin-bottom: 20px; font-size: 15px; color: black;">
 
-                <center><img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="280" alt="INTEC" style="margin-top: -65px"></center><br>
+                <center><img src="{{ URL::to('/') }}/img/INTEC_PRIMARY_LOGO.png" height="110" width="300" alt="INTEC" style="margin-top: -65px"></center><br>
 
-                <div class="table-responsive" style="margin-top: 80px;">
+                <div class="table-responsive" style="margin-top: 50px;">
                     <table id="info" class="table table-bordered w-100">
                         <thead>
                             <tr class="text-center">
@@ -95,7 +95,17 @@
                     </table>
                 </div>
                 <br>
-                <p>I, {{strtoupper($application->staff->staff_name)}} CONFIRMED THAT THE PERSONAL DETAILS AND PURCHASE PROOF GIVEN ARE GENUINE. I AGREE TO ACCEPT THIS APPLICATION AND ABIDE ALL REGULATIONS.</p>
+                <p>I, {{strtoupper($application->staff->staff_name)}} CONFIRM THAT THE PERSONAL DETAILS AND PURCHASE PROOF GIVEN ARE GENUINE. I UNDERSTAND AND AGREE TO COMPLY WITH ALL RULES AND REGULATIONS OF THE COMPUTER GRANT.</p>
+                
+                <p>Terms:</p>
+                <ol>
+                    <li>Staff can login to https://ids.intec.edu.my to make application and grant claim.</li>
+                    <li>Application is eligible for permanent and contract academic staff only.</li>
+                    <li>Grant period is 5 years only.</li>
+                    <li>Device purchase must be made within one month after obtaining approval.</li>
+                    <li>Device can be purchased from any supplier, including online.</li>
+                    <li>Type of device that can be purchased are Laptop, Notebook or Tablet only.</li>
+                </ol>
 
                 <div style="float: left; margin-top: 100px;">
                     .......................................................................................

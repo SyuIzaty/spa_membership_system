@@ -408,6 +408,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('get-image/{image}','ComputerGrantController@getImage');
     Route::get('get-file/{file}','ComputerGrantController@getFile');
     Route::get('get-declaration/{id}','ComputerGrantController@getDeclarationFile');
+    Route::get('Grant-Reimbursement-Form','ComputerGrantController@getFinanceForm');
     Route::get('/applicationPDF/{id}','ComputerGrantController@applicationPDF');
     Route::get('/faq', 'ComputerGrantController@faq');
     Route::get('/faq-list', 'ComputerGrantController@faqList');
@@ -428,6 +429,19 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/upload-declaration', 'ComputerGrantController@uploadAgreement');
     Route::post('requestCancellation', 'ComputerGrantController@requestCancellation');
     Route::post('/verifyCancellation', 'ComputerGrantController@verifyCancellation');
+
+    //Engagement Management System
+    Route::get('/list', 'EngagementManagementController@index');
+    Route::post('/all-list', 'EngagementManagementController@lists');
+    Route::get('/status', 'EngagementManagementController@status');
+    Route::post('/getStatus', 'EngagementManagementController@getStatus');
+    Route::post('/add-status', 'EngagementManagementController@addStatus');
+    Route::post('/edit-status', 'EngagementManagementController@editStatus');
+    Route::get('/engagement-detail/{id}', 'EngagementManagementController@details');
+    Route::delete('/delete-status/{id}','EngagementManagementController@deleteStatus');
+
+
+
 
 });
 

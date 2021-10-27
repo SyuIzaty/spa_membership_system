@@ -20,7 +20,7 @@
     <div class="row">
         <div class="col-xl-12" style="padding: 100px; margin-bottom: 20px; font-size: 15px; color: black;">
 
-                <center><img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="280" alt="INTEC" style="margin-top: -65px"></center><br>
+            <center><img src="{{ URL::to('/') }}/img/INTEC_PRIMARY_LOGO.png" height="110" width="300" alt="INTEC" style="margin-top: -65px"></center><br>
 
                 <div class="table-responsive" style="margin-top: 80px;">
                     <table id="info" class="table table-bordered table-hover table-striped w-100">

@@ -20,7 +20,7 @@
 
                 <div class="panel-container show">
                     <div class="panel-content">
-                        <center><img src="{{ asset('img/intec_logo.png') }}" style="height: 120px; width: 270px;"></center><br>
+                        <center><img src="{{ asset('img/INTEC_PRIMARY_LOGO.png') }}" style="width: 300px;"></center><br>
 
                         @if(session()->has('message'))
                             <div class="alert alert-success">
@@ -111,9 +111,13 @@
                                                     </a>
 
                                                     @if ($activeData->status == 3 || $activeData->status == 4 || $activeData->status == 5 || $activeData->status == 6)
-                                                        <a class="btn btn-primary" data-page="/agreementPDF/{{ $activeData->id }}" onclick="Print(this)">
-                                                            <i class="fal fa-download"></i> Declaration Form
-                                                        </a>
+                                                    <a class="btn btn-primary" data-page="/agreementPDF/{{ $activeData->id }}" onclick="Print(this)">
+                                                        <i class="fal fa-download"></i> Declaration Form
+                                                    </a>
+
+                                                    <a class="btn btn-success" data-page="/Grant-Reimbursement-Form" onclick="Print(this)">
+                                                        <i class="fal fa-download"></i> Grant Reimbursement Form       
+                                                    </a>
                                                     @endif
                                                 </td>                                           
                                             </tr>

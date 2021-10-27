@@ -25,7 +25,7 @@
 
                 <div class="panel-container show">
                     <div class="panel-content">
-                        <center><img src="{{ asset('img/intec_logo.png') }}" style="height: 120px; width: 270px;"></center><br>
+                    <center><img src="{{ asset('img/INTEC_PRIMARY_LOGO.png') }}" style="width: 300px;"></center><br>
 
                         @if(session()->has('message'))
                             <div class="alert alert-success">
@@ -156,6 +156,10 @@
                                                 <td colspan="4">
                                                     <a class="btn btn-info" target="_blank" href="/get-file/{{$verified_doc->id}}">
                                                         <i class="fal fa-download"></i> Application Form
+                                                    </a>
+
+                                                    <a class="btn btn-success" target="_blank" href="/Grant-Reimbursement-Form">
+                                                        <i class="fal fa-download"></i> Grant Reimbursement Form       
                                                     </a>
                                                 </td>
                                             </tr>
