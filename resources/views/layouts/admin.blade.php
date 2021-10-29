@@ -160,6 +160,32 @@
                             // echo ($permission);
                         @endphp
 
+                        <!-- Start Engagement Management System -->
+
+                        <li class="nav-title">Engagement Management</li>
+                            <li>
+                                <a href="/list" title="External Engagement" data-filter-tags="engagement">
+                                    <i class="fal fa-users"></i>
+                                    <span class="nav-link-text" data-i18n="nav.engagement">External Engagement</span>
+                                </a>
+                            </li>
+                        </li>
+                        <li class="open">
+                            <a href="#" title="Setting" data-filter-tags="setting">
+                                <i class="fal fa-cogs"></i>
+                                <span class="nav-link-text" data-i18n="nav.setting">Setting</span>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="/status" title="Status" data-filter-tags="emsstatus">
+                                        <span class="nav-link-text" data-i18n="nav.emsstatus">Status</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <!-- End Engagement Management System -->
+
                         @can('Short Course Management - View All')
                             <li class="nav-title">Short Course Management</li>
                             <li>

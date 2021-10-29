@@ -433,6 +433,14 @@ Route::group(['middleware' => 'auth'], function () {
     //Engagement Management System
     Route::get('/list', 'EngagementManagementController@index');
     Route::post('/all-list', 'EngagementManagementController@lists');
+    Route::get('/create', 'EngagementManagementController@new');
+    Route::post('/post-create', 'EngagementManagementController@store');
+    Route::post('/todolist-create', 'EngagementManagementController@createToDoList');
+    Route::post('/update-profile', 'EngagementManagementController@updateProfile');
+    Route::post('/delete-member/{id}', 'EngagementManagementController@deleteMember');
+    Route::post('/create-progress', 'EngagementManagementController@createProgress');
+    Route::post('/getProgress/{id}', 'EngagementManagementController@getProgress');
+    Route::post('/edit-progress', 'EngagementManagementController@editProgress');
     Route::get('/status', 'EngagementManagementController@status');
     Route::post('/getStatus', 'EngagementManagementController@getStatus');
     Route::post('/add-status', 'EngagementManagementController@addStatus');
