@@ -25,7 +25,7 @@
                         <div class="table-responsive">
                             <table id="tindih" class="table table-bordered table-hover table-striped w-100">
                                 <thead>
-                                    <tr class="text-center bg-primary-50">
+                                    <tr class="text-center bg-primary-50" style="white-space: nowrap">
                                         <th style="width:30px">ID</th>
                                         <th>NAMA PELAPOR</th>
                                          <th style="text-align: center; width: 170px">LOKASI</th>

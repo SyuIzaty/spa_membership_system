@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-xl-12" style="padding: 50px; margin-bottom: 20px">
                 
-                <center><img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="280" alt="INTEC" style="margin-top: -65px"></center><br>
+                <center><img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="320" alt="INTEC" style="margin-top: -65px"></center><br>
 
                 <div align="left">
                     <h4 style="margin-top: -25px; margin-bottom: -15px"><b>LAPORAN ADUAN #{{ $aduan->id }}</b></h4>

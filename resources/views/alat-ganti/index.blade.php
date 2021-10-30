@@ -31,7 +31,7 @@
                         <div class="table-responsive">
                             <table id="alat" class="table table-bordered table-hover table-striped w-100">
                                 <thead>
-                                    <tr class="text-center bg-primary-50">
+                                    <tr class="text-center bg-primary-50" style="white-space: nowrap">
                                         <th style="width:30px">NO</th>
                                         <th>ALAT GANTI</th>
                                         <th>TINDAKAN</th>

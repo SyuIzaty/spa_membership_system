@@ -23,7 +23,7 @@
                 <div class="panel-container show">
                     <div class="panel-content">
                         <div class="table-responsive">
-                            <table id="selesai" class="table table-bordered table-hover table-striped w-100">
+                            <table id="selesai" class="table table-bordered table-hover table-striped w-100" style="white-space: nowrap">
                                 <thead>
                                     <tr class="text-center bg-primary-50">
                                         <th style="width:30px">ID</th>

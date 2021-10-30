@@ -95,7 +95,7 @@
                                             <div class="table-responsive">
                                                 <table class="table table-bordered" id="rep">
                                                     <thead>
-                                                        <tr class="text-center bg-primary-50">
+                                                        <tr class="text-center bg-primary-50" style="white-space: nowrap">
                                                             <th>#ID</th>
                                                             <th>NAMA</th>
                                                             <th>EMEL</th>
