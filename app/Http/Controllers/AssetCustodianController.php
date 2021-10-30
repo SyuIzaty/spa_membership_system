@@ -29,7 +29,7 @@ class AssetCustodianController extends Controller
                 ->groupBy('a.id')
                 ->get();
          
-        return view('asset-custodian.index', compact('department'))->with('no', 1);
+        return view('inventory.asset-custodian.index', compact('department'))->with('no', 1);
     }
 
     public function addDepartment(Request $request)
@@ -66,7 +66,7 @@ class AssetCustodianController extends Controller
         }
 
         $custodian = AssetCustodian::where('department_id', $id)->get();
-        return view('asset-custodian.details', compact('department','members','custodian'));
+        return view('inventory.asset-custodian.details', compact('department','members','custodian'));
     }
 
     public function storeDepartCust(Request $request)

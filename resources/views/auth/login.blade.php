@@ -16,7 +16,7 @@
             <div class="col-lg-6">
                 <div class="card2 card border-0 px-4 py-5">
                     <div class="row mb-4 px-3 justify-content-center">
-                        <img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="280" alt="INTEC">
+                        <img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="320" alt="INTEC">
                     </div>
                     <div style="font-family: Verdana, sans-serif;" class="card-header"><center><b>{{ __('LOGIN ACCOUNT') }}</b></center></div><br><br>
                     @if(session()->has('message'))

@@ -49,7 +49,7 @@
                                                                 <td width="10%"><label class="form-label" for="department_id"><span class="text-danger">*</span> Department :</label></td>
                                                                 <td colspan="3">
                                                                     <select name="department_id" id="department_id" class="department form-control" required>
-                                                                        <option value="">Select Department</option>
+                                                                        <option value="">Please Select</option>
                                                                         @foreach ($department as $depart) 
                                                                             <option value="{{ $depart->id }}" {{ old('department_id') ? 'selected' : '' }}>{{ $depart->department_name }}</option>
                                                                         @endforeach
@@ -72,7 +72,7 @@
 
                                                         <tr>
                                                             <div class="form-group">
-                                                                <td width="10%"><label class="form-label" for="finance_code"> Asset Code (Finance) :</label></td>
+                                                                <td width="10%"><label class="form-label" for="finance_code"> Finance Code :</label></td>
                                                                 <td colspan="3"><input value="{{ old('finance_code') }}" class="form-control" id="finance_code" name="finance_code">
                                                                     @error('finance_code')
                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
@@ -132,7 +132,7 @@
                                                                 <td width="10%"><label class="form-label" for="status"><span class="text-danger">*</span> Status :</label></td>
                                                                 <td colspan="3">
                                                                     <select class="form-control status" id="status" name="status" required>
-                                                                        <option value="">Select Status</option>
+                                                                        <option value="">Please Select</option>
                                                                         <option value="1" {{ old('status') == '1' ? 'selected':''}} >ACTIVE</option>
                                                                         <option value="0" {{ old('status') == '0' ? 'selected':''}} >INACTIVE</option>
                                                                     </select>
@@ -148,7 +148,7 @@
                                                                 <td width="10%"><label class="form-label" for="availability"> Availability :</label></td>
                                                                 <td colspan="3">
                                                                     <select class="form-control availability" name="availability" id="availability" >
-                                                                        <option value="">Select Availability</option>
+                                                                        <option value="">Please Select</option>
                                                                         @foreach ($availability as $available) 
                                                                             <option value="{{ $available->id }}" {{ old('availability') ==  $available->id  ? 'selected' : '' }}>{{ $available->name }}</option>
                                                                         @endforeach
@@ -164,7 +164,7 @@
                                                                 <td width="10%"><label class="form-label" for="model"><span class="text-danger">*</span> Reason :</label></td>
                                                                 <td colspan="3">
                                                                     <select class="form-control inactive_reason" name="inactive_reason" id="inactive_reason">
-                                                                        <option value="">Select Reason</option>
+                                                                        <option value="">Please Select</option>
                                                                         @foreach ($status as $statuss) 
                                                                             <option value="{{ $statuss->id }}" {{ old('inactive_reason') ==  $statuss->id  ? 'selected' : '' }}>{{ $statuss->status_name }}</option>
                                                                         @endforeach
@@ -184,14 +184,17 @@
                                                         </tr>
                                                         <tr>
                                                             <div class="form-group">
-                                                                <td width="10%"><label class="form-label" for="set_package"><span class="text-danger">*</span>  Set Package ?</label></td>
+                                                                <td width="10%"><label class="form-label" for="asset_class"><span class="text-danger">*</span>  Asset Class </label></td>
                                                                 <td colspan="3">
-                                                                        <input type="radio" name="set_package" id="set_package" value="Y" {{ old('set_package') == "Y" ? 'checked' : '' }}> Yes
-                                                                        <input class="ml-5" type="radio" name="set_package" id="set_package" value="N" {{ old('set_package') == "N" ? 'checked' : '' }}> No
-                                                                        @error('set_package')
-                                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                        @enderror
-                                                                    </label>
+                                                                    <select class="form-control asset_class" name="asset_class" id="asset_class" required>
+                                                                        <option value="">Please Select</option>
+                                                                        @foreach ($class as $classses) 
+                                                                            <option value="{{ $classses->class_code }}" {{ old('asset_class') ==  $classses->class_code  ? 'selected' : '' }}>{{ $classses->class_code }} - {{ $classses->class_name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    @error('asset_class')
+                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                    @enderror
                                                                 </td>
                                                                 <td width="10%"><label class="form-label" for="upload_image"> Image :</label></td>
                                                                 <td colspan="3">
@@ -202,12 +205,25 @@
                                                                 </td>
                                                             </div>
                                                         </tr>
+                                                        <tr>
+                                                            <div class="form-group">
+                                                                <td width="10%"><label class="form-label" for="set_package"><span class="text-danger">*</span>  Set Package ?</label></td>
+                                                                <td colspan="6">
+                                                                        <input type="radio" name="set_package" id="set_package" value="Y" {{ old('set_package') == "Y" ? 'checked' : '' }}> Yes
+                                                                        <input class="ml-5" type="radio" name="set_package" id="set_package" value="N" {{ old('set_package') == "N" ? 'checked' : '' }}> No
+                                                                        @error('set_package')
+                                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                        @enderror
+                                                                    </label>
+                                                                </td>
+                                                            </div>
+                                                        </tr>
                                                         <tr class="set_tab">
                                                             <div class="form-group">
                                                                 <td colspan="6">
                                                                     <div class="card-body test" id="test">
                                                                         <table class="table table-bordered text-center" id="head_field">
-                                                                            <tr class="bg-primary-50">
+                                                                            <tr class="bg-primary-50" style="white-space: nowrap">
                                                                                 <td>Asset Type</td>
                                                                                 <td>Serial No.</td>
                                                                                 <td>Model</td>
@@ -296,7 +312,7 @@
                                                                 <td width="10%"><label class="form-label" for="acquisition_type"> Acquisition Type :</label></td>
                                                                 <td colspan="3">
                                                                     <select class="form-control" name="acquisition_type" id="acquisition_type" >
-                                                                        <option value="">Select Acquisition</option>
+                                                                        <option value="">Please Select</option>
                                                                         @foreach ($acquisition as $acq) 
                                                                             <option value="{{ $acq->id }}" {{ old('acquisition_type') ==  $acq->id  ? 'selected' : '' }}>{{ $acq->acquisition_type }}</option>
                                                                         @endforeach
@@ -330,9 +346,9 @@
                                                                 <td width="10%"><label class="form-label" for="custodian_id"><span class="text-danger">*</span> Custodian :</label></td>
                                                                 <td colspan="3">
                                                                     <select class="form-control custodian_id" name="custodian_id" id="custodian_id" required>
-                                                                        <option value="">Select Custodian</option>
+                                                                        <option value="">Please Select</option>
                                                                         @foreach ($custodian as $custs) 
-                                                                            <option value="{{ $custs->id }}" {{ old('custodian_id') ==  $custs->id  ? 'selected' : '' }}>{{ $custs->name }}</option>
+                                                                            <option value="{{ $custs->id }}" {{ old('custodian_id') ==  $custs->id  ? 'selected' : '' }}>{{ $custs->id ?? '' }} - {{ $custs->name ?? '' }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                     @error('custodian_id')
@@ -375,7 +391,7 @@
 @section('script')
 <script>
   $(document).ready( function() {
-        $('#department_id, #asset_type, #asset_types, #custodian_id, #status, #availability, #asset_code_type, #acquisition_type, #inactive_reason').select2();
+        $('#department_id, #asset_type, #asset_types, #custodian_id, #status, #availability, #asset_code_type, #acquisition_type, #inactive_reason, #asset_class').select2();
 
          // Add Set
          $('#addhead').click(function(){

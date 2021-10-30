@@ -20,7 +20,7 @@ class BorrowController extends Controller
 {
     public function borrowIndex()
     {  
-        return view('inventory.borrow-index');
+        return view('inventory.borrow.borrow-index');
     }
 
     public function borrowNew()
@@ -39,7 +39,7 @@ class BorrowController extends Controller
         $user = User::orderBy('name')->get();
         $asset = new Asset();
         $borrow = new Borrow();
-        return view('inventory.borrow-new', compact('department', 'asset', 'user', 'borrow'));
+        return view('inventory.borrow.borrow-new', compact('department', 'asset', 'user', 'borrow'));
     }
 
     public function findUsers(Request $request)
@@ -197,7 +197,7 @@ class BorrowController extends Controller
         $borrow = Borrow::where('id', $id)->first(); 
         $status = BorrowStatus::all();
 
-        return view('inventory.borrow-detail', compact('borrow', 'status', 'user'));
+        return view('inventory.borrow.borrow-detail', compact('borrow', 'status', 'user'));
     }
 
     public function borrowUpdate(Request $request)
@@ -250,7 +250,7 @@ class BorrowController extends Controller
 
     public function monitorList()
     {  
-        return view('inventory.monitor-list');
+        return view('inventory.borrow.monitor-list');
     }
 
     public function data_monitorList()
@@ -380,7 +380,7 @@ class BorrowController extends Controller
         $selectedstatus = $request->status; 
         $list = [];
 
-        return view('inventory.borrow-report', compact('request', 'asset', 'borrower', 'status', 'selectedasset', 'selectedborrower', 'selectedstatus', 'list'));
+        return view('inventory.borrow.borrow-report', compact('request', 'asset', 'borrower', 'status', 'selectedasset', 'selectedborrower', 'selectedstatus', 'list'));
     }
 
     public function exports($asset = null, $borrower = null, $status = null)

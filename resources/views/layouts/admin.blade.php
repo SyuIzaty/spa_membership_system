@@ -566,6 +566,11 @@
                                                 <span class="nav-link-text" data-i18n="nav.asset">Asset Type</span>
                                             </a>
                                         </li>
+                                        <li>
+                                            <a href="/asset-class" title="Asset" data-filter-tags="asset">
+                                                <span class="nav-link-text" data-i18n="nav.asset">Asset Class</span>
+                                            </a>
+                                        </li>
                                         @can('create custodian')
                                             <li>
                                                 <a href="/asset-custodian" title="Manager" data-filter-tags="manager">

@@ -29,6 +29,7 @@ class AssetImport implements ToModel, WithHeadingRow, WithValidation
             'finance_asset_code'    => 'nullable',
             'asset_name'            => 'required',
             'asset_type'            => 'required',
+            'asset_class'           => 'nullable',
             'serial_no'             => 'nullable',
             'model'                 => 'nullable',
             'brand'                 => 'nullable',
@@ -60,6 +61,7 @@ class AssetImport implements ToModel, WithHeadingRow, WithValidation
                 'asset_code'                => $code,
                 'asset_name'                => $row['asset_name'],
                 'asset_type'                => $row['asset_type'],
+                'asset_class'               => $row['asset_class'],
                 'serial_no'                 => $row['serial_no'],
                 'model'                     => $row['model'],
                 'brand'                     => $row['brand'],
@@ -82,6 +84,7 @@ class AssetImport implements ToModel, WithHeadingRow, WithValidation
             $trail = AssetTrail::create([
                 'asset_id'              => $asset->id,
                 'asset_type'            => $asset->asset_type,
+                'asset_class'           => $asset->asset_class,
                 'asset_code'            => $asset->asset_code,
                 'asset_code_type'       => $asset->asset_code_type,
                 'finance_code'          => $asset->finance_code,

@@ -12,7 +12,7 @@ class Asset extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
         'asset_code', 'asset_code_type', 'finance_code', 'asset_name', 'asset_type', 'serial_no', 'model', 'brand', 'total_price', 'lo_no', 'io_no', 'do_no', 'purchase_date', 'vendor_name', 
-        'custodian_id', 'created_by', 'remark', 'status', 'inactive_reason', 'inactive_remark', 'inactive_date', 'availability', 'storage_location', 'set_package', 'acquisition_type'
+        'custodian_id', 'created_by', 'remark', 'status', 'inactive_reason', 'inactive_remark', 'inactive_date', 'availability', 'storage_location', 'set_package', 'acquisition_type', 'asset_class'
     ];
 
     public function assetTrail()
@@ -38,6 +38,11 @@ class Asset extends Model
     public function type()
     {
         return $this->hasOne('App\AssetType', 'id', 'asset_type');
+    }
+
+    public function assetClass()
+    {
+        return $this->hasOne('App\AssetClass', 'class_code', 'asset_class');
     }
 
     public function custodians()

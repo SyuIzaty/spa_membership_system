@@ -4,7 +4,7 @@
 <main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
     <div class="subheader">
         <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-dolly-flatbed'></i>ASSET LISTS
+        <i class='subheader-icon fal fa-bell'></i> PENDING ASSET VERIFICATION 
         </h1>
     </div>
     <div class="row">
@@ -12,7 +12,7 @@
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
                     <h2>
-                        List <span class="fw-300"><i>Of Asset</i></span>
+                        List <span class="fw-300"><i>of Pending Asset Verification</i></span>
                     </h2>
                     <div class="panel-toolbar">
                         <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
@@ -22,27 +22,20 @@
                 </div>
                 <div class="panel-container show">
                     <div class="panel-content">
-                        @if (Session::has('message'))
-                            <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}</div>
-                        @endif
                         <div class="table-responsive">
-                            <table id="assets" class="table table-bordered table-hover table-striped w-100">
+                            <table id="verify" class="table table-bordered table-hover table-striped w-100">
                                 <thead>
-                                    <tr class="bg-primary-50 text-center">
+                                    <tr class="bg-primary-50 text-center" style="white-space: nowrap">
                                         <th>#ID</th>
                                         <th>DEPARTMENT</th>
                                         <th>CODE TYPE</th>
-                                        <th>FINANCE CODE</th>
-                                        <th>ASSET CODE</th>
-                                        <th>ASSET NAME</th>
                                         <th>ASSET TYPE</th>
-                                        <th>SERIAL NO.</th>
-                                        <th>MODEL</th>
-                                        <th>CUSTODIAN</th>
-                                        <th>PURCHASE DATE</th>
-                                        <th>STATUS</th>
-                                        <th>AVAILABILITY</th>
-                                        <th>CREATED BY</th>
+                                        <th>ASSET CLASS</th>
+                                        <th>ASSET DETAILS</th>
+                                        <th>ASSIGN BY</th>
+                                        <th>ASSIGN DATE</th>
+                                        <th>VERIFICATION DELAY</th>
+                                        <th>VERIFICATION</th>
                                         <th>ACTION</th>
                                     </tr>
                                     <tr>
@@ -63,9 +56,6 @@
                                                 @endforeach
                                             </select>
                                         </td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Finance Code"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Asset Code"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Asset Name"></td>
                                         <td class="hasinput">
                                             <select id="data_type" name="data_type" class="form-control">
                                                 <option value="">All</option>
@@ -74,35 +64,24 @@
                                                 @endforeach
                                             </select>
                                         </td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Serial No."></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Model"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Custodian"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Purchase Date"></td>
                                         <td class="hasinput">
-                                            <select id="data_status" name="data_status" class="form-control">
+                                            <select id="data_class" name="data_class" class="form-control">
                                                 <option value="">All</option>
-                                                @foreach($data_status as $data_statuss)
-                                                    <option value="{{$data_statuss->status_name}}">{{ $data_statuss->status_name }}</option>
+                                                @foreach($data_class as $data_classes)
+                                                    <option value="{{$data_classes->class_code}}">{{ $data_classes->class_code }} - {{ $data_classes->class_name }}</option>
                                                 @endforeach
                                             </select>
                                         </td>
-                                        <td class="hasinput">
-                                            <select id="data_availability" name="data_availability" class="form-control">
-                                                <option value="">All</option>
-                                                @foreach($data_availability as $data_availabilitys)
-                                                    <option value="{{$data_availabilitys->name}}">{{ $data_availabilitys->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Created By"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Asset Details"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Assigned By"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Assigned Date"></td>
+                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Delay"></td>
+                                        <td class="hasinput"></td>
                                         <td class="hasinput"></td>
                                     </tr>
                                 </thead>
                             </table>
                         </div>
-                    </div>
-                    <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex  pull-right">
-                        <a class="btn btn-primary ml-auto" href="/asset-new"><i class="fal fa-plus-square"></i> Add New Asset</a><br><br>
                     </div>
                 </div>
             </div>
@@ -117,9 +96,9 @@
 <script>
     $(document).ready(function()
     {
-        $('#data_department, #data_code, #data_type, #data_status, #data_availability').select2();
+        $('#data_department, #data_code, #data_type, #data_class').select2();
 
-        $('#assets thead tr .hasinput').each(function(i)
+        $('#verify thead tr .hasinput').each(function(i)
         {
             $('input', this).on('keyup change', function()
             {
@@ -144,39 +123,42 @@
             });
         });
 
-        var table = $('#assets').DataTable({
+        var table = $('#verify').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
-                url: "/assetList",
+                url: "/verifyList",
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
             columns: [
                     { className: 'text-center', data: 'id', name: 'id' },
-                    { className: 'text-center', data: 'department_id', name: 'department_id' },
+                    { className: 'text-center', data: 'department', name: 'department' },
                     { className: 'text-center', data: 'asset_code_type', name: 'asset_code_type' },
-                    { className: 'text-center', data: 'finance_code', name: 'finance_code' },
-                    { className: 'text-center', data: 'asset_code', name: 'asset_code' },
-                    { className: 'text-center', data: 'asset_name', name: 'asset_name' },
                     { className: 'text-center', data: 'asset_type', name: 'asset_type' },
-                    { className: 'text-center', data: 'serial_no', name: 'serial_no' },
-                    { className: 'text-center', data: 'model', name: 'model' },
-                    { className: 'text-center', data: 'custodian_id', name: 'custodian_id'},
-                    { className: 'text-center', data: 'purchase_date', name: 'purchase_date'},
-                    { className: 'text-center', data: 'status', name: 'status'},
-                    { className: 'text-center', data: 'availability', name: 'availability'},
-                    { className: 'text-center', data: 'created_by', name: 'created_by'},
+                    { className: 'text-center', data: 'asset_class', name: 'asset_class' },
+                    { data: 'asset_name', name: 'asset_name' },
+                    { className: 'text-center', data: 'assigned_by', name: 'assigned_by' },
+                    { className: 'text-center', data: 'assigned_date', name: 'assigned_date' },
+                    { className: 'text-center', data: 'delay', name: 'delay' },
+                    { className: 'text-center', data: 'verification', name: 'verification', orderable: false, searchable: false},
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
+                createdRow: function (row, data, dataIndex, cells) {
+                    if (data.stylesheet) {
+                        $.each(data.stylesheet, function (k, rowStyle) {
+                            $(cells[rowStyle.col]).css(rowStyle.style);
+                        });
+                    }
+                },
                 orderCellsTop: true,
-                "order": [[ 0, "desc" ]],
+                "order": [[ 7, "desc" ]],
                 "initComplete": function(settings, json) {
-
                 } 
         });
+    });
 
-        $('#assets').on('click', '.btn-delete[data-remote]', function (e) {
+    $('#verify').on('click', '.btn-verify[data-remote]', function (e) {
             e.preventDefault();
             $.ajaxSetup({
                 headers: {
@@ -184,31 +166,28 @@
                 }
             });
             var url = $(this).data('remote');
-
             Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                title: 'APPROVE VERIFICATION ?',
+                text: " I CERTIFY THAT I APPROVE TO BE THIS ASSET CUSTODIAN. ACTION MAY BE TAKEN IF THE INFORMATION PROVIDED IS FALSE.",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Yes'
             }).then((result) => {
                 if (result.value) {
                     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
                     $.ajax({
                     url: url,
-                    type: 'DELETE',
+                    type: 'POST',
                     dataType: 'json',
-                    data: {method: '_DELETE', submit: true}
+                    data: {method: 'POST', submit: true}
                     }).always(function (data) {
-                        $('#assets').DataTable().draw(false);
+                        $('#verify').DataTable().draw(false);
                     });
                 }
             })
         });
-
-    });
 
 </script>
 

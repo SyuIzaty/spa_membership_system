@@ -85,7 +85,7 @@
                                                                                 <td colspan="3">
                                                                                     <input class="form-control" id="asset_code" style="cursor:context-menu" name="asset_code" value="{{ $asset->asset_code }}" readonly>
                                                                                 </td>
-                                                                                <td width="15%"><label class="form-label" for="finance_code"> Asset Code (Finance):</label></td>
+                                                                                <td width="15%"><label class="form-label" for="finance_code"> Finance Code:</label></td>
                                                                                 <td colspan="3">
                                                                                     <input class="form-control" id="finance_code" name="finance_code" value="{{ $asset->finance_code ?? old('finance_code') }}">
                                                                                     @error('finance_code')
@@ -158,7 +158,7 @@
                                                                                 <td width="15%"><label class="form-label" for="status"><span class="text-danger">*</span> Status:</label></td>
                                                                                 <td colspan="3">
                                                                                     <select class="form-control" id="status" name="status" required>
-                                                                                        <option value="">Select Status</option>
+                                                                                        <option value="">Please Select</option>
                                                                                         <option value="1" {{ old('status', $asset->status) == '1' ? 'selected':''}} >ACTIVE</option>
                                                                                         <option value="0" {{ old('status', $asset->status) == '0' ? 'selected':''}} >INACTIVE</option>
                                                                                     </select>
@@ -174,7 +174,7 @@
                                                                                 <td width="15%"><label class="form-label" for="availability"> Availability:</label></td>
                                                                                 <td colspan="3">
                                                                                     <select class="form-control availability" name="availability" id="availability">
-                                                                                        <option value="">Select Availability</option>
+                                                                                        <option value="">Please Select</option>
                                                                                         @foreach ($availability as $available) 
                                                                                             <option value="{{ $available->id }}" {{ old('availability', ($asset->availability ? $asset->availabilities->id : '')) == $available->id ? 'selected' : '' }}>{{ $available->name }}</option>
                                                                                         @endforeach
@@ -196,7 +196,7 @@
                                                                                 <td width="15%"><label class="form-label" for="inactive_reason"><span class="text-danger">*</span> Reason:</label></td>
                                                                                 <td colspan="3">
                                                                                     <select class="form-control inactive_reason" name="inactive_reason" id="inactive_reason">
-                                                                                        <option value="">Select Reason</option>
+                                                                                        <option value="">Please Select</option>
                                                                                         @foreach ($status as $statuss) 
                                                                                             <option value="{{ $statuss->id }}" {{ old('inactive_reason', ($asset->inactive_reason ? $asset->assetStatus->id : '')) ==  $statuss->id  ? 'selected' : '' }}>
                                                                                                 {{ $statuss->status_name }}</option>
@@ -229,6 +229,19 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <div class="form-group">
+                                                                                <td width="15%"><label class="form-label" for="asset_class"><span class="text-danger">*</span> Asset Class :</label></td>
+                                                                                <td colspan="3">
+                                                                                    <select class="form-control asset_class" name="asset_class" id="asset_class">
+                                                                                        <option value="">Please Select</option>
+                                                                                        @foreach ($class as $classes) 
+                                                                                            <option value="{{ $classes->class_code }}" {{ old('asset_class', ($asset->asset_class ? $asset->assetClass->class_code : '')) ==  $classes->class_code  ? 'selected' : '' }}>
+                                                                                                {{ $classes->class_code }} - {{ $classes->class_name }}</option>
+                                                                                        @endforeach
+                                                                                    </select>
+                                                                                    @error('asset_class')
+                                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                    @enderror
+                                                                                </td>
                                                                                 <td width="15%"><label class="form-label" for="upload_image"> Image :</label></td>
                                                                                 <td colspan="3">
                                                                                     <input type="file" class="form-control" id="upload_image" name="upload_image[]" multiple>
@@ -236,8 +249,12 @@
                                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                     @enderror
                                                                                 </td>
+                                                                            </div>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <div class="form-group">
                                                                                 <td width="15%"><label class="form-label" for="set_package"><span class="text-danger">*</span> Set Package ?</label></td>
-                                                                                <td colspan="3">
+                                                                                <td colspan="6">
                                                                                     <input class="ml-5" type="radio" name="set_package" id="set_package" value="Y" {{ $asset->set_package == "Y" ? 'checked="checked"' : ''}}> Yes
                                                                                     <input class="ml-5" type="radio" name="set_package" id="set_package" value="N" {{ $asset->set_package == "N" ? 'checked="checked"' : '' }}> No
                                                                                     @error('set_package')
@@ -251,7 +268,7 @@
                                                                                 <td colspan="6">
                                                                                     <div class="card-body test" id="test">
                                                                                         <table class="table table-bordered text-center" id="head_field">
-                                                                                            <tr class="bg-primary-50">
+                                                                                            <tr class="bg-primary-50" style="white-space: nowrap">
                                                                                                 <td>Asset Type</td>
                                                                                                 <td>Serial No.</td>
                                                                                                 <td>Model</td>
@@ -261,7 +278,7 @@
                                                                                             <tr>
                                                                                                 <td>
                                                                                                     <select class="form-control asset_types" name="asset_types[]" id="asset_types" >
-                                                                                                        <option value="">Select Asset Type</option>
+                                                                                                        <option value="">Please Select</option>
                                                                                                         @foreach ($setType as $setTypes) 
                                                                                                             <option value="{{ $setTypes->id }}" {{ old('asset_types') ==  $setTypes->id  ? 'selected' : '' }}>{{ $setTypes->asset_type }}</option>
                                                                                                         @endforeach
@@ -318,7 +335,7 @@
                                                                             @endif
                                                                             <table id="assets" class="table table-bordered table-hover table-striped w-100 mb-1">
                                                                                 <thead class="bg-primary-50 text-center">
-                                                                                    <tr>
+                                                                                    <tr style="white-space: nowrap">
                                                                                         <td>No.</td>
                                                                                         <td>Asset Type</td>
                                                                                         <td>Serial No.</td>
@@ -434,14 +451,21 @@
                                                                                     </div>
                                                                                 </tr>
                                                                                 <tr>
+                                                                                    <?php 
+                                                                                        $get_type = $asset->codeType->code_name ?? '--';
+                                                                                        $get_class = $asset->assetClass->class_code ?? '--';
+                                                                                        $get_department = $asset->type->department->department_name ?? '--';
+                                                                                        $get_asset = $asset->asset_code ?? '--';
+                                                                                        $get_code = $get_type.'/'.$get_class.'/'.$get_department.'/'.$get_asset;
+                                                                                    ?>
                                                                                     <div class="form-group">
                                                                                         <td colspan="4" align="center" style="vertical-align: middle">
-                                                                                            @php echo DNS1D::getBarcodeSVG($asset->asset_code, 'C39',1.0,33,'black', false); @endphp <br>
-                                                                                            {{-- {{ $asset->asset_code}} --}}
+                                                                                            @php echo DNS1D::getBarcodeSVG($get_code, 'C39',1.0,33,'black', false); @endphp <br>
+                                                                                            {{ $get_code }}
                                                                                         </td>
                                                                                         <td colspan="4" align="center" style="vertical-align: middle">
-                                                                                            {!! QrCode::generate($asset->asset_code); !!} <br>
-                                                                                            {{-- {{ $asset->asset_code }} --}}
+                                                                                            {!! QrCode::generate($get_code); !!} <br>
+                                                                                            {{ $get_code }}
                                                                                         </td>
                                                                                     </div>
                                                                                 </tr>
@@ -566,13 +590,17 @@
                                                 <div class="table-responsive">
                                                     <table id="trk" class="table table-bordered table-hover table-striped w-100">
                                                         <thead>
-                                                            <tr align="center" class="bg-primary-50">
+                                                            <tr align="center" class="bg-primary-50" style="white-space: nowrap">
                                                                 <th>#ID</th>
                                                                 <th>Code Type</th>
                                                                 <th>Asset Code</th>
                                                                 <th>Finance Code</th>
+                                                                <th>Asset Type</th>
+                                                                <th>Asset Class</th>
                                                                 <th>Asset Name</th>
                                                                 <th>Serial No.</th>
+                                                                <th>Model</th>
+                                                                <th>Brand</th>
                                                                 <th>Purchase Date</th>
                                                                 <th>Vendor Name</th>
                                                                 <th>L.O. No.</th>
@@ -592,8 +620,12 @@
                                                                 <td>{{ $trails->codeType->code_name ?? '--' }}</td>
                                                                 <td>{{ $trails->asset_code ?? '--' }}</td>
                                                                 <td>{{ $trails->finance_code ?? '--' }}</td>
+                                                                <td>{{ $trails->type->type_name ?? '--' }}</td>
+                                                                <td>{{ $trails->assetClass->class_code ?? '--' }}</td>
                                                                 <td>{{ $trails->asset_name ?? '--' }}</td>
                                                                 <td>{{ $trails->serial_no ?? '--' }}</td>
+                                                                <td>{{ $trails->model ?? '--' }}</td>
+                                                                <td>{{ $trails->brand ?? '--' }}</td>
                                                                 <td>{{ isset($trails->purchase_date) ? date('d-m-Y', strtotime($trails->purchase_date)) : '--' }}</td>
                                                                 <td>{{ $trails->vendor_name ?? '--' }}</td>
                                                                 <td>{{ $trails->lo_no ?? '--' }}</td>
@@ -630,7 +662,7 @@
                                                 <div class="table-responsive">
                                                     <table id="cst" class="table table-bordered table-hover table-striped w-100">
                                                         <thead>
-                                                            <tr align="center" class="bg-primary-50">
+                                                            <tr align="center" class="bg-primary-50" style="white-space: nowrap">
                                                                 <th style="width: 50px;">No.</th>
                                                                 <th>Custodian</th>
                                                                 <th>Change Reason</th>
@@ -886,7 +918,7 @@
 
     $(document).ready(function()
     {
-        $('#status, #availability, #asset_types, #asset_code_type, #acquisition_type, #inactive_reason').select2();
+        $('#status, #availability, #asset_types, #asset_code_type, #acquisition_type, #inactive_reason, #asset_class').select2();
 
         $('.department, .custodian_id').select2({ 
             dropdownParent: $("#crud-modal") 

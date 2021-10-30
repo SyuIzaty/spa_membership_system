@@ -34,7 +34,7 @@ class AssetTypeController extends Controller
             })->get();
         }
 
-        return view('asset-type.index', compact('assetType', 'department'));
+        return view('inventory.asset-type.index', compact('assetType', 'department'));
     }
 
     public function data_asset()

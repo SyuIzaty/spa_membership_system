@@ -160,6 +160,49 @@
 
                                     <div class="card">
                                         <div class="card-header">
+                                            <a href="javascript:void(0);" class="card-title collapsed" data-toggle="collapse" data-target="#class" aria-expanded="false">
+                                                <i class="fal fa-bookmark width-2 fs-xl"></i>
+                                                Asset Class
+                                                <span class="ml-auto">
+                                                    <span class="collapsed-reveal">
+                                                        <i class="fal fa-minus fs-xl"></i>
+                                                    </span>
+                                                    <span class="collapsed-hidden">
+                                                        <i class="fal fa-plus fs-xl"></i>
+                                                    </span>
+                                                </span>
+                                            </a>
+                                        </div>
+                                        <div id="class" class="collapse" data-parent="#class">
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                <table class="table table-bordered" id="class_list" style="width: 100%">
+                                                    <thead>
+                                                        <tr class="bg-primary-50 text-center">
+                                                            <td>CLASS CODE</td>
+                                                            <td>CLASS NAME</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Code"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Name"></td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($class as $classes)
+                                                            <tr align="center">
+                                                                <td>{{ $classes->class_code ?? '--' }}</td>
+                                                                <td>{{ $classes->class_name ?? '--' }}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card">
+                                        <div class="card-header">
                                             <a href="javascript:void(0);" class="card-title collapsed" data-toggle="collapse" data-target="#status" aria-expanded="false">
                                                 <i class="fal fa-check-circle width-2 fs-xl"></i>
                                                 Status
@@ -421,6 +464,43 @@
         });
 
         var table = $('#type_list').DataTable({
+            columnDefs: [],
+                orderCellsTop: true,
+                "order": [[ 0, "asc" ]],
+                "initComplete": function(settings, json) {
+                }
+        });
+
+    });
+
+    $(document).ready(function() {
+
+        $('#class_list thead tr .hasinput').each(function(i)
+        {
+            $('input', this).on('keyup change', function()
+            {
+                if (table.column(i).search() !== this.value)
+                {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+
+            $('select', this).on('keyup change', function()
+            {
+                if (table.column(i).search() !== this.value)
+                {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+
+        var table = $('#class_list').DataTable({
             columnDefs: [],
                 orderCellsTop: true,
                 "order": [[ 0, "asc" ]],

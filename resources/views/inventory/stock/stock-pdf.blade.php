@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-xl-12" style="padding: 50px; margin-bottom: 20px">
                 
-                <center><img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="280" alt="INTEC" style="margin-top: -40px"></center><br><br>
+                <center><img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="320" alt="INTEC" style="margin-top: -40px"></center><br><br>
 
                 <div align="left">
                     <h4 style="margin-top: -25px; margin-bottom: -15px"><b> STOCK ID : #{{ $stock->id}}</b></h4>
@@ -64,7 +64,7 @@
                 {{-- <div class="table-responsive"> --}}
                     <table id="log" class="table table-bordered table-hover table-striped w-100 table-sm">
                         <thead>
-                            <tr align="center" class="bg-primary-50">
+                            <tr align="center" class="bg-primary-50" style="white-space: nowrap">
                                 <th style="vertical-align: middle">#ID</th>
                                 <th style="vertical-align: middle">StockIn (+)</th>
                                 <th style="vertical-align: middle">StockOut (-)</th>

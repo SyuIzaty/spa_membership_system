@@ -9,7 +9,7 @@
                 <div class="card-header" style="background-image: url({{asset('img/inventory.png')}}); background-size: cover; background-blend-mode: difference">
                     <div class="d-flex justify-content-center" style="color: black">
                         <div class="p-2">
-                            <center><img src="{{ asset('img/intec_logo.png') }}" style="max-width: 100%" class="responsive"/></center><br>
+                            <center><img src="{{ asset('img/intec_logo_new.png') }}" height="120" width="320" class="responsive"/></center><br>
                             <h4 style="text-align: center; margin-top: -25px">
                                 <b>INTEC EDUCATION COLLEGE ASSET TRACKING</b>
                             </h4>
@@ -72,7 +72,7 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <div class="form-group">
-                                                                            <td width="15%"><label class="form-label" for="finance_code">Asset Code (Finance) :</label></td>
+                                                                            <td width="15%"><label class="form-label" for="finance_code">Finance Code :</label></td>
                                                                             <td colspan="3">{{ $data->finance_code ?? '--' }}</td>
                                                                             <td width="15%"><label class="form-label" for="serial_no">Serial No. : </label></td>
                                                                             <td colspan="3">{{ $data->serial_no ?? '--' }}</td>
@@ -80,8 +80,10 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <div class="form-group">
+                                                                            <td width="15%"><label class="form-label" for="asset_name">Asset Class :</label></td>
+                                                                            <td colspan="3">{{ $data->assetClass->class_name ?? '--' }}</td>
                                                                             <td width="15%"><label class="form-label" for="asset_name">Asset Name :</label></td>
-                                                                            <td colspan="6">{{ $data->asset_name ?? '--' }}</td>
+                                                                            <td colspan="3">{{ $data->asset_name ?? '--' }}</td>
                                                                         </div>
                                                                     </tr>
                                                                     <tr>
@@ -138,7 +140,7 @@
                                                                     @endif
                                                                     <tr>
                                                                         <div class="form-group">
-                                                                            <td width="15%"><label class="form-label" for="storage_location"> Storage :</label></td>
+                                                                            <td width="15%"><label class="form-label" for="storage_location"> Location :</label></td>
                                                                             <td colspan="3">{{ $data->storage_location ?? '--' }}</td>
                                                                             <td width="15%"><label class="form-label" for="custodian_id"> Set Package : </label></td>
                                                                             <td colspan="3">
@@ -155,7 +157,7 @@
                                                             @if($data->set_package == 'Y')
                                                                 <table id="assets" class="table table-bordered table-hover w-100 mb-1">
                                                                     <thead style="background-color: #f7f7f7" class="text-center">
-                                                                        <tr>
+                                                                        <tr style="white-space: nowrap">
                                                                             <td>No.</td>
                                                                             <td>Package Asset Type</td>
                                                                             <td>Package Serial No.</td>
@@ -306,14 +308,21 @@
                                                                                         </div>
                                                                                     </tr>
                                                                                     <tr>
+                                                                                        <?php 
+                                                                                            $get_type = $data->codeType->code_name ?? '--';
+                                                                                            $get_class = $data->assetClass->class_code ?? '--';
+                                                                                            $get_department = $data->type->department->department_name ?? '--';
+                                                                                            $get_asset = $data->asset_code ?? '--';
+                                                                                            $get_code = $get_type.'/'.$get_class.'/'.$get_department.'/'.$get_asset;
+                                                                                        ?>
                                                                                         <div class="form-group">
                                                                                             <td colspan="4" align="center" style="vertical-align: middle">
-                                                                                                @php echo DNS1D::getBarcodeSVG($data->asset_code, 'C39',1.0,33,'black', false); @endphp <br>
-                                                                                                {{-- {{ $data->asset_code}} --}}
+                                                                                                @php echo DNS1D::getBarcodeSVG($get_code, 'C39',1.0,33,'black', false); @endphp <br>
+                                                                                                {{ $get_code }}
                                                                                             </td>
                                                                                             <td colspan="4" align="center" style="vertical-align: middle">
-                                                                                                {!! QrCode::generate($data->asset_code); !!} <br>
-                                                                                                {{-- {{ $data->asset_code }} --}}
+                                                                                                {!! QrCode::generate($get_code); !!} <br>
+                                                                                                {{ $get_code }}
                                                                                             </td>
                                                                                         </div>
                                                                                     </tr>

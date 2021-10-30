@@ -226,7 +226,7 @@
                                             <div class="table-responsive">
                                                 <table id="log" class="table table-bordered table-hover table-striped w-100">
                                                     <thead>
-                                                        <tr align="center" class="bg-primary-50">
+                                                        <tr align="center" class="bg-primary-50" style="white-space: nowrap">
                                                             <th style="vertical-align: middle">#ID</th>
                                                             <th style="vertical-align: middle">StockIn (+)</th>
                                                             <th style="vertical-align: middle">StockOut (-)</th>

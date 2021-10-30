@@ -78,6 +78,7 @@ class AssetExport implements FromCollection, WithHeadings
                 'Asset_code'       => "",
                 'Asset_name'       => "",
                 'Asset_type'       => "",
+                'Asset_class'       => "",
                 'Serial_no'        => "",
                 'Model'            => "",
                 'Brand'            => "",
@@ -94,10 +95,11 @@ class AssetExport implements FromCollection, WithHeadings
                 'Purchase_date'    => "",
                 'Vendor'           => "",
                 'Acquisition_type' => "",
+                'Remark'           => "",
                 'Custodian'        => "",
                 'Location'         => "",
                 'Created_by'       => "",
-                'Remark'           => "",
+                'Notes'            => "",
             ];
             foreach($item as $ikey => $ivalue)
             {
@@ -110,6 +112,7 @@ class AssetExport implements FromCollection, WithHeadings
                     $data['Asset_code'] =$ivalue->asset_code;
                     $data['Asset_name'] =$ivalue->asset_name;
                     $data['Asset_type'] =$ivalue->asset_type;
+                    $data['Asset_class'] =$ivalue->asset_class;
                     $data['Serial_no'] =$ivalue->serial_no;
                     $data['Model'] =$ivalue->model;
                     $data['Brand'] =$ivalue->brand;
@@ -126,10 +129,11 @@ class AssetExport implements FromCollection, WithHeadings
                     $data['Purchase_date'] =$ivalue->purchase_date;
                     $data['Vendor'] =$ivalue->vendor_name;
                     $data['Acquisition_type'] =$ivalue->acquisitionType->acquisition_type;
+                    $data['Remark'] =$ivalue->remark;
                     $data['Custodian'] =$ivalue->custodian_id;
                     $data['Location'] =$ivalue->storage_location;
                     $data['Created_by'] =$ivalue->created_by;
-                    $data['Remark'] =$ivalue->remark;
+                    $data['Notes'] ='';
                 }
 
             }
@@ -141,7 +145,7 @@ class AssetExport implements FromCollection, WithHeadings
 
     public function headings(): array
     {
-        return ['ID','DEPARTMENT','CODE TYPE','FINANCE CODE','ASSET CODE','ASSET NAME','ASSET TYPE','SERIAL NO.', 'MODEL', 'BRAND','STATUS','INACTIVE DATE','INACTIVE REASON','INACTIVE REMARK', 
-        'AVAILABILITY', 'SET','PRICE (RM)','L.O. NO.','D.O. NO.','INVOICE NO.','PURCHASE DATE','VENDOR', 'ACQUISITION TYPE', 'CUSTODIAN','LOCATION','CREATED BY','REMARK'];
+        return ['ID','DEPARTMENT','CODE TYPE','FINANCE CODE','ASSET CODE','ASSET NAME','ASSET TYPE','ASSET CLASS','SERIAL NO.', 'MODEL', 'BRAND','STATUS','INACTIVE DATE','INACTIVE REASON','INACTIVE REMARK', 
+        'AVAILABILITY', 'SET','PRICE (RM)','L.O. NO.','D.O. NO.','INVOICE NO.','PURCHASE DATE','VENDOR', 'ACQUISITION TYPE','REMARK', 'CUSTODIAN','LOCATION','CREATED BY','NOTES'];
     }
 }

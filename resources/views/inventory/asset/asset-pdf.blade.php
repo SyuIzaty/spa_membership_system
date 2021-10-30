@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-xl-12" style="padding: 50px; margin-bottom: 20px">
                 
-                <center><img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="280" alt="INTEC"></center><br>
+                <center><img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="320" alt="INTEC"></center><br>
 
                 <div align="center">
                     <h4 style="margin-top: -25px; margin-bottom: -15px"><b> ASSET {{ $asset->asset_code}} - {{ $asset->asset_name}} INFO</b></h4>
@@ -36,7 +36,7 @@
                         </tr>
                         <tr>
                             <div class="form-group">
-                                <td width="15%"><label class="form-label" for="finance_code">Asset Code (Finance):</label></td>
+                                <td width="15%"><label class="form-label" for="finance_code">Finance Code :</label></td>
                                 <td colspan="3">{{ $asset->finance_code ?? '--' }}</td>
                                 <td width="15%"><label class="form-label" for="serial_no">Serial No. : </label></td>
                                 <td colspan="3">{{ $asset->serial_no ?? '--' }}</td>
@@ -44,13 +44,15 @@
                         </tr>
                         <tr>
                             <div class="form-group">
-                                <td width="15%"><label class="form-label" for="asset_name">Asset Name:</label></td>
-                                <td colspan="6">{{ $asset->asset_name ?? '--' }}</td>
+                                <td width="15%"><label class="form-label" for="asset_class">Asset Class :</label></td>
+                                <td colspan="3">{{ $asset->asset_class ?? '--' }} - {{ $asset->assetClass->class_name ?? '--'}}</td>
+                                <td width="15%"><label class="form-label" for="asset_name">Asset Name :</label></td>
+                                <td colspan="3">{{ $asset->asset_name ?? '--' }}</td>
                             </div>
                         </tr>
                         <tr>
                             <div class="form-group">
-                                <td width="15%"><label class="form-label" for="model">Model:</label></td>
+                                <td width="15%"><label class="form-label" for="model">Model :</label></td>
                                 <td colspan="3">{{ $asset->model ?? '--' }}</td>
                                 <td width="15%"><label class="form-label" for="brand"> Brand : </label></td>
                                 <td colspan="3">{{ $asset->brand ?? '--' }}</td>
@@ -58,7 +60,7 @@
                         </tr>
                         <tr>
                             <div class="form-group">
-                                <td width="15%"><label class="form-label" for="status"> Status:</label></td>
+                                <td width="15%"><label class="form-label" for="status"> Status :</label></td>
                                 <td colspan="3">
                                     @if ($asset->status == '0')
                                         INACTIVE
@@ -102,7 +104,7 @@
                         </tr>
                         <tr>
                             <div class="form-group">
-                                <td width="15%"><label class="form-label" for="storage_location"> Location/Storage:</label></td>
+                                <td width="15%"><label class="form-label" for="storage_location"> Location:</label></td>
                                 <td colspan="3">{{ $asset->storage_location ?? '--' }}</td>
                                 <td width="15%"><label class="form-label" for="custodian_id"> Set Package : </label></td>
                                 <td colspan="3">
@@ -120,7 +122,7 @@
                 @if($asset->set_package == 'Y')
                     <table id="assets" class="table table-bordered table-hover w-100 mb-1">
                         <thead style="background-color: #f7f7f7" class="text-center">
-                            <tr>
+                            <tr style="white-space: nowrap">
                                 <td>No.</td>
                                 <td>Package Asset Type</td>
                                 <td>Package Serial No.</td>
@@ -190,25 +192,6 @@
                     </thead>
                 </table>
 
-                {{-- <table id="assets" class="table table-bordered table-hover table-striped w-100 mb-1" style="table-layout: fixed">
-                    <thead>
-                        <tr>
-                            <td colspan="5" align="center" style="vertical-align: middle">Image</td>
-                        </tr>
-                        <tr align="center">
-                            @if(isset($image->first()->upload_image))
-                                @foreach($image as $images)
-                                <td>
-                                    <img src="/get-file-image/{{ $images->upload_image }}" style="width:150px; height:130px;" class="img-fluid mr-2"><br><br>
-                                </td>
-                                @endforeach
-                            @else
-                                <span>No Image Uploaded</span>
-                            @endif
-                        </tr>
-                    </thead>
-                </table> --}}
-
                 <table id="assets" class="table table-bordered table-hover table-striped w-100 mb-1">
                     <thead>
                         <tr>
@@ -218,12 +201,21 @@
                             </div>
                         </tr>
                         <tr>
+                            <?php 
+                                $get_type = $asset->codeType->code_name ?? '--';
+                                $get_class = $asset->assetClass->class_code ?? '--';
+                                $get_department = $asset->type->department->department_name ?? '--';
+                                $get_asset = $asset->asset_code ?? '--';
+                                $get_code = $get_type.'/'.$get_class.'/'.$get_department.'/'.$get_asset;
+                            ?>
                             <div class="form-group">
                                 <td colspan="4" align="center" style="vertical-align: middle">
-                                    @php echo DNS1D::getBarcodeSVG($asset->asset_code, 'C39',1.0,33,'black', false); @endphp <br>
+                                    @php echo DNS1D::getBarcodeSVG($get_code, 'C39',1.0,33,'black', false); @endphp <br>
+                                    {{ $get_code }}
                                 </td>
                                 <td colspan="4" align="center" style="vertical-align: middle">
-                                    {!! QrCode::generate($asset->asset_code); !!} <br>
+                                    {!! QrCode::generate($get_code); !!} <br>
+                                    {{ $get_code }}
                                 </td>
                             </div>
                         </tr>

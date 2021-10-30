@@ -34,7 +34,7 @@ class StockController extends Controller
             })->get();
         }
 
-        return view('inventory.stock-index', compact('department'));
+        return view('inventory.stock.stock-index', compact('department'));
     }
 
     public function newStockStore(Request $request)
@@ -182,7 +182,7 @@ class StockController extends Controller
             $total_bal += ($list->stock_in - $list->stock_out);
         }
 
-        return view('inventory.stock-detail', compact('stock', 'image', 'department', 'transaction', 'user', 'total_bal'))->with('no', 1);
+        return view('inventory.stock.stock-detail', compact('stock', 'image', 'department', 'transaction', 'user', 'total_bal'))->with('no', 1);
     }
 
     public function deleteImages($id, $stock_id)
@@ -425,7 +425,7 @@ class StockController extends Controller
         foreach($stock->transaction as $list){
             $total_bal += ($list->stock_in - $list->stock_out);
         }
-        return view('inventory.stock-pdf', compact('stock', 'image', 'total_bal'))->with('no', 1);
+        return view('inventory.stock.stock-pdf', compact('stock', 'image', 'total_bal'))->with('no', 1);
     }
 
     public function exportStock()

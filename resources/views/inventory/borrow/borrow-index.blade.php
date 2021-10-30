@@ -28,7 +28,7 @@
                         <div class="table-responsive">
                             <table id="borrow" class="table table-bordered table-hover table-striped w-100">
                                 <thead>
-                                    <tr class="bg-primary-50 text-center">
+                                    <tr class="bg-primary-50 text-center" style="white-space: nowrap">
                                         <th>#ID</th>
                                         <th>BORROWER</th>
                                         <th>ASSET TYPE</th>

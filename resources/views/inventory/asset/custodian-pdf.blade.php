@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-xl-12" style="padding: 50px; margin-bottom: 20px">
                 
-                <center><img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="280" alt="INTEC"></center><br>
+                <center><img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="320" alt="INTEC"></center><br>
 
                 <div align="center">
                     <h4 style="margin-top: -25px; margin-bottom: -15px"><b> ASSET {{ $asset->asset_code}} - {{ $asset->asset_name}} CUSTODIAN TRAIL LIST</b></h4>
@@ -13,7 +13,7 @@
                 <br><br><br>
                 <table id="trk" class="table table-bordered table-hover table-striped table-sm w-100">
                     <thead>
-                        <tr align="center">
+                        <tr align="center" style="white-space: nowrap">
                             <th>#ID</th>
                             <th>Asset Code</th>
                             <th>Finance Code</th>

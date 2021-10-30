@@ -19,6 +19,8 @@ use App\AssetDepartment;
 use App\CustodianStatus;
 use App\AssetAcquisition;
 use App\AssetSetTrail;
+use App\AssetClass;
+use Barryvdh\DomPDF\Facade as PDF;
 use App\Exports\IndividualAssetExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Mail;
@@ -29,6 +31,7 @@ use Response;
 use Auth;
 use File;
 use DB;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class AssetController extends Controller
 {
@@ -58,8 +61,9 @@ class AssetController extends Controller
         $data_type = AssetType::all();
         $data_status = AssetStatus::all();
         $data_availability = AssetAvailability::all();
+        $data_class = AssetClass::all();
 
-        return view('inventory.asset-index', compact('data_department','data_code','data_type','data_status','data_availability'));
+        return view('inventory.asset.asset-index', compact('data_department','data_code','data_type','data_status','data_availability','data_class'));
     }
 
     public function assetNew()
@@ -85,8 +89,9 @@ class AssetController extends Controller
         $assetSet = new AssetSet();
         $status = AssetStatus::all();
         $acquisition = AssetAcquisition::all();
+        $class = AssetClass::all();
 
-        return view('inventory.asset-new', compact('department', 'members', 'asset', 'availability', 'assetSet', 'custodian','codeType','status','acquisition'));
+        return view('inventory.asset.asset-new', compact('department', 'members', 'asset', 'availability', 'assetSet', 'custodian','codeType','status','acquisition','class'));
     }
 
     public function findAssetType(Request $request)
@@ -127,6 +132,7 @@ class AssetController extends Controller
                 'asset_code_type'   => 'required',
                 'inactive_date'     => 'required',
                 'inactive_reason'   => 'required',
+                'asset_class'       => 'required',
             ]);
 
         } else {
@@ -140,11 +146,13 @@ class AssetController extends Controller
                 'status'            => 'required',
                 'set_package'       => 'required',
                 'asset_code_type'   => 'required',
+                'asset_class'       => 'required',
             ]);
         }
         
         $asset = Asset::create([
             'asset_type'            => $request->asset_type,
+            'asset_class'           => $request->asset_class,
             'asset_code'            => $code,
             'asset_code_type'       => $request->asset_code_type,
             'finance_code'          => $request->finance_code,
@@ -174,6 +182,7 @@ class AssetController extends Controller
         $trail = AssetTrail::create([
             'asset_id'              => $asset->id,
             'asset_type'            => $request->asset_type,
+            'asset_class'           => $request->asset_class,
             'asset_code'            => $asset->asset_code,
             'asset_code_type'       => $request->asset_code_type,
             'finance_code'          => $request->finance_code,
@@ -262,7 +271,7 @@ class AssetController extends Controller
                 'details'           => $asset->asset_code.' : '.$asset->asset_name,
             ];
 
-            Mail::send('inventory.verify-mail', $data, function($message) use ($cust) {
+            Mail::send('inventory.asset.verify-mail', $data, function($message) use ($cust) {
                 $message->to($cust->staff->staff_email)->subject('Asset Custodian Verification');
                 $message->from(Auth::user()->email);
             });
@@ -279,7 +288,98 @@ class AssetController extends Controller
         return response()->json(['success'=>'Asset Deleted Successfully']);
     }
 
-    public function data_assetList()
+    public function printBarcode(Request $request)
+    {
+        $checked = explode(',',$request->mem_checkbox_submit);
+        // $customPaper = array('0','0','188.98','128.50'); landscape
+        $customPaper = array('0','0','132.28','188.98');  
+        // cm height: 3.4cm (128.50) 3.5(132.28) + width 5cm 
+
+        // $pdf = PDF::loadView('inventory.asset-barcode', compact('checked'))->setPaper($customPaper, 'landscape');
+        $pdf = PDF::loadView('inventory.asset.asset-barcode', compact('checked'))->setPaper($customPaper, 'potrait');
+        return $pdf->stream('Barcode.pdf');
+    }
+
+    public function assetFilter($filter,Request $request)
+    {
+        $check = $request->checked ? explode(',',$request->checked) : [];
+
+        foreach($request->only('department_id','asset_code_type','finance_code','asset_code','asset_name','asset_type','serial_no','model','custodian_id','purchase_date','status','availability','created_by') as $key => $val){
+
+            if($key == "asset_code_type" && $val){
+                $filter = $filter->filter(function($item) use ($val){
+                    if( stripos($item->codeType->code_name,$val) !== false ){
+                        return $item;
+                    }
+                });
+            } else if($key == "asset_type" && $val) {
+                $filter = $filter->filter(function($item) use ($val){
+                    if( stripos($item->type->asset_type,$val) !== false ){
+                        return $item;
+                    }
+                });
+            } else if($key == "asset_class" && $val) {
+                $filter = $filter->filter(function($item) use ($val){
+                    if( stripos($item->assetClass->class_code,$val) !== false ){
+                        return $item;
+                    }
+                });
+            }else if($key == "custodian_id" && $val) {
+                $filter = $filter->filter(function($item) use ($val){
+                    if( stripos($item->custodians->name,$val) !== false ){
+                        return $item;
+                    }
+                });
+            }
+            else if($key == "availability" && $val) {
+                $filter = $filter->filter(function($item) use ($val){
+                    if( stripos($item->availabilities->name,$val) !== false ){
+                        return $item;
+                    }
+                });
+            }else if($key == "created_by" && $val) {
+                $filter = $filter->filter(function($item) use ($val){
+                    if( stripos($item->user->name,$val) !== false ){
+                        return $item;
+                    }
+                });
+            }else if($key == "department_id" && $val) {
+                $filter = $filter->filter(function($item) use ($val){
+                    if( stripos($item->type->department->department_name,$val) !== false ){
+                        return $item;
+                    }
+                });
+            }else if($val) {
+                $filter = $filter->filter(function($item) use ($val,$key){
+                    if( stripos($item->{$key},$val) !== false ){
+                        return $item;
+                    }
+                });
+            }
+
+        }
+        $filtered = collect($filter)->pluck('id')->toArray();
+
+        if($request->checkall){
+
+            $check =  array_unique(array_merge($check,$filtered));
+
+        }else if($request->uncheck){
+
+            foreach($filtered as $fil){
+
+                $index = array_search($fil,$check);
+
+                unset($check[$index]);
+            }
+        }
+
+        $check = implode(',',$check);
+
+        return $check;
+    }
+
+    public function data_assetList(Request $request)
     {
         if( Auth::user()->hasRole('Inventory Admin') )
         { 
@@ -295,8 +395,16 @@ class AssetController extends Controller
                 });
             });
         }
+        
+        $check = $this->assetFilter($asset,$request);
 
         return datatables()::of($asset)
+
+        ->addColumn('checkone', function ($asset) use ($check) {
+            return '<input type="hidden" name="mem_checkbox_submit" class="mem_checkbox_submit" value="'.$check.'">
+            <input type="checkbox" name="mem_checkbox[]" value="'.$asset->id.'" class="mem_checkbox">';
+        })
+
         ->addColumn('action', function ($asset) {
 
             return '<div class="btn-group"><a href="/asset-detail/' . $asset->id.'" class="btn btn-sm btn-primary mr-1"><i class="fal fa-eye"></i></a>
@@ -344,6 +452,11 @@ class AssetController extends Controller
             return $asset->type->asset_type ?? '<div style="color:red;" >--</div>';
         })
 
+        ->editColumn('asset_class', function ($asset) {
+
+            return $asset->asset_class ?? '<div style="color:red;" >--</div>';
+        })
+
         ->editColumn('asset_code_type', function ($asset) {
 
             return $asset->codeType->code_name ?? '<div style="color:red;" >--</div>';
@@ -388,8 +501,14 @@ class AssetController extends Controller
                 return '--';
             }
         })
+
+        ->editColumn('storage_location', function ($asset) {
+
+            return isset($asset->storage_location) ? strtoupper($asset->storage_location) : '<div style="color:red;" >--</div>';
+        })
         
-        ->rawColumns(['action', 'status', 'custodian_id', 'department_id', 'purchase_date', 'asset_type', 'asset_name', 'availability', 'created_by', 'asset_code_type', 'finance_code', 'model', 'serial_no'])
+        ->rawColumns(['storage_location','checked','checkone','action', 'status', 'custodian_id', 'department_id', 'purchase_date', 'asset_type', 'asset_name', 'availability', 
+        'created_by', 'asset_code_type', 'finance_code', 'model', 'serial_no','asset_class'])
         ->make(true);
     }
 
@@ -405,10 +524,11 @@ class AssetController extends Controller
         $codeType = AssetCodeType::all();
         $status = AssetStatus::all();
         $acquisition = AssetAcquisition::all();
+        $class = AssetClass::all();
         $assetTrail = AssetTrail::where('asset_id', $id)->orderBy('created_at', 'desc')->get();
         $borrow = Borrow::where('asset_id', $id)->whereNull('actual_return_date')->where('status','1')->first();
 
-        return view('inventory.asset-detail', compact('borrow', 'asset', 'image', 'department', 'availability', 'set', 'setType', 'custodian', 'codeType', 'status', 'assetTrail', 'acquisition'))->with('no', 1)->with('num', 1);
+        return view('inventory.asset.asset-detail', compact('class', 'borrow', 'asset', 'image', 'department', 'availability', 'set', 'setType', 'custodian', 'codeType', 'status', 'assetTrail', 'acquisition'))->with('no', 1)->with('num', 1);
     }
 
     public function deleteImage($id, $asset_id)
@@ -474,6 +594,7 @@ class AssetController extends Controller
                         'inactive_date'     => 'required',
                         'inactive_reason'   => 'required',
                         'asset_code_type'   => 'required',
+                        'asset_class'       => 'required',
                     ]);
         
                     $asset->update([
@@ -489,6 +610,7 @@ class AssetController extends Controller
                         'inactive_date'         => $request->inactive_date,
                         'inactive_reason'       => $request->inactive_reason,
                         'inactive_remark'       => $request->inactive_remark,
+                        'asset_class'           => $request->asset_class
                     ]);
 
                 } else {
@@ -500,6 +622,7 @@ class AssetController extends Controller
                         'set_package'       => 'required',
                         'status'            => 'required',
                         'asset_code_type'   => 'required',
+                        'asset_class'       => 'required',
                     ]);
         
                     $asset->update([
@@ -512,6 +635,7 @@ class AssetController extends Controller
                         'availability'          => $request->availability,
                         'set_package'           => $request->set_package,
                         'asset_code_type'       => $request->asset_code_type,
+                        'asset_class'           => $request->asset_class,
                         'inactive_date'         => null,
                         'inactive_reason'       => null,
                         'inactive_remark'       => null,
@@ -526,6 +650,7 @@ class AssetController extends Controller
                     'set_package'       => 'required',
                     'status'            => 'required',
                     'asset_code_type'   => 'required',
+                    'asset_class'       => 'required',
                 ]);
     
                 $asset->update([
@@ -538,6 +663,7 @@ class AssetController extends Controller
                     'availability'          => $request->availability,
                     'set_package'           => $request->set_package,
                     'asset_code_type'       => $request->asset_code_type,
+                    'asset_class'           => $request->asset_class,
                     'inactive_date'         => null,
                     'inactive_reason'       => null,
                     'inactive_remark'       => null,
@@ -558,6 +684,7 @@ class AssetController extends Controller
                     'inactive_date'     => 'required',
                     'inactive_reason'   => 'required',
                     'asset_code_type'   => 'required',
+                    'asset_class'       => 'required',
                 ]);
     
                 $asset->update([
@@ -570,6 +697,7 @@ class AssetController extends Controller
                     'availability'          => $request->availability,
                     'set_package'           => $request->set_package,
                     'asset_code_type'       => $request->asset_code_type,
+                    'asset_class'           => $request->asset_class,
                     'inactive_date'         => $request->inactive_date,
                     'inactive_reason'       => $request->inactive_reason,
                     'inactive_remark'       => $request->inactive_remark,
@@ -584,6 +712,7 @@ class AssetController extends Controller
                     'set_package'       => 'required',
                     'status'            => 'required',
                     'asset_code_type'   => 'required',
+                    'asset_class'       => 'required',
                 ]);
     
                 $asset->update([
@@ -596,16 +725,18 @@ class AssetController extends Controller
                     'availability'          => $request->availability,
                     'set_package'           => $request->set_package,
                     'asset_code_type'       => $request->asset_code_type,
+                    'asset_class'           => $request->asset_class,
                 ]);
 
              }
         }
 
-        if($request->asset_name != $assets->asset_name || $request->asset_code_type != $assets->asset_code_type || $request->serial_no != $assets->serial_no || $request->status != $assets->status)
+        if($request->asset_name != $assets->asset_name || $request->asset_code_type != $assets->asset_code_type || $request->serial_no != $assets->serial_no || $request->status != $assets->status || $request->asset_class != $assets->asset_class)
         {
            $trail = AssetTrail::create([
                 'asset_id'              => $asset->id,
                 'asset_type'            => $asset->asset_type,
+                'asset_class'           => $asset->asset_class,
                 'asset_code'            => $asset->asset_code,
                 'asset_code_type'       => $asset->asset_code_type,
                 'finance_code'          => $asset->finance_code,
@@ -669,7 +800,7 @@ class AssetController extends Controller
             if(isset($value) && !empty($value))
             {
                 AssetSetTrail::create([
-                    'asset_id'      => $trail->id,
+                    'asset_id'      => $asset->id,
                     'asset_type'    => $value,
                     'serial_no'     => strtoupper($request->serial_nos[$key]),
                     'model'         => strtoupper($request->models[$key]),
@@ -775,7 +906,7 @@ class AssetController extends Controller
                 'details'           => $asset->asset_code.' : '.$asset->asset_name,
             ];
 
-            Mail::send('inventory.verify-mail', $data, function($message) use ($custodian) {
+            Mail::send('inventory.asset.verify-mail', $data, function($message) use ($custodian) {
                 $message->to($custodian->staff->staff_email)->subject('Asset Custodian Verification');
                 $message->from(Auth::user()->email);
             });
@@ -810,21 +941,21 @@ class AssetController extends Controller
         $set = AssetSet::where('asset_id', $id)->get();
         $borrow = Borrow::where('asset_id', $id)->whereNull('actual_return_date')->where('status','1')->first();
          
-        return view('inventory.asset-pdf', compact('asset', 'image', 'set', 'borrow'))->with('num', 1);
+        return view('inventory.asset.asset-pdf', compact('asset', 'image', 'set', 'borrow'))->with('num', 1);
     }
 
     public function trailPdf(Request $request, $id)
     {
         $asset = Asset::where('id', $id)->first();
          
-        return view('inventory.trail-pdf', compact('asset'));
+        return view('inventory.asset.trail-pdf', compact('asset'));
     }
 
     public function custodianPdf(Request $request, $id)
     {
         $asset = Asset::where('id', $id)->first();
          
-        return view('inventory.custodian-pdf', compact('asset'));
+        return view('inventory.asset.custodian-pdf', compact('asset'));
     }
 
     public function assetTrail($id)
@@ -832,7 +963,7 @@ class AssetController extends Controller
         $asset = AssetTrail::where('id', $id)->first(); 
         $set = AssetSetTrail::where('asset_trail_id', $id)->get();
 
-        return view('inventory.asset-trail', compact('asset', 'set'))->with('num', 1);
+        return view('inventory.asset.asset-trail', compact('asset', 'set'))->with('num', 1);
     }
 
     // My Asset 
@@ -841,8 +972,9 @@ class AssetController extends Controller
         $data_department = AssetDepartment::all();
         $data_code = AssetCodeType::all();
         $data_type = AssetType::all();
+        $data_class = AssetClass::all();
 
-        return view('inventory.verify-list', compact('data_department','data_code','data_type'));
+        return view('inventory.asset.verify-list', compact('data_department','data_code','data_type','data_class'));
     }
 
     public function data_verifyList()
@@ -915,6 +1047,11 @@ class AssetController extends Controller
             return $verify->assets->type->asset_type ?? '<div style="color:red;" >--</div>';
         })
 
+        ->editColumn('asset_class', function ($verify) {
+
+            return $verify->assets->asset_class ?? '<div style="color:red;" >--</div>';
+        })
+
         ->editColumn('delay', function ($verify) {
 
             $delay = Carbon::parse($verify->created_at)->diffInDays(Carbon::now())+1;
@@ -928,7 +1065,7 @@ class AssetController extends Controller
             return $delay;
         })
         
-        ->rawColumns(['action', 'delay', 'asset_type', 'assigned_by', 'department', 'asset_name', 'assigned_date', 'asset_code_type', 'id', 'verification'])
+        ->rawColumns(['action', 'delay', 'asset_type', 'assigned_by', 'department', 'asset_name', 'assigned_date', 'asset_code_type', 'id', 'verification', 'asset_class'])
         ->make(true);
     }
 
@@ -948,8 +1085,9 @@ class AssetController extends Controller
         $data_department = AssetDepartment::all();
         $data_code = AssetCodeType::all();
         $data_type = AssetType::all();
+        $data_class = AssetClass::all();
 
-        return view('inventory.individual-list', compact('data_department','data_code','data_type'));
+        return view('inventory.asset.individual-list', compact('data_department','data_code','data_type','data_class'));
     }
 
     public function data_individualList()
@@ -1010,7 +1148,12 @@ class AssetController extends Controller
             return $verify->assets->type->asset_type ?? '<div style="color:red;" >--</div>';
         })
 
-        ->rawColumns(['action', 'verification_date', 'asset_type', 'assigned_by', 'department', 'asset_name', 'assigned_date', 'asset_code_type', 'id', 'verification'])
+        ->editColumn('asset_class', function ($verify) {
+
+            return $verify->assets->asset_class ?? '<div style="color:red;" >--</div>';
+        })
+
+        ->rawColumns(['action', 'verification_date', 'asset_type', 'assigned_by', 'department', 'asset_name', 'assigned_date', 'asset_code_type', 'id', 'verification', 'asset_class'])
         ->make(true);
     }
 
@@ -1026,7 +1169,7 @@ class AssetController extends Controller
         $set = AssetSet::where('asset_id', $id)->get();
         $borrow = Borrow::where('asset_id', $id)->whereNull('actual_return_date')->where('status','1')->first();
 
-        return view('inventory.asset-info', compact('asset', 'image', 'set', 'borrow'))->with('num', 1);
+        return view('inventory.asset.asset-info', compact('asset', 'image', 'set', 'borrow'))->with('num', 1);
     }
 
     // Export
@@ -1044,6 +1187,7 @@ class AssetController extends Controller
         }
 
         $availability = AssetAvailability::select('id', 'name')->get();
+        $class = AssetClass::select('class_code', 'class_name')->get();
 
         if( Auth::user()->hasRole('Inventory Admin') )
         { 
@@ -1064,14 +1208,15 @@ class AssetController extends Controller
         $selectedavailability = $request->availability; 
         $selectedtype = $request->type; 
         $selectedstatus = $request->status; 
+        $selectedclass = $request->classs; 
         $list = [];
 
-        return view('inventory.asset-report', compact('request', 'department', 'type', 'availability', 'selectedstatus', 'selecteddepartment', 'selectedavailability', 'selectedtype', 'list'));
+        return view('inventory.asset.asset-report', compact('request', 'department', 'type', 'availability', 'selectedstatus', 'selecteddepartment', 'selectedavailability', 'selectedtype', 'selectedclass', 'list', 'class'));
     }
 
-    public function exports($department = null, $availability = null, $type = null, $status = null)
+    public function exports($department = null, $availability = null, $type = null, $status = null, $classs = null)
     {
-        return Excel::download(new AssetExport($department, $availability, $type, $status), 'Asset.xlsx');
+        return Excel::download(new AssetExport($department, $availability, $type, $status, $classs), 'Asset.xlsx');
     }
 
     public function data_assetexport(Request $request) 
@@ -1095,6 +1240,11 @@ class AssetController extends Controller
         if( $request->status != "" && $request->status != "All")
         {
             $cond .= " AND status = '".$request->status."' ";
+        }
+
+        if( $request->classs != "" && $request->classs != "All")
+        {
+            $cond .= " AND asset_class = '".$request->classs."' ";
         }
 
         if( Auth::user()->hasRole('Inventory Admin') )
@@ -1132,6 +1282,11 @@ class AssetController extends Controller
         ->editColumn('asset_type', function ($asset) {
 
             return $asset->type->asset_type ?? '<div style="color:red;" > -- </div>';
+        })
+
+        ->editColumn('asset_class', function ($asset) {
+
+            return $asset->asset_class ?? '<div style="color:red;" > -- </div>';
         })
 
         ->editColumn('serial_no', function ($asset) {
@@ -1251,10 +1406,15 @@ class AssetController extends Controller
 
             return $asset->acquisitionType->acquisition_type ?? '<div style="color:red;" >--</div>';
         })
+
+        ->editColumn('notes', function ($asset) {
+
+            return '';
+        })
     
        ->rawColumns(['inactive_date','finance_code','department', 'asset_code_type', 'asset_code', 'asset_name', 'asset_type', 'set_package', 'status', 'serial_no',
         'model', 'brand', 'total_price', 'lo_no', 'io_no', 'do_no', 'purchase_date', 'vendor_name', 'custodian_id', 'created_by', 'remark', 'availability', 'storage_location',
-        'inactive_remark', 'inactive_reason', 'acquisition_type'])
+        'inactive_remark', 'inactive_reason', 'acquisition_type', 'notes', 'asset_class'])
        ->make(true);
     }
 
@@ -1275,7 +1435,7 @@ class AssetController extends Controller
             $data = $result->first();
         }
              
-        return view('inventory.asset-search', compact('data','request'))->with('num', 1);
+        return view('inventory.asset.asset-search', compact('data','request'))->with('num', 1);
     }
 
     // Upload
@@ -1286,6 +1446,7 @@ class AssetController extends Controller
         $availability = AssetAvailability::all();
         $custodian = User::orderBy('name')->get();
         $data_department = AssetDepartment::all();
+        $class = AssetClass::all();
 
         if( Auth::user()->hasRole('Inventory Admin') )
         { 
@@ -1300,7 +1461,7 @@ class AssetController extends Controller
             });
         }
 
-        return view('inventory.asset-upload', compact('code','type','acquisition','availability','custodian','data_department'));
+        return view('inventory.asset.asset-upload', compact('code','type','acquisition','availability','custodian','data_department','class'));
     }
 
     public function assetTemplate()

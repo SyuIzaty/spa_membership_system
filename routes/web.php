@@ -113,6 +113,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('addType', 'AssetTypeController@addType');
     Route::post('updateType', 'AssetTypeController@updateType');
 
+    // AssetClass
+    Route::resource('asset-class', 'AssetClassController');
+    Route::post('assetClass', 'AssetClassController@data_asset_class');
+    Route::post('addClass', 'AssetClassController@addClass');
+    Route::post('updateClass', 'AssetClassController@updateCLass');
+
     // Custodian-Department
     Route::resource('asset-custodian', 'AssetCustodianController');
     Route::post('addDepartment', 'AssetCustodianController@addDepartment');
@@ -157,6 +163,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/assetTemplates','AssetController@assetTemplate');
     Route::get('/asset-trail/{id}', 'AssetController@assetTrail');
     Route::get('/asset-dashboard', 'AssetController@dashboard');
+    Route::post('printBarcode', 'AssetController@printBarcode');
 
     // Stock
     Route::get('/stock-index', 'StockController@stockIndex');
@@ -526,11 +533,13 @@ Route::get('/findStaff', 'TrainingController@findStaff');
 
 // Training : Claim
 Route::get('/claim-form', 'TrainingController@claimForm');
-Route::post('store-claim', 'TrainingController@claimStore');
+Route::post('store-claim', 'TrainingController@claimStore')->name('claimStore');
 Route::get('/claim-list', 'TrainingController@claimList')->name('claimList');
 Route::post('data-pending-claim', 'TrainingController@data_pending_claim');
 Route::post('approve-claim', 'TrainingController@approveClaim');
 Route::post('reject-claim', 'TrainingController@rejectClaim');
+Route::post('/get-attachment','TrainingController@getAttachment');
+Route::get('getClaimAttachment/{id}','TrainingController@getClaimAttachment');
 Route::delete('delete-claim/{id}', 'TrainingController@deleteClaim')->name('deleteClaim');
 Route::get('/claim-info/{id}', 'TrainingController@claimInfo');
 Route::get('claim/{filename}/{type}','TrainingController@claimAttachment');
@@ -580,9 +589,9 @@ Route::get('/question-pdf/{id}', 'TrainingController@questionPdf')->name('questi
 // Training : Evaluation Report
 Route::get('/evaluation-report', 'TrainingController@reportList');
 Route::post('data-evaluation-report', 'TrainingController@data_evaluation_report');
-
 Route::get('/report-info/{id}', 'TrainingController@reportInfo');
 Route::get('/report-response/{id}/{head}/{eval}','TrainingController@reportResponse');
+Route::get('/report-response-pdf/{id}/{head}/{eval}', 'TrainingController@reportResponsePdf')->name('reportResponsePdf');
 
 // Training : Evaluation Form
 Route::get('/evaluation-form/{id}', 'TrainingController@evaluationForm');
