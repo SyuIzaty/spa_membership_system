@@ -9,7 +9,7 @@
                 <div class="card-header">
                     <div class="d-flex justify-content-center">
                         <div class="p-2">
-                            <center><img src="{{ asset('img/intec_logo.png') }}" style="max-width: 100%" class="responsive"/></center><br>
+                            <center><img src="{{ asset('img/intec_logo_new.png') }}" style="height: 120px; width: 320px;" class="responsive"/></center><br>
                         </div>
                     </div>
                 </div>

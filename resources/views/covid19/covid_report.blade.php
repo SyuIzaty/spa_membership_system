@@ -96,7 +96,7 @@
                                             <div class="table-responsive">
                                                 <table class="table table-bordered" id="rep">
                                                     <thead>
-                                                        <tr class="bg-primary-50 text-center">
+                                                        <tr class="bg-primary-50 text-center" style="white-space: nowrap">
                                                             <th>ID</th>
                                                             <th>NAME</th>
                                                             <th>IC NO</th>

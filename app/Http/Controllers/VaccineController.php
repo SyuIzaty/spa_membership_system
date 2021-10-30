@@ -105,8 +105,8 @@ class VaccineController extends Controller
         return datatables()::of($vaccine)
         ->addColumn('action', function ($vaccine) {
             
-            return '<a href="/vaccine-detail/' . $vaccine->id.'" class="btn btn-sm btn-info"><i class="fal fa-eye"></i></a>
-                <button class="btn btn-sm btn-danger btn-delete" data-remote="/deleteVaccine/' . $vaccine->id . '"><i class="fal fa-trash"></i></button>';
+            return '<div class="btn-group"><a href="/vaccine-detail/' . $vaccine->id.'" class="btn btn-sm btn-info mr-1"><i class="fal fa-eye"></i></a>
+                <button class="btn btn-sm btn-danger btn-delete" data-remote="/deleteVaccine/' . $vaccine->id . '"><i class="fal fa-trash"></i></button></div>';
         })
 
         ->editColumn('created_at', function ($vaccine) {

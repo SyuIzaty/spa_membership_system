@@ -9,7 +9,7 @@
                 <div class="card-header" style="background-image: url({{asset('img/coronavirus.png')}}); background-size: cover">
                     <div class="d-flex justify-content-center" style="color: black">
                         <div class="p-2">
-                            <center><img src="{{ asset('img/intec_logo.png') }}" style="max-width: 100%" class="responsive"/></center><br>
+                            <center><img src="{{ asset('img/intec_logo_new.png') }}" style="height: 120px; width: 320px;" class="responsive"/></center><br>
                             <h4 style="text-align: center">
                                 <b>INTEC EDUCATION COLLEGE COVID19 RISK SCREENING DAILY DECLARATION FORM</b>
                             </h4>

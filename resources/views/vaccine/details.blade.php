@@ -19,7 +19,7 @@
 
                 <div class="panel-container show">
                     <div class="panel-content">
-                        <center><img src="{{ asset('img/intec_logo.png') }}" style="height: 120px; width: 270px;"></center><br>
+                        <center><img src="{{ asset('img/intec_logo_new.png') }}" style="height: 120px; width: 320px;"></center><br>
                         <h4 style="text-align: center">
                             <b>INTEC EDUCATION COLLEGE VACCINATION FORM DETAILS</b>
                         </h4>

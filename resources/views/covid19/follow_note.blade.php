@@ -63,7 +63,7 @@
                                         </div>
                                     @endif
                                     <table class="table table-bordered">
-                                        <tr class="bg-primary-50 text-center">
+                                        <tr class="bg-primary-50 text-center" style="white-space: nowrap">
                                             <td><b>NO.</b></td>
                                             <td><b>FOLLOW UP</b></td>
                                             <td><b>CREATED BY</b></td>

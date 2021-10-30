@@ -25,7 +25,7 @@
                         <div class="table-responsive">
                             <table id="catD" class="table table-bordered table-hover table-striped w-100">
                                 <thead>
-                                    <tr class="bg-primary-50 text-center">
+                                    <tr class="bg-primary-50 text-center" style="white-space: nowrap">
                                         <th style="width:25px">NO</th>
                                         <th>ID</th>
                                         <th>NAME</th>

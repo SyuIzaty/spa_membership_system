@@ -306,12 +306,12 @@ class CovidController extends Controller
         ->addColumn('action', function ($declare) {
             
             if($declare->category != 'A' && $declare->category != 'B' && $declare->category != 'C') {
-                return '<a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info"><i class="fal fa-eye"></i> Declaration</a>
-                    <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> Delete</button>';
+                return '<div class="btn-group"><a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info mr-1"><i class="fal fa-eye"></i> Declaration</a>
+                    <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> Delete</button></div>';
             } else {
-                return '<a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info"><i class="fal fa-eye"></i> Declaration</a>
-                        <a href="/followup-list/' . $declare->id.'" class="btn btn-warning btn-sm"><i class="fal fa-plus-square"></i> FollowUp</a>
-                        <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> Delete</button>';
+                return '<div class="btn-group"><a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info mr-1"><i class="fal fa-eye"></i> Declaration</a>
+                        <a href="/followup-list/' . $declare->id.'" class="btn btn-warning btn-sm mr-1"><i class="fal fa-plus-square"></i> FollowUp</a>
+                        <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> Delete</button></div>';
             }
         })
 
@@ -375,12 +375,12 @@ class CovidController extends Controller
         ->addColumn('action', function ($declare) {
 
             if($declare->category != 'A' && $declare->category != 'B' && $declare->category != 'C') {
-                return '<a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info"><i class="fal fa-eye"></i> Declaration</a>
-                    <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> Delete</button>';
+                return '<div class="btn-group"><a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info mr-1"><i class="fal fa-eye"></i> Declaration</a>
+                    <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> Delete</button></div>';
             } else {
-                return '<a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info"><i class="fal fa-eye"></i> Declaration</a>
-                        <a href="/followup-list/' . $declare->id.'" class="btn btn-warning btn-sm"><i class="fal fa-plus-square"></i> FollowUp</a>
-                        <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> Delete</button>';
+                return '<div class="btn-group"><a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info mr-1"><i class="fal fa-eye"></i> Declaration</a>
+                        <a href="/followup-list/' . $declare->id.'" class="btn btn-warning btn-sm mr-1"><i class="fal fa-plus-square"></i> FollowUp</a>
+                        <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> Delete</button></div>';
             }
         })
 
@@ -508,9 +508,9 @@ class CovidController extends Controller
         return datatables()::of($declare)
         ->addColumn('action', function ($declare) {
 
-            return '<a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info"><i class="fal fa-eye"></i> Declaration</a>
-                    <a href="/followup-list/' . $declare->id.'" class="btn btn-warning btn-sm"><i class="fal fa-plus-square"></i> FollowUp</a>
-                    <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i>  Delete</button>';
+            return '<div class="btn-group"><a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info mr-1"><i class="fal fa-eye"></i> Declaration</a>
+                    <a href="/followup-list/' . $declare->id.'" class="btn btn-warning btn-sm mr-1"><i class="fal fa-plus-square"></i> FollowUp</a>
+                    <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i>  Delete</button></div>';
         })
 
         ->editColumn('user_name', function ($declare) {
@@ -583,9 +583,9 @@ class CovidController extends Controller
         return datatables()::of($declare)
         ->addColumn('action', function ($declare) {
 
-            return '<a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info"><i class="fal fa-eye"></i> Declaration</a>
-                    <a href="/followup-list/' . $declare->id.'" class="btn btn-warning btn-sm"><i class="fal fa-plus-square"></i> FollowUp</a>
-                    <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i>  Delete</button>';
+            return '<div class="btn-group"><a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info mr-1"><i class="fal fa-eye"></i> Declaration</a>
+                    <a href="/followup-list/' . $declare->id.'" class="btn btn-warning btn-sm mr-1"><i class="fal fa-plus-square"></i> FollowUp</a>
+                    <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i>  Delete</button></div>';
         })
 
         ->editColumn('user_name', function ($declare) {
@@ -712,9 +712,9 @@ class CovidController extends Controller
         return datatables()::of($declare)
         ->addColumn('action', function ($declare) {
 
-            return '<a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info"><i class="fal fa-eye"></i> Declaration</a>
-            <a href="/followup-list/' . $declare->id.'" class="btn btn-warning btn-sm"><i class="fal fa-plus-square"></i> FollowUp</a>
-            <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i>  Delete</button>';
+            return '<div class="btn-group"><a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info mr-1"><i class="fal fa-eye"></i> Declaration</a>
+            <a href="/followup-list/' . $declare->id.'" class="btn btn-warning btn-sm mr-1"><i class="fal fa-plus-square"></i> FollowUp</a>
+            <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i>  Delete</button></div>';
         })
 
         ->editColumn('user_name', function ($declare) {
@@ -768,8 +768,8 @@ class CovidController extends Controller
         return datatables()::of($declare)
         ->addColumn('action', function ($declare) {
 
-            return '<a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info"><i class="fal fa-eye"></i> Declaration</a>
-            <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> Delete</button>';
+            return '<div class="btn-group"><a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info mr-1"><i class="fal fa-eye"></i> Declaration</a>
+            <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> Delete</button></div>';
         })
 
         ->editColumn('user_name', function ($declare) {
@@ -823,8 +823,8 @@ class CovidController extends Controller
         return datatables()::of($declare)
         ->addColumn('action', function ($declare) {
 
-            return '<a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info"><i class="fal fa-eye"></i> Declaration</a>
-            <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> Delete</button>';
+            return '<div class="btn-group"><a href="/declare-info/' . $declare->id.'" class="btn btn-sm btn-info mr-1"><i class="fal fa-eye"></i> Declaration</a>
+            <button class="btn btn-sm btn-danger btn-delete" data-remote="/declareList/' . $declare->id . '"><i class="fal fa-trash"></i> Delete</button></div>';
         })
 
         ->editColumn('user_name', function ($declare) {
