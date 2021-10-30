@@ -10,7 +10,7 @@
                 <div class="card-header bg-primary-50">
                     <div class="d-flex justify-content-center" style="color: black">
                         <div class="p-2">
-                            <center><img src="{{ asset('img/intec_logo.png') }}" style="max-width: 100%" class="responsive"/></center><br>
+                            <center><img src="{{ asset('img/intec_logo_new.png') }}" style="max-width: 100%" class="responsive"/></center><br>
                             <h4 style="text-align: center; margin-top: -25px">
                                 <b>TRAINING EVALUATION FORM</b>
                             </h4>
@@ -85,8 +85,8 @@
                                 <div class="col-md-12">
                                     <?php
                                         $exist = \App\TrainingEvaluationHeadResult::where('staff_id', Auth::user()->id)->where('training_id', $training->id)->first();
-                                        $duration = \App\TrainingEvaluationHeadResult::where('staff_id', Auth::user()->id)->where('training_id', $training->id)->whereHas('trainingEvaluation', function($query){
-                                                        $query->whereDate('open_date','<=',\Carbon\Carbon::now())->whereDate('close_date','>=',\Carbon\Carbon::now());
+                                        $duration = \App\TrainingEvaluationHeadResult::where('staff_id', Auth::user()->id)->where('training_id', $training->id)->whereHas('trainingList', function($query){
+                                                        $query->where('evaluation_status', '1');
                                                     })->first();         
                                     ?>
                                     @if(isset($exist))
@@ -109,7 +109,7 @@
                                                                 ?>
                                                                 @foreach($data->trainingEvaluationQuestions->groupBy('head_id') as $questions)
                                                                     @if( $questions->first()->eval_rate === "R" )
-                                                                        <tr class="font-weight-bold text-center">
+                                                                        <tr class="font-weight-bold text-center" style="white-space: nowrap">
                                                                             <td style="width: 2%">No</td>
                                                                             <td style="width: 50%">Question</td>
                                                                             <td style="width: 7%">Strongly Disagree</td>
@@ -119,7 +119,7 @@
                                                                             <td style="width: 7%">Strongly Agree</td>
                                                                         </tr>
                                                                     @else
-                                                                        <tr class="font-weight-bold text-center">
+                                                                        <tr class="font-weight-bold text-center" style="white-space: nowrap">
                                                                             <td style="width: 2%">No</td>
                                                                             <td style="width: 50%">Question</td>
                                                                             <td colspan="5">Answer</td>

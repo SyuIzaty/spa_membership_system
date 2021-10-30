@@ -20,7 +20,7 @@
 
                 <div class="panel-container show">
                     <div class="panel-content">
-                        <center><img src="{{ asset('img/intec_logo.png') }}" style="height: 120px; width: 270px;"></center><br>
+                        <center><img src="{{ asset('img/intec_logo_new.png') }}" style="height: 120px; width: 320px;"></center><br>
                         <h4 style="text-align: center">
                             <b>INTEC EDUCATION COLLEGE TRAINING HOURS CLAIM DETAILS</b>
                         </h4>
@@ -150,7 +150,7 @@
                                                                     --
                                                                 @endif
                                                             </td>
-                                                            <td width="20%" style="vertical-align: middle"><label class="form-label"> Attachment : <i class="fal fa-info-circle fs-xs mr-1" data-toggle="tooltip" data-placement="right" title="" data-original-title="Maximum attachment 5 (.pdf, .jpg, .jpeg, .png)"></i></label></td>
+                                                            <td width="20%" style="vertical-align: middle"><label class="form-label"> Attachment : <i class="fal fa-info-circle fs-xs mr-1" data-toggle="tooltip" data-placement="right" title="" data-original-title="Attachment is accepted in the form of .pdf, .doc, .docx (max 1(one) file) or .png, .jpg, .jpeg (max 5(five) image)"></i></label></td>
                                                             <td colspan="3">
                                                                 @if($attachment->first())
                                                                 <ol style="margin-left: -25px">
@@ -211,52 +211,9 @@
                                                                         <i class="fal fa-cloud-upload text-muted mb-3"></i> <br>
                                                                         <span class="text-uppercase">Drop files here or click to upload.</span>
                                                                         <br>
-                                                                        <span class="fs-sm text-muted">This is a dropzone. Selected files <strong>.pdf,.jpeg,.jpg,.png</strong> are actually uploaded.</span>
+                                                                        <span class="fs-sm text-muted">This is a dropzone. Selected files <strong>.pdf,.doc,.docx,.jpeg,.jpg,.png</strong> are actually uploaded.</span>
                                                                     </div>
                                                                 </form>   
-                                                                <script type="text/javascript">
-                                                                    Dropzone.options.dpzMultipleFiles = {
-                                                                         maxFilesize: 15, // MB
-                                                                         maxFiles: 5,
-                                                                         renameFile: function(file) {
-                                                                             var dt = new Date();
-                                                                             var time = dt.getTime();
-                                                                            return time+file.name;
-                                                                         },
-                                                                         acceptedFiles: ".jpeg,.jpg,.png",
-                                                                         addRemoveLinks: true,
-                                                                         timeout: 50000,
-                                                                         init: function () {
-                                                                            this.on('removedfile', function (file) {
-                                                                                var name = file.upload.filename;
-                                                                                $.ajax({
-                                                                                    headers: {
-                                                                                                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                                                                                            },
-                                                                                    type: 'POST',
-                                                                                    url: '{{ url("delete-file") }}',
-                                                                                    data: {filename: name},
-                                                                                    success: function (data){
-                                                                                        console.log("File has been successfully removed!!");
-                                                                                    },
-                                                                                    error: function(e) {
-                                                                                        console.log(e);
-                                                                                    }});
-                                                                                    var fileRef;
-                                                                                    return (fileRef = file.previewElement) != null ? 
-                                                                                    fileRef.parentNode.removeChild(file.previewElement) : void 0;
-                                                                            });
-                                                                            this.on('success', function (file, response) {
-                                                                                console.log(response);
-                                                                                location.reload();
-                                                                            });
-                                                                            this.on('error', function(file, response) {
-                                                                                return false;
-                                                                            }); 
-                                                                             
-                                                                        }
-                                                                    };
-                                                                </script>
                                                             </td>
                                                         </div>
                                                     </tr>
@@ -287,8 +244,48 @@
         $('#type, #category').select2();
     })
 
-</script>
+    Dropzone.options.dpzMultipleFiles = {
+            maxFilesize: 15, // MB
+            maxFiles: 5,
+            renameFile: function(file) {
+                var dt = new Date();
+                var time = dt.getTime();
+            return time+file.name;
+            },
+            acceptedFiles: ".jpeg,.jpg,.png,.pdf,.doc,.docx",
+            addRemoveLinks: true,
+            timeout: 50000,
+            init: function () {
+                this.on('removedfile', function (file) {
+                    var name = file.upload.filename;
+                    $.ajax({
+                        headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                                },
+                        type: 'POST',
+                        url: '{{ url("delete-file") }}',
+                        data: {filename: name},
+                        success: function (data){
+                            console.log("File has been successfully removed!!");
+                        },
+                        error: function(e) {
+                            console.log(e);
+                        }});
+                        var fileRef;
+                        return (fileRef = file.previewElement) != null ? 
+                        fileRef.parentNode.removeChild(file.previewElement) : void 0;
+                });
+                this.on('success', function (file, response) {
+                    console.log(response);
+                    location.reload();
+                });
+                this.on('error', function(file, response) {
+                    return false;
+                }); 
+                    
+            }
+    };                           
 
-  
+</script>
 @endsection
 

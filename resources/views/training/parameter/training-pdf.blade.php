@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-xl-12" style="padding: 50px; margin-bottom: 20px">
                 
-                <center><img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="280" alt="INTEC"></center>
+                <center><img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="320" alt="INTEC"></center>
                 <h4 style="text-align: center">
                     <b>{{ strtoupper($train->title) }} INFO</b>
                 </h4><br>
@@ -48,7 +48,7 @@
                                             <table class="table table-bordered table-hover table-striped w-100">
                                                 <p><b>PARTICIPANT LIST : </b></p> 
                                                 <thead>
-                                                    <tr class="bg-primary-50 text-center">
+                                                    <tr class="bg-primary-50 text-center" style="white-space: nowrap">
                                                         <th>NO</th>
                                                         <th>TICKET #ID</th>
                                                         <th>ID</th>

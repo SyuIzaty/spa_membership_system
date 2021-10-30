@@ -4,7 +4,7 @@
 <main id="js-page-content" role="main" class="page-content">
     <div class="row">
         <div class="col-xl-12" style="padding: 50px; margin-bottom: 20px">
-            <center><img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="280" alt="INTEC"></center>
+            <center><img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="320" alt="INTEC"></center>
                 <h4 style="text-align: center">
                     <b>INTEC EDUCATION COLLEGE {{ strtoupper($header->first()->trainingEvaluation->evaluation) }} FORM SET</b>
                 </h4><br>
@@ -24,7 +24,7 @@
                                         ?>
                                         @foreach($data->trainingEvaluationQuestions->groupBy('head_id') as $questions)
                                             @if( $questions->first()->eval_rate === "R" )
-                                                <tr class="font-weight-bold text-center">
+                                                <tr class="font-weight-bold text-center" style="white-space: nowrap">
                                                     <td style="width: 2%">No</td>
                                                     <td style="width: 50%">Question</td>
                                                     <td style="width: 7%">Strongly Disagree</td>
@@ -34,7 +34,7 @@
                                                     <td style="width: 7%">Strongly Agree</td>
                                                 </tr>
                                             @else
-                                                <tr class="font-weight-bold text-center">
+                                                <tr class="font-weight-bold text-center" style="white-space: nowrap">
                                                     <td style="width: 2%">No</td>
                                                     <td style="width: 50%">Question</td>
                                                     <td colspan="5">Answer</td>

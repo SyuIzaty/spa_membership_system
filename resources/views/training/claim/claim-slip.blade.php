@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-xl-12" style="padding: 50px; margin-bottom: 20px">
                 
-                <center><img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="280" alt="INTEC"></center>
+                <center><img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="320" alt="INTEC"></center>
                     <h4 style="text-align: center">
                         <b>INTEC EDUCATION COLLEGE TRAINING HOUR SLIP {{ $year }}</b>
                     </h4><br>
@@ -38,7 +38,7 @@
                                                     <div class="table-responsive">
                                                         <table class="table m-0 table-bordered">
                                                             <thead>
-                                                                <tr>
+                                                                <tr style="white-space: nowrap">
                                                                     <th class="text-center border-top-0 table-scale-border-bottom fw-700"></th>
                                                                     <th class="border-top-0 table-scale-border-bottom fw-700">Title</th>
                                                                     <th class="border-top-0 table-scale-border-bottom fw-700 text-center">Start Date</th>
@@ -69,12 +69,25 @@
                                                         <br><br>
                                                         <table class="table m-0 table-bordered" style="width: 30.5%" align="right">
                                                             <tr>
-                                                                <td colspan="1" class="text-right table-scale-border-bottom table-scale-border-top">Total Current Training Hours : </td>
-                                                                <td colspan="1" class="text-right fw-700 table-scale-border-bottom table-scale-border-top" style="width : 25%">{{ $data2 }}</td>
+                                                                <td colspan="1" class="text-right">Overall Required Training Hours : </td>
+                                                                <td colspan="1" class="text-right fw-700">{{ $hours->training_hour ?? '0' }}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="1" class="text-right table-scale-border-bottom">Overall Required Training Hours : </td>
-                                                                <td colspan="1" class="text-right fw-700 table-scale-border-bottom">{{ $hours->training_hour ?? '--' }}</td>
+                                                                <td colspan="1" class="text-right">Total Current Training Hours : </td>
+                                                                <td colspan="1" class="text-right fw-700" style="width : 25%">{{ $data2 ?? '0'}}</td>
+                                                            </tr>
+                                                            <?php 
+                                                                $balance = $hours->training_hour - $data2;
+                                                            ?>
+                                                            <tr>
+                                                                <td colspan="1" class="text-right">( - ) Total Balance Training Hours : </td>
+                                                                <td colspan="1" class="text-right fw-700">
+                                                                    @if($balance >= 0)
+                                                                        {{ number_format((float)$balance, 2, '.', '') ?? '0' }}
+                                                                    @else 
+                                                                        0
+                                                                    @endif
+                                                                </td>
                                                             </tr>
                                                         </table>
                                                     </div>  

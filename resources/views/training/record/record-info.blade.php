@@ -4,7 +4,7 @@
 <main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
     <div class="subheader">
         <h1 class="subheader-title">
-            <i class='subheader-icon fal fa-cogs'></i> STAFF RECORD DETAILS
+            <i class='subheader-icon fal fa-cogs'></i> STAFF RECORD DETAIL {{ $selectedYear }}
         </h1>
     </div>
 
@@ -31,7 +31,7 @@
                                         <label> Year Selection : </label>
                                         <select class="selectfilter form-control" name="year" id="year">
                                             @foreach ($year as $years)
-                                                <option value="{{ $years->year }}" {{ $selectedYear == $years->year ? 'selected' : '' }}>{{ $selectedYear }} -> {{ $years->year }}</option>
+                                                <option value="{{ $years->year }}" {{ $selectedYear == $years->year ? 'selected' : '' }}>{{ $years->year }}</option>
                                             @endforeach
                                         </select> 
                                     </div>
@@ -67,7 +67,7 @@
                                                     </h5>
                                                 </div>
                                                 <div class="card-body m-3">
-                                                    <center><img src="{{ asset('img/intec_logo.png') }}" style="height: 120px; width: 270px;"></center><br>
+                                                    <center><img src="{{ asset('img/intec_logo_new.png') }}" style="height: 120px; width: 320px;"></center><br>
                                                     <h4 style="text-align: center">
                                                         <b>INTEC EDUCATION COLLEGE TRAINING HOUR RECORDS</b>
                                                     </h4>
@@ -100,7 +100,7 @@
                                                     <div class="table-responsive">
                                                         <table class="table mt-5 table-striped">
                                                             <thead>
-                                                                <tr>
+                                                                <tr style="white-space: nowrap">
                                                                     <th class="text-center border-top-0 table-scale-border-bottom fw-700"></th>
                                                                     <th class="border-top-0 table-scale-border-bottom fw-700">Title</th>
                                                                     <th class="border-top-0 table-scale-border-bottom fw-700">Start Date</th>
@@ -138,18 +138,35 @@
                                                                     <tbody>
                                                                         <tr class="table-scale-border-top border-left-0 border-right-0 border-bottom-0">
                                                                             <td class="text-left keep-print-font">
+                                                                                <h5 class="m-0 fw-700 h4 keep-print-font color-primary-700">Overall Required Training Hours</h5>
+                                                                            </td>
+                                                                            <td class="text-right keep-print-font">
+                                                                                <h5 class="m-0 fw-700 h4 keep-print-font">{{ $yearly_hour->training_hour ?? '--' }}</h5>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="text-left keep-print-font">
                                                                                 <h5 class="m-0 fw-700 h4 keep-print-font color-primary-700">Total Current Training Hours</h5>
                                                                             </td>
                                                                             <td class="text-right keep-print-font">
                                                                                 <h5 class="m-0 fw-700 h4 keep-print-font text-danger">{{ $current_hours }}</h5>
                                                                             </td>
                                                                         </tr>
+                                                                        <?php 
+                                                                            $balance = $yearly_hour->training_hour - $current_hours;
+                                                                        ?>
                                                                         <tr>
                                                                             <td class="text-left keep-print-font">
-                                                                                <h5 class="m-0 fw-700 h4 keep-print-font color-primary-700">Overall Required Training Hours</h5>
+                                                                                <h5 class="m-0 fw-700 h4 keep-print-font color-primary-700">( - ) Total Balance Training Hours</h5>
                                                                             </td>
                                                                             <td class="text-right keep-print-font">
-                                                                                <h5 class="m-0 fw-700 h4 keep-print-font">{{ $yearly_hour->training_hour ?? '--' }}</h5>
+                                                                                <h5 class="m-0 fw-700 h4 keep-print-font text-danger">
+                                                                                    @if($balance >= 0)
+                                                                                        {{ number_format((float)$balance, 2, '.', '') ?? '0' }}
+                                                                                    @else 
+                                                                                        0
+                                                                                    @endif
+                                                                                </h5>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
@@ -212,7 +229,7 @@
                                                     <div class="table-responsive">
                                                         <table id="hist" class="table table-bordered table-hover table-striped w-100">
                                                             <thead>
-                                                                <tr class="bg-primary-50 text-center">
+                                                                <tr class="bg-primary-50 text-center" style="white-space: nowrap">
                                                                     <th>#ID</th>
                                                                     <th>Title</th>
                                                                     <th>Start Date</th>

@@ -20,7 +20,7 @@
 
                 <div class="panel-container show">
                     <div class="panel-content">
-                        <center><img src="{{ asset('img/intec_logo.png') }}" style="height: 120px; width: 270px;"></center><br>
+                        <center><img src="{{ asset('img/intec_logo_new.png') }}" style="height: 120px; width: 320px;"></center><br>
                         <h4 style="text-align: center">
                             <b>INTEC EDUCATION COLLEGE TRAINING HOURS CLAIM FORM</b>
                         </h4>
@@ -204,9 +204,9 @@
                                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                 @enderror
                                                             </td>
-                                                            <td width="20%" style="vertical-align: middle"><label class="form-label"><span class="text-danger">*</span> Attachment : <i class="fal fa-info-circle fs-xs mr-1" data-toggle="tooltip" data-placement="right" title="" data-original-title="Attachment in the form of training report / certificate / attendance (.pdf)"></i></label></td>
+                                                            <td width="20%" style="vertical-align: middle"><label class="form-label"><span class="text-danger">*</span> Attachment : <i class="fal fa-info-circle fs-xs mr-1" data-toggle="tooltip" data-placement="right" title="" data-original-title="Attachment is accepted in the form of .pdf, .doc, .docx (max 1(one) file) or .png, .jpg, .jpeg (max 5(five) image)"></i></label></td>
                                                             <td colspan="3">
-                                                                <input type="file" class="form-control" id="file_name" name="file_name" accept="application/pdf" required>
+                                                                <input type="file" class="form-control" id="file_name" name="file_name[]" required multiple>
                                                                 @error('file_name')
                                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                 @enderror

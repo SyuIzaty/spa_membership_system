@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-xl-12" style="padding: 50px; margin-bottom: 20px">
                 
-                <center><img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="280" alt="INTEC"></center>
+                <center><img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="320" alt="INTEC"></center>
                     <h4 style="text-align: center">
                         <b>INTEC EDUCATION COLLEGE CLAIM RECORD SLIP {{ $year }}</b>
                     </h4><br>
@@ -38,7 +38,7 @@
                                                 <div class="table-responsive">
                                                     <table id="hist" class="table table-bordered table-hover table-striped w-100">
                                                         <thead>
-                                                            <tr class="text-center">
+                                                            <tr class="text-center" style="white-space: nowrap">
                                                                 <th>#ID</th>
                                                                 <th>Title</th>
                                                                 <th>Start Date</th>

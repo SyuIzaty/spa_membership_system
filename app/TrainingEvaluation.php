@@ -11,7 +11,7 @@ class TrainingEvaluation extends Model
     protected $table = 'trm_evaluation';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'evaluation', 'open_date', 'close_date'
+        'evaluation'
     ];
 
     public function trainingEvaluationHeads()

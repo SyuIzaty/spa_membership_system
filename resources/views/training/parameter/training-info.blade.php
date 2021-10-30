@@ -167,6 +167,21 @@
                                                                     </td>
                                                                 </div>
                                                             </tr>
+                                                            <tr class="eval">
+                                                                <div class="form-group">
+                                                                    <td width="25%"><label class="form-label" for="evaluation_status"><span class="text-danger">*</span> Evaluation Status : </label></td>
+                                                                    <td colspan="3">
+                                                                        <select class="form-control" name="evaluation_status" id="evaluation_status">
+                                                                            <option value="">Please Select</option>
+                                                                            <option value="1" {{ old('evaluation_status', $train->evaluation_status) == '1' ? 'selected':''}} >OPEN</option>
+                                                                            <option value="0" {{ old('evaluation_status', $train->evaluation_status) == '0' ? 'selected':''}} >CLOSE</option>
+                                                                        </select>
+                                                                        @error('evaluation_status')
+                                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                        @enderror
+                                                                    </td>
+                                                                </div>
+                                                            </tr>
                                                             <tr>
                                                                 <div class="form-group">
                                                                     <td width="25%"><label class="form-label" for="upload_image"> Upload Image : </label></td>
@@ -258,7 +273,7 @@
                                             <div class="table-responsive">
                                                 <table id="log" class="table table-bordered table-hover table-striped w-100">
                                                     <thead>
-                                                        <tr class="bg-primary-50 text-center">
+                                                        <tr class="bg-primary-50 text-center" style="white-space: nowrap">
                                                             <th>NO</th>
                                                             <th>TICKET #ID</th>
                                                             <th>ID</th>
@@ -329,7 +344,7 @@
 
     $(document).ready(function()
     {
-        $('#evaluation, #type, #category').select2();
+        $('#evaluation, #type, #category, #evaluation_status').select2();
 
         $('#log thead tr .hasinput').each(function(i)
         {
@@ -367,6 +382,7 @@
         $('#type').val(); 
         $("#type").change(); 
         $('#evaluation').val().change();
+        $('#evaluation_status').val().change();
  
     })
 

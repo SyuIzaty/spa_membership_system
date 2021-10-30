@@ -23,39 +23,53 @@
                     <div class="card-body">
                         <div id="barchart_material" style="height:400px"></div>
                         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-                        <script type="text/javascript">
-                        google.charts.load('current', {'packages':['bar']});
-                        google.charts.setOnLoadCallback(drawChart);
-
-                        function drawChart() {
-                            var data = google.visualization.arrayToDataTable([
-                            ['Year', 'Sales', 'Expenses', 'Profit'],
-                            ['2015', 1170, 460, 250],
-                            ['2016', 660, 1120, 300],
-                            ['2017', 1030, 540, 350]
-                            ]);
-
-                            var options = {
-                            chart: {
-                                title: 'Company Performance',
-                                subtitle: 'Sales, Expenses, and Profit: 2014-2017',
-                            },
-                            bars: 'horizontal' // Required for Material Bar Charts.
-                            };
-
-                            var chart = new google.charts.Bar(document.getElementById('barchart_material'));
-
-                            chart.draw(data, google.charts.Bar.convertOptions(options));
-                        }
-                        </script>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 mb-4">
                 <div class="card">
-                    <div class="card-header bg-primary-500">Staff Performance</div>
-                </div>
-                <div style="height:400px">
+                    <div class="card-header bg-primary-500">Staff Performance {{ $year }}</div>
+                        <div class="card-body">
+                            <?php 
+                                $complete = \App\TrainingHourTrail::where('status', '4')->where('year', $year)->count();
+
+                                $uncomplete = \App\TrainingHourTrail::where('status', '5')->where('year', $year)->count();
+                                
+                                $all = \App\TrainingHourTrail::where('year', $year)->count();   
+                                
+                                $percentComplete = $all == 0 ? 0 : ($complete / $all * 100);
+                                $percentUncomplete = $all == 0 ? 0 : ($uncomplete / $all * 100);
+                            ?>
+                            <div class="col-md-6">
+                                <div class="js-easy-pie-chart color-primary-900 d-flex" data-percent="{{ $percentComplete }}" data-piesize="145" data-linewidth="20" data-trackcolor="#ccbfdf" data-scalelength="8">
+                                    <div class="d-flex align-items-center justify-content-center position-absolute pos-left pos-right pos-top pos-bottom fw-300 fs-xl">
+                                        <span class="text-dark" style="margin-left: 220px">{{ $complete }}</span>
+                                    </div>
+                                    <canvas height="195" width="195" style="height: 145px; width: 145px;"></canvas>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="col-md-12">
+                                <div align="center">
+                                    <button class="btn btn-xs btn-outline-primary pl-4 pr-4"><small>COMPLETE</small></button>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="col-md-6">
+                                <div class="js-easy-pie-chart color-danger-900 d-flex" data-percent="{{ $percentUncomplete }}" data-piesize="145" data-linewidth="20" data-trackcolor="#ccbfdf" data-scalelength="8">
+                                    <div class="d-flex align-items-center justify-content-center position-absolute pos-left pos-right pos-top pos-bottom fw-300 fs-xl">
+                                        <span class="text-dark" style="margin-left: 220px">{{ $uncomplete }}</span>
+                                    </div>
+                                    <canvas height="195" width="195" style="height: 145px; width: 145px;"></canvas>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="col-md-12">
+                                <div align="center">
+                                    <button class="btn btn-xs btn-outline-primary pl-4 pr-4"><small>UNCOMPLETE</small></button>
+                                </div>
+                            </div>
+                        </div>
                 </div>
             </div>
 
@@ -64,37 +78,14 @@
                     <div class="card-header bg-primary-500">Training Category</div>
                     <div class="card-body">
                         <div id="piechart" style="height: 400px;"></div>
-                        {{-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> --}}
-                        <script type="text/javascript">
-                        google.charts.load('current', {'packages':['corechart']});
-                        google.charts.setOnLoadCallback(drawChart);
-
-                        function drawChart() {
-
-                            var data = google.visualization.arrayToDataTable([
-                            ['Task', 'Hours per Day'],
-                            ['Work',     11],
-                            ['Eat',      2],
-                            ['Commute',  2],
-                            ['Watch TV', 2],
-                            ['Sleep',    7]
-                            ]);
-
-                            var options = {
-                            title: 'My Daily Activities'
-                            };
-
-                            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
-                            chart.draw(data, options);
-                        }
-                        </script>
+                         
+                        
                     </div>
                 </div>
             </div>
             <div class="col-md-4 mb-4">
                 <div class="card">
-                    <div class="card-header bg-primary-500"> <i class="fal fa-cubes"></i> Top Internal Training</div>
+                    <div class="card-header bg-primary-500"> <i class="fal fa-cubes"></i> Top Internal Training {{ $year }}</div>
                     <div class="card-body">
                         <table class="table m-0">
                             <thead>
@@ -122,7 +113,7 @@
             </div>
             <div class="col-md-4 mb-4">
                 <div class="card">
-                    <div class="card-header bg-primary-500">Top Staff with Most Training</div>
+                    <div class="card-header bg-primary-500">Top Staff with Most Training {{ $year }}</div>
                 </div>
                 <div style="height:400px">
                 </div>
@@ -138,71 +129,59 @@
 @section('script')
 
 <script>
-     $(function () {    
-        var claim = <?php echo $claim; ?>;
-        console.log(claim);
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart1);
-        function drawChart1() {
-            var data = google.visualization.arrayToDataTable(claim);
-            var options = {
-            title: 'LAPORAN ADUAN KEROSAKAN BERDASARKAN STATUS',
-            titleTextStyle: {
-                color: '333333',
-                fontName: 'Arial',
-                fontSize: 16,
-            },
-            bar: {groupWidth: "80%"},
-            borderColor: 
-                'rgb(135, 48, 14)',
-            legend: { position: 'bottom'},
-            is3D: true,
-            } 
-            var chart = new google.visualization.PieChart(document.getElementById('chart1'));
-            chart.draw(data, options);
-            
-        }
 
-    })
-
-    var ctx = document.getElementById('offerApplicant').getContext('2d');
-    var chart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {  
-            labels:  {!!json_encode($chart->labels)!!} ,
-            datasets: [
-                {
-                    label: 'Offered applicant',
-                    backgroundColor: ["#efb5ae", "#e2d6bb", "#b0d8ed", "#b0c7ed", "#b7e1e6", "#c2b8e5", "#bbe2d9", "#c0ddc6", "#f6e3d8", "#fcf6f2"],
-                    data:  {!! json_encode($chart->dataset)!!} ,
+    // Start PieChart
+        $(function () {    
+            var category = <?php echo $category; ?>;
+            console.log(category);
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawChart1);
+            function drawChart1() {
+                var data = google.visualization.arrayToDataTable(category);
+                var options = {
+                title: 'Total Training Based Category {{$year}}',
+                titleTextStyle: {
+                    color: '666666',
+                    fontName: 'Roboto',
+                    fontSize: 16,
+                    bold: false,
                 },
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            legend: {
-                position: "left",
-                labels: {
-                    fontColor: '#122C4B',
-                    fontFamily: "'Muli', sans-serif",
-                    padding: 15,
-                    boxWidth: 10,
-                    fontSize: 14,
-                }
-            },
-            layout: {
-                padding: {
-                    left: 10,
-                    right: 10,
-                    bottom: 30,
-                    top: 30
-                }
+                bar: {groupWidth: "80%"},
+                borderColor: 
+                    'rgb(135, 48, 14)',
+                legend: { position: 'bottom'},
+                is3D: true,
+                } 
+                var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                chart.draw(data, options);
             }
-        }
-    });
+        })
+    // End PieCart
 
+    // Start BarChart
+            var population = <?php echo $population; ?>;
+            console.log(population);
+            google.charts.load('current', {
+                'packages': ['bar']
+            });
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+                var data = google.visualization.arrayToDataTable(population);
+                var options = {
+                chart: {
+                    title: 'Training Performance',
+                    subtitle: 'Sales, Expenses, and Profit: {{ $years->last()->year }}-{{ $years->first()->year }}',
+                },
+                bars: 'horizontal' // Required for Material Bar Charts.
+                };
+                var chart = new google.visualization.Bar(document.getElementById('barchart_material'));
+                chart.draw(data, google.charts.Bar.convertOptions(options));
+            }   
+    // End BarChart
      
 </script>
 
+ 
+ 
 @endsection

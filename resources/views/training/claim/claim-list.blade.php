@@ -12,7 +12,7 @@
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
                     <h2>
-                         CLAIM HOUR<span class="fw-300"><i>LIST</i></span>
+                         CLAIM HOUR LIST FOR <span class="fw-300"><i>{{ $selectedYear }}</i></span>
                     </h2>
                     <div class="panel-toolbar">
                         <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
@@ -68,7 +68,7 @@
                                             {{-- <option value="" selected disabled> Please select </option> --}}
                                             {{-- <option value="ALL"> ALL </option> --}}
                                             @foreach ($year as $years)
-                                                <option value="{{ $years->year }}" {{ $selectedYear == $years->year ? 'selected' : '' }}>{{ $selectedYear }} -> {{ $years->year }}</option>
+                                                <option value="{{ $years->year }}" {{ $selectedYear == $years->year ? 'selected' : '' }}>{{ $years->year }}</option>
                                             @endforeach
                                         </select> 
                                     </div>
@@ -104,7 +104,7 @@
                                             <div class="table-responsive">
                                                 <table id="pen" class="table table-bordered table-hover table-striped w-100">
                                                     <thead>
-                                                        <tr class="text-center bg-primary-50">
+                                                        <tr class="text-center bg-primary-50" style="white-space: nowrap">
                                                             <th>#ID</th>
                                                             <th>STAFF</th>
                                                             <th>TITLE</th>
@@ -155,7 +155,7 @@
                                              <div class="table-responsive">
                                                 <table id="app" class="table table-bordered table-hover table-striped w-100">
                                                     <thead>
-                                                        <tr class="text-center bg-primary-50">
+                                                        <tr class="text-center bg-primary-50" style="white-space: nowrap">
                                                             <th>#ID</th>
                                                             <th>STAFF</th>
                                                             <th>TITLE</th>
@@ -206,7 +206,7 @@
                                             <div class="table-responsive">
                                                 <table id="rej" class="table table-bordered table-hover table-striped w-100">
                                                     <thead>
-                                                        <tr class="text-center bg-primary-50">
+                                                        <tr class="text-center bg-primary-50" style="white-space: nowrap">
                                                             <th>#ID</th>
                                                             <th>STAFF</th>
                                                             <th>TITLE</th>
@@ -268,7 +268,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="card-header bg-primary text-white">
-                    <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i>APPROVE CLAIM #<label class="id"></label></h5>
+                    <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i>APPROVE CLAIM #<label id="id"></label></h5>
                 </div>
                 <div class="modal-body">
                     {!! Form::open(['action' => 'TrainingController@approveClaim', 'method' => 'POST']) !!}
@@ -281,7 +281,7 @@
                                 <div class="form-group">
                                     <td width="15%" style="vertical-align: middle"><label class="form-label"> Staff :</label></td>
                                     <td colspan="6" style="text-transform: uppercase">
-                                        <label class="staff" style="vertical-align: middle"></label>
+                                        <label id="staff" style="vertical-align: middle"></label>
                                     </td>
                                 </div>
                             </tr>
@@ -289,7 +289,7 @@
                                 <div class="form-group">
                                     <td width="15%" style="vertical-align: middle"><label class="form-label"> Training Title :</label></td>
                                     <td colspan="6" style="text-transform: uppercase">
-                                        <label class="title" style="vertical-align: middle"></label>
+                                        <label id="title" style="vertical-align: middle"></label>
                                     </td>
                                 </div>
                             </tr>
@@ -297,11 +297,11 @@
                                 <div class="form-group">
                                     <td width="15%" style="vertical-align: middle"><label class="form-label"> Type of Training :</label></td>
                                     <td colspan="3" style="text-transform: uppercase">
-                                        <label class="type" style="vertical-align: middle"></label>
+                                        <label id="type" style="vertical-align: middle"></label>
                                     </td>
                                     <td width="15%" style="vertical-align: middle"><label class="form-label"> Category of Training :</label></td>
                                     <td colspan="3" style="text-transform: uppercase">
-                                        <label class="category" style="vertical-align: middle"></label>
+                                        <label id="category" style="vertical-align: middle"></label>
                                     </td>
                                 </div>
                             </tr>
@@ -309,28 +309,39 @@
                                 <div class="form-group">
                                     <td width="15%" style="vertical-align: middle"><label class="form-label"> Date :</label></td>
                                     <td colspan="3">
-                                        <label class="date" style="vertical-align: middle"></label>
+                                        <label id="date" style="vertical-align: middle"></label>
                                     </td>
                                     <td width="15%" style="vertical-align: middle"><label class="form-label"> Time :</label></td>
                                     <td colspan="3">
-                                        <label class="time" style="vertical-align: middle"></label>
+                                        <label id="time" style="vertical-align: middle"></label>
                                     </td>
                                 </div>
                             </tr>
                             <tr>
                                 <div class="form-group">
                                     <td width="15%" style="vertical-align: middle"><label class="form-label"> Venue :</label></td>
-                                    <td colspan="6">
-                                        <label class="venue" style="vertical-align: middle"></label>
+                                    <td colspan="3">
+                                        <label id="venue" style="vertical-align: middle"></label>
                                     </td>
-                                   
+                                    <td width="15%" style="vertical-align: middle"><label class="form-label"> Link :</label></td>
+                                    <td colspan="3">
+                                        <label id="link" style="vertical-align: middle"></label>
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                <div class="form-group">
+                                    <td width="15%" style="vertical-align: middle"><label class="form-label"> Attachment :</label></td>
+                                    <td colspan="6">
+                                        <label id="existclaimattachment" style="vertical-align: middle"></label>
+                                    </td>
                                 </div>
                             </tr>
                             <tr>
                                 <div class="form-group">
                                     <td width="15%" style="vertical-align: middle"><label class="form-label"> Claim Hours :</label></td>
                                     <td colspan="3" style="vertical-align: middle">
-                                        <label class="hour"></label>
+                                        <label id="hour"></label>
                                     </td>
                                     <td width="15%" style="vertical-align: middle"><label class="form-label"><span class="text-danger">*</span>  Approve Hours : </label></td>
                                     <td colspan="3">
@@ -358,7 +369,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="card-header bg-primary text-white">
-                    <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i>REJECT CLAIM #<label class="ids"></label></h5>
+                    <h5 class="card-title w-100"><i class="fal fa-info width-2 fs-xl"></i>REJECT CLAIM #<label id="ids"></label></h5>
                 </div>
                 <div class="modal-body">
                     {!! Form::open(['action' => 'TrainingController@rejectClaim', 'method' => 'POST']) !!}
@@ -371,7 +382,7 @@
                                 <div class="form-group">
                                     <td width="15%" style="vertical-align: middle"><label class="form-label"> Staff :</label></td>
                                     <td colspan="6" style="text-transform: uppercase">
-                                        <label class="staffs" style="vertical-align: middle"></label>
+                                        <label id="staffs" style="vertical-align: middle"></label>
                                     </td>
                                 </div>
                             </tr>
@@ -379,7 +390,7 @@
                                 <div class="form-group">
                                     <td width="15%" style="vertical-align: middle"><label class="form-label"> Training Title :</label></td>
                                     <td colspan="6" style="text-transform: uppercase">
-                                        <label class="titles" style="vertical-align: middle"></label>
+                                        <label id="titles" style="vertical-align: middle"></label>
                                     </td>
                                 </div>
                             </tr>
@@ -387,11 +398,11 @@
                                 <div class="form-group">
                                     <td width="15%" style="vertical-align: middle"><label class="form-label"> Type of Training :</label></td>
                                     <td colspan="3" style="text-transform: uppercase">
-                                        <label class="types" style="vertical-align: middle"></label>
+                                        <label id="types" style="vertical-align: middle"></label>
                                     </td>
                                     <td width="15%" style="vertical-align: middle"><label class="form-label"> Category of Training :</label></td>
                                     <td colspan="3" style="text-transform: uppercase">
-                                        <label class="categorys" style="vertical-align: middle"></label>
+                                        <label id="categorys" style="vertical-align: middle"></label>
                                     </td>
                                 </div>
                             </tr>
@@ -399,28 +410,39 @@
                                 <div class="form-group">
                                     <td width="15%" style="vertical-align: middle"><label class="form-label"> Date :</label></td>
                                     <td colspan="3">
-                                        <label class="dates" style="vertical-align: middle"></label>
+                                        <label id="dates" style="vertical-align: middle"></label>
                                     </td>
                                     <td width="15%" style="vertical-align: middle"><label class="form-label"> Time :</label></td>
                                     <td colspan="3">
-                                        <label class="times" style="vertical-align: middle"></label>
+                                        <label id="times" style="vertical-align: middle"></label>
                                     </td>
                                 </div>
                             </tr>
                             <tr>
                                 <div class="form-group">
                                     <td width="15%" style="vertical-align: middle"><label class="form-label"> Venue :</label></td>
-                                    <td colspan="6">
-                                        <label class="venues" style="vertical-align: middle"></label>
+                                    <td colspan="3">
+                                        <label id="venues" style="vertical-align: middle"></label>
                                     </td>
-                                   
+                                    <td width="15%" style="vertical-align: middle"><label class="form-label"> Link :</label></td>
+                                    <td colspan="3">
+                                        <label id="links" style="vertical-align: middle"></label>
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                <div class="form-group">
+                                    <td width="15%" style="vertical-align: middle"><label class="form-label"> Attachment :</label></td>
+                                    <td colspan="6">
+                                        <div id="existclaimattachments"></div>
+                                    </td>
                                 </div>
                             </tr>
                             <tr>
                                 <div class="form-group">
                                     <td width="15%" style="vertical-align: middle"><label class="form-label"> Claim Hours :</label></td>
                                     <td colspan="3" style="vertical-align: middle">
-                                        <label class="hours"></label>
+                                        <label id="hours"></label>
                                     </td>
                                     <td width="15%" style="vertical-align: middle"><label class="form-label"><span class="text-danger">*</span>  Reject Reason : </label></td>
                                     <td colspan="3">
@@ -450,6 +472,8 @@
 @section('script')
 
 <script>
+    
+
     $(document).ready(function()
     {
         $("#year").change(function(){
@@ -458,53 +482,99 @@
 
         $('#data_types_P, #data_categorys_P, #data_types_A, #data_categorys_A, #data_types_R, #data_categorys_R, #year').select2();
 
-        $('#crud-approve').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget) 
-            var claim = button.data('claim') 
-            var title = button.data('title') 
-            var type = button.data('type') 
-            var category = button.data('category') 
-            var date = button.data('date') 
-            var time = button.data('time') 
-            var venue = button.data('venue') 
-            var hour = button.data('hour') 
-            var staff = button.data('staff') 
+        $(document).on('click', '.edit_data', function(){
+            $.ajaxSetup({
+                headers:{
+                'X-CSRF-Token' : $("input[name=_token]").val()
+                }
+            });
 
-            $('.modal-body #claim').val(claim); 
-            $('.id').html(claim); 
-            $('.modal-body .title').html(title); 
-            $('.modal-body .type').html(type); 
-            $('.modal-body .category').html(category); 
-            $('.modal-body .date').html(date); 
-            $('.modal-body .time').html(time); 
-            $('.modal-body .venue').html(venue); 
-            $('.modal-body .hour').html(hour); 
-            $('.modal-body .staff').html(staff); 
-        })
+            var id = $(this).attr("data-id");
+            $.ajax({
+                url: '{{ url("get-attachment") }}',
+                method:"POST",
+                data:{id:id},
+                dataType:"json",
+                success:function(data){
+                    $('#claim').val(data.id);
+                    $('#id').html(data.id);
+                    $('#staff').html(data.staffs.staff_name).append(` ( ${data.staffs.staff_id} ) `);
+                    $('#title').html(`#${data.training_id} : ${data.title}`);
+                    $('#type').html(data.types.type_name);
+                    $('#category').html(data.categories.category_name);
+                    $('#date').html(data.start_date).append(` - ${data.end_date}`);
+                    $('#time').html(data.start_time).append(` - ${data.end_time}`);
+                    $('#venue').html(data.venue);
+                    $('#hour').html(data.claim_hour);
+                    $('#link').html(` <a href="${data.link}" target="_blank">${data.link}</a> `);
+                    $('#crud-approve').modal('show');
+                    
+                    $.ajax({
+                        type: 'GET',
+                        url: "{{url('getClaimAttachment')}}/" + id,
+                        success: function (respond) {
+                            $('#existclaimattachment').empty();
+                            respond.files.forEach(function(ele){
+                                $('#existclaimattachment').append(`
+                                    <div id="attachment${ele.id}">
+                                        <li> 
+                                        ${ele.file_name} | <a href="{{url('claim')}}/${ele.file_name}/Download">Download</i> <br/>
+                                        </li>
+                                    </div>
+                                `);
+                            });
+                        }
+                    });
+                }
+            });
+        });
+        
+        $(document).on('click', '.edit_datas', function(){
+            $.ajaxSetup({
+                headers:{
+                'X-CSRF-Token' : $("input[name=_token]").val()
+                }
+            });
 
-        $('#crud-reject').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget) 
-            var claims = button.data('claims') 
-            var titles = button.data('titles') 
-            var types = button.data('types') 
-            var categorys = button.data('categorys') 
-            var dates = button.data('dates') 
-            var times = button.data('times') 
-            var venues = button.data('venues') 
-            var hours = button.data('hours') 
-            var staffs = button.data('staffs')
-
-            $('.modal-body #claims').val(claims); 
-            $('.ids').html(claims);
-            $('.modal-body .titles').html(titles); 
-            $('.modal-body .types').html(types); 
-            $('.modal-body .categorys').html(categorys); 
-            $('.modal-body .dates').html(dates); 
-            $('.modal-body .times').html(times); 
-            $('.modal-body .venues').html(venues); 
-            $('.modal-body .hours').html(hours); 
-            $('.modal-body .staffs').html(staffs); 
-        })
+            var id = $(this).attr("data-id");
+            $.ajax({
+                url: '{{ url("get-attachment") }}',
+                method:"POST",
+                data:{id:id},
+                dataType:"json",
+                success:function(data){
+                    $('#claims').val(data.id);
+                    $('#ids').html(data.id);
+                    $('#staffs').html(data.staffs.staff_name).append(` ( ${data.staffs.staff_id} ) `);
+                    $('#titles').html(`#${data.training_id} : ${data.title}`);
+                    $('#types').html(data.types.type_name);
+                    $('#categorys').html(data.categories.category_name);
+                    $('#dates').html(data.start_date).append(` - ${data.end_date}`);
+                    $('#times').html(data.start_time).append(` - ${data.end_time}`);
+                    $('#venues').html(data.venue);
+                    $('#hours').html(data.claim_hour);
+                    $('#links').html(` <a href="${data.link}" target="_blank">${data.link}</a> `);
+                    $('#crud-reject').modal('show');
+                    
+                    $.ajax({
+                        type: 'GET',
+                        url: "{{url('getClaimAttachment')}}/" + id,
+                        success: function (respond) {
+                            $('#existclaimattachments').empty();
+                            respond.files.forEach(function(ele){
+                                $('#existclaimattachments').append(`
+                                    <div id="attachment${ele.id}">
+                                        <li> 
+                                        ${ele.file_name} | <a href="{{url('claim')}}/${ele.file_name}/Download">Download</i> <br/>
+                                        </li>
+                                    </div>
+                                `);
+                            });
+                        }
+                    });
+                }
+            });
+        });
 
         $('#pen thead tr .hasinput').each(function(i)
         {

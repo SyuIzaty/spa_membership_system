@@ -21,42 +21,44 @@
                     </div>
                 </div>
                 <div class="panel-container show">
-                    <div class="panel-content">
-
-                        <div class="row">
-                            <div class="tab-content col-md-12">
-                                <div>
-                                    <div class="col-md-12">
+                            <div class="panel-content">
+                                <div class="row">
+                                    <div class="tab-content col-md-12">
                                         <div class="row ">
                                             <div class="col-md-12">
                                                 <div class="card">
-                                                    @foreach($ques_response as $questions)
-                                                    <div class="card-header bg-primary-50 font-weight-bold"> {{ $questions->question }}</div>
+                                                    <div class="card-header">
+                                                        Evaluation Result
+                                                        <a data-page="/report-response-pdf/{{ $id }}/{{ $ques_response->first()->head_id }}/{{ $ques_response->first()->evaluation_id }}" class="float-right" style="cursor: pointer" onclick="Print(this)"><i class="fal fa-file-pdf" style="color: red; font-size: 20px"></i></a>
+                                                    </div>
                                                         <div class="card-body">
-                                                            @foreach ($questions->trainingEvaluationResults as $all_result)
-                                                                <table class="table table-bordered">
-                                                                    <tr>
-                                                                        <td style="width: 5px">{{ $loop->iteration }}.</td>
-                                                                        <td>{{ $all_result->rating }}</td>
-                                                                    </tr>
-                                                                </table>
-                                                            @endforeach
+                                                            <div class="card">
+                                                                @foreach($ques_response as $questions)
+                                                                <div class="card-header bg-primary-50 font-weight-bold"> {{ $questions->question }}</div>
+                                                                    <div class="card-body">
+                                                                        <table class="table table-bordered">
+                                                                            @foreach ($questions->trainingEvaluationResults as $all_result)
+                                                                            <tr>
+                                                                                <td style="width: 5px">{{ $loop->iteration }}.</td>
+                                                                                <td>{{ $all_result->rating }}</td>
+                                                                            </tr>
+                                                                            @endforeach
+                                                                        </table>
+                                                                    </div>
+                                                                @endforeach
+                                                            </div>
+                                                            <div class="footer mt-3">
+                                                                <a href="/report-info/{{ $id }}" class="btn btn-success ml-auto float-right" ><i class="fal fa-arrow-alt-left"></i> Back</a>
+                                                            </div>
                                                         </div>
-                                                    @endforeach
-                                                </div>
-                                                <div class="footer mt-3">
-                                                    <a href="/report-info/{{ $id }}" class="btn btn-success ml-auto float-right" ><i class="fal fa-arrow-alt-left"></i> Back</a>
-                                                </div>
+                                                    </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                               
                             </div>
                         </div>
                     </div>
-                    </div>
-                </div>
                 </div>
             </div>
         </div>
@@ -67,7 +69,14 @@
 
 @section('script')
 <script>
-   //
+   function Print(button)
+    {
+        var url = $(button).data('page');
+        var printWindow = window.open( '{{url("/")}}'+url+'', 'Print', 'left=200, top=200, width=950, height=500, toolbar=0, resizable=0');
+        printWindow.addEventListener('load', function(){
+            printWindow.print();
+        }, true);
+    }
 </script>
 @endsection
 

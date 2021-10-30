@@ -25,7 +25,7 @@
                         <div class="table-responsive">
                             <table id="report" class="table table-bordered table-hover table-striped w-100">
                                 <thead>
-                                    <tr class="text-center bg-primary-50">
+                                    <tr class="text-center bg-primary-50" style="white-space: nowrap">
                                         <th>NO.</th>
                                         <th>#ID</th>
                                         <th>TRAINING TITLE</th>

@@ -55,7 +55,7 @@
                                                                         <?php 
                                                                             $data = \App\TrainingEvaluationHead::where('id', $headers->id)->first();
                                                                         ?>
-                                                                        <tr class="font-weight-bold text-center">
+                                                                        <tr class="font-weight-bold text-center" style="white-space: nowrap">
                                                                             <td style="width: 2%">No</td>
                                                                             <td style="width: 50%">Question</td>
                                                                             <td style="width: 7%">Strongly Disagree</td>

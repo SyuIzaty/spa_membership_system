@@ -31,7 +31,7 @@
                         <div class="table-responsive">
                             <table id="type" class="table table-bordered table-hover table-striped w-100">
                                 <thead>
-                                    <tr class="text-center bg-primary-50">
+                                    <tr class="text-center bg-primary-50" style="white-space: nowrap">
                                         <th>NO.</th>
                                         <th>TRAINING TYPE</th>
                                         <th>ACTION</th>

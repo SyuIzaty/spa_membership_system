@@ -11,7 +11,8 @@ class TrainingList extends Model
     protected $table = 'trm_training';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'title', 'type', 'category', 'start_date', 'end_date', 'venue', 'evaluation', 'upload_image', 'web_path', 'start_time', 'end_time', 'claim_hour', 'link'
+        'title', 'type', 'category', 'start_date', 'end_date', 'venue', 'evaluation', 'evaluation_status', 'upload_image', 'web_path', 
+        'start_time', 'end_time', 'claim_hour', 'link'
     ];
 
     public function types()

@@ -4,7 +4,7 @@
 <main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
     <div class="subheader">
         <h1 class="subheader-title">
-            <i class='subheader-icon fal fa-folder-open'></i> TRAINING EVALUATION DETAILS
+            <i class='subheader-icon fal fa-folder-open' style="text-transform: uppercase"></i> #{{ $evaluate->id }} : {{ $evaluate->evaluation }} 
         </h1>
     </div>
 
@@ -13,7 +13,7 @@
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
                     <h2>
-                        EvaluationID : #{{ $evaluate->id }}
+                        {{-- EvaluationID : #{{ $evaluate->id }} --}}
                     </h2>
                     <div class="panel-toolbar">
                         <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
@@ -25,143 +25,147 @@
                 <div class="panel-container show">
                     <div class="panel-content">
                         <div class="row">
-                                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                    <a class="nav-link mb-2 active" id="current-tab" data-toggle="pill" href="#current" role="tab" style="border: 1px solid;">
-                                        <i class="fal fa-info-circle"></i>
-                                        <span class="hidden-sm-down ml-1"> EVALUATION HEADER </span>
-                                    </a>
-                                    @foreach ($evaluation as $count => $eval)
-                                        <a class="nav-link mb-2" id="nav-home-tab-{{$eval->sequence}}" data-toggle="pill" href="#nav-home-{{$eval->sequence}}" role="tab" style="border: 1px solid;">
-                                            <i class="fal fa-eraser"></i>
-                                            <span class="hidden-sm-down ml-1">{{ strtoupper($eval->question_head) }}</span>
-                                        </a>
-                                    @endforeach
-                                    @if($evaluation->first())
-                                        <a class="nav-link mb-2" data-page="/question-pdf/{{ $id }}" onclick="Print(this)" style="font-weight: 500; cursor: pointer; color: #886ab5; border: 1px solid"><i class="fal fa-eye"></i> PREVIEW</a>
-                                    @endif
+                            <div class="col-sm-12 col-md-6 mb-4">
+                                <div class="card card-primary card-outline mb-4">
+                                    <div class="card-header">
+                                        <h5 class="card-title w-100"><i class="fal fa-cube width-2 fs-xl"></i> NEW HEADER </h5>
+                                    </div>
+                                    <div class="card-body m-3">
+                                        {!! Form::open(['action' => 'TrainingController@storeHeader', 'method' => 'POST'])!!}
+                                            <table class="table table-bordered text-center" id="head_field">
+                                                <tr class="bg-primary-50">
+                                                    <td>Question Header</td>
+                                                    <td>Color</td>
+                                                    <td>Action</td>
+                                                </tr>
+                                                <tr>
+                                                    <input type="hidden" name="te_id" value="{{ $id }}">
+                                                    <td><input type="text" name="head[]" placeholder="Question Header" class="form-control head" /></td>
+                                                    <td style="width: 20%"><input type="color" value="#ffffff" class="form-control" id="color" name="color[]"></td>
+                                                    <td><button type="button" name="addhead" id="addhead" class="btn btn-success btn-sm"><i class="fal fa-plus"></i></button></td>
+                                                </tr>
+                                            </table>
+                                            <div class="footer">
+                                                <button type="submit" class="btn btn-primary ml-auto float-right" name="submit" id="submithead"><i class="fal fa-save"></i> Save</button>
+                                                <a href="/evaluation-question" class="btn btn-success ml-auto float-right mr-2" ><i class="fal fa-arrow-alt-left"></i> Back</a>
+                                            </div>
+                                            <br><br>
+                                        {!! Form::close() !!}
+                                    </div>
                                 </div>
-                             
-                            <div class="col">
-                                <div class="tab-content" id="v-pills-tabContent">
-                                    <div class="tab-pane active" id="current" role="tabpanel"> 
-                                        <div class="col-sm-12 mb-4">
-                                            <div class="card card-primary card-outline mb-4">
-                                                <div class="card-header">
-                                                    <h5 class="card-title w-100"><i class="fal fa-cube width-2 fs-xl"></i> HEADER DETAIL </h5>
-                                                </div>
-                                                <div class="card-body m-3">
-                                                    {!! Form::open(['action' => 'TrainingController@storeHeader', 'method' => 'POST'])!!}
-                                                        <table class="table table-bordered text-center" id="head_field">
-                                                            <tr class="bg-primary-50">
-                                                                <td>Question Header</td>
-                                                                <td>Color</td>
-                                                                <td>Action</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <input type="hidden" name="te_id" value="{{ $id }}">
-                                                                <td><input type="text" name="head[]" placeholder="Question Header" class="form-control head" /></td>
-                                                                <td style="width: 20%"><input type="color" value="#ffffff" class="form-control" id="color" name="color[]"></td>
-                                                                <td><button type="button" name="addhead" id="addhead" class="btn btn-success btn-sm"><i class="fal fa-plus"></i></button></td>
-                                                            </tr>
-                                                        </table>
-                                                        <div class="footer">
-                                                            <button type="submit" class="btn btn-primary ml-auto float-right" name="submit" id="submithead"><i class="fal fa-save"></i> Save</button>
-                                                            <a href="/evaluation-question" class="btn btn-success ml-auto float-right mr-2" ><i class="fal fa-arrow-alt-left"></i> Back</a>
-                                                        </div>
-                                                        <br><br>
-                                                    {!! Form::close() !!}
-                                                    <br><br>
-                                                    @if (Session::has('message'))
-                                                        <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}</div>
-                                                    @endif
-                                                    <table class="table table-bordered headedit" id="headedit">
-                                                        <thead class="bg-primary-50 text-center">
-                                                            <tr>
-                                                                <td style="width: 5px">No</td>
-                                                                <td>Question Header</td>
-                                                                <td>Color</td>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody data-eid="{{ $id }}">
-                                                            @foreach ($evaluation as $eval)
-                                                            <tr class="data-row">
-                                                                <td>{{ isset($eval->sequence) ? $eval->sequence : $loop->iteration }}</td>
-                                                                <td class="quest_id" style="display: none">{{ $eval->id }}</td>
-                                                                <td class="question">{{ $eval->question_head }}</td>
-                                                                <td style="display:none" id={{ $eval->sequence }}>{{ $eval->sequence }}</td>
-                                                                <td style="display:none">{{ $eval->trainingEvaluationQuestions->count() }}</td>
-                                                                <td class="category_color" data-selected="{{ $eval->color }}"></td>
-                                                            </tr>
-                                                            @endforeach
-                                                        </tbody>
+                            </div>
+
+                            <div class="col-sm-12 col-md-6 mb-4">
+                                <div class="card card-primary card-outline mb-4">
+                                    <div class="card-header">
+                                        <h5 class="card-title w-100"><i class="fal fa-cube width-2 fs-xl"></i> HEADER LIST 
+                                            @if($evaluation->first())
+                                                <a data-page="/question-pdf/{{ $id }}" class="float-right" style="cursor: pointer" onclick="Print(this)"><i class="fal fa-file-pdf" style="color: red; font-size: 20px"></i></a>
+                                            @endif
+                                        </h5>
+                                    </div>
+                                    <div class="card-body m-3">
+                                        @if (Session::has('message'))
+                                            <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}</div>
+                                        @endif
+                                        <table class="table table-bordered headedit" id="headedit">
+                                            <thead class="bg-primary-50 text-center">
+                                                <tr>
+                                                    <td style="width: 5px">No</td>
+                                                    <td>Question Header</td>
+                                                    <td>Color</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody data-eid="{{ $id }}">
+                                                @foreach ($evaluation as $eval)
+                                                <tr class="data-row">
+                                                    <td>{{ isset($eval->sequence) ? $eval->sequence : $loop->iteration }}</td>
+                                                    <td class="quest_id" style="display: none">{{ $eval->id }}</td>
+                                                    <td class="question">{{ $eval->question_head }}</td>
+                                                    <td style="display:none" id={{ $eval->sequence }}>{{ $eval->sequence }}</td>
+                                                    <td style="display:none">{{ $eval->trainingEvaluationQuestions->count() }}</td>
+                                                    <td class="category_color" data-selected="{{ $eval->color }}"></td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                @foreach ($evaluation as $count => $eval)
+                                <div class="accordion accordion-outline" id="js_demo_accordion-3">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <a href="javascript:void(0);" class="card-title collapsed" data-toggle="collapse" data-target="#org{{$eval->sequence}}" aria-expanded="true">
+                                                <i class="fal fa-list-ul width-2 fs-xl"></i>
+                                                {{ strtoupper($eval->question_head) }}
+                                                <span class="ml-auto">
+                                                    <span class="collapsed-reveal">
+                                                        <i class="fal fa-minus fs-xl"></i>
+                                                    </span>
+                                                    <span class="collapsed-hidden">
+                                                        <i class="fal fa-plus fs-xl"></i>
+                                                    </span>
+                                                </span>
+                                            </a>
+                                        </div>
+                                        <div id="org{{$eval->sequence}}" class="collapse {{ ($eval->sequence == '1' ? 'show' : '') }}" data-parent="#org{{$eval->sequence}}">
+                                            <div class="card-body">
+                                                {!! Form::open(['action' => 'TrainingController@storeQuestion', 'method' => 'POST'])!!}
+                                                    <table class="table table-bordered text-center" id="question_field{{ $eval->id }}">
+                                                        <tr class="bg-primary-50 text-center">
+                                                            <td>Question</td>
+                                                            <td>Type</td>
+                                                            <td>Action</td>
+                                                        </tr>
+                                                        <tr class="data-row">
+                                                            <input type="hidden" name="te_id" value="{{ $eval->evaluation_id }}" id="te_id">
+                                                            <input type="hidden" name="ques_head" value="{{ $eval->id}}">
+                                                            <td><input type="text" name="question[]" placeholder="Question" class="form-control question" /></td>
+                                                            <td>
+                                                                <select class="form-control ques_type" name="eval_rate[]" required>
+                                                                    <option disabled selected>Please Select</option>
+                                                                    <option value="R">Rating</option>
+                                                                    <option value="C">Comment</option>
+                                                                </select>
+                                                            </td>
+                                                            <td><button type="button" name="addquestion" class="btn btn-success btn-sm addquestion" data-id="{{ $eval->id }}"><i class="fal fa-plus"></i></button></td>
+                                                        </tr>
                                                     </table>
-                                                </div>
+                                                    <div class="footer">
+                                                        <button type="submit" class="btn btn-primary ml-auto float-right submitQuestion" name="submit"><i class="fal fa-save"></i> Save</button>
+                                                        <a href="/evaluation-question" class="btn btn-success ml-auto float-right mr-2" ><i class="fal fa-arrow-alt-left"></i> Back</a>
+                                                    </div>
+                                                    <br><br>
+                                                {!! Form::close() !!}
+
+                                                <table class="table table-bordered editable mt-5 w-100" id="editable">
+                                                    <thead class="bg-primary-50">
+                                                        <tr>
+                                                            <td style="width: 5px">No</td>
+                                                            <td style="width: 900px">Question</td>
+                                                            <td>Type</td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody data-teid="{{ $eval->evaluation_id }}">
+                                                        @foreach ($eval->trainingEvaluationQuestions as $question)
+                                                            <tr class="data-row">
+                                                                <td>{{ isset($question->sequence) ? $question->sequence : $loop->iteration }}</td>
+                                                                <td class="quest_id" style="display:none">{{ $question->id }}</td>
+                                                                <td class="question">{{ $question->question }}</td>
+                                                                <td style="display:none" id={{ $question->sequence }}>{{ $question->sequence }}</td>
+                                                                <td class="eval_rate_select" data-selected="{{ $question->eval_rate }}"></td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
-
-                                    @foreach ($evaluation as $count => $eval)
-                                        <div class="tab-pane" id="nav-home-{{$eval->sequence}}" role="tabpanel">
-                                            <div class="col-sm-12 mb-4">
-                                                <div class="card card-primary card-outline">
-                                                    <div class="card-header">
-                                                        <h5 class="card-title w-100"><i class="fal fa-clipboard width-2 fs-xl"></i>{{ strtoupper($eval->question_head) }}</h5>
-                                                    </div>
-                                                    <div class="card-body m-3">
-                                                        {!! Form::open(['action' => 'TrainingController@storeQuestion', 'method' => 'POST'])!!}
-                                                            <table class="table table-bordered text-center" id="question_field{{ $eval->id }}">
-                                                                <tr class="bg-primary-50 text-center">
-                                                                    <td>Question</td>
-                                                                    <td>Type</td>
-                                                                    <td>Action</td>
-                                                                </tr>
-                                                                <tr class="data-row">
-                                                                    <input type="hidden" name="te_id" value="{{ $eval->evaluation_id }}" id="te_id">
-                                                                    <input type="hidden" name="ques_head" value="{{ $eval->id}}">
-                                                                    <td><input type="text" name="question[]" placeholder="Question" class="form-control question" /></td>
-                                                                    <td>
-                                                                        <select class="form-control ques_type" name="eval_rate[]" required>
-                                                                            <option disabled selected>Please Select</option>
-                                                                            <option value="R">Rating</option>
-                                                                            <option value="C">Comment</option>
-                                                                        </select>
-                                                                    </td>
-                                                                    <td><button type="button" name="addquestion" class="btn btn-success btn-sm addquestion" data-id="{{ $eval->id }}"><i class="fal fa-plus"></i></button></td>
-                                                                </tr>
-                                                            </table>
-                                                            <div class="footer">
-                                                                <button type="submit" class="btn btn-primary ml-auto float-right submitQuestion" name="submit"><i class="fal fa-save"></i> Save</button>
-                                                                <a href="/evaluation-question" class="btn btn-success ml-auto float-right mr-2" ><i class="fal fa-arrow-alt-left"></i> Back</a>
-                                                            </div>
-                                                            <br><br>
-                                                        {!! Form::close() !!}
-                                                        <br><br>
-                                                        <table class="table table-bordered editable mt-5 w-100" id="editable">
-                                                            <thead class="bg-primary-50">
-                                                                <tr>
-                                                                    <td style="width: 5px">No</td>
-                                                                    <td style="width: 900px">Question</td>
-                                                                    <td>Type</td>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody data-teid="{{ $eval->evaluation_id }}">
-                                                                @foreach ($eval->trainingEvaluationQuestions as $question)
-                                                                    <tr class="data-row">
-                                                                        <td>{{ isset($question->sequence) ? $question->sequence : $loop->iteration }}</td>
-                                                                        <td class="quest_id" style="display:none">{{ $question->id }}</td>
-                                                                        <td class="question">{{ $question->question }}</td>
-                                                                        <td style="display:none" id={{ $question->sequence }}>{{ $question->sequence }}</td>
-                                                                        <td class="eval_rate_select" data-selected="{{ $question->eval_rate }}"></td>
-                                                                    </tr>
-                                                                @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
                                 </div>
+                                @endforeach
                             </div>
                     </div>
                 </div>

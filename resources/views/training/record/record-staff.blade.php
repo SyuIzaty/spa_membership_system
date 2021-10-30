@@ -27,7 +27,7 @@
                                 <div class="p-3 bg-primary-300 rounded overflow-hidden position-relative text-white mb-g">
                                     <div class="">
                                         <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                                            {{ \App\Staff::whereNotNull('staff_id')->get()->count() }}
+                                            {{ \App\TrainingHourTrail::where('year', \Carbon\Carbon::now()->format('Y') )->whereNotNull('staff_id')->get()->count() }}
                                             <small class="m-0 l-h-n">TOTAL STAFF</small>
                                         </h3>
                                     </div>
@@ -60,7 +60,7 @@
                         <div class="table-responsive">
                             <table id="staff" class="table table-bordered table-hover table-striped w-100">
                                 <thead>
-                                    <tr class="text-center bg-primary-50">
+                                    <tr class="text-center bg-primary-50" style="white-space: nowrap">
                                         <th>#ID</th>
                                         <th>NAME</th>
                                         <th>POSITION</th>
@@ -144,11 +144,11 @@
             },
             columns: [
                     { className: 'text-center', data: 'staff_id', name: 'staff_id' },
-                    { data: 'staff_name', name: 'staff_id' },
-                    { data: 'staff_position', name: 'staff_id' },
-                    { data: 'staff_dept', name: 'staff_id' },
-                    { className: 'text-center', data: 'staff_training_hr', name: 'year' },
-                    { className: 'text-center', data: 'staff_current_hr', name: 'staff_id' },
+                    { data: 'staff_name', name: 'staff_name' },
+                    { data: 'staff_position', name: 'staff_position' },
+                    { data: 'staff_dept', name: 'staff_dept' },
+                    { className: 'text-center', data: 'staff_training_hr', name: 'staff_training_hr' },
+                    { className: 'text-center', data: 'staff_current_hr', name: 'staff_current_hr' },
                     { className: 'text-center', data: 'status', name: 'status' },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],

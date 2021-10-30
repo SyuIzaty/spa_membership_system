@@ -35,6 +35,17 @@
                                 </div>
                             </div>
                             <div class="col-sm-6 col-xl-4">
+                                <div class="p-3 bg-primary-300 rounded overflow-hidden position-relative text-white mb-g">
+                                    <div class="">
+                                        <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                            {{ \App\TrainingList::whereDate('start_date','<=', \Carbon\Carbon::today())->whereDate('end_date','>=', \Carbon\Carbon::today())->get()->count() }}
+                                            <small class="m-0 l-h-n">TODAY / ONGOING TRAINING</small>
+                                        </h3>
+                                    </div>
+                                    <i class="fal fa-cube position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1" style="font-size:6rem"></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-xl-4">
                                 <div class="p-3 bg-primary-400 rounded overflow-hidden position-relative text-white mb-g">
                                     <div class="">
                                         <h3 class="display-4 d-block l-h-n m-0 fw-500">
@@ -55,7 +66,7 @@
                         <div class="table-responsive">
                             <table id="train" class="table table-bordered table-hover table-striped w-100">
                                 <thead>
-                                    <tr class="text-center bg-primary-50">
+                                    <tr class="text-center bg-primary-50" style="white-space: nowrap">
                                         <th>#ID</th>
                                         <th>TITLE</th>
                                         <th>TYPE</th>
@@ -222,6 +233,21 @@
                                     </td>
                                 </div>
                             </tr>
+                            <tr class="eval">
+                                <div class="form-group">
+                                    <td width="12%"><label class="form-label" for="evaluation_status"><span class="text-danger">*</span> Evaluation Status :</label></td>
+                                    <td colspan="4">
+                                        <select name="evaluation_status" id="evaluation_status" class="form-control">
+                                            <option value="">Please Select</option>
+                                            <option value="1" {{ old('evaluation_status') == '1' ? 'selected':''}} >OPEN</option>
+                                            <option value="0" {{ old('evaluation_status') == '0' ? 'selected':''}} >CLOSE</option>
+                                        </select>
+                                        @error('evaluation_status')
+                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                        @enderror
+                                    </td>
+                                </div>
+                            </tr>
                             <tr>
                                 <div class="form-group">
                                     <td width="12%"><label class="form-label"><span class="text-danger">*</span> Claim Hours :</label></td>
@@ -231,7 +257,7 @@
                                             <p style="color: red"><strong> * {{ $message }} </strong></p>
                                         @enderror
                                     </td>
-                                    <td width="12%"><label class="form-label" for="upload_image"> Image : <i class="fal fa-info-circle fs-xs mr-1" data-toggle="tooltip" data-placement="right" title="" data-original-title="Banner / Poster / Any image related to the training (.jpg, .png)"></i></label></td>
+                                    <td width="12%"><label class="form-label" for="upload_image"> Image : <i class="fal fa-info-circle fs-xs mr-1" data-toggle="tooltip" data-placement="right" title="" data-original-title="Banner / Poster / Any image related to the training (.jpg, .jpeg, .png)"></i></label></td>
                                     <td colspan="2">
                                         <input type="file" class="form-control" id="upload_image" name="upload_image">
                                         @error('upload_image')
@@ -277,8 +303,9 @@
         $('#type').val('{{ old('type') }}'); 
         $("#type").change(); 
         $('#evaluation').val('{{ old('evaluation') }}');
+        $('#evaluation_status').val('{{ old('evaluation_status') }}');
 
-        $('#evaluation, #category, #type').select2({ 
+        $('#evaluation, #category, #type, #evaluation_status').select2({ 
             dropdownParent: $('#crud-modal') 
         }); 
 
