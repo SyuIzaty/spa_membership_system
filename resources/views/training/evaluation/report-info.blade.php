@@ -35,172 +35,127 @@
                                                 <div class="card">
                                                     <div class="card-header">
                                                         Evaluation Result
-                                                        <a data-page="#" class="float-right" style="cursor: pointer" onclick="Print(this)"><i class="fal fa-file-pdf" style="color: red; font-size: 20px"></i></a>
+                                                        <a data-page="/report-pdf/{{ $id }}" class="float-right" style="cursor: pointer" onclick="Print(this)"><i class="fal fa-file-pdf" style="color: red; font-size: 20px"></i></a>
                                                     </div>
-                                                        <div class="card-body">
-                                                            <?php $grand_total = 0; $totalquestion = 0; ?>
-                                                                @foreach($trainingHead as $detail => $headers)
-
-                                                                    @php $is = 1; @endphp
-                                                                    <?php $total = 0; $questioncount = 0; ?>
-                                                                    <table class="table table-bordered" style="margin-bottom: 50px">
+                                                    <div class="card-body">
+                                                        <?php $grand_total = 0; $totalquestion = 0; ?>
+                                                        @foreach($trainingHead as $detail => $headers)
+                                                            @php $is = 1; @endphp
+                                                            <?php $total = 0; $questioncount = 0; ?>
+                                                            <table class="table table-bordered" style="margin-bottom: 50px">
+                                                                <tr>
+                                                                    <td colspan="8" class="bg-primary-50 font-weight-bold">
+                                                                        {{ $headers->question_head }}
+                                                                        @if ($headers->trainingEvaluationQuestions->whereIn('eval_rate',['C'])->count() >= 1)
+                                                                            <a href="/report-response/{{ $id }}/{{ $headers->id }}/{{ $headers->evaluation_id }}" class="btn btn-primary btn-xs float-right"><i class='fal fa-volume-down'></i> Response</a>
+                                                                        @endif
+                                                                    </td>
+                                                                </tr>
+                                                                <?php 
+                                                                    $data = \App\TrainingEvaluationHead::where('id', $headers->id)->first();
+                                                                ?>
+                                                                <tr class="font-weight-bold text-center" style="white-space: nowrap">
+                                                                    <td style="width: 2%">No</td>
+                                                                    <td style="width: 50%">Question</td>
+                                                                    <td style="width: 7%">Strongly Disagree</td>
+                                                                    <td style="width: 7%">Disagree</td>
+                                                                    <td style="width: 7%">In Between</td>
+                                                                    <td style="width: 7%">Agree</td>
+                                                                    <td style="width: 7%">Strongly Agree</td>
+                                                                    <td style="width: 13%">Point</td>
+                                                                </tr>
+                                                                @foreach($data->trainingEvaluationQuestions->where('eval_rate', '!=', 'C')->groupBy('head_id') as $questions)
+                                                                    @foreach ($trainingResult as $key => $item)
+                                                                        @if($item->trainingEvaluationQuestion->trainingEvaluationHeads->id ==  $questions->first()->head_id)
                                                                         <tr>
-                                                                            <td colspan="8" class="bg-primary-50 font-weight-bold">
-                                                                                {{ $headers->question_head }}
-                                                                                @if ($headers->trainingEvaluationQuestions->whereIn('eval_rate',['C'])->count() >= 1)
-                                                                                    <a href="/report-response/{{ $id }}/{{ $headers->id }}/{{ $headers->evaluation_id }}" class="btn btn-primary btn-xs float-right"><i class='fal fa-volume-down'></i> Response</a>
-                                                                                @endif
-                                                                            </td>
-                                                                        </tr>
-                                                                        <?php 
-                                                                            $data = \App\TrainingEvaluationHead::where('id', $headers->id)->first();
-                                                                        ?>
-                                                                        <tr class="font-weight-bold text-center" style="white-space: nowrap">
-                                                                            <td style="width: 2%">No</td>
-                                                                            <td style="width: 50%">Question</td>
-                                                                            <td style="width: 7%">Strongly Disagree</td>
-                                                                            <td style="width: 7%">Disagree</td>
-                                                                            <td style="width: 7%">In Between</td>
-                                                                            <td style="width: 7%">Agree</td>
-                                                                            <td style="width: 7%">Strongly Agree</td>
-                                                                            <td style="width: 13%">Point</td>
-                                                                        </tr>
-                                                                        @foreach($data->trainingEvaluationQuestions->where('eval_rate', '!=', 'C')->groupBy('head_id') as $questions)
-                                                                            @foreach ($trainingResult as $key => $item)
-                                                                             @if($item->trainingEvaluationQuestion->trainingEvaluationHeads->id ==  $questions->first()->head_id)
-                                                                                <tr>
-                                                                                    @if( $questions->first()->eval_rate === "R" )
-                                                                                        <td>{{ $is++ }}</td>
-                                                                                        <td>{{ $item->trainingEvaluationQuestion->question }}</td>
-                                                                                    @endif
-                                                                                    @if( $questions->first()->eval_rate === "R" )
-                                                                                        <?php
-                                                                                            $questioncount ++;
-                                                                                            $totalquestion ++;
-                                                                                            $point = $item->where('question',$item->question)->where('training_id',$id)->sum('rating');
-                                                                                            $frequency = $item->where('question',$item->question)->where('training_id',$id)->groupby('staff_id')->count();
-                                                                                            $grade = $frequency > 0 ? $point / $frequency : 0;
-                                                                                            $total += $grade;
-                                                                                            $grand_total += $point;
-                                                                                        ?>
-                                                                                        @for($i = 1; $i <= 5; $i++)
-                                                                                            <td class="text-center">
-                                                                                                {{ $item->where('question',$item->question)->where('rating',$i)->where('training_id',$id)->count() }}
-                                                                                            </td>
-                                                                                        @endfor
-                                                                                        <td class="text-center">{{ number_format($grade,2) }}</td>
-                                                                                    @endif
-                                                                                </tr>
-                                                                             @endif
+                                                                            @if( $questions->first()->eval_rate === "R" )
+                                                                                <td>{{ $is++ }}</td>
+                                                                                <td>{{ $item->trainingEvaluationQuestion->question }}</td>
+                                                                            @endif
+                                                                            @if( $questions->first()->eval_rate === "R" )
                                                                                 <?php
-
-                                                                                    // header
-                                                                                    $dataHead = $headers->select('id', 'question_head')->whereHas('trainingEvaluation',function($query) use($id){
-                                                                                                $query->whereHas('trainingList',function($query) use($id){
-                                                                                                    $query->where('id', $id);
-                                                                                                });
-                                                                                            })->pluck('id', 'question_head')->toArray();
-            
-                                                                                    // color
-                                                                                    $dataColor = $headers->select('id', 'color')->whereHas('trainingEvaluation',function($query) use($id){
-                                                                                                $query->whereHas('trainingList',function($query) use($id){
-                                                                                                    $query->where('id', $id);
-                                                                                                });
-                                                                                            })->pluck('id', 'color')->toArray();
-            
-                                                                                    // $data = [$headers->question_head];
-                                                                                    // $datas = [$total > 0 && $questioncount >0 ? ROUND($total / $questioncount,2) : 0];
-                                                                                    // $datass = [$headers->color ];
-
-                                                                                    $dataz = $headers->whereHas('trainingEvaluation',function($query) use($id){
-                                                                                                $query->whereHas('trainingList',function($query) use($id){
-                                                                                                    $query->where('id', $id);
-                                                                                                });
-                                                                                            })->get();
-            
-                                                                                    $listBal = [];
-            
-                                                                                    foreach($dataz as $key => $test) {
-                                                                                        $data = $headers->where('id', $test['id'])->first(); 
-                                                                                        // dd($data);
-                                                                                        $total_bal = 0;
-                                                                                        
-                                                                                        foreach($data->trainingEvaluationQuestions as $list){
-                                                                                            // $a += $list->question->count();
-                                                                                            
-                                                                                            $total_bal = $total > 0 && $questioncount >0 ? ROUND($total / $questioncount,2) : 0;
-                                                                                            // dd($total_bal);
-                                                                                        }
-                                                                                        $listBal[] = $total_bal;
-                                                                                    }
-
-                                                                                    // $dataTotal = $total > 0 && $questioncount >0 ? ROUND($total / $questioncount,2) : 0;
-            
-                                                                                    $chart = new \App\TrainingEvaluationHead;
-                                                                                    $chart->labels = (array_keys($dataHead));
-                                                                                    $chart->backgroundColor = (array_keys($dataColor));
-                                                                                    $chart->dataset = (array_values($listBal)); 
-            
+                                                                                    $questioncount ++;
+                                                                                    $totalquestion ++;
+                                                                                    $point = $item->where('question',$item->question)->where('training_id',$id)->sum('rating');
+                                                                                    $frequency = $item->where('question',$item->question)->where('training_id',$id)->groupby('staff_id')->count();
+                                                                                    $grade = $frequency > 0 ? $point / $frequency : 0;
+                                                                                    $total += $grade;
+                                                                                    $grand_total += $point;
                                                                                 ?>
-                                                                            @endforeach
-                                                                            {{-- @if($key == count($trainingResult) - 1) --}}
-                                                                                <tr class="text-center font-weight-bold">
-                                                                                    <td colspan="7"> Average Point </td>
-                                                                                    <td> {{ $total > 0 && $questioncount >0 ? number_format($total / $questioncount,2) : 0 }}</td>
-                                                                                </tr>
-                                                                            {{-- @endif --}}
-                                                                        @endforeach
-                                                                    </table>
-                                                                
-                                                                @endforeach
-                                                             
-                                                            <canvas id="chartz1" style="background: transparent" class="rounded shadow"></canvas>
-                                                            <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3"></script>
-                                                            <script>
-                                                                var ctx = document.getElementById('chartz1').getContext('2d');
-                                                                
-                                                                var myChart = new Chart(ctx, {
-                                                                    type: 'bar',
-                                                                    data: {
-                                                                        labels:  {!!json_encode($chart->labels)!!} ,
-                                                                        datasets: [{
-                                                                            label: 'EVALUATION REPORT',
-                                                                            data: {!!json_encode($chart->dataset)!!} ,
-                                                                            backgroundColor: {!!json_encode($chart->backgroundColor)!!} ,
-                                                                            borderWidth: 1
-                                                                        }]
-                                                                    },
-                                                                    options: {
-                                                                        scales: {
-                                                                            yAxes: [{
-                                                                                ticks: {
-                                                                                    beginAtZero: true
+                                                                                @for($i = 1; $i <= 5; $i++)
+                                                                                    <td class="text-center">
+                                                                                        {{ $item->where('question',$item->question)->where('rating',$i)->where('training_id',$id)->count() }}
+                                                                                    </td>
+                                                                                @endfor
+                                                                                <td class="text-center">{{ number_format($grade,2) }}</td>
+                                                                            @endif
+                                                                        </tr>
+                                                                        @endif
+                                                                        <?php
+                                                                            // header
+                                                                            $dataHead = $headers->select('id', 'question_head')->whereHas('trainingEvaluation',function($query) use($id){
+                                                                                        $query->whereHas('trainingList',function($query) use($id){
+                                                                                            $query->where('id', $id);
+                                                                                        });
+                                                                                    })->pluck('id', 'question_head')->toArray();
+    
+                                                                            // color
+                                                                            $dataColor = $headers->select('id', 'color')->whereHas('trainingEvaluation',function($query) use($id){
+                                                                                        $query->whereHas('trainingList',function($query) use($id){
+                                                                                            $query->where('id', $id);
+                                                                                        });
+                                                                                    })->pluck('id', 'color')->toArray();
+    
+                                                                            
+                                                                            // avg point
+                                                                            $dataz = $headers->whereHas('trainingEvaluation',function($query) use($id){
+                                                                                        $query->whereHas('trainingList',function($query) use($id){
+                                                                                            $query->where('id', $id);
+                                                                                        });
+                                                                                    })->get();
+    
+                                                                            $listBale = [];
+                                                                            foreach($dataz as $key => $test) {
+                                                                                $datae = $headers->where('id', $test['id'])->first(); 
+                                                                                $totale = 0;
+                                                                                $questioncounte = 0;
+                                                                                $total_bale = 0;
+                                                                                
+                                                                                foreach($datae->trainingEvaluationQuestions as $liste){
+                                                                                    if($liste->eval_rate != 'C')
+                                                                                    {
+                                                                                        $questioncounte ++;
+                                                                                        
+                                                                                        foreach($liste->trainingEvaluationResults as $resulte){
+                                                                                            if($resulte->training_id == $id)
+                                                                                            {
+                                                                                                $pointe = $resulte->where('question',$resulte->question)->where('training_id',$id)->sum('rating');
+                                                                                                $frequencye = $resulte->where('question',$resulte->question)->where('training_id',$id)->groupby('staff_id')->count();
+                                                                                                $gradee = $frequencye > 0 ? $pointe / $frequencye : 0;
+                                                                                                $totale += $gradee;
+                                                                                            }
+                                                                                        }
+                                                                                    }
                                                                                 }
-                                                                            }]
-                                                                        },
-                                                                        legend: {
-                                                                            position: "top",
-                                                                            labels: {
-                                                                                fontColor: '#122C4B',
-                                                                                fontFamily: "'Muli', sans-serif",
-                                                                                padding: 15,
-                                                                                boxWidth: 10,
-                                                                                fontSize: 14,
+                                                                                $total_bale = $totale > 0 && $questioncounte >0 ? ROUND($totale / $questioncounte,2) : 0;
+                                                                                $listBale[] = $total_bale;
                                                                             }
-                                                                        },
-                                                                        bar: {groupWidth: "80%"},
-                                                                        layout: {
-                                                                            padding: {
-                                                                                left: 10,
-                                                                                right: 10,
-                                                                                bottom: 30,
-                                                                                top: 30
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                });
-                                                            </script>
-                                                        </div>
+
+                                                                            $chart = new \App\TrainingEvaluationHead;
+                                                                            $chart->labels = (array_keys($dataHead));
+                                                                            $chart->backgroundColor = (array_keys($dataColor));
+                                                                            $chart->dataset = (array_values($listBale)); 
+                                                                        ?>
+                                                                    @endforeach
+                                                                        <tr class="text-center font-weight-bold">
+                                                                            <td colspan="7"> Average Point </td>
+                                                                            <td> {{ $total > 0 && $questioncount >0 ? number_format($total / $questioncount,2) : 0 }}</td>
+                                                                        </tr>
+                                                                @endforeach
+                                                            </table>
+                                                        @endforeach
+                                                        <canvas id="chartz1" style="background: transparent" class="rounded shadow"></canvas>
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -287,7 +242,6 @@
                                         </div>
                                     </div>
                                 </div>
-                               
                             </div>
                         </div>
                     </div>
@@ -302,6 +256,51 @@
 @endsection
 
 @section('script')
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3"></script>
+<script>
+    var ctx = document.getElementById('chartz1').getContext('2d');
+    
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels:  {!!json_encode($chart->labels)!!} ,
+            datasets: [{
+                label: 'EVALUATION REPORT',
+                data: {!!json_encode($chart->dataset)!!} ,
+                backgroundColor: {!!json_encode($chart->backgroundColor)!!} ,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            },
+            legend: {
+                position: "top",
+                labels: {
+                    fontColor: '#122C4B',
+                    fontFamily: "'Muli', sans-serif",
+                    padding: 15,
+                    boxWidth: 10,
+                    fontSize: 14,
+                }
+            },
+            bar: {groupWidth: "80%"},
+            layout: {
+                padding: {
+                    left: 10,
+                    right: 10,
+                    bottom: 30,
+                    top: 30
+                }
+            }
+        }
+    });
+</script>
 <script>
     function Print(button)
     {
@@ -310,18 +309,7 @@
         printWindow.addEventListener('load', function(){
             printWindow.print();
         }, true);
-    }
-
-    
-
-    
-   
-
- 
-
-
-                                                                    
-
+    } 
 </script>
 @endsection
 

@@ -2289,6 +2289,18 @@ class TrainingController extends Controller
         return view('training.evaluation.response-pdf',compact('ques_response','id'));
     }
 
+    public function reportPdf($id)
+    {
+        $evaluationStatus = TrainingEvaluationStatus::all();
+        $training = TrainingList::where('id', $id)->first();
+        $trainingHead = TrainingEvaluationHead::orderBy('sequence', 'ASC')->where('evaluation_id', $training->evaluation)->get();
+        $trainingResult = TrainingEvaluationResult::select('question')->where('training_id', $id)->whereHas('trainingEvaluationQuestion',function($query) {
+            $query->where('eval_rate', 'R');
+        })->groupBy('question')->get(); 
+
+        return view('training.evaluation.report-pdf', compact('evaluationStatus','id','training','trainingHead','trainingResult'));
+    }
+
 /**
      * Display a listing of the resource.
      *
