@@ -11,7 +11,7 @@
                     <div class="card card border-0 px-4 py-5"> 
                         <div><a href="{{ route('login') }}" class="btn border-3 float-right"><i class="fal fa-window-close" style="font-size:24px"></i></a></div>
                         <div class="row mb-4 px-3 justify-content-center">
-                            <img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="280" alt="INTEC">
+                            <img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" alt="INTEC">
                         </div>
 
                         <div class="card-header">{{ __('Reset Password') }}</div>
