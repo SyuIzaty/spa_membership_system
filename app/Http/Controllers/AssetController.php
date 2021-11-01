@@ -291,12 +291,10 @@ class AssetController extends Controller
     public function printBarcode(Request $request)
     {
         $checked = explode(',',$request->mem_checkbox_submit);
-        // $customPaper = array('0','0','188.98','128.50'); landscape
         $customPaper = array('0','0','132.28','188.98');  
         // cm height: 3.4cm (128.50) 3.5(132.28) + width 5cm 
 
-        // $pdf = PDF::loadView('inventory.asset-barcode', compact('checked'))->setPaper($customPaper, 'landscape');
-        $pdf = PDF::loadView('inventory.asset.asset-barcode', compact('checked'))->setPaper($customPaper, 'potrait');
+        $pdf = PDF::loadView('inventory.asset.asset-barcode', compact('checked'))->setPaper($customPaper, 'landscape');
         return $pdf->stream('Barcode.pdf');
     }
 
@@ -586,6 +584,7 @@ class AssetController extends Controller
                 if($asset->status == '1') {
                 // check former status 1 or not
                     $request->validate([
+                        'asset_code'        => 'required|unique:inv_asset,asset_code,' .$request->id,
                         'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$request->id,
                         'asset_name'        => 'required',
                         'serial_no'         => 'required',
@@ -599,6 +598,7 @@ class AssetController extends Controller
         
                     $asset->update([
                         'asset_name'            => strtoupper($request->asset_name), 
+                        'asset_code'            => $request->asset_code, 
                         'finance_code'          => $request->finance_code, 
                         'serial_no'             => strtoupper($request->serial_no), 
                         'model'                 => strtoupper($request->model),
@@ -616,6 +616,7 @@ class AssetController extends Controller
                 } else {
                   // former status 0
                     $request->validate([
+                        'asset_code'        => 'required|unique:inv_asset,asset_code,' .$request->id,
                         'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$request->id,
                         'asset_name'        => 'required',
                         'serial_no'         => 'required',
@@ -627,6 +628,7 @@ class AssetController extends Controller
         
                     $asset->update([
                         'asset_name'            => strtoupper($request->asset_name), 
+                        'asset_code'            => $request->asset_code, 
                         'finance_code'          => $request->finance_code, 
                         'serial_no'             => strtoupper($request->serial_no), 
                         'model'                 => strtoupper($request->model),
@@ -644,6 +646,7 @@ class AssetController extends Controller
             } else {
               // request status == 1
                 $request->validate([
+                    'asset_code'        => 'required|unique:inv_asset,asset_code,' .$request->id,
                     'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$request->id,
                     'asset_name'        => 'required',
                     'serial_no'         => 'required',
@@ -655,6 +658,7 @@ class AssetController extends Controller
     
                 $asset->update([
                     'asset_name'            => strtoupper($request->asset_name), 
+                    'asset_code'            => $request->asset_code, 
                     'finance_code'          => $request->finance_code, 
                     'serial_no'             => strtoupper($request->serial_no), 
                     'model'                 => strtoupper($request->model),
@@ -675,6 +679,7 @@ class AssetController extends Controller
              if($request->status == '0') {
               // request status == 0
                 $request->validate([
+                    'asset_code'        => 'required|unique:inv_asset,asset_code,' .$request->id,
                     'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$request->id,
                     'asset_name'        => 'required',
                     'serial_no'         => 'required',
@@ -689,6 +694,7 @@ class AssetController extends Controller
     
                 $asset->update([
                     'asset_name'            => strtoupper($request->asset_name), 
+                    'asset_code'            => $request->asset_code,
                     'finance_code'          => $request->finance_code, 
                     'serial_no'             => strtoupper($request->serial_no), 
                     'model'                 => strtoupper($request->model),
@@ -706,6 +712,7 @@ class AssetController extends Controller
              } else {
                 // request status == 1
                 $request->validate([
+                    'asset_code'        => 'required|unique:inv_asset,asset_code,' .$request->id,
                     'finance_code'      => 'nullable|unique:inv_asset,finance_code,' .$request->id,
                     'asset_name'        => 'required',
                     'serial_no'         => 'required',
@@ -717,6 +724,7 @@ class AssetController extends Controller
     
                 $asset->update([
                     'asset_name'            => strtoupper($request->asset_name), 
+                    'asset_code'            => $request->asset_code,
                     'finance_code'          => $request->finance_code, 
                     'serial_no'             => strtoupper($request->serial_no), 
                     'model'                 => strtoupper($request->model),
@@ -731,7 +739,7 @@ class AssetController extends Controller
              }
         }
 
-        if($request->asset_name != $assets->asset_name || $request->asset_code_type != $assets->asset_code_type || $request->serial_no != $assets->serial_no || $request->status != $assets->status || $request->asset_class != $assets->asset_class)
+        if($request->asset_code != $assets->asset_code || $request->asset_name != $assets->asset_name || $request->asset_code_type != $assets->asset_code_type || $request->serial_no != $assets->serial_no || $request->status != $assets->status || $request->asset_class != $assets->asset_class)
         {
            $trail = AssetTrail::create([
                 'asset_id'              => $asset->id,

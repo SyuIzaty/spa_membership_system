@@ -1,6 +1,11 @@
 @extends('layouts.admin')
 
 @section('content')
+<style>
+    .td-green td {background-color: rgb(67, 250, 67);}
+    .td-yellow td {background-color: rgb(139, 255, 139);}
+    .td-red td {background-color: rgb(176, 245, 176);}
+</style>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
 
@@ -26,6 +31,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-md-4 mb-4">
                 <div class="card">
                     <div class="card-header bg-primary-500">Staff Performance {{ $year }}</div>
@@ -78,14 +84,13 @@
                     <div class="card-header bg-primary-500">Training Category</div>
                     <div class="card-body">
                         <div id="piechart" style="height: 400px;"></div>
-                         
-                        
                     </div>
                 </div>
             </div>
+
             <div class="col-md-4 mb-4">
                 <div class="card">
-                    <div class="card-header bg-primary-500"> <i class="fal fa-cubes"></i> Top Internal Training {{ $year }}</div>
+                    <div class="card-header bg-primary-500"><i class="fal fa-cubes"></i> Top Internal Training {{ $year }}</div>
                     <div class="card-body">
                         <table class="table m-0">
                             <thead>
@@ -97,11 +102,16 @@
                             </thead>
                             <tbody>
                                 @foreach($trainingRank as $trainRank)
-                                    <?php
-                                        $color = array('#FFFF7D', '#FFFF97', '#FFFFAC', 'FFFFFF', 'FFFFFF');
-                                    ?>
-                                    <tr style="background-color:   }}">
-                                        <td class="text-center">{{ $no++ }}</td>
+                                    <tr class="
+                                        @if($loop->iteration == 1)
+                                            {{ 'td-green' }} 
+                                        @elseif($loop->iteration == 2) 
+                                            {{ 'td-yellow' }}
+                                        @elseif($loop->iteration == 3)
+                                            {{ 'td-red' }}
+                                        @endif
+                                    ">
+                                        <td class="text-center">{{ $train_no++ }}</td>
                                         <td class="text-left">{{ $trainRank->trainings->title }}</td>
                                         <td class="text-center">{{ $trainRank->total }}</td>
                                     </tr>
@@ -111,15 +121,40 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-md-4 mb-4">
                 <div class="card">
-                    <div class="card-header bg-primary-500">Top Staff with Most Training {{ $year }}</div>
-                </div>
-                <div style="height:400px">
+                    <div class="card-header bg-primary-500"><i class="fal fa-cubes"></i> Top Staff with Most Training {{ $year }}</div>
+                    <div class="card-body">
+                        <table class="table m-0">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Staff</th>
+                                    <th>Total Hour</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($staffRank as $staffsRank)
+                                    <tr class="
+                                        @if($loop->iteration == 1)
+                                            {{ 'td-green' }} 
+                                        @elseif($loop->iteration == 2) 
+                                            {{ 'td-yellow' }}
+                                        @elseif($loop->iteration == 3)
+                                            {{ 'td-red' }}
+                                        @endif
+                                    ">
+                                        <td class="text-center">{{ $staff_no++ }}</td>
+                                        <td class="text-left">{{ $staffsRank->staffs->staff_name }}</td>
+                                        <td class="text-center">{{ $staffsRank->total }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-             
-            
             
         </div>
 

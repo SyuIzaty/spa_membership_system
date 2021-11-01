@@ -81,9 +81,12 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <div class="form-group">
-                                                                                <td width="15%"><label class="form-label" for="asset_code"> Asset Code : </label></td>
+                                                                                <td width="15%"><label class="form-label" for="asset_code"><span class="text-danger">*</span> Asset Code : </label></td>
                                                                                 <td colspan="3">
-                                                                                    <input class="form-control" id="asset_code" style="cursor:context-menu" name="asset_code" value="{{ $asset->asset_code }}" readonly>
+                                                                                    <input class="form-control" id="asset_code" name="asset_code" value="{{ $asset->asset_code ?? old('asset_code') }}">
+                                                                                    @error('asset_code')
+                                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                    @enderror
                                                                                 </td>
                                                                                 <td width="15%"><label class="form-label" for="finance_code"> Finance Code:</label></td>
                                                                                 <td colspan="3">

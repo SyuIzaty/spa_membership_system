@@ -45,14 +45,17 @@ class TrainingController extends Controller
         $years = TrainingHourYear::select('year')->orderBy('year', 'desc')->limit(3)->get();
 
         // Start Rank
-            $trainingRank = TrainingClaim::select('training_id', DB::raw('count(*) as total'))->groupBy('training_id')->whereHas('trainings',function($query) {
-                $query->whereIn('type', ['1','2']);
-            })->limit(5)->orderBy('total', 'desc')->get();
-            
+            $trainingRank = TrainingClaim::select('training_id', DB::raw('count(*) as total'))->groupBy('training_id')
+                            ->where(DB::raw('YEAR(start_date)'), '=', $year)->whereHas('trainings',function($query) {
+                                $query->whereIn('type', ['1','2']);
+                            })->limit(5)->orderBy('total', 'desc')->get();
 
-            // $staffRank = TrainingCLaim::select('approved_hour', DB::raw('count(*) as total'))->where( DB::raw('YEAR(start_date)'), '=', $year )->get();
-            // ->groupBy('approved_hour')->limit(3)->orderBy('total', 'desc')
-            // dd($staffRank);
+            $staffRank = TrainingCLaim::select('staff_id', DB::raw('SUM(approved_hour) as total'))
+                        ->where( DB::raw('YEAR(start_date)'), '=', $year )
+                        ->groupBy('staff_id')
+                        ->limit(5)
+                        ->orderBy('total', 'desc')
+                        ->get();
          // End Rank
 
         // Start PieChart
@@ -69,7 +72,7 @@ class TrainingController extends Controller
             }
         // End PieCart
 
-        // Start BarChart
+        // Start BarChart uncomp.
             $population = TrainingClaim::select(
                 DB::raw("year(start_date) as year"),
                 DB::raw("SUM(category) as bears"),
@@ -90,7 +93,7 @@ class TrainingController extends Controller
         
         
 
-        return view('training.dashboard.analysis',compact('year','years','trainingRank'))->with('category',json_encode($result))->with('no', 1)->with('population', json_encode($res));
+        return view('training.dashboard.analysis',compact('year','years','trainingRank','staffRank'))->with('category',json_encode($result))->with('train_no', 1)->with('staff_no', 1)->with('population', json_encode($res));
     }
 
      // Training List
