@@ -136,7 +136,6 @@
                                                     </table>
                                                     <div class="footer">
                                                         <button type="submit" class="btn btn-primary ml-auto float-right submitQuestion" name="submit"><i class="fal fa-save"></i> Save</button>
-                                                        <a href="/evaluation-question" class="btn btn-success ml-auto float-right mr-2" ><i class="fal fa-arrow-alt-left"></i> Back</a>
                                                     </div>
                                                     <br><br>
                                                 {!! Form::close() !!}
@@ -196,7 +195,43 @@
                 }
         });
 
-        // Add Question
+        // Add Header
+
+            $('#addhead').click(function(){
+                i++;
+                $('#head_field').append(`
+                <tr id="row${i}" class="head-added">
+                <td><input type="text" name="head[]" placeholder="Question Header" class="form-control head" /></td>
+                <td><input type="color" value="#ffffff" class="form-control" id="color" name="color[]"></td>
+                <td><button type="button" name="remove" id="${i}" class="btn btn-sm btn-danger btn_remove"><i class="fal fa-trash"></i></button></td>
+                </tr>
+                `);
+                $('.eval_rate').select2();
+            });
+
+            var postURL = "<?php echo url('addmore'); ?>";
+            var i=1;
+
+            $.ajaxSetup({
+                headers:{
+                'X-CSRF-Token' : $("input[name=_token]").val()
+                }
+            });
+
+            $(document).on('click', '.btn_remove', function(){
+                var button_id = $(this).attr("id");
+                $('#row'+button_id+'').remove();
+            });
+
+            $.ajaxSetup({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+        // End Header
+
+        // Start Add Question
 
             $('.addquestion').click(function(){
                 var id = $(this).attr("data-id");
@@ -259,62 +294,10 @@
 
             $('.eval_rate').select2();
 
-            // $('.editable').find('tr').each(function() {
-            //     var $tds = $(this).find('td'),
-            //     all = $tds.eq(5).text();
-            //     if(all >= 1){
-            //         $tds.eq(7).html("<p class='badge border border-danger text-danger'>Exist</p>");
-            //     }
-            // });
-
-            // $('.editable').find('tr').each(function() {
-            //     var $tds = $(this).find('td'),
-            //     all = $tds.eq(5).text();
-            //     result = $tds.eq(6).text();
-            //     if(all >= 1){
-            //         $tds.eq(7).html("<p class='badge border border-danger text-danger'>Exist</p>");
-            //     }
-            //     if(result >= 1){
-            //         $tds.eq(7).html("<p class='badge border border-danger text-danger'>Exist</p>");
-            //     }
-            // });
-
-
-        // End: Table Question
+        // End Question
 
         // Add Header
-            $('#addhead').click(function(){
-                i++;
-                $('#head_field').append(`
-                <tr id="row${i}" class="head-added">
-                <td><input type="text" name="head[]" placeholder="Question Header" class="form-control head" /></td>
-                <td><input type="color" value="#ffffff" class="form-control" id="color" name="color[]"></td>
-                <td><button type="button" name="remove" id="${i}" class="btn btn-sm btn-danger btn_remove"><i class="fal fa-trash"></i></button></td>
-                </tr>
-                `);
-                $('.eval_rate').select2();
-            });
-
-            var postURL = "<?php echo url('addmore'); ?>";
-            var i=1;
-
-            $.ajaxSetup({
-                headers:{
-                'X-CSRF-Token' : $("input[name=_token]").val()
-                }
-            });
-
-            $(document).on('click', '.btn_remove', function(){
-                var button_id = $(this).attr("id");
-                $('#row'+button_id+'').remove();
-            });
-
-            $.ajaxSetup({
-                headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
+            
             $('.headedit').Tabledit({
                 url:'{{ route("updateHeader") }}',
                 dataType:"json",
@@ -382,18 +365,6 @@
                 }
             });
 
-            // $('.headedit').find('tr').each(function() {
-            //     var $tda = $(this).find('td'),
-            //     total = $tda.eq(5).text();
-            //     result = $tda.eq(6).text();
-            //     if(total >= 1){
-            //         $tda.eq(8).html("<p class='badge border border-danger text-danger'>Exist</p>");
-            //     }
-            //     if(result >= 1){
-            //         $tda.eq(8).html("<p class='badge border border-danger text-danger'>Exist</p>");
-            //     }
-            // })
-
             $('#headedit tbody').sortable({
                 placeholder : "ui-state-highlight",
                 opacity: 0.9,
@@ -420,121 +391,121 @@
 
         // End Header
 
-            $('#add').click(function(){
-                i++;
-                $('#question_field').append(`
-                <tr id="row${i}" class="dynamic-added">
-                <td><input type="text" name="question[]" placeholder="Question" class="form-control question" /></td>
-                <td>
-                    <select class="form-control eval_head" name="eval_head[]">
-                        <option disabled>Please Select</option>
-                        @foreach ($evaluation as $eval_heads)
-                            <option value="{{ $eval_heads->id }}">{{ $eval_heads->question_head }}</option>
-                        @endforeach
-                    </select>
-                </td>
-                <td><button type="button" name="remove" id="${i}" class="btn btn-danger btn_remove">X</button></td>
-                </tr>
-                `);
-                $('.eval_head').select2();
-            });
+        $('#add').click(function(){
+            i++;
+            $('#question_field').append(`
+            <tr id="row${i}" class="dynamic-added">
+            <td><input type="text" name="question[]" placeholder="Question" class="form-control question" /></td>
+            <td>
+                <select class="form-control eval_head" name="eval_head[]">
+                    <option disabled>Please Select</option>
+                    @foreach ($evaluation as $eval_heads)
+                        <option value="{{ $eval_heads->id }}">{{ $eval_heads->question_head }}</option>
+                    @endforeach
+                </select>
+            </td>
+            <td><button type="button" name="remove" id="${i}" class="btn btn-danger btn_remove">X</button></td>
+            </tr>
+            `);
+            $('.eval_head').select2();
+        });
 
-            $(document).on('click', '.btn_remove', function(){
-                var button_id = $(this).attr("id");
-                $('#row'+button_id+'').remove();
-            });
+        $(document).on('click', '.btn_remove', function(){
+            var button_id = $(this).attr("id");
+            $('#row'+button_id+'').remove();
+        });
 
-            $.ajaxSetup({
-                headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            $('#submit').click(function(){
-                $.ajax({
-                    url:postURL,
-                    method:"POST",
-                    data:$('#add_name').serialize(),
-                    type:'json',
-                    success:function(data)
-                    {
-                        if(data.error){
-                            printErrorMsg(data.error);
-                        }else{
-                            i=1;
-                            $('.dynamic-added').remove();
-                        }
-                    }
-                });
-            });
-
-            $('#submithead').click(function(){
-                $.ajax({
-                    url:postURL,
-                    method:"POST",
-                    data:$('#add_name').serialize(),
-                    type:'json',
-                    success:function(data)
-                    {
-                        if(data.error){
-                            printErrorMsg(data.error);
-                        }else{
-                            i=1;
-                            $('.head-added').remove();
-                        }
-                    }
-                });
-            });
-
-            $('.submitQuestion').click(function(){
-                $.ajax({
-                    url:postURL,
-                    method:"POST",
-                    data:$('#add_name').serialize(),
-                    type:'json',
-                    success:function(data)
-                    {
-                        if(data.error){
-                            printErrorMsg(data.error);
-                        }else{
-                            i=1;
-                            $('.head-added').remove();
-                        }
-                    }
-                });
-            });
-
-            function printErrorMsg (msg) {
-                $(".print-error-msg").find("ul").html('');
-                $(".print-error-msg").css('display','block');
-                $(".print-success-msg").css('display','none');
-                $.each( msg, function( key, value ) {
-                $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
-                });
+        $.ajaxSetup({
+            headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
+        });
 
-            $('.tabledit-view-mode').find('select').each(function(){
-                $(this).attr('disabled','disabled');
-            });
-
-            $('.tabledit-view-mode').find('.color').each(function(){
-                $(this).attr('disabled','disabled');
-            });
-
-            $('.tabledit-edit-button').on('click',function(){
-                if($(this).hasClass('active')){
-                    $(this).parents('tr').find('select').attr('disabled','disabled');
-                    $(this).parents('tr').find('.color').attr('disabled','disabled');
-                }else{
-                    $(this).parents('tr').find('select').removeAttr('disabled');
-                    $(this).parents('tr').find('.color').removeAttr('disabled');
+        $('#submit').click(function(){
+            $.ajax({
+                url:postURL,
+                method:"POST",
+                data:$('#add_name').serialize(),
+                type:'json',
+                success:function(data)
+                {
+                    if(data.error){
+                        printErrorMsg(data.error);
+                    }else{
+                        i=1;
+                        $('.dynamic-added').remove();
+                    }
                 }
             });
+        });
 
-            $('.tabledit-save-button').on('click',function(){
+        $('#submithead').click(function(){
+            $.ajax({
+                url:postURL,
+                method:"POST",
+                data:$('#add_name').serialize(),
+                type:'json',
+                success:function(data)
+                {
+                    if(data.error){
+                        printErrorMsg(data.error);
+                    }else{
+                        i=1;
+                        $('.head-added').remove();
+                    }
+                }
+            });
+        });
+
+        $('.submitQuestion').click(function(){
+            $.ajax({
+                url:postURL,
+                method:"POST",
+                data:$('#add_name').serialize(),
+                type:'json',
+                success:function(data)
+                {
+                    if(data.error){
+                        printErrorMsg(data.error);
+                    }else{
+                        i=1;
+                        $('.head-added').remove();
+                    }
+                }
+            });
+        });
+
+        function printErrorMsg (msg) {
+            $(".print-error-msg").find("ul").html('');
+            $(".print-error-msg").css('display','block');
+            $(".print-success-msg").css('display','none');
+            $.each( msg, function( key, value ) {
+            $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
+            });
+        }
+
+        $('.tabledit-view-mode').find('select').each(function(){
+            $(this).attr('disabled','disabled');
+        });
+
+        $('.tabledit-view-mode').find('.color').each(function(){
+            $(this).attr('disabled','disabled');
+        });
+
+        $('.tabledit-edit-button').on('click',function(){
+            if($(this).hasClass('active')){
                 $(this).parents('tr').find('select').attr('disabled','disabled');
                 $(this).parents('tr').find('.color').attr('disabled','disabled');
-            })
+            }else{
+                $(this).parents('tr').find('select').removeAttr('disabled');
+                $(this).parents('tr').find('.color').removeAttr('disabled');
+            }
+        });
+
+        $('.tabledit-save-button').on('click',function(){
+            $(this).parents('tr').find('select').attr('disabled','disabled');
+            $(this).parents('tr').find('.color').attr('disabled','disabled');
+        })
 
     });
 

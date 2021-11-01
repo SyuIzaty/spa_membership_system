@@ -21,9 +21,9 @@
                 $get_asset = $asset->asset_code ?? '--';
                 $get_code = $get_type.'/'.$get_class.'/'.$get_department.'/'.$get_asset;
             ?>
-            <img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="40" width="120" alt="INTEC"><br>
+            <img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="370" alt="INTEC"><br>
             <img id="qrcode" src="data:image/png;base64, {!! base64_encode(QrCode::format('svg')->size(100)->generate($get_code)) !!}"><br>
-            <p style="font-size: 3.70mm; font-weight: 500">
+            <p style="font-size: 3.55mm; font-weight: 500">
                 {{ $get_code }}
             </p>
         </div>
