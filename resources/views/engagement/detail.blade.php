@@ -178,7 +178,7 @@
                                                                 </div>
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="5">Phone Number:</td>
+                                                                <td colspan="5">Contact Number:</td>
                                                             </tr>
                                                                 <div class="form-group">
                                                                     <td colspan="4">
@@ -231,7 +231,7 @@
                                                                     </div>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td colspan="5">Phone Number:</td>
+                                                                    <td colspan="5">Contact Number:</td>
                                                                 </tr>
                                                                     <div class="form-group">
                                                                         <td colspan="4">

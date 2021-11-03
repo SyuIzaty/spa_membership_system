@@ -353,6 +353,7 @@ class EngagementManagementController extends Controller
            {
                return "N/A";
            }
+           
         })
 
         ->addColumn('action', function ($data) {

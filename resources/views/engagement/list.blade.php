@@ -28,6 +28,9 @@
                                             <th class="text-center">Title</th>
                                             <th class="text-center">Status</th>
                                             <th class="text-center">Organization</th>
+                                            <th class="text-center">Contact Number</th>
+                                            <th class="text-center">Email</th>
+                                            <th class="text-center">Designation</th>
                                             <th class="text-center">View</th>
                                         </tr>
                                     </thead>

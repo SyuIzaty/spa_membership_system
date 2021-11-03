@@ -55,7 +55,7 @@
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text">Content</span>
                                                                     </div>
-                                                                    <textarea value="{{ old('content') }}" class="form-control summernote" id="content" name="content"></textarea>                                        
+                                                                    <textarea value="{{ old('content') }}" class="form-control summernote" id="content" name="content">{{$progress->content}}</textarea>                                        
                                                                 </div>
                                                             </div>   
                                                             </tr>
@@ -65,7 +65,7 @@
                                                                         <div class="input-group-prepend">
                                                                             <span class="input-group-text">Remark</span>
                                                                         </div>
-                                                                        <input class="form-control" type="text" name="remark" value="{{ $progress->remark }}" required></input>
+                                                                        <input class="form-control" type="text" name="remark" value="{{ $progress->remark }}"></input>
                                                                     </div>
                                                                 </div>                                                           
                                                             </tr>
@@ -101,7 +101,7 @@
                                                     @foreach ( $file as $f )
                                                         <li>
                                                             <a target="_blank" href="/get-uploaded-file/{{$f->id}}">{{$f->upload}}</a>
-                                                            <a href="#" data-path ="{{$f->id}}" class="btn btn-danger btn-xs delete-alert"><i class="fal fa-trash"></i></a>                                                        
+                                                            <a href="#" data-path ="{{$f->id}}" class="btn btn-danger btn-xs delete-alert" id="delete"><i class="fal fa-trash"></i></a>                                                        
                                                         </li>
                                                         <br>
                                                     @endforeach
@@ -133,20 +133,19 @@
 @section('script')
 
 <script>
+        
+        Dropzone.autoDiscover = false;
+
        $(document).ready(function() {
             $('.member').select2();
-        });
 
-        $('.summernote').summernote({
+            $('.summernote').summernote({
             height: 200,
             width: 1100,
             spellCheck: true
             
-        }).summernote('editor.pasteHTML', '{!!$progress->content!!}');
+        });
 
-    Dropzone.autoDiscover = false;
-    var fileList = new Array;
-    var i = 0;
     $("#dropzone").dropzone({
         addRemoveLinks: true,
         maxFiles: 10, //change limit as per your requirements
@@ -155,11 +154,10 @@
             this.on("queuecomplete", function (file) {
             location.reload();
             });
-        }
+        },
     });
 
     $(".delete-alert").on('click', function(e) {
-        e.preventDefault();
 
         let id = $(this).data('path');
 
@@ -196,6 +194,11 @@
                 return false;
             })
         });
+
+
+        });
+
+
 
 </script>
 
