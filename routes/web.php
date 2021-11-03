@@ -444,7 +444,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/post-create', 'EngagementManagementController@store');
     Route::post('/todolist-create', 'EngagementManagementController@createToDoList');
     Route::post('/update-profile', 'EngagementManagementController@updateProfile');
-    Route::post('/delete-member/{id}', 'EngagementManagementController@deleteMember');
+    Route::DELETE('/delete-member/{id}', 'EngagementManagementController@deleteMember');
     Route::post('/create-progress', 'EngagementManagementController@createProgress');
     Route::post('/getProgress/{id}', 'EngagementManagementController@getProgress');
     Route::post('/edit-progress', 'EngagementManagementController@editProgress');
@@ -454,6 +454,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/edit-status', 'EngagementManagementController@editStatus');
     Route::get('/engagement-detail/{id}', 'EngagementManagementController@details');
     Route::delete('/delete-status/{id}','EngagementManagementController@deleteStatus');
+
+    Route::get('/new-progress/{id}', 'EngagementManagementController@newProgress');
+    Route::get('/edit-progress/{id}', 'EngagementManagementController@progress');
+    Route::post('/store-files', 'EngagementManagementController@storeFile');
+    Route::get('get-uploaded-file/{file}','EngagementManagementController@getFile');
+    Route::DELETE('/delete-file/{id}','EngagementManagementController@deleteFile');
+
 
     // Training : Training
     Route::get('/training-list', 'TrainingController@trainingList');

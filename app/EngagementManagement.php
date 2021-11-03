@@ -12,11 +12,10 @@ class EngagementManagement extends Model
     protected $table = 'ems_engagement';
     protected $primarykey = 'id';
     protected $fillable = [
-        'title', 'engage_party_one', 'engage_party_two', 'team_member','created_by', 'updated_by', 'deleted_by'
+        'title', 'created_by', 'updated_by', 'deleted_by'
     ];
 
     public function progress(){
         return $this->hasMany('App\EngagementProgress', 'engagement_id', 'id');
     }
-
 }

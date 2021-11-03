@@ -12,7 +12,7 @@ class EngagementProgress extends Model
     protected $table = 'ems_progress';
     protected $primarykey = 'id';
     protected $fillable = [
-        'engagement_id', 'remark', 'status', 'team_member','created_by', 'updated_by', 'deleted_by'
+        'engagement_id', 'content', 'remark', 'status', 'team_member','created_by', 'updated_by', 'deleted_by'
     ];
 
     public function getStatus()

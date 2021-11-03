@@ -27,11 +27,13 @@
                                             <th class="text-center">ID</th>
                                             <th class="text-center">Title</th>
                                             <th class="text-center">Status</th>
+                                            <th class="text-center">Organization</th>
                                             <th class="text-center">View</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
+                                            <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
@@ -64,8 +66,9 @@
             },
             columns: [
                     { className: 'text-center', data: 'id', name: 'id' },
-                    { className: 'text-center', data: 'title', name: 'title' },
+                    { className: 'text-left', data: 'title', name: 'title' },
                     { className: 'text-center', data: 'status', name: 'status' },
+                    { className: 'text-left', data: 'organization', name: 'organization' },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false},
                 ],
                 orderCellsTop: true,

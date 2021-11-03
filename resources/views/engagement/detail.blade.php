@@ -73,7 +73,7 @@
         </h1>
     </div>
 
-        <div class="row">
+    <div class="row">
         <div class="col-xl-12">
             <div id="panel-1" class="panel">
                     <div class="panel-hdr">
@@ -100,259 +100,246 @@
                             @endif
 
                             <div class="row">
-                                <div class="col-sm-5">
-                                    {!! Form::open(['action' => ['EngagementManagementController@updateProfile'], 'method' => 'POST', 'enctype' => 'multipart/form-data'])!!}
-                                    <input type="hidden" id="id" name="id" value="{{ $data->id }}">
+                                <div class="col-sm-8">
                                     <div class="card card-primary card-outline">
-                                        <div class="card-header text-white bg-primary">
-                                            <h5 class="card-title w-100 text-center">PROFILE</h5>
+                                        <div class="card-header text-white bg-dark">
+                                            <h5 class="card-title w-100 text-center">Progress Update</h5>
                                         </div>
-                                        
                                         <div class="card-body">
                                             <div class="table-responsive">
-                                            <table class="table table-borderless table-hover table-striped w-100">
-                                                <thead>
-                                                    <tr>
-                                                        <div class="form-group">
-                                                            <td width="25%"><label class="form-label" for="title"> Title:</label></td>
-                                                            <td colspan="4">
-                                                                <input type="text" id="title" name="title" class="form-control max" value="{{ $data->title }}" required>
-                                                                    @error('title')
-                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                    @enderror
-                                                            </td>
-                                                        </div>
-                                                    </tr>
-                                                    <tr>
-                                                        <div class="form-group">
-                                                            <td width="25%"><label class="form-label" for="party1"> Engage Party One:</label></td>
-                                                            <td colspan="4">
-                                                                <input type="text" id="party1" name="party1" class="form-control max" value="{{ isset($data->engage_party_one) ? $data->engage_party_one : 'N/A' }}" required>
-                                                                    @error('party1')
-                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                    @enderror
-                                                            </td>
-                                                        </div>
-                                                    </tr>
-                                                    <tr>
-                                                        <div class="form-group">
-                                                            <td width="25%"><label class="form-label" for="party2"> Engage Party Two:</label></td>
-                                                            <td colspan="4">
-                                                                <input type="text" id="party2" name="party2" class="form-control max" value="{{ isset($data->engage_party_two) ? $data->engage_party_two : 'N/A' }}">
-                                                                    @error('party2')
-                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                    @enderror
-                                                            </td>
-                                                        </div>
-                                                    </tr>
-                                                    <tr>
-                                                        <td width="25%"><label class="form-label" for="member"> Team Member:</label></td>
-                                                        <td colspan="4"> 
-                                                            @php $i = 1; @endphp
-                                                            @if ($member->isNotEmpty())
-                                                                <ol>
-                                                                    @foreach ( $member as $m )
-                                                                    <form id="form-id">
-                                                                        @csrf
-                                                                        <li>
-                                                                            <input type="hidden" name="id" value="{{ $data->id }}">
-
-                                                                            &nbsp{{ $m->memberDetails->name }}
-                                                                            <button type="submit" class="btn btn-xs btn-danger" data-path="{{ $m->staff_id }}" id="delete"><i class="fal fa-trash"></i></button>
-                                                                        </li>
-                                                                    </form>
-                                                                    @endforeach
-                                                                </ol>
-                                                            @endif
-                                                        </td>
-
-                                                    </tr>
-                                                    
-                                                    <tr>
-                                                        <div class="form-group">
-                                                            <td width="25%"><label class="form-label" for="member">Add Team Member:</label></td>
-                                                            <td colspan="4">
-                                                            <select class="form-control memberList" name="member_id[]" multiple>
-                                                                @foreach ($user as $u)
-                                                                    <option value="{{ $u->id }}">{{ $u->name }}</option>
-                                                                @endforeach
-                                                            </select>                                                                    
-                                                                @error('member')
-                                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                @enderror
-                                                            </td>
-                                                        </div>
-                                                    </tr>
-                                                </thead>
-                                            </table>
+                                                <table id="progress" class="table table-bordered table-hover table-striped w-100">
+                                                    <thead>
+                                                        <tr align="center" class="card-header">
+                                                            <th style="width: 50px;">No.</th>
+                                                            <th>Remark</th>
+                                                            <th>Date</th>
+                                                            <th>Status</th>
+                                                            <th>Member</th>
+                                                            <th>Attachment</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                        <tbody>
+                                                            <tr  align="center"  class="data-row">
+                                                                <td class="hasinput"></td>
+                                                                <td class="hasinput"></td>
+                                                                <td class="hasinput"></td>
+                                                                <td class="hasinput"></td>
+                                                                <td class="hasinput"></td>
+                                                                <td class="hasinput"></td>
+                                                                <td class="hasinput"></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </thead>
+                                                </table>
                                             </div>
-                                                <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Update</button>
+                                            <!-- <a href="#" data-target="#crud-modal" data-id="{{$data->id}}" data-toggle="modal" class="btn btn-primary ml-auto float-right" style="margin-top: 15px;"><i class="fal fa-plus-square"></i> Add Progress</a> -->
+                                            <a href="/new-progress/{{$data->id}}" class="btn btn-primary ml-auto float-right" style="margin-top: 15px;"><i class="fal fa-plus-square"></i> Add New Progress</a>
                                         </div>
-                                    </div>    
-                                {!! Form::close() !!}
-                            </div>
+                                    </div>                                    
+                                </div>
                                 <br>
-                            <div class="col-sm-7">
-                                <form class="savetodolist">
-                                            @csrf
-                                            <div class="card card-primary card-outline">
+                                <div class="col-sm-4">
+                                    {!! Form::open(['action' => ['EngagementManagementController@updateProfile'], 'method' => 'POST', 'enctype' => 'multipart/form-data'])!!}
+                                        <input type="hidden" id="id" name="id" value="{{ $data->id }}">
+                                        <div class="card card-primary card-outline">
+                                            <div class="card-header text-white bg-primary">
+                                                <h5 class="card-title w-100 text-center">PROFILE</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-borderless table-hover table-striped w-100">
+                                                        <thead>
+                                                            <tr>
+                                                                <td colspan="5" class="text-center"><b>TITLE</b></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <div class="form-group">
+                                                                    <td colspan="4">
+                                                                        <input type="text" id="title" name="title" class="form-control max" value="{{ $data->title }}" required>
+                                                                            @error('title')
+                                                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                            @enderror
+                                                                    </td>
+                                                                </div>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="5" class="text-center"><b>ORGANIZATION ONE</b></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="5">Name:</td>
+                                                            </tr>
+                                                                <div class="form-group">
+                                                                    <td colspan="4">
+                                                                        <input type="text" id="name1" name="name1" class="form-control" value="{{ $org->whereIn('no', 1)->first()->name }}" required>
+                                                                            @error('name1')
+                                                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                            @enderror
+                                                                    </td>
+                                                                </div>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="5">Phone Number:</td>
+                                                            </tr>
+                                                                <div class="form-group">
+                                                                    <td colspan="4">
+                                                                        <input type="text" id="phone1" name="phone1" class="form-control" value="{{ $org->whereIn('no', 1)->first()->phone }}" required>
+                                                                            @error('phone1')
+                                                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                            @enderror
+                                                                    </td>
+                                                                </div>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="5">Email:</td>
+                                                            </tr>
+                                                                <div class="form-group">
+                                                                    <td colspan="4">
+                                                                        <input type="text" id="email1" name="email1" class="form-control" value="{{ $org->whereIn('no', 1)->first()->email }}" required>
+                                                                            @error('email1')
+                                                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                            @enderror
+                                                                    </td>
+                                                                </div>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="5">Designation:</td>
+                                                            </tr>
+                                                                <div class="form-group">
+                                                                    <td colspan="4">
+                                                                        <input type="text" id="designation1" name="designation1" class="form-control" value="{{ $org->whereIn('no', 1)->first()->designation }}" required>
+                                                                            @error('designation1')
+                                                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                            @enderror
+                                                                    </td>
+                                                                </div>
+                                                            </tr>
+                                                            
+                                                            @if (($org->whereIn('no', 2))->isNotEmpty())
+                                                                <tr>
+                                                                    <td colspan="5" class="text-center"><b>ORGANIZATION TWO</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="5">Name:</td>
+                                                                </tr>
+                                                                    <div class="form-group">
+                                                                        <td colspan="4">
+                                                                            <input type="text" id="name2" name="name2" class="form-control" value="{{ $org->whereIn('no', 2)->first()->name }}" required>
+                                                                                @error('name2')
+                                                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                @enderror
+                                                                        </td>
+                                                                    </div>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="5">Phone Number:</td>
+                                                                </tr>
+                                                                    <div class="form-group">
+                                                                        <td colspan="4">
+                                                                            <input type="text" id="phone2" name="phone2" class="form-control" value="{{ $org->whereIn('no', 2)->first()->phone }}" required>
+                                                                                @error('phone2')
+                                                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                @enderror
+                                                                        </td>
+                                                                    </div>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="5">Email:</td>
+                                                                </tr>
+                                                                    <div class="form-group">
+                                                                        <td colspan="4">
+                                                                            <input type="text" id="email2" name="email2" class="form-control" value="{{ $org->whereIn('no', 2)->first()->email }}" required>
+                                                                                @error('email2')
+                                                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                @enderror
+                                                                        </td>
+                                                                    </div>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="5">Designation:</td>
+                                                                </tr>
+                                                                    <div class="form-group">
+                                                                        <td colspan="4">
+                                                                            <input type="text" id="designation2" name="designation2" class="form-control" value="{{ $org->whereIn('no', 2)->first()->designation }}" required>
+                                                                                @error('designation2')
+                                                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                @enderror
+                                                                        </td>
+                                                                    </div>
+                                                                </tr>
+                                                            @endif
+                                                            <tr>
+                                                                <td colspan="5" class="text-center"><b>TEAM MEMBER</b></td>
+                                                            </tr>
+                                                            <tr>                                                            
+                                                                <td colspan="5"> 
+                                                                    @if ($member->isNotEmpty())
+                                                                        <ol>
+                                                                            @foreach ( $member as $m )
+                                                                                <li>
+                                                                                    &nbsp{{ $m->memberDetails->name }}
+                                                                                    <a href="#" data-path ="{{$m->id}}" class="btn btn-danger btn-xs delete-alert" id="delete"><i class="fal fa-trash"></i></a>                                                        
+                                                                                </li>
+                                                                            </form>
+                                                                            @endforeach
+                                                                        </ol>
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                            <tr>
+                                                                <div class="form-group">
+                                                                    <td width="25%"><label class="form-label" for="member">Add Team Member:</label></td>
+                                                                    <td colspan="4">
+                                                                    <select class="form-control memberList" name="member_id[]" multiple>
+                                                                        @foreach ($user as $u)
+                                                                            <option value="{{ $u->id }}">{{ $u->name }}</option>
+                                                                        @endforeach
+                                                                    </select>                                                                    
+                                                                        @error('member')
+                                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                        @enderror
+                                                                    </td>
+                                                                </div>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Update</button>
+                                            </div>
+                                        </div>    
+                                    {!! Form::close() !!}
+                                    <br>
+                                    <form class="savetodolist">
+                                        @csrf
+                                        <div class="card card-primary card-outline">
                                             <div class="card-header text-white bg-success">
                                                 <h5 class="card-title w-100 text-center">TO DO LIST</h5>
                                             </div>
-                                            
+                                        
                                             <div class="card-body">
                                                 @if (Session::has('messages'))
                                                     <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('messages') }}</div>
                                                 @endif
                                                 <div class="table-responsive">
-                                                <table class="table table-borderless table-hover table-striped w-100">
-                                                    <thead>
-                                                        <tr>
-                                                            <td>
-                                                                <label class="container">
-                                                                    <input type="checkbox">
-                                                                    <input type="text" class="form-control max" name="todo" placeholder="Add an item" >
-                                                                    <div class="form-status-holder"></div>
-                                                                    <span class="checkmark"></span>
-                                                                </label>
-                                                            </td>
-                                                        </tr>
-                                                    </thead>
-                                                </table>
+                                                    <table class="table table-borderless table-hover table-striped w-100">
+                                                        <thead>
+                                                            <tr>
+                                                                <td>
+                                                                    <label class="container">
+                                                                        <input type="checkbox">
+                                                                        <input type="text" class="form-control max" name="todo" placeholder="Add an item" >
+                                                                        <div class="form-status-holder"></div>
+                                                                        <span class="checkmark"></span>
+                                                                    </label>
+                                                                </td>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>    
                                     </form>
-
-                                <br>
-                                <div class="card card-primary card-outline">
-                                    <div class="card-header text-white bg-dark">
-                                        <h5 class="card-title w-100 text-center">Progress Update</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                        <table id="progress" class="table table-bordered table-hover table-striped w-100">
-                                            <thead>
-                                                <tr align="center" class="card-header">
-                                                    <th style="width: 50px;">No.</th>
-                                                    <th>Remark</th>
-                                                    <th>Date</th>
-                                                    <th>Status</th>
-                                                    <th>Member</th>
-                                                    <th>Attachment</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                                <tbody>
-                                                    <tr  align="center"  class="data-row">
-                                                        <td class="hasinput"></td>
-                                                        <td class="hasinput"></td>
-                                                        <td class="hasinput"></td>
-                                                        <td class="hasinput"></td>
-                                                        <td class="hasinput"></td>
-                                                        <td class="hasinput"></td>
-                                                        <td class="hasinput"></td>
-                                                    </tr>
-                                                </tbody>
-                                                </tr>                                                    
-                                            </thead>
-                                        </table>
-                                        </div>
-                                        <a href="#" data-target="#crud-modal" data-id="{{$data->id}}" data-toggle="modal" class="btn btn-primary ml-auto float-right" style="margin-top: 15px;"><i class="fal fa-plus-square"></i> Add Progress</a>
-                                    </div>
-
-                                </div>
-                            </div>
-                                   
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="modal fade" id="crud-modal" aria-hidden="true" >
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="card-header">
-                                    <h5 class="card-title w-100 text-center ">NEW PROGRESS</h5>
-                                </div>
-                                <div class="modal-body">
-                                    {!! Form::open(['action' => 'EngagementManagementController@createProgress', 'method' => 'POST']) !!}
-                                    <input type="hidden" name="id" id="id">
-                                     
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">Remark</span>
-                                            </div>
-                                            <textarea class="form-control" aria-label="With textarea" name="remark" id="remark" rows="5" cols="40" maxlength="200" required></textarea>
-                                        </div>
-                                        <span style="font-size: 10px; color: red;"><i>*Limit to 200 characters only</i></span>
-                                    </div>   
-
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">Status</span>
-                                            </div>
-                                            <select class="custom-select form-control" name="status" id="status" required>
-                                                <option disabled selected>Please Select Status</option>
-                                               @if (isset($status))
-                                                    @foreach ( $status as $s )
-                                                        <option value="{{$s->id}}">{{$s->description}}</option>
-                                                   @endforeach
-                                               @endif
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="footer">
-                                        <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
-                                        <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
-                                    </div>
-                                    {!! Form::close() !!}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="modal fade" id="edit" aria-hidden="true" >
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="card-header">
-                                    <h5 class="card-title w-100 text-center ">EDIT PROGRESS</h5>
-                                </div>
-                                <div class="modal-body">
-                                    {!! Form::open(['action' => 'EngagementManagementController@editProgress', 'method' => 'POST']) !!}
-                                    <input type="hidden" name="id" id="id">
-                                     
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">Remark</span>
-                                            </div>
-                                            <textarea class="form-control" aria-label="With textarea" name="remark" id="remark" rows="5" cols="40" maxlength="200" required></textarea>
-                                        </div>
-                                        <span style="font-size: 10px; color: red;"><i>*Limit to 200 characters only</i></span>
-                                    </div>   
-
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">Status</span>
-                                            </div>
-                                            <select class="custom-select form-control" name="status" id="status" required>
-                                               @if (isset($status))
-                                                    @foreach ( $status as $s )
-                                                        <option value="{{$s->id}}">{{$s->description}}</option>
-                                                   @endforeach
-                                               @endif
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="footer">
-                                        <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
-                                        <button type="button" class="btn btn-success ml-auto float-right mr-2" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
-                                    </div>
-                                    {!! Form::close() !!}
+                                    <br>
                                 </div>
                             </div>
                         </div>
@@ -383,11 +370,10 @@
         })
     })
 
-    $("#delete").on('click', function(e) {
+    $(".delete-alert").on('click', function(e) {
         e.preventDefault();
 
         let id = $(this).data('path');
-        var datas = $('#form-id').serialize();
 
             Swal.fire({
                 title: 'Delete?',
@@ -401,10 +387,11 @@
             }).then(function (e) {
                 if (e.value === true) {
                     $.ajax({
-                        type: "POST",
+                        type: "DELETE",
                         url: "/delete-member/" + id,
-                        data: datas,
+                        data: id,
                         dataType: "json",
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                         success: function (response) {
                         console.log(response);
                         if(response){
@@ -420,26 +407,6 @@
             }, function (dismiss) {
                 return false;
             })
-        });
-
-        $('#crud-modal').on('show.bs.modal', function(event) {
-        var button = $(event.relatedTarget) 
-        var id = button.data('id') // data-id
-
-        $('.modal-body #id').val(id);
-
-        });
-
-        $('#edit').on('show.bs.modal', function(event) {
-        var button = $(event.relatedTarget) 
-        var id = button.data('id')
-        var remark = button.data('remark')
-        var status = button.data('status')
-
-        $('.modal-body #id').val(id);
-        $('.modal-body #remark').val(remark);
-        $('.modal-body #status').val(status);
-
         });
 
         var id= @json($data->id);
