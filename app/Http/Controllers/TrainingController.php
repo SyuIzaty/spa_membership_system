@@ -56,44 +56,26 @@ class TrainingController extends Controller
                         ->limit(5)
                         ->orderBy('total', 'desc')
                         ->get();
-         // End Rank
+        // End Rank
 
         // Start PieChart
-            $category = DB::table('trm_category as categories')
-            ->select('categories.category_name','claims.category', DB::raw('COUNT(claims.category) as count'))
-            ->leftJoin('trm_claim as claims','categories.id','=','claims.category')
+            $type = DB::table('trm_type as types')
+            ->select('types.type_name','claims.type', DB::raw('COUNT(claims.type) as count'))
+            ->leftJoin('trm_claim as claims','types.id','=','claims.type')
             ->where(DB::raw('YEAR(claims.start_date)'), '=', $year)
-            ->groupBy('categories.id','claims.category')
+            ->groupBy('types.id','claims.type')
             ->get();
 
-            $result[] = ['Category','Total'];
-            foreach ($category as $key => $value) {
-                $result[++$key] = [$value->category_name, (int)$value->count];
+            $result[] = ['Type','Total'];
+            foreach ($type as $key => $value) {
+                $result[++$key] = [$value->type_name, (int)$value->count];
             }
         // End PieCart
 
-        // Start BarChart uncomp.
-            $population = TrainingClaim::select(
-                DB::raw("year(start_date) as year"),
-                DB::raw("SUM(category) as bears"),
-                DB::raw("SUM(training_id) as dolphins")) 
-            ->orderBy(DB::raw("YEAR(start_date)"))
-            ->groupBy(DB::raw("YEAR(start_date)"))
-            ->get();
-            // dd($population); 
-
-            $res[] = ['Year', 'bears', 'dolphins'];
-            foreach ($population as $key => $val) {
-            $res[++$key] = [$val->year, (int)$val->bears, (int)$val->dolphins];
-            }
-
-            // return view('line-chart')
-            // ->with('population', json_encode($res));
-        // End Barchart
         
+        // dd($result);
         
-
-        return view('training.dashboard.analysis',compact('year','years','trainingRank','staffRank'))->with('category',json_encode($result))->with('train_no', 1)->with('staff_no', 1)->with('population', json_encode($res));
+        return view('training.dashboard.analysis',compact('year','years','trainingRank','staffRank'))->with('type',json_encode($result))->with('train_no', 1)->with('staff_no', 1);
     }
 
      // Training List
@@ -1385,11 +1367,11 @@ class TrainingController extends Controller
         // Emel to Staff
 
         $data = [
-            // 'receiver_name' => 'Assalamualaikum wbt & Greetings, Sir/Madam/Mr/Ms ' . $claim->staffs->staff_name,
-            // 'details'       => 'Your application has been approved and entered into training hours record on '.date(' j F Y ', strtotime(Carbon::now())).
-            //                     'Please check your Claim Record in IDS System. Thank you.',
-            'receiver_name' => $claim->staffs->staff_name,
-            'details'       => date(' j F Y ', strtotime(Carbon::now())),
+            'receivers'     => $claim->staffs->staff_name,
+            'titles'        => $claim->title,
+            'dates'         => date(' d/m/Y ', strtotime($claim->start_date) ).' - '. date(' d/m/Y ', strtotime($claim->end_date) ),
+            'times'         => date(' h:i A ', strtotime($claim->start_time) ).' - '. date(' h:i A ', strtotime($claim->end_time) ),
+            'hours'         => $claim->approved_hour,
         ];
 
         Mail::send('training.claim.approve-mail', $data, function($message) use ($claim) {
@@ -1430,15 +1412,14 @@ class TrainingController extends Controller
             'assigned_by'       => Auth::user()->id,
         ]);
 
-        
         // Emel to Staff
 
         $data = [
-            // 'receiver_name' => 'Assalamualaikum wbt & Greetings, Sir/Madam/Mr/Ms ' . $claim->staffs->staff_name,
-            // 'details'       => 'Your application has been rejected on '.date(' j F Y ', strtotime(Carbon::now())).' because '.$claim->reject_reason.'.',
-            'receiver_name'     => $claim->staffs->staff_name,
-            'dates'              => date(' j F Y ', strtotime(Carbon::now())),
-            'details'           => strtoupper($claim->reject_reason),
+            'receivers'     => $claim->staffs->staff_name,
+            'titles'        => $claim->title,
+            'dates'         => date(' d/m/Y ', strtotime($claim->start_date) ).' - '. date(' d/m/Y ', strtotime($claim->end_date) ),
+            'times'         => date(' h:i A ', strtotime($claim->start_time) ).' - '. date(' h:i A ', strtotime($claim->end_time) ),
+            'remarks'       => $claim->reject_reason,
         ];
 
         Mail::send('training.claim.reject-mail', $data, function($message) use ($claim) {

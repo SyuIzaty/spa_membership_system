@@ -13,4 +13,9 @@ class TrainingCategory extends Model
     protected $fillable = [
         'category_name'
     ];
+
+    public function claims()
+    {
+        return $this->hasMany('App\TrainingClaim','category');  
+    }
 }

@@ -38,10 +38,14 @@
                 <tr>
                     <td>
                         <div style="margin-left: 30px; line-height: 1em">
-                            <p>Assalamualaikum wbt & Greetings.</p><br>
-                            <p style="line-height: 2em">Sir/Madam/Mr/Ms, {{ strtoupper($receiver_name) }}</p>
-                            <p>Your application has been APPROVED and entered into training hours record on  {{ $details }}. Please login IDS System to check your Claim Record.</p>
-                            <p style="line-height: 2em">Thank you.</p>
+                            <p>Assalammualaikum wbt. and Greetings</p><br>
+                            <p style="line-height: 1em">Mr/Ms, {{ strtoupper($receivers) }}</p>
+                            <p>Your request for training hours claim has been Approved.</p>
+                            <p>Title of training    : {{ $titles ?? '--' }}</p> 
+                            <p>Date		        	: {{ $dates ?? '--' }}</p> 
+                            <p>Time		        	: {{ $times ?? '--' }}</p> 
+                            <p>Total Hour   	    : {{ $hours ?? '--' }} HOUR(S)</p> 
+                            <p style="line-height: 2em">Kindly login to the System to check your latest training record.</p>
                         </div><br><br>
                     </td>
                 </tr>
