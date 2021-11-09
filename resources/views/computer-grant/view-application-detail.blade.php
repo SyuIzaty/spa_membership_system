@@ -114,7 +114,7 @@
                                 @if ($activeData->status == 1)
                                 @role('Computer Grant (IT Admin)')
                                 {!! Form::open(['action' => 'ComputerGrantController@verifyApplication', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
-                                <input type="hidden" id="id" name="id" value="{{ $activeData->id }}" required>
+                                <input type="hidden" id="id" name="id" value="{{ $activeData->id }}">
 
                                 <div class="table-responsive">
                                     <table id="info" class="table table-bordered table-hover table-striped w-100">
@@ -124,7 +124,7 @@
                                             </tr>
                                             <tr>
                                                 <th width="20%" style="vertical-align: top"><span class="text-danger">*</span> Upload Signed Application : </th>
-                                                <td colspan="4"><input type="file" class="form-control" accept=".pdf" id="upload_image" name="upload_image" required>
+                                                <td colspan="4"><input type="file" class="form-control" accept=".pdf" id="upload_image" name="upload_image">
 
                                                     @error('upload_image')
                                                         <p style="color: red">{{ $message }}</p>
@@ -152,11 +152,12 @@
                                                 <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-user"></i> IT ADMIN & CE APPROVAL</label></td>
                                             </tr>
                                             <tr>
-                                                <th width="20%" style="vertical-align: top">Verified Application : </th>
                                                 <td colspan="4">
-                                                    <a class="btn btn-info" target="_blank" href="/get-file/{{$verified_doc->id}}">
-                                                        <i class="fal fa-download"></i> Application Form
-                                                    </a>
+                                                    @if (isset($verified_doc))
+                                                        <a class="btn btn-info" target="_blank" href="/get-file/{{$verified_doc->id}}">
+                                                            <i class="fal fa-download"></i> Application Form
+                                                        </a>
+                                                    @endif
 
                                                     <a class="btn btn-success" target="_blank" href="/Grant-Reimbursement-Form">
                                                         <i class="fal fa-download"></i> Grant Reimbursement Form       
@@ -205,8 +206,8 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <th width="20%" style="vertical-align: top">Price : RM</th>
-                                                <td colspan="4" style="vertical-align: middle">{{$activeData->price}}</td>
+                                                <th width="20%" style="vertical-align: top">Price :</th>
+                                                <td colspan="4" style="vertical-align: middle"> RM {{$activeData->price}}</td>
                                             </tr>
                                         </thead>
                                     </table>

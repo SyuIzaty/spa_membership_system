@@ -16,6 +16,7 @@ use App\ComputerGrantFile;
 use App\ComputerGrantLog;
 use App\ComputerGrantQuota;
 use App\ComputerGrantFAQ;
+use App\ComputerGrantActivityLog;
 use Carbon\Carbon;
 use File;
 use Response;
@@ -65,7 +66,7 @@ class ComputerGrantController extends Controller
         $user = Auth::user();
         $user_details = Staff::where('staff_id',$user->id)->first();
 
-        $activeData = ComputerGrant::with(['getStatus','getType','staff'])->where('id',$id)->first();
+        $activeData = ComputerGrant::with(['getStatus','getType','staff','getQuota'])->where('id',$id)->first();
 
         $deviceType = ComputerGrantType::all();
 
@@ -560,24 +561,26 @@ class ComputerGrantController extends Controller
             'approved_at' => Carbon::now()->toDateTimeString()
         ]);
 
-        $image = $request->file('upload_image');
-        $paths = storage_path()."/computerGrantFile/";
-
-        $timestamp = Carbon::now();
-
-      
-        $fileSizes = $image->getSize();
-        $fileNames = $request->id."_Application Form_".date('d-m-Y_hia');
-        $image->storeAs('/computerGrantFile', $fileNames);
-        ComputerGrantFile::create([
-            'permohonan_id'  => $request->id,
-            'form_type'      => 'A', //Application Form
-            'upload'         => $fileNames,
-            'web_path'       => "app/computerGrantFile/".$fileNames,
-            'created_by'     => Auth::user()->id
-        ]);
-        
+        if ($request->file('upload_image') != '')
+        {
+            $image = $request->file('upload_image');
+            $paths = storage_path()."/computerGrantFile/";
     
+            $timestamp = Carbon::now();
+    
+          
+            $fileSizes = $image->getSize();
+            $fileNames = $request->id."_Application Form_".date('d-m-Y_hia');
+            $image->storeAs('/computerGrantFile', $fileNames);
+            ComputerGrantFile::create([
+                'permohonan_id'  => $request->id,
+                'form_type'      => 'A', //Application Form
+                'upload'         => $fileNames,
+                'web_path'       => "app/computerGrantFile/".$fileNames,
+                'created_by'     => Auth::user()->id
+            ]);
+        }
+           
         ComputerGrantLog::create([
             'permohonan_id'  => $request->id,
             'activity'  => 'Approve application',
@@ -1149,6 +1152,110 @@ class ComputerGrantController extends Controller
         ]);
 
         return response() ->json(['success' => 'Reimbursement cancelled!']);
+    }
+
+    public function report($my)
+    {
+        $monthyear = ComputerGrant::orderBy('created_at', 'ASC')->pluck('created_at')->map(function($date)
+        {return Carbon::parse($date)->format('F-Y');})->unique(); //month & year selection
+
+        $lists = ComputerGrant::where('status', '!=', '7')->orWhere('status', '!=', '8')->get();
+
+        return view('computer-grant.report', compact('monthyear','my','lists'));
+    }
+
+    public function reportList($my)
+    {
+        if ($my == "all")
+        {
+            $lists = ComputerGrant::with(['getStatus', 'staff', 'getLog'])->where('status', '!=', '7')->orWhere('status', '!=', '8')->get();
+        }
+
+        else
+        {
+            $explodemy = explode('-', $my);
+
+            $month = date('m', strtotime($explodemy[0]));
+    
+            $year = $explodemy[1];
+    
+            $lists = ComputerGrant::with(['getStatus', 'staff', 'getLog'])->whereMonth('created_at', $month)->whereYear('created_at', $year)->where('status', '!=', '7')->where('status', '!=', '8')->get();    
+        }
+
+        return datatables()::of($lists)
+
+            ->addColumn('name',function($lists)
+            {
+                return $lists->staff->staff_name ;
+            })
+
+            ->addColumn('department',function($lists)
+            {
+                return $lists->staff->staff_dept;
+            })
+
+            ->addColumn('application',function($lists)
+            {
+                return $lists->created_at->format('d/m/Y');
+            })
+
+            ->addColumn('approval',function($lists)
+            {
+                return isset($lists->approved_at) ? $lists->approved_at->format('d/m/Y') : 'N/A';
+            })
+
+            ->addColumn('purchase',function($lists)
+            {
+                return isset($lists->getLog->where('activity', 'Approve purchase')->first()->created_at) ? $lists->getLog->where('activity', 'Approve purchase')->first()->created_at->format('d/m/Y') : 'N/A' ;
+            })
+
+            ->addColumn('status',function($lists)
+            {
+                return $lists->getStatus->description;
+            })
+
+            ->addIndexColumn()
+
+            ->make(true);
+
+    }
+
+    public function reportbyMonth($my)
+    {
+
+        $monthyear = ComputerGrant::orderBy('created_at', 'ASC')->pluck('created_at')->map(function($date)
+        {return Carbon::parse($date)->format('F-Y');})->unique(); //month & year selection
+        
+        $explodemy = explode('-', $my);
+
+        $month = date('m', strtotime($explodemy[0]));
+
+        $year = $explodemy[1];
+
+        $lists = ComputerGrant::with(['getStatus', 'staff', 'getLog'])->whereMonth('created_at', $month)->whereYear('created_at', $year)->where('status', '!=', '7')->where('status', '!=', '8')->get();
+        return view('computer-grant.report', compact('lists','monthyear','my'));
+    }
+
+    public function getReport()
+    {
+        $my = '';
+
+        $lists = ComputerGrant::with(['getStatus', 'staff', 'getLog'])->where('status', '!=', '7')->where('status', '!=', '8')->get();
+
+        return view('computer-grant.get-report', compact('lists','my'));
+    }
+
+    public function getReportbyMonth($my)
+    {
+        $explodemy = explode('-', $my);
+
+        $month = date('m', strtotime($explodemy[0]));
+
+        $year = $explodemy[1];
+
+        $lists = ComputerGrant::with(['getStatus', 'staff', 'getLog'])->whereMonth('created_at', $month)->whereYear('created_at', $year)->where('status', '!=', '7')->where('status', '!=', '8')->get();
+
+        return view('computer-grant.get-report', compact('lists','my'));
     }
 
 }

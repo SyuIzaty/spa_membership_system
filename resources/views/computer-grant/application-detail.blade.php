@@ -93,7 +93,7 @@
                                 </form>  
                                 @endif
 
-                                @if (($activeData->status == 2) || ($activeData->status == 3) || ($activeData->status == 4) || ($activeData->status == 5) || ($activeData->status == 6))
+                                @if (($activeData->status == 3) || ($activeData->status == 4) || ($activeData->status == 5) || ($activeData->status == 6))
                                 <div class="table-responsive">
                                     <table id="info" class="table table-bordered table-hover table-striped w-100">
                                         <thead>
@@ -104,11 +104,12 @@
                                                 <td colspan="5" class="bg-warning-50" style="vertical-align: middle">After submitting the purchase details below, please print the documents and bring together with purchased device to IT Admin.</td>
                                             </tr>
                                             <tr>
-                                                <th width="20%" style="vertical-align: top">Verified Application : </th>
                                                 <td colspan="4">
+                                                    @if (isset($verified_doc))
                                                     <a class="btn btn-info" data-page="/get-file/{{$verified_doc->id}}" onclick="Print(this)">
                                                         <i class="fal fa-download"></i> Application Form
                                                     </a>
+                                                    @endif
 
                                                     @if ($activeData->status == 3 || $activeData->status == 4 || $activeData->status == 5 || $activeData->status == 6)
                                                     <a class="btn btn-primary" data-page="/agreementPDF/{{ $activeData->id }}" onclick="Print(this)">
@@ -233,8 +234,8 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <th width="20%" style="vertical-align: top">Price : RM</th>
-                                                <td colspan="4" style="vertical-align: middle">{{$activeData->price}}</td>
+                                                <th width="20%" style="vertical-align: top">Price :</th>
+                                                <td colspan="4" style="vertical-align: middle"> RM {{$activeData->price}}</td>
                                             </tr>
                                         </thead>
                                     </table>

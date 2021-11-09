@@ -69,39 +69,22 @@
                     </table>
                 </div>
 
-                <table style="table-layout:fixed; width:800px; word-wrap: break-word; margin-top: 100px"> 
-                    <tr>
-                        <td>....................................</td>
-                        <td></td>
-                        <td>....................................</td>
-                        <td></td>
-                        <td>....................................</td>
-                    </tr>
-                    <tr>
-                        <td>{{strtoupper($application->staff->staff_name)}}</td>
-                        <td></td>
-                        <td>MOHD YUZI BIN ZALI</td>
-                        <td></td>
-                        <td>PROFESSOR DR ROSHAYANI BINTI DATO’ ARSHAD</td>
-                    </tr>
+                <div style="float: left; margin-top: 100px;">
+                    .......................................................................................
 
-                    <tr>
-                        <td>{{$application->staff->staff_position}}</td>
-                        <td></td>
-                        <td>HEAD OF INFORMATION TECHNOLOGY UNIT (IITU)</td>
-                        <td></td>
-                        <td>CHIEF EXECUTIVE</td>
-                    </tr>
+                    <p style="margin-top: 10px;">{{strtoupper($application->staff->staff_name)}}</p>
+                    <p>{{$application->staff->staff_position}}</p>
+                    <br>
+                    <p>Date:</p>
+                </div>
+                <div style="float: right; margin-top: 100px;">
+                    .......................................................................................
 
-                    <tr>
-                        <td>Date:</td>
-                        <td></td>
-                        <td>Date:</td>
-                        <td></td>
-                        <td>Date:</td>
-
-                    </tr>
-                </table>
+                    <p style="margin-top: 10px;">MOHD YUZI BIN ZALI</p>
+                    <p>HEAD OF INFORMATION TECHNOLOGY UNIT (IITU)</p>
+                    <br>
+                    <p>Date:</p>
+                </div>
         </div>
     </div>
 </main>

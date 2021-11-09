@@ -99,12 +99,11 @@
                 
                 <p>Terms:</p>
                 <ol>
-                    <li>Staff can login to https://ids.intec.edu.my to make application and grant claim.</li>
                     <li>Application is eligible for permanent and contract academic staff only.</li>
-                    <li>Grant period is 5 years only.</li>
+                    <li>Grant period is {{$application->getQuota->duration}} years only.</li>
                     <li>Device purchase must be made within one month after obtaining approval.</li>
                     <li>Device can be purchased from any supplier, including online.</li>
-                    <li>Type of device that can be purchased are Laptop, Notebook or Tablet only.</li>
+                    <li>Type of device that can be purchased are Laptop or Tablet only.</li>
                 </ol>
 
                 <div style="float: left; margin-top: 100px;">

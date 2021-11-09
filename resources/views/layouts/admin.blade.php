@@ -162,11 +162,19 @@
 
                         <!-- Start Engagement Management System -->
 
+                        @role('Engagement (Admin)|Engagement (Team Member)')
+
                         <li class="nav-title">Engagement Management</li>
                             <li>
-                                <a href="/list" title="External Engagement" data-filter-tags="engagement">
+                                <a href="/list/active" title="Active Engagement" data-filter-tags="engagement">
                                     <i class="fal fa-users"></i>
-                                    <span class="nav-link-text" data-i18n="nav.engagement">External Engagement</span>
+                                    <span class="nav-link-text" data-i18n="nav.engagement">Active Engagement</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/list/complete" title="Completed Engagement" data-filter-tags="engagement">
+                                    <i class="fal fa-file-check"></i>
+                                    <span class="nav-link-text" data-i18n="nav.engagement">Completed Engagement</span>
                                 </a>
                             </li>
                         </li>
@@ -184,6 +192,7 @@
                             </ul>
                         </li>
 
+                        @endrole
                         <!-- End Engagement Management System -->
 
                         @can('Short Course Management - View All')
@@ -720,8 +729,14 @@
                                         </li>
                                     </ul>
                                 </li>
-                            @endrole
 
+                                <li>
+                                    <a href="/report/all" title="Grant Report" data-filter-tags="report">
+                                        <i class="fal fa-clipboard-list"></i>
+                                        <span class="nav-link-text" data-i18n="nav.report">Report</span>
+                                    </a>
+                                </li>
+                            @endrole
                         @endrole
                         {{-- End Computer Grant Management --}}
 

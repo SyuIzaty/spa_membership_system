@@ -436,10 +436,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/upload-declaration', 'ComputerGrantController@uploadAgreement');
     Route::post('requestCancellation', 'ComputerGrantController@requestCancellation');
     Route::post('/verifyCancellation', 'ComputerGrantController@verifyCancellation');
+    Route::get('/report/{all}','ComputerGrantController@report');
+    Route::post('/reportList/{all}','ComputerGrantController@reportList');
+    Route::get('/report/{month}','ComputerGrantController@reportbyMonth');
+    Route::get('/Computer-Grant-Report-{my}','ComputerGrantController@getReportbyMonth');
+    Route::get('/Computer-Grant-Report','ComputerGrantController@getReport');
 
     //Engagement Management System
-    Route::get('/list', 'EngagementManagementController@index');
-    Route::post('/all-list', 'EngagementManagementController@lists');
+    Route::get('/list/{id}', 'EngagementManagementController@index');
+    Route::post('/all-list/{id}', 'EngagementManagementController@lists');
     Route::get('/create', 'EngagementManagementController@new');
     Route::post('/post-create', 'EngagementManagementController@store');
     Route::post('/todolist-create', 'EngagementManagementController@createToDoList');
@@ -460,6 +465,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/store-files', 'EngagementManagementController@storeFile');
     Route::get('get-uploaded-file/{file}','EngagementManagementController@getFile');
     Route::DELETE('/delete-file/{id}','EngagementManagementController@deleteFile');
+    Route::DELETE('/delete-progress/{id}','EngagementManagementController@deleteProgress');
 
 
     // Training : Training
