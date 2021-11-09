@@ -1429,6 +1429,8 @@ class AssetController extends Controller
     // Search
     public function assetSearch(Request $request)
     {  
+        $integer = substr($request->asset_code, -10);  
+
         $data = $data2 = $data3 =  '';
 
         if($request->asset_code)
@@ -1437,7 +1439,7 @@ class AssetController extends Controller
 
             if($request->asset_code != "")
             {
-                $result = $result->where('asset_code', $request->asset_code)->orWhere('finance_code', $request->asset_code);
+                $result = $result->where('asset_code', $integer);
             }
             
             $data = $result->first();

@@ -1,6 +1,8 @@
 @extends('layouts.public')
 
 @section('content')
+<script src="{{asset('js/instascan.js')}}"></script>
+{{-- <script src="{{asset('js/instascan.min.js')}}"></script> --}}
 <main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg-form.jpg')}}); background-size: cover">
     <div class="row">
         <div class="col-md-2"></div>
@@ -16,69 +18,51 @@
                         </div>
                     </div>
                 </div>
-                
                 <div class="card-body">
-
                     <div class="panel-container show">
                         <div class="panel-content">
-                               
                             <div class="row">
-    
-                                <div class="col-sm-12 col-md-6 mb-4">
-                                    <div class="card card-primary card-outline">
-                                        <div class="card-body">
-                                            <form action="{{ route('assetSearch') }}" method="GET" id="form_find">
-                                                <div>
-                                                    <div class="table-responsive">
-                                                        <table class="table table-striped w-100">
-                                                            <tr align="center">
-                                                                <td colspan="2" style="vertical-align: middle"><label class="form-label" for="asset_code"><span class="text-danger">**</span> ASSET / FINANCE CODE :</label></td>
-                                                            <tr>
-                                                        </table>
-                                                        <table class="table w-100">
-                                                            <tr align="center">
-                                                                <td style="vertical-align: middle"><input class="form-control" id="asset_code" name="asset_code"></td>
-                                                                <td style="vertical-align: middle"><button type="submit" id="btn-search" class="btn btn-sm btn-danger "><i class="fal fa-location-arrow"></i></button></td>
-                                                            <tr>
-                                                        </table>
-                                                        <i><span class="text-danger">**</span> Please key in asset or finance code to view details</i>
+                                <div class="table-responsive">
+                                    <table class="table w-100">
+                                        <tr align="center">
+                                            <td>
+                                                <div class="col-sm-12 col-md-6">
+                                                    <div class="card card-primary card-outline">
+                                                        <div class="card-body">
+                                                            <form action="{{ route('assetSearch') }}" method="GET" id="form_find">
+                                                                <div>
+                                                                    <div class="table-responsive">
+                                                                        <table class="table table-striped w-100">
+                                                                            <tr align="center">
+                                                                                <td colspan="2" style="vertical-align: middle"><label class="form-label" for="asset_code"><span class="text-danger">**</span> SCAN HERE</label></td>
+                                                                            <tr>
+                                                                        </table>
+                                                                        <table class="table w-100">
+                                                                            <tr align="center">
+                                                                                <td><video id="preview" width="500"></video></td>
+                                                                            </tr>
+                                                                        </table>
+                                                                        <table class="table w-100">
+                                                                            <tr align="center">
+                                                                                <td style="vertical-align: middle"><input class="form-control" id="asset_code" name="asset_code" placeholder="Example : INTEC/CH/ICT/2021000000"></td>
+                                                                                <td style="vertical-align: middle"><button type="submit" id="btn-search" class="btn btn-sm btn-danger "><i class="fal fa-location-arrow"></i></button></td>
+                                                                            <tr>
+                                                                        </table>
+                                                                        <i><span class="text-danger">**</span> Please key in asset code or scan the qrcode to view details</i>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </form>
-                                        </div>
-                                    </div>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </div>
-    
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="card card-primary card-outline">
-                                        <div class="card-body">
-                                            <form action="{{ route('assetSearch') }}" method="GET" id="form_find">
-                                                <div>
-                                                    <div class="table-responsive">
-                                                        <table class="table table-striped w-100">
-                                                            <tr align="center">
-                                                                <td style="vertical-align: middle"><label class="form-label" for="asset_code"><span class="text-danger">**</span> SCAN HERE</label></td>
-                                                            <tr> 
-                                                        </table>
-                                                        <table class="table w-100">
-                                                            <tr align="center">
-                                                                <td style="vertical-align: middle"></td>
-                                                            <tr>
-                                                        </table>
-                                                        <i><span class="text-danger">**</span> Please scan qrcode here to view details</i>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-    
                             </div>
                         </div>
                     </div>
-
                     <hr>
-
                     <div class="panel-container show">
                         <div class="panel-content">
                             @if($request->asset_code != '' && isset($data))
@@ -342,18 +326,43 @@
 </main>
 @endsection
 @section('script')
-    <script>
-        
-        // $("#datek, #cates").change(function(){
-        //     $("#form_find").submit();
-        // })
+    <script type="text/javascript">
+    
+        let scanner = new Instascan.Scanner({video: document.getElementById('preview')});
+        scanner.addListener('scan', function(content) {
+            $("#asset_code").val(content);
+        });
+        Instascan.Camera.getCameras().then(function (cameras) {
+            if (cameras.length > 0) {
+            scanner.start(cameras[0]);
+            } else {
+            console.error('No cameras found.');
+            }
+            // if (cameras.length > 0) {
+            //     var selectedCam = cameras[0];
+            //     $.each(cameras, (i, c) => {
+            //         if (c.name.indexOf('back') != -1) {
+            //             selectedCam = c;
+            //             return false;
+            //         }
+            //     });
+
+            //     scanner.start(selectedCam);
+            // } else {
+            //     console.error('No cameras found.');
+            // }
+        }).catch(function (e) {
+            console.error(e);
+        });
 
         $(document).ready(function() {
+            $('#inversion-mode-select, #cam-list').select2();
+
             $('#asset_code').on('click', '#btn-search', function(e) {
                 e.preventDefault();
                 $("#form_find").submit();
             });
         });
-
     </script>
+     
 @endsection
