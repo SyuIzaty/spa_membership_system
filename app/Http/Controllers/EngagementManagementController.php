@@ -43,7 +43,7 @@ class EngagementManagementController extends Controller
                 })->where('status', '!=', 7)->get();
             }
 
-            else if( Auth::user()->hasRole('Engagement (Admin)') )
+            if( Auth::user()->hasRole('Engagement (Admin)') )
             {
                 $list = EngagementManagement::where('status', '!=', 7)->get();
             }
@@ -58,7 +58,7 @@ class EngagementManagementController extends Controller
                 })->where('status', 7)->get();
             }
 
-            else if( Auth::user()->hasRole('Engagement (Admin)') )
+            if( Auth::user()->hasRole('Engagement (Admin)') )
             {
                 $list = EngagementManagement::where('status', 7)->get();
             }
