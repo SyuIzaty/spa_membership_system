@@ -24,47 +24,80 @@ class EngagementManagementController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        return view('engagement.list');
+        return view('engagement.list', compact('id'));
 
     }
 
-    public function lists()
+    public function lists($id)
     {
-        $list = EngagementManagement::all();
+        $user = Auth::user()->id;
+
+        if ($id == "active")
+        {
+            if( Auth::user()->hasRole('Engagement (Team Member)') )
+            {
+                $list = EngagementManagement::wherehas('member', function($query) use ($user){
+                    $query->where('staff_id', $user);
+                })->where('status', '!=', 7)->get();
+            }
+
+            else if( Auth::user()->hasRole('Engagement (Admin)') )
+            {
+                $list = EngagementManagement::where('status', '!=', 7)->get();
+            }
+        }
+
+        else if ($id == "complete")
+        {
+            if( Auth::user()->hasRole('Engagement (Team Member)') )
+            {
+                $list = EngagementManagement::wherehas('member', function($query) use ($user){
+                    $query->where('staff_id', $user);
+                })->where('status', 7)->get();
+            }
+
+            else if( Auth::user()->hasRole('Engagement (Admin)') )
+            {
+                $list = EngagementManagement::where('status', 7)->get();
+            }
+        }
 
         return datatables()::of($list)
 
         ->editColumn('status', function ($list) {
 
-            $status = EngagementProgress::where('engagement_id', $list->id)->latest('id')->first();
-
-            if ($status != '')
-            {
-                return $status->getStatus->description;
-            }
-
-            else
-            {
-                return 'N/A';
-            }
-            
+            return $list->getStatus->description;            
         })
 
         ->editColumn('organization', function ($list) {
 
             $org = EngagementOrganization::where('engagement_id', $list->id)->where('no', 1)->first();
 
-            if ($org != '')
-            {
-                return '
-                '.$org->name.'<br>
-                '.$org->phone.'<br>
-                '.$org->email.'<br>
-                '.$org->designation.'</br>
-                ';
-            }
+            return isset ($org->name) ? $org->name : 'N/A';
+
+        })
+
+        ->editColumn('email', function ($list) {
+
+            $org = EngagementOrganization::where('engagement_id', $list->id)->where('no', 1)->first();
+
+            return isset ($org->email) ? $org->email : 'N/A';
+        })
+
+        ->editColumn('phone', function ($list) {
+
+            $org = EngagementOrganization::where('engagement_id', $list->id)->where('no', 1)->first();
+
+            return isset ($org->phone) ? $org->phone : 'N/A';
+        })
+
+        ->editColumn('designation', function ($list) {
+
+            $org = EngagementOrganization::where('engagement_id', $list->id)->where('no', 1)->first();
+
+            return isset ($org->designation) ? $org->designation : 'N/A';
         })
 
         ->addColumn('action', function ($list) {
@@ -72,7 +105,9 @@ class EngagementManagementController extends Controller
             return '<a href="/engagement-detail/' .$list->id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
         })
 
-        ->rawColumns(['action','organization'])
+        ->addIndexColumn()
+
+        ->rawColumns(['action'])
         ->make(true);
     }
 
@@ -181,6 +216,7 @@ class EngagementManagementController extends Controller
 
         $engagement = new EngagementManagement();
         $engagement->title = $request->title;
+        $engagement->status = 1;
         $engagement->created_by = Auth::user()->id;
         $engagement->updated_by = Auth::user()->id;
         $engagement->save();
@@ -215,6 +251,13 @@ class EngagementManagementController extends Controller
                 'designation'   => $request->designation2,
                 'created_by'    => Auth::user()->id
             ]);    
+        }
+
+        $user = User::find($value);
+
+        if(!$user->hasRole('Engagement (Team Member)'))
+        {
+            $user->assignRole('Engagement (Team Member)');
         }
 
         return redirect('engagement-detail/'.$engagement->id)->with('message','Profile created!');
@@ -285,6 +328,14 @@ class EngagementManagementController extends Controller
                         'staff_id'      => $value, 
                         'created_by'    => Auth::user()->id
                     ]);
+
+                    $user = User::find($value);
+
+                    if(!$user->hasRole('Engagement (Team Member)'))
+                    {
+                        $user->assignRole('Engagement (Team Member)');
+                    }
+
                 }
             }
         }
@@ -317,12 +368,20 @@ class EngagementManagementController extends Controller
     public function progress($id)
     {
         $status = EngagementStatus::all();
+
+        $user = Auth::user()->id; 
         
         $progress = EngagementProgress::where('id', $id)->first();
 
+        $eID = $progress->engagement_id;
+
+        $eStatus = EngagementProgress::wherehas('engagement', function($query) use ($eID){
+            $query->where('id', $eID)->where('status', 7);
+        })->first();
+
         $file = EngagementFile::where('progress_id',$id)->get();
 
-        return view('engagement.edit_progress', compact('status','progress','file'));
+        return view('engagement.edit_progress', compact('status','progress','file','eStatus','user'));
     }
 
 
@@ -330,7 +389,13 @@ class EngagementManagementController extends Controller
     {
         $data = EngagementProgress::where('engagement_id', $id)->get();
 
+
         return datatables()::of($data)
+
+        ->editColumn('remark', function ($data) {
+
+            return isset($data->remark) ? $data->remark : 'N/A';            
+        })
 
         ->editColumn('date', function ($data) {
 
@@ -347,18 +412,34 @@ class EngagementManagementController extends Controller
             return $data->memberDetails->name;            
         })
 
-        ->editColumn('attachment', function ($data) {
-
-           if ($data->attachement == NULL)
-           {
-               return "N/A";
-           }
-           
-        })
 
         ->addColumn('action', function ($data) {
-            return '<a href="/edit-progress/'.$data->id.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a><br>';
+
+            $user = Auth::user()->id; 
+            
+            $engagement = EngagementManagement::where('id', $data->engagement_id)->first();
+
+            if ($engagement->status != 7)
+            {
+                if ($data->created_by == $user)
+                {
+                    return '<a href="/edit-progress/'.$data->id.'" class="btn btn-sm btn-primary mt-2"><i class="fal fa-eye"></i></a>
+                    <button class="btn btn-sm btn-danger btn-delete mt-2" data-remote="/delete-progress/' . $data->id . '"><i class="fal fa-trash"></i></button>';
+                }
+            
+                else
+                {
+                    return '<a href="/edit-progress/'.$data->id.'" class="btn btn-sm btn-primary mt-2"><i class="fal fa-eye"></i></a>';
+                }
+            }
+
+            else if ($engagement->status = 7)
+            {
+                return '<a href="/edit-progress/'.$data->id.'" class="btn btn-sm btn-primary mt-2"><i class="fal fa-eye"></i></a>';    
+            }
         })
+
+        ->addIndexColumn()
 
         ->rawColumns(['action'])
         ->make(true);
@@ -375,6 +456,8 @@ class EngagementManagementController extends Controller
         $engagement->updated_by = Auth::user()->id;
         $engagement->save();
 
+        EngagementManagement::where('id', $request->id)->update(['status' => $request->status]);
+
         return redirect('edit-progress/'.$engagement->id)->with('message','Progress created!');
     }
 
@@ -386,6 +469,10 @@ class EngagementManagementController extends Controller
             'status'     => $request->status,
             'created_by' => Auth::user()->id
         ]);
+
+        $id = EngagementProgress::where('id', $request->id)->first();
+
+        EngagementManagement::where('id', $id->engagement_id)->update(['status' => $request->status]);
 
         return redirect()->back()->with('message','Progress Updated');
     }
@@ -436,12 +523,26 @@ class EngagementManagementController extends Controller
 
         return response() ->json(['success' => 'Deleted!']);
     }
+
+    public function deleteProgress($id)
+    {
+        $exist = EngagementProgress::find($id);
+        $exist->delete();
+        $exist->update(['deleted_by' => Auth::user()->id]);
+
+        return response() ->json(['success' => 'Deleted!']);
+    }
+
    
     public function deleteMember($id)
     {
-        $exist = EngagementMember::find($id);
+        $exist = EngagementMember::where('id',$id)->first();
         $exist->delete();
         $exist->update(['deleted_by' => Auth::user()->id]);
+
+        $user = User::find($exist->staff_id);
+
+        $user->removeRole('Engagement (Team Member)');
 
         return response() ->json(['success' => 'Deleted!']);
     }

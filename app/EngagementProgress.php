@@ -20,8 +20,14 @@ class EngagementProgress extends Model
         return $this->hasOne('App\EngagementStatus','id','status');
     }
 
-    public function memberDetails(){
+    public function memberDetails()
+    {
         return $this->hasOne('App\User', 'id', 'created_by');
+    }
+
+    public function engagement()
+    {
+        return $this->hasOne('App\EngagementManagement','id','engagement_id');
     }
 
 }

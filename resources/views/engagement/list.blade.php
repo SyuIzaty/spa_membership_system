@@ -28,6 +28,9 @@
                                             <th class="text-center">Title</th>
                                             <th class="text-center">Status</th>
                                             <th class="text-center">Organization</th>
+                                            <th class="text-center">Contact Number</th>
+                                            <th class="text-center">Email</th>
+                                            <th class="text-center">Designation</th>
                                             <th class="text-center">View</th>
                                         </tr>
                                     </thead>
@@ -38,14 +41,21 @@
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
+                                            <td class="hasinput"></td>
+                                            <td class="hasinput"></td>
+                                            <td class="hasinput"></td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted">
-                            <a href= "/create" class="btn btn-danger waves-effect waves-themed float-right" style="margin-right: 7px; margin-bottom: 10px;"><i class="fal fa-plus-square"></i> Add New Engagement</a>
-                        </div>
+                        @if ($id == "active")
+                            @role('Engagement (Admin)')
+                                <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted">
+                                    <a href= "/create" class="btn btn-danger waves-effect waves-themed float-right" style="margin-right: 7px; margin-bottom: 10px;"><i class="fal fa-plus-square"></i> Add New Engagement</a>
+                                </div>
+                            @endrole
+                        @endif
                     </div>
                 </div>
             </div>
@@ -56,19 +66,25 @@
 <script>
     $(document).ready(function()
     {
+        var id= @json($id);
+        console.log(id);
+
         var table = $('#log').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
-                url: "/all-list",
+                url: "/all-list/" + id,
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
             columns: [
-                    { className: 'text-center', data: 'id', name: 'id' },
+                    { className: 'text-center', data: 'DT_RowIndex', name: 'DT_RowIndex' , orderable: false, searchable: false },
                     { className: 'text-left', data: 'title', name: 'title' },
                     { className: 'text-center', data: 'status', name: 'status' },
                     { className: 'text-left', data: 'organization', name: 'organization' },
+                    { className: 'text-left', data: 'phone', name: 'phone' },
+                    { className: 'text-left', data: 'email', name: 'email' },
+                    { className: 'text-left', data: 'designation', name: 'designation' },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false},
                 ],
                 orderCellsTop: true,

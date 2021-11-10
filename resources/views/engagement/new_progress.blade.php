@@ -55,7 +55,7 @@
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text">Remark</span>
                                                                     </div>
-                                                                    <input class="form-control" type="text" name="remark" required></input>
+                                                                    <input class="form-control" type="text" name="remark"></input>
                                                                 </div>
                                                             </div>                                                           
                                                         </tr>

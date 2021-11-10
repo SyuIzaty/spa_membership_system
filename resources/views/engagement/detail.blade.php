@@ -115,12 +115,10 @@
                                                             <th>Date</th>
                                                             <th>Status</th>
                                                             <th>Member</th>
-                                                            <th>Attachment</th>
                                                             <th>Action</th>
                                                         </tr>
                                                         <tbody>
                                                             <tr  align="center"  class="data-row">
-                                                                <td class="hasinput"></td>
                                                                 <td class="hasinput"></td>
                                                                 <td class="hasinput"></td>
                                                                 <td class="hasinput"></td>
@@ -132,8 +130,9 @@
                                                     </thead>
                                                 </table>
                                             </div>
-                                            <!-- <a href="#" data-target="#crud-modal" data-id="{{$data->id}}" data-toggle="modal" class="btn btn-primary ml-auto float-right" style="margin-top: 15px;"><i class="fal fa-plus-square"></i> Add Progress</a> -->
+                                            @if ($data->status != 7)
                                             <a href="/new-progress/{{$data->id}}" class="btn btn-primary ml-auto float-right" style="margin-top: 15px;"><i class="fal fa-plus-square"></i> Add New Progress</a>
+                                            @endif
                                         </div>
                                     </div>                                    
                                 </div>
@@ -285,60 +284,69 @@
                                                                     @endif
                                                                 </td>
                                                             </tr>
-                                                            
-                                                            <tr>
-                                                                <div class="form-group">
-                                                                    <td width="25%"><label class="form-label" for="member">Add Team Member:</label></td>
-                                                                    <td colspan="4">
-                                                                    <select class="form-control memberList" name="member_id[]" multiple>
-                                                                        @foreach ($user as $u)
-                                                                            <option value="{{ $u->id }}">{{ $u->name }}</option>
-                                                                        @endforeach
-                                                                    </select>                                                                    
-                                                                        @error('member')
-                                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                        @enderror
-                                                                    </td>
-                                                                </div>
-                                                            </tr>
+                                                            @if ($data->status != 7)
+                                                                @role('Engagement (Admin)')
+                                                                    <tr>
+                                                                        <div class="form-group">
+                                                                            <td width="25%"><label class="form-label" for="member">Add Team Member:</label></td>
+                                                                            <td colspan="4">
+                                                                            <select class="form-control memberList" name="member_id[]" multiple>
+                                                                                @foreach ($user as $u)
+                                                                                    <option value="{{ $u->id }}">{{ $u->name }}</option>
+                                                                                @endforeach
+                                                                            </select>                                                                    
+                                                                                @error('member')
+                                                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                @enderror
+                                                                            </td>
+                                                                        </div>
+                                                                    </tr>
+                                                                @endrole
+                                                            @endif
                                                         </thead>
                                                     </table>
                                                 </div>
-                                                <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Update</button>
+                                                @if ($data->status != 7)
+                                                    @role('Engagement (Admin)')
+                                                        <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Update</button>
+                                                    @endrole
+                                                @endif
                                             </div>
                                         </div>    
                                     {!! Form::close() !!}
                                     <br>
-                                    <form class="savetodolist">
-                                        @csrf
-                                        <div class="card card-primary card-outline">
-                                            <div class="card-header text-white bg-success">
-                                                <h5 class="card-title w-100 text-center">TO DO LIST</h5>
-                                            </div>
-                                        
-                                            <div class="card-body">
-                                                @if (Session::has('messages'))
-                                                    <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('messages') }}</div>
-                                                @endif
-                                                <div class="table-responsive">
-                                                    <table class="table table-borderless table-hover table-striped w-100">
-                                                        <thead>
-                                                            <tr>
-                                                                <td>
-                                                                    <label class="container">
-                                                                        <input type="checkbox">
-                                                                        <input type="text" class="form-control max" name="todo" placeholder="Add an item" >
-                                                                        <div class="form-status-holder"></div>
-                                                                        <span class="checkmark"></span>
-                                                                    </label>
-                                                                </td>
-                                                            </tr>
-                                                        </thead>
-                                                    </table>
+                                    @role('Engagement (Admin)')
+                                        <form class="savetodolist">
+                                            @csrf
+                                            <div class="card card-primary card-outline">
+                                                <div class="card-header text-white bg-success">
+                                                    <h5 class="card-title w-100 text-center">TO DO LIST</h5>
                                                 </div>
-                                            </div>
-                                        </div>    
-                                    </form>
+                                            
+                                                <div class="card-body">
+                                                    @if (Session::has('messages'))
+                                                        <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('messages') }}</div>
+                                                    @endif
+                                                    <div class="table-responsive">
+                                                        <table class="table table-borderless table-hover table-striped w-100">
+                                                            <thead>
+                                                                <tr>
+                                                                    <td>
+                                                                        <label class="container">
+                                                                            <input type="checkbox">
+                                                                            <input type="text" class="form-control max" name="todo" placeholder="Add an item" >
+                                                                            <div class="form-status-holder"></div>
+                                                                            <span class="checkmark"></span>
+                                                                        </label>
+                                                                    </td>
+                                                                </tr>
+                                                            </thead>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>    
+                                        </form>
+                                    @endrole
                                     <br>
                                 </div>
                             </div>
@@ -420,12 +428,11 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
             columns: [
-                    { className: 'text-center', data: 'id', name: 'id' },
+                    { className: 'text-center', data: 'DT_RowIndex', name: 'DT_RowIndex' , orderable: false, searchable: false },
                     { className: 'text-center', data: 'remark', name: 'remark' },
                     { className: 'text-center', data: 'date', name: 'date' },
                     { className: 'text-center', data: 'status', name: 'status' },
                     { className: 'text-center', data: 'member', name: 'member' },
-                    { className: 'text-center', data: 'attachment', name: 'attachment' },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false},
                 ],
                 orderCellsTop: true,
@@ -433,6 +440,37 @@
                 "initComplete": function(settings, json) {
 
                 }
+        });
+
+        $('#progress').on('click', '.btn-delete[data-remote]', function (e) {
+            e.preventDefault();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            var url = $(this).data('remote');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
+                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                    $.ajax({
+                        url: url,
+                        type: 'DELETE',
+                        dataType: 'json',
+                        data: {method: '_DELETE', submit: true}
+                    }).always(function (data) {
+                        $('#progress').DataTable().draw(false);
+                    });
+                }
+            })
         });
 
 
