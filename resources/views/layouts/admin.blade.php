@@ -745,7 +745,7 @@
 
                             <li class="nav-title">COVID19 MANAGEMENT</li>
                             <li class="open">
-                                <a href="#" title="Application Intel" data-filter-tags="application intel">
+                                <a href="/covid-dashboard" title="Application Intel" data-filter-tags="application intel">
                                     <i class="fal fa-chart-pie"></i>
                                     <span class="nav-link-text" data-i18n="nav.application_intel">Covid19 Dashboard</span>
                                 </a>

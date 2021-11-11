@@ -240,6 +240,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/export-undeclare/{datek?}/{cates?}', 'CovidController@exportUndeclare');
     Route::get('exportundeclare/{datek?}/{cates?}', 'CovidController@exportUndeclare');
     Route::get('/remainder/{date?}/{cate?}', 'CovidController@sendRemainder')->name('remainder');
+    Route::get('/covid-dashboard', 'CovidController@dashboard');
 
     // Vaccine
     Route::get('/vaccineForm', 'VaccineController@form')->name('vaccineForm');
@@ -567,7 +568,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('update-evaluation-form','TrainingController@updateEvaluationForm');
 
     // Training : Dashboard
-    Route::get('/training-dashboard', 'TrainingController@dashboard'); // not comp.
+    Route::get('/training-dashboard', 'TrainingController@dashboard')->name('dashList');
 });
 
 //SCM - Public View
@@ -600,7 +601,7 @@ Route::get('/get-payment-proof-image/{id}/{payment_proof_path}', 'ShortCourseMan
 Route::get('/covid', 'CovidController@openForm')->name('openForm');
 Route::get('/findUser', 'CovidController@findUser');
 Route::post('openFormStore', 'CovidController@storeOpenForm');
-Route::get('/add-form', 'CovidController@addForm');
+Route::get('/covid-result', 'CovidController@addForm');
 
 // Asset Public
 Route::get('/asset-search', 'AssetController@assetSearch')->name('assetSearch');
