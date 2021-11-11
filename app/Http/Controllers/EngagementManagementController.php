@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 use App\EngagementManagement;
 use App\EngagementProgress;
@@ -9,6 +10,7 @@ use App\EngagementStatus;
 use App\EngagementMember;
 use App\EngagementOrganization;
 use App\EngagementFile;
+use App\EngagementToDoList;
 use App\User;
 use Carbon\Carbon;
 use File;
@@ -190,8 +192,26 @@ class EngagementManagementController extends Controller
 
     public function createToDoList(Request $request)
     {
-        
+        $todo = new EngagementToDoList();
+        $todo->engagement_id = $request->id;
+        $todo->title = $request->todo;
+        $todo->active = 'Y';
+        $todo->created_by = Auth::user()->id;
+        $todo->save();
 
+        $dataid = $todo->id;
+
+        return response()->json($dataid);
+
+    }
+
+    public function updateToDoList($id, $title)
+    {
+        $update = EngagementToDoList::where('id', $id)->first();
+        $update->update([
+            'title' => $title,
+            'updated_by'  => Auth::user()->id
+        ]);
 
     }
 
@@ -270,8 +290,9 @@ class EngagementManagementController extends Controller
         $data = EngagementManagement::where('id', $id)->first();
         $member = EngagementMember::where('engagement_id', $id)->get();
         $org = EngagementOrganization::where('engagement_id', $id)->get();
+        $todo = EngagementToDoList::all();
 
-        return view('engagement.detail', compact('user','status','data','member','org'));
+        return view('engagement.detail', compact('user','status','data','member','org','todo'));
     }
 
     public function updateProfile(Request $request)
@@ -312,15 +333,14 @@ class EngagementManagementController extends Controller
         {
             foreach($request->member_id as $key => $value)
             {
-                $validator = Validator::make($request->all(),[
-                'member_id' => "unique:ems_member,staff_id,NULL,id,engagement_id,".$request->id.",deleted_at,NULL",
-                ]);
-
-                if ($validator->fails())
+                
+                if (EngagementMember::where('engagement_id',$request->id)->where('staff_id', $value)->count() > 0)
                 {
+                    
                     $staff = User::where('id',$value)->first();
                     $error[] = $staff->name;
                 }
+            
                 else
                 {
                     EngagementMember::create([
