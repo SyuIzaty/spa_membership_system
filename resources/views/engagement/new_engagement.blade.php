@@ -207,19 +207,19 @@
         });
 
         $('#btn2').click(function(){
-                i++;
-                $('#addtodo').append(`
-                <tr id="row${i}">
-                    <td>
-                        <div class="input-group mb-3">
-                            <input class="form-control" type="text" name="todolist[]" id="todolist">
-                            <div class="input-group-append">
-                                <button class="btn_removeToDo btn btn-danger btn-sm btn-icon" id="${i}" type="button"><i class="fal fa-times"></i></button>
-                            </div>
+            i++;
+            $('#addtodo').append(`
+            <tr id="row${i}">
+                <td>
+                    <div class="input-group mb-3">
+                        <input class="form-control" type="text" name="todolist[]" id="todolist">
+                        <div class="input-group-append">
+                            <button class="btn_removeToDo btn btn-danger btn-sm btn-icon" id="${i}" type="button"><i class="fal fa-times"></i></button>
                         </div>
-                    </td>
-                </tr>`);
-        });
+                    </div>
+                </td>
+            </tr>`);
+    });
 
         var i=1;
         $(document).on('click', '.btn_removeToDo', function(){

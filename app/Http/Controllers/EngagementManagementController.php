@@ -218,6 +218,33 @@ class EngagementManagementController extends Controller
             }
         }
 
+        //checked checkbox
+        if ($request->id)
+        {
+            if($request->check)
+            {
+                foreach($request->check as $key => $value)
+                {
+                    
+                    EngagementToDoList::where('id', $value)->update([
+                        'active'        => 'N', 
+                        'updated_by'    => Auth::user()->id
+                    ]);
+                }
+            }
+                
+            else
+            {
+                foreach($request->id as $key => $value)
+                {
+                    EngagementToDoList::where('id', $value)->update([
+                        'active'        => 'Y', 
+                        'updated_by'    => Auth::user()->id
+                    ]);
+                }
+            }
+        }
+
         // foreach($request->id as $key => $value)
         // {
         //     $update = EngagementToDoList::where('id', $value)->first();
@@ -617,6 +644,15 @@ class EngagementManagementController extends Controller
         $user = User::find($exist->staff_id);
 
         $user->removeRole('Engagement (Team Member)');
+
+        return response() ->json(['success' => 'Deleted!']);
+    }
+
+    public function deleteToDoList($id)
+    {
+        $exist = EngagementToDoList::where('id',$id)->first();
+        $exist->delete();
+        $exist->update(['deleted_by' => Auth::user()->id]);
 
         return response() ->json(['success' => 'Deleted!']);
     }

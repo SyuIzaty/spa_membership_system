@@ -462,6 +462,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/edit-status', 'EngagementManagementController@editStatus');
     Route::get('/engagement-detail/{id}', 'EngagementManagementController@details');
     Route::delete('/delete-status/{id}','EngagementManagementController@deleteStatus');
+    Route::delete('/delete-todolist/{id}','EngagementManagementController@deleteToDoList');
+
 
     Route::get('/new-progress/{id}', 'EngagementManagementController@newProgress');
     Route::get('/edit-progress/{id}', 'EngagementManagementController@progress');

@@ -327,7 +327,7 @@
                                                                                     <span class="checkmark"></span>
                                                                                 </label>
                                                                             </td>
-                                                                            <td><button type="button" name="remove" class="btn_removetodo btn btn-danger btn-sm btn-icon">X</button></td>
+                                                                            <td><a href="#" data-path ="{{$t->id}}" class="btn_delete btn btn-danger btn-sm btn-icon"><i class="fal fa-times"></i></a></td>
                                                                         </tr>
                                                                     @endforeach
                                                                 @endif
@@ -415,6 +415,45 @@
                     $.ajax({
                         type: "DELETE",
                         url: "/delete-member/" + id,
+                        data: id,
+                        dataType: "json",
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        success: function (response) {
+                        console.log(response);
+                        if(response){
+                        Swal.fire(response.success);
+                        location.reload();
+                    }
+                        }
+                    });
+                }
+                else {
+                    e.dismiss;
+                }
+            }, function (dismiss) {
+                return false;
+            })
+        });
+
+        $(".btn_delete").on('click', function(e) {
+        e.preventDefault();
+
+        let id = $(this).data('path');
+
+            Swal.fire({
+                title: 'Delete?',
+                text: "Data cannot be restored!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Delete!',
+                cancelButtonText: 'No'
+            }).then(function (e) {
+                if (e.value === true) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/delete-todolist/" + id,
                         data: id,
                         dataType: "json",
                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
