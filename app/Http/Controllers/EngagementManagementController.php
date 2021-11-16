@@ -229,7 +229,7 @@ class EngagementManagementController extends Controller
                     if ($request->check[$key] == $value)
                     {
                         
-                            EngagementToDoList::where('id', $value)->update([
+                        EngagementToDoList::where('id', $value)->update([
                         'active'        => 'N', 
                         'updated_by'    => Auth::user()->id
                         ]);
