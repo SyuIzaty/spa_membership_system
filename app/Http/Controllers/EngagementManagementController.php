@@ -221,56 +221,31 @@ class EngagementManagementController extends Controller
         //checked checkbox
         if ($request->id)
         {
-            if($request->check)
+
+            foreach($request->id as $key => $value)
             {
-                foreach($request->check as $key => $value)
+                if(isset($request->check[$key]))
                 {
-                    
-                    EngagementToDoList::where('id', $value)->update([
+                    if ($request->check[$key] == $value)
+                    {
+                        
+                            EngagementToDoList::where('id', $value)->update([
                         'active'        => 'N', 
                         'updated_by'    => Auth::user()->id
-                    ]);
+                        ]);
+                    }                    
                 }
-            }
-                
-            else
-            {
-                foreach($request->id as $key => $value)
+
+                else
                 {
                     EngagementToDoList::where('id', $value)->update([
                         'active'        => 'Y', 
                         'updated_by'    => Auth::user()->id
-                    ]);
+                        ]);
                 }
             }
+                
         }
-
-        // foreach($request->id as $key => $value)
-        // {
-        //     $update = EngagementToDoList::where('id', $value)->first();
-        //     $update->update([
-        //         'title' => $request->todo[$key],
-        //         'updated_by'  => Auth::user()->id
-        //     ]);
-
-        //     // if ($request->check)
-        //     // {
-        //     //     $update = EngagementToDoList::where('id', $request->id)->first();
-        //     //     $update->update([
-        //     //     'active' => 'N',
-        //     //     'updated_by'  => Auth::user()->id
-        //     //     ]);
-        //     // }
-
-        //     // else
-        //     // {
-        //     //     $update = EngagementToDoList::where('id', $request->id)->first();
-        //     //     $update->update([
-        //     //     'active' => 'Y',
-        //     //     'updated_by'  => Auth::user()->id
-        //     //     ]);
-        //     // }
-        // }
 
         return redirect()->back()->with('message','To Do List updated');
 
