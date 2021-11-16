@@ -449,6 +449,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/create', 'EngagementManagementController@new');
     Route::post('/post-create', 'EngagementManagementController@store');
     Route::post('/todolist-create', 'EngagementManagementController@createToDoList');
+    Route::post('/todolist-update', 'EngagementManagementController@updateToDoList');
+
     Route::post('/update-profile', 'EngagementManagementController@updateProfile');
     Route::DELETE('/delete-member/{id}', 'EngagementManagementController@deleteMember');
     Route::post('/create-progress', 'EngagementManagementController@createProgress');
