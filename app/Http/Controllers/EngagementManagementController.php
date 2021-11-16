@@ -115,7 +115,7 @@ class EngagementManagementController extends Controller
 
     public function new()
     {
-        $user = User::orderBy('name', 'ASC')->get();
+        $user = User::orderBy('name', 'ASC')->where('category', 'STF')->get();
 
         return view('engagement.new_engagement', compact('user'));
     }
@@ -190,28 +190,62 @@ class EngagementManagementController extends Controller
         $exist->update(['deleted_by' => Auth::user()->id]);
     }
 
-    public function createToDoList(Request $request)
+    public function updateToDoList(Request $request)
     {
-        $todo = new EngagementToDoList();
-        $todo->engagement_id = $request->id;
-        $todo->title = $request->todo;
-        $todo->active = 'Y';
-        $todo->created_by = Auth::user()->id;
-        $todo->save();
+        //create new todo list
+        if($request->newtodo)
+        {
+            foreach($request->newtodo as $key => $value)
+            {
+                EngagementToDoList::create([
+                    'engagement_id' => $request->idEngage,
+                    'title'         => $value, 
+                    'active'         => 'Y', 
+                    'created_by'    => Auth::user()->id
+                ]);
+            }
+        }
 
-        $dataid = $todo->id;
+        //update todo list
+        if($request->content)
+        {
+            foreach($request->id as $key => $value)
+            {
+                EngagementToDoList::where('id', $value)->update([
+                    'title'         => $request->content[$key], 
+                    'updated_by'    => Auth::user()->id
+                ]);
+            }
+        }
 
-        return response()->json($dataid);
+        // foreach($request->id as $key => $value)
+        // {
+        //     $update = EngagementToDoList::where('id', $value)->first();
+        //     $update->update([
+        //         'title' => $request->todo[$key],
+        //         'updated_by'  => Auth::user()->id
+        //     ]);
 
-    }
+        //     // if ($request->check)
+        //     // {
+        //     //     $update = EngagementToDoList::where('id', $request->id)->first();
+        //     //     $update->update([
+        //     //     'active' => 'N',
+        //     //     'updated_by'  => Auth::user()->id
+        //     //     ]);
+        //     // }
 
-    public function updateToDoList($id, $title)
-    {
-        $update = EngagementToDoList::where('id', $id)->first();
-        $update->update([
-            'title' => $title,
-            'updated_by'  => Auth::user()->id
-        ]);
+        //     // else
+        //     // {
+        //     //     $update = EngagementToDoList::where('id', $request->id)->first();
+        //     //     $update->update([
+        //     //     'active' => 'Y',
+        //     //     'updated_by'  => Auth::user()->id
+        //     //     ]);
+        //     // }
+        // }
+
+        return redirect()->back()->with('message','To Do List updated');
 
     }
 
@@ -223,15 +257,11 @@ class EngagementManagementController extends Controller
      */
     public function store(Request $request)
     {
-
         $validated = $request->validate([
             'phone1' => 'required|regex:/[0-9]/|min:8|max:11',
             'email1' => 'required|email',
-            'phone2' => 'nullable|regex:/[0-9]/|min:8|max:11',
-            'email2' => 'nullable|email',
         ], [
             'phone1.regex' => 'Phone number does not match the format',
-            'phone2.regex' => 'Phone number does not match the format',
         ]);
 
         $engagement = new EngagementManagement();
@@ -248,6 +278,14 @@ class EngagementManagementController extends Controller
                 'staff_id'      => $value, 
                 'created_by'    => Auth::user()->id
             ]);
+
+            $user = User::find($value);
+
+            if(!$user->hasRole('Engagement (Team Member)'))
+            {
+                $user->assignRole('Engagement (Team Member)');
+            }
+    
         }
 
         EngagementOrganization::create([
@@ -260,37 +298,48 @@ class EngagementManagementController extends Controller
             'created_by'    => Auth::user()->id
         ]);
 
-        if ($request->name2 != '')
+        
+        if ($request->names)
         {
-            EngagementOrganization::create([
-                'engagement_id' => $engagement->id,
-                'no'            => 2, 
-                'name'          => $request->name2,
-                'phone'         => $request->phone2,
-                'email'         => $request->email2,
-                'designation'   => $request->designation2,
-                'created_by'    => Auth::user()->id
-            ]);    
+            foreach($request->names as $key => $value) 
+            {
+                $organization = new EngagementOrganization();
+                $organization->engagement_id = $engagement->id;
+                $organization->name = $value;
+                $organization->email = $request->email[$key];
+                $organization->phone = $request->phone[$key];
+                $organization->designation = $request->designation[$key];
+                $organization->created_by = Auth::user()->id;
+                $organization->save();
+            }
         }
 
-        $user = User::find($value);
-
-        if(!$user->hasRole('Engagement (Team Member)'))
+        if ($request->todolist)
         {
-            $user->assignRole('Engagement (Team Member)');
+            foreach($request->todolist as $key => $value) 
+            {
+                EngagementToDoList::create([
+                    'engagement_id' => $engagement->id,
+                    'title'         => $value, 
+                    'active'        => 'Y', 
+                    'created_by'    => Auth::user()->id
+                ]);
+        
+            }
         }
+
 
         return redirect('engagement-detail/'.$engagement->id)->with('message','Profile created!');
     }
 
     public function details($id)
     {
-        $user = User::orderBy('name', 'ASC')->get();
+        $user = User::orderBy('name', 'ASC')->where('category', 'STF')->get();
         $status = EngagementStatus::all();
         $data = EngagementManagement::where('id', $id)->first();
         $member = EngagementMember::where('engagement_id', $id)->get();
         $org = EngagementOrganization::where('engagement_id', $id)->get();
-        $todo = EngagementToDoList::all();
+        $todo = EngagementToDoList::where('engagement_id', $id)->get();
 
         return view('engagement.detail', compact('user','status','data','member','org','todo'));
     }
@@ -317,13 +366,18 @@ class EngagementManagementController extends Controller
             'updated_by'    => Auth::user()->id
         ]);  
 
-        EngagementOrganization::where('engagement_id', $request->id)->where('no', 2)->update([
-            'name'          => $request->name2,
-            'phone'         => $request->phone2,
-            'email'         => $request->email2,
-            'designation'   => $request->designation2,
-            'updated_by'    => Auth::user()->id
-        ]);  
+        
+
+        foreach($request->ids as $key => $value) 
+        {
+            EngagementOrganization::where('id', $value)->update([
+                'name'          => $request->name[$key],
+                'phone'         => $request->phone[$key],
+                'email'         => $request->email[$key],
+                'designation'   => $request->designation[$key],
+                'updated_by'    => Auth::user()->id
+            ]);  
+        }
         
 
         $error = [];

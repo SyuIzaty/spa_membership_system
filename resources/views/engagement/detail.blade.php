@@ -152,119 +152,101 @@
                                                                 <td colspan="5" class="text-center"><b>TITLE</b></td>
                                                             </tr>
                                                             <tr>
-                                                                <div class="form-group">
-                                                                    <td colspan="4">
-                                                                        <input type="text" id="title" name="title" class="form-control max" value="{{ $data->title }}" required>
-                                                                            @error('title')
-                                                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                            @enderror
-                                                                    </td>
-                                                                </div>
+                                                                <td colspan="5">
+                                                                    <input type="text" id="title" name="title" class="form-control" value="{{ $data->title }}" required>
+                                                                        @error('title')
+                                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                        @enderror
+                                                                </td>
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="5" class="text-center"><b>ORGANIZATION ONE</b></td>
+                                                                <td colspan="5" class="text-center"><b>ORGANIZATION 1</b></td>
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="5">Name:</td>
-                                                            </tr>
-                                                                <div class="form-group">
-                                                                    <td colspan="4">
+                                                                <td style="vertical-align: middle">Name</td>
+                                                                    <td>
                                                                         <input type="text" id="name1" name="name1" class="form-control" value="{{ $org->whereIn('no', 1)->first()->name }}" required>
                                                                             @error('name1')
                                                                                 <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                             @enderror
                                                                     </td>
-                                                                </div>
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="5">Contact Number:</td>
-                                                            </tr>
-                                                                <div class="form-group">
-                                                                    <td colspan="4">
-                                                                        <input type="text" id="phone1" name="phone1" class="form-control" value="{{ $org->whereIn('no', 1)->first()->phone }}" required>
-                                                                            @error('phone1')
-                                                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                            @enderror
-                                                                    </td>
-                                                                </div>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="5">Email:</td>
-                                                            </tr>
-                                                                <div class="form-group">
-                                                                    <td colspan="4">
-                                                                        <input type="text" id="email1" name="email1" class="form-control" value="{{ $org->whereIn('no', 1)->first()->email }}" required>
-                                                                            @error('email1')
-                                                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                            @enderror
-                                                                    </td>
-                                                                </div>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="5">Designation:</td>
-                                                            </tr>
-                                                                <div class="form-group">
-                                                                    <td colspan="4">
-                                                                        <input type="text" id="designation1" name="designation1" class="form-control" value="{{ $org->whereIn('no', 1)->first()->designation }}" required>
-                                                                            @error('designation1')
-                                                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                            @enderror
-                                                                    </td>
-                                                                </div>
+                                                                <td style="vertical-align: middle">Contact Number</td>
+                                                                <td>
+                                                                    <input type="text" id="phone1" name="phone1" class="form-control" value="{{ $org->whereIn('no', 1)->first()->phone }}" required>
+                                                                        @error('phone1')
+                                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                        @enderror
+                                                                </td>
                                                             </tr>
                                                             
-                                                            @if (($org->whereIn('no', 2))->isNotEmpty())
-                                                                <tr>
-                                                                    <td colspan="5" class="text-center"><b>ORGANIZATION TWO</b></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td colspan="5">Name:</td>
-                                                                </tr>
-                                                                    <div class="form-group">
-                                                                        <td colspan="4">
-                                                                            <input type="text" id="name2" name="name2" class="form-control" value="{{ $org->whereIn('no', 2)->first()->name }}" required>
-                                                                                @error('name2')
-                                                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                                @enderror
-                                                                        </td>
-                                                                    </div>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td colspan="5">Contact Number:</td>
-                                                                </tr>
-                                                                    <div class="form-group">
-                                                                        <td colspan="4">
-                                                                            <input type="text" id="phone2" name="phone2" class="form-control" value="{{ $org->whereIn('no', 2)->first()->phone }}" required>
-                                                                                @error('phone2')
-                                                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                                @enderror
-                                                                        </td>
-                                                                    </div>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td colspan="5">Email:</td>
-                                                                </tr>
-                                                                    <div class="form-group">
-                                                                        <td colspan="4">
-                                                                            <input type="text" id="email2" name="email2" class="form-control" value="{{ $org->whereIn('no', 2)->first()->email }}" required>
-                                                                                @error('email2')
-                                                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                                @enderror
-                                                                        </td>
-                                                                    </div>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td colspan="5">Designation:</td>
-                                                                </tr>
-                                                                    <div class="form-group">
-                                                                        <td colspan="4">
-                                                                            <input type="text" id="designation2" name="designation2" class="form-control" value="{{ $org->whereIn('no', 2)->first()->designation }}" required>
+                                                            <tr>
+                                                                <td style="vertical-align: middle">Email</td>
+                                                                <td>
+                                                                    <input type="text" id="email1" name="email1" class="form-control" value="{{ $org->whereIn('no', 1)->first()->email }}" required>
+                                                                        @error('email1')
+                                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                        @enderror
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="vertical-align: middle">Designation</td>
+                                                                <td>
+                                                                    <input type="text" id="designation1" name="designation1" class="form-control" value="{{ $org->whereIn('no', 1)->first()->designation }}" required>
+                                                                        @error('designation1')
+                                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                        @enderror
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                            @php $i = 2; @endphp
+                                                            @if (($org->where('no', '!=', 1))->isNotEmpty())
+                                                                @foreach ( $org->where('no', '!=', 1) as $o)                                                                
+                                                                    <tr>
+                                                                        <td colspan="5" class="text-center"><b>ORGANIZATION {{$i}}</b></td>
+                                                                        <input type="hidden" name="ids[]" value="{{ $o->id }}">
+
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="vertical-align: middle">Name:</td>
+                                                                            <td>
+                                                                                <input type="text" id="name2" name="name[]" class="form-control" value="{{ $o->name }}" required>
+                                                                                    @error('name2')
+                                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                    @enderror
+                                                                            </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="vertical-align: middle">Contact Number:</td>
+                                                                            <td>
+                                                                                <input type="text" id="phone2" name="phone[]" class="form-control" value="{{ $o->phone }}" required>
+                                                                                    @error('phone2')
+                                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                    @enderror
+                                                                            </td>
+                                                                        </div>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="vertical-align: middle">Email:</td>
+                                                                            <td>
+                                                                                <input type="text" id="email2" name="email[]" class="form-control" value="{{ $o->email }}" required>
+                                                                                    @error('email2')
+                                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                    @enderror
+                                                                            </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="vertical-align: middle">Designation:</td>
+                                                                        <td>
+                                                                            <input type="text" id="designation2" name="designation[]" class="form-control" value="{{ $o->designation }}" required>
                                                                                 @error('designation2')
                                                                                     <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                 @enderror
                                                                         </td>
-                                                                    </div>
-                                                                </tr>
+                                                                    </tr>
+                                                                    @php $i++ @endphp
+                                                                @endforeach
                                                             @endif
                                                             <tr>
                                                                 <td colspan="5" class="text-center"><b>TEAM MEMBER</b></td>
@@ -316,11 +298,15 @@
                                     {!! Form::close() !!}
                                     <br>
                                     @role('Engagement (Admin)')
-                                        <form class="savetodolist">
-                                            @csrf
+                                    {!! Form::open(['action' => ['EngagementManagementController@updateToDoList'], 'method' => 'POST', 'enctype' => 'multipart/form-data'])!!}
+                                    <input type="hidden" name="idEngage" value="{{ $data->id }}">
                                             <div class="card card-primary card-outline">
                                                 <div class="card-header text-white bg-success">
-                                                    <h5 class="card-title w-100 text-center">TO DO LIST</h5>
+                                                    <h5 class="card-title w-100 text-center">TO DO LIST
+                                                        <span>
+                                                            <button type="button" style="margin-left: 5px;" id ="btn1" class="btn btn-sm btn-warning btn-icon rounded-circle waves-effect waves-themed"><i class="fal fa-plus"></i></button>
+                                                        </span>
+                                                    </h5>
                                                 </div>
                                             
                                                 <div class="card-body">
@@ -328,24 +314,30 @@
                                                         <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('messages') }}</div>
                                                     @endif
                                                     <div class="table-responsive">
-                                                        <table class="table table-borderless table-hover table-striped w-100">
-                                                            <thead>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="container">
-                                                                            <input type="checkbox">
-                                                                            <input type="text" class="form-control max" name="todo" placeholder="Add an item" >
-                                                                            <div class="form-status-holder"></div>
-                                                                            <span class="checkmark"></span>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                            </thead>
-                                                        </table>
+                                                            <table class="table table-borderless table-hover table-striped w-100" id="addtodo">
+                                                                @if ($todo->isNotEmpty())
+                                                                    @foreach ($todo as $t )
+                                                                        <tr>
+                                                                            <td>
+                                                                                <label class="container">                                                                        
+                                                                                    <input type="checkbox" name="check[]" value="{{$t->id}}" @if ($t->active == 'N') checked @endif>
+                                                                                    <input type="text" class="form-control" name="content[]" value="{{$t->title}}">
+                                                                                    <input type="hidden" id="id" name="id[]" value="{{ $t->id }}">
+                                                                                    <div class="form-status-holder"></div>
+                                                                                    <span class="checkmark"></span>
+                                                                                </label>
+                                                                            </td>
+                                                                            <td><button type="button" name="remove" class="btn_removetodo btn btn-danger btn-sm btn-icon">X</button></td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                @endif
+                                                            </table>
                                                     </div>
+                                                    <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
+
                                                 </div>
-                                            </div>    
-                                        </form>
+                                            </div> 
+                                        {!! Form::close() !!}   
                                     @endrole
                                     <br>
                                 </div>
@@ -362,8 +354,34 @@
 
 <script>
 
-    $(document).ready(function() {
+    $(document).ready(function()
+    {
         $('.memberList').select2();
+
+        $('#btn1').click(function()
+        {
+            i++;
+            $('#addtodo').append(`
+            <tr id="row${i}">
+                <td>
+                    <label class="container">                                                                        
+                        <input type="checkbox">
+                        <input type="text" class="form-control" name="newtodo[]">
+                        <div class="form-status-holder"></div>
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
+                <td>
+                    <button class="btn_remove btn btn-danger btn-sm btn-icon" id="${i}" type="button"><i class="fal fa-times"></i></button>
+                </td>
+            </tr>`);        
+        });
+
+        var i=1;
+        $(document).on('click', '.btn_remove', function(){
+            var button_id = $(this).attr("id");
+            $('#row'+button_id+'').remove();
+        });
     });
 
     $(function () 
@@ -478,43 +496,5 @@
     //     // $(this).toggleClass('strike').fadeOut('slow');    
     //   });
 
-// var timeoutId;
-// $('form input, form textarea').on('input propertychange change', function() {
-//     console.log('Textarea Change');
-    
-//     clearTimeout(timeoutId);
-//     timeoutId = setTimeout(function() {
-//         // Runs 1 second (1000 ms) after the last change    
-//         saveToDB();
-//     }, 1000);
-// });
-
-// function saveToDB()
-// {
-//     console.log('Saving to the db');
-//     form = $('.savetodolist');
-// 	$.ajax({
-// 		url: "/todolist-create",
-// 		type: "POST",
-// 		data: form.serialize(), // serializes the form's elements.
-// 		beforeSend: function(xhr) {
-//             // Let them know we are saving
-// 			$('.form-status-holder').html('Saving...');
-// 		},
-// 		success: function(data) {
-// 			var jqObj = jQuery(data); // You can get data returned from your ajax call here. ex. jqObj.find('.returned-data').html()
-//             // Now show them we saved and when we did
-//             var d = new Date();
-//             $('.form-status-holder').html('Saved! Last: ' + d.toLocaleTimeString());
-// 		},
-// 	});
-// }
-
-// // This is just so we don't go anywhere  
-// // and still save if you submit the form
-// $('.savetodolist').submit(function(e) {
-// 	saveToDB();
-// 	e.preventDefault();
-// });
 </script>
 @endsection
