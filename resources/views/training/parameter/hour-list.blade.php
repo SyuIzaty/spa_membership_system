@@ -61,7 +61,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="crud-modal" aria-hidden="true"  data-keyboard="false" data-backdrop="static">
+    <div class="modal fade" id="crud-modal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="card-header bg-primary text-white">
@@ -99,7 +99,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="crud-modals" aria-hidden="true"  data-keyboard="false" data-backdrop="static">
+    <div class="modal fade" id="crud-modals" aria-hidden="true" data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="card-header bg-primary text-white">
@@ -138,7 +138,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="crud-modal-assign" aria-hidden="true"  data-keyboard="false" data-backdrop="static">
+    <div class="modal fade" id="crud-modal-assign" aria-hidden="true" data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="card-header bg-primary text-white">

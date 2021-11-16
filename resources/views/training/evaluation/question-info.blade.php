@@ -31,26 +31,28 @@
                                         <h5 class="card-title w-100"><i class="fal fa-cube width-2 fs-xl"></i> NEW HEADER </h5>
                                     </div>
                                     <div class="card-body m-3">
-                                        {!! Form::open(['action' => 'TrainingController@storeHeader', 'method' => 'POST'])!!}
-                                            <table class="table table-bordered text-center" id="head_field">
-                                                <tr class="bg-primary-50">
-                                                    <td>Question Header</td>
-                                                    <td>Color</td>
-                                                    <td>Action</td>
-                                                </tr>
-                                                <tr>
-                                                    <input type="hidden" name="te_id" value="{{ $id }}">
-                                                    <td><input type="text" name="head[]" placeholder="Question Header" class="form-control head" /></td>
-                                                    <td style="width: 20%"><input type="color" value="#ffffff" class="form-control" id="color" name="color[]"></td>
-                                                    <td><button type="button" name="addhead" id="addhead" class="btn btn-success btn-sm"><i class="fal fa-plus"></i></button></td>
-                                                </tr>
-                                            </table>
-                                            <div class="footer">
-                                                <button type="submit" class="btn btn-primary ml-auto float-right" name="submit" id="submithead"><i class="fal fa-save"></i> Save</button>
-                                                <a href="/evaluation-question" class="btn btn-success ml-auto float-right mr-2" ><i class="fal fa-arrow-alt-left"></i> Back</a>
-                                            </div>
-                                            <br><br>
-                                        {!! Form::close() !!}
+                                        @if ($result < 1)
+                                            {!! Form::open(['action' => 'TrainingController@storeHeader', 'method' => 'POST'])!!}
+                                                <table class="table table-bordered text-center" id="head_field">
+                                                    <tr class="bg-primary-50">
+                                                        <td>Question Header</td>
+                                                        <td>Color</td>
+                                                        <td>Action</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <input type="hidden" name="te_id" value="{{ $id }}">
+                                                        <td><input type="text" name="head[]" placeholder="Question Header" class="form-control head" /></td>
+                                                        <td style="width: 20%"><input type="color" value="#ffffff" class="form-control" id="color" name="color[]"></td>
+                                                        <td><button type="button" name="addhead" id="addhead" class="btn btn-success btn-sm"><i class="fal fa-plus"></i></button></td>
+                                                    </tr>
+                                                </table>
+                                                <div class="footer">
+                                                    <button type="submit" class="btn btn-primary ml-auto float-right" name="submit" id="submithead"><i class="fal fa-save"></i> Save</button>
+                                                    <a href="/evaluation-question" class="btn btn-success ml-auto float-right mr-2" ><i class="fal fa-arrow-alt-left"></i> Back</a>
+                                                </div>
+                                                <br><br>
+                                            {!! Form::close() !!}
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -84,6 +86,7 @@
                                                     <td class="question">{{ $eval->question_head }}</td>
                                                     <td style="display:none" id={{ $eval->sequence }}>{{ $eval->sequence }}</td>
                                                     <td style="display:none">{{ $eval->trainingEvaluationQuestions->count() }}</td>
+                                                    <td style="display:none">{{ $result }}</td>
                                                     <td class="category_color" data-selected="{{ $eval->color }}"></td>
                                                 </tr>
                                                 @endforeach
@@ -113,33 +116,34 @@
                                         </div>
                                         <div id="org{{$eval->sequence}}" class="collapse {{ ($eval->sequence == '1' ? 'show' : '') }}" data-parent="#org{{$eval->sequence}}">
                                             <div class="card-body">
-                                                {!! Form::open(['action' => 'TrainingController@storeQuestion', 'method' => 'POST'])!!}
-                                                    <table class="table table-bordered text-center" id="question_field{{ $eval->id }}">
-                                                        <tr class="bg-primary-50 text-center">
-                                                            <td>Question</td>
-                                                            <td>Type</td>
-                                                            <td>Action</td>
-                                                        </tr>
-                                                        <tr class="data-row">
-                                                            <input type="hidden" name="te_id" value="{{ $eval->evaluation_id }}" id="te_id">
-                                                            <input type="hidden" name="ques_head" value="{{ $eval->id}}">
-                                                            <td><input type="text" name="question[]" placeholder="Question" class="form-control question" /></td>
-                                                            <td>
-                                                                <select class="form-control ques_type" name="eval_rate[]" required>
-                                                                    <option disabled selected>Please Select</option>
-                                                                    <option value="R">Rating</option>
-                                                                    <option value="C">Comment</option>
-                                                                </select>
-                                                            </td>
-                                                            <td><button type="button" name="addquestion" class="btn btn-success btn-sm addquestion" data-id="{{ $eval->id }}"><i class="fal fa-plus"></i></button></td>
-                                                        </tr>
-                                                    </table>
-                                                    <div class="footer">
-                                                        <button type="submit" class="btn btn-primary ml-auto float-right submitQuestion" name="submit"><i class="fal fa-save"></i> Save</button>
-                                                    </div>
-                                                    <br><br>
-                                                {!! Form::close() !!}
-
+                                                @if($result < 1)
+                                                    {!! Form::open(['action' => 'TrainingController@storeQuestion', 'method' => 'POST'])!!}
+                                                        <table class="table table-bordered text-center" id="question_field{{ $eval->id }}">
+                                                            <tr class="bg-primary-50 text-center">
+                                                                <td>Question</td>
+                                                                <td>Type</td>
+                                                                <td>Action</td>
+                                                            </tr>
+                                                            <tr class="data-row">
+                                                                <input type="hidden" name="te_id" value="{{ $eval->evaluation_id }}" id="te_id">
+                                                                <input type="hidden" name="ques_head" value="{{ $eval->id}}">
+                                                                <td><input type="text" name="question[]" placeholder="Question" class="form-control question" /></td>
+                                                                <td>
+                                                                    <select class="form-control ques_type" name="eval_rate[]" required>
+                                                                        <option disabled selected>Please Select</option>
+                                                                        <option value="R">Rating</option>
+                                                                        <option value="C">Comment</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td><button type="button" name="addquestion" class="btn btn-success btn-sm addquestion" data-id="{{ $eval->id }}"><i class="fal fa-plus"></i></button></td>
+                                                            </tr>
+                                                        </table>
+                                                        <div class="footer">
+                                                            <button type="submit" class="btn btn-primary ml-auto float-right submitQuestion" name="submit"><i class="fal fa-save"></i> Save</button>
+                                                        </div>
+                                                        <br><br>
+                                                    {!! Form::close() !!}
+                                                @endif
                                                 <table class="table table-bordered editable mt-5 w-100" id="editable">
                                                     <thead class="bg-primary-50">
                                                         <tr>
@@ -156,6 +160,8 @@
                                                                 <td class="question">{{ $question->question }}</td>
                                                                 <td style="display:none" id={{ $question->sequence }}>{{ $question->sequence }}</td>
                                                                 <td class="eval_rate_select" data-selected="{{ $question->eval_rate }}"></td>
+                                                                <td style="display:none">{{ $question->trainingEvaluationResults->count() }}</td>
+                                                                <td style="display:none">{{ $result }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -179,24 +185,32 @@
 
 <script>
 
-    $(document).ready(function()
+    $(document).ready(function() 
     {
-        $('#status, #availability, #asset_types, #asset_code_type, #year, .ques_type').select2();
+        $('#status, .ques_type, .eval_rate').select2();
 
-        $("#year").change(function(){
-            $("#form_find").submit();
-        })
+        // Start Question
+            $('.addquestion').click(function(){
+                var id = $(this).attr("data-id");
+                i++;
+                $('#question_field'+id).append(`
+                <tr id="row${i}" class="head-added">
+                    <td><input type="text" name="question[]" placeholder="Question" class="form-control question" /></td>
+                    <td>
+                        <select class="form-control ques_type" name="eval_rate[]" required>
+                            <option disabled selected>Please Select</option>
+                            <option value="R">Rating</option>
+                            <option value="C">Comment</option>
+                        </select>
+                    </td>
+                    <td><button type="button" name="remove" id="${i}" class="btn btn-sm btn-danger btn_remove"><i class="fal fa-trash"></i></button></td>
+                </tr>
+                `);
+                $('.ques_type').select2();
+            });
+        //End Question
 
-        var table = $('#hist').DataTable({
-            columnDefs: [],
-                orderCellsTop: true,
-                "order": [[ 2, "desc" ]],
-                "initComplete": function(settings, json) {
-                }
-        });
-
-        // Add Header
-
+        // Start Header
             $('#addhead').click(function(){
                 i++;
                 $('#head_field').append(`
@@ -206,7 +220,7 @@
                 <td><button type="button" name="remove" id="${i}" class="btn btn-sm btn-danger btn_remove"><i class="fal fa-trash"></i></button></td>
                 </tr>
                 `);
-                $('.eval_rate').select2();
+                // $('.eval_rate').select2();
             });
 
             var postURL = "<?php echo url('addmore'); ?>";
@@ -228,51 +242,32 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-
         // End Header
 
-        // Start Add Question
-
-            $('.addquestion').click(function(){
-                var id = $(this).attr("data-id");
-                i++;
-                $('#question_field'+id).append(`
-                <tr id="row${i}" class="head-added">
-                    <td><input type="text" name="question[]" placeholder="Question" class="form-control question" /></td>
-                    <td>
-                        <select class="form-control ques_type" name="eval_rate[]" required>
-                            <option disabled selected>Please Select</option>
-                            <option value="R">Rating</option>
-                            <option value="C">Comment</option>
-                        </select>
-                    </td>
-                    <td><button type="button" name="remove" id="${i}" class="btn btn-sm btn-danger btn_remove"><i class="fal fa-trash"></i></button></td>
-                </tr>
-                `);
-                $('.ques_type').select2();
-            });
-
+        // Start Question
             $('.editable').Tabledit({
                 url:'{{ route("updateQuestion") }}',
                 dataType:"json",
                 columns:{
                     identifier:[1, 'id'],
-                    editable:[[2, 'question'], [4, 'eval_rate']]
+                    editable:[[2, 'question'],[4,'eval_rate']]
                 },
                 restoreButton:false,
 
                 onSuccess:function(data, textStatus, jqXHR){
+                    console.log(data);
                     if(data.action == 'delete'){
                         $('#'+data.id).remove();
                     }
+                    location.reload();
                 }
             });
 
             $('.eval_rate_select').each(function(){
                 var selected = $(this).data('selected');
                 var select = `<input type="hidden" name="eval_rate" data-type="changed" class="select" value="${selected}"><select class="eval_rate form-control">
-                                    <option value="R">Rating</option>
-                                    <option value="C">Comment</option>
+                                        <option value="R">Rating</option>
+                                        <option value="C">Comment</option>
                                 </select>`;
                 $(this).html(select);
                 $(this).children('select').val(selected).change();
@@ -294,10 +289,20 @@
 
             $('.eval_rate').select2();
 
+            $('.editable').find('tr').each(function() {
+                var $tds = $(this).find('td'),
+                all = $tds.eq(5).text();
+                result = $tds.eq(6).text();
+                if(all >= 1){
+                    $tds.eq(7).html("<p class='badge border border-danger text-danger'>Exist</p>");
+                }
+                if(result >= 1){
+                    $tds.eq(7).html("<p class='badge border border-danger text-danger'>Exist</p>");
+                }
+            });
         // End Question
 
-        // Add Header
-            
+        // Start Header
             $('.headedit').Tabledit({
                 url:'{{ route("updateHeader") }}',
                 dataType:"json",
@@ -310,11 +315,11 @@
                 onSuccess:function(data, textStatus, jqXHR){
                     if(data.action == 'delete'){
                         $('#'+data.id).remove();
-                        location.reload();
                     }
+                    location.reload();
                 }
             });
-
+            
             $('.category_color').each(function(){
                 var selected = $(this).data('selected');
                 var color = `<input type="hidden" name="color" data-type="changed" class="select_color" value="${selected}"><input type="color" class="color form-control" value="${selected}">`;
@@ -333,7 +338,7 @@
                         $(this).removeClass('tabledit-input');
                     }
                 });
-                $(this).closest('tr').find('.select_color').addClass('tabledit-input');
+                $(this).closest('tr').find('.select,.select_color').addClass('tabledit-input');
             });
 
             $('table.editable thead').each(function(){
@@ -365,6 +370,18 @@
                 }
             });
 
+            $('.headedit').find('tr').each(function() {
+                var $tda = $(this).find('td'),
+                total = $tda.eq(5).text();
+                result = $tda.eq(6).text();
+                if(total >= 1){
+                    $tda.eq(8).html("<p class='badge border border-danger text-danger'>Exist</p>");
+                }
+                if(result >= 1){
+                    $tda.eq(8).html("<p class='badge border border-danger text-danger'>Exist</p>");
+                }
+            })
+
             $('#headedit tbody').sortable({
                 placeholder : "ui-state-highlight",
                 opacity: 0.9,
@@ -388,27 +405,7 @@
                     })
                 }
             });
-
         // End Header
-
-        $('#add').click(function(){
-            i++;
-            $('#question_field').append(`
-            <tr id="row${i}" class="dynamic-added">
-            <td><input type="text" name="question[]" placeholder="Question" class="form-control question" /></td>
-            <td>
-                <select class="form-control eval_head" name="eval_head[]">
-                    <option disabled>Please Select</option>
-                    @foreach ($evaluation as $eval_heads)
-                        <option value="{{ $eval_heads->id }}">{{ $eval_heads->question_head }}</option>
-                    @endforeach
-                </select>
-            </td>
-            <td><button type="button" name="remove" id="${i}" class="btn btn-danger btn_remove">X</button></td>
-            </tr>
-            `);
-            $('.eval_head').select2();
-        });
 
         $(document).on('click', '.btn_remove', function(){
             var button_id = $(this).attr("id");
@@ -474,7 +471,7 @@
                 }
             });
         });
-
+       
         function printErrorMsg (msg) {
             $(".print-error-msg").find("ul").html('');
             $(".print-error-msg").css('display','block');

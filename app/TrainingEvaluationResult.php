@@ -18,4 +18,11 @@ class TrainingEvaluationResult extends Model
     {
         return $this->hasOne('App\TrainingEvaluationQuestion','id','question');
     }
+
+    public function checkResult($id)
+    {
+        return TrainingEvaluationResult::wherehas('trainingEvaluationQuestion',function($query) use ($id){
+            $query->where('evaluation_id',$id);
+        })->get()->count();
+    }
 }

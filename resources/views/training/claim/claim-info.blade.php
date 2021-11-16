@@ -34,16 +34,16 @@
                                         @endif
                                             <table class="table table-bordered table-hover table-striped w-100">
                                                 <thead>
-                                                    <div style="float: left"><i>Submitted Date : {{ date(' j F Y | h:i:s A', strtotime($claim->created_at) )}}</i></div><br>
+                                                    <div style="float: left"><i>Submitted Date : {{ isset($claim->created_at) ? date(' j F Y | h:i:s A', strtotime($claim->created_at) ) : '-'}}</i></div><br>
                                                     <tr>
                                                         <div class="form-group">
                                                             <td width="20%" style="vertical-align: middle"><label class="form-label"> Full Name :</label></td>
                                                             <td colspan="3">
-                                                                {{ $claim->staffs->staff_name ?? '--'}}
+                                                                {{ $claim->staffs->staff_name ?? '-'}}
                                                             </td>
                                                             <td width="20%" style="vertical-align: middle"><label class="form-label"> Staff ID :</label></td>
                                                             <td colspan="3">
-                                                                {{ $claim->staffs->staff_id ?? '--'}}
+                                                                {{ $claim->staffs->staff_id ?? '-'}}
                                                             </td>
                                                         </div>
                                                     </tr>
@@ -51,11 +51,11 @@
                                                         <div class="form-group">
                                                             <td width="20%" style="vertical-align: middle"><label class="form-label"> Position :</label></td>
                                                             <td colspan="3">
-                                                                {{ $claim->staffs->staff_position ?? '--'}}
+                                                                {{ $claim->staffs->staff_position ?? '-'}}
                                                             </td>
                                                             <td width="20%" style="vertical-align: middle"><label class="form-label"> Department :</label></td>
                                                             <td colspan="3">
-                                                                {{ $claim->staffs->staff_dept ?? '--'}}
+                                                                {{ $claim->staffs->staff_dept ?? '-'}}
                                                             </td>
                                                         </div>
                                                     </tr>
@@ -63,7 +63,7 @@
                                                         <div class="form-group">
                                                             <td width="20%" style="vertical-align: middle"><label class="form-label"> Training Title :</label></td>
                                                             <td colspan="6" style="text-transform: uppercase">
-                                                                #{{ $claim->training_id ?? '--'}} : {{ $claim->title ?? '--'}}
+                                                                #{{ $claim->training_id ?? '-'}} : {{ $claim->title ?? '-'}}
                                                             </td>
                                                         </div>
                                                     </tr>
@@ -71,11 +71,11 @@
                                                         <div class="form-group">
                                                             <td width="20%" style="vertical-align: middle"><label class="form-label"> Type of Training :</label></td>
                                                             <td colspan="3" style="text-transform: uppercase">
-                                                                {{ $claim->types->type_name ?? '--'}}
+                                                                {{ $claim->types->type_name ?? '-'}}
                                                             </td>
                                                             <td width="20%" style="vertical-align: middle"><label class="form-label"> Category of Training :</label></td>
                                                             <td colspan="3" style="text-transform: uppercase">
-                                                                {{ $claim->categories->category_name ?? '--'}}
+                                                                {{ $claim->categories->category_name ?? '-'}}
                                                             </td>
                                                         </div>
                                                     </tr>
@@ -83,11 +83,11 @@
                                                         <div class="form-group">
                                                             <td width="20%" style="vertical-align: middle"><label class="form-label"> Start Date :</label></td>
                                                             <td colspan="3">
-                                                                {{ date(' d/m/Y ', strtotime($claim->start_date) ) ?? '--'}}
+                                                                {{ date(' d/m/Y ', strtotime($claim->start_date) ) ?? '-'}}
                                                             </td>
                                                             <td width="20%" style="vertical-align: middle"><label class="form-label"> End Date :</label></td>
                                                             <td colspan="3">
-                                                                {{ date(' d/m/Y ', strtotime($claim->end_date) ) ?? '--'}}
+                                                                {{ date(' d/m/Y ', strtotime($claim->end_date) ) ?? '-'}}
                                                             </td>
                                                         </div>
                                                     </tr>
@@ -96,11 +96,11 @@
                                                         <div class="form-group">
                                                             <td width="20%" style="vertical-align: middle"><label class="form-label"> Time :</label></td>
                                                             <td colspan="3">
-                                                                {{ date(' h:i A ', strtotime($claim->start_time) ) ?? '--'}} -  {{ date(' h:i A ', strtotime($claim->end_time) ) ?? '--'}}
+                                                                {{ date(' h:i A ', strtotime($claim->start_time) ) ?? '-'}} -  {{ date(' h:i A ', strtotime($claim->end_time) ) ?? '-'}}
                                                             </td>
                                                             <td width="20%" style="vertical-align: middle"><label class="form-label"> Claim Hours :</label></td>
                                                             <td colspan="3">
-                                                                {{ $claim->claim_hour ?? '--'}} HOURS
+                                                                {{ $claim->claim_hour ?? '-'}} HOURS
                                                             </td>
                                                         </div>
                                                     </tr>
@@ -110,11 +110,11 @@
                                                         <div class="form-group">
                                                             <td width="20%" style="vertical-align: middle"><label class="form-label"> Start Time :</label></td>
                                                             <td colspan="3">
-                                                                {{ date(' h:i A ', strtotime($claim->start_time) ) ?? '--'}}
+                                                                {{ date(' h:i A ', strtotime($claim->start_time) ) ?? '-'}}
                                                             </td>
                                                             <td width="20%" style="vertical-align: middle"><label class="form-label"> End Time :</label></td>
                                                             <td colspan="3">
-                                                                {{ date(' h:i A ', strtotime($claim->end_time) ) ?? '--'}} 
+                                                                {{ date(' h:i A ', strtotime($claim->end_time) ) ?? '-'}} 
                                                             </td>
                                                         </div>
                                                     </tr>
@@ -122,18 +122,18 @@
                                                         <div class="form-group">
                                                             <td width="20%" style="vertical-align: middle"><label class="form-label"> Claim Hours :</label></td>
                                                             <td colspan="3">
-                                                                {{ $claim->claim_hour ?? '--'}} HOURS
+                                                                {{ $claim->claim_hour ?? '-'}} HOURS
                                                             </td>
                                                             @if($claim->status == '2')
                                                             <td width="20%" style="vertical-align: middle"><label class="form-label"> Approved Hours :</label></td>
                                                             <td colspan="3">
-                                                                {{ $claim->approved_hour ?? '--'}} HOURS
+                                                                {{ $claim->approved_hour ?? '-'}} HOURS
                                                             </td>
                                                             @endif
                                                             @if($claim->status == '3')
                                                             <td width="20%" style="vertical-align: middle"><label class="form-label"> Reject Reason :</label></td>
                                                             <td colspan="3">
-                                                                {{ $claim->reject_reason ?? '--'}} 
+                                                                {{ $claim->reject_reason ?? '-'}} 
                                                             </td>
                                                             @endif
                                                         </div>
@@ -145,9 +145,9 @@
                                                             <td width="20%" style="vertical-align: middle"><label class="form-label"> Link :</label></td>
                                                             <td colspan="3" style="vertical-align: middle">
                                                                 @if(isset($claim->link ))
-                                                                    <a href="{{ $claim->link ?? '--'}}" target="_blank"> {{ $claim->link }} </a>
+                                                                    <a href="{{ $claim->link ?? '-'}}" target="_blank"> {{ $claim->link }} </a>
                                                                 @else 
-                                                                    --
+                                                                    -
                                                                 @endif
                                                             </td>
                                                             <td width="20%" style="vertical-align: middle"><label class="form-label"> Attachment : <i class="fal fa-info-circle fs-xs mr-1" data-toggle="tooltip" data-placement="right" title="" data-original-title="Attachment is accepted in the form of .pdf, .doc, .docx (max 1(one) file) or .png, .jpg, .jpeg (max 5(five) image)"></i></label></td>
@@ -177,7 +177,7 @@
                                                         <div class="form-group">
                                                             <td width="20%" style="vertical-align: middle"><label class="form-label"> Venue :</label></td>
                                                             <td colspan="3" style="text-transform: uppercase">
-                                                                {{ $claim->venue ?? '--'}}
+                                                                {{ $claim->venue ?? '-'}}
                                                             </td>
                                                             <td width="20%" style="vertical-align: middle"><label class="form-label"> Status : </label></td>
                                                             <td colspan="3">
@@ -196,7 +196,7 @@
                                                         <div class="form-group">
                                                             <td width="20%" style="vertical-align: middle"><label class="form-label"> Assigned By :</label></td>
                                                             <td colspan="6" style="text-transform: uppercase">
-                                                                {{ $claim->users->name ?? '--'}}
+                                                                {{ $claim->users->name ?? '-'}}
                                                             </td>
                                                         </div>
                                                     </tr>

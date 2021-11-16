@@ -77,7 +77,11 @@
                                                                 <td colspan="1" class="text-right fw-700" style="width : 25%">{{ $data2 ?? '0'}}</td>
                                                             </tr>
                                                             <?php 
-                                                                $balance = $hours->training_hour - $data2;
+                                                                if(isset($hours->training_hour)) {
+                                                                    $balance = $hours->training_hour - $data2;
+                                                                } else {
+                                                                    $balance = 0;
+                                                                }
                                                             ?>
                                                             <tr>
                                                                 <td colspan="1" class="text-right">( - ) Total Balance Training Hours : </td>

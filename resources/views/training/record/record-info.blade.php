@@ -153,7 +153,11 @@
                                                                             </td>
                                                                         </tr>
                                                                         <?php 
-                                                                            $balance = $yearly_hour->training_hour - $current_hours;
+                                                                            if(isset($yerly_hour->training_hour)) {
+                                                                                $balance = $yearly_hour->training_hour - $current_hours;
+                                                                            } else {
+                                                                                $balance = 0;
+                                                                            }
                                                                         ?>
                                                                         <tr>
                                                                             <td class="text-left keep-print-font">

@@ -60,21 +60,17 @@
                         </div>
                         <div class="row">
                             <div class="col-auto">
-                                {{-- <div class="col-lg-6 col-sm-6 mb-2"> --}}
-                                    <form action="{{ route('claimList') }}" method="GET" id="form_find">
-                                    <div class="form-group">
-                                        <label>Year Selection : </label>
-                                        <select class="selectfilter form-control" name="year" id="year">
-                                            {{-- <option value="" selected disabled> Please select </option> --}}
-                                            {{-- <option value="ALL"> ALL </option> --}}
-                                            @foreach ($year as $years)
-                                                <option value="{{ $years->year }}" {{ $selectedYear == $years->year ? 'selected' : '' }}>{{ $years->year }}</option>
-                                            @endforeach
-                                        </select> 
-                                    </div>
-                                    </form>
-                                    <br>
-                                {{-- </div> --}}
+                                <form action="{{ route('claimList') }}" method="GET" id="form_find">
+                                <div class="form-group">
+                                    <label>Year Selection : </label>
+                                    <select class="selectfilter form-control" name="year" id="year">
+                                        @foreach ($year as $years)
+                                            <option value="{{ $years->year }}" {{ $selectedYear == $years->year ? 'selected' : '' }}>{{ $years->year }}</option>
+                                        @endforeach
+                                    </select> 
+                                </div>
+                                </form>
+                                <br>
                                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                     <a class="nav-link mb-2 active" id="pendings-tab" data-toggle="pill" href="#pendings" role="tab" aria-controls="pendings" aria-selected="false" style="border: 1px solid;">
                                         <i class="fal fa-info-circle"></i>
@@ -107,11 +103,12 @@
                                                         <tr class="text-center bg-primary-50" style="white-space: nowrap">
                                                             <th>#ID</th>
                                                             <th>STAFF</th>
-                                                            <th>TITLE</th>
+                                                            <th>TRAINING TITLE</th>
                                                             <th>TYPE</th>
                                                             <th>CATEGORY</th>
                                                             <th>DATE</th>
                                                             <th>TIME</th>
+                                                            <th>CLAIM HOURS</th>
                                                             <th>PENDING</th>
                                                             <th>APPROVE</th>
                                                             <th>REJECT</th>
@@ -139,7 +136,8 @@
                                                             </td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Search Date"></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Search Time"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Duration"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Claim Hour"></td>
+                                                            <td class="hasinput"></td>
                                                             <td class="hasinput"></td>
                                                             <td class="hasinput"></td>
                                                             <td class="hasinput"></td>
@@ -158,7 +156,7 @@
                                                         <tr class="text-center bg-primary-50" style="white-space: nowrap">
                                                             <th>#ID</th>
                                                             <th>STAFF</th>
-                                                            <th>TITLE</th>
+                                                            <th>TRAINING TITLE</th>
                                                             <th>TYPE</th>
                                                             <th>CATEGORY</th>
                                                             <th>DATE</th>
@@ -209,7 +207,7 @@
                                                         <tr class="text-center bg-primary-50" style="white-space: nowrap">
                                                             <th>#ID</th>
                                                             <th>STAFF</th>
-                                                            <th>TITLE</th>
+                                                            <th>TRAINING TITLE</th>
                                                             <th>TYPE</th>
                                                             <th>CATEGORY</th>
                                                             <th>DATE</th>
@@ -617,11 +615,12 @@
                     { className: 'text-center', data: 'id', name: 'id' },
                     { data: 'staff_id', name: 'staff_id' },
                     { data: 'title', name: 'title' },
-                    { className: 'text-center', data: 'type', name: 'type' },
-                    { className: 'text-center', data: 'category', name: 'category' },
-                    { className: 'text-center', data: 'date', name: 'date' },
-                    { className: 'text-center', data: 'time', name: 'time' },
-                    { className: 'text-center', data: 'duration', name: 'duration' },
+                    { className: 'text-center', data: 'type', name: 'types.type_name' },
+                    { className: 'text-center', data: 'category', name: 'categories.category_name' },
+                    { className: 'text-center', data: 'date', name: 'start_date' },
+                    { className: 'text-center', data: 'time', name: 'start_time' },
+                    { className: 'text-center', data: 'claim_hour', name: 'claim_hour' },
+                    { className: 'text-center', data: 'duration', name: 'duration', orderable: false, searchable: false },
                     { className: 'text-center', data: 'approve', name: 'approve', orderable: false, searchable: false },
                     { className: 'text-center', data: 'reject', name: 'reject', orderable: false, searchable: false },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
@@ -717,13 +716,13 @@
                     { className: 'text-center', data: 'id', name: 'id' },
                     { data: 'staff_id', name: 'staff_id' },
                     { data: 'title', name: 'title' },
-                    { className: 'text-center', data: 'type', name: 'type' },
-                    { className: 'text-center', data: 'category', name: 'category' },
-                    { className: 'text-center', data: 'date', name: 'date' },
-                    { className: 'text-center', data: 'time', name: 'time' },
+                    { className: 'text-center', data: 'type', name: 'types.type_name' },
+                    { className: 'text-center', data: 'category', name: 'categories.category_name' },
+                    { className: 'text-center', data: 'date', name: 'start_date' },
+                    { className: 'text-center', data: 'time', name: 'start_time' },
                     { className: 'text-center', data: 'claim_hour', name: 'claim_hour' },
                     { className: 'text-center', data: 'approved_hour', name: 'approved_hour' },
-                    { className: 'text-center', data: 'assigned_by', name: 'assigned_by' },
+                    { data: 'assigned_by', name: 'assigned_by' },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 createdRow: function (row, data, dataIndex, cells) {
@@ -816,13 +815,13 @@
                     { className: 'text-center', data: 'id', name: 'id' },
                     { data: 'staff_id', name: 'staff_id' },
                     { data: 'title', name: 'title' },
-                    { className: 'text-center', data: 'type', name: 'type' },
-                    { className: 'text-center', data: 'category', name: 'category' },
-                    { className: 'text-center', data: 'date', name: 'date' },
-                    { className: 'text-center', data: 'time', name: 'time' },
+                    { className: 'text-center', data: 'type', name: 'types.type_name' },
+                    { className: 'text-center', data: 'category', name: 'categories.category_name' },
+                    { className: 'text-center', data: 'date', name: 'start_date' },
+                    { className: 'text-center', data: 'time', name: 'start_time' },
                     { className: 'text-center', data: 'claim_hour', name: 'claim_hour' },
                     { data: 'reject_reason', name: 'reject_reason' },
-                    { className: 'text-center', data: 'assigned_by', name: 'assigned_by' },
+                    { data: 'assigned_by', name: 'assigned_by' },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 createdRow: function (row, data, dataIndex, cells) {

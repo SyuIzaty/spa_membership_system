@@ -81,7 +81,7 @@
                                             <select id="data_status" name="data_status" class="form-control">
                                                 <option value="">All</option>
                                                 @foreach($data_status as $status)
-                                                    <option value="{{$status->id}}">{{strtoupper($status->status_name)}}</option>
+                                                    <option value="{{$status->status_name}}">{{strtoupper($status->status_name)}}</option>
                                                 @endforeach
                                             </select>
                                         </td>

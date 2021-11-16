@@ -63,7 +63,9 @@
                                                                     </div>
                                                                 </div>
                                                             </form>
-                                                        </tr><br>
+                                                        </tr>
+                                                        <i><span class="text-danger">**</span><b> Notes : </b>Please select either year or type to view training hour record</i>
+                                                        <br><br>
                                                         <tr>
                                                             <th width="15%">Name : </th>
                                                             <td colspan="4">{{ $staff->staff_name ?? '--' }}</td>
@@ -200,7 +202,11 @@
                                                                         </td>
                                                                     </tr>
                                                                     <?php 
-                                                                        $balance = $hours->training_hour - $data2;
+                                                                        if(isset($hours->training_hour)) {
+                                                                            $balance = $hours->training_hour - $data2;
+                                                                        } else {
+                                                                            $balance = 0;
+                                                                        }
                                                                     ?>
                                                                     <tr>
                                                                         <td class="text-left keep-print-font">
@@ -222,7 +228,7 @@
                                                     </div>
                                                     
                                                 @endif
-                                            <i><span class="text-danger">**</span><b> Notes : </b>Please select either year or type to view training hour record</i>
+                                            
                                 </div>
                             </div>
                         </div>

@@ -37,21 +37,37 @@ use Barryvdh\DomPDF\Facade as PDF;
 
 class TrainingController extends Controller
 {
+    public function __construct(TrainingEvaluationResult $trainingEvaluationResult)
+    {
+        $this->middleware('auth');
+
+        $this->trainingEvaluationResult = $trainingEvaluationResult;
+    }
+
     // Dashboard Analysis
 
-    public function dashboard()
+    public function dashboard(Request $request)
     {
-        $year = Carbon::now()->format('Y'); 
-        $years = TrainingHourYear::select('year')->orderBy('year', 'desc')->limit(3)->get();
+        $years = TrainingClaim::selectRaw("DATE_FORMAT(start_date, '%Y') year")
+                ->whereNotNull('start_date')
+                ->groupBy('year')
+                ->orderBy('year', 'desc')
+                ->limit(3)->get();
+
+        if($request->year) {
+            $selectedYear = $request->year;
+        } else {
+            $selectedYear = Carbon::now()->format('Y');
+        }
 
         // Start Rank
             $trainingRank = TrainingClaim::select('training_id', DB::raw('count(*) as total'))->groupBy('training_id')
-                            ->where(DB::raw('YEAR(start_date)'), '=', $year)->whereHas('trainings',function($query) {
+                            ->where(DB::raw('YEAR(start_date)'), '=', $selectedYear)->whereHas('trainings',function($query) {
                                 $query->whereIn('type', ['1','2']);
                             })->limit(5)->orderBy('total', 'desc')->get();
 
             $staffRank = TrainingCLaim::select('staff_id', DB::raw('SUM(approved_hour) as total'))
-                        ->where( DB::raw('YEAR(start_date)'), '=', $year )
+                        ->where( DB::raw('YEAR(start_date)'), '=', $selectedYear )
                         ->groupBy('staff_id')
                         ->limit(5)
                         ->orderBy('total', 'desc')
@@ -62,7 +78,7 @@ class TrainingController extends Controller
             $type = DB::table('trm_type as types')
             ->select('types.type_name','claims.type', DB::raw('COUNT(claims.type) as count'))
             ->leftJoin('trm_claim as claims','types.id','=','claims.type')
-            ->where(DB::raw('YEAR(claims.start_date)'), '=', $year)
+            ->where(DB::raw('YEAR(claims.start_date)'), '=', $selectedYear)
             ->groupBy('types.id','claims.type')
             ->get();
 
@@ -72,13 +88,24 @@ class TrainingController extends Controller
             }
         // End PieCart
 
-        
-        // dd($result);
-        
-        return view('training.dashboard.analysis',compact('year','years','trainingRank','staffRank'))->with('type',json_encode($result))->with('train_no', 1)->with('staff_no', 1);
+        // Start BarChart
+            $category = DB::table('trm_category as categories')
+            ->select('categories.category_name','claims.category', DB::raw('COUNT(claims.category) as count'))
+            ->leftJoin('trm_claim as claims','categories.id','=','claims.category')
+            ->where(DB::raw('YEAR(claims.start_date)'), '=', $selectedYear)
+            ->groupBy('categories.id','claims.category')
+            ->get();
+
+            $results[] = ['Category','Total Training'];
+            foreach ($category as $key => $value) {
+                $results[++$key] = [$value->category_name, (int)$value->count];
+            }
+        // End BarChart
+
+        return view('training.dashboard.analysis',compact('years','trainingRank','staffRank','selectedYear','request'))->with('type',json_encode($result))->with('category',json_encode($results))->with('train_no', 1)->with('staff_no', 1);
     }
 
-     // Training List
+    // Training List
 
      public function trainingList()
      {
@@ -180,7 +207,7 @@ class TrainingController extends Controller
  
      public function storeTraining(Request $request)
      {
-        if($request->type == '3' && $request->type == '4') {
+        if($request->type == '3' || $request->type == '4') {
             // external
             $request->validate([
                 'title'         => 'required',
@@ -1244,12 +1271,12 @@ class TrainingController extends Controller
 
     public function data_pending_claim(Request $request)
     {
-        if($request->year != '') {
-
-            $pendingClaim = TrainingClaim::where('status', '1')->where( DB::raw('YEAR(start_date)'), '=', $request->year )->get();
+        if($request->year != '') 
+        {
+            $pendingClaim = TrainingClaim::where('status', '1')->where( DB::raw('YEAR(start_date)'), '=', $request->year )->with('types','categories')->select('trm_claim.*');
         } else {
 
-            $pendingClaim = TrainingClaim::where('status', '1')->where( DB::raw('YEAR(start_date)'), '=', Carbon::now()->format('Y') )->get();
+            $pendingClaim = TrainingClaim::where('status', '1')->where( DB::raw('YEAR(start_date)'), '=', Carbon::now()->format('Y') )->with('types','categories')->select('trm_claim.*');
         }
         
         return datatables()::of($pendingClaim)
@@ -1257,7 +1284,7 @@ class TrainingController extends Controller
         ->addColumn('stylesheet', function ($pendingClaim) {
             return [
                 [
-                    'col' => 7,
+                    'col' => 8,
                     'style' => [
                         'background' => 'rgb(255 116 63)',
                         'color' => '#fff',
@@ -1316,7 +1343,7 @@ class TrainingController extends Controller
 
         ->editColumn('time', function ($pendingClaim) {
 
-            return strtoupper(date(' h:i A', strtotime($pendingClaim->start_time) )).' - '.strtoupper(date(' h:i A', strtotime($pendingClaim->end_time) )).'<br>( '.$pendingClaim->claim_hour.' HOURS )';
+            return strtoupper(date(' H:i A', strtotime($pendingClaim->start_time) )).' - '.strtoupper(date(' H:i A', strtotime($pendingClaim->end_time) ));
         })
 
         ->editColumn('duration', function ($pendingClaim) {
@@ -1332,7 +1359,12 @@ class TrainingController extends Controller
             return $duration;
         })
 
-        ->rawColumns(['action', 'approve', 'reject', 'staff_id', 'title', 'type', 'category', 'date', 'duration', 'time'])
+        ->editColumn('claim_hour', function ($pendingClaim) {
+
+            return $pendingClaim->claim_hour.' HOURS';
+        })
+
+        ->rawColumns(['action', 'approve', 'reject', 'staff_id', 'title', 'type', 'category', 'date', 'duration', 'time', 'claim_hour'])
         ->make(true);
     }
 
@@ -1449,12 +1481,13 @@ class TrainingController extends Controller
 
     public function data_approve_claim(Request $request)
     {
-        if($request->year != '') {
+        if($request->year != '') 
+        {
 
-            $approveClaim = TrainingClaim::where('status', '2')->where( DB::raw('YEAR(start_date)'), '=', $request->year )->get();
+            $approveClaim = TrainingClaim::where('status', '2')->where( DB::raw('YEAR(start_date)'), '=', $request->year )->with('types','categories')->select('trm_claim.*');
         } else {
 
-            $approveClaim = TrainingClaim::where('status', '2')->where( DB::raw('YEAR(start_date)'), '=', Carbon::now()->format('Y') )->get();
+            $approveClaim = TrainingClaim::where('status', '2')->where( DB::raw('YEAR(start_date)'), '=', Carbon::now()->format('Y') )->with('types','categories')->select('trm_claim.*');
         }
 
         return datatables()::of($approveClaim)
@@ -1511,7 +1544,7 @@ class TrainingController extends Controller
 
         ->editColumn('time', function ($approveClaim) {
 
-            return strtoupper(date(' h:i A', strtotime($approveClaim->start_time) )).' - '.strtoupper(date(' h:i A', strtotime($approveClaim->end_time) ));
+            return strtoupper(date(' H:i A', strtotime($approveClaim->start_time) )).' - '.strtoupper(date(' H:i A', strtotime($approveClaim->end_time) ));
         })
 
         ->editColumn('claim_hour', function ($approveClaim) {
@@ -1526,9 +1559,10 @@ class TrainingController extends Controller
 
         ->editColumn('assigned_by', function ($approveClaim) {
 
-            $staff = $approveClaim->users->name ?? '--';
+            $id = $approveClaim->users->id ?? '--';
+            $name = $approveClaim->users->name ?? '';
 
-            return '<p style="text-transform : uppercase; overflow-wrap: break-word">'.$staff.'</p>' ?? '--';
+            return '<h6 class="mb-0 flex-1 text-dark fw-500">'.$id.'<small class="m-0 l-h-n">'.$name.'</small></h6>' ?? '--';
         })
 
         ->rawColumns(['action', 'claim_hour', 'approved_hour', 'staff_id', 'title', 'type', 'category', 'date', 'assigned_by', 'time'])
@@ -1539,10 +1573,10 @@ class TrainingController extends Controller
     {
         if($request->year != '') {
 
-            $rejectClaim = TrainingClaim::where('status', '3')->where( DB::raw('YEAR(start_date)'), '=', $request->year )->get();
+            $rejectClaim = TrainingClaim::where('status', '3')->where( DB::raw('YEAR(start_date)'), '=', $request->year )->with('types','categories')->select('trm_claim.*');
         } else {
 
-            $rejectClaim = TrainingClaim::where('status', '3')->where( DB::raw('YEAR(start_date)'), '=', Carbon::now()->format('Y') )->get();
+            $rejectClaim = TrainingClaim::where('status', '3')->where( DB::raw('YEAR(start_date)'), '=', Carbon::now()->format('Y') )->with('types','categories')->select('trm_claim.*');
         }
 
         return datatables()::of($rejectClaim)
@@ -1599,7 +1633,7 @@ class TrainingController extends Controller
 
         ->editColumn('time', function ($rejectClaim) {
 
-            return strtoupper(date(' h:i A', strtotime($rejectClaim->start_time) )).' - '.strtoupper(date(' h:i A', strtotime($rejectClaim->end_time) ));
+            return strtoupper(date(' H:i A', strtotime($rejectClaim->start_time) )).' - '.strtoupper(date(' H:i A', strtotime($rejectClaim->end_time) ));
         })
 
         ->editColumn('claim_hour', function ($rejectClaim) {
@@ -1612,11 +1646,12 @@ class TrainingController extends Controller
             return '<p style="text-transform : uppercase; overflow-wrap: break-word">'.$rejectClaim->reject_reason.'</p>' ?? '--';
         })
 
-        ->editColumn('assigned_by', function ($rejectClaim) {
+        ->editColumn('assigned_by', function ($approveClaim) {
 
-            $staff = $rejectClaim->users->name ?? '--';
+            $id = $approveClaim->users->id ?? '--';
+            $name = $approveClaim->users->name ?? '';
 
-            return '<p style="text-transform : uppercase; overflow-wrap: break-word">'.$staff.'</p>' ?? '--';
+            return '<h6 class="mb-0 flex-1 text-dark fw-500">'.$id.'<small class="m-0 l-h-n">'.$name.'</small></h6>' ?? '--';
         })
 
         ->rawColumns(['action', 'claim_hour', 'reject_reason', 'staff_id', 'title', 'type', 'category', 'date', 'assigned_by', 'time'])
@@ -1702,6 +1737,8 @@ class TrainingController extends Controller
         $req_type = $request->type;
 
         $year = TrainingClaim::selectRaw("COUNT(*) views, DATE_FORMAT(start_date, '%Y') date")
+                ->where('staff_id', Auth::user()->id)
+                ->whereNotNull('start_date')
                 ->groupBy('date')
                 ->orderBy('date', 'desc')
                 ->get();
@@ -1961,16 +1998,16 @@ class TrainingController extends Controller
         return redirect('evaluation-question');
     }
 
-    public function questionInfo($id) // uncomp. result exist
+    public function questionInfo($id)  
     {
         $evaluate = TrainingEvaluation::where('id', $id)->first();
         $evaluation = TrainingEvaluationHead::TeId($id)->with(['trainingEvaluationQuestions'=>function($query){
             $query->orderby('sequence','ASC');
         }, 'trainingEvaluation'])->orderby('sequence','ASC')->get();
 
-        // $result = $this->teachingEvaluationResult->checkResult($id);
+        $result = $this->trainingEvaluationResult->checkResult($id);
 
-        return view('training.evaluation.question-info', compact('evaluate','evaluation','id'));
+        return view('training.evaluation.question-info', compact('evaluate','evaluation','id','result'));
     }
 
     public function storeHeader(Request $request)
@@ -2005,7 +2042,9 @@ class TrainingController extends Controller
 
             if($request->action == 'delete'){
                 TrainingEvaluationHead::find($request->id)->delete();
+                TrainingEvaluationQuestion::where('head_id', $request->id)->delete();
             }
+            return response()->json($request);
         }
 
     }
@@ -2035,8 +2074,8 @@ class TrainingController extends Controller
 
     public function updateQuestion(Request $request)
     {
-        if($request->ajax()){
-
+        if($request->ajax())
+        {
             if($request->action == 'edit'){
                 $data = array(
                     'question' => $request->question,
