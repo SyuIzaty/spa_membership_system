@@ -48,6 +48,7 @@ class ClaimExport implements FromCollection, WithHeadings, WithMapping, WithEven
             $claim->approved_hour ?? '--',
             $claim->reject_reason ?? '--',
             $claim->users->name ?? '--',
+            isset($claim->assigned_date) ? date(' d/m/Y | h:i A', strtotime($claim->assigned_date) ) : '--',
             isset($claim->created_at) ? date(' d/m/Y | h:i A', strtotime($claim->created_at) ) : '--'
         ];
     }
@@ -74,6 +75,7 @@ class ClaimExport implements FromCollection, WithHeadings, WithMapping, WithEven
             'APPROVED HOUR',
             'REJECT REASON',
             'ASSIGNED BY',
+            'ASSIGNED DATE',
             'CREATED DATE',
         ];
     }

@@ -164,6 +164,7 @@
                                                             <th>CLAIM HOURS</th>
                                                             <th>APPROVE HOURS</th>
                                                             <th>APPROVE BY</th>
+                                                            <th>APPROVE DATE</th>
                                                             <th>ACTION</th>
                                                         </tr>
                                                         <tr>
@@ -191,6 +192,7 @@
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Search Claim Hour"></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Search Approve Hour"></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Search Approve By"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Approve Date"></td>
                                                             <td class="hasinput"></td>
                                                         </tr>
                                                     </thead>
@@ -214,7 +216,8 @@
                                                             <th>TIME</th>
                                                             <th>CLAIM HOURS</th>
                                                             <th>REJECT REASONS</th>
-                                                            <th>APPROVE BY</th>
+                                                            <th>REJECT BY</th>
+                                                            <th>REJECT DATE</th>
                                                             <th>ACTION</th>
                                                         </tr>
                                                         <tr>
@@ -241,7 +244,8 @@
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Search Time"></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Search Claim Hour"></td>
                                                             <td class="hasinput"><input type="text" class="form-control" placeholder="Search Reasons"></td>
-                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Approve By"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Reject By"></td>
+                                                            <td class="hasinput"><input type="text" class="form-control" placeholder="Search Reject Date"></td>
                                                             <td class="hasinput"></td>
                                                         </tr>
                                                     </thead>
@@ -723,6 +727,7 @@
                     { className: 'text-center', data: 'claim_hour', name: 'claim_hour' },
                     { className: 'text-center', data: 'approved_hour', name: 'approved_hour' },
                     { data: 'assigned_by', name: 'assigned_by' },
+                    { className: 'text-center', data: 'assigned_date', name: 'assigned_date' },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 createdRow: function (row, data, dataIndex, cells) {
@@ -822,6 +827,7 @@
                     { className: 'text-center', data: 'claim_hour', name: 'claim_hour' },
                     { data: 'reject_reason', name: 'reject_reason' },
                     { data: 'assigned_by', name: 'assigned_by' },
+                    { className: 'text-center', data: 'assigned_date', name: 'assigned_date' },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 createdRow: function (row, data, dataIndex, cells) {

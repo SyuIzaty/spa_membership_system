@@ -37,7 +37,7 @@
                 <!-- Email Body -->
                 <tr>
                     <td>
-                        <div style="margin-left: 30px; line-height: 1em">
+                        <div style="margin-left: 30px; line-height: 1em; color: black">
                             <p>Assalammualaikum wbt. and Greetings</p><br>
                             <p style="line-height: 1em">Mr/Ms, {{ strtoupper($receivers) }}</p>
                             <p>Your request for training hours claim has been Rejected.</p>

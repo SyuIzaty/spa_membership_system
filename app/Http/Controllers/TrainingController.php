@@ -1394,6 +1394,7 @@ class TrainingController extends Controller
             'approved_hour'     => $request->approved_hour,
             'status'            => '2',
             'assigned_by'       => Auth::user()->id,
+            'assigned_date'     => Carbon::now()->toDateString(),
         ]);
 
         // Emel to Staff
@@ -1412,15 +1413,15 @@ class TrainingController extends Controller
         });
 
         $year = date('Y', strtotime($claim->start_date));
-        $totalApprove = TrainingClaim::where( DB::raw('YEAR(start_date)'), '=', $year )->where('staff_id', Auth::user()->id)->where('status', '2')->sum('approved_hour');
+        $totalApprove = TrainingClaim::where( DB::raw('YEAR(start_date)'), '=', $year )->where('staff_id', $claim->staff_id)->where('status', '2')->sum('approved_hour');
         $totalHour = TrainingHourYear::where('year', $year)->first();
 
         if($totalApprove >= $totalHour->training_hour) {
-            $exist = TrainingHourTrail::where('staff_id', Auth::user()->id)->where('year', $year)->where('status', '4')->first();
+            $exist = TrainingHourTrail::where('staff_id', $claim->staff_id)->where('year', $year)->where('status', '4')->first();
 
             if(!isset($exist)) {
 
-                TrainingHourTrail::where('staff_id', Auth::user()->id)->where('year', $year)->update([
+                TrainingHourTrail::where('staff_id', $claim->staff_id)->where('year', $year)->update([
                     'status'            => '4',
                 ]);
             }
@@ -1442,6 +1443,7 @@ class TrainingController extends Controller
             'reject_reason'     => $request->reject_reason,
             'status'            => '3',
             'assigned_by'       => Auth::user()->id,
+            'assigned_date'     => Carbon::now()->toDateString(),
         ]);
 
         // Emel to Staff
@@ -1467,6 +1469,32 @@ class TrainingController extends Controller
     {
         $exist = TrainingClaim::find($id);
         $exist->delete();
+         
+        $year = date('Y', strtotime($exist->start_date));
+        $totalApprove = TrainingClaim::where( DB::raw('YEAR(start_date)'), '=', $year )->where('staff_id', $exist->staff_id)->where('status', '2')->sum('approved_hour');
+        $totalHour = TrainingHourYear::where('year', $year)->first();
+
+        if($totalApprove >= $totalHour->training_hour) {
+            //total training complete
+            $existComp = TrainingHourTrail::where('staff_id', $exist->staff_id)->where('year', $year)->where('status', '4')->first();
+
+            if(!isset($existComp)) {
+
+                TrainingHourTrail::where('staff_id', $exist->staff_id)->where('year', $year)->update([
+                    'status'            => '4',
+                ]);
+            }
+        } else {
+            //total training uncomplete
+            $existUncomp = TrainingHourTrail::where('staff_id', $exist->staff_id)->where('year', $year)->where('status', '5')->first();
+
+            if(!isset($existUncomp)) {
+
+                TrainingHourTrail::where('staff_id', $exist->staff_id)->where('year', $year)->update([
+                    'status'            => '5',
+                ]);
+            }
+        }
 
         return redirect()->back();
     }
@@ -1565,6 +1593,11 @@ class TrainingController extends Controller
             return '<h6 class="mb-0 flex-1 text-dark fw-500">'.$id.'<small class="m-0 l-h-n">'.$name.'</small></h6>' ?? '--';
         })
 
+        ->editColumn('assigned_date', function ($approveClaim) {
+
+            return isset($approveClaim->assigned_date) ? strtoupper(date(' Y-m-d ', strtotime($approveClaim->assigned_date) )) : '-';
+        })
+
         ->rawColumns(['action', 'claim_hour', 'approved_hour', 'staff_id', 'title', 'type', 'category', 'date', 'assigned_by', 'time'])
         ->make(true);
     }
@@ -1654,7 +1687,12 @@ class TrainingController extends Controller
             return '<h6 class="mb-0 flex-1 text-dark fw-500">'.$id.'<small class="m-0 l-h-n">'.$name.'</small></h6>' ?? '--';
         })
 
-        ->rawColumns(['action', 'claim_hour', 'reject_reason', 'staff_id', 'title', 'type', 'category', 'date', 'assigned_by', 'time'])
+        ->editColumn('assigned_date', function ($approveClaim) {
+
+            return isset($approveClaim->assigned_date) ? strtoupper(date(' Y-m-d ', strtotime($approveClaim->assigned_date) )) : '-';
+        })
+
+        ->rawColumns(['action', 'claim_hour', 'reject_reason', 'staff_id', 'title', 'type', 'category', 'date', 'assigned_by', 'time', 'assigned_date'])
         ->make(true);
     }
 
@@ -1825,6 +1863,7 @@ class TrainingController extends Controller
     public function data_record_staff()
     {
         $staff = TrainingHourTrail::where('year', Carbon::now()->format('Y'))->get();
+        // $staff = TrainingHourTrail::where('year', Carbon::now()->format('Y'))->with(['staffs','record_status','hour_year'])->select('trm_hour_trail.*');
 
         return datatables()::of($staff)
 

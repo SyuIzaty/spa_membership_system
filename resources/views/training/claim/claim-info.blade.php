@@ -195,8 +195,12 @@
                                                     <tr>
                                                         <div class="form-group">
                                                             <td width="20%" style="vertical-align: middle"><label class="form-label"> Assigned By :</label></td>
-                                                            <td colspan="6" style="text-transform: uppercase">
+                                                            <td colspan="3" style="text-transform: uppercase">
                                                                 {{ $claim->users->name ?? '-'}}
+                                                            </td>
+                                                            <td width="20%" style="vertical-align: middle"><label class="form-label"> Assigned Date :</label></td>
+                                                            <td colspan="3" style="text-transform: uppercase">
+                                                                {{ isset($claim->assigned_date) ? date(' d/m/Y ', strtotime($claim->assigned_date) ) : '--' }}
                                                             </td>
                                                         </div>
                                                     </tr>
