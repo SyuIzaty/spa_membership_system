@@ -298,8 +298,6 @@
                                     {!! Form::close() !!}
                                     <br>
                                     @role('Engagement (Admin)')
-                                    {!! Form::open(['action' => ['EngagementManagementController@updateToDoList'], 'method' => 'POST', 'enctype' => 'multipart/form-data'])!!}
-                                    <input type="hidden" name="idEngage" value="{{ $data->id }}">
                                             <div class="card card-primary card-outline">
                                                 <div class="card-header text-white bg-success">
                                                     <h5 class="card-title w-100 text-center">TO DO LIST
@@ -314,15 +312,18 @@
                                                         <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('messages') }}</div>
                                                     @endif
                                                     <div class="table-responsive">
+                                                        {!! Form::open(['action' => ['EngagementManagementController@updateToDoList'], 'method' => 'POST', 'enctype' => 'multipart/form-data'])!!}
+                                                        <input type="hidden" name="idEngage" value="{{ $data->id }}">
                                                             <table class="table table-borderless table-hover table-striped w-100" id="addtodo">
                                                                 @if ($todo->isNotEmpty())
                                                                     @foreach ($todo as $t )
                                                                         <tr>
                                                                             <td>
-                                                                                <label class="container">                                                                        
-                                                                                    <input type="checkbox" name="check[]" value="{{$t->id}}" @if ($t->active == 'N') checked @endif>
+                                                                                <label class="container">    
+                                                                                    {{-- <input type="checkbox" name="check" value="{{ $t->id }}" onClick="this.form.submit()" @if ($t->active == 'N') checked @endif/> --}}
+                                                                                    <input type="checkbox" name="check[]" value="{{ $t->id }}" @if ($t->active == 'N') checked @endif/>
+                                                                                    <input type="hidden" name="id[]" value="{{ $t->id }}"/>
                                                                                     <input type="text" class="form-control" name="content[]" value="{{$t->title}}">
-                                                                                    <input type="hidden" id="id" name="id[]" value="{{ $t->id }}">
                                                                                     <div class="form-status-holder"></div>
                                                                                     <span class="checkmark"></span>
                                                                                 </label>
@@ -330,14 +331,15 @@
                                                                             <td><a href="#" data-path ="{{$t->id}}" class="btn_delete btn btn-danger btn-sm btn-icon"><i class="fal fa-times"></i></a></td>
                                                                         </tr>
                                                                     @endforeach
+                                                                    
                                                                 @endif
                                                             </table>
                                                     </div>
                                                     <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
-
+                                                    {!! Form::close() !!}
                                                 </div>
                                             </div> 
-                                        {!! Form::close() !!}   
+                                           
                                     @endrole
                                     <br>
                                 </div>
@@ -382,6 +384,8 @@
             var button_id = $(this).attr("id");
             $('#row'+button_id+'').remove();
         });
+
+        
     });
 
     $(function () 

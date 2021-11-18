@@ -193,7 +193,7 @@ class EngagementManagementController extends Controller
     public function updateToDoList(Request $request)
     {
         //create new todo list
-        if($request->newtodo)
+        if(isset($request->newtodo))
         {
             foreach($request->newtodo as $key => $value)
             {
@@ -206,8 +206,8 @@ class EngagementManagementController extends Controller
             }
         }
 
-        //update todo list
-        if($request->content)
+        // update todo list
+        if(isset($request->content))
         {
             foreach($request->id as $key => $value)
             {
@@ -219,21 +219,28 @@ class EngagementManagementController extends Controller
         }
 
         //checked checkbox
-        if ($request->id)
-        {
-
+        if(isset($request->id))
+        {    
             foreach($request->id as $key => $value)
             {
-                if(isset($request->check[$key]))
+                
+                if (isset($request->check[$key]))
                 {
                     if ($request->check[$key] == $value)
                     {
-                        
                         EngagementToDoList::where('id', $value)->update([
                         'active'        => 'N', 
                         'updated_by'    => Auth::user()->id
                         ]);
-                    }                    
+                    }
+
+                    else
+                    {
+                        EngagementToDoList::where('id', $value)->update([
+                            'active'        => 'Y', 
+                            'updated_by'    => Auth::user()->id
+                            ]);
+                    }
                 }
 
                 else
@@ -244,10 +251,33 @@ class EngagementManagementController extends Controller
                         ]);
                 }
             }
-                
         }
+            // if (isset($request->check))
+            // {
+            //     foreach($request->id as $key => $value)
+            //      {
+            //         if ($request->check[$key] == $value)
+            //         {
+            //              EngagementToDoList::where('id', $value)->update([
+            //             'active'        => 'N', 
+            //             'updated_by'    => Auth::user()->id
+            //             ]);
+            //         }
+            //      }                
+            // }
 
+            // else if (isset($request->test))
+            // {
+            //     EngagementToDoList::where('id', $request->test)->update([
+            //         'active'        => 'Y', 
+            //         'updated_by'    => Auth::user()->id
+            //         ]);
+            // }
+
+        
         return redirect()->back()->with('message','To Do List updated');
+        // return response() ->json(['success' => 'saved!']);
+
 
     }
 
@@ -369,18 +399,19 @@ class EngagementManagementController extends Controller
         ]);  
 
         
-
-        foreach($request->ids as $key => $value) 
+        if(isset($request->ids))
         {
-            EngagementOrganization::where('id', $value)->update([
-                'name'          => $request->name[$key],
-                'phone'         => $request->phone[$key],
-                'email'         => $request->email[$key],
-                'designation'   => $request->designation[$key],
-                'updated_by'    => Auth::user()->id
-            ]);  
+            foreach($request->ids as $key => $value) 
+            {
+                EngagementOrganization::where('id', $value)->update([
+                    'name'          => $request->name[$key],
+                    'phone'         => $request->phone[$key],
+                    'email'         => $request->email[$key],
+                    'designation'   => $request->designation[$key],
+                    'updated_by'    => Auth::user()->id
+                ]);  
+            }
         }
-        
 
         $error = [];
         $message = '';
