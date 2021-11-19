@@ -30,4 +30,9 @@ class EngagementProgress extends Model
         return $this->hasOne('App\EngagementManagement','id','engagement_id');
     }
 
+    public function getFile()
+    {
+        return $this->hasMany('App\EngagementFile', 'progress_id', 'id');
+    }
+
 }

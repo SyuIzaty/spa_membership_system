@@ -470,6 +470,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/store-files', 'EngagementManagementController@storeFile');
     Route::get('get-uploaded-file/{file}','EngagementManagementController@getFile');
     Route::DELETE('/delete-file/{id}','EngagementManagementController@deleteFile');
+    Route::get('get-progress-file/{file}','EngagementManagementController@getProgressFile');
     Route::DELETE('/delete-progress/{id}','EngagementManagementController@deleteProgress');
 
 

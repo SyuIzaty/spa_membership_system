@@ -114,11 +114,13 @@
                                                             <th>Remark</th>
                                                             <th>Date</th>
                                                             <th>Status</th>
+                                                            <th>File</th>
                                                             <th>Member</th>
                                                             <th>Action</th>
                                                         </tr>
                                                         <tbody>
                                                             <tr  align="center"  class="data-row">
+                                                                <td class="hasinput"></td>
                                                                 <td class="hasinput"></td>
                                                                 <td class="hasinput"></td>
                                                                 <td class="hasinput"></td>
@@ -138,7 +140,55 @@
                                 </div>
                                 <br>
                                 <div class="col-sm-4">
-                                    {!! Form::open(['action' => ['EngagementManagementController@updateProfile'], 'method' => 'POST', 'enctype' => 'multipart/form-data'])!!}
+                                    @role('Engagement (Admin)')
+                                            <div class="card card-primary card-outline">
+                                                <div class="card-header text-white bg-success">
+                                                    <h5 class="card-title w-100 text-center">TO DO LIST
+                                                        <span>
+                                                            <button type="button" style="margin-left: 5px;" id ="btn1" class="btn btn-sm btn-warning btn-icon rounded-circle waves-effect waves-themed"><i class="fal fa-plus"></i></button>
+                                                        </span>
+                                                    </h5>
+                                                </div>
+                                            
+                                                <div class="card-body">
+                                                    @if (Session::has('messages'))
+                                                        <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('messages') }}</div>
+                                                    @endif
+                                                    <div class="table-responsive">
+                                                        {!! Form::open(['action' => ['EngagementManagementController@updateToDoList'], 'method' => 'POST', 'enctype' => 'multipart/form-data'])!!}
+                                                        <input type="hidden" name="idEngage" value="{{ $data->id }}">
+                                                            <table class="table table-borderless table-hover table-striped w-100" id="addtodo">
+                                                                @if ($todo->isNotEmpty())
+                                                                    @foreach ($todo as $t )
+                                                                        <tr>
+                                                                            <td>
+                                                                                <label class="container">    
+                                                                                    {{-- <input type="checkbox" name="check" value="{{ $t->id }}" onClick="this.form.submit()" @if ($t->active == 'N') checked @endif/> --}}
+                                                                                    {{-- <input type="hidden" name="checkboxName[]" value="0|{{$t->id}}"><input type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value" @if ($t->active == 'N') checked @endif> --}}
+                                                                                    <input type="hidden" name="id[{{ $t->id }}]" value="{{ $t->id }}"/>
+                                                                                    <input type="checkbox" name="check[{{ $t->id }}]" value="{{ $t->id }}" @if ($t->active == 'Y') checked @endif/>
+                                                                                    <input type="text" class="form-control" name="content[{{ $t->id }}]" value="{{$t->title}}">
+                                                                                    <div class="form-status-holder"></div>
+                                                                                    <span class="checkmark"></span>
+                                                                                </label>
+                                                                            </td>
+                                                                            <td><a href="#" data-path ="{{$t->id}}" class="btn_delete btn btn-danger btn-sm btn-icon"><i class="fal fa-times"></i></a></td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                    
+                                                                @endif
+                                                            </table>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
+                                                    {!! Form::close() !!}
+                                                </div>
+                                            </div> 
+                                           
+                                    @endrole
+                                    <br>
+                                </div>
+                            </div>
+                            {!! Form::open(['action' => ['EngagementManagementController@updateProfile'], 'method' => 'POST', 'enctype' => 'multipart/form-data'])!!}
                                         <input type="hidden" id="id" name="id" value="{{ $data->id }}">
                                         <div class="card card-primary card-outline">
                                             <div class="card-header text-white bg-primary">
@@ -149,7 +199,7 @@
                                                     <table class="table table-borderless table-hover table-striped w-100">
                                                         <thead>
                                                             <tr>
-                                                                <td colspan="5" class="text-center"><b>TITLE</b></td>
+                                                                <td colspan="5"><b>TITLE</b></td>
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="5">
@@ -159,97 +209,54 @@
                                                                         @enderror
                                                                 </td>
                                                             </tr>
-                                                            <tr>
-                                                                <td colspan="5" class="text-center"><b>ORGANIZATION 1</b></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td style="vertical-align: middle">Name</td>
-                                                                    <td>
-                                                                        <input type="text" id="name1" name="name1" class="form-control" value="{{ $org->whereIn('no', 1)->first()->name }}" required>
-                                                                            @error('name1')
-                                                                                <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                            @enderror
-                                                                    </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td style="vertical-align: middle">Contact Number</td>
-                                                                <td>
-                                                                    <input type="text" id="phone1" name="phone1" class="form-control" value="{{ $org->whereIn('no', 1)->first()->phone }}" required>
-                                                                        @error('phone1')
-                                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                        @enderror
-                                                                </td>
-                                                            </tr>
                                                             
-                                                            <tr>
-                                                                <td style="vertical-align: middle">Email</td>
-                                                                <td>
-                                                                    <input type="text" id="email1" name="email1" class="form-control" value="{{ $org->whereIn('no', 1)->first()->email }}" required>
-                                                                        @error('email1')
-                                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                        @enderror
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td style="vertical-align: middle">Designation</td>
-                                                                <td>
-                                                                    <input type="text" id="designation1" name="designation1" class="form-control" value="{{ $org->whereIn('no', 1)->first()->designation }}" required>
-                                                                        @error('designation1')
-                                                                            <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                        @enderror
-                                                                </td>
-                                                            </tr>
                                                             
-                                                            @php $i = 2; @endphp
-                                                            @if (($org->where('no', '!=', 1))->isNotEmpty())
-                                                                @foreach ( $org->where('no', '!=', 1) as $o)                                                                
+                                                            @php $i = 1; @endphp
+                                                            @if ($org->isNotEmpty())
+                                                                @foreach ( $org as $o)                                                                
                                                                     <tr>
-                                                                        <td colspan="5" class="text-center"><b>ORGANIZATION {{$i}}</b></td>
+                                                                        <td width="15%"><label class="form-label" for="engage1"><span class="text-danger">*</span><b> Organization {{$i}}</b></label></td>
                                                                         <input type="hidden" name="ids[]" value="{{ $o->id }}">
-
                                                                     </tr>
-                                                                    <tr>
-                                                                        <td style="vertical-align: middle">Name:</td>
+                                                                    <tr>    
                                                                             <td>
-                                                                                <input type="text" id="name2" name="name[]" class="form-control" value="{{ $o->name }}" required>
-                                                                                    @error('name2')
+                                                                                <label class="form-label" for="name"> Name:</label>
+                                                                                <input type="text" id="name" name="name[]" class="form-control"  value="{{ $o->name }}" required>
+                                                                                    @error('name')
                                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                     @enderror
                                                                             </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td style="vertical-align: middle">Contact Number:</td>
+                                                                    
                                                                             <td>
-                                                                                <input type="text" id="phone2" name="phone[]" class="form-control" value="{{ $o->phone }}" required>
-                                                                                    @error('phone2')
+                                                                                <label class="form-label" for="contact"> Contact Number:</label>
+                                                                                <input type="text" id="contact" name="phone[]" class="form-control"  value="{{ $o->phone }}" required>
+                                                                                    @error('contact')
                                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                     @enderror
                                                                             </td>
-                                                                        </div>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td style="vertical-align: middle">Email:</td>
+                                                                        
+                                                                        
                                                                             <td>
-                                                                                <input type="text" id="email2" name="email[]" class="form-control" value="{{ $o->email }}" required>
-                                                                                    @error('email2')
+                                                                                <label class="form-label" for="email"> Email:</label>
+                                                                                <input type="text" id="email" name="email[]" class="form-control"  value="{{ $o->email }}" required>
+                                                                                    @error('email')
                                                                                         <p style="color: red"><strong> * {{ $message }} </strong></p>
                                                                                     @enderror
                                                                             </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td style="vertical-align: middle">Designation:</td>
-                                                                        <td>
-                                                                            <input type="text" id="designation2" name="designation[]" class="form-control" value="{{ $o->designation }}" required>
-                                                                                @error('designation2')
-                                                                                    <p style="color: red"><strong> * {{ $message }} </strong></p>
-                                                                                @enderror
-                                                                        </td>
+                                                                            <td>
+                                                                                <label class="form-label" for="designation"> Designation:</label>
+                                                                                <input type="text" id="designation" name="designation[]" class="form-control"  value="{{ $o->designation }}" required>
+                                                                                    @error('designation')
+                                                                                        <p style="color: red"><strong> * {{ $message }} </strong></p>
+                                                                                    @enderror
+                                                                            </td>
+                                                                    
                                                                     </tr>
                                                                     @php $i++ @endphp
                                                                 @endforeach
                                                             @endif
                                                             <tr>
-                                                                <td colspan="5" class="text-center"><b>TEAM MEMBER</b></td>
+                                                                <td colspan="5"><b>TEAM MEMBER</b></td>
                                                             </tr>
                                                             <tr>                                                            
                                                                 <td colspan="5"> 
@@ -296,54 +303,6 @@
                                             </div>
                                         </div>    
                                     {!! Form::close() !!}
-                                    <br>
-                                    @role('Engagement (Admin)')
-                                            <div class="card card-primary card-outline">
-                                                <div class="card-header text-white bg-success">
-                                                    <h5 class="card-title w-100 text-center">TO DO LIST
-                                                        <span>
-                                                            <button type="button" style="margin-left: 5px;" id ="btn1" class="btn btn-sm btn-warning btn-icon rounded-circle waves-effect waves-themed"><i class="fal fa-plus"></i></button>
-                                                        </span>
-                                                    </h5>
-                                                </div>
-                                            
-                                                <div class="card-body">
-                                                    @if (Session::has('messages'))
-                                                        <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('messages') }}</div>
-                                                    @endif
-                                                    <div class="table-responsive">
-                                                        {!! Form::open(['action' => ['EngagementManagementController@updateToDoList'], 'method' => 'POST', 'enctype' => 'multipart/form-data'])!!}
-                                                        <input type="hidden" name="idEngage" value="{{ $data->id }}">
-                                                            <table class="table table-borderless table-hover table-striped w-100" id="addtodo">
-                                                                @if ($todo->isNotEmpty())
-                                                                    @foreach ($todo as $t )
-                                                                        <tr>
-                                                                            <td>
-                                                                                <label class="container">    
-                                                                                    {{-- <input type="checkbox" name="check" value="{{ $t->id }}" onClick="this.form.submit()" @if ($t->active == 'N') checked @endif/> --}}
-                                                                                    <input type="checkbox" name="check[]" value="{{ $t->id }}" @if ($t->active == 'N') checked @endif/>
-                                                                                    <input type="hidden" name="id[]" value="{{ $t->id }}"/>
-                                                                                    <input type="text" class="form-control" name="content[]" value="{{$t->title}}">
-                                                                                    <div class="form-status-holder"></div>
-                                                                                    <span class="checkmark"></span>
-                                                                                </label>
-                                                                            </td>
-                                                                            <td><a href="#" data-path ="{{$t->id}}" class="btn_delete btn btn-danger btn-sm btn-icon"><i class="fal fa-times"></i></a></td>
-                                                                        </tr>
-                                                                    @endforeach
-                                                                    
-                                                                @endif
-                                                            </table>
-                                                    </div>
-                                                    <button type="submit" class="btn btn-primary ml-auto float-right"><i class="fal fa-save"></i> Save</button>
-                                                    {!! Form::close() !!}
-                                                </div>
-                                            </div> 
-                                           
-                                    @endrole
-                                    <br>
-                                </div>
-                            </div>
                         </div>
                     </div>
             </div>
@@ -493,6 +452,7 @@
                     { className: 'text-center', data: 'remark', name: 'remark' },
                     { className: 'text-center', data: 'date', name: 'date' },
                     { className: 'text-center', data: 'status', name: 'status' },
+                    { className: 'text-center', data: 'file', name: 'file' },
                     { className: 'text-center', data: 'member', name: 'member' },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false},
                 ],

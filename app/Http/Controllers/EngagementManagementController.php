@@ -200,7 +200,7 @@ class EngagementManagementController extends Controller
                 EngagementToDoList::create([
                     'engagement_id' => $request->idEngage,
                     'title'         => $value, 
-                    'active'         => 'Y', 
+                    'active'         => 'N', 
                     'created_by'    => Auth::user()->id
                 ]);
             }
@@ -226,59 +226,25 @@ class EngagementManagementController extends Controller
                 
                 if (isset($request->check[$key]))
                 {
-                    if ($request->check[$key] == $value)
-                    {
+                   
                         EngagementToDoList::where('id', $value)->update([
-                        'active'        => 'N', 
+                        'active'        => 'Y', 
                         'updated_by'    => Auth::user()->id
                         ]);
-                    }
-
-                    else
-                    {
-                        EngagementToDoList::where('id', $value)->update([
-                            'active'        => 'Y', 
-                            'updated_by'    => Auth::user()->id
-                            ]);
-                    }
-                }
+                }  
 
                 else
                 {
                     EngagementToDoList::where('id', $value)->update([
-                        'active'        => 'Y', 
+                        'active'        => 'N', 
                         'updated_by'    => Auth::user()->id
                         ]);
                 }
+
             }
         }
-            // if (isset($request->check))
-            // {
-            //     foreach($request->id as $key => $value)
-            //      {
-            //         if ($request->check[$key] == $value)
-            //         {
-            //              EngagementToDoList::where('id', $value)->update([
-            //             'active'        => 'N', 
-            //             'updated_by'    => Auth::user()->id
-            //             ]);
-            //         }
-            //      }                
-            // }
-
-            // else if (isset($request->test))
-            // {
-            //     EngagementToDoList::where('id', $request->test)->update([
-            //         'active'        => 'Y', 
-            //         'updated_by'    => Auth::user()->id
-            //         ]);
-            // }
-
-        
+            
         return redirect()->back()->with('message','To Do List updated');
-        // return response() ->json(['success' => 'saved!']);
-
-
     }
 
 
@@ -302,6 +268,14 @@ class EngagementManagementController extends Controller
         $engagement->created_by = Auth::user()->id;
         $engagement->updated_by = Auth::user()->id;
         $engagement->save();
+
+        $progress = new EngagementProgress();
+        $progress->engagement_id = $engagement->id;
+        $progress->remark = "New Profile Created";
+        $progress->status = 1;
+        $progress->created_by = Auth::user()->id;
+        $progress->updated_by = Auth::user()->id;
+        $progress->save();
 
         foreach($request->member_id as $key => $value)
         {
@@ -466,7 +440,7 @@ class EngagementManagementController extends Controller
 
     public function newProgress($id)
     {
-        $status = EngagementStatus::all();
+        $status = EngagementStatus::where('id', '!=',1)->get();
         $data = EngagementManagement::where('id', $id)->first();
 
         return view('engagement.new_progress', compact('status','data'));
@@ -474,7 +448,7 @@ class EngagementManagementController extends Controller
 
     public function progress($id)
     {
-        $status = EngagementStatus::all();
+        $status = EngagementStatus::where('id', '!=',1)->get();
 
         $user = Auth::user()->id; 
         
@@ -511,8 +485,29 @@ class EngagementManagementController extends Controller
 
         ->editColumn('status', function ($data) {
 
-            return $data->getStatus->description;            
+            return isset($data->getStatus) ? $data->getStatus->description : 'N/A' ;            
         })
+
+        ->editColumn('file', function ($data) {
+
+            $file = '';
+
+            if($data->getFile->count() > 0)
+            {
+                foreach($data->getFile as $d)
+                {
+                    $file .= '<a target="_blank" href="/get-uploaded-file/'.$d->id.'">'.$d->upload.'</a><br>';
+                }                            
+            }
+
+            else
+            {
+                $file = "N/A";
+            }
+
+            return $file;
+        })
+
 
         ->editColumn('member', function ($data) {
 
@@ -548,7 +543,7 @@ class EngagementManagementController extends Controller
 
         ->addIndexColumn()
 
-        ->rawColumns(['action'])
+        ->rawColumns(['action','file'])
         ->make(true);
     }
 
