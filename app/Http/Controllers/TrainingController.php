@@ -118,7 +118,7 @@ class TrainingController extends Controller
  
      public function data_training()
      {
-         $train = TrainingList::all();
+         $train = TrainingList::with(['types','categories'])->select('trm_training.*');
         
          return datatables()::of($train)
          ->addColumn('action', function ($train) {
@@ -611,7 +611,7 @@ class TrainingController extends Controller
 
     public function data_type()
     {
-        $type = TrainingType::all();
+        $type = TrainingType::select('trm_type.*');
        
         return datatables()::of($type)
         ->addColumn('action', function ($type) {
@@ -628,7 +628,7 @@ class TrainingController extends Controller
             }
         })
 
-        ->addIndexColumn()
+        // ->addIndexColumn()
         ->make(true);
     }
 
@@ -679,7 +679,7 @@ class TrainingController extends Controller
 
     public function data_category()
     {
-        $cat = TrainingCategory::all();
+        $cat = TrainingCategory::select('trm_category.*');
        
         return datatables()::of($cat)
         ->addColumn('action', function ($cat) {
@@ -696,7 +696,7 @@ class TrainingController extends Controller
             }
         })
 
-        ->addIndexColumn()
+        // ->addIndexColumn()
         ->make(true);
     }
 
@@ -750,7 +750,7 @@ class TrainingController extends Controller
 
     public function data_hour()
     {
-        $hour = TrainingHourYear::all();
+        $hour = TrainingHourYear::select('trm_hour_year.*');
        
         return datatables()::of($hour)
         ->addColumn('action', function ($hour) {
@@ -782,7 +782,7 @@ class TrainingController extends Controller
             }
         })
 
-        ->addIndexColumn()
+        // ->addIndexColumn()
         ->rawColumns(['action', 'assign'])
         ->make(true);
     }
@@ -1863,7 +1863,6 @@ class TrainingController extends Controller
     public function data_record_staff()
     {
         $staff = TrainingHourTrail::where('year', Carbon::now()->format('Y'))->get();
-        // $staff = TrainingHourTrail::where('year', Carbon::now()->format('Y'))->with(['staffs','record_status','hour_year'])->select('trm_hour_trail.*');
 
         return datatables()::of($staff)
 
@@ -1971,7 +1970,7 @@ class TrainingController extends Controller
 
     public function data_evaluation()
     {
-        $evaluate = TrainingEvaluation::all();
+        $evaluate = TrainingEvaluation::select('trm_evaluation.*');
        
         return datatables()::of($evaluate)
         ->addColumn('action', function ($evaluate) {
@@ -2256,7 +2255,7 @@ class TrainingController extends Controller
 
     public function data_evaluation_report()
     {
-        $report = TrainingList::whereIn('type', ['1','2'])->get();
+        $report = TrainingList::whereIn('type', ['1','2'])->with('types','categories')->select('trm_training.*');
        
         return datatables()::of($report)
         ->addColumn('action', function ($report) {
@@ -2320,7 +2319,7 @@ class TrainingController extends Controller
             }
         })
 
-        ->addIndexColumn()
+        // ->addIndexColumn()
         ->rawColumns(['action', 'title', 'start_date', 'participant', 'respondant', 'percentage', 'id', 'type'])
         ->make(true);
     }

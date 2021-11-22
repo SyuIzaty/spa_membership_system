@@ -100,7 +100,7 @@
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Date"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Venue"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Hours"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Participant"></td>
+                                        <td class="hasinput"></td>
                                         <td class="hasinput"></td>
                                         <td class="hasinput"></td>
                                     </tr>
@@ -349,12 +349,12 @@
             columns: [
                     { className: 'text-center', data: 'id', name: 'id' },
                     { data: 'title', name: 'title' },
-                    { className: 'text-center', data: 'type', name: 'type' },
-                    { className: 'text-center', data: 'category', name: 'category' },
+                    { className: 'text-center', data: 'type', name: 'types.type_name' },
+                    { className: 'text-center', data: 'category', name: 'categories.category_name' },
                     { className: 'text-center', data: 'date', name: 'start_date' },
                     { className: 'text-center', data: 'venue', name: 'venue' },
                     { className: 'text-center', data: 'claim_hour', name: 'claim_hour' },
-                    { className: 'text-center', data: 'participant', name: 'id' },
+                    { className: 'text-center', data: 'participant', name: 'participant', orderable: false, searchable: false },
                     { className: 'text-center', data: 'open', name: 'open', orderable: false, searchable: false},
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],

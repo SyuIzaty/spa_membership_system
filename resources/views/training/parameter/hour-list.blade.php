@@ -276,7 +276,7 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
             columns: [
-                    { className: 'text-center', data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                    { className: 'text-center', data: 'id', name: 'id' },
                     { className: 'text-center', data: 'year', name: 'year' },
                     { className: 'text-center', data: 'training_hour', name: 'training_hour' },
                     { className: 'text-center', data: 'assign', name: 'assign', orderable: false, searchable: false},

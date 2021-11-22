@@ -26,7 +26,7 @@
                             <table id="report" class="table table-bordered table-hover table-striped w-100">
                                 <thead>
                                     <tr class="text-center bg-primary-50" style="white-space: nowrap">
-                                        <th>NO.</th>
+                                        {{-- <th>NO.</th> --}}
                                         <th>#ID</th>
                                         <th>TRAINING TITLE</th>
                                         <th>TRAINING DATE</th>
@@ -37,14 +37,14 @@
                                         <th>ACTION</th>
                                     </tr>
                                     <tr>
-                                        <td class="hasinput"></td>
+                                        {{-- <td class="hasinput"></td> --}}
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search ID"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Title"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Date"></td>
                                         <td class="hasinput"><input type="text" class="form-control" placeholder="Search Type"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Participant"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Respondant"></td>
-                                        <td class="hasinput"><input type="text" class="form-control" placeholder="Search Percentage"></td>
+                                        <td class="hasinput"></td>
+                                        <td class="hasinput"></td>
+                                        <td class="hasinput"></td>
                                         <td class="hasinput"></td>
                                     </tr>
                                 </thead>
@@ -98,14 +98,14 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
             columns: [
-                    { className: 'text-center', data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                    // { className: 'text-center', data: 'DT_RowIndex', name: 'DT_RowIndex' },
                     { className: 'text-center', data: 'id', name: 'id' },
                     { data: 'title', name: 'title' },
                     { className: 'text-center', data: 'start_date', name: 'start_date' },
-                    { className: 'text-center', data: 'type', name: 'type' },
-                    { className: 'text-center', data: 'participant', name: 'evaluation' },
-                    { className: 'text-center', data: 'respondant', name: 'evaluation' },
-                    { className: 'text-center', data: 'percentage', name: 'evaluation' },
+                    { className: 'text-center', data: 'type', name: 'types.type_name' },
+                    { className: 'text-center', data: 'participant', name: 'participant', orderable: false, searchable: false },
+                    { className: 'text-center', data: 'respondant', name: 'respondant', orderable: false, searchable: false },
+                    { className: 'text-center', data: 'percentage', name: 'percentage', orderable: false, searchable: false },
                     { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 orderCellsTop: true,
