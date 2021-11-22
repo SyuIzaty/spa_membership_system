@@ -171,7 +171,7 @@
                                 </a>
                             </li>
                         @endrole
-                        @role('eDocument (Staff)')
+                        @role('Staff')
                             <li>
                                 <a href="/index" title="Download Document" data-filter-tags="download">
                                     <i class="fal fa-download"></i>
