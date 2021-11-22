@@ -450,9 +450,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/post-create', 'EngagementManagementController@store');
     Route::post('/todolist-create', 'EngagementManagementController@createToDoList');
     Route::post('/todolist-update', 'EngagementManagementController@updateToDoList');
-
     Route::post('/update-profile', 'EngagementManagementController@updateProfile');
-    Route::DELETE('/delete-member/{id}', 'EngagementManagementController@deleteMember');
+    Route::delete('/delete-member/{id}', 'EngagementManagementController@deleteMember');
     Route::post('/create-progress', 'EngagementManagementController@createProgress');
     Route::post('/getProgress/{id}', 'EngagementManagementController@getProgress');
     Route::post('/edit-progress', 'EngagementManagementController@editProgress');
@@ -463,15 +462,24 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/engagement-detail/{id}', 'EngagementManagementController@details');
     Route::delete('/delete-status/{id}','EngagementManagementController@deleteStatus');
     Route::delete('/delete-todolist/{id}','EngagementManagementController@deleteToDoList');
-
-
     Route::get('/new-progress/{id}', 'EngagementManagementController@newProgress');
     Route::get('/edit-progress/{id}', 'EngagementManagementController@progress');
     Route::post('/store-files', 'EngagementManagementController@storeFile');
     Route::get('get-uploaded-file/{file}','EngagementManagementController@getFile');
-    Route::DELETE('/delete-file/{id}','EngagementManagementController@deleteFile');
-    Route::get('get-progress-file/{file}','EngagementManagementController@getProgressFile');
-    Route::DELETE('/delete-progress/{id}','EngagementManagementController@deleteProgress');
+    Route::delete('/delete-file/{id}','EngagementManagementController@deleteFile');
+    Route::delete('/delete-progress/{id}','EngagementManagementController@deleteProgress');
+
+    //eDocument Management System
+    Route::resource('/index', 'DocumentManagementController');
+    Route::post('/view-list/{id}', 'DocumentManagementController@viewList');
+    Route::get('get-doc/{file}','DocumentManagementController@getDoc');
+    Route::get('get-list/{id}','DocumentManagementController@getList');
+    Route::get('upload/{id}','DocumentManagementController@upload');
+    Route::post('/store-doc', 'DocumentManagementController@storeDoc');
+    Route::delete('/delete-doc/{id}','DocumentManagementController@deleteDoc');
+
+
+
 
 
     // Training : Training
