@@ -54,9 +54,7 @@
                                     </table>
                                 </div>
                                 @role('eDocument (Admin)')
-                                    <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted">
-                                        <a href= "/upload/{{$id}}" class="btn btn-info waves-effect waves-themed float-right" style=" margin-bottom: 10px;"><i class="fal fa-upload"></i> Upload</a>
-                                    </div>
+                                        <a href= "/upload/{{$id}}" class="btn btn-info waves-effect waves-themed float-right" style="margin-top: 15px; margin-bottom: 10px;"><i class="fal fa-upload"></i> Upload</a>
                                 @endrole
                             @else
                                 <div class="table-responsive">

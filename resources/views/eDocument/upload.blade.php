@@ -80,7 +80,7 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                            <a style="margin-right:5px" href="/get-list/{{$id}}" class="btn btn-info ml-auto float-right"><i class="fal fa-arrow-alt-left"></i> Back</a>                                            
+                                            <a style="margin-top: 10px; margin-right: 12px;" href="/get-list/{{$id}}" class="btn btn-info ml-auto float-right"><i class="fal fa-arrow-alt-left"></i> Back</a>                                            
                                         </div>
                                     </div>
                                 </div>
