@@ -11,4 +11,9 @@ class DepartmentList extends Model
     protected $fillable = [
         'name', 'active'
     ];
+
+    public function document()
+    {
+        return $this->hasMany('App\DocumentManagement', 'department_id', 'id');
+    }
 }

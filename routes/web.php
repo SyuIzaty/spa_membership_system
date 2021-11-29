@@ -471,16 +471,11 @@ Route::group(['middleware' => 'auth'], function () {
 
     //eDocument Management System
     Route::resource('/index', 'DocumentManagementController');
-    Route::post('/view-list/{id}', 'DocumentManagementController@viewList');
     Route::get('get-doc/{file}','DocumentManagementController@getDoc');
-    Route::get('get-list/{id}','DocumentManagementController@getList');
-    Route::get('upload/{id}','DocumentManagementController@upload');
+    Route::get('upload','DocumentManagementController@upload');
+    Route::get('upload/{id}','DocumentManagementController@getUpload');
     Route::post('/store-doc', 'DocumentManagementController@storeDoc');
     Route::delete('/delete-doc/{id}','DocumentManagementController@deleteDoc');
-
-
-
-
 
     // Training : Training
     Route::get('/training-list', 'TrainingController@trainingList');

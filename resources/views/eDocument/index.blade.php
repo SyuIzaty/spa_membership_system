@@ -20,24 +20,15 @@
                     </div>
                     <div class="panel-container show">
                         <div class="panel-content">
-                            <div class="col-sm-6">
-                                <button class="btn btn-success dropdown-toggle waves-effect waves-themed" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    @if ($id != '')
-                                      {{$getDepartment->name}}
+                            
+                            <div class="table-responsive" style="padding: 0 25px; margin-top: 10px;">
+                                @role('eDocument (Admin)')
+                                <a href= "/upload" class="btn btn-info waves-effect waves-themed float-right" style="margin-bottom: 5px;"><i class="fal fa-upload"></i> Upload</a>
+                                @endrole
 
-                                    @else
-                                        Select Department
-                                    @endif
-                                </button>
-                                <div class="dropdown-menu" style="">
-                                    @foreach ($department as $d)
-                                        <a  href="/get-list/{{$d->id}}" class="dropdown-item" name="list" value="{{$d->id}}">{{$d->name}}</a>
-                                    @endforeach                                                                           
-                                </div>
-                            </div>
-                            <br>
-                            @if ($id != '')
-                                <div class="table-responsive">
+                                @foreach ($department as $d)
+                                    @php $i = 1; @endphp
+                                   <h5> <i class='fal fa-caret-right'></i><b> {{$d->name}}</b></h5><br>
                                     <table id="list" class="table table-bordered table-hover table-striped w-100">
                                         <thead>
                                             <tr class="bg-primary-50 text-center">
@@ -46,33 +37,27 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td class="hasinput"></td>
-                                                <td class="hasinput"></td>
-                                            </tr>
+                                            @if ($list->where('department_id',$d->id)->isNotEmpty())
+                                                @foreach ($list->where('department_id',$d->id) as $l)
+                                                    <tr>
+                                                        <td class="text-center">{{$i}}</td>
+                                                        <td><a target="_blank" href="/get-doc/{{$l->id}}">{{$l->original_name}}</a></td>
+                                                    </tr>
+                                                    @php $i++; @endphp
+                                                @endforeach
+
+                                            @else
+                                                <tr><td colspan="2" class="text-center text-danger"><b>NO DOCUMENTS UPLOADED</b></td></tr>
+                                            @endif
                                         </tbody>
                                     </table>
-                                </div>
-                                @role('eDocument (Admin)')
-                                        <a href= "/upload/{{$id}}" class="btn btn-info waves-effect waves-themed float-right" style="margin-top: 15px; margin-bottom: 10px;"><i class="fal fa-upload"></i> Upload</a>
-                                @endrole
-                            @else
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-hover table-striped w-100">
-                                        <thead>
-                                            <tr class="bg-primary-50 text-center">
-                                                <th class="text-center">No</th>
-                                                <th class="text-center">Document</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td colspan="2" class="text-center text-danger"><b>PLEASE CHOOSE DEPARMENT</b></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            @endif
+                                    <br>
+                                @endforeach
+                            </div>
+                            
+                            @role('eDocument (Admin)')
+                                    <a href= "/upload" class="btn btn-info waves-effect waves-themed float-right" style="margin: -25px 25px 15px;"><i class="fal fa-upload"></i> Upload</a>
+                            @endrole
                         </div>
                     </div>
                 </div>
@@ -82,30 +67,5 @@
 @endsection
 @section('script')
 <script>
-    $(document).ready(function()
-    {
-        var department = @json($id);
-        var table = $('#list').DataTable({
-        
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: "/view-list/" + department,
-                type: 'POST',
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
-            },
-            columns: [
-                    { className: 'text-center', data: 'DT_RowIndex', name: 'DT_RowIndex' , orderable: false, searchable: false },
-                    { className: 'text-left', data: 'document', name: 'document' },
-
-                ],
-                orderCellsTop: true,
-                "order": [[ 0, "asc" ]],
-                "initComplete": function(settings, json) {
-
-                }
-        });
-    });
-
 </script>
 @endsection

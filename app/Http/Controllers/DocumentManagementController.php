@@ -18,45 +18,27 @@ class DocumentManagementController extends Controller
      */
     public function index()
     {
-        $id = '';
-        $getDepartment = '';
         $department = DepartmentList::all();
-        return view('eDocument.index', compact('department','id','getDepartment'));
+        $list = DocumentManagement::get();
+        return view('eDocument.index', compact('list','department'));
     }
 
-    public function getList($id)
+    public function upload()
     {
+        $id = '';
         $department = DepartmentList::all();
-        $getDepartment = DepartmentList::where('id',$id)->first();
-        
-        return view('eDocument.index', compact('department','id','getDepartment'));
+        return view('eDocument.upload', compact('id','department'));
     }
 
-
-    public function viewList($id)
-    {            
-        $list = DocumentManagement::where('department_id',$id)->get();
-      
-        return datatables()::of($list)
-
-        ->editColumn('document', function ($list) {
-            return '<a download="'.$list->original_name.'" href="/get-doc/'.$list->id.'">'.$list->original_name.'</a><br>';        
-        })
-
-        ->addIndexColumn()
-
-        ->rawColumns(['document'])
-        ->make(true);
-    }
-
-
-    public function upload($id)
+    public function getUpload($id)
     {
         $file = DocumentManagement::where('department_id', $id)->get();
-        return view('eDocument.upload', compact('id','file'));
+        $getDepartment = DepartmentList::where('id',$id)->first();
+        $department = DepartmentList::all();
+
+        return view('eDocument.upload', compact('id','file','getDepartment','department'));
     }
     
-
     public function storeDoc(Request $request)
     {
         $file = $request->file('file');

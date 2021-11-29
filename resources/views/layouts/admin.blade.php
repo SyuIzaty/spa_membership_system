@@ -163,19 +163,11 @@
                         <!-- Start eDocument Management System -->
                         
                         <li class="nav-title">eDocument Management</li>
-                        @role('eDocument (Admin)')
-                            <li>
-                                <a href="/index" title="Upload Document" data-filter-tags="upload">
-                                    <i class="fal fa-upload"></i>
-                                    <span class="nav-link-text" data-i18n="nav.document">Upload</span>
-                                </a>
-                            </li>
-                        @endrole
                         @role('Staff')
                             <li>
-                                <a href="/index" title="Download Document" data-filter-tags="download">
-                                    <i class="fal fa-download"></i>
-                                    <span class="nav-link-text" data-i18n="nav.document">Download</span>
+                                <a href="/index" title="Document" data-filter-tags="doc">
+                                    <i class="fal fa-file"></i>
+                                    <span class="nav-link-text" data-i18n="nav.document">Document</span>
                                 </a>
                             </li>
                         @endrole

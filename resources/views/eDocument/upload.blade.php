@@ -33,6 +33,23 @@
 
                     <div class="panel-container show">
                         <div class="panel-content">
+                            <div class="col-sm-6">
+                                <button class="btn btn-success dropdown-toggle waves-effect waves-themed" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    @if ($id != '')
+                                      {{$getDepartment->name}}
+
+                                    @else
+                                        Select Department
+                                    @endif
+                                </button>
+                                <div class="dropdown-menu" style="">
+                                    @foreach ($department as $d)
+                                        <a  href="/upload/{{$d->id}}" class="dropdown-item" name="list" value="{{$d->id}}">{{$d->name}}</a>
+                                    @endforeach                                                                           
+                                </div>
+                            </div>
+                            <br>
+                            @if ($id != '')
                                 <div class="row" style="margin-bottom:15px;">   
                                     <div class="col-md-12">
                                         <div class="row mt-5">
@@ -80,10 +97,11 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                            <a style="margin-top: 10px; margin-right: 12px;" href="/get-list/{{$id}}" class="btn btn-info ml-auto float-right"><i class="fal fa-arrow-alt-left"></i> Back</a>                                            
+                                            <a style="margin-top: 10px; margin-right: 12px;" href="/index" class="btn btn-info ml-auto float-right"><i class="fal fa-arrow-alt-left"></i> Back</a>                                            
                                         </div>
                                     </div>
                                 </div>
+                            @endif
                         </div>
                     </div>                       
             </div>
