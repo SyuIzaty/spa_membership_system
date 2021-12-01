@@ -50,11 +50,49 @@
                                         Select Department
                                     @endif
                                 </button>
+                                @role('eDocument (Admin)')
                                 <div class="dropdown-menu" style="">
                                     @foreach ($department as $d)
                                         <a  href="/upload/{{$d->id}}" class="dropdown-item" name="list" value="{{$d->id}}">{{$d->name}}</a>
-                                    @endforeach                                                                           
+                                    @endforeach
                                 </div>
+                                @endrole
+
+                                @role('eDocument (IT)')
+                                <div class="dropdown-menu" style="">
+                                    <a  href="/upload/1" class="dropdown-item" name="list" value="1">INFORMATION TECHNOLOGY</a>
+                                </div>
+                                @endrole
+
+                                @role('eDocument (Finance)')
+                                <div class="dropdown-menu" style="">
+                                    <a  href="/upload/2" class="dropdown-item" name="list" value="2">FINANCE</a>
+                                </div>
+                                @endrole
+
+                                @role('eDocument (Corporate)')
+                                <div class="dropdown-menu" style="">
+                                    <a  href="/upload/3" class="dropdown-item" name="list" value="3">CORPORATE COMMUNICATION & STRATEGIC</a>
+                                </div>
+                                @endrole
+
+                                @role('eDocument (Academic)')
+                                <div class="dropdown-menu" style="">
+                                    <a  href="/upload/4" class="dropdown-item" name="list" value="4">ACADEMIC AND STUDENT AFFAIRS</a>
+                                </div>
+                                @endrole
+
+                                @role('eDocument (Operation)')
+                                <div class="dropdown-menu" style="">
+                                    <a  href="/upload/5" class="dropdown-item" name="list" value="5">OPERATION MANAGEMENT AND HUMAN RESOURCES</a>
+                                </div>
+                                @endrole
+
+                                @role('eDocument (Marketing)')
+                                <div class="dropdown-menu" style="">
+                                    <a  href="/upload/6" class="dropdown-item" name="list" value="6">MARKETING & STUDENT ADMISSION</a>
+                                </div>
+                                @endrole
                             </div>
                             <br>
                             @if ($id != '')
@@ -91,20 +129,12 @@
                                                             <ol>
                                                                 @foreach ( $file as $f )
                                                                     <li>
-                                                                        {{-- <a target="_blank" href="/get-doc/{{$f->id}}" class="text-info">{{$f->title}}</a> --}}
+                                                                        <a target="_blank" href="/get-doc/{{$f->id}}" class="text-info">{{$f->title}}</a>
 
-                                                                        {{-- <label for="{{$f->id}}" class="control-label"><p class="text-info">{{$f->title}}</p></label> --}}
-                                                                        {{-- <form id="formID">
-                                                                            @csrf --}}
-                                                                            <a target="_blank" href="/get-doc/{{$f->id}}" class="text-info">{{$f->title}}</a>
-                                                                            <input type="hidden" name="id" value="{{$f->id}}">
-                                                                            {{-- <button type="submit" class="btn btn-warning btn-xs submitdata" id="edit"><i class="fal fa-save"></i></button> --}}
+                                                                        <input type="hidden" name="id" value="{{$f->id}}">
                                                                         
-
                                                                         <a href="#" data-path ="{{$f->id}}" class="btn btn-danger btn-xs delete-alert" id="buttons"><i class="fal fa-trash"></i></a>
-                                                                        {{-- <a href="#" target="_blank" href="/get-doc/{{$f->id}}" class="btn btn-primary btn-xs" id="buttons"><i class="fal fa-eye"></i></a> --}}
-                                                                        <a href="#" data-toggle="addModal" data-id="{{$f->id}}" data-title="{{$f->title}}" id="buttons" class="btn btn-warning btn-xs editTitle"><i class="fal fa-pencil"></i></a>
-                                                                    {{-- </form>   --}}
+                                                                        <a href="#" data-toggle="addModal" data-id="{{$f->id}}" data-title="{{$f->title}}" data-category="{{$f->category}}" id="buttons" class="btn btn-warning btn-xs editTitle"><i class="fal fa-pencil"></i></a>
                                                                     </li>
                                                                     <br>
                                                                 @endforeach
@@ -132,26 +162,42 @@
                                         <div class="modal-body">
                                             <form id="form-title">
                                                 @csrf
-                                            <input type="hidden" name="id" id="id"/>
-                                            <div class="form-group">
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text">Title</span>
+                                                <input type="hidden" name="id" id="id"/>
+
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">Title</span>
+                                                        </div>
+                                                        <input class="form-control"  name="title" id="title">
                                                     </div>
-                                                    <input class="form-control"  name="title" id="title">
                                                 </div>
-                                            </div>
-                                                                                                
-                                            <div class="footer">
-                                                <button type="submit" id="saves" class="btn btn-primary ml-auto float-right waves-effect waves-themed"><i class="fal fa-save"></i> Save</button>
-                                                <button type="button" class="btn btn-success ml-auto float-right mr-2 waves-effect waves-themed" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
-                                            </div>
-                                        </form>
+
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">Category</span>
+                                                        </div>
+                                                        <select class="custom-select form-control" name="category" id="category">
+                                                            <option disabled selected value="">Select Category</option>
+                                                            @foreach ($category as $c)
+                                                                <option value="{{$c->id}}">{{$c->description}}</option>
+                                                            @endforeach
+                                                         </select>
+                                                    </div>
+                                                </div>
+
+                                                                       
+                                                                                                    
+                                                <div class="footer">
+                                                    <button type="submit" id="saves" class="btn btn-primary ml-auto float-right waves-effect waves-themed"><i class="fal fa-save"></i> Save</button>
+                                                    <button type="button" class="btn btn-success ml-auto float-right mr-2 waves-effect waves-themed" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-    
                         </div>
                     </div>                       
             </div>
@@ -184,10 +230,12 @@
 
         var id = $(this).data('id');
         var title = $(this).data('title');
+        var category = $(this).data('category');
 
 
     $(".modal-body #id").val( id );
     $(".modal-body #title").val( title );
+    $(".modal-body #category").val( category );
 
 
     $('#addModal').modal('show');
@@ -231,57 +279,7 @@
             })
         });
 
-
-        //edit title
-
-
-
-        
-        // $('#edit').click(function() {
-        // var text = $('.text-info').text();
-        // var input = $('<input id="attribute" type="text" value="' + text + '" />')
-        // $('.text-info').text('').append(input);
-        // input.select();
-
-        // input.blur(function() {
-        // var text = $('#attribute').val();
-        // $('#attribute').parent().text(text);
-        // $('#attribute').remove();
-        // });
-        // });
-
-
-    //     $("#formID").submit(function(e) {
-        
-    //     e.preventDefault();
-
-    //     $.ajaxSetup({
-    //             headers: {
-    //                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //             }
-    //         });
-
-    //     var datas = $(this).serialize();
-
-    //     $.ajax({
-    //         type: "POST",
-    //         url: "{{ url('update-title')}}",
-    //         data: datas,
-    //         dataType: "json",
-    //         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-    //         success: function(response) {
-    //             console.log(response);
-    //             if(response){
-    //                 Swal.fire(response.success);
-    //             }
-    //         },
-    //         error:function(error){
-    //             console.log(error)
-    //             alert("Error");
-    //         }
-    //     });
-
-    // });
+    //edit
 
     $("#addModal").submit(function(e) {
         

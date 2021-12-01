@@ -22,7 +22,7 @@
                         <div class="panel-content">
                             
                             <div class="table-responsive" style="padding: 0 25px; margin-top: 10px;">
-                                @role('eDocument (Admin)')
+                                @role('eDocument (Admin)|eDocument (IT)|eDocument (Finance)|eDocument (Corporate)|eDocument (Academic)|eDocument (Operation)|eDocument (Marketing)')
                                 <a href= "/upload" class="btn btn-info waves-effect waves-themed float-right" style="margin-bottom: 5px;"><i class="fal fa-upload"></i> Upload</a>
                                 @endrole
 
@@ -55,7 +55,7 @@
                                 @endforeach
                             </div>
                             
-                            @role('eDocument (Admin)')
+                            @role('eDocument (Admin)|eDocument (IT)|eDocument (Finance)|eDocument (Corporate)|eDocument (Academic)|eDocument (Operation)|eDocument (Marketing)')
                                     <a href= "/upload" class="btn btn-info waves-effect waves-themed float-right" style="margin: -25px 25px 15px;"><i class="fal fa-upload"></i> Upload</a>
                             @endrole
                         </div>

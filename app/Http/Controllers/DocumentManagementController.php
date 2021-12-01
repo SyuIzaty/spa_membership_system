@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DocumentManagement;
+use App\DocumentCategory;
 use App\DepartmentList;
 use File;
 use Response;
@@ -26,17 +27,19 @@ class DocumentManagementController extends Controller
     public function upload()
     {
         $id = '';
+        $category = DocumentCategory::all();
         $department = DepartmentList::all();
-        return view('eDocument.upload', compact('id','department'));
+        return view('eDocument.upload', compact('id','department','category'));
     }
 
     public function getUpload($id)
     {
+        $category = DocumentCategory::all();
         $file = DocumentManagement::where('department_id', $id)->get();
         $getDepartment = DepartmentList::where('id',$id)->first();
         $department = DepartmentList::all();
 
-        return view('eDocument.upload', compact('id','file','getDepartment','department'));
+        return view('eDocument.upload', compact('id','file','getDepartment','department','category'));
     }
     
     public function storeDoc(Request $request)
@@ -91,6 +94,7 @@ class DocumentManagementController extends Controller
         $update = DocumentManagement::where('id', $request->id)->first();
         $update->update([
             'title' => $request->title,
+            'category' => $request->category,
             'updated_by'  => Auth::user()->id
         ]);
         
