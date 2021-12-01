@@ -48,10 +48,12 @@ class DocumentManagementController extends Controller
         if (isset($file)) { 
             $originalName = $file->getClientOriginalName();
             $fileName = $originalName."_".date('d-m-Y_hia');
+            $title = current(explode(".", $originalName));
             $file->storeAs('/eDocument', $fileName);
             DocumentManagement::create([
                 'department_id' => $request->id,
                 'upload'        => $fileName,
+                'title'        => $title,
                 'original_name' => $originalName,
                 'web_path'      => "app/eDocument/".$fileName,
                 'created_by' => Auth::user()->id
@@ -82,6 +84,17 @@ class DocumentManagementController extends Controller
         $exist->update(['deleted_by' => Auth::user()->id]);
 
         return response() ->json(['success' => 'Deleted!']);
+    }
+
+    public function updateTitle(Request $request)
+    {
+        $update = DocumentManagement::where('id', $request->id)->first();
+        $update->update([
+            'title' => $request->title,
+            'updated_by'  => Auth::user()->id
+        ]);
+        
+        return response() ->json(['success' => 'Saved!']);
     }
 
 

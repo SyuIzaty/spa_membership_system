@@ -41,7 +41,7 @@
                                                 @foreach ($list->where('department_id',$d->id) as $l)
                                                     <tr>
                                                         <td class="text-center">{{$i}}</td>
-                                                        <td><a target="_blank" href="/get-doc/{{$l->id}}">{{$l->original_name}}</a></td>
+                                                        <td><a target="_blank" href="/get-doc/{{$l->id}}">{{$l->title}}</a></td>
                                                     </tr>
                                                     @php $i++; @endphp
                                                 @endforeach

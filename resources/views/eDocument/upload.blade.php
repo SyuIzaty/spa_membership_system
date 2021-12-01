@@ -3,11 +3,19 @@
 @section('content')
 
 <style>
-    #delete{
+    #buttons{
         display: none;
     }
 
-    li:hover #delete {
+    li:hover #buttons {
+        display:inline;  
+    }
+
+    #edit{
+        display: none;
+    }
+
+    li:hover #edit {
         display:inline;  
     }
 </style>
@@ -83,8 +91,20 @@
                                                             <ol>
                                                                 @foreach ( $file as $f )
                                                                     <li>
-                                                                        <a target="_blank" href="/get-doc/{{$f->id}}">{{$f->original_name}}</a>
-                                                                        <a href="#" data-path ="{{$f->id}}" class="btn btn-danger btn-xs delete-alert" id="delete"><i class="fal fa-trash"></i></a>
+                                                                        {{-- <a target="_blank" href="/get-doc/{{$f->id}}" class="text-info">{{$f->title}}</a> --}}
+
+                                                                        {{-- <label for="{{$f->id}}" class="control-label"><p class="text-info">{{$f->title}}</p></label> --}}
+                                                                        {{-- <form id="formID">
+                                                                            @csrf --}}
+                                                                            <a target="_blank" href="/get-doc/{{$f->id}}" class="text-info">{{$f->title}}</a>
+                                                                            <input type="hidden" name="id" value="{{$f->id}}">
+                                                                            {{-- <button type="submit" class="btn btn-warning btn-xs submitdata" id="edit"><i class="fal fa-save"></i></button> --}}
+                                                                        
+
+                                                                        <a href="#" data-path ="{{$f->id}}" class="btn btn-danger btn-xs delete-alert" id="buttons"><i class="fal fa-trash"></i></a>
+                                                                        {{-- <a href="#" target="_blank" href="/get-doc/{{$f->id}}" class="btn btn-primary btn-xs" id="buttons"><i class="fal fa-eye"></i></a> --}}
+                                                                        <a href="#" data-toggle="addModal" data-id="{{$f->id}}" data-title="{{$f->title}}" id="buttons" class="btn btn-warning btn-xs editTitle"><i class="fal fa-pencil"></i></a>
+                                                                    {{-- </form>   --}}
                                                                     </li>
                                                                     <br>
                                                                 @endforeach
@@ -102,6 +122,36 @@
                                     </div>
                                 </div>
                             @endif
+
+                            <div class="modal fade" id="addModal" aria-hidden="true" >
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="card-header">
+                                            <h5 class="card-title w-100">Edit Title</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="form-title">
+                                                @csrf
+                                            <input type="hidden" name="id" id="id"/>
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Title</span>
+                                                    </div>
+                                                    <input class="form-control"  name="title" id="title">
+                                                </div>
+                                            </div>
+                                                                                                
+                                            <div class="footer">
+                                                <button type="submit" id="saves" class="btn btn-primary ml-auto float-right waves-effect waves-themed"><i class="fal fa-save"></i> Save</button>
+                                                <button type="button" class="btn btn-success ml-auto float-right mr-2 waves-effect waves-themed" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
+                                            </div>
+                                        </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+    
                         </div>
                     </div>                       
             </div>
@@ -128,6 +178,19 @@
             location.reload();
             });
         },
+    });
+
+    $(".editTitle").on('click', function(e) {
+
+        var id = $(this).data('id');
+        var title = $(this).data('title');
+
+
+    $(".modal-body #id").val( id );
+    $(".modal-body #title").val( title );
+
+
+    $('#addModal').modal('show');
     });
 
     $(".delete-alert").on('click', function(e) {
@@ -169,7 +232,84 @@
         });
 
 
+        //edit title
+
+
+
+        
+        // $('#edit').click(function() {
+        // var text = $('.text-info').text();
+        // var input = $('<input id="attribute" type="text" value="' + text + '" />')
+        // $('.text-info').text('').append(input);
+        // input.select();
+
+        // input.blur(function() {
+        // var text = $('#attribute').val();
+        // $('#attribute').parent().text(text);
+        // $('#attribute').remove();
+        // });
+        // });
+
+
+    //     $("#formID").submit(function(e) {
+        
+    //     e.preventDefault();
+
+    //     $.ajaxSetup({
+    //             headers: {
+    //                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //             }
+    //         });
+
+    //     var datas = $(this).serialize();
+
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "{{ url('update-title')}}",
+    //         data: datas,
+    //         dataType: "json",
+    //         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+    //         success: function(response) {
+    //             console.log(response);
+    //             if(response){
+    //                 Swal.fire(response.success);
+    //             }
+    //         },
+    //         error:function(error){
+    //             console.log(error)
+    //             alert("Error");
+    //         }
+    //     });
+
+    // });
+
+    $("#addModal").submit(function(e) {
+        
+        e.preventDefault();
+
+        var datas = $('#form-title').serialize();
+
+        $.ajax({
+            type: "POST",
+            url: "{{ url('update-title')}}",
+            data: datas,
+            dataType: "json",
+            success: function(response) {
+                console.log(response);
+                if(response){
+                    $('#addModal').modal('hide');
+                    Swal.fire(response.success);
+                    location.reload();
+                }
+            },
+            error:function(error){
+                console.log(error)
+                alert("Error");
+            }
         });
+
+    });
+});
 
 
 

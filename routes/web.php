@@ -476,6 +476,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('upload/{id}','DocumentManagementController@getUpload');
     Route::post('/store-doc', 'DocumentManagementController@storeDoc');
     Route::delete('/delete-doc/{id}','DocumentManagementController@deleteDoc');
+    Route::post('/update-title', 'DocumentManagementController@updateTitle');
 
     // Training : Training
     Route::get('/training-list', 'TrainingController@trainingList');
