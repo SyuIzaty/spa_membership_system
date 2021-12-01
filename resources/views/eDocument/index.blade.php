@@ -21,7 +21,7 @@
                     <div class="panel-container show">
                         <div class="panel-content">
                             
-                            <div class="table-responsive" style="padding: 0 25px; margin-top: 10px;">
+                            <div class="table-responsive" style="padding: 0 60px; margin-top: 10px;">
                                 @role('eDocument (Admin)|eDocument (IT)|eDocument (Finance)|eDocument (Corporate)|eDocument (Academic)|eDocument (Operation)|eDocument (Marketing)')
                                 <a href= "/upload" class="btn btn-info waves-effect waves-themed float-right" style="margin-bottom: 5px;"><i class="fal fa-upload"></i> Upload</a>
                                 @endrole
@@ -33,6 +33,7 @@
                                         <thead>
                                             <tr class="bg-primary-50 text-center">
                                                 <th class="text-center">No</th>
+                                                <th class="text-center">Category</th>
                                                 <th class="text-center">Document</th>
                                             </tr>
                                         </thead>
@@ -40,14 +41,15 @@
                                             @if ($list->where('department_id',$d->id)->isNotEmpty())
                                                 @foreach ($list->where('department_id',$d->id) as $l)
                                                     <tr>
-                                                        <td class="text-center">{{$i}}</td>
+                                                        <td class="text-center col-md-1">{{$i}}</td>
+                                                        <td class="text-center col-md-2">{{ isset($l->category) ? $l->getCategory->description : 'N/A' }}</td>
                                                         <td><a target="_blank" href="/get-doc/{{$l->id}}">{{$l->title}}</a></td>
                                                     </tr>
                                                     @php $i++; @endphp
                                                 @endforeach
 
                                             @else
-                                                <tr><td colspan="2" class="text-center text-danger"><b>NO DOCUMENTS UPLOADED</b></td></tr>
+                                                <tr><td colspan="3" class="text-center text-danger"><b>NO DOCUMENTS UPLOADED</b></td></tr>
                                             @endif
                                         </tbody>
                                     </table>
@@ -56,7 +58,7 @@
                             </div>
                             
                             @role('eDocument (Admin)|eDocument (IT)|eDocument (Finance)|eDocument (Corporate)|eDocument (Academic)|eDocument (Operation)|eDocument (Marketing)')
-                                    <a href= "/upload" class="btn btn-info waves-effect waves-themed float-right" style="margin: -25px 25px 15px;"><i class="fal fa-upload"></i> Upload</a>
+                                    <a href= "/upload" class="btn btn-info waves-effect waves-themed float-right" style="margin: -25px 60px 15px;"><i class="fal fa-upload"></i> Upload</a>
                             @endrole
                         </div>
                     </div>

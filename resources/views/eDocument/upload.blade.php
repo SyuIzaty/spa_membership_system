@@ -125,20 +125,34 @@
                                                         <h5 class="card-title w-100"><i class="fal fa-file width-2 fs-xl"></i>FILE LIST</h5>                                            
                                                     </div>
                                                     @if ($file->isNotEmpty())    
+                                                        @php $i = 1; @endphp
                                                         <div class="card-body">
-                                                            <ol>
-                                                                @foreach ( $file as $f )
-                                                                    <li>
-                                                                        <a target="_blank" href="/get-doc/{{$f->id}}" class="text-info">{{$f->title}}</a>
-
-                                                                        <input type="hidden" name="id" value="{{$f->id}}">
-                                                                        
-                                                                        <a href="#" data-path ="{{$f->id}}" class="btn btn-danger btn-xs delete-alert" id="buttons"><i class="fal fa-trash"></i></a>
-                                                                        <a href="#" data-toggle="addModal" data-id="{{$f->id}}" data-title="{{$f->title}}" data-category="{{$f->category}}" id="buttons" class="btn btn-warning btn-xs editTitle"><i class="fal fa-pencil"></i></a>
-                                                                    </li>
-                                                                    <br>
-                                                                @endforeach
-                                                            </ol>
+                                                            <table class="table table-bordered editable" id="editable">
+                                                                <thead class="bg-info-50">
+                                                                    <tr class="text-center">
+                                                                        <td>No.</td>
+                                                                        <td>File</td>
+                                                                        <td>Category</td>
+                                                                        <td>Action</td>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach ( $file as $f )
+                                                                        <tr>
+                                                                            <td class="text-center">{{$i}}</td>
+                                                                            <td><a target="_blank" href="/get-doc/{{$f->id}}" class="text-info">{{$f->title}}</a></td>
+                                                                            <td style="display:none"><input type="hidden" name="id" value="{{$f->id}}"></td>
+                                                                            <td class="text-center">{{ isset($f->category) ? $f->getCategory->description : 'N/A' }}</td>
+                                                                            <td class="text-center col-md-3">
+                                                                                <a href="#" data-toggle="addModal" data-id="{{$f->id}}" data-title="{{$f->title}}" data-category="{{$f->category}}" class="btn btn-warning btn-xs editTitle"><i class="fal fa-pencil"></i></a>
+                                                                                <a href="#" data-path ="{{$f->id}}" class="btn btn-danger btn-xs delete-alert"><i class="fal fa-trash"></i></a>
+                                                                            </td>
+                                                                        </tr>
+                                                                     
+                                                                     @php $i++; @endphp
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
                                                         </div>
                                                     @else
                                                         <div class="card-body">

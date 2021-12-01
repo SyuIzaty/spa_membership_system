@@ -20,7 +20,7 @@ class DocumentManagementController extends Controller
     public function index()
     {
         $department = DepartmentList::all();
-        $list = DocumentManagement::get();
+        $list = DocumentManagement::orderBy('category', 'ASC')->get();
         return view('eDocument.index', compact('list','department'));
     }
 
@@ -35,7 +35,7 @@ class DocumentManagementController extends Controller
     public function getUpload($id)
     {
         $category = DocumentCategory::all();
-        $file = DocumentManagement::where('department_id', $id)->get();
+        $file = DocumentManagement::where('department_id', $id)->orderBy('category', 'ASC')->get();
         $getDepartment = DepartmentList::where('id',$id)->first();
         $department = DepartmentList::all();
 

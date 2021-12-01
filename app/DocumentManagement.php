@@ -21,4 +21,9 @@ class DocumentManagement extends Model
         return $this->hasOne('App\DepartmentList', 'id', 'department_id');
     }
 
+    public function getCategory()
+    {
+        return $this->hasOne('App\DocumentCategory', 'id', 'category');
+    }
+
 }
