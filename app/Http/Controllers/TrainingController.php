@@ -1072,11 +1072,14 @@ class TrainingController extends Controller
         $training_cat = TrainingCategory::all();
         $training_list = TrainingList::all();
         // $staff = Staff::whereNotNull('staff_id')->orderBy('staff_dept','asc')->orderBy('staff_name','asc')->get();
-        $staff = DB::table('intec_sims_dev.staffs as a')
-                ->leftjoin('auth.users as b','b.id','=','a.staff_id')
+        $staff = Staff::select('staffs.*')
+                ->whereNotNull('staffs.staff_id')
+                ->leftJoin('auth.users as b', 'b.id', '=', 'staffs.staff_id')
                 ->where('b.active', '=', 'Y')
-                ->orderBy('a.staff_dept','asc')->orderBy('a.staff_name','asc')->get();
-
+                ->orderBy('staffs.staff_dept','asc')
+                ->orderBy('staffs.staff_name','asc')
+                ->get();
+                
         return view('training.claim.bulk-claim-form', compact('training_type', 'training_cat', 'staff', 'training_list'));
     }
 
