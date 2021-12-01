@@ -594,6 +594,7 @@ class TrainingController extends Controller
                 'status'            => '2',
                 'form_type'         => 'AF',
                 'assigned_by'       => Auth::user()->id,
+                'assigned_date'     => Carbon::now()->toDateString(),
             ]);
     
             Session::flash('message');
@@ -1215,6 +1216,7 @@ class TrainingController extends Controller
                                 'form_type'         => 'AF',
                                 'approved_hour'     => $request->claim_hour, 
                                 'assigned_by'       => Auth::user()->id,
+                                'assigned_date'     => Carbon::now()->toDateString(),
                             ]);
 
                             $year = date('Y', strtotime($claim->start_date));
