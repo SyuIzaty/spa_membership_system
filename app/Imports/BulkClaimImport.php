@@ -64,6 +64,7 @@ class BulkClaimImport implements ToModel, WithHeadingRow, WithValidation, WithSt
                 'form_type'         => 'AF',
                 'approved_hour'     => $this->claim_hour, 
                 'assigned_by'       => Auth::user()->id,
+                'assigned_date'     => Carbon::now()->toDateString(),
             ]);
 
             $year = date('Y', strtotime($claim->start_date));

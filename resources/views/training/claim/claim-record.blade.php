@@ -150,7 +150,7 @@
                                                                             @if($details->training_id == '0') {{-- others --}}
                                                                                 <button class="btn btn-xs btn-secondary" disabled style="pointer-events: none"><i class="fal fa-link"></i></button>
                                                                             @else {{-- list --}}
-                                                                                @if( ($details->type == '1' || $details->type == '2') && ($details->status == '1' || $details->status == '2') ) {{-- internal & pending/approve--}}
+                                                                                @if( $details->status == '1' || $details->status == '2' ) {{--pending/approve--}}
                                                                                     @if(\App\TrainingList::where('id', $details->training_id)->whereNotNull('evaluation')->first())
                                                                                     {{-- evaluation in training not null --}}
                                                                                         @if(isset($exist))

@@ -831,8 +831,12 @@ class TrainingController extends Controller
 
     public function assignHour($id)
     {
-        $staff = Staff::whereNotNull('staff_id')->pluck('staff_id')->toArray();
-
+        // $staff = Staff::whereNotNull('staff_id')->pluck('staff_id')->toArray();
+        $staff = DB::table('intec_sims_dev.staffs as a')
+                ->leftjoin('auth.users as b','b.id','=','a.staff_id')
+                ->where('b.active', '=', 'Y')
+                ->pluck('a.staff_id')->toArray();
+    
         foreach($staff as $key => $value) {
             TrainingHourTrail::create([
                 'staff_id'      => $value,
@@ -1066,7 +1070,11 @@ class TrainingController extends Controller
         $training_type = TrainingType::all();
         $training_cat = TrainingCategory::all();
         $training_list = TrainingList::all();
-        $staff = Staff::whereNotNull('staff_id')->orderBy('staff_dept','asc')->orderBy('staff_name','asc')->get();
+        // $staff = Staff::whereNotNull('staff_id')->orderBy('staff_dept','asc')->orderBy('staff_name','asc')->get();
+        $staff = DB::table('intec_sims_dev.staffs as a')
+                ->leftjoin('auth.users as b','b.id','=','a.staff_id')
+                ->where('b.active', '=', 'Y')
+                ->orderBy('a.staff_dept','asc')->orderBy('a.staff_name','asc')->get();
 
         return view('training.claim.bulk-claim-form', compact('training_type', 'training_cat', 'staff', 'training_list'));
     }
@@ -1123,6 +1131,7 @@ class TrainingController extends Controller
                                 'form_type'         => 'AF',
                                 'approved_hour'     => $request->claim_hour, 
                                 'assigned_by'       => Auth::user()->id,
+                                'assigned_date'     => Carbon::now()->toDateString(),
                             ]);
 
                             $year = date('Y', strtotime($claim->start_date));
@@ -2052,7 +2061,7 @@ class TrainingController extends Controller
     {
         $request->validate([
             'te_id'     => 'required',
-            'color'     => 'required',
+            'color'     => 'required', 
         ]);
 
         foreach($request->input('head') as $key => $value) {
@@ -2255,12 +2264,19 @@ class TrainingController extends Controller
 
     public function data_evaluation_report()
     {
-        $report = TrainingList::whereIn('type', ['1','2'])->with('types','categories')->select('trm_training.*');
+        $report = TrainingList::whereNotNull('evaluation')->with('types','categories')->select('trm_training.*');
+        // whereIn('type', ['1','2'])->
        
         return datatables()::of($report)
         ->addColumn('action', function ($report) {
 
-            return '<a href="/report-info/' . $report->id.'" class="btn btn-sm btn-primary ml-1"><i class="fal fa-eye"></i></a>';
+            $exist = TrainingEvaluationHeadResult::where('training_id', $report->id)->first();
+
+            if(isset($exist)) {
+                return '<a href="/report-info/' . $report->id.'" class="btn btn-sm btn-primary ml-1"><i class="fal fa-eye"></i></a>';
+            } else {
+                return '<button class="btn btn-sm btn-secondary" disabled style="pointer-events: none"><i class="fal fa-eye"></i></button>';
+            }
         })
 
         ->editColumn('title', function ($report) {

@@ -10,7 +10,7 @@
                 <div class="card-header bg-primary-50">
                     <div class="d-flex justify-content-center" style="color: black">
                         <div class="p-2">
-                            <center><img src="{{ asset('img/intec_logo_new.png') }}" style="max-width: 100%" class="responsive"/></center><br>
+                            <center><img src="{{ URL::to('/') }}/img/intec_logo_new.png" height="120" width="320" alt="INTEC"></center><br>
                             <h4 style="text-align: center; margin-top: -25px">
                                 <b>TRAINING EVALUATION FORM</b>
                             </h4>

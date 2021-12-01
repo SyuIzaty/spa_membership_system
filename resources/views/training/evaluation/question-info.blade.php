@@ -41,8 +41,8 @@
                                                     </tr>
                                                     <tr>
                                                         <input type="hidden" name="te_id" value="{{ $id }}">
-                                                        <td><input type="text" name="head[]" placeholder="Question Header" class="form-control head" /></td>
-                                                        <td style="width: 20%"><input type="color" value="#ffffff" class="form-control" id="color" name="color[]"></td>
+                                                        <td><input type="text" name="head[]" placeholder="Question Header" class="form-control head" required/></td>
+                                                        <td style="width: 20%"><input type="color" value="#ffffff" class="form-control" id="color" name="color[]" required></td>
                                                         <td><button type="button" name="addhead" id="addhead" class="btn btn-success btn-sm"><i class="fal fa-plus"></i></button></td>
                                                     </tr>
                                                 </table>
@@ -127,10 +127,10 @@
                                                             <tr class="data-row">
                                                                 <input type="hidden" name="te_id" value="{{ $eval->evaluation_id }}" id="te_id">
                                                                 <input type="hidden" name="ques_head" value="{{ $eval->id}}">
-                                                                <td><input type="text" name="question[]" placeholder="Question" class="form-control question" /></td>
+                                                                <td><input type="text" name="question[]" placeholder="Question" class="form-control question" required/></td>
                                                                 <td>
                                                                     <select class="form-control ques_type" name="eval_rate[]" required>
-                                                                        <option disabled selected>Please Select</option>
+                                                                        <option value="" disabled selected>Please Select</option>
                                                                         <option value="R">Rating</option>
                                                                         <option value="C">Comment</option>
                                                                     </select>
@@ -195,7 +195,7 @@
                 i++;
                 $('#question_field'+id).append(`
                 <tr id="row${i}" class="head-added">
-                    <td><input type="text" name="question[]" placeholder="Question" class="form-control question" /></td>
+                    <td><input type="text" name="question[]" placeholder="Question" class="form-control question" required/></td>
                     <td>
                         <select class="form-control ques_type" name="eval_rate[]" required>
                             <option disabled selected>Please Select</option>
@@ -215,8 +215,8 @@
                 i++;
                 $('#head_field').append(`
                 <tr id="row${i}" class="head-added">
-                <td><input type="text" name="head[]" placeholder="Question Header" class="form-control head" /></td>
-                <td><input type="color" value="#ffffff" class="form-control" id="color" name="color[]"></td>
+                <td><input type="text" name="head[]" placeholder="Question Header" class="form-control head" required/></td>
+                <td><input type="color" value="#ffffff" class="form-control" id="color" name="color[]" required></td>
                 <td><button type="button" name="remove" id="${i}" class="btn btn-sm btn-danger btn_remove"><i class="fal fa-trash"></i></button></td>
                 </tr>
                 `);

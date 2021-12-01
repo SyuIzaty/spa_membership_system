@@ -353,7 +353,7 @@
                 <select name="staff_id[]" class="staffs_id form-control">
                     <option value="">Please select</option>
                     @foreach ($staff as $staffID) 
-                        <option value="{{ $staffID->id }}" {{ old('staff_id') ? 'selected' : '' }}>{{ $staffID->staff_id }} - {{ $staffID->staff_name }} [ {{ $staffID->staff_dept }} ]</option>
+                        <option value="{{ $staffID->staff_id }}" {{ old('staff_id') ? 'selected' : '' }}>{{ $staffID->staff_id }} - {{ $staffID->staff_name }} [ {{ $staffID->staff_dept }} ]</option>
                     @endforeach
                 </select>
             </td>

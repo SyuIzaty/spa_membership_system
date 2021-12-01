@@ -14,7 +14,7 @@ class Staff extends Model
 
     public function users()
     {
-        return $this->hasOne('App\User','id','staff_id')->where('active', '=', 'Y');
+        return $this->hasOne('App\User','id','staff_id');
     }
 
 }
