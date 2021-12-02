@@ -91,14 +91,23 @@ class DocumentManagementController extends Controller
 
     public function updateTitle(Request $request)
     {
-        $update = DocumentManagement::where('id', $request->id)->first();
-        $update->update([
-            'title' => $request->title,
-            'category' => $request->category,
-            'updated_by'  => Auth::user()->id
-        ]);
         
-        return response() ->json(['success' => 'Saved!']);
+        if($request->ajax()){
+            if($request->action == 'edit'){
+                $update = DocumentManagement::where('id', $request->id)->first();
+                $update->update([
+                    'title' => $request->title,
+                    'category' => $request->category,
+                    'updated_by'  => Auth::user()->id
+                ]);
+            }
+
+            if($request->action == 'delete'){
+                DocumentManagement::find($request->id)->delete();
+            }
+
+            return response()->json($request);
+        }
     }
 
 

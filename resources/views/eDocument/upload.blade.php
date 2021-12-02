@@ -133,20 +133,17 @@
                                                                         <td>No.</td>
                                                                         <td>File</td>
                                                                         <td>Category</td>
-                                                                        <td>Action</td>
+                                                                        <td>View</td>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     @foreach ( $file as $f )
                                                                         <tr>
                                                                             <td class="text-center">{{$i}}</td>
-                                                                            <td><a target="_blank" href="/get-doc/{{$f->id}}" class="text-info">{{$f->title}}</a></td>
-                                                                            <td style="display:none"><input type="hidden" name="id" value="{{$f->id}}"></td>
-                                                                            <td class="text-center">{{ isset($f->category) ? $f->getCategory->description : 'N/A' }}</td>
-                                                                            <td class="text-center col-md-3">
-                                                                                <a href="#" data-toggle="addModal" data-id="{{$f->id}}" data-title="{{$f->title}}" data-category="{{$f->category}}" class="btn btn-warning btn-xs editTitle"><i class="fal fa-pencil"></i></a>
-                                                                                <a href="#" data-path ="{{$f->id}}" class="btn btn-danger btn-xs delete-alert"><i class="fal fa-trash"></i></a>
-                                                                            </td>
+                                                                            <td style="display:none"><input name="id">{{$f->id}}</td>
+                                                                            <td class='title'>{{$f->title}}</td>
+                                                                            <td class="category" data-selected="{{ $f->category }}"></td>
+                                                                            <td><a target="_blank" href="/get-doc/{{$f->id}}" class="btn btn-info btn-xs"><i class="fal fa-eye"></i></a></td>
                                                                         </tr>
                                                                      
                                                                      @php $i++; @endphp
@@ -228,6 +225,12 @@
 
     $(document).ready(function() {
           
+//         jQuery(document).ready(function($) {
+//         $(".clickable-row").click(function() {
+//         // window.location = $(this).data("href");
+//         window.open($(this).data("href"), '_blank');
+//     });
+// });
 
     $("#dropzone").dropzone({
         addRemoveLinks: true,
@@ -321,6 +324,73 @@
         });
 
     });
+
+    $.ajaxSetup({
+            headers:{
+            'X-CSRF-Token' : $("input[name=_token]").val()
+            }
+        });
+
+    // Start: Edit title & category
+
+    $('.editable').Tabledit({
+            url: '{{ url("update-title") }}',
+            dataType:"json",
+            columns:{
+                identifier:[1, 'id'],
+                editable:[[2, 'title'], [3, 'category']]
+            },
+            restoreButton:false,
+
+            onSuccess:function(data, textStatus, jqXHR){
+                if(data.action == 'delete'){
+                    $('#'+data.id).remove();
+                }
+            }
+        });
+
+        $('.category').each(function(){
+            var selected = $(this).data('selected');
+            var select = $(`<input type="hidden" name="category" data-type="changed" class="select" value="${selected}"><select class="categories form-control"></select>`)
+            select.append('<option disabled selected value="">Select Category</option>' );
+            @foreach($category as $c)
+            select.append('<option value="{{ $c["id"] }}" >{{ $c["description"] }}</option>' );
+            @endforeach
+            $(this).html(select);
+            $(this).children('select').val(selected).change();
+        });
+
+        $('.categories').on('change',function(){
+            var selected = $(this).val();
+            $(this).siblings('.select').val(selected);
+        });
+
+        $('.tabledit-edit-button').on('click',function(){
+            $('input[data-type="changed"]').each(function(){
+                if($(this).hasClass('tabledit-input')){
+                    $(this).removeClass('tabledit-input');
+                }
+            });
+            $(this).closest('tr').find('.select').addClass('tabledit-input');
+        });
+
+        $('.tabledit-view-mode').find('select').each(function(){
+            $(this).attr('disabled','disabled');
+        });
+
+        $('.tabledit-edit-button').on('click',function(){
+            if($(this).hasClass('active')){
+                $(this).parents('tr').find('select').attr('disabled','disabled');
+            }else{
+                $(this).parents('tr').find('select').removeAttr('disabled');
+            }
+        });
+
+        $('.tabledit-save-button').on('click',function(){
+            $(this).parents('tr').find('select').attr('disabled','disabled');
+        })
+
+        // End: Edit title & category
 });
 
 
