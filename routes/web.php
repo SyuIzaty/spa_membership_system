@@ -478,6 +478,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/delete-doc/{id}','DocumentManagementController@deleteDoc');
     Route::post('/update-title', 'DocumentManagementController@updateTitle');
 
+    //eAduan Korporat
+    Route::get('/lists/{id}', 'AduanKorporatController@list');
+    Route::post('/get-list/{id}', 'AduanKorporatController@show');
+    Route::get('/detail/{id}', 'AduanKorporatController@detail');
+    Route::get('/log/{id}', 'AduanKorporatController@log');
+
+
+
     // Training : Training
     Route::get('/training-list', 'TrainingController@trainingList');
     Route::post('data-training', 'TrainingController@data_training');
@@ -620,3 +628,12 @@ Route::get('get-file-image/{filename}', 'AssetController@getImage');
 Route::get('/training-open-attendance/{id}', 'TrainingController@openAttendance')->name('openAttendance');
 Route::post('training-confirm-attendance', 'TrainingController@confirmAttendance');
 Route::get('get-train-image/{filename}', 'TrainingController@getImage');
+
+// eAduan Korporat Public
+Route::get('/form', 'AduanKorporatController@index');
+Route::get('/main', 'AduanKorporatController@main');
+Route::get('/end', 'AduanKorporatController@end');
+Route::get('/check', 'AduanKorporatController@check');
+Route::get('/search', 'AduanKorporatController@search');
+Route::post('/store', 'AduanKorporatController@store');
+Route::get('/detail', 'AduanKorporatController@displayDetail');

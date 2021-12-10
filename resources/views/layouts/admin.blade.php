@@ -160,6 +160,60 @@
                             // echo ($permission);
                         @endphp
 
+                        <!-- Start eAduan Korporat System -->
+                            @can('take action')
+                            <li class="nav-title">i-Complaint</li>
+                            <li>
+                                <a href="/main" title="Form" data-filter-tags="form">
+                                    <i class="fal fa-file-alt"></i>
+                                    <span class="nav-link-text" data-i18n="nav.form">Form</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/dashboard-aduan-korporat" title="Dashboard Aduan Korporat" data-filter-tags="dashboard">
+                                    <i class="fal fa-chart-pie"></i>
+                                    <span class="nav-link-text" data-i18n="nav.dashboard">Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="open">
+                                <a href="#" title="List" data-filter-tags="list">
+                                    <i class="fal fa-list"></i>
+                                    <span class="nav-link-text" data-i18n="nav.list">List</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        @inject('lists', 'App\AduanKorporat')
+                                        <a href="/lists/1" title="Pending" data-filter-tags="pending">
+                                            <span class="nav-link-text" data-i18n="nav.pending">Pending ({{ $lists->countPending() }})</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/lists/2" title="Has Assigned" data-filter-tags="assign">
+                                            <span class="nav-link-text" data-i18n="nav.assign">Has Assigned ({{ $lists->countAssigned() }})</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/lists/3" title="Action Taken" data-filter-tags="action">
+                                            <span class="nav-link-text" data-i18n="nav.action">Action Taken ({{ $lists->countAction() }})</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/lists/4" title="Completed" data-filter-tags="completed">
+                                            <span class="nav-link-text" data-i18n="nav.completed">Completed ({{ $lists->countCompleted() }})</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="/report/all" title="Report" data-filter-tags="report">
+                                    <i class="fal fa-clipboard-list"></i>
+                                    <span class="nav-link-text" data-i18n="nav.report">Report</span>
+                                </a>
+                            </li>
+                            @endcan
+
+                        <!-- End eAduan Korporat System -->
+
                         <!-- Start eDocument Management System -->
                         
                         <li class="nav-title">eDocument Management</li>
