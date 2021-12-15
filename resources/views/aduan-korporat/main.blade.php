@@ -30,7 +30,7 @@
 } */
 
 .items {
-  border-radius: 5px;
+  border-radius: 20px;
   display: grid;
   grid-template-rows: 2fr 1fr;
   grid-gap: 10px;
@@ -38,6 +38,7 @@
   border: 3px dotted black;
   transition: all 0.6s;
   margin: 5px;
+  background-color: white;
 }
 
 .icon-wrapper, .project-name {
@@ -48,7 +49,7 @@
 
 .icon-wrapper i {
   font-size: 50px;
-  color: #52a9c4;
+  color: #ff0000;
   transform: translateY(0px);
   transition: all 0.6s;
 }
@@ -97,7 +98,7 @@
                     </div>
                 </div>
                 
-                <div class="card-body">
+                <div class="card-body" style="background-color: #d3d3d366;">
                     <div style="margin-bottom: 100px;"></div>
                     <div class="panel-container show">
                         <div class="panel-content">
@@ -120,7 +121,7 @@
                                     </div>
                                     
                                     <div class="col-sm-6" style="padding: 0 80px">
-                                        <a href="/check">
+                                        <a href="/lists">
                                             <div class="items">
                                                 <div class="icon-wrapper">
                                                     <span><i class="fas fa-search"></i></span>                                           

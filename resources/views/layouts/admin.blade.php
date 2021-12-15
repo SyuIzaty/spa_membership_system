@@ -175,18 +175,25 @@
                                     <span class="nav-link-text" data-i18n="nav.dashboard">Dashboard</span>
                                 </a>
                             </li>
+                            
+
                             <li class="open">
                                 <a href="#" title="List" data-filter-tags="list">
                                     <i class="fal fa-list"></i>
                                     <span class="nav-link-text" data-i18n="nav.list">List</span>
                                 </a>
                                 <ul>
+                                @endcan
+                                @can('assign department')
                                     <li>
                                         @inject('lists', 'App\AduanKorporat')
                                         <a href="/lists/1" title="Pending" data-filter-tags="pending">
                                             <span class="nav-link-text" data-i18n="nav.pending">Pending ({{ $lists->countPending() }})</span>
                                         </a>
                                     </li>
+                                @endcan
+                                @can('take action')
+                                    @inject('lists', 'App\AduanKorporat')
                                     <li>
                                         <a href="/lists/2" title="Has Assigned" data-filter-tags="assign">
                                             <span class="nav-link-text" data-i18n="nav.assign">Has Assigned ({{ $lists->countAssigned() }})</span>

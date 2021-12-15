@@ -35,6 +35,11 @@ class AduanKorporat extends Model
         return $this->hasOne('App\DepartmentList','id','assign');
     }
 
+    public function getRemark()
+    {
+        return $this->hasOne('App\AduanKorporatRemark','complaint_id','id');
+    }
+
     public function countPending()
     {
         return $this->where('status', 1)->count();

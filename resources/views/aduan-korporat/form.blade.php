@@ -248,7 +248,7 @@
             var datas = $('#form-id').serialize();
         
             Swal.fire({
-                title: 'Saving..',
+                title: 'Sending..',
                 text: 'Please wait..',
                 allowOutsideClick: false,
                 allowEscapeKey: false,

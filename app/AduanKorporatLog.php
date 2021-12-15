@@ -8,7 +8,7 @@ class AduanKorporatLog extends Model
 {
     protected $table = 'eak_log_activity';
     protected $primarykey = 'id';
-    protected $fillable = ['complaint_id', 'activity', 'created_by', 'updated_by', 'deleted_by'];
+    protected $fillable = ['complaint_id','name', 'activity', 'created_by', 'updated_by', 'deleted_by'];
 
     public function complaint()
     {
