@@ -63,12 +63,8 @@ class AduanKorporatController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->userCategory == "STF")
+        if($request->userCategory == "STF" || $request->userCategory == "STD")
         {
-            // $validated = $request->validate([
-            //     'user_phone'  => 'required|min:10|max:11|numeric',
-            // ]);
-
             $data                = new AduanKorporat();
             $data->staff_id      = $request->user_id;
             $data->name          = $request->user_name;
@@ -114,7 +110,7 @@ class AduanKorporatController extends Controller
                         'original_name' => $originalName,
                         'upload'        => $newFileName,
                         'web_path'      => "app/eaduankorporat/".$fileName,
-                        'created_by' => Auth::user()->id
+                        'created_by'    => $request->user_id
                     ]);
                 }
             }
@@ -168,20 +164,20 @@ class AduanKorporatController extends Controller
                         'original_name' => $originalName,
                         'upload'        => $newFileName,
                         'web_path'      => "app/eaduankorporat/".$fileName,
-                        'created_by' => Auth::user()->id
+                        'created_by' => $request->ic
                     ]);
                 }
             }
 
         }
 
-        // return redirect()->back()->with('message','Sent!');
-        return response() ->json(['success' => 'Sent!']);        
+        return redirect('end/'.$ticket);
+      
     }
 
-    public function end()
+    public function end($ticket)
     {
-        return view('aduan-korporat.end');
+        return view('aduan-korporat.end', compact('ticket'));
     }
 
 

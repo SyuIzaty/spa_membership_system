@@ -637,7 +637,7 @@ Route::get('get-train-image/{filename}', 'TrainingController@getImage');
 // eAduan Korporat Public
 Route::get('/form', 'AduanKorporatController@index');
 Route::get('/main', 'AduanKorporatController@main');
-Route::get('/end', 'AduanKorporatController@end');
+Route::get('/end/{ticket}', 'AduanKorporatController@end');
 Route::get('/check', 'AduanKorporatController@check');
 Route::get('/search', 'AduanKorporatController@search');
 Route::post('/store', 'AduanKorporatController@store');

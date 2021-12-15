@@ -113,7 +113,7 @@
                                                     <ol>
                                                         @foreach ( $file as $f )
                                                             <li>
-                                                                <a target="_blank" href="/get-file/{{$f->id}}">{{$f->upload}}</a>
+                                                                <a target="_blank" href="/get-file/{{$f->id}}">{{$f->original_name}}</a>
                                                             </li>
                                                             <br>
                                                         @endforeach

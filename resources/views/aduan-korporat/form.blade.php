@@ -34,7 +34,7 @@
                                     <div class="alert alert-success" style="color: #3b6324; background-color: #d3fabc;"> <i class="icon fal fa-check-circle"></i> {{ Session::get('message') }}</div>
                             @endif
                             {{-- {!! Form::open(['action' => 'AduanKorporatController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!} --}}
-                            <form id="form-id" enctype='multipart/form-data'>
+                            <form id="form-id" action="/store" method="post" enctype='multipart/form-data'>
                                 @csrf
                             {{-- <input type="hidden" class="form-control name" id="name" name="name">
                             <input type="hidden" class="form-control email" id="email" name="email"> --}}
@@ -239,45 +239,18 @@
 
 //start validate
 
-        $("#submit").click(function(){
-        var valid = Validate();
-        if(valid){
-                        
-            event.preventDefault();
-        
-            var datas = $('#form-id').serialize();
-        
-            Swal.fire({
-                title: 'Sending..',
-                text: 'Please wait..',
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-                allowEnterKey: false,
-                onOpen: () => {
-                    Swal.showLoading()
-                }
-            })
-        
-            $.ajax({
-                type: "POST",
-                url: "{{ url('store')}}",
-                data: datas,
-                dataType: "json",
-                success: function(response) {
-                    console.log(response);
-                    if(response){
-                        Swal.fire(response.success);
-                        window.location.href ="{{ url('end')}}";
-                    }
-                },
-                error:function(error){
-                    console.log(error)
-                    alert("Error");
-                }
-            });
-        
-            
-        }
+        $("#submit").click(function(e){
+            var valid = Validate();
+            if(valid)
+            {
+
+                $('#form-id').submit(function() { 
+                    // submit the form 
+                    $(this).ajaxSubmit(); 
+                    // return false to prevent normal browser submit and page navigation 
+                    return false; 
+                });
+            }
         });
 
         function Validate() {
