@@ -473,6 +473,19 @@ class EngagementManagementController extends Controller
 
         return datatables()::of($data)
 
+        ->editColumn('content', function ($data) {
+            
+            if ($data->content != '')
+            {
+                return '<p>'.str_replace('<br />', "\r\n", $data->content).'</p>';
+            }
+
+            else
+            {
+                return "N/A";
+            }
+        })
+
         ->editColumn('remark', function ($data) {
 
             return isset($data->remark) ? $data->remark : 'N/A';            
@@ -543,7 +556,7 @@ class EngagementManagementController extends Controller
 
         ->addIndexColumn()
 
-        ->rawColumns(['action','file'])
+        ->rawColumns(['action','file','content'])
         ->make(true);
     }
 
