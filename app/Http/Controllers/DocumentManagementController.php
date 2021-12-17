@@ -21,7 +21,10 @@ class DocumentManagementController extends Controller
     {
         $department = DepartmentList::all();
         $list = DocumentManagement::orderBy('category', 'ASC')->get();
-        return view('eDocument.index', compact('list','department'));
+
+        $count = DepartmentList::select('id', 'name')->withCount('document')->orderByDesc('document_count')->get();
+
+        return view('eDocument.index', compact('list','department','count'));
     }
 
     public function upload()
@@ -50,7 +53,7 @@ class DocumentManagementController extends Controller
 
         if (isset($file)) { 
             $originalName = $file->getClientOriginalName();
-            $fileName = $originalName."_".date('d-m-Y_hia');
+            $fileName = date('dmY_Hi')."_".$originalName;
             $title = current(explode(".", $originalName));
             $file->storeAs('/eDocument', $fileName);
             DocumentManagement::create([

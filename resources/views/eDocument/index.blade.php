@@ -26,24 +26,26 @@
                                 <a href= "/upload" class="btn btn-info waves-effect waves-themed float-right" style="margin-bottom: 5px;"><i class="fal fa-upload"></i> Upload</a>
                                 @endrole
 
-                                @foreach ($department as $d)
+                                @foreach ($count as $c)
                                     @php $i = 1; @endphp
-                                   <h5> <i class='fal fa-caret-right'></i><b> {{$d->name}}</b></h5><br>
+                                   <h5> <i class='fal fa-caret-right'></i><b> {{$c->name}}</b></h5><br>
                                     <table id="list" class="table table-bordered table-hover table-striped w-100">
                                         <thead>
                                             <tr class="bg-primary-50 text-center">
                                                 <th class="text-center">No</th>
-                                                <th class="text-center">Category</th>
                                                 <th class="text-center">Document</th>
+                                                <th class="text-center">Category</th>
+                                                <th class="text-center">Download</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @if ($list->where('department_id',$d->id)->isNotEmpty())
-                                                @foreach ($list->where('department_id',$d->id) as $l)
+                                            @if ($c->document_count != 0)
+                                                @foreach ($list->where('department_id',$c->id) as $l)
                                                     <tr>
                                                         <td class="text-center col-md-1">{{$i}}</td>
-                                                        <td class="text-center col-md-2">{{ isset($l->category) ? $l->getCategory->description : 'N/A' }}</td>
                                                         <td><a target="_blank" href="/get-doc/{{$l->id}}">{{$l->title}}</a></td>
+                                                        <td class="text-center col-md-2">{{ isset($l->category) ? $l->getCategory->description : 'N/A' }}</td>
+                                                        <td class="text-center col-md-2"><a href="/get-doc/{{$l->id}}" class="btn btn-sm btn-primary" download="{{$l->title}}"><i class="fal fa-download"></i></a></td>
                                                     </tr>
                                                     @php $i++; @endphp
                                                 @endforeach
