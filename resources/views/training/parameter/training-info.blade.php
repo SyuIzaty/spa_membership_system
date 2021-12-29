@@ -155,7 +155,7 @@
                                                                 <div class="form-group">
                                                                     <td width="25%"><label class="form-label" for="evaluation"><span class="text-danger">*</span> Evaluation : </label></td>
                                                                     <td colspan="3">
-                                                                        <select class="form-control" name="evaluation" id="evaluation">
+                                                                        <select class="form-control" name="evaluation" id="evaluation" required>
                                                                             <option value="">Please Select</option>
                                                                             @foreach ($data_evaluation as $evaluates) 
                                                                                 <option value="{{ $evaluates->id }}" {{ $train->evaluation == $evaluates->id ? 'selected="selected"' : '' }}>{{ strtoupper($evaluates->evaluation) }}</option>
@@ -171,7 +171,7 @@
                                                                 <div class="form-group">
                                                                     <td width="25%"><label class="form-label" for="evaluation_status"><span class="text-danger">*</span> Evaluation Status : </label></td>
                                                                     <td colspan="3">
-                                                                        <select class="form-control" name="evaluation_status" id="evaluation_status">
+                                                                        <select class="form-control" name="evaluation_status" id="evaluation_status" required>
                                                                             <option value="">Please Select</option>
                                                                             <option value="1" {{ old('evaluation_status', $train->evaluation_status) == '1' ? 'selected':''}} >OPEN</option>
                                                                             <option value="0" {{ old('evaluation_status', $train->evaluation_status) == '0' ? 'selected':''}} >CLOSE</option>
@@ -372,7 +372,7 @@
 
         $("#type").change(function() {
             var val = $("#type").val();
-            if(val=="1" || val=="2"){
+            if(val=="1" || val=="2" || val=="3" || val=="4"){
                 $(".eval").show();
             } else {
                 $(".eval").hide();

@@ -207,35 +207,49 @@ class TrainingController extends Controller
  
      public function storeTraining(Request $request)
      {
-        if($request->type == '3' || $request->type == '4') {
-            // external
-            $request->validate([
-                'title'         => 'required',
-                'type'          => 'required',
-                'category'      => 'required',
-                'start_date'    => 'required',
-                'end_date'      => 'required',
-                'start_time'    => 'required',
-                'end_time'      => 'required',
-                'venue'         => 'required',
-                'claim_hour'    => 'required',
-            ]);
-        } else {
-            // internal
-            $request->validate([
-                'title'                 => 'required',
-                'type'                  => 'required',
-                'category'              => 'required',
-                'start_date'            => 'required',
-                'end_date'              => 'required',
-                'start_time'            => 'required',
-                'end_time'              => 'required',
-                'venue'                 => 'required',
-                'claim_hour'            => 'required',
-                'evaluation'            => 'required',
-                'evaluation_status'     => 'required',
-            ]);
-        }
+        // if($request->type == '3' || $request->type == '4') {
+        //     // external
+        //     $request->validate([
+        //         'title'         => 'required',
+        //         'type'          => 'required',
+        //         'category'      => 'required',
+        //         'start_date'    => 'required',
+        //         'end_date'      => 'required',
+        //         'start_time'    => 'required',
+        //         'end_time'      => 'required',
+        //         'venue'         => 'required',
+        //         'claim_hour'    => 'required',
+        //     ]);
+        // } else {
+        //     // internal
+        //     $request->validate([
+        //         'title'                 => 'required',
+        //         'type'                  => 'required',
+        //         'category'              => 'required',
+        //         'start_date'            => 'required',
+        //         'end_date'              => 'required',
+        //         'start_time'            => 'required',
+        //         'end_time'              => 'required',
+        //         'venue'                 => 'required',
+        //         'claim_hour'            => 'required',
+        //         'evaluation'            => 'required',
+        //         'evaluation_status'     => 'required',
+        //     ]);
+        // }
+
+        $request->validate([
+            'title'                 => 'required',
+            'type'                  => 'required',
+            'category'              => 'required',
+            'start_date'            => 'required',
+            'end_date'              => 'required',
+            'start_time'            => 'required',
+            'end_time'              => 'required',
+            'venue'                 => 'required',
+            'claim_hour'            => 'required',
+            'evaluation'            => 'required',
+            'evaluation_status'     => 'required',
+        ]);
 
         $image = $request->upload_image;
         $paths = storage_path()."/training/";
@@ -288,35 +302,49 @@ class TrainingController extends Controller
      {
          $train = TrainingList::where('id', $request->id)->first();
          
-         if($request->type == '3' && $request->type == '4') {
-            // external
-            $request->validate([
-                'title'         => 'required',
-                'type'          => 'required',
-                'category'      => 'required',
-                'start_date'    => 'required',
-                'end_date'      => 'required',
-                'start_time'    => 'required',
-                'end_time'      => 'required',
-                'venue'         => 'required',
-                'claim_hour'    => 'required',
-            ]);
-        } else {
-            // internal
-            $request->validate([
-                'title'                 => 'required',
-                'type'                  => 'required',
-                'category'              => 'required',
-                'start_date'            => 'required',
-                'end_date'              => 'required',
-                'start_time'            => 'required',
-                'end_time'              => 'required',
-                'venue'                 => 'required',
-                'claim_hour'            => 'required',
-                'evaluation'            => 'required',
-                'evaluation_status'     => 'required',
-            ]);
-        }
+        //  if($request->type == '3' && $request->type == '4') {
+        //     // external
+        //     $request->validate([
+        //         'title'         => 'required',
+        //         'type'          => 'required',
+        //         'category'      => 'required',
+        //         'start_date'    => 'required',
+        //         'end_date'      => 'required',
+        //         'start_time'    => 'required',
+        //         'end_time'      => 'required',
+        //         'venue'         => 'required',
+        //         'claim_hour'    => 'required',
+        //     ]);
+        // } else {
+        //     // internal
+        //     $request->validate([
+        //         'title'                 => 'required',
+        //         'type'                  => 'required',
+        //         'category'              => 'required',
+        //         'start_date'            => 'required',
+        //         'end_date'              => 'required',
+        //         'start_time'            => 'required',
+        //         'end_time'              => 'required',
+        //         'venue'                 => 'required',
+        //         'claim_hour'            => 'required',
+        //         'evaluation'            => 'required',
+        //         'evaluation_status'     => 'required',
+        //     ]);
+        // }
+
+        $request->validate([
+            'title'                 => 'required',
+            'type'                  => 'required',
+            'category'              => 'required',
+            'start_date'            => 'required',
+            'end_date'              => 'required',
+            'start_time'            => 'required',
+            'end_time'              => 'required',
+            'venue'                 => 'required',
+            'claim_hour'            => 'required',
+            'evaluation'            => 'required',
+            'evaluation_status'     => 'required',
+        ]);
 
         $image = $request->upload_image;
         $paths = storage_path()."/training/";
@@ -384,8 +412,10 @@ class TrainingController extends Controller
                         'claim_hour'       => $request->claim_hour, 
                         'venue'            => $request->venue, 
                         'link'             => $request->link, 
-                        'evaluation'       => null, 
-                        'evaluation_status'=> null,
+                        // 'evaluation'       => null, 
+                        // 'evaluation_status'=> null,
+                        'evaluation'       => $request->evaluation, 
+                        'evaluation_status'=> $request->evaluation_status,
                         'upload_image'     => $originalsName,
                         'web_path'         => "app/training/".$fileNames,
                     ]);
@@ -401,8 +431,10 @@ class TrainingController extends Controller
                         'claim_hour'       => $request->claim_hour, 
                         'venue'            => $request->venue, 
                         'link'             => $request->link, 
-                        'evaluation'       => null, 
-                        'evaluation_status'=> null,
+                        // 'evaluation'       => null, 
+                        // 'evaluation_status'=> null,
+                        'evaluation'       => $request->evaluation, 
+                        'evaluation_status'=> $request->evaluation_status,
                     ]);
                 }
             }
@@ -430,6 +462,8 @@ class TrainingController extends Controller
                         'link'             => $request->link, 
                         'upload_image'     => $originalsName,
                         'web_path'         => "app/training/".$fileNames,
+                        'evaluation'       => $request->evaluation, 
+                        'evaluation_status'=> $request->evaluation_status,
                     ]);
                 } else {
                     $train->update([
@@ -443,6 +477,8 @@ class TrainingController extends Controller
                         'claim_hour'       => $request->claim_hour, 
                         'venue'            => $request->venue, 
                         'link'             => $request->link, 
+                        'evaluation'       => $request->evaluation, 
+                        'evaluation_status'=> $request->evaluation_status,
                     ]);
                 }
             } else {
@@ -985,7 +1021,7 @@ class TrainingController extends Controller
             }
            
         } else { // if others @ 0
-
+            
             for($x = 0; $x < count($request->file_name) ; $x ++)
             {
                 if ($request->file_name[$x]->getMimeType() == 'image/png' || $request->file_name[$x]->getMimeType() == 'image/jpg' || $request->file_name[$x]->getMimeType() == 'image/jpeg') {

@@ -221,7 +221,7 @@
                                 <div class="form-group">
                                     <td width="12%"><label class="form-label" for="evaluation"><span class="text-danger">*</span> Evaluation :</label></td>
                                     <td colspan="4">
-                                        <select name="evaluation" id="evaluation" class="form-control">
+                                        <select name="evaluation" id="evaluation" class="form-control" required>
                                             <option value="">Please Select</option>
                                             @foreach ($data_evaluation as $evaluate) 
                                                 <option value="{{ $evaluate->id }}" {{ old('evaluation') ? 'selected' : '' }}>{{ $evaluate->evaluation }}</option>
@@ -237,7 +237,7 @@
                                 <div class="form-group">
                                     <td width="12%"><label class="form-label" for="evaluation_status"><span class="text-danger">*</span> Evaluation Status :</label></td>
                                     <td colspan="4">
-                                        <select name="evaluation_status" id="evaluation_status" class="form-control">
+                                        <select name="evaluation_status" id="evaluation_status" class="form-control" required>
                                             <option value="">Please Select</option>
                                             <option value="1" {{ old('evaluation_status') == '1' ? 'selected':''}} >OPEN</option>
                                             <option value="0" {{ old('evaluation_status') == '0' ? 'selected':''}} >CLOSE</option>
@@ -293,7 +293,7 @@
 
         $( "#type" ).change(function() {
             var val = $("#type").val();
-            if(val=="1" || val=="2"){
+            if(val=="1" || val=="2" || val=="3" || val=="4"){
                 $(".eval").show();
             } else {
                 $(".eval").hide();
