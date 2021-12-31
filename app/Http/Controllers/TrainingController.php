@@ -48,6 +48,7 @@ class TrainingController extends Controller
 
     public function dashboard(Request $request)
     {
+        //
         $years = TrainingClaim::selectRaw("DATE_FORMAT(start_date, '%Y') year")
                 ->whereNotNull('start_date')
                 ->groupBy('year')
