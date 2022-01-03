@@ -591,6 +591,18 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Training : Dashboard
     Route::get('/training-dashboard', 'TrainingController@dashboard')->name('dashList');
+
+
+    // eVotingController
+    Route::get('/vote', function () {
+        return view('vue/evote');
+    });
+
+
+    Route::get('/{vue_capture?}',function () {
+        return view('vue/evote');
+    })->where('vue_capture', '[\/\w\.-]*');
+
 });
 
 //SCM - Public View
@@ -647,12 +659,3 @@ Route::get('/lists', 'AduanKorporatController@publicList');
 Route::post('/get-lists/{id}', 'AduanKorporatController@getPublicList');
 Route::get('/view-detail/{id}', 'AduanKorporatController@publicDetail');
 
-// eVotingController
-Route::get('/vote', function () {
-    return view('vue/evote');
-});
-
-
-Route::get('/{vue_capture?}',function () {
-    return view('vue/evote');
-})->where('vue_capture', '[\/\w\.-]*');

@@ -3,6 +3,11 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- base css -->
+        <link rel="stylesheet" media="screen, print" href="{{ URL::asset('css/vendors.bundle.css') }}">
+        <link rel="stylesheet" media="screen, print" href="{{ URL::asset('css/app.bundle.css') }}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+
 
         <title>Laravel</title>
 
@@ -66,14 +71,20 @@
     </head>
     <body>
         <div id="app">
+            <nav class="navbar navbar-light bg-light">
+                <a class="navbar-brand" href="/">
+                    <img src="{{asset('img/intec_logo_new.png')}}" height="30" class="d-inline-block align-top" alt="">
+                </a>
+            </nav>
             <div class="flex-center position-ref full-height">
-                <div class="content">
+                <div class="content full-height w-100 p-3 p-md-5" style="position:absolute;">
                     <router-view></router-view>
                 </div>
             </div>
         </div>
         <script src="{{ asset('js/app.js') }}"></script>
-
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
     </body>
 
 </html>
