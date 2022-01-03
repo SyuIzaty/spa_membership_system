@@ -647,3 +647,12 @@ Route::get('/lists', 'AduanKorporatController@publicList');
 Route::post('/get-lists/{id}', 'AduanKorporatController@getPublicList');
 Route::get('/view-detail/{id}', 'AduanKorporatController@publicDetail');
 
+// eVotingController
+Route::get('/vote', function () {
+    return view('vue/evote');
+});
+
+
+Route::get('/{vue_capture?}',function () {
+    return view('vue/evote');
+})->where('vue_capture', '[\/\w\.-]*');

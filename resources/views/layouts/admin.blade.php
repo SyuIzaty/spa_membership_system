@@ -175,7 +175,7 @@
                                     <span class="nav-link-text" data-i18n="nav.dashboard">Dashboard</span>
                                 </a>
                             </li>
-                            
+
 
                             <li class="open">
                                 <a href="#" title="List" data-filter-tags="list">
@@ -222,7 +222,7 @@
                         <!-- End eAduan Korporat System -->
 
                         <!-- Start eDocument Management System -->
-                        
+
                         <li class="nav-title">eDocument Management</li>
                         @role('Staff')
                             <li>
@@ -234,8 +234,21 @@
                         @endrole
 
                             <!-- End eDocument Management System -->
-                            
-                    
+
+                        <!-- Start eDocument Management System -->
+
+                        <li class="nav-title">eVoting</li>
+                        <li>
+                            <a href="/vote" title="Voting Platform" data-filter-tags="vote">
+                                <!-- <i class="fal fa-file"></i> -->
+                                <i class="ni ni-envelope-letter"></i>
+                                <span class="nav-link-text" data-i18n="nav.vote">Voting Station</span>
+                            </a>
+                        </li>
+
+                        <!-- End eDocument Management System -->
+
+
                         <!-- Start Engagement Management System -->
 
                         @role('Engagement (Admin)|Engagement (Team Member)')
@@ -691,7 +704,7 @@
                         {{-- Start Computer Grant Management --}}
                         @role('Lecturer|Computer Grant (IT Admin)|Computer Grant (Finance Admin)|Super Admin')
                             <li class="nav-title">COMPUTER GRANT MANAGEMENT</li>
-                            
+
                             {{-- User --}}
                             @role('Lecturer|Super Admin')
                                 <li>
@@ -743,22 +756,22 @@
                                         <a href="/all-grant-list/5" title="Agreement Signed" data-filter-tags="signed">
                                             <span class="nav-link-text" data-i18n="nav.signed">Signed Agreement ({{ $grant->countSigned() }})</span>
                                         </a>
-                                    </li>  
+                                    </li>
                                     <li>
                                         <a href="/all-grant-list/6" title="Reimbursement Completed" data-filter-tags="reimbursement">
                                             <span class="nav-link-text" data-i18n="nav.reimbursement">Completed ({{ $grant->countReimbursement() }})</span>
                                         </a>
-                                    </li>  
+                                    </li>
                                     <li>
                                         <a href="/all-grant-list/7" title="Request for Cancellation" data-filter-tags="cancel">
                                             <span class="nav-link-text" data-i18n="nav.cancel">Request Cancellation ({{ $grant->countRequestCancel() }})</span>
                                         </a>
-                                    </li>  
+                                    </li>
                                     <li>
                                         <a href="/all-grant-list/8" title="Request for Cancellation Verified" data-filter-tags="cancelverified">
                                             <span class="nav-link-text" data-i18n="nav.cancelverified">Cancellation Verified ({{ $grant->countCancelVerified() }})</span>
                                         </a>
-                                    </li>   
+                                    </li>
                                 </ul>
                             </li>
                             @endrole
