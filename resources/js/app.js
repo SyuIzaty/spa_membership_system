@@ -7,16 +7,16 @@
 require("./bootstrap");
 
 import Vue from "vue";
+import { routes } from "./routes";
 import VueRouter from "vue-router";
 
 Vue.use(VueRouter);
-
-import { routes } from "./routes";
 
 const router = new VueRouter({
     routes, // short for `routes: routes`
     mode: "history"
 });
+Vue.config.productionTip = false;
 
 /**
  * The following block of code may be used to automatically register your

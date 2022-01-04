@@ -70,14 +70,14 @@
         <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text.css">
     </head>
     <body>
-        <div id="app">
-            <nav class="navbar navbar-light bg-light">
+        <div id="app" class=" full-height">
+            <nav class="navbar navbar-light bg-light" style="height:10%">
                 <a class="navbar-brand" href="/">
                     <img src="{{asset('img/intec_logo_new.png')}}" height="30" class="d-inline-block align-top" alt="">
                 </a>
             </nav>
-            <div class="flex-center position-ref full-height">
-                <div class="content full-height w-100 p-3 p-md-5" style="position:absolute;">
+            <div class="flex-center position-ref" style="height:90%">
+                <div class="content h-100 w-100 p-3 p-md-5" style="position:absolute;padding-top:1rem !important;">
                     <router-view></router-view>
                 </div>
             </div>
