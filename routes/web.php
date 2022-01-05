@@ -594,13 +594,23 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     // eVotingController
-    Route::get('/vote', function () {
-        return view('e-voting/index');
+    Route::get('/vote-platform', function () {
+        return view('e-voting/platform');
     });
 
 
-    Route::get('/{vue_capture?}',function () {
-        return view('e-voting/index');
+    Route::get('/vote-report', function () {
+        return view('e-voting/report');
+    });
+
+
+
+    Route::get('/vote-platform/{vue_capture?}',function () {
+        return view('e-voting/platform');
+    })->where('vue_capture', '[\/\w\.-]*');
+
+    Route::get('/vote-report/{vue_capture?}',function () {
+        return view('e-voting/report');
     })->where('vue_capture', '[\/\w\.-]*');
 
 });

@@ -2,6 +2,7 @@
 
 @section('css')
 <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text.css">
+<!-- <link href="https://unpkg.com/primevue/resources/themes/saga-blue/theme.css " rel="stylesheet"> -->
 @endsection
 
 @section('content')
@@ -13,7 +14,7 @@
                 <div id="panel-1" class="panel">
                     <div class="panel-hdr">
                         <h2>
-                            eVoting <span class="fw-300"><i> </i></span>
+                            eVoting <small>Report</small><span class="fw-300"><i></i></span>
                         </h2>
                         <div class="panel-toolbar">
                             <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip"
@@ -28,14 +29,10 @@
 
                     <div class="panel-container show">
                         <div class="panel-content" id="app" >
-                            <!-- <div id="app" class=" full-height">
-                                <div class="flex-center position-ref" style="height:90%">
-                                    <div class="content h-100 w-100 p-3 p-md-5" style="position:absolute;padding-top:1rem !important;">
-                                        <router-view></router-view>
-                                    </div>
-                                </div>
-                            </div> -->
-
+                            <!-- <div v-for="test in [{no:'1'},{no:'2'}]">
+                                @{{test.no}}
+                            </div>
+                            <example-component/> -->
                             <router-view></router-view>
                         </div>
                     </div>
@@ -48,6 +45,5 @@
 @endsection
 
 @section('script')
-
 <script src="{{ asset('js/app.js') }}"></script>
 @endsection

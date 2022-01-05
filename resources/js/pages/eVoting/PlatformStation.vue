@@ -1,5 +1,19 @@
 <template>
-    <div style="height: 100%; display: flex; flex-direction: column">
+    <div
+        style="
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        "
+    >
+        <button
+            class="btn btn-primary"
+            style="position: absolute"
+            @click="$router.push({ name: 'vote-platform' })"
+        >
+            <i class="ni ni-chevron-left"></i>
+        </button>
         <div
             class="text-center"
             style="margin-top: 1rem; width: 100%; align-self: center"
@@ -16,7 +30,7 @@
         <button
             type="submit"
             class="btn btn-primary"
-            style="margin-top: 1rem; width: 80%; align-self: center"
+            style="width: 80%; align-self: center"
         >
             Submit
         </button>
@@ -24,7 +38,7 @@
 </template>
 
 <script>
-import CandidateDetailsCard from "./sub-components/CandidateDetailsCard.vue";
+import CandidateDetailsCard from "../../components/eVoting/CandidateDetailsCard.vue";
 export default {
     name: "eVotingStation",
     components: { CandidateDetailsCard },
@@ -48,6 +62,6 @@ export default {
     justify-items: center;
     align-items: center;
     padding: 0 0 2rem 0;
-    min-height: 25rem;
+    min-height: 22.5rem;
 }
 </style>

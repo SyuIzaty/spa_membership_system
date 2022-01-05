@@ -17,7 +17,7 @@
             class="menu d-flex flex-column flex-sm-row justify-content-center align-items-center"
             style="height: 100%; width: 100%"
         >
-            <router-link :to="{ name: 'dashboard' }">
+            <router-link :to="{ name: 'vote-platform-dashboard' }">
                 <div class="card card__option">
                     <i
                         class="card-img-top ni ni-bar-chart py-3"
@@ -33,7 +33,7 @@
                 </div>
             </router-link>
             <div class="gap"></div>
-            <router-link :to="{ name: 'station' }">
+            <router-link :to="{ name: 'vote-platform-station' }">
                 <div class="card card__option">
                     <i
                         class="card-img-top ni ni-envelope-letter py-3"
@@ -54,7 +54,7 @@
 
 <script>
 export default {
-    name: "eVotingIndex",
+    name: "PlatformIndex",
 };
 </script>
 

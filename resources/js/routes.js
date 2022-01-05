@@ -1,10 +1,20 @@
 // import VoteDashboard from "./components/vote-management-system/VoteDashboard.vue";
-let eVotingDashboard = require("./components/eVoting/eVotingDashboard").default;
-let eVotingStation = require("./components/eVoting/eVotingStation").default;
-let index = require("./components/eVoting/index").default;
+let PlatformDashboard = require("./pages/eVoting/PlatformDashboard").default;
+let PlatformStation = require("./pages/eVoting/PlatformStation").default;
+let PlatformIndex = require("./pages/eVoting/PlatformIndex").default;
+let ReportIndex = require("./pages/eVoting/ReportIndex").default;
 
 export const routes = [
-    { path: "/vote", component: index, name: "vote" },
-    { path: "/vote/dashboard", component: eVotingDashboard, name: "dashboard" },
-    { path: "/vote/station", component: eVotingStation, name: "station" }
+    { path: "/vote-platform", component: PlatformIndex, name: "vote-platform" },
+    {
+        path: "/vote-platform/dashboard",
+        component: PlatformDashboard,
+        name: "vote-platform-dashboard",
+    },
+    {
+        path: "/vote-platform/station",
+        component: PlatformStation,
+        name: "vote-platform-station",
+    },
+    { path: "/vote-report", component: ReportIndex, name: "vote-report" },
 ];

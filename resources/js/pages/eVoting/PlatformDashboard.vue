@@ -1,5 +1,12 @@
 <template>
-    <div style="padding: 1rem">
+    <div style="position: relative">
+        <button
+            class="btn btn-primary"
+            style="position: absolute"
+            @click="$router.push({ name: 'vote-platform' })"
+        >
+            <i class="ni ni-chevron-left"></i>
+        </button>
         <h1 class="text-center">Dashboard</h1>
         <div
             class="row align-items-center"
@@ -60,8 +67,8 @@
 </template>
 
 <script>
-import PieChart from "./sub-components/PieChart.vue";
-import HorizontalBarChart from "./sub-components/HorizontalBarChart.vue";
+import PieChart from "../../components/eVoting/PieChart.vue";
+import HorizontalBarChart from "../../components/eVoting/HorizontalBarChart.vue";
 export default {
     name: "eVotingDashboard",
     components: { PieChart, HorizontalBarChart },
