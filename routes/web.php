@@ -17,7 +17,6 @@ Route::get('/', function () {
 
 Route::view('/reset_password', 'auth.passwords.email')->name('reset_password');
 
-Route::get('home', 'DashboardController@index');
 
 Auth::routes();
 
@@ -36,6 +35,8 @@ Route::post('/data_moduleauth', 'ModuleAuthController@data_moduleauth');
 Route::get('/test', 'ApplicantController@test');
 
 Route::group(['middleware' => 'auth'], function () {
+    
+    Route::get('home', 'DashboardController@index');
 
     // Aduan
     Route::get('/borang-aduan', 'AduanController@borangAduan')->name('borangAduan');
@@ -477,6 +478,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/store-doc', 'DocumentManagementController@storeDoc');
     Route::delete('/delete-doc/{id}','DocumentManagementController@deleteDoc');
     Route::post('/update-title', 'DocumentManagementController@updateTitle');
+    Route::post('/edit', 'DocumentManagementController@edit');
+    Route::get('department-list','DocumentManagementController@departmentList');
+    Route::post('/getDeptList', 'DocumentManagementController@getDepartment');
+
 
     //eAduan Korporat
     Route::get('/lists/{id}', 'AduanKorporatController@list');
@@ -488,6 +493,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/log/{id}', 'AduanKorporatController@log');
     Route::post('/get-log/{id}', 'AduanKorporatController@logList');
     Route::get('/get-file/{id}', 'AduanKorporatController@file');
+    Route::get('/dashboard-icomplaint', 'AduanKorporatController@dashboard');
+    Route::get('/searchYear/{year}', 'AduanKorporatController@searchYear');
+    Route::get('/searchMonth/{month}', 'AduanKorporatController@searchMonth');
+    Route::get('/report', 'AduanKorporatController@report');
+    Route::post('/change-dept', 'AduanKorporatController@changeDepartment');
+
 
 
 

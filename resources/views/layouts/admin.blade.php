@@ -170,7 +170,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="/dashboard-aduan-korporat" title="Dashboard Aduan Korporat" data-filter-tags="dashboard">
+                                <a href="/dashboard-icomplaint" title="Dashboard i-Complaint" data-filter-tags="dashboard">
                                     <i class="fal fa-chart-pie"></i>
                                     <span class="nav-link-text" data-i18n="nav.dashboard">Dashboard</span>
                                 </a>
@@ -222,13 +222,20 @@
                         <!-- End eAduan Korporat System -->
 
                         <!-- Start eDocument Management System -->
-                        
-                        <li class="nav-title">eDocument Management</li>
                         @role('Staff')
+                        <li class="nav-title">eDocument Management</li>
                             <li>
                                 <a href="/index" title="Document" data-filter-tags="doc">
                                     <i class="fal fa-file"></i>
                                     <span class="nav-link-text" data-i18n="nav.document">Document</span>
+                                </a>
+                            </li>
+                        @endrole
+                        @role('eDocument (Admin)')
+                            <li>
+                                <a href="/department-list" title="Admin" data-filter-tags="doc">
+                                    <i class="fal fa-users"></i>
+                                    <span class="nav-link-text" data-i18n="nav.admin">Admin List</span>
                                 </a>
                             </li>
                         @endrole

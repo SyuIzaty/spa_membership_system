@@ -11,6 +11,7 @@ use App\AduanKorporatRemark;
 use App\AduanKorporatFile;
 use App\DepartmentList;
 use App\User;
+use App\Staff;
 use DateTime;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -66,7 +67,6 @@ class AduanKorporatController extends Controller
         if($request->userCategory == "STF" || $request->userCategory == "STD")
         {
             $data                = new AduanKorporat();
-            $data->staff_id      = $request->user_id;
             $data->name          = $request->user_name;
             $data->phone_no      = $request->user_phone;
             $data->address       = $request->address;
@@ -119,8 +119,13 @@ class AduanKorporatController extends Controller
 
         if($request->userCategory == "VSR" || $request->userCategory == "SPL" || $request->userCategory == "SPR" || $request->userCategory == "SPS")
         {
+            $validated = $request->validate([
+                'user_phone'   => 'required|regex:/[0-9]/|min:10|max:11',
+                'other_email'  => 'required|email',
+                'ic'      => 'required|regex:/[0-9]/|min:9|max:12',
+            ]);
+
             $data                = new AduanKorporat();
-            $data->ic            = $request->ic;
             $data->name          = $request->other_name;
             $data->phone_no      = $request->user_phone;
             $data->address       = $request->address;
@@ -164,7 +169,7 @@ class AduanKorporatController extends Controller
                         'original_name' => $originalName,
                         'upload'        => $newFileName,
                         'web_path'      => "app/eaduankorporat/".$fileName,
-                        'created_by' => $request->ic
+                        'created_by'    => $request->user_id
                     ]);
                 }
             }
@@ -259,7 +264,7 @@ class AduanKorporatController extends Controller
 
         ->addColumn('action', function ($list) {
             
-            return '<a href="/detail/' .$list->id.'" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+            return '<a href="/detail/' .$list->id.'" class="btn btn-sm btn-danger"><i class="fal fa-eye"></i></a>';
         })
 
         ->addColumn('log', function ($list) {
@@ -285,7 +290,10 @@ class AduanKorporatController extends Controller
         $dataRemark = AduanKorporatRemark::where('complaint_id', $id)->first();
         $file = AduanKorporatFile::where('complaint_id', $id)->get();
 
-        return view('aduan-korporat.admin-view-detail', compact('data','department','dataRemark','file'));
+        $user = AduanKorporatLog::where('complaint_id',$id)->where('activity','Sent remark')->first();
+        $user_detail = Staff::where('staff_id',$user->created_by)->first();
+
+        return view('aduan-korporat.admin-view-detail', compact('data','department','dataRemark','file','user','user_detail'));
     }
 
     public function assign(Request $request)
@@ -416,7 +424,7 @@ class AduanKorporatController extends Controller
 
     public function getPublicList($id)
     {
-        $list = AduanKorporat::where('staff_id', $id)->orWhere('student_id', $id)->orWhere('ic', $id)->get();
+        $list = AduanKorporat::where('created_by', $id)->get();
 
         return datatables()::of($list)
 
@@ -426,21 +434,8 @@ class AduanKorporatController extends Controller
         })
 
         ->editColumn('id', function ($list) {
-
-            if ($list->staff_id != '')
-            {
-                return $list->staff_id;
-            }
-
-            else if ($list->student_id != '')
-            {
-                return $list->student_id;
-            }
-
-            else if ($list->ic != '')
-            {
-                return $list->ic;
-            }
+           
+            return $list->created_by;
                         
         })
 
@@ -462,7 +457,7 @@ class AduanKorporatController extends Controller
 
     public function searchID(Request $request)
     {
-        $data = AduanKorporat::where('staff_id', $request->id)->orWhere('student_id', $request->id)->orWhere('ic', $request->id)->get();
+        $data = AduanKorporat::where('created_by', $request->id)->get();
 
         if ($data == '')
         {
@@ -486,6 +481,83 @@ class AduanKorporatController extends Controller
         return view('aduan-korporat.view-detail', compact('data','file'));
     }
 
+    public function dashboard()
+    {
+        $userCategory = AduanKorporatUser::select('code', 'description')->withCount('complaint')->orderBy('description', 'ASC')->get();
+
+        $countUserCat[] = ['Category','Total'];
+        foreach ($userCategory as $key => $value) {
+            $countUserCat[++$key] = [$value->description, (int)$value->complaint_count];
+        }
+
+        $category = AduanKorporatCategory::select('id', 'description')->withCount('complaint')->orderBy('description', 'ASC')->get();
+
+        $countCategory[] = ['Category','Total'];
+        foreach ($category as $key => $value) {
+            $countCategory[++$key] = [$value->description, (int)$value->complaint_count];
+        }
+
+        $year = AduanKorporat::orderBy('created_at', 'ASC')
+                ->pluck('created_at')
+                ->map(function($date)
+                {
+                    return Carbon::parse($date)->format('Y');
+                })
+                ->unique(); //year selection
+
+
+        return view('aduan-korporat.dashboard', compact('year'))->with('userCategory',json_encode($countUserCat))->with('category',json_encode($countCategory));
+
+    }
+
+    public function searchYear($year)
+    {
+        $month = AduanKorporat::whereYear('created_at', '=', $year)
+                ->orderBy('created_at', 'ASC')
+                ->pluck('created_at')
+                ->map(function($date)
+                {
+                    return Carbon::parse($date)->format('F');
+                })
+                ->unique(); //month selection
+
+        return response()->json($month);
+    }
+
+    public function searchMonth($month)
+    {
+
+        $convertMonth = Carbon::parse($month)->format('m');
+
+        $month = AduanKorporat::whereMonth('created_at', '=', $convertMonth)->get();
+
+        $userCategory = AduanKorporatUser::select('code', 'description')->withCount('complaint')->orderBy('description', 'ASC')->get();
+
+        $countUserCat[] = ['Category','Total'];
+        foreach ($userCategory as $key => $value) {
+            $countUserCat[++$key] = [$value->description, (int)$value->complaint_count];
+        }
+
+        $category = AduanKorporatCategory::select('id', 'description')->withCount('complaint')->orderBy('description', 'ASC')->get();
+
+        $countCategory[] = ['Category','Total'];
+        foreach ($category as $key => $value) {
+            $countCategory[++$key] = [$value->description, (int)$value->complaint_count];
+        }
+
+        return response()->with('userCategory',json_encode($countUserCat))->with('category',json_encode($countCategory));
+    }
+
+    public function changeDepartment(Request $request)
+    {
+        $update = AduanKorporat::where('id', $request->id)->first();
+        $update->update([
+            'assign'      => $request->department,
+            'updated_by'  => Auth::user()->id
+        ]);
+        
+        return response() ->json(['success' => 'Changes Saved!']);
+    }
 
     /**
      * Update the specified resource in storage.

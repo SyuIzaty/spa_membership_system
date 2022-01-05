@@ -1,17 +1,9 @@
 @extends('layouts.public')
 
 @section('content')
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Sora:wght@700&display=swap');
+<link rel="stylesheet" href="{{ asset('css/icomplaint.css') }}">
 
-    .title{
-        font-family: 'Sora', sans-serif;
-        font-size: 30px;
-        
-    }
-    
-</style>
-<main id="js-page-content" role="main" class="page-content" style="background-image: url({{asset('img/bg4.jpg')}}); background-size: cover">
+<main id="js-page-content" role="main" id="main" class="page-content" style="background-image: url({{asset('img/bg4.jpg')}}); background-size: cover">
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
@@ -19,7 +11,7 @@
                 <div class="card-header" style="background-size: cover">
                     <div class="d-flex justify-content-center" style="color: black">
                         <div class="p-2">
-                            <center><img src="{{ asset('img/intec_logo_new.png') }}" style="height: 120px; width: 320px;" class="responsive"/></center><br>
+                            <center><img src="{{ asset('img/intec_logo_new.png') }}" style="width: 320px;" class="responsive"/></center><br>
                             <h2 style="text-align: center" class="title">
                                 i-Complaint
                             </h2>
@@ -78,6 +70,7 @@
             </div>
         </div>
     </div>
+    @include('aduan-korporat.footer')
 </main>
 @endsection
 @section('script')

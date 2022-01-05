@@ -10,5 +10,11 @@ class AduanKorporatCategory extends Model
     protected $primarykey = 'id';
     protected $fillable = ['code','description'];
 
+    public function complaint()
+    {
+        return $this->hasMany('App\AduanKorporat', 'category', 'id');
+    }
+
+
 }
 
