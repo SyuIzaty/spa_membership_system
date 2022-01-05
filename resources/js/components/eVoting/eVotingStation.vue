@@ -1,6 +1,9 @@
 <template>
-    <div style="height:100%;">
-        <div class="text-center text-lg-left">
+    <div style="height: 100%; display: flex; flex-direction: column">
+        <div
+            class="text-center"
+            style="margin-top: 1rem; width: 100%; align-self: center"
+        >
             <h3>Vote Station</h3>
             <p>Please make your vote. (min: 1, max: 3)</p>
         </div>
@@ -13,7 +16,7 @@
         <button
             type="submit"
             class="btn btn-primary"
-            style="margin-top:1rem;width:80%"
+            style="margin-top: 1rem; width: 80%; align-self: center"
         >
             Submit
         </button>
@@ -27,7 +30,7 @@ export default {
     components: { CandidateDetailsCard },
     mounted() {
         window.scrollTo({ top: 100, left: 0, behavior: "smooth" });
-    }
+    },
 };
 </script>
 
@@ -45,5 +48,6 @@ export default {
     justify-items: center;
     align-items: center;
     padding: 0 0 2rem 0;
+    min-height: 25rem;
 }
 </style>

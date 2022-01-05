@@ -17,7 +17,6 @@ Route::get('/', function () {
 
 Route::view('/reset_password', 'auth.passwords.email')->name('reset_password');
 
-Route::get('home', 'DashboardController@index');
 
 Auth::routes();
 
@@ -37,6 +36,7 @@ Route::get('/test', 'ApplicantController@test');
 
 Route::group(['middleware' => 'auth'], function () {
 
+    Route::get('home', 'DashboardController@index');
     // Aduan
     Route::get('/borang-aduan', 'AduanController@borangAduan')->name('borangAduan');
     Route::post('simpanAduan', 'AduanController@simpanAduan');
@@ -595,12 +595,12 @@ Route::group(['middleware' => 'auth'], function () {
 
     // eVotingController
     Route::get('/vote', function () {
-        return view('vue/evote');
+        return view('e-voting/index');
     });
 
 
     Route::get('/{vue_capture?}',function () {
-        return view('vue/evote');
+        return view('e-voting/index');
     })->where('vue_capture', '[\/\w\.-]*');
 
 });

@@ -2,27 +2,32 @@
     <div
         class="d-flex flex-column justify-content-center main align-items-center"
     >
-        <div
+        <!-- <div
             style="
-            display:flex;
-            height:20%;
-            width:100%;
-            align-items: center;
-            justify-content: center;"
+                display: flex;
+                height: 20%;
+                width: 100%;
+                align-items: center;
+                justify-content: center;
+            "
         >
             <h3>e-Voting</h3>
-        </div>
+        </div> -->
         <div
             class="menu d-flex flex-column flex-sm-row justify-content-center align-items-center"
-            style="height:100%; width:100%"
+            style="height: 100%; width: 100%"
         >
             <router-link :to="{ name: 'dashboard' }">
-                <div class="card card__option ">
+                <div class="card card__option">
                     <i
                         class="card-img-top ni ni-bar-chart py-3"
-                        style="font-size:4rem; margin-top:1rem;"
+                        style="
+                            font-size: 4rem;
+                            margin-top: 1rem;
+                            text-align: center;
+                        "
                     ></i>
-                    <div class="card-body">
+                    <div class="card-body" style="text-align: center">
                         Dashboard
                     </div>
                 </div>
@@ -32,9 +37,13 @@
                 <div class="card card__option">
                     <i
                         class="card-img-top ni ni-envelope-letter py-3"
-                        style="font-size:4rem; margin-top:1rem;"
+                        style="
+                            font-size: 4rem;
+                            margin-top: 1rem;
+                            text-align: center;
+                        "
                     ></i>
-                    <div class="card-body">
+                    <div class="card-body" style="text-align: center">
                         Vote Station
                     </div>
                 </div>
@@ -45,16 +54,16 @@
 
 <script>
 export default {
-    name: "eVotingIndex"
+    name: "eVotingIndex",
 };
 </script>
 
 <style lang="scss" scoped>
 .main {
     position: relative;
-    transform: translate(-50%, -50%);
-    left: 50%;
-    top: 50%;
+    // transform: translate(-50%, -50%);
+    // left: 50%;
+    // top: 50%;
     height: 100%;
     width: 100%;
 }

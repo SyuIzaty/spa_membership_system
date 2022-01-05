@@ -2240,6 +2240,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2262,6 +2272,9 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _sub_components_CandidateDetailsCard_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./sub-components/CandidateDetailsCard.vue */ "./resources/js/components/eVoting/sub-components/CandidateDetailsCard.vue");
+//
+//
+//
 //
 //
 //
@@ -2310,6 +2323,15 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -21637,7 +21659,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".grid[data-v-176eeeb6] {\n  display: grid;\n  height: 80%;\n  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));\n  grid-auto-rows: 50%;\n  grid-gap: 0.8rem;\n  overflow: auto;\n  justify-content: center;\n  justify-items: center;\n  align-items: center;\n  padding: 0 0 2rem 0;\n}", ""]);
+exports.push([module.i, ".grid[data-v-176eeeb6] {\n  display: grid;\n  height: 80%;\n  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));\n  grid-auto-rows: 50%;\n  grid-gap: 0.8rem;\n  overflow: auto;\n  justify-content: center;\n  justify-items: center;\n  align-items: center;\n  padding: 0 0 2rem 0;\n  min-height: 25rem;\n}", ""]);
 
 // exports
 
@@ -21656,7 +21678,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".main[data-v-bc037998] {\n  position: relative;\n  transform: translate(-50%, -50%);\n  left: 50%;\n  top: 50%;\n  height: 100%;\n  width: 100%;\n}\n.gap[data-v-bc037998] {\n  width: 2.5rem;\n  height: 2.5rem;\n}\n.card-body[data-v-bc037998] {\n  padding: 0.5rem;\n}\n.card__option[data-v-bc037998] {\n  height: 10rem;\n  width: 10rem;\n  cursor: pointer;\n}", ""]);
+exports.push([module.i, ".main[data-v-bc037998] {\n  position: relative;\n  height: 100%;\n  width: 100%;\n}\n.gap[data-v-bc037998] {\n  width: 2.5rem;\n  height: 2.5rem;\n}\n.card-body[data-v-bc037998] {\n  padding: 0.5rem;\n}\n.card__option[data-v-bc037998] {\n  height: 10rem;\n  width: 10rem;\n  cursor: pointer;\n}", ""]);
 
 // exports
 
@@ -75473,7 +75495,7 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticStyle: { padding: "1rem" } }, [
-    _c("h1", [_vm._v("Dashboard")]),
+    _c("h1", { staticClass: "text-center" }, [_vm._v("Dashboard")]),
     _vm._v(" "),
     _c(
       "div",
@@ -75505,7 +75527,7 @@ var render = function () {
             _vm._v(" "),
             _c("PieChart", {
               attrs: {
-                styles: { height: "20rem" },
+                styles: { height: "10rem" },
                 options: {
                   responsive: true,
                   maintainAspectRatio: false,
@@ -75522,11 +75544,13 @@ var render = function () {
           "div",
           { staticClass: "col-12 col-lg-6 mb-3" },
           [
-            _c("h5", [_vm._v("Candidate Chart")]),
+            _c("h5", { staticClass: "text-center" }, [
+              _vm._v("Candidate Chart"),
+            ]),
             _vm._v(" "),
             _c("HorizontalBarChart", {
               attrs: {
-                styles: { height: "20rem", width: "100%" },
+                styles: { height: "10rem", width: "100%" },
                 options: {
                   indexAxis: "y",
                   responsive: true,
@@ -75547,7 +75571,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "col-12 col-lg-2 bg-secondary mb-3" }, [
-      _c("h5", { staticClass: "text-white m-0" }, [
+      _c("h5", { staticClass: "text-white m-0 text-center" }, [
         _vm._v(
           "\n                Faculty of Computer and Mathematical Sciences\n            "
         ),
@@ -75563,7 +75587,7 @@ var staticRenderFns = [
       {
         staticStyle: {
           width: "100%",
-          "max-width": "20rem",
+          "max-width": "10rem",
           "margin-top": "1rem",
         },
       },
@@ -75604,49 +75628,74 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticStyle: { height: "100%" } }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "grid" },
-      [
-        _c("CandidateDetailsCard", {
-          attrs: { id: "1", name: "NUR ARIF HUSAINI BIN NORWAZA" },
-        }),
-        _vm._v(" "),
-        _c("CandidateDetailsCard", {
-          attrs: { id: "2", name: "NUR ARIF HUSAINI BIN NORWAZA" },
-        }),
-        _vm._v(" "),
-        _c("CandidateDetailsCard", {
-          attrs: { id: "3", name: "NUR ARIF HUSAINI BIN NORWAZA" },
-        }),
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c(
-      "button",
-      {
-        staticClass: "btn btn-primary",
-        staticStyle: { "margin-top": "1rem", width: "80%" },
-        attrs: { type: "submit" },
+  return _c(
+    "div",
+    {
+      staticStyle: {
+        height: "100%",
+        display: "flex",
+        "flex-direction": "column",
       },
-      [_vm._v("\n        Submit\n    ")]
-    ),
-  ])
+    },
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "grid" },
+        [
+          _c("CandidateDetailsCard", {
+            attrs: { id: "1", name: "NUR ARIF HUSAINI BIN NORWAZA" },
+          }),
+          _vm._v(" "),
+          _c("CandidateDetailsCard", {
+            attrs: { id: "2", name: "NUR ARIF HUSAINI BIN NORWAZA" },
+          }),
+          _vm._v(" "),
+          _c("CandidateDetailsCard", {
+            attrs: { id: "3", name: "NUR ARIF HUSAINI BIN NORWAZA" },
+          }),
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-primary",
+          staticStyle: {
+            "margin-top": "1rem",
+            width: "80%",
+            "align-self": "center",
+          },
+          attrs: { type: "submit" },
+        },
+        [_vm._v("\n        Submit\n    ")]
+      ),
+    ]
+  )
 }
 var staticRenderFns = [
   function () {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "text-center text-lg-left" }, [
-      _c("h3", [_vm._v("Vote Station")]),
-      _vm._v(" "),
-      _c("p", [_vm._v("Please make your vote. (min: 1, max: 3)")]),
-    ])
+    return _c(
+      "div",
+      {
+        staticClass: "text-center",
+        staticStyle: {
+          "margin-top": "1rem",
+          width: "100%",
+          "align-self": "center",
+        },
+      },
+      [
+        _c("h3", [_vm._v("Vote Station")]),
+        _vm._v(" "),
+        _c("p", [_vm._v("Please make your vote. (min: 1, max: 3)")]),
+      ]
+    )
   },
 ]
 render._withStripped = true
@@ -75677,8 +75726,6 @@ var render = function () {
         "d-flex flex-column justify-content-center main align-items-center",
     },
     [
-      _vm._m(0),
-      _vm._v(" "),
       _c(
         "div",
         {
@@ -75688,15 +75735,24 @@ var render = function () {
         },
         [
           _c("router-link", { attrs: { to: { name: "dashboard" } } }, [
-            _c("div", { staticClass: "card card__option " }, [
+            _c("div", { staticClass: "card card__option" }, [
               _c("i", {
                 staticClass: "card-img-top ni ni-bar-chart py-3",
-                staticStyle: { "font-size": "4rem", "margin-top": "1rem" },
+                staticStyle: {
+                  "font-size": "4rem",
+                  "margin-top": "1rem",
+                  "text-align": "center",
+                },
               }),
               _vm._v(" "),
-              _c("div", { staticClass: "card-body" }, [
-                _vm._v("\n                    Dashboard\n                "),
-              ]),
+              _c(
+                "div",
+                {
+                  staticClass: "card-body",
+                  staticStyle: { "text-align": "center" },
+                },
+                [_vm._v("\n                    Dashboard\n                ")]
+              ),
             ]),
           ]),
           _vm._v(" "),
@@ -75706,12 +75762,21 @@ var render = function () {
             _c("div", { staticClass: "card card__option" }, [
               _c("i", {
                 staticClass: "card-img-top ni ni-envelope-letter py-3",
-                staticStyle: { "font-size": "4rem", "margin-top": "1rem" },
+                staticStyle: {
+                  "font-size": "4rem",
+                  "margin-top": "1rem",
+                  "text-align": "center",
+                },
               }),
               _vm._v(" "),
-              _c("div", { staticClass: "card-body" }, [
-                _vm._v("\n                    Vote Station\n                "),
-              ]),
+              _c(
+                "div",
+                {
+                  staticClass: "card-body",
+                  staticStyle: { "text-align": "center" },
+                },
+                [_vm._v("\n                    Vote Station\n                ")]
+              ),
             ]),
           ]),
         ],
@@ -75720,26 +75785,7 @@ var render = function () {
     ]
   )
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticStyle: {
-          display: "flex",
-          height: "20%",
-          width: "100%",
-          "align-items": "center",
-          "justify-content": "center",
-        },
-      },
-      [_c("h3", [_vm._v("e-Voting")])]
-    )
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

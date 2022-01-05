@@ -35,7 +35,6 @@
     <link rel="stylesheet" href="{{ asset('css/formplugins/summernote/summernote-bs4.css') }}">
     <link rel="stylesheet" href="{{ asset('css/indicator.css') }}">
     <link rel="stylesheet" href="{{ asset('css/jquery.fancybox.css') }}" />
-
     @yield('css')
     <style>
         .highlight {
@@ -1003,8 +1002,8 @@
                                 <img src="{{ asset('img/demo/avatars/avatar-m.png') }}"
                                     class="profile-image rounded-circle" alt="">
                                 <!-- you can also add username next to the avatar with the codes below:
-         <span class="ml-1 mr-1 text-truncate text-truncate-header hidden-xs-down">Me</span>
-         <i class="ni ni-chevron-down hidden-xs-down"></i> -->
+                                <span class="ml-1 mr-1 text-truncate text-truncate-header hidden-xs-down">Me</span>
+                                <i class="ni ni-chevron-down hidden-xs-down"></i> -->
                             </a>
                             <div class="dropdown-menu dropdown-menu-animated dropdown-lg">
                                 <div class="dropdown-header bg-trans-gradient d-flex flex-row py-4 rounded-top">
@@ -1047,6 +1046,7 @@
 
                 <!--@yield('breadcrumbs')-->
                 @yield('content')
+                <router-view></router-view>
 
                 <!-- this overlay is activated only when mobile menu is triggered -->
                 <div class="page-content-overlay" data-action="toggle" data-class="mobile-nav-on"></div>
@@ -1079,6 +1079,8 @@
       + waves.js (extension)
       + smartpanels.js (extension)
       + src/../jquery-snippets.js (core) -->
+
+      @yield('script')
     <script src="{{ asset('js/vendors.bundle.js') }}"></script>
     <script src="{{ asset('js/app.bundle.js') }}"></script>
     <script src="{{ asset('js/datagrid/datatables/datatables.bundle.js') }}"></script>
@@ -1101,7 +1103,6 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/29.1.0/classic/ckeditor.js"></script>
     {{-- <script src="https://cdn.ckeditor.com/ckeditor5/29.1.0/decoupled-document/ckeditor.js"></script> --}}
 
-    @yield('script')
     <script>
         // var CKEDITOR = require('@ckeditor/ckeditor5-build-[name]');
         // $('.collapsable-list li a').on('click', function() {
@@ -1156,6 +1157,7 @@
             })
         });
     </script>
+
     @yield('style')
     <style>
         /* For CKEditor */
