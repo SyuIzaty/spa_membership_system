@@ -5,6 +5,8 @@
             family, oversees his daughter's wedding. His beloved son Michael has
             just come home from the war, but does not intend to become part of
             his father's business. Through Michael's life the nature of the
+
+            <Divider />
             family business becomes clear. The business of the family is just
             like the head of the family, kind and benevolent to those who give
             respect, but given to ruthless violence whenever anything stands
@@ -15,9 +17,10 @@
 
 <script>
 import Fieldset from "primevue/fieldset";
+import Divider from "primevue/divider";
 export default {
     name: "ReportIndex",
-    components: { Fieldset },
+    components: { Fieldset, Divider },
 };
 </script>
 

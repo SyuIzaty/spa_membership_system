@@ -16,6 +16,7 @@
     <!-- Remove Tap Highlight on Windows Phone IE -->
     <meta name="msapplication-tap-highlight" content="no">
 
+    @yield('css')
     <!-- base css -->
     <link rel="stylesheet" media="screen, print" href="{{ asset('css/vendors.bundle.css') }}">
     <link rel="stylesheet" media="screen, print" href="{{ asset('css/app.bundle.css') }}">
@@ -35,7 +36,6 @@
     <link rel="stylesheet" href="{{ asset('css/formplugins/summernote/summernote-bs4.css') }}">
     <link rel="stylesheet" href="{{ asset('css/indicator.css') }}">
     <link rel="stylesheet" href="{{ asset('css/jquery.fancybox.css') }}" />
-    @yield('css')
     <style>
         .highlight {
             font-weight: bolder;
@@ -1037,7 +1037,12 @@
       + smartpanels.js (extension)
       + src/../jquery-snippets.js (core) -->
 
-      @yield('script')
+
+
+
+
+</body>
+@yield('script')
     <script src="{{ asset('js/vendors.bundle.js') }}"></script>
     <script src="{{ asset('js/app.bundle.js') }}"></script>
     <script src="{{ asset('js/datagrid/datatables/datatables.bundle.js') }}"></script>
@@ -1164,8 +1169,7 @@
             })
         });
     </script>
-
-    @yield('style')
+     @yield('style')
     <style>
         /* For CKEditor */
 
@@ -1310,7 +1314,5 @@ Preserve the relative scale, though. */
         }
 
     </style>
-
-</body>
 
 </html>

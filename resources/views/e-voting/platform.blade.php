@@ -28,13 +28,6 @@
 
                     <div class="panel-container show">
                         <div class="panel-content h-100" id="app" >
-                            <!-- <div id="app" class=" full-height">
-                                <div class="flex-center position-ref" style="height:90%">
-                                    <div class="content h-100 w-100 p-3 p-md-5" style="position:absolute;padding-top:1rem !important;">
-                                        <router-view></router-view>
-                                    </div>
-                                </div>
-                            </div> -->
 
                             <router-view></router-view>
                         </div>
