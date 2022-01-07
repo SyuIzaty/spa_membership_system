@@ -47,52 +47,17 @@
                                       {{$getDepartment->name}}
 
                                     @else
-                                        Select Department
+                                        {{isset($admin->department) ? $admin->department->name : ''}}
                                     @endif
                                 </button>
-                                @role('eDocument (Admin)')
+
                                 <div class="dropdown-menu" style="">
                                     @foreach ($department as $d)
-                                        <a  href="/upload/{{$d->id}}" class="dropdown-item" name="list" value="{{$d->id}}">{{$d->name}}</a>
+                                        @if( ($admins->whereIn('department_id',$d->id)->count() > 0) || ($superAdmin->count() > 0)) 
+                                            <a  href="/upload/{{$d->id}}" class="dropdown-item" name="list" value="{{$d->id}}">{{$d->name}}</a>
+                                        @endif
                                     @endforeach
                                 </div>
-                                @endrole
-
-                                @role('eDocument (IT)')
-                                <div class="dropdown-menu" style="">
-                                    <a  href="/upload/1" class="dropdown-item" name="list" value="1">INFORMATION TECHNOLOGY</a>
-                                </div>
-                                @endrole
-
-                                @role('eDocument (Finance)')
-                                <div class="dropdown-menu" style="">
-                                    <a  href="/upload/2" class="dropdown-item" name="list" value="2">FINANCE</a>
-                                </div>
-                                @endrole
-
-                                @role('eDocument (Corporate)')
-                                <div class="dropdown-menu" style="">
-                                    <a  href="/upload/3" class="dropdown-item" name="list" value="3">CORPORATE COMMUNICATION & STRATEGIC</a>
-                                </div>
-                                @endrole
-
-                                @role('eDocument (Academic)')
-                                <div class="dropdown-menu" style="">
-                                    <a  href="/upload/4" class="dropdown-item" name="list" value="4">ACADEMIC AND STUDENT AFFAIRS</a>
-                                </div>
-                                @endrole
-
-                                @role('eDocument (Operation)')
-                                <div class="dropdown-menu" style="">
-                                    <a  href="/upload/5" class="dropdown-item" name="list" value="5">OPERATION MANAGEMENT AND HUMAN RESOURCES</a>
-                                </div>
-                                @endrole
-
-                                @role('eDocument (Marketing)')
-                                <div class="dropdown-menu" style="">
-                                    <a  href="/upload/6" class="dropdown-item" name="list" value="6">MARKETING & STUDENT ADMISSION</a>
-                                </div>
-                                @endrole
                             </div>
                             <br>
                             @if ($id != '')
@@ -162,6 +127,74 @@
                                         </div>
                                     </div>
                                 </div>
+
+                            @else
+                                <div class="row" style="margin-bottom:15px;">   
+                                    <div class="col-md-12">
+                                        <div class="row mt-5">
+                                            <div class="col-md-6">
+                                                <div class="card card-success card-outline">
+                                                    <div class="card-header bg-info text-white">
+                                                        <h5 class="card-title w-100"><i class="fal fa-upload width-2 fs-xl"></i>UPLOAD DOCUMENTS</h5>                                            
+                                                    </div>
+                                                        
+                                                    <div class="card-body">
+                                                        <form method="post" action="{{url('store-doc')}}" enctype="multipart/form-data" class="dropzone needsclick dz-clickable" id="dropzone">
+                                                            @csrf
+                                                            <input type="hidden" name="id" value="{{$admin->department_id}}">
+                                                            <div class="dz-message needsclick">
+                                                                <i class="fal fa-cloud-upload text-muted mb-3"></i> <br>
+                                                                <span class="text-uppercase">Drop files here or click to upload.</span>
+                                                                <br>
+                                                                <span class="fs-sm text-muted">This is a dropzone. Selected files <strong>.pdf,.doc,.docx,.jpeg,.jpg,.png</strong> are actually uploaded.</span>
+                                                            </div>
+                                                        </form>   
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card card-success card-outline">
+                                                    <div class="card-header bg-info text-white">
+                                                        <h5 class="card-title w-100"><i class="fal fa-file width-2 fs-xl"></i>FILE LIST</h5>                                            
+                                                    </div>
+                                                    @if (isset($file))    
+                                                        @php $i = 1; @endphp
+                                                        <div class="card-body">
+                                                            <table class="table table-bordered editable" id="editable">
+                                                                <thead class="bg-info-50">
+                                                                    <tr class="text-center">
+                                                                        <td>No.</td>
+                                                                        <td>File</td>
+                                                                        <td>Category</td>
+                                                                        <td>View</td>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach ( $file as $f )
+                                                                        <tr>
+                                                                            <td class="text-center">{{$i}}</td>
+                                                                            <td style="display:none"><input name="id">{{$f->id}}</td>
+                                                                            <td class='title'>{{$f->title}}</td>
+                                                                            <td class="category" data-selected="{{ $f->category }}"></td>
+                                                                            <td><a target="_blank" href="/get-doc/{{$f->id}}" class="btn btn-info btn-xs"><i class="fal fa-eye"></i></a></td>
+                                                                        </tr>
+                                                                     @php $i++; @endphp
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    @else
+                                                        <div class="card-body">
+                                                            <p class="text-center"><b>NO DOCUMENTS UPLOADED</b></p>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <a style="margin-top: 10px; margin-right: 12px;" href="/index" class="btn btn-info ml-auto float-right"><i class="fal fa-arrow-alt-left"></i> Back</a>                                            
+                                        </div>
+                                    </div>
+                                </div>
+
                             @endif
 
                             <div class="modal fade" id="addModal" aria-hidden="true" >
@@ -198,8 +231,6 @@
                                                     </div>
                                                 </div>
 
-                                                                       
-                                                                                                    
                                                 <div class="footer">
                                                     <button type="submit" id="saves" class="btn btn-primary ml-auto float-right waves-effect waves-themed"><i class="fal fa-save"></i> Save</button>
                                                     <button type="button" class="btn btn-success ml-auto float-right mr-2 waves-effect waves-themed" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>

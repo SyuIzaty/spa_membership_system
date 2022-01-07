@@ -26,4 +26,9 @@ class DocumentManagement extends Model
         return $this->hasOne('App\DocumentCategory', 'id', 'category');
     }
 
+    public function admin()
+    {
+        return $this->hasOne('App\DocumentAdmin', 'department_id', 'department_id');
+    }
+
 }

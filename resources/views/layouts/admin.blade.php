@@ -231,7 +231,7 @@
                                 </a>
                             </li>
                         @endrole
-                        @role('eDocument (Admin)')
+                        @role('eDocument (Super Admin)')
                             <li>
                                 <a href="/department-list" title="Admin" data-filter-tags="doc">
                                     <i class="fal fa-users"></i>

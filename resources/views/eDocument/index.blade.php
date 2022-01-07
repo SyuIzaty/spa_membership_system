@@ -22,9 +22,9 @@
                         <div class="panel-content">
                             
                             <div class="table-responsive" style="padding: 0 60px; margin-top: 10px;">
-                                @role('eDocument (Admin)|eDocument (IT)|eDocument (Finance)|eDocument (Corporate)|eDocument (Academic)|eDocument (Operation)|eDocument (Marketing)')
-                                <a href= "/upload" class="btn btn-info waves-effect waves-themed float-right" style="margin-bottom: 5px;"><i class="fal fa-upload"></i> Upload</a>
-                                @endrole
+                                @can('upload file')                                
+                                    <a href= "/upload" class="btn btn-info waves-effect waves-themed float-right" style="margin-bottom: 5px;"><i class="fal fa-upload"></i> Upload</a>
+                                @endcan
 
                                 @foreach ($count as $c)
                                     @php $i = 1; @endphp
@@ -45,7 +45,14 @@
                                                         <td class="text-center col-md-1">{{$i}}</td>
                                                         <td><a target="_blank" href="/get-doc/{{$l->id}}">{{$l->title}}</a></td>
                                                         <td class="text-center col-md-2">{{ isset($l->category) ? $l->getCategory->description : 'N/A' }}</td>
-                                                        <td class="text-center col-md-2"><a href="/get-doc/{{$l->id}}" class="btn btn-sm btn-primary" download="{{$l->title}}"><i class="fal fa-download"></i></a></td>
+                                                        <td class="text-center col-md-2">
+                                                            <a href="/get-doc/{{$l->id}}" class="btn btn-sm btn-primary" download="{{$l->title}}"><i class="fal fa-download"></i></a>
+                                                            
+                                                            @if( ($admins->whereIn('department_id',$c->id)->count() > 0) || ($superAdmin->count() > 0)) 
+                                                                <a href="#" data-target="#edit" data-toggle="modal" data-id="{{$l->id}}" data-title="{{$l->title}}" data-category="{{$l->category}}"
+                                                                class="btn btn-sm btn-success"><i class="fal fa-pencil"></i></a>
+                                                            @endif
+                                                        </td>
                                                     </tr>
                                                     @php $i++; @endphp
                                                 @endforeach
@@ -59,11 +66,55 @@
                                 @endforeach
                             </div>
                             
-                            @role('eDocument (Admin)|eDocument (IT)|eDocument (Finance)|eDocument (Corporate)|eDocument (Academic)|eDocument (Operation)|eDocument (Marketing)')
+                            @can('upload file')
                                     <a href= "/upload" class="btn btn-info waves-effect waves-themed float-right" style="margin: -25px 60px 15px;"><i class="fal fa-upload"></i> Upload</a>
-                            @endrole
+                            @endcan
                         </div>
                     </div>
+
+                    <div class="modal fade" id="edit" aria-hidden="true" >
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="card-header">
+                                    <h5 class="card-title w-100">Edit</h5>
+                                </div>
+                                <div class="modal-body">
+                                {!! Form::open(['action' => 'DocumentManagementController@edit', 'method' => 'POST']) !!}
+                                <input type="hidden" name="id" id="id">
+
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Title</span>
+                                            </div>
+                                            <input class="form-control"  name="title" id="title">
+                                        </div>
+                                    </div>
+            
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Category</span>
+                                            </div>
+                                            <select class="custom-select form-control" name="category" id="category">
+                                                <option disabled selected value="">Select Category</option>
+                                                @foreach ($category as $c)
+                                                    <option value="{{$c->id}}">{{$c->description}}</option>
+                                                @endforeach
+                                             </select>
+                                        </div>
+                                    </div>
+            
+                                    <div class="footer">
+                                        <button type="submit" id="btn_search" class="btn btn-primary ml-auto float-right waves-effect waves-themed"><i class="fal fa-save"></i> Save</button>
+                                        <button type="button" class="btn btn-success ml-auto float-right mr-2 waves-effect waves-themed" data-dismiss="modal"><i class="fal fa-window-close"></i> Close</button>
+                                    </div>
+                                    {!! Form::close() !!}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
                 </div>
             </div>
         </div>
@@ -71,5 +122,20 @@
 @endsection
 @section('script')
 <script>
+        $(document).ready(function()
+    {
+        $('#edit').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget) 
+        var id = button.data('id') // data-id
+        var title = button.data('title') // data-title
+        var category = button.data('category') // data-category
+
+        $('.modal-body #id').val(id);
+        $('.modal-body #title').val(title);
+        $('.modal-body #category').val(category);
+
+        });
+    });
+
 </script>
 @endsection
