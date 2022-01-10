@@ -39,7 +39,7 @@ class TrainingController extends Controller
 {
     public function __construct(TrainingEvaluationResult $trainingEvaluationResult)
     {
-        $this->middleware('auth', ['except' => 'openAttendance','confirmAttendance']);
+        $this->middleware('auth');
 
         $this->trainingEvaluationResult = $trainingEvaluationResult;
     }
