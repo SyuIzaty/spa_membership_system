@@ -64,7 +64,7 @@
                                 <div class="row" style="margin-bottom:15px;">   
                                     <div class="col-md-12">
                                         <div class="row mt-5">
-                                            <div class="col-md-6">
+                                            <div class="col-md-12">
                                                 <div class="card card-success card-outline">
                                                     <div class="card-header bg-info text-white">
                                                         <h5 class="card-title w-100"><i class="fal fa-upload width-2 fs-xl"></i>UPLOAD DOCUMENTS</h5>                                            
@@ -84,7 +84,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-12 mt-3">
                                                 <div class="card card-success card-outline">
                                                     <div class="card-header bg-info text-white">
                                                         <h5 class="card-title w-100"><i class="fal fa-file width-2 fs-xl"></i>FILE LIST</h5>                                            
@@ -97,6 +97,7 @@
                                                                     <tr class="text-center">
                                                                         <td>No.</td>
                                                                         <td>File</td>
+                                                                        <td>File Ext.</td>
                                                                         <td>Category</td>
                                                                         <td>View</td>
                                                                     </tr>
@@ -107,8 +108,9 @@
                                                                             <td class="text-center">{{$i}}</td>
                                                                             <td style="display:none"><input name="id">{{$f->id}}</td>
                                                                             <td class='title'>{{$f->title}}</td>
+                                                                            <td class="text-center">{{$f->file_ext}}</td>
                                                                             <td class="category" data-selected="{{ $f->category }}"></td>
-                                                                            <td><a target="_blank" href="/get-doc/{{$f->id}}" class="btn btn-info btn-xs"><i class="fal fa-eye"></i></a></td>
+                                                                            <td class="text-center"><a target="_blank" href="/get-doc/{{$f->id}}" class="btn btn-info btn-xs"><i class="fal fa-eye"></i></a></td>
                                                                         </tr>
                                                                      
                                                                      @php $i++; @endphp
@@ -132,7 +134,7 @@
                                 <div class="row" style="margin-bottom:15px;">   
                                     <div class="col-md-12">
                                         <div class="row mt-5">
-                                            <div class="col-md-6">
+                                            <div class="col-md-12">
                                                 <div class="card card-success card-outline">
                                                     <div class="card-header bg-info text-white">
                                                         <h5 class="card-title w-100"><i class="fal fa-upload width-2 fs-xl"></i>UPLOAD DOCUMENTS</h5>                                            
@@ -152,7 +154,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-12 mt-3">
                                                 <div class="card card-success card-outline">
                                                     <div class="card-header bg-info text-white">
                                                         <h5 class="card-title w-100"><i class="fal fa-file width-2 fs-xl"></i>FILE LIST</h5>                                            
@@ -165,6 +167,7 @@
                                                                     <tr class="text-center">
                                                                         <td>No.</td>
                                                                         <td>File</td>
+                                                                        <td>File Ext.</td>
                                                                         <td>Category</td>
                                                                         <td>View</td>
                                                                     </tr>
@@ -175,8 +178,9 @@
                                                                             <td class="text-center">{{$i}}</td>
                                                                             <td style="display:none"><input name="id">{{$f->id}}</td>
                                                                             <td class='title'>{{$f->title}}</td>
+                                                                            <td class="text-center">{{$f->file_ext}}</td>
                                                                             <td class="category" data-selected="{{ $f->category }}"></td>
-                                                                            <td><a target="_blank" href="/get-doc/{{$f->id}}" class="btn btn-info btn-xs"><i class="fal fa-eye"></i></a></td>
+                                                                            <td class="text-center"><a target="_blank" href="/get-doc/{{$f->id}}" class="btn btn-info btn-xs"><i class="fal fa-eye"></i></a></td>
                                                                         </tr>
                                                                      @php $i++; @endphp
                                                                     @endforeach
@@ -369,7 +373,7 @@
             dataType:"json",
             columns:{
                 identifier:[1, 'id'],
-                editable:[[2, 'title'], [3, 'category']]
+                editable:[[2, 'title'], [4, 'category']]
             },
             restoreButton:false,
 

@@ -20,22 +20,21 @@
                     </div>
                     <div class="panel-container show">
                         <div class="panel-content">
-                            
-                            <div class="table-responsive" style="padding: 0 60px; margin-top: 10px;">
+                            <div class="table-responsive">
                                 @can('upload file')                                
-                                    <a href= "/upload" class="btn btn-info waves-effect waves-themed float-right" style="margin-bottom: 5px;"><i class="fal fa-upload"></i> Upload</a>
+                                    <a href= "/upload" class="btn btn-info waves-effect waves-themed float-right"><i class="fal fa-upload"></i> Upload</a>
                                 @endcan
 
                                 @foreach ($count as $c)
                                     @php $i = 1; @endphp
-                                   <h5> <i class='fal fa-caret-right'></i><b> {{$c->name}}</b></h5><br>
+                                   <h5 style="margin-top: 10px;"><b> {{$c->name}}</b></h5><br>
                                     <table id="list" class="table table-bordered table-hover table-striped w-100">
                                         <thead>
                                             <tr class="bg-primary-50 text-center">
                                                 <th class="text-center">No</th>
                                                 <th class="text-center">Document</th>
                                                 <th class="text-center">Category</th>
-                                                <th class="text-center">Download</th>
+                                                <th class="text-center">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -58,16 +57,17 @@
                                                 @endforeach
 
                                             @else
-                                                <tr><td colspan="3" class="text-center text-danger"><b>NO DOCUMENTS UPLOADED</b></td></tr>
+                                                <tr><td colspan="4" class="text-center text-danger"><b>NO DOCUMENTS UPLOADED</b></td></tr>
                                             @endif
                                         </tbody>
                                     </table>
                                     <br>
                                 @endforeach
                             </div>
-                            
                             @can('upload file')
-                                    <a href= "/upload" class="btn btn-info waves-effect waves-themed float-right" style="margin: -25px 60px 15px;"><i class="fal fa-upload"></i> Upload</a>
+                                <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted">
+                                    <a href="/upload" class="btn btn-info waves-effect waves-themed float-right" style="margin-bottom: 10px;"><i class="fal fa-upload"></i> Upload</a>
+                                </div>
                             @endcan
                         </div>
                     </div>

@@ -13,7 +13,7 @@ class DocumentManagement extends Model
     protected $table = 'dms_file';
     protected $primarykey = 'id';
     protected $fillable = [
-        'department_id', 'category', 'upload', 'title', 'original_name', 'web_path', 'created_by', 'updated_by', 'deleted_by'
+        'department_id', 'category', 'upload', 'title', 'original_name', 'file_ext', 'web_path', 'created_by', 'updated_by', 'deleted_by'
     ];
 
     public function department()

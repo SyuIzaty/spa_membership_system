@@ -23,7 +23,7 @@ class DocumentManagementController extends Controller
     public function index()
     {
         $department = DepartmentList::all();
-        $list = DocumentManagement::orderBy('category', 'ASC')->get();
+        $list = DocumentManagement::orderBy('category', 'ASC')->get(); //then orderby doc name
 
         $count = DepartmentList::select('id', 'name')->withCount('document')->orderByDesc('document_count')->get();
 
@@ -84,11 +84,14 @@ class DocumentManagementController extends Controller
             $originalName = $file->getClientOriginalName();
             $fileName = date('dmY_Hi')."_".$originalName;
             $title = current(explode(".", $originalName));
+            $ext = substr($originalName, strpos($originalName, ".") + 1);
+            $file_ext = str_pad(".", STR_PAD_LEFT) . $ext;
             $file->storeAs('/eDocument', $fileName);
             DocumentManagement::create([
                 'department_id' => $request->id,
                 'upload'        => $fileName,
                 'title'         => $title,
+                'file_ext'      => $file_ext,
                 'original_name' => $originalName,
                 'web_path'      => "app/eDocument/".$fileName,
                 'created_by'    => Auth::user()->id

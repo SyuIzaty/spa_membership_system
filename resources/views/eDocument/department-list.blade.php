@@ -25,7 +25,7 @@
                                     {{ session()->get('message') }}
                                 </div>
                             @endif
-                            <div class="table-responsive" style="padding: 0 60px; margin-top: 10px;">
+                            <div class="table-responsive">
                                 <table id="deptlist" class="table table-bordered table-hover table-striped w-100">
                                     <thead>
                                         <tr class="bg-primary-50 text-center">

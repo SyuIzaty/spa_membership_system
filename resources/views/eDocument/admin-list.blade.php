@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <div class="panel-container show">
-                    <div class="panel-content" style="padding: 20px 80px;">
+                    <div class="panel-content">
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="card card-primary card-outline">
@@ -63,7 +63,7 @@
                                         </div>
                                     {!! Form::close() !!}
 
-                                    <div class="card-body" style="padding: 10px 60px;">
+                                    <div class="card-body">
                                         <table class="table table-bordered">
                                             <thead class="bg-primary-50 text-center">
                                                 <tr>
@@ -89,7 +89,7 @@
                                                                 <form action="{{route('destroy', $a->id)}}" method="POST" class="deleteAdmin"> 
                                                                     @method('DELETE')  
                                                                     @csrf
-                                                                    <button type="submit" class="btn btn-danger btn-sm delete-alert"><i class="fal fa-trash"></i></button>               
+                                                                    <button type="submit" class="btn btn-danger btn-sm delete-alert"><i class="fal fa-trash"></i> Delete</button>               
                                                                 </form>
                                                             </td>
                                                         </tr>
