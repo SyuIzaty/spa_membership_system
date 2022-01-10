@@ -17,6 +17,7 @@ Route::get('/', function () {
 
 Route::view('/reset_password', 'auth.passwords.email')->name('reset_password');
 
+Route::get('home', 'DashboardController@index');
 
 Auth::routes();
 
@@ -35,8 +36,6 @@ Route::post('/data_moduleauth', 'ModuleAuthController@data_moduleauth');
 Route::get('/test', 'ApplicantController@test');
 
 Route::group(['middleware' => 'auth'], function () {
-    
-    Route::get('home', 'DashboardController@index');
 
     // Aduan
     Route::get('/borang-aduan', 'AduanController@borangAduan')->name('borangAduan');
@@ -478,12 +477,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/store-doc', 'DocumentManagementController@storeDoc');
     Route::delete('/delete-doc/{id}','DocumentManagementController@deleteDoc');
     Route::post('/update-title', 'DocumentManagementController@updateTitle');
-    Route::post('/edit', 'DocumentManagementController@edit');
-    Route::get('department-list','DocumentManagementController@departmentList');
-    Route::post('/getDeptList', 'DocumentManagementController@getDepartment');
-    Route::get('update-admin/{id}','DocumentManagementController@adminList');
-    Route::delete('destroy/{id}', 'DocumentManagementController@destroy')->name('destroy');
-    Route::post('/store', 'DocumentManagementController@store');
 
     //eAduan Korporat
     Route::get('/lists/{id}', 'AduanKorporatController@list');
@@ -495,14 +488,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/log/{id}', 'AduanKorporatController@log');
     Route::post('/get-log/{id}', 'AduanKorporatController@logList');
     Route::get('/get-file/{id}', 'AduanKorporatController@file');
-    Route::get('/dashboard-icomplaint', 'AduanKorporatController@dashboard');
-    Route::get('/searchYear/{year}', 'AduanKorporatController@searchYear');
-    Route::get('/searchMonth/{month}', 'AduanKorporatController@searchMonth');
-    Route::get('/report', 'AduanKorporatController@report');
-    Route::post('/change-dept', 'AduanKorporatController@changeDepartment');
 
-
-
+    // Training : Open Attendance - Public
+    Route::get('/training-open-attendance/{id}', 'TrainingController@openAttendance')->name('openAttendance');
+    Route::post('training-confirm-attendance', 'TrainingController@confirmAttendance');
+    Route::get('get-train-image/{filename}', 'TrainingController@getImage');
 
     // Training : Training
     Route::get('/training-list', 'TrainingController@trainingList');
@@ -656,9 +646,4 @@ Route::get('/detail', 'AduanKorporatController@displayDetail');
 Route::get('/lists', 'AduanKorporatController@publicList');
 Route::post('/get-lists/{id}', 'AduanKorporatController@getPublicList');
 Route::get('/view-detail/{id}', 'AduanKorporatController@publicDetail');
-
-// Training : Open Attendance - Public
-Route::get('/training-open-attendance/{id}', 'TrainingController@openAttendance')->name('openAttendance');
-Route::post('training-confirm-attendance', 'TrainingController@confirmAttendance');
-Route::get('get-train-image/{filename}', 'TrainingController@getImage');
 
