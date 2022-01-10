@@ -642,10 +642,7 @@ Route::get('/covid-result', 'CovidController@addForm');
 Route::get('/asset-search', 'AssetController@assetSearch')->name('assetSearch');
 Route::get('get-file-image/{filename}', 'AssetController@getImage');
 
-// Training : Open Attendance - Public
-Route::get('/training-open-attendance/{id}', 'TrainingController@openAttendance')->name('openAttendance');
-Route::post('training-confirm-attendance', 'TrainingController@confirmAttendance');
-Route::get('get-train-image/{filename}', 'TrainingController@getImage');
+
 
 // eAduan Korporat Public
 Route::get('/form', 'AduanKorporatController@index');
@@ -659,4 +656,9 @@ Route::get('/detail', 'AduanKorporatController@displayDetail');
 Route::get('/lists', 'AduanKorporatController@publicList');
 Route::post('/get-lists/{id}', 'AduanKorporatController@getPublicList');
 Route::get('/view-detail/{id}', 'AduanKorporatController@publicDetail');
+
+// Training : Open Attendance - Public
+Route::get('/training-open-attendance/{id}', 'TrainingController@openAttendance')->name('openAttendance');
+Route::post('training-confirm-attendance', 'TrainingController@confirmAttendance');
+Route::get('get-train-image/{filename}', 'TrainingController@getImage');
 
