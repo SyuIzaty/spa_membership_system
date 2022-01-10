@@ -477,6 +477,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/store-doc', 'DocumentManagementController@storeDoc');
     Route::delete('/delete-doc/{id}','DocumentManagementController@deleteDoc');
     Route::post('/update-title', 'DocumentManagementController@updateTitle');
+    Route::post('/edit', 'DocumentManagementController@edit');
+    Route::get('department-list','DocumentManagementController@departmentList');
+    Route::post('/getDeptList', 'DocumentManagementController@getDepartment');
+    Route::get('update-admin/{id}','DocumentManagementController@adminList');
+    Route::delete('destroy/{id}', 'DocumentManagementController@destroy')->name('destroy');
+    Route::post('/store', 'DocumentManagementController@store');
 
     //eAduan Korporat
     Route::get('/lists/{id}', 'AduanKorporatController@list');
