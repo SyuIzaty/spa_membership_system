@@ -494,6 +494,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/log/{id}', 'AduanKorporatController@log');
     Route::post('/get-log/{id}', 'AduanKorporatController@logList');
     Route::get('/get-file/{id}', 'AduanKorporatController@file');
+    Route::post('/change-dept', 'AduanKorporatController@changeDepartment');
+    Route::get('/dashboard-icomplaint', 'AduanKorporatController@dashboard');
+    Route::get('/searchYear/{year}', 'AduanKorporatController@searchYear');
+    Route::get('/searchMonth/{month}', 'AduanKorporatController@searchMonth');
+    Route::get('/report', 'AduanKorporatController@report');
 
     // Training : Training
     Route::get('/training-list', 'TrainingController@trainingList');

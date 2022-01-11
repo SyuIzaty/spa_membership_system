@@ -13,6 +13,8 @@ use App\DepartmentList;
 use App\User;
 use App\Staff;
 use DateTime;
+use File;
+use Response;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -264,16 +266,13 @@ class AduanKorporatController extends Controller
 
         ->addColumn('action', function ($list) {
             
-            return '<a href="/detail/' .$list->id.'" class="btn btn-sm btn-danger"><i class="fal fa-eye"></i></a>';
-        })
-
-        ->addColumn('log', function ($list) {
-            return '<a href="/log/' .$list->id.'" class="btn btn-sm btn-primary"><i class="fal fa-list-alt"></i></a>';
+            return '<a href="/detail/' .$list->id.'" class="btn btn-sm btn-danger"><i class="fal fa-eye"></i></a>
+                    <a href="/log/' .$list->id.'" class="btn btn-sm btn-primary"><i class="fal fa-list-alt"></i></a>';
         })
 
         ->addIndexColumn()
 
-        ->rawColumns(['action','log'])
+        ->rawColumns(['action'])
         ->make(true);
     }
 
@@ -290,10 +289,11 @@ class AduanKorporatController extends Controller
         $dataRemark = AduanKorporatRemark::where('complaint_id', $id)->first();
         $file = AduanKorporatFile::where('complaint_id', $id)->get();
 
-        $user = AduanKorporatLog::where('complaint_id',$id)->where('activity','Sent remark')->first();
-        $user_detail = Staff::where('staff_id',$user->created_by)->first();
+        $dept_pic = AduanKorporatLog::where('complaint_id',$id)->where('activity','Sent remark')->first();
 
-        return view('aduan-korporat.admin-view-detail', compact('data','department','dataRemark','file','user','user_detail'));
+        $admin = AduanKorporatLog::where('complaint_id',$id)->where('activity','Completed')->first();
+
+        return view('aduan-korporat.admin-view-detail', compact('data','department','dataRemark','file','dept_pic','admin'));
     }
 
     public function assign(Request $request)
@@ -350,7 +350,6 @@ class AduanKorporatController extends Controller
                 'admin_remark' => $request->adminremarks,
                 'updated_by' => Auth::user()->id
             ]);
-        
 
         $update = AduanKorporat::where('id', $request->id)->first();
         $update->update([
@@ -365,9 +364,9 @@ class AduanKorporatController extends Controller
             'name'          => $user->name,
             'activity'      => 'Completed',
             'created_by'    => Auth::user()->id
-        ]);
-
-        return response() ->json(['success' => 'Completed!']);
+        ]); 
+    
+        return response() ->json(['success' => 'Remark sent!']);
     }
 
     public function file($id)

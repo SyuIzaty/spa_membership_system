@@ -57,15 +57,7 @@
                                                 <th width="20%" style="vertical-align: middle">Name : </th>
                                                 <td colspan="2" style="vertical-align: middle">{{strtoupper($data->name)}}</td>
                                                 <th width="20%" style="vertical-align: middle">Staff ID / Student ID / IC No. / Passport No. : </th>
-                                                <td colspan="2" style="vertical-align: middle">
-                                                @if ($data->staff_id != '')
-                                                    {{$data->staff_id}}
-                                                @elseif ($data->student_id != '')
-                                                    {{$data->student_id}}
-                                                @else
-                                                    {{$data->ic}}
-                                                @endif
-                                                </td>
+                                                <td colspan="2" style="vertical-align: middle">{{$data->created_by}}</td>
                                             </tr>
                                             <tr>
                                                 <th width="20%" style="vertical-align: middle">Phone Number : </th>
@@ -115,7 +107,7 @@
                                                         <ol>
                                                             @foreach ( $file as $f )
                                                                 <li>
-                                                                    <a target="_blank" href="/get-file/{{$f->id}}">{{$f->original_name}}</a>
+                                                                    <a target="_blank" href="/get-files/{{$f->id}}">{{$f->original_name}}</a>
                                                                 </li>
                                                                 <br>
                                                             @endforeach
@@ -160,16 +152,31 @@
 
                                 @if ($data->status == '2')
                                         @can('take action')
-                                            <form id="formRemark">
-                                                @csrf
                                                 <div class="table-responsive">
                                                     <table class="table table-bordered table-hover table-striped w-100">
                                                         <thead>
-                                                            <input type="hidden" id="id" name="id" value="{{ $data->id }}">
                                                             <tr>
-                                                                <td colspan="5" class="bg-info-50"><label class="form-label"><i class="fal fa-comment-alt"></i> REMARK: {{$data->getDepartment->name}} DEPARTMENT</label></td>
+                                                                <td colspan="5" class="bg-info-50">
+                                                                    <label class="form-label"><i class="fal fa-comment-alt"></i> REMARK: 
+                                                                        <form id="changedept" style="display: inline-block;">
+                                                                            @csrf
+                                                                            <input type="hidden" id="id" name="id" value="{{ $data->id }}">
+                                                                            <select name="department" id="department" >
+                                                                                <option disabled>Choose Department</option>
+                                                                                @foreach ($department as $d)
+                                                                                    <option value="{{ $d->id }}" {{ $data->assign == $d->id  ? 'selected' : '' }}>{{ $d->name }}</option>
+                                                                                @endforeach
+                                                                            </select>
+
+                                                                            <button type="submit" id="submitDept" class="btn btn-danger btn-xs float-right waves-effect waves-themed" style="margin-left: 10px; display: none;"><i class="fal fa-times-circle"></i> Submit</button>
+
+                                                                        </form>
+                                                                    </label>
+                                                                </td>
                                                             </tr>
-                                                            
+                                                            <form id="formRemark">
+                                                                @csrf                
+                                                                <input type="hidden" id="id" name="id" value="{{ $data->id }}">
                                                             <tr>
                                                                 <td colspan="4" style="vertical-align: middle">
                                                                     <textarea value="{{ old('remark') }}" class="form-control summernote" id="remark" name="remark"></textarea>                                        
@@ -193,7 +200,10 @@
                                                             </tr>
                                                             
                                                             <tr>
-                                                                <td colspan="4" style="vertical-align: middle">{!! nl2br($data->getRemark->remark) !!}</td>
+                                                                <td colspan="4" style="vertical-align: middle">
+                                                                    <p style="font-size: 10px;"><i style="color:#858c93">{{isset($dept_pic->staff->staff_name) ? $dept_pic->staff->staff_name : ''}} &nbsp; {{isset($dept_pic->created_at) ? $dept_pic->created_at : ''}}</i></p>
+                                                                    {!! nl2br($data->getRemark->remark) !!}
+                                                                </td>
                                                             </tr>
                                                         </thead>
                                                     </table>
@@ -214,8 +224,8 @@
                                                             </tr>
                                                             
                                                             <tr>
-                                                                <td colspan="4" style="vertical-align: middle">                                     
-                                                                    <textarea value="{{ old('adminremarks') }}" class="form-control summernote" id="adminremarks" name="adminremarks" required></textarea>                                        
+                                                                <td colspan="4" style="vertical-align: middle">   
+                                                                    <textarea value="{{ old('adminremarks') }}" class="form-control summernote" id="adminremarks" name="adminremarks" required>{!! nl2br($data->getRemark->remark) !!}</textarea>                                        
                                                                 </td>
                                                             </tr>
                                                         </thead>
@@ -235,9 +245,12 @@
                                                             <tr>
                                                                 <td colspan="5" class="bg-info-50"><label class="form-label"><i class="fal fa-user"></i> ADMIN REMARK</label></td>
                                                             </tr>
-                                                            
+
                                                             <tr>
-                                                                <td colspan="4" style="vertical-align: middle">{!! nl2br($data->getRemark->admin_remark) !!}</td>
+                                                                <td colspan="4" style="vertical-align: middle">
+                                                                    <p style="font-size: 10px;"><i style="color:#858c93">{{isset($admin->staff->staff_name) ? $admin->staff->staff_name : ''}} &nbsp; {{isset($admin->created_at) ? $admin->created_at : ''}}</i></p>
+                                                                    {!! nl2br($data->getRemark->remark) !!}
+                                                                </td>
                                                             </tr>
                                                         </thead>
                                                     </table>
@@ -259,13 +272,13 @@
 @section('script')
 <script>
 
-$('.summernote').summernote({
+        $('.summernote').summernote({
             height: 200,
             width: 1165,
             spellCheck: true
         });
 
-$("#assign").on('click', function(e) {
+        $("#assign").on('click', function(e) {
             e.preventDefault();
 
             var datas = $('#formId').serialize();
@@ -411,6 +424,48 @@ $("#assign").on('click', function(e) {
                 }
             })
         });
+
+        $(function() { 
+            $(document).on('change','#department',function(){
+
+                $("#submitDept").show();
+
+            });
+        });
+
+        $("#submitDept").on('click', function(e) {
+        
+        e.preventDefault();
+
+        var datas = $('#changedept').serialize();
+
+        $.ajaxSetup({
+            headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            });
+
+        $.ajax({
+            type: "POST",
+            url: "{{ url('change-dept')}}",
+            data: datas,
+            dataType: "json",
+            success: function(response) {
+                console.log(response);
+                if(response){
+                    Swal.fire(response.success);
+                    $("#submitDept").hide();
+                }
+            },
+            error:function(error){
+                console.log(error)
+                alert("Error");
+            }
+        });
+
+    });
+
+        
 </script>
 @endsection
 

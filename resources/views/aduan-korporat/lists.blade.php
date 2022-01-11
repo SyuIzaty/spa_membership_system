@@ -36,12 +36,10 @@
                                             <th class="text-center">Status</th>
                                             <th class="text-center">Assigned Department</th>
                                             <th class="text-center">Action</th>
-                                            <th class="text-center">Activity Log</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
@@ -82,7 +80,6 @@
                 { className: 'text-center', data: 'status', name: 'status' },
                 { className: 'text-center', data: 'assign', name: 'assign' },
                 { className: 'text-center', data: 'action', name: 'action', orderable: false, searchable: false},
-                { className: 'text-center', data: 'log', name: 'log', orderable: false, searchable: false} 
                 ],
                 orderCellsTop: true,
                 "order": [[ 1, "asc" ]],
