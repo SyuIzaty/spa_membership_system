@@ -42,11 +42,21 @@
                                                 @foreach ($list->where('department_id',$c->id) as $l)
                                                     <tr>
                                                         <td class="text-center col-md-1">{{$i}}</td>
-                                                        <td><a target="_blank" href="/get-doc/{{$l->id}}">{{$l->title}}</a></td>
+                                                        <td>
+                                                            @if (file_exists( storage_path().'/app/eDocument/'.$l->upload ))
+                                                                <a style="text-decoration: none!important;  font-weight: normal;" target="_blank" href="/get-doc/{{$l->id}}">{{$l->title}}</a>
+                                                            @else 
+                                                                <a class="nofile" href="#">{{$l->title}}</a>
+                                                            @endif
+                                                        </td>
                                                         <td class="text-center col-md-2">{{ isset($l->category) ? $l->getCategory->description : 'N/A' }}</td>
                                                         <td class="text-center col-md-2">
-                                                            <a href="/get-doc/{{$l->id}}" class="btn btn-sm btn-primary" download="{{$l->title}}"><i class="fal fa-download"></i></a>
-                                                            
+                                                            @if (file_exists( storage_path().'/app/eDocument/'.$l->upload ))
+                                                                <a href="/get-doc/{{$l->id}}" class="btn btn-sm btn-primary" download="{{$l->title}}"><i class="fal fa-download"></i></a>
+                                                            @else 
+                                                                <button class="btn btn-sm btn-primary nofile"><i class="fal fa-download"></i></button>
+                                                            @endif
+
                                                             @if( ($admins->whereIn('department_id',$c->id)->count() > 0) || ($superAdmin->count() > 0)) 
                                                                 <a href="#" data-target="#edit" data-toggle="modal" data-id="{{$l->id}}" data-title="{{$l->title}}" data-category="{{$l->category}}"
                                                                 class="btn btn-sm btn-success"><i class="fal fa-pencil"></i></a>
@@ -134,6 +144,14 @@
         $('.modal-body #title').val(title);
         $('.modal-body #category').val(category);
 
+        });
+
+        $(".nofile").click(function()
+        {
+            Swal.fire({
+            title: 'File not found!',
+            text: 'Please contact IITU for further assistance.',
+            })
         });
     });
 

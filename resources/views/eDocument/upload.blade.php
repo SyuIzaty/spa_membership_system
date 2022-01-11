@@ -110,7 +110,13 @@
                                                                             <td class='title'>{{$f->title}}</td>
                                                                             <td class="text-center">{{$f->file_ext}}</td>
                                                                             <td class="category" data-selected="{{ $f->category }}"></td>
-                                                                            <td class="text-center"><a target="_blank" href="/get-doc/{{$f->id}}" class="btn btn-info btn-xs"><i class="fal fa-eye"></i></a></td>
+                                                                            <td class="text-center">
+                                                                                @if (file_exists( storage_path().'/app/eDocument/'.$f->upload ))
+                                                                                    <a target="_blank" href="/get-doc/{{$f->id}}" class="btn btn-info btn-xs"><i class="fal fa-eye"></i></a></td>
+                                                                                @else 
+                                                                                    <a href="#" class="btn btn-info btn-xs nofile"><i class="fal fa-eye"></i></a></td>
+                                                                                @endif
+                                                                            </td>
                                                                         </tr>
                                                                      
                                                                      @php $i++; @endphp
@@ -180,7 +186,12 @@
                                                                             <td class='title'>{{$f->title}}</td>
                                                                             <td class="text-center">{{$f->file_ext}}</td>
                                                                             <td class="category" data-selected="{{ $f->category }}"></td>
-                                                                            <td class="text-center"><a target="_blank" href="/get-doc/{{$f->id}}" class="btn btn-info btn-xs"><i class="fal fa-eye"></i></a></td>
+                                                                            <td class="text-center">
+                                                                                @if (file_exists( storage_path().'/app/eDocument/'.$f->upload ))
+                                                                                    <a target="_blank" href="/get-doc/{{$f->id}}" class="btn btn-info btn-xs"><i class="fal fa-eye"></i></a></td>
+                                                                                @else 
+                                                                                    <a href="#" class="btn btn-info btn-xs nofile"><i class="fal fa-eye"></i></a></td>
+                                                                                @endif
                                                                         </tr>
                                                                      @php $i++; @endphp
                                                                     @endforeach
@@ -260,12 +271,13 @@
 
     $(document).ready(function() {
           
-//         jQuery(document).ready(function($) {
-//         $(".clickable-row").click(function() {
-//         // window.location = $(this).data("href");
-//         window.open($(this).data("href"), '_blank');
-//     });
-// });
+    $(".nofile").click(function()
+    {
+        Swal.fire({
+        title: 'File not found!',
+        text: 'Please contact IITU for further assistance.',
+        })
+    });
 
     $("#dropzone").dropzone({
         addRemoveLinks: true,
