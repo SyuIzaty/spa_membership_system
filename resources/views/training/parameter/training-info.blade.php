@@ -139,7 +139,7 @@
                                                                 <div class="form-group">
                                                                     <td width="25%"><label class="form-label" for="link">  Link : </label></td>
                                                                     <td colspan="3">
-                                                                        <input class="form-control" id="link" name="link" value="{{ $train->link }}" required>
+                                                                        <input class="form-control" id="link" name="link" value="{{ $train->link }}">
                                                                     </td>
                                                                 </div>
                                                             </tr>
@@ -246,7 +246,7 @@
                                                                     <tr align="center">
                                                                         @if(isset($train->upload_image))
                                                                             <td colspan="5">
-                                                                                <a data-fancybox="gallery" href="/get-train-image/{{ $train->upload_image }}"><img src="/get-train-image/{{ $train->upload_image }}" style="width:1080px; height:500px;" class="img-fluid mr-2"></a><br><br>
+                                                                                <a data-fancybox="gallery" href="/get-train-image/{{ $train->upload_image }}"><img src="/get-train-image/{{ $train->upload_image }}" style="width:100%" class="img-fluid mr-2"></a><br><br>
                                                                             </td>
                                                                         @else
                                                                             <span>No Image Uploaded</span>

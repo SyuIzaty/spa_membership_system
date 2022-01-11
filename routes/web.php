@@ -495,11 +495,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/get-log/{id}', 'AduanKorporatController@logList');
     Route::get('/get-file/{id}', 'AduanKorporatController@file');
 
-    // Training : Open Attendance - Public
-    Route::get('/training-open-attendance/{id}', 'TrainingController@openAttendance')->name('openAttendance');
-    Route::post('training-confirm-attendance', 'TrainingController@confirmAttendance');
-    Route::get('get-train-image/{filename}', 'TrainingController@getImage');
-
     // Training : Training
     Route::get('/training-list', 'TrainingController@trainingList');
     Route::post('data-training', 'TrainingController@data_training');
@@ -638,7 +633,10 @@ Route::get('/covid-result', 'CovidController@addForm');
 Route::get('/asset-search', 'AssetController@assetSearch')->name('assetSearch');
 Route::get('get-file-image/{filename}', 'AssetController@getImage');
 
-
+// Training : Open Attendance - Public
+Route::get('/training-open-attendance/{id}', 'TrainingController@openAttendance')->name('openAttendance');
+Route::post('training-confirm-attendance', 'TrainingController@confirmAttendance');
+Route::get('get-train-image/{filename}', 'TrainingController@getImage');
 
 // eAduan Korporat Public
 Route::get('/form', 'AduanKorporatController@index');

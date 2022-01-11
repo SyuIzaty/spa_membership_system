@@ -23,9 +23,9 @@
                             <form  action="{{ url('training-open-attendance/'. $training->id) }}" method="GET" id="form_find">
                                 <div>
                                     <div class="table-responsive">
-                                        <table class="table table-striped w-50">
+                                        <table class="table table-striped w-100">
                                             <tr>
-                                                <td width="35%" style="vertical-align: middle"><label class="form-label" for="ids"><span class="text-danger">**</span> Staff ID / IC Number :</label></td>
+                                                <td width="30%" style="vertical-align: middle"><label class="form-label" for="ids"><span class="text-danger">**</span> Staff ID / IC Number :</label></td>
                                                 <td colspan="3"><input class="form-control" id="ids" name="ids" value="{{ $request->ids }}" required></td>
                                                 <td style="vertical-align: middle"><button type="submit" id="btn-search" class="btn btn-sm btn-success float-right"><i class="fal fa-location-arrow"></i></button></td>
                                             <tr>
@@ -68,45 +68,50 @@
                                             <div class="col-sm-12">
                                                 <div class="card-primary card-outline">
                                                     <div class="card-body">
-                                                        <table id="train" class="table table-bordered table-hover table-striped w-100 mb-1">
-                                                            <thead>
-                                                                <tr class="text-center">
-                                                                    <div class="form-group">
-                                                                        <td colspan="6">
-                                                                            @if(isset($training->upload_image))
-                                                                                <a data-fancybox="gallery" href="/get-train-image/{{ $training->upload_image }}"><img src="/get-train-image/{{ $training->upload_image }}" style="width:800px; height:500px" class="img-fluid"></a>
-                                                                            @else 
-                                                                                <img src="{{ URL::to('/') }}/img/default.png" alt="default" style="width:800px; height:400px">
-                                                                            @endif
-                                                                        </td>
-                                                                    </div>
-                                                                </tr>
-                                                                <tr>
-                                                                    <div class="form-group">
-                                                                        <td width="15%"><label class="form-label"> TRAINING TITLE : </label></td>
-                                                                        <td colspan="6">{{ $training->title ?? '--' }}</td>
-                                                                    </div>
-                                                                </tr>
-                                                                <tr>
-                                                                    <div class="form-group">
-                                                                        <td width="15%"><label class="form-label"> DATE : </label></td>
-                                                                        <td colspan="3">
-                                                                            {{ isset($training->start_date) ? date('d/m/Y', strtotime($training->start_date)) : 'dd/mm/YYYY' }} - {{ isset($training->end_date) ? date('d/m/Y', strtotime($training->end_date)) : 'dd/mm/YYYY' }}
-                                                                        </td>
-                                                                        <td width="15%"><label class="form-label"> TIME : </label></td>
-                                                                        <td colspan="3">
-                                                                            {{ isset($training->start_time) ? date('h:i A', strtotime($training->start_time)) : 'h:i A' }} - {{ isset($training->end_time) ? date('h:i A', strtotime($training->end_time)) : 'h:i A' }}
-                                                                        </td>
-                                                                    </div>
-                                                                </tr>
-                                                                <tr>
-                                                                    <div class="form-group">
-                                                                        <td width="15%"><label class="form-label"> VENUE : </label></td>
-                                                                        <td colspan="6">{{ strtoupper($training->venue) ?? '--' }}</td>
-                                                                    </div>
-                                                                </tr>
-                                                            </thead>
-                                                        </table>
+                                                        <div class="table-responsive">
+                                                            <table id="train" class="table table-bordered table-hover table-striped w-100 mb-1">
+                                                                <thead>
+                                                                    <tr class="text-center">
+                                                                        <div class="form-group">
+                                                                            <td colspan="6">
+                                                                                @if(isset($training->upload_image))
+                                                                                    <a data-fancybox="gallery" href="/get-train-image/{{ $training->upload_image }}"><img src="/get-train-image/{{ $training->upload_image }}" style="width:100%" class="img-fluid"></a>
+                                                                                @else 
+                                                                                    <img src="{{ URL::to('/') }}/img/default.png" alt="default" style="width:100%">
+                                                                                @endif
+                                                                            </td>
+                                                                        </div>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <div class="form-group">
+                                                                            <td width="22%"><label class="form-label"> TRAINING TITLE : </label></td>
+                                                                            <td colspan="6">{{ $training->title ?? '--' }}</td>
+                                                                        </div>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <div class="form-group">
+                                                                            <td width="22%"><label class="form-label"> DATE : </label></td>
+                                                                            <td colspan="6">
+                                                                                {{ isset($training->start_date) ? date('d/m/Y', strtotime($training->start_date)) : 'dd/mm/YYYY' }} - {{ isset($training->end_date) ? date('d/m/Y', strtotime($training->end_date)) : 'dd/mm/YYYY' }}
+                                                                            </td>
+                                                                        </div>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <div class="form-group">
+                                                                            <td width="22%"><label class="form-label"> TIME : </label></td>
+                                                                            <td colspan="6">
+                                                                                {{ isset($training->start_time) ? date('h:i A', strtotime($training->start_time)) : 'h:i A' }} - {{ isset($training->end_time) ? date('h:i A', strtotime($training->end_time)) : 'h:i A' }}
+                                                                            </td>
+                                                                        </div>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <div class="form-group">
+                                                                            <td width="22%"><label class="form-label"> VENUE : </label></td>
+                                                                            <td colspan="6">{{ strtoupper($training->venue) ?? '--' }}</td>
+                                                                        </div>
+                                                                    </tr>
+                                                                </thead>
+                                                            </table>
                                                         @if($request->ids != '' && isset($data))
                                                             <br>
                                                             <table id="info" class="table table-bordered table-hover table-striped w-100 mb-1">
@@ -114,7 +119,7 @@
                                                                     <li>
                                                                         <a href="#" disabled style="pointer-events: none">
                                                                             <i class="fal fa-caret-right"></i>
-                                                                            <span class="hidden-md-down">Personal Information</span>
+                                                                            <span class="">Personal Information</span>
                                                                         </a>
                                                                     </li>
                                                                     <p></p>
@@ -122,36 +127,49 @@
                                                                 <thead>
                                                                     <tr>
                                                                         <div class="form-group">
-                                                                            <td width="15%"><label class="form-label"> NAME : </label></td>
+                                                                            <td width="22%"><label class="form-label"> NAME : </label></td>
                                                                             <td colspan="6">{{ $data->staff_name ?? '--' }}</td>
                                                                         </div>
                                                                     </tr>
                                                                     <tr>
                                                                         <div class="form-group">
-                                                                            <td width="15%"><label class="form-label"> STAFF ID : </label></td>
-                                                                            <td colspan="3">{{ $data->staff_id ?? '--' }}</td>
-                                                                            <td width="15%"><label class="form-label"> IC/PASSPORT NO. : </label></td>
-                                                                            <td colspan="3">{{ $data->staff_ic ?? '--' }}</td>
+                                                                            <td width="22%"><label class="form-label"> STAFF ID : </label></td>
+                                                                            <td colspan="6">{{ $data->staff_id ?? '--' }}</td>
                                                                         </div>
                                                                     </tr>
                                                                     <tr>
                                                                         <div class="form-group">
-                                                                            <td width="15%"><label class="form-label"> PHONE NO. : </label></td>
-                                                                            <td colspan="3">{{ $data->staff_phone ?? '--' }}</td>
-                                                                            <td width="15%"><label class="form-label"> EMAIL : </label></td>
-                                                                            <td colspan="3">{{ $data->staff_email ?? '--' }}</td>
+                                                                            <td width="22%"><label class="form-label"> IC NO. : </label></td>
+                                                                            <td colspan="6">{{ $data->staff_ic ?? '--' }}</td>
                                                                         </div>
                                                                     </tr>
                                                                     <tr>
                                                                         <div class="form-group">
-                                                                            <td width="15%"><label class="form-label"> POSITION : </label></td>
-                                                                            <td colspan="3">{{ $data->staff_position ?? '--' }}</td>
-                                                                            <td width="15%"><label class="form-label"> DEPARTMENT : </label></td>
-                                                                            <td colspan="3">{{ $data->staff_dept ?? '--' }}</td>
+                                                                            <td width="22%"><label class="form-label"> PHONE NO. : </label></td>
+                                                                            <td colspan="6">{{ $data->staff_phone ?? '--' }}</td>
+                                                                        </div>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <div class="form-group">
+                                                                            <td width="22%"><label class="form-label"> EMAIL : </label></td>
+                                                                            <td colspan="6">{{ $data->staff_email ?? '--' }}</td>
+                                                                        </div>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <div class="form-group">
+                                                                            <td width="22%"><label class="form-label"> POSITION : </label></td>
+                                                                            <td colspan="6">{{ $data->staff_position ?? '--' }}</td>
+                                                                        </div>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <div class="form-group">
+                                                                            <td width="22%"><label class="form-label"> DEPARTMENT : </label></td>
+                                                                            <td colspan="6">{{ $data->staff_dept ?? '--' }}</td>
                                                                         </div>
                                                                     </tr>
                                                                 </thead>
                                                             </table>
+                                                        </div>
                                                             <br><br>
                                                             {!! Form::open(['action' => 'TrainingController@confirmAttendance', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                                                             <input type="hidden" name="_token" value="{{ csrf_token() }}">

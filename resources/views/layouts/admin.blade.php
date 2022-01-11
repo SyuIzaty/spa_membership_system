@@ -478,16 +478,16 @@
                         </li>
 
                         <li class="open">
-                            <a href="#" title="Asset" data-filter-tags="asset">
+                            <a href="#" title="Training" data-filter-tags="training">
                                 <i class="fal fa-location-arrow"></i>
                                 <span class="nav-link-text" data-i18n="nav.asset">Training Request</span>
                             </a>
                         </li>
 
                         <li class="open">
-                            <a href="#" title="Asset" data-filter-tags="asset">
+                            <a href="#" title="training" data-filter-tags="training">
                                 <i class="fal fa-expand-arrows-alt"></i>
-                                <span class="nav-link-text" data-i18n="nav.asset">Training Hour</span>
+                                <span class="nav-link-text" data-i18n="nav.training">Training Hour</span>
                             </a>
                             <ul>
                                 <li>
@@ -518,26 +518,26 @@
                             </ul>
                         </li>
                         <li class="open">
-                            <a href="#" title="Asset" data-filter-tags="asset">
+                            <a href="#" title="Training" data-filter-tags="training">
                                 <i class="fal fa-bookmark"></i>
-                                <span class="nav-link-text" data-i18n="nav.asset">Training Evaluation</span>
+                                <span class="nav-link-text" data-i18n="nav.training">Training Evaluation</span>
                             </a>
                             <ul>
                                 <li>
-                                    <a href="/evaluation-question" title="Asset" data-filter-tags="asset">
-                                        <span class="nav-link-text" data-i18n="nav.asset">Evaluation Question</span>
+                                    <a href="/evaluation-question" title="Training" data-filter-tags="training">
+                                        <span class="nav-link-text" data-i18n="nav.training">Evaluation Question</span>
                                     </a>
-                                    <a href="/evaluation-report" title="Asset" data-filter-tags="asset">
-                                        <span class="nav-link-text" data-i18n="nav.asset">Evaluation Report</span>
+                                    <a href="/evaluation-report" title="Training" data-filter-tags="training">
+                                        <span class="nav-link-text" data-i18n="nav.training">Evaluation Report</span>
                                     </a>
                                 </li>
                             </ul>
                         </li>
 
                         <li class="open">
-                            <a href="#" title="Asset" data-filter-tags="asset">
+                            <a href="#" title="Training" data-filter-tags="training">
                                 <i class="fal fa-cogs"></i>
-                                <span class="nav-link-text" data-i18n="nav.asset">Parameter Setting</span>
+                                <span class="nav-link-text" data-i18n="nav.training">Parameter Setting</span>
                             </a>
                             <ul>
                                 <li>
@@ -909,6 +909,7 @@
                                     <span class="nav-link-text" data-i18n="nav.declaration">Today Declaration</span>
                                 </a>
                             </li>
+                            @role('Staff')
                             <li class="open">
                                 <a href="/vaccineForm" title="Vaccine" data-filter-tags="vaccine">
                                     <i class="fal fa-syringe"></i>
@@ -921,6 +922,7 @@
                                     <span class="nav-link-text" data-i18n="nav.vaccine">Dependent Vaccination</span>
                                 </a>
                             </li>
+                            @endrole
                             <li class="open">
                                 <a href="/selfHistory/{{ Auth::user()->id }}" title="History" data-filter-tags="history">
                                     <i class="fal fa-clock"></i>
