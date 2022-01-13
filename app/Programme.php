@@ -17,4 +17,10 @@ class Programme extends Model
     protected $fillable = [
         'id','programme_series','programme_name','scroll_name','programme_name_malay','scroll_name_malay','programme_duration','programme_status', 'programme_semester'
     ];
+
+
+    public function programme_category()
+    {
+        return $this->belongsTo('App\ProgrammeCategory', 'programme_category_id', 'id');
+    }
 }

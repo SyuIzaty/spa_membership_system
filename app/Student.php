@@ -20,4 +20,9 @@ class Student extends Model
         return $this->hasOne('App\Programme','id', 'students_programme');
     }
 
+    public function candidate()
+    {
+        return $this->hasMany('App\Models\eVoting\Candidate', 'student_id', 'students_id');
+    }
+
 }

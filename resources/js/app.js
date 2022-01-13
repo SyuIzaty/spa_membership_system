@@ -6,9 +6,19 @@ import PrimeVue from "primevue/config";
 import Vue from "vue";
 import { routes } from "./routes";
 import VueRouter from "vue-router";
+import { ValidationProvider, ValidationObserver } from "vee-validate";
+import ConfirmationService from "primevue/confirmationservice";
+import ToastService from "primevue/toastservice";
+import Toast from "primevue/toast";
+
 require("./bootstrap");
 
 Vue.use(PrimeVue);
+Vue.use(ToastService);
+Vue.use(ConfirmationService);
+Vue.component("ValidationProvider", ValidationProvider);
+Vue.component("ValidationObserver", ValidationObserver);
+Vue.component("Toast", Toast);
 
 Vue.use(VueRouter);
 

@@ -19,7 +19,7 @@
                         object-fit: cover;
                         backface-visibility: hidden;
                     "
-                    src="../../assets/profile_1.jpg"
+                    :src="require(`../../assets/${img}`)"
                 />
             </figure>
             <div
@@ -31,10 +31,10 @@
                         {{ name }}
                     </div>
                     <div style="text-align: start; font-size: 0.8rem">
-                        Faculty of Accounting
+                        {{ category }}
                     </div>
                 </div>
-                <div class="py-2">"Maju Mahasiswa Untuk Negara"</div>
+                <div class="py-2">"{{ tagline }}"</div>
                 <div
                     style="
                         display: flex;
@@ -50,8 +50,18 @@
                                 value="None"
                                 :id="'squaredTwo' + id"
                                 name="check"
+                                :checked="checked"
                             />
-                            <label :for="'squaredTwo' + id"></label>
+
+                            <label
+                                :for="'squaredTwo' + id"
+                                @click="
+                                    $emit('voted-candidate', {
+                                        id: id,
+                                        is_selected: !is_selected,
+                                    })
+                                "
+                            ></label>
                         </div>
                         <!-- end .squaredTwo -->
                     </section>
@@ -67,6 +77,13 @@ export default {
     props: {
         name: { type: String, required: true, default: "" },
         id: { type: String, required: true, default: "" },
+        img: { type: String, required: true, default: "" },
+        category: { type: String, required: true, default: "" },
+        tagline: { type: String, required: true, default: "" },
+        is_selected: { type: Boolean, required: true, default: false },
+    },
+    data() {
+        return { checked: this.is_selected };
     },
 };
 </script>
