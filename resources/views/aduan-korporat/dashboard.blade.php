@@ -49,14 +49,15 @@
                                     <div class="chart">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <div class="table-responsive">
+                                                <div class="table-responsive" style="overflow:hidden;">
                                                     <div id="chart1" style="height: 500px"></div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <hr style="border-top: 1px solid #b9b8b8;">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <div class="table-responsive">
+                                                <div class="table-responsive" style="overflow:hidden;">
                                                     <div id="chart2" style="height: 500px"></div>
                                                 </div>
                                             </div>
@@ -162,69 +163,7 @@
             });
         });
 
-        //---------------------
 
-        $(document).ready(function()
-    {
-        function createDatatable(year = null ,month = null)
-        {
-            var check = $.fn.DataTable.isDataTable('#class-group');
-
-            if(check){
-                $('#class-group').DataTable().destroy();
-            }
-
-            var table = $('#class-group').DataTable({
-            processing: true,
-            serverSide: true,
-            autowidth: false,
-            ajax: {
-                url: "/data_classgroup",
-                data: {year:year, month:month},
-                type: 'POST',
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
-            },
-            columns: [
-                    { data: 'id', name: 'id'},
-                    { data: 'academic_session', name: 'academic_session'},
-                    { data: 'programme_code', name: 'programme_code'},
-                    { data: 'course_code', name: 'course_code'},
-                    { data: 'group_code', name: 'group_code'},
-                    { data: 'lect_one', name: 'lect_one'},
-                    { data: 'lect_two', name: 'lect_two'},
-                    { data: 'lect_venue', name: 'lect_venue'},
-                    { data: 'action', name: 'action', orderable: false, searchable: false}
-                ],
-                orderCellsTop: true,
-                "order": [[ 1, "asc" ]],
-                "initComplete": function(settings, json) {
-                },
-            });
-        }
-
-        $.ajaxSetup({
-            headers:{
-            'X-CSRF-Token' : $("input[name=_token]").val()
-            }
-        });
-
-        $('#year').on('change',function(){
-            $('#month').val('').change();
-        });
-
-        $('.selectfilter').on('change',function(){
-            var year = $('#year').val();
-            var month = $('#month').val();
-            if(year && month){
-
-                createDatatable(year,month);
-            }
-        });
-
-    });
-
-
-        //---------------------
 
 
 </script>
