@@ -35,6 +35,11 @@ class AduanKorporat extends Model
         return $this->hasOne('App\DepartmentList','id','assign');
     }
 
+    public function getLog()
+    {
+        return $this->hasMany('App\AduanKorporatLog','complaint_id','id');
+    }
+
     public function getRemark()
     {
         return $this->hasOne('App\AduanKorporatRemark','complaint_id','id');

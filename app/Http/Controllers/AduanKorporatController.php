@@ -462,14 +462,12 @@ class AduanKorporatController extends Controller
         {
             $data = '';
             return response()->json($data);
-
         }
 
         else
         {
             return response()->json($data);
         }
-
     }
 
     public function publicDetail($id)
@@ -503,10 +501,7 @@ class AduanKorporatController extends Controller
                     return Carbon::parse($date)->format('Y');
                 })
                 ->unique(); //year selection
-
-
         return view('aduan-korporat.dashboard', compact('year'))->with('userCategory',json_encode($countUserCat))->with('category',json_encode($countCategory));
-
     }
 
     public function searchYear($year)
@@ -557,6 +552,198 @@ class AduanKorporatController extends Controller
         
         return response() ->json(['success' => 'Changes Saved!']);
     }
+
+    public function aduanKorporatExport($id)
+    {
+        return Excel::download(new aduanKorporatExport($id),'Aduan Korporat Report.xlsx');
+    }
+
+    public function reports()
+    {
+        $year = AduanKorporat::orderBy('created_at', 'ASC')
+        ->pluck('created_at')
+        ->map(function($date)
+        {
+            return Carbon::parse($date)->format('Y');
+        })
+        ->unique(); //year selection
+
+        return view('aduan-korporat.report', compact('year'));
+    }
+
+    public function allReport()
+    {
+
+        $list = AduanKorporat::all();
+
+        return datatables()::of($list)
+
+        ->editColumn('ticket_no', function ($list) {
+
+            return $list->ticket_no;            
+        })
+
+        ->editColumn('date', function ($list) {
+
+            $date = new DateTime($list->created_at);
+
+            $date = $date->format('d-m-Y');
+
+            return $date;            
+        })
+
+        ->editColumn('category', function ($list) {
+
+            return $list->getCategory->description ?? '';            
+        })
+
+        ->editColumn('user', function ($list) {
+
+            return $list->getUserCategory->description ?? '';            
+        })
+
+        ->editColumn('status', function ($list) {
+
+            return $list->getStatus->description ?? '';            
+        })
+
+        ->editColumn('department', function ($list) {
+
+            return isset($list->getDepartment->name) ? $list->getDepartment->name : 'N/A';            
+        })
+
+        ->editColumn('complete', function ($list) {
+
+            $date = AduanKorporatLog::where('complaint_id',$list->id)->where('activity','Completed');
+            
+            if ($date->exists()) {
+
+                $date = new DateTime($date->first()->created_at);
+
+                $d = $date->format('d-m-Y');
+    
+                return $d;            
+            }
+
+            else
+            {
+                return "N/A";
+            }
+        })
+
+        ->editColumn('duration', function ($list) {
+
+            $date = AduanKorporatLog::where('complaint_id',$list->id)->where('activity','Completed');
+
+            if ($date->exists()) {
+                
+                return Carbon::parse($list->created_at)->diffInDays($date->first()->created_at)." days";
+            }
+
+            else
+            {
+                return Carbon::parse($list->created_at)->diffInDays(Carbon::now()->toDateTimeString())." days";
+            }
+        })
+
+        ->addIndexColumn()
+        ->make(true);
+    }
+
+    public function getYear($year)
+    {
+        $month = AduanKorporat::whereYear('created_at', '=', $year)
+                ->orderBy('created_at', 'ASC')
+                ->pluck('created_at')
+                ->map(function($date)
+                {
+                    return Carbon::parse($date)->format('F');
+                })
+                ->unique(); //month selection
+
+        return response()->json($month);
+    }
+
+    public function getReport(Request $request)
+    {
+        $month = date('m', strtotime($request->month));
+
+        $list = AduanKorporat::whereYear('created_at', '=', $request->year)->whereMonth('created_at', '=', $month)->get();
+
+        return datatables()::of($list)
+
+        ->editColumn('ticket_no', function ($list) {
+
+            return $list->ticket_no;            
+        })
+
+        ->editColumn('date', function ($list) {
+
+            $date = new DateTime($list->created_at);
+
+            $date = $date->format('d-m-Y');
+
+            return $date;            
+        })
+
+        ->editColumn('category', function ($list) {
+
+            return $list->getCategory->description ?? '';            
+        })
+
+        ->editColumn('user', function ($list) {
+
+            return $list->getUserCategory->description ?? '';            
+        })
+
+        ->editColumn('status', function ($list) {
+
+            return $list->getStatus->description ?? '';            
+        })
+
+        ->editColumn('department', function ($list) {
+
+            return isset($list->getDepartment->name) ? $list->getDepartment->name : 'N/A';            
+        })
+
+        ->editColumn('complete', function ($list) {
+
+            $date = AduanKorporatLog::where('complaint_id',$list->id)->where('activity','Completed');
+            if ($date->exists()) {
+                
+                $date = new DateTime($date->first()->created_at);
+
+                $d = $date->format('d-m-Y');
+    
+                return $d;            
+            }
+
+            else
+            {
+                return "N/A";
+            }
+        })
+
+        ->editColumn('duration', function ($list) {
+
+            $date = AduanKorporatLog::where('complaint_id',$list->id)->where('activity','Completed');
+            
+            if ($date->exists()) {
+                
+                return Carbon::parse($list->created_at)->diffInDays($date->first()->created_at)." days";
+            }
+
+            else
+            {
+                return Carbon::parse($list->created_at)->diffInDays(Carbon::now()->toDateTimeString())." days";
+            }
+        })
+
+        ->addIndexColumn()
+        ->make(true);
+    }
+
+
 
     /**
      * Update the specified resource in storage.

@@ -493,12 +493,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/submit-complete', 'AduanKorporatController@complete');
     Route::get('/log/{id}', 'AduanKorporatController@log');
     Route::post('/get-log/{id}', 'AduanKorporatController@logList');
-    Route::get('/get-file/{id}', 'AduanKorporatController@file');
     Route::post('/change-dept', 'AduanKorporatController@changeDepartment');
     Route::get('/dashboard-icomplaint', 'AduanKorporatController@dashboard');
     Route::get('/searchYear/{year}', 'AduanKorporatController@searchYear');
     Route::get('/searchMonth/{month}', 'AduanKorporatController@searchMonth');
-    Route::get('/report', 'AduanKorporatController@report');
+    Route::get('/reports', 'AduanKorporatController@reports');
+    Route::post('/all-report', 'AduanKorporatController@allReport');
+    Route::get('/get-year/{year}', 'AduanKorporatController@getYear');
+    Route::post('/year-month-report', 'AduanKorporatController@getReport');
+
 
     // Training : Training
     Route::get('/training-list', 'TrainingController@trainingList');
@@ -655,4 +658,5 @@ Route::get('/detail', 'AduanKorporatController@displayDetail');
 Route::get('/lists', 'AduanKorporatController@publicList');
 Route::post('/get-lists/{id}', 'AduanKorporatController@getPublicList');
 Route::get('/view-detail/{id}', 'AduanKorporatController@publicDetail');
+Route::get('/get-files/{id}', 'AduanKorporatController@file');
 

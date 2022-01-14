@@ -1,9 +1,18 @@
 @extends('layouts.admin')
 
 @section('content')
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script> 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
 <style>
     .swal2-container {
         z-index: 10000;
+    }
+
+    .dataTables_wrapper .dt-buttons {
+        float: right; 
+        margin-top: 20px;
+        margin-bottom: 20px;
     }
 </style>
     <main id="js-page-content" role="main" class="page-content">
@@ -32,37 +41,48 @@
                             @endif
                             <div class="row mb-2">
                                 <div class="col-md-6">
-                                    <select class="form-control programme selectfilter" name="programme" id="programme">
+                                    <label>Year</label>
+                                    <select class="form-control year selectfilter" name="year" id="year">
                                         <option disabled selected>Please Select</option>
-                                        @foreach ($programme as $programmes)
-                                        <option value="{{ $programmes->id }}">{{ $programmes->id }} - {{ $programmes->programme_name }}</option>
+                                        @foreach ($year as $y)
+                                            <option value="{{ $y }}">{{ $y }}</option>                                        
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Session</label>
-                                    <select class="form-control selectfilter session" name="session1" id="session">
+                                    <label>Month</label>
+                                    <select class="form-control selectfilter month" name="months" id="month">
                                     </select>
                                 </div>
                             </div>
-                            <table class="table table-bordered" id="class-group">
+                            <table class="table table-bordered" id="report">
                                 <thead>
                                     <tr class="bg-primary-50 text-center">
                                         <th class="text-center">No.</th>
                                         <th class="text-center">Ticket No.</th>
+                                        <th class="text-center">Date</th>
                                         <th class="text-center">Category</th>
                                         <th class="text-center">User Category</th>
-                                        <th class="text-center">Status</th>
                                         <th class="text-center">Assigned Department</th>
+                                        <th class="text-center">Status</th>
                                         <th class="text-center">Duration</th>
+                                        <th class="text-center">Date of Completion</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <tr>
+                                        <td class="hasinput"></td>
+                                        <td class="hasinput"></td>
+                                        <td class="hasinput"></td>
+                                        <td class="hasinput"></td>
+                                        <td class="hasinput"></td>
+                                        <td class="hasinput"></td>
+                                        <td class="hasinput"></td>
+                                        <td class="hasinput"></td>
+                                        <td class="hasinput"></td>
+                                    </tr>
                                 </tbody>
                             </table>
-                        </div>
-                        <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted d-flex float-right">
-                            <a class="btn btn-success btn-sm float-right mb-2" href="javascript:;" data-toggle="modal" id="new">Offer Subject</a>
                         </div>
                     </div>
                 </div>
@@ -73,203 +93,103 @@
 @section('script')
 <script>
     $(document).ready(function() {
-        $('#programme, #session').select2();
-
-        $('#programme2, #session2').select2({
-            dropdownParent: $('#crud-modal')
-        });
-
-        $('#new').click(function () {
-            $('#crud-modal').modal('show');
-        });
-
-        $("#all").change(function(){
-            var filter = false;
-            $('.searchfilter').each(function(){
-                if($(this).val()){
-                    filter = true;
-                }
-            });
-
-            if( !$(this).is(':checked') && !filter){
-                $('.course_checkbox_submit').val();
+        $('#year').on('change', function() {
+            var year = $(this).val();
+            if(year) {
+                $.ajax({
+                    url: '/get-year/'+year,
+                    type: "GET",
+                    data : {"_token":"{{ csrf_token() }}"},
+                    dataType: "json",
+                    success:function(data) {
+                        if(data){
+                            $('#month').empty();
+                            $('#month').focus;
+                            $('select[name="months"]').append(`<option value="" selected disabled>Please Choose</option>`);
+                            $.each(data, function(key, value){
+                                $('select[name="months"]').append('<option value="'+ value +'">' + value + '</option>');
+                            });
+                        }else{
+                            $('#month').empty();
+                        }
+                    }
+                });
+            }else{
+            $('#month').empty();
             }
-
-            $('#course').DataTable().ajax.reload();
-            $('.course_checkbox').prop("checked",$(this).prop("checked"));
-        });
-
-        $("#all").click(function(){
-            if(!$(this).is(':checked')){
-                $('#uncheck').val(1);
-            }
-        });
-
-        $('.course_checkbox').click(function(){
-            if(!$(this).prop("checked")){
-                $('#all').prop("checked",false);
-            }
-        });
-
-        $('.searchfilter').bind('change keyup',function(){
-            $('#all').prop('checked',false);
-        });
-
-        $('#course thead tr .hasinput').each(function(i)
-        {
-            $('input', this).on('keyup change', function()
-            {
-                if (student_table.column(i+1).search() !== this.value)
-                {
-                    student_table
-                        .column(i+1)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-
-            $('select', this).on('keyup change', function()
-            {
-                if (student_table.column(i+1).search() !== this.value)
-                {
-                    student_table
-                        .column(i+1)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
-
-        var selected = [];
-
-
-        $('#merge_table thead tr .hasinput').each(function(i)
-        {
-            $('input', this).on('keyup change', function()
-            {
-                if (table.column(i).search() !== this.value)
-                {
-                    table
-                        .column(1)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
-
-        var table = $('#merge_table').DataTable({
-            processing: true,
-            serverSide: true,
-            autowidth: false,
-            ajax: {
-                url: "/data_mergecourse",
-                type: 'POST',
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
-            },
-            columns: [
-                    { data: 'id', name: 'id' },
-                    { data: 'programme_code', name: 'programme_code' },
-                    { data: 'merge_code', name: 'merge_code' },
-                    { data: 'course', name: 'course' },
-                    { data: 'action', name: 'action', orderable: false, searchable: false}
-                ],
-                orderCellsTop: true,
-                "order": [[ 1, "asc" ]],
-                "initComplete": function(settings, json) {
-                },
         });
     });
-        $(document).ready(function() {
-            $('#programme').on('change', function() {
-                var programme = $(this).val();
-                if(programme) {
-                    $.ajax({
-                        url: '/exam-programme/'+programme,
-                        type: "GET",
-                        data : {"_token":"{{ csrf_token() }}"},
-                        dataType: "json",
-                        success:function(data) {
-                            if(data){
-                                $('#session').empty();
-                                $('#session').focus;
-                                $('select[name="session1"]').append(`<option value="" selected disabled>Please Choose</option>`);
-                                $.each(data, function(key, value){
-                                    $('select[name="session1"]').append('<option value="'+ value.academic_session_code +'">' + value.academic_session_code + '</option>');
-                                });
-                            }else{
-                                $('#session').empty();
-                            }
-                        }
-                    });
-                }else{
-                $('#session').empty();
-                }
-            });
-        });
-
-        $(document).ready(function() {
-            $('#programme2').on('change', function() {
-                var programme2 = $(this).val();
-                if(programme2) {
-                    $.ajax({
-                        url: '/exam-programme/'+programme2,
-                        type: "GET",
-                        data : {"_token":"{{ csrf_token() }}"},
-                        dataType: "json",
-                        success:function(data) {
-                            if(data){
-                                $('#session2').empty();
-                                $('#session2').focus;
-                                $('select[name="session"]').append(`<option value="" selected disabled>Please Choose</option>`);
-                                $.each(data, function(key, value){
-                                    $('select[name="session"]').append('<option value="'+ value.academic_session_code +'">' + value.academic_session_code + '</option>');
-                                });
-                            }else{
-                                $('#session2').empty();
-                            }
-                        }
-                    });
-                }else{
-                $('#session2').empty();
-                }
-            });
-        });
 
     $(document).ready(function()
     {
-        function createDatatable(programme = null ,session = null)
-        {
-            var check = $.fn.DataTable.isDataTable('#class-group');
-
-            if(check){
-                $('#class-group').DataTable().destroy();
-            }
-
-            var table = $('#class-group').DataTable({
+        var table = $('#report').DataTable({
             processing: true,
             serverSide: true,
             autowidth: false,
             ajax: {
-                url: "/data_classgroup",
-                data: {programme:programme, session:session},
+                url: "/all-report",
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
             columns: [
-                    { data: 'id', name: 'id'},
-                    { data: 'academic_session', name: 'academic_session'},
-                    { data: 'programme_code', name: 'programme_code'},
-                    { data: 'course_code', name: 'course_code'},
-                    { data: 'group_code', name: 'group_code'},
-                    { data: 'lect_one', name: 'lect_one'},
-                    { data: 'lect_two', name: 'lect_two'},
-                    { data: 'lect_venue', name: 'lect_venue'},
-                    { data: 'action', name: 'action', orderable: false, searchable: false}
+                    { className: 'text-center', data: 'DT_RowIndex', name: 'DT_RowIndex' , orderable: false, searchable: false },
+                    { className: 'text-center', data: 'ticket_no', name: 'ticket_no'},
+                    { className: 'text-center', data: 'date', name: 'date'},
+                    { className: 'text-center', data: 'category', name: 'category'},
+                    { className: 'text-center', data: 'user_category', name: 'user_category'},
+                    { className: 'text-center', data: 'department', name: 'department'},
+                    { className: 'text-center', data: 'status', name: 'status'},
+                    { className: 'text-center', data: 'duration', name: 'duration'},
+                    { className: 'text-center', data: 'complete', name: 'complete'},
                 ],
                 orderCellsTop: true,
-                "order": [[ 1, "asc" ]],
+                "order": [[ 0, "asc" ]],
                 "initComplete": function(settings, json) {
                 },
+                dom: 'frtipB',
+               
+                buttons: [
+                    { extend: 'excel', text: 'Report', className: 'btn btn-danger', title: 'i-Complaint Report' },
+                ]   
+
+            });
+
+
+
+        function createDatatable(year = null,month = null)
+        {
+            $('#report').dataTable().fnDestroy();
+
+            var table = $('#report').DataTable({
+            processing: true,
+            serverSide: true,
+            autowidth: false,
+            ajax: {
+                url: "/year-month-report",
+                data: {year:year, month:month},
+                type: 'POST',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
+            },
+            columns: [
+                { className: 'text-center', data: 'DT_RowIndex', name: 'DT_RowIndex' , orderable: false, searchable: false },
+                    { className: 'text-center', data: 'ticket_no', name: 'ticket_no'},
+                    { className: 'text-center', data: 'date', name: 'date'},
+                    { className: 'text-center', data: 'category', name: 'category'},
+                    { className: 'text-center', data: 'user_category', name: 'user_category'},
+                    { className: 'text-center', data: 'department', name: 'department'},
+                    { className: 'text-center', data: 'status', name: 'status'},
+                    { className: 'text-center', data: 'duration', name: 'duration'},
+                    { className: 'text-center', data: 'complete', name: 'complete'},
+            ],
+                orderCellsTop: true,
+                "order": [[ 0, "asc" ]],
+                "initComplete": function(settings, json) {
+                },
+                dom: 'frtipB',
+               
+                buttons: [
+                    { extend: 'excel', text: 'Report', className: 'btn btn-danger', title: 'i-Complaint Report' },
+                ]   
             });
         }
 
@@ -279,16 +199,16 @@
             }
         });
 
-        $('#programme').on('change',function(){
-            $('#session').val('').change();
+        $('#year').on('change',function(){
+            $('#month').val('').change();
         });
 
         $('.selectfilter').on('change',function(){
-            var programme = $('#programme').val();
-            var session = $('#session').val();
-            if(programme && session){
+            var year = $('#year').val();
+            var month = $('#month').val();
+            if(year && month){
 
-                createDatatable(programme,session);
+                createDatatable(year,month);
             }
         });
 

@@ -212,7 +212,7 @@
                                 </ul>
                             </li>
                             <li>
-                                <a href="/report/all" title="Report" data-filter-tags="report">
+                                <a href="reports" title="Report" data-filter-tags="report">
                                     <i class="fal fa-clipboard-list"></i>
                                     <span class="nav-link-text" data-i18n="nav.report">Report</span>
                                 </a>
