@@ -494,6 +494,14 @@ class AduanKorporatController extends Controller
             $countCategory[++$key] = [$value->description, (int)$value->complaint_count];
         }
 
+        $department = DepartmentList::select('id', 'name')->withCount('complaint')->orderBy('name', 'ASC')->get();
+
+        $countDepartment[] = ['Category','Total'];
+        foreach ($department as $key => $value) {
+            $countDepartment[++$key] = [ucwords(strtolower($value->name)), (int)$value->complaint_count];
+        }
+
+
         $year = AduanKorporat::orderBy('created_at', 'ASC')
                 ->pluck('created_at')
                 ->map(function($date)
@@ -501,7 +509,43 @@ class AduanKorporatController extends Controller
                     return Carbon::parse($date)->format('Y');
                 })
                 ->unique(); //year selection
-        return view('aduan-korporat.dashboard', compact('year'))->with('userCategory',json_encode($countUserCat))->with('category',json_encode($countCategory));
+
+        return view('aduan-korporat.dashboard', compact('year'))->with('userCategory',json_encode($countUserCat))->with('category',json_encode($countCategory))->with('department',json_encode($countDepartment));
+    }
+
+    public function getDashboard(Request $request)
+    {
+        $month = date('m', strtotime($request->month));
+
+        $userCategory = AduanKorporatUser::select('code', 'description')->withCount(['complaint' => function($query) use ($month,$request) {
+                $query->whereYear('created_at', '=', $request->year)->whereMonth('created_at', '=', $month);}])->get();
+        
+           
+        $countUserCat[] = ['Category','Total'];
+        foreach ($userCategory as $key => $value) {
+            $countUserCat[++$key] = [$value->description, (int)$value->complaint_count];
+        }
+
+        $category = AduanKorporatCategory::select('id', 'description')->withCount(['complaint' => function($query) use ($month,$request) {
+            $query->whereYear('created_at', '=', $request->year)->whereMonth('created_at', '=', $month);}])->get();
+
+        $countCategory[] = ['Category','Total'];
+        foreach ($category as $key => $value) {
+            $countCategory[++$key] = [$value->description, (int)$value->complaint_count];
+        }
+
+        $department = DepartmentList::select('id', 'name')->withCount(['complaint' => function($query) use ($month,$request) {
+            $query->whereYear('created_at', '=', $request->year)->whereMonth('created_at', '=', $month);}])->get();
+
+        $countDepartment[] = ['Category','Total'];
+        foreach ($department as $key => $value) {
+            $countDepartment[++$key] = [ucwords(strtolower($value->name)), (int)$value->complaint_count];
+        }
+
+        $result = array( 'countUserCat' => $countUserCat, 'countCat' => $countCategory, 'countDepartment' => $countDepartment);
+
+        return response()->json($result);
+
     }
 
     public function searchYear($year)
@@ -516,30 +560,6 @@ class AduanKorporatController extends Controller
                 ->unique(); //month selection
 
         return response()->json($month);
-    }
-
-    public function searchMonth($month)
-    {
-
-        $convertMonth = Carbon::parse($month)->format('m');
-
-        $month = AduanKorporat::whereMonth('created_at', '=', $convertMonth)->get();
-
-        $userCategory = AduanKorporatUser::select('code', 'description')->withCount('complaint')->orderBy('description', 'ASC')->get();
-
-        $countUserCat[] = ['Category','Total'];
-        foreach ($userCategory as $key => $value) {
-            $countUserCat[++$key] = [$value->description, (int)$value->complaint_count];
-        }
-
-        $category = AduanKorporatCategory::select('id', 'description')->withCount('complaint')->orderBy('description', 'ASC')->get();
-
-        $countCategory[] = ['Category','Total'];
-        foreach ($category as $key => $value) {
-            $countCategory[++$key] = [$value->description, (int)$value->complaint_count];
-        }
-
-        return response()->with('userCategory',json_encode($countUserCat))->with('category',json_encode($countCategory));
     }
 
     public function changeDepartment(Request $request)

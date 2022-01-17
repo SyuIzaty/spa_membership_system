@@ -501,6 +501,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/all-report', 'AduanKorporatController@allReport');
     Route::get('/get-year/{year}', 'AduanKorporatController@getYear');
     Route::post('/year-month-report', 'AduanKorporatController@getReport');
+    Route::post('/year-month-dashboard', 'AduanKorporatController@getDashboard');
 
 
     // Training : Training

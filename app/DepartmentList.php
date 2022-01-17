@@ -16,4 +16,10 @@ class DepartmentList extends Model
     {
         return $this->hasMany('App\DocumentManagement', 'department_id', 'id');
     }
+
+    public function complaint()
+    {
+        return $this->hasMany('App\AduanKorporat', 'assign', 'id');
+    }
+
 }
