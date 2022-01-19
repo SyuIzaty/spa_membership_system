@@ -1,5 +1,5 @@
 <template>
-    <div>Congratulation</div>
+    <div>Congratulation! You already vote.</div>
 </template>
 
 <script>

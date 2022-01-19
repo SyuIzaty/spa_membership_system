@@ -2336,109 +2336,237 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/eVoting/HorizontalBarChart.vue?vue&type=script&lang=js&":
-/*!*************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/eVoting/HorizontalBarChart.vue?vue&type=script&lang=js& ***!
-  \*************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/eVoting/CategoricalReport.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/eVoting/CategoricalReport.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue_chartjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-chartjs */ "./node_modules/vue-chartjs/es/index.js");
+/* harmony import */ var primevue_fieldset__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! primevue/fieldset */ "./node_modules/primevue/fieldset/index.js");
+/* harmony import */ var primevue_fieldset__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(primevue_fieldset__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var primevue_divider__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! primevue/divider */ "./node_modules/primevue/divider/index.js");
+/* harmony import */ var primevue_divider__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(primevue_divider__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  "extends": vue_chartjs__WEBPACK_IMPORTED_MODULE_0__["HorizontalBar"],
+  name: "CategoricalReport",
+  components: {
+    Fieldset: primevue_fieldset__WEBPACK_IMPORTED_MODULE_0___default.a,
+    Divider: primevue_divider__WEBPACK_IMPORTED_MODULE_1___default.a
+  },
   props: {
-    options: {
-      type: Object,
-      "default": function _default() {},
-      required: false
+    name: {
+      type: String,
+      required: true,
+      "default": ""
+    },
+    description: {
+      type: String,
+      required: true,
+      "default": ""
+    },
+    total_students: {
+      type: Number,
+      required: true,
+      "default": 0
+    },
+    total_turnouts: {
+      type: Number,
+      required: true,
+      "default": 0
+    },
+    total_not_turnouts: {
+      type: Number,
+      required: true,
+      "default": 0
+    },
+    programme_categories_name: {
+      type: Array,
+      required: true,
+      "default": function _default() {}
+    },
+    candidates: {
+      type: Array,
+      required: true,
+      "default": function _default() {}
     }
   },
-  // watch: {
-  //     chartData() {
-  //         this.$data._chart.update();
-  //     }
-  // },
-  mounted: function mounted() {
-    this.renderChart({
-      labels: ["Nur Arif Husaini Bin Norwaza", "Syahirah Azlina Binti Shamsuddin", "Zulkifli Bin Hamzah"],
-      datasets: [{
-        label: "Vote",
-        backgroundColor: "#f87979",
-        data: [40, 121, 20]
-      }]
-    }, {
-      responsive: true,
-      maintainAspectRatio: false
-    });
+  computed: {
+    custom_name: function custom_name() {
+      var name = this.name + " (";
+      var count_programme_category = this.programme_categories_name.length;
+      this.programme_categories_name.forEach(function (x, index) {
+        name += x;
+
+        if (index < count_programme_category - 1) {
+          name += " & ";
+        }
+      });
+      name += ")";
+      return name;
+    }
   }
 });
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/eVoting/PieChart.vue?vue&type=script&lang=js&":
-/*!***************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/eVoting/PieChart.vue?vue&type=script&lang=js& ***!
-  \***************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue_chartjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-chartjs */ "./node_modules/vue-chartjs/es/index.js");
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  "extends": vue_chartjs__WEBPACK_IMPORTED_MODULE_0__["Pie"],
-  props: {
-    options: {
-      type: Object,
-      "default": function _default() {},
-      required: false
-    }
-  },
-  mounted: function mounted() {
-    this.gradient2 = this.$refs.canvas.getContext("2d").createLinearGradient(0, 0, 0, 450);
-    this.gradient = this.$refs.canvas.getContext("2d").createLinearGradient(0, 0, 0, 450);
-    this.gradient2.addColorStop(0, "rgba(255, 0,0, 0.5)");
-    this.gradient2.addColorStop(0.5, "rgba(255, 0, 0, 0.25)");
-    this.gradient2.addColorStop(1, "rgba(255, 0, 0, 0)");
-    this.gradient.addColorStop(0, "rgba(63, 245, 39, 0.9)");
-    this.gradient.addColorStop(0.5, "rgba(63, 245, 39, 0.5)");
-    this.gradient.addColorStop(1, "rgba(63, 245, 39, 0.25)"); // this.addPlugin({
-    //     id: "my-plugin",
-    //     beforeInit: function(chart) {
-    //         return {
-    //             legend: {
-    //                 position: "bottom"
-    //             },
-    //             title: {
-    //                 display: true,
-    //                 text: "Chart.js Pie Chart"
-    //             }
-    //         };
-    //     }
-    // });
-
-    console.log(this.plugins);
-    this.renderChart({
-      labels: ["Turnout", "Not Turnout"],
-      datasets: [{
-        label: "Faculty of Mathematics",
-        backgroundColor: [this.gradient, this.gradient2, "#00D8FF"],
-        data: [40, 10]
-      }]
-    }, this.options);
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/eVoting/PlatformDashboard.vue?vue&type=script&lang=js&":
-/*!*******************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/eVoting/PlatformDashboard.vue?vue&type=script&lang=js& ***!
-  \*******************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/eVoting/CategoricalStatisticalChart.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/eVoting/CategoricalStatisticalChart.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2514,13 +2642,227 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "CategoricalStatisticalChart",
+  components: {
+    PieChart: _components_eVoting_PieChart_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    HorizontalBarChart: _components_eVoting_HorizontalBarChart_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  props: {
+    title: {
+      type: String,
+      "default": "",
+      required: true
+    },
+    data_pie: {
+      type: Object,
+      "default": function _default() {},
+      required: true
+    },
+    data_bar: {
+      type: Object,
+      "default": function _default() {},
+      required: true
+    }
+  },
+  computed: {
+    data_pie_total: function data_pie_total() {
+      return this.data_pie.datasets[0].data.reduce(this.add, 0);
+    }
+  },
+  methods: {
+    add: function add(accumulator, a) {
+      return accumulator + a;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/eVoting/HorizontalBarChart.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/eVoting/HorizontalBarChart.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_chartjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-chartjs */ "./node_modules/vue-chartjs/es/index.js");
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  "extends": vue_chartjs__WEBPACK_IMPORTED_MODULE_0__["HorizontalBar"],
+  props: {
+    options: {
+      type: Object,
+      "default": function _default() {},
+      required: false
+    },
+    data: {
+      type: Object,
+      "default": function _default() {},
+      required: true
+    }
+  },
+  // watch: {
+  //     chartData() {
+  //         this.$data._chart.update();
+  //     }
+  // },
+  mounted: function mounted() {
+    this.renderChart(this.data, {
+      responsive: true,
+      maintainAspectRatio: false
+    });
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/eVoting/PieChart.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/eVoting/PieChart.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_chartjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-chartjs */ "./node_modules/vue-chartjs/es/index.js");
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  "extends": vue_chartjs__WEBPACK_IMPORTED_MODULE_0__["Pie"],
+  props: {
+    options: {
+      type: Object,
+      "default": function _default() {},
+      required: false
+    },
+    data: {
+      type: Object,
+      "default": function _default() {},
+      required: true
+    }
+  },
+  mounted: function mounted() {
+    this.gradient2 = this.$refs.canvas.getContext("2d").createLinearGradient(0, 0, 0, 450);
+    this.gradient = this.$refs.canvas.getContext("2d").createLinearGradient(0, 0, 0, 450);
+    this.gradient2.addColorStop(0, "rgba(255, 0,0, 0.5)");
+    this.gradient2.addColorStop(0.5, "rgba(255, 0, 0, 0.25)");
+    this.gradient2.addColorStop(1, "rgba(255, 0, 0, 0)");
+    this.gradient.addColorStop(0, "rgba(63, 245, 39, 0.9)");
+    this.gradient.addColorStop(0.5, "rgba(63, 245, 39, 0.5)");
+    this.gradient.addColorStop(1, "rgba(63, 245, 39, 0.25)"); // this.addPlugin({
+    //     id: "my-plugin",
+    //     beforeInit: function(chart) {
+    //         return {
+    //             legend: {
+    //                 position: "bottom"
+    //             },
+    //             title: {
+    //                 display: true,
+    //                 text: "Chart.js Pie Chart"
+    //             }
+    //         };
+    //     }
+    // });
+
+    this.renderChart(this.data, this.options);
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/eVoting/PlatformDashboard.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/eVoting/PlatformDashboard.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_eVoting_CategoricalStatisticalChart_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/eVoting/CategoricalStatisticalChart.vue */ "./resources/js/components/eVoting/CategoricalStatisticalChart.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "eVotingDashboard",
   components: {
-    PieChart: _components_eVoting_PieChart_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    HorizontalBarChart: _components_eVoting_HorizontalBarChart_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    CategoricalStatisticalChart: _components_eVoting_CategoricalStatisticalChart_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      categories: []
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get("/categorical-statistics").then(function (response) {
+      var categories = response.data.data;
+      categories.forEach(function (x) {
+        var temp = {
+          category_name: "",
+          candidates_data: {
+            labels: [],
+            datasets: [{
+              label: "Vote",
+              backgroundColor: "#f87979",
+              data: []
+            }]
+          },
+          participation_data: {
+            labels: ["Turnout", "Not Turnout"],
+            datasets: [{
+              backgroundColor: ["rgba(63, 245, 39, 0.9)", "rgba(255, 0,0, 0.5)"],
+              data: []
+            }]
+          }
+        };
+        temp.category_name = x.candidate_category + " (";
+        var count_category = x.programme_categories.length;
+        x.programme_categories.forEach(function (y, index) {
+          temp.category_name += y;
+
+          if (index < count_category - 1) {
+            temp.category_name += " & ";
+          }
+        });
+        temp.category_name += ")";
+        temp.candidates_data.labels = x.candidate_names;
+        temp.candidates_data.datasets[0].data = x.total_voted; // x.participation_data.labels = [];
+
+        temp.participation_data.datasets[0].data.push(x.total_turnouts);
+        temp.participation_data.datasets[0].data.push(x.total_not_turnouts);
+
+        _this.categories.push(temp);
+      });
+    });
   }
 });
 
@@ -2720,29 +3062,47 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
     confirm: function confirm(event) {
       var _this2 = this;
 
-      this.$confirm.require({
-        target: event.currentTarget,
-        message: "Are you sure you want to proceed?",
-        icon: "pi pi-exclamation-triangle",
-        accept: function accept() {
-          _this2.submit();
-
-          _this2.$toast.add({
-            severity: "info",
-            summary: "Submitted",
-            detail: "You have submitted the vote",
-            life: 3000
-          });
-        },
-        reject: function reject() {
-          _this2.$toast.add({
-            severity: "warn",
-            summary: "Cancel",
-            detail: "You choose to reconsider your vote again.",
-            life: 3000
-          });
+      var count_vote = 0;
+      this.candidates.forEach(function (x) {
+        if (x.is_selected) {
+          count_vote += 1;
         }
       });
+
+      if (count_vote < 1) {
+        this.below_min = true;
+        this.above_max = false;
+      } else if (count_vote > 2) {
+        this.below_min = false;
+        this.above_max = true;
+      } else {
+        this.below_min = false;
+        this.above_max = false;
+
+        this.$confirm.require({
+          target: event.currentTarget,
+          message: "Are you sure you want to proceed?",
+          icon: "pi pi-exclamation-triangle",
+          accept: function accept() {
+            _this2.submit();
+
+            _this2.$toast.add({
+              severity: "info",
+              summary: "Submitted",
+              detail: "You have submitted the vote",
+              life: 3000
+            });
+          },
+          reject: function reject() {
+            _this2.$toast.add({
+              severity: "warn",
+              summary: "Cancel",
+              detail: "You choose to reconsider your vote again.",
+              life: 3000
+            });
+          }
+        });
+      }
     },
     voted_candidate: function voted_candidate(value) {
       console.log(value);
@@ -2760,7 +3120,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         }
       });
 
-      if (count_vote < 2) {
+      if (count_vote < 1) {
         this.below_min = true;
         this.above_max = false;
       } else if (count_vote > 2) {
@@ -2824,10 +3184,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var primevue_fieldset__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! primevue/fieldset */ "./node_modules/primevue/fieldset/index.js");
-/* harmony import */ var primevue_fieldset__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(primevue_fieldset__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var primevue_divider__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! primevue/divider */ "./node_modules/primevue/divider/index.js");
-/* harmony import */ var primevue_divider__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(primevue_divider__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _components_eVoting_CategoricalReport_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/eVoting/CategoricalReport.vue */ "./resources/js/components/eVoting/CategoricalReport.vue");
 //
 //
 //
@@ -2852,128 +3209,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ReportIndex",
   components: {
-    Fieldset: primevue_fieldset__WEBPACK_IMPORTED_MODULE_0___default.a,
-    Divider: primevue_divider__WEBPACK_IMPORTED_MODULE_1___default.a
+    CategoricalReport: _components_eVoting_CategoricalReport_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      categories: []
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get("/categorical-report").then(function (response) {
+      var categories = response.data.data;
+      console.log(categories);
+      _this.categories = categories;
+    });
   }
 });
 
@@ -17688,10 +17942,10 @@ exports.push([module.i, "figure[data-v-7ef23c1d] {\n  margin: 0;\n}\n.card-candi
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/eVoting/PlatformDashboard.vue?vue&type=style&index=0&id=1cb049c5&lang=scss&scoped=true&":
-/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/eVoting/PlatformDashboard.vue?vue&type=style&index=0&id=1cb049c5&lang=scss&scoped=true& ***!
-  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/eVoting/CategoricalReport.vue?vue&type=style&index=0&id=3f9b87b6&lang=scss&scoped=true&":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/eVoting/CategoricalReport.vue?vue&type=style&index=0&id=3f9b87b6&lang=scss&scoped=true& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -17700,7 +17954,26 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".grid[data-v-1cb049c5] {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));\n  grid-gap: 2rem;\n  overflow: visible;\n  justify-content: center;\n  justify-items: center;\n  align-items: center;\n  padding: 2rem 0 2rem 0;\n}\ntable[data-v-1cb049c5] {\n  font-family: arial, sans-serif;\n  border-collapse: collapse;\n  width: 100%;\n}\ntd[data-v-1cb049c5],\nth[data-v-1cb049c5] {\n  border: 1px solid #dddddd;\n  text-align: left;\n  padding: 8px;\n}\ntr[data-v-1cb049c5]:nth-child(even) {\n  background-color: #dddddd;\n}", ""]);
+exports.push([module.i, "table[data-v-3f9b87b6] {\n  font-family: arial, sans-serif;\n  border-collapse: collapse;\n  width: 100%;\n}\ntd[data-v-3f9b87b6],\nth[data-v-3f9b87b6] {\n  border: 1px solid #dddddd;\n  text-align: left;\n  padding: 8px;\n}\ntr[data-v-3f9b87b6]:nth-child(even) {\n  background-color: #dddddd;\n}", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/eVoting/CategoricalStatisticalChart.vue?vue&type=style&index=0&id=d2b21cb6&lang=scss&scoped=true&":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/eVoting/CategoricalStatisticalChart.vue?vue&type=style&index=0&id=d2b21cb6&lang=scss&scoped=true& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".grid[data-v-d2b21cb6] {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));\n  grid-gap: 2rem;\n  overflow: visible;\n  justify-content: center;\n  justify-items: center;\n  align-items: center;\n  padding: 2rem 0 2rem 0;\n}\ntable[data-v-d2b21cb6] {\n  font-family: arial, sans-serif;\n  border-collapse: collapse;\n  width: 100%;\n}\ntd[data-v-d2b21cb6],\nth[data-v-d2b21cb6] {\n  border: 1px solid #dddddd;\n  text-align: left;\n  padding: 8px;\n}\ntr[data-v-d2b21cb6]:nth-child(even) {\n  background-color: #dddddd;\n}", ""]);
 
 // exports
 
@@ -17739,25 +18012,6 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 // module
 exports.push([module.i, ".grid[data-v-7dfbe2a5] {\n  display: grid;\n  height: 80%;\n  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));\n  grid-auto-rows: 50%;\n  grid-gap: 0.8rem;\n  overflow: auto;\n  justify-content: center;\n  justify-items: center;\n  align-items: center;\n  padding: 0rem 2rem 0rem 2rem;\n  min-height: 25rem;\n}", ""]);
-
-// exports
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/eVoting/ReportIndex.vue?vue&type=style&index=0&id=1ab56ce2&lang=scss&scoped=true&":
-/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/eVoting/ReportIndex.vue?vue&type=style&index=0&id=1ab56ce2&lang=scss&scoped=true& ***!
-  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "table[data-v-1ab56ce2] {\n  font-family: arial, sans-serif;\n  border-collapse: collapse;\n  width: 100%;\n}\ntd[data-v-1ab56ce2],\nth[data-v-1ab56ce2] {\n  border: 1px solid #dddddd;\n  text-align: left;\n  padding: 8px;\n}\ntr[data-v-1ab56ce2]:nth-child(even) {\n  background-color: #dddddd;\n}", ""]);
 
 // exports
 
@@ -73480,15 +73734,45 @@ if(false) {}
 
 /***/ }),
 
-/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/eVoting/PlatformDashboard.vue?vue&type=style&index=0&id=1cb049c5&lang=scss&scoped=true&":
-/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/eVoting/PlatformDashboard.vue?vue&type=style&index=0&id=1cb049c5&lang=scss&scoped=true& ***!
-  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/eVoting/CategoricalReport.vue?vue&type=style&index=0&id=3f9b87b6&lang=scss&scoped=true&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/eVoting/CategoricalReport.vue?vue&type=style&index=0&id=3f9b87b6&lang=scss&scoped=true& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./PlatformDashboard.vue?vue&type=style&index=0&id=1cb049c5&lang=scss&scoped=true& */ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/eVoting/PlatformDashboard.vue?vue&type=style&index=0&id=1cb049c5&lang=scss&scoped=true&");
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./CategoricalReport.vue?vue&type=style&index=0&id=3f9b87b6&lang=scss&scoped=true& */ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/eVoting/CategoricalReport.vue?vue&type=style&index=0&id=3f9b87b6&lang=scss&scoped=true&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/eVoting/CategoricalStatisticalChart.vue?vue&type=style&index=0&id=d2b21cb6&lang=scss&scoped=true&":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/eVoting/CategoricalStatisticalChart.vue?vue&type=style&index=0&id=d2b21cb6&lang=scss&scoped=true& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./CategoricalStatisticalChart.vue?vue&type=style&index=0&id=d2b21cb6&lang=scss&scoped=true& */ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/eVoting/CategoricalStatisticalChart.vue?vue&type=style&index=0&id=d2b21cb6&lang=scss&scoped=true&");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -73549,36 +73833,6 @@ if(false) {}
 
 
 var content = __webpack_require__(/*! !../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./PlatformStation.vue?vue&type=style&index=0&id=7dfbe2a5&lang=scss&scoped=true& */ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/eVoting/PlatformStation.vue?vue&type=style&index=0&id=7dfbe2a5&lang=scss&scoped=true&");
-
-if(typeof content === 'string') content = [[module.i, content, '']];
-
-var transform;
-var insertInto;
-
-
-
-var options = {"hmr":true}
-
-options.transform = transform
-options.insertInto = undefined;
-
-var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
-
-if(content.locals) module.exports = content.locals;
-
-if(false) {}
-
-/***/ }),
-
-/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/eVoting/ReportIndex.vue?vue&type=style&index=0&id=1ab56ce2&lang=scss&scoped=true&":
-/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/eVoting/ReportIndex.vue?vue&type=style&index=0&id=1ab56ce2&lang=scss&scoped=true& ***!
-  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-var content = __webpack_require__(/*! !../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./ReportIndex.vue?vue&type=style&index=0&id=1ab56ce2&lang=scss&scoped=true& */ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/eVoting/ReportIndex.vue?vue&type=style&index=0&id=1ab56ce2&lang=scss&scoped=true&");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -77995,10 +78249,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/eVoting/PlatformDashboard.vue?vue&type=template&id=1cb049c5&scoped=true&":
-/*!***********************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/eVoting/PlatformDashboard.vue?vue&type=template&id=1cb049c5&scoped=true& ***!
-  \***********************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/eVoting/CategoricalReport.vue?vue&type=template&id=3f9b87b6&scoped=true&":
+/*!****************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/eVoting/CategoricalReport.vue?vue&type=template&id=3f9b87b6&scoped=true& ***!
+  \****************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -78010,133 +78264,479 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticStyle: { position: "relative" } }, [
-    _c(
-      "button",
-      {
-        staticClass: "btn btn-primary",
-        staticStyle: { position: "absolute" },
-        on: {
-          click: function ($event) {
-            return _vm.$router.push({ name: "vote-platform" })
+  return _c(
+    "div",
+    [
+      _c(
+        "Fieldset",
+        { attrs: { legend: _vm.custom_name, toggleable: false } },
+        [
+          _vm._v("\n        " + _vm._s(_vm.description) + "\n\n        "),
+          _c("Divider", { attrs: { align: "left", type: "dashed" } }, [
+            _c("b", [_vm._v("General Information")]),
+          ]),
+          _vm._v(
+            "\n        Total Students: " +
+              _vm._s(_vm.total_students) +
+              " persons"
+          ),
+          _c("br"),
+          _vm._v(
+            "\n        Total Turnouts: " +
+              _vm._s(_vm.total_turnouts) +
+              " persons (" +
+              _vm._s(
+                Math.round(
+                  ((_vm.total_turnouts / _vm.total_students) * 100 +
+                    Number.EPSILON) *
+                    100
+                ) / 100
+              ) +
+              "%)"
+          ),
+          _c("br"),
+          _vm._v(
+            "\n        Total Not Turnouts: " +
+              _vm._s(_vm.total_not_turnouts) +
+              " persons (" +
+              _vm._s(
+                Math.round(
+                  ((_vm.total_not_turnouts / _vm.total_students) * 100 +
+                    Number.EPSILON) *
+                    100
+                ) / 100
+              ) +
+              "%)\n\n        "
+          ),
+          _c("Divider", { attrs: { align: "left", type: "dashed" } }, [
+            _c("b", [_vm._v("Candidate Information")]),
+          ]),
+          _vm._v(" "),
+          _vm.candidates.length > 0
+            ? _c(
+                "div",
+                _vm._l(_vm.candidates, function (candidate, index) {
+                  return _c("div", { key: candidate.id }, [
+                    _vm._v(
+                      "\n                Candidate " +
+                        _vm._s(index + 1) +
+                        ": " +
+                        _vm._s(candidate.name) +
+                        "\n                " +
+                        _vm._s(
+                          candidate.age !== null ? ", " + candidate.age : null
+                        ) +
+                        "\n                " +
+                        _vm._s(
+                          candidate.origin !== null
+                            ? "(" + candidate.origin + ")"
+                            : null
+                        ) +
+                        "\n                "
+                    ),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "row",
+                        staticStyle: { "justify-content": "space-around" },
+                      },
+                      [
+                        _c("table", { staticClass: "col-12 col-md-5 my-3" }, [
+                          _c("tr", [
+                            _c(
+                              "th",
+                              {
+                                staticClass: "bg-primary text-white",
+                                staticStyle: { width: "20%" },
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                Gender\n                            "
+                                ),
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(
+                                    candidate.gender !== null
+                                      ? candidate.gender
+                                      : "-"
+                                  ) +
+                                  "\n                            "
+                              ),
+                            ]),
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c(
+                              "th",
+                              {
+                                staticClass: "bg-primary text-white",
+                                staticStyle: { width: "20%" },
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                Phone\n                            "
+                                ),
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(
+                                    candidate.phone !== null
+                                      ? candidate.phone
+                                      : "-"
+                                  ) +
+                                  "\n                            "
+                              ),
+                            ]),
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c(
+                              "th",
+                              {
+                                staticClass: "bg-primary text-white",
+                                staticStyle: { width: "20%" },
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                Email\n                            "
+                                ),
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(
+                                    candidate.email !== null
+                                      ? candidate.email
+                                      : "-"
+                                  ) +
+                                  "\n                            "
+                              ),
+                            ]),
+                          ]),
+                        ]),
+                        _vm._v(" "),
+                        _c("table", { staticClass: "col-12 col-md-5 my-3" }, [
+                          _c("tr", [
+                            _c(
+                              "th",
+                              {
+                                staticClass: "bg-primary text-white",
+                                staticStyle: { width: "35%" },
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                Program\n                            "
+                                ),
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(candidate.programme) +
+                                  "\n                            "
+                              ),
+                            ]),
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c(
+                              "th",
+                              {
+                                staticClass: "bg-primary text-white",
+                                staticStyle: { width: "35%" },
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                Semester\n                            "
+                                ),
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(candidate.current_semester) +
+                                  "\n                                "
+                              ),
+                            ]),
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c(
+                              "th",
+                              {
+                                staticClass: "bg-primary text-white",
+                                staticStyle: { width: "35%" },
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                Student ID\n                            "
+                                ),
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(candidate.student_id))]),
+                          ]),
+                        ]),
+                      ]
+                    ),
+                  ])
+                }),
+                0
+              )
+            : _c("div", { staticClass: "text-center" }, [
+                _vm._v("There is no candidates"),
+              ]),
+          _vm._v(" "),
+          _c("Divider", { attrs: { align: "left", type: "dashed" } }, [
+            _c("b", [_vm._v("Result")]),
+          ]),
+          _vm._v(" "),
+          _vm.candidates.length > 0
+            ? _c("div", [
+                _vm._v(
+                  "\n            The result of the election is as listed below,\n            "
+                ),
+                _c(
+                  "ol",
+                  _vm._l(_vm.candidates, function (candidate) {
+                    return _c("li", { key: candidate.id }, [
+                      _c("b", [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(candidate.name) +
+                            ":\n                        "
+                        ),
+                        _c("span", { staticClass: "text-success" }, [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(candidate.total_vote) +
+                              " Vote\n                        "
+                          ),
+                        ]),
+                      ]),
+                    ])
+                  }),
+                  0
+                ),
+              ])
+            : _c("div", { staticClass: "text-center" }, [
+                _vm._v("There is no candidates"),
+              ]),
+        ],
+        1
+      ),
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/eVoting/CategoricalStatisticalChart.vue?vue&type=template&id=d2b21cb6&scoped=true&":
+/*!**************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/eVoting/CategoricalStatisticalChart.vue?vue&type=template&id=d2b21cb6&scoped=true& ***!
+  \**************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "row align-items-center",
+      staticStyle: {
+        height: "100%",
+        "border-style": "solid",
+        padding: "1rem",
+        margin: "1rem",
+      },
+    },
+    [
+      _c(
+        "div",
+        {
+          staticClass: "col-12 col-lg-2 mb-3 mb-lg-1",
+          staticStyle: {
+            display: "flex",
+            "flex-direction": "column",
+            "align-items": "center",
+            "background-color": "#a240ff",
+            "min-height": "20rem",
+            "justify-content": "center",
           },
         },
-      },
-      [_c("i", { staticClass: "ni ni-chevron-left" })]
-    ),
-    _vm._v(" "),
-    _c("h1", { staticClass: "text-center" }, [_vm._v("Dashboard")]),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "row align-items-center",
-        staticStyle: {
-          height: "100%",
-          "border-style": "solid",
-          padding: "1rem",
-          margin: "1rem",
+        [
+          _c("h5", { staticClass: "text-white m-0 text-center" }, [
+            _vm._v("\n            " + _vm._s(_vm.title) + "\n        "),
+          ]),
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "col-12 col-lg-4 mb-3 mb-lg-1",
+          staticStyle: {
+            width: "100%",
+            display: "flex",
+            "flex-direction": "column",
+            "align-items": "center",
+          },
         },
-      },
-      [
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "col-12 col-lg-4 mb-3",
-            staticStyle: {
-              width: "100%",
-              display: "flex",
-              "flex-direction": "column",
-              "align-items": "center",
+        [
+          _c("h5", [_vm._v("Participation Chart")]),
+          _vm._v(" "),
+          _c("PieChart", {
+            attrs: {
+              data: _vm.data_pie,
+              styles: { height: "10rem" },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+              },
+            },
+          }),
+          _vm._v(" "),
+          _c(
+            "table",
+            {
+              staticStyle: {
+                width: "100%",
+                "max-width": "10rem",
+                "margin-top": "1rem",
+              },
+            },
+            _vm._l(_vm.data_pie.labels, function (label, index) {
+              return _c("tr", { key: index }, [
+                _c("th", [_vm._v(_vm._s(label))]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(_vm.data_pie.datasets[0].data[index]) +
+                      "\n                    (" +
+                      _vm._s(
+                        Math.round(
+                          ((_vm.data_pie.datasets[0].data[index] /
+                            _vm.data_pie_total) *
+                            100 +
+                            Number.EPSILON) *
+                            100
+                        ) / 100
+                      ) +
+                      "%)\n                "
+                  ),
+                ]),
+              ])
+            }),
+            0
+          ),
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "col-12 col-lg-6 mb-3 mb-lg-1" },
+        [
+          _c("h5", { staticClass: "text-center" }, [_vm._v("Candidate Chart")]),
+          _vm._v(" "),
+          _c("HorizontalBarChart", {
+            attrs: {
+              data: _vm.data_bar,
+              styles: { height: "10rem", width: "100%" },
+              options: {
+                indexAxis: "y",
+                responsive: true,
+                maintainAspectRatio: false,
+              },
+            },
+          }),
+        ],
+        1
+      ),
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/eVoting/PlatformDashboard.vue?vue&type=template&id=1cb049c5&":
+/*!***********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/eVoting/PlatformDashboard.vue?vue&type=template&id=1cb049c5& ***!
+  \***********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticStyle: { position: "relative" } },
+    [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-primary",
+          staticStyle: { position: "absolute" },
+          on: {
+            click: function ($event) {
+              return _vm.$router.push({ name: "vote-platform" })
             },
           },
-          [
-            _c("h5", [_vm._v("Participation Chart")]),
-            _vm._v(" "),
-            _c("PieChart", {
-              attrs: {
-                styles: { height: "10rem" },
-                options: {
-                  responsive: true,
-                  maintainAspectRatio: false,
-                },
-              },
-            }),
-            _vm._v(" "),
-            _vm._m(1),
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "col-12 col-lg-6 mb-3" },
-          [
-            _c("h5", { staticClass: "text-center" }, [
-              _vm._v("Candidate Chart"),
-            ]),
-            _vm._v(" "),
-            _c("HorizontalBarChart", {
-              attrs: {
-                styles: { height: "10rem", width: "100%" },
-                options: {
-                  indexAxis: "y",
-                  responsive: true,
-                  maintainAspectRatio: false,
-                },
-              },
-            }),
-          ],
-          1
-        ),
-      ]
-    ),
-  ])
-}
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-12 col-lg-2 bg-secondary mb-3" }, [
-      _c("h5", { staticClass: "text-white m-0 text-center" }, [
-        _vm._v(
-          "\n                Faculty of Computer and Mathematical Sciences\n            "
-        ),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "table",
-      {
-        staticStyle: {
-          width: "100%",
-          "max-width": "10rem",
-          "margin-top": "1rem",
         },
-      },
-      [
-        _c("tr", [
-          _c("th", [_vm._v("Turnout")]),
-          _vm._v(" "),
-          _c("td", [_vm._v("40 (80%)")]),
-        ]),
-        _vm._v(" "),
-        _c("tr", [
-          _c("th", [_vm._v("Not Turnout")]),
-          _vm._v(" "),
-          _c("td", [_vm._v("10 (20%)")]),
-        ]),
-      ]
-    )
-  },
-]
+        [_c("i", { staticClass: "ni ni-chevron-left" })]
+      ),
+      _vm._v(" "),
+      _c("h1", { staticClass: "text-center" }, [_vm._v("Dashboard")]),
+      _vm._v(" "),
+      _vm._l(_vm.categories, function (category, index) {
+        return _c("CategoricalStatisticalChart", {
+          key: index,
+          attrs: {
+            title: category.category_name,
+            data_pie: category.participation_data,
+            data_bar: category.candidates_data,
+          },
+        })
+      }),
+    ],
+    2
+  )
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -78394,7 +78994,7 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("Congratulation")])
+  return _c("div", [_vm._v("Congratulation! You already vote.")])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -78403,10 +79003,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/eVoting/ReportIndex.vue?vue&type=template&id=1ab56ce2&scoped=true&":
-/*!*****************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/eVoting/ReportIndex.vue?vue&type=template&id=1ab56ce2&scoped=true& ***!
-  \*****************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/eVoting/ReportIndex.vue?vue&type=template&id=1ab56ce2&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/eVoting/ReportIndex.vue?vue&type=template&id=1ab56ce2& ***!
+  \*****************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -78430,301 +79030,26 @@ var render = function () {
       _vm._v(" "),
       _vm._m(0),
       _vm._v(" "),
-      _c(
-        "Fieldset",
-        {
-          attrs: { legend: "Kumpulan Teknikal Jepun (KTJ)", toggleable: false },
-        },
-        [
-          _vm._v(
-            "\n        The story begins as Don Vito Corleone, the head of a New York Mafia\n        family, oversees his daughter's wedding. His beloved son Michael has\n        just come home from the war, but does not intend to become part of\n        his father's business. Through Michael's life the nature of the\n\n        "
-          ),
-          _c("Divider", { attrs: { align: "left", type: "dashed" } }, [
-            _c("b", [_vm._v("General Information")]),
-          ]),
-          _vm._v("\n        Total Students: 1000 persons"),
-          _c("br"),
-          _vm._v("\n        Total Turnout: 800 persons (80%)\n\n        "),
-          _c("Divider", { attrs: { align: "left", type: "dashed" } }, [
-            _c("b", [_vm._v("Candidate Information")]),
-          ]),
-          _vm._v(
-            "\n        Candidate 1: Nur Arif Husaini Bin Norwaza, 25 (Klang)\n        "
-          ),
-          _c(
+      _vm.categories.length > 0
+        ? _c(
             "div",
-            {
-              staticClass: "row",
-              staticStyle: { "justify-content": "space-around" },
-            },
-            [
-              _c("table", { staticClass: "col-12 col-md-5 my-3" }, [
-                _c("tr", [
-                  _c(
-                    "th",
-                    {
-                      staticClass: "bg-primary text-white",
-                      staticStyle: { width: "20%" },
-                    },
-                    [
-                      _vm._v(
-                        "\n                        Gender\n                    "
-                      ),
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("td", [_vm._v("Male")]),
-                ]),
-                _vm._v(" "),
-                _c("tr", [
-                  _c(
-                    "th",
-                    {
-                      staticClass: "bg-primary text-white",
-                      staticStyle: { width: "20%" },
-                    },
-                    [
-                      _vm._v(
-                        "\n                        Phone\n                    "
-                      ),
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("td", [_vm._v("013-636 2353")]),
-                ]),
-                _vm._v(" "),
-                _c("tr", [
-                  _c(
-                    "th",
-                    {
-                      staticClass: "bg-primary text-white",
-                      staticStyle: { width: "20%" },
-                    },
-                    [
-                      _vm._v(
-                        "\n                        Email\n                    "
-                      ),
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("td", [_vm._v("chemist.arif.husaini@gmail.com")]),
-                ]),
-              ]),
-              _vm._v(" "),
-              _c("table", { staticClass: "col-12 col-md-5 my-3" }, [
-                _c("tr", [
-                  _c(
-                    "th",
-                    {
-                      staticClass: "bg-primary text-white",
-                      staticStyle: { width: "20%" },
-                    },
-                    [
-                      _vm._v(
-                        "\n                        Program\n                    "
-                      ),
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("td", [
-                    _vm._v(
-                      "\n                        Foundation of Information and Communication\n                        Technology (ICT)\n                    "
-                    ),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("tr", [
-                  _c(
-                    "th",
-                    {
-                      staticClass: "bg-primary text-white",
-                      staticStyle: { width: "20%" },
-                    },
-                    [
-                      _vm._v(
-                        "\n                        Semester\n                    "
-                      ),
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("td", [_vm._v("6 (Total Semester: 7)")]),
-                ]),
-                _vm._v(" "),
-                _c("tr", [
-                  _c(
-                    "th",
-                    {
-                      staticClass: "bg-primary text-white",
-                      staticStyle: { width: "20%" },
-                    },
-                    [
-                      _vm._v(
-                        "\n                        CGPA/Point\n                    "
-                      ),
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("td", [_vm._v("3.61")]),
-                ]),
-              ]),
-            ]
-          ),
-          _vm._v(
-            "\n        Candidate 2: Syazwani Binti Kamarul, 25 (KL)\n        "
-          ),
-          _c(
-            "div",
-            {
-              staticClass: "row",
-              staticStyle: { "justify-content": "space-around" },
-            },
-            [
-              _c("table", { staticClass: "col-12 col-md-5 my-3" }, [
-                _c("tr", [
-                  _c(
-                    "th",
-                    {
-                      staticClass: "bg-primary text-white",
-                      staticStyle: { width: "20%" },
-                    },
-                    [
-                      _vm._v(
-                        "\n                        Gender\n                    "
-                      ),
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("td", [_vm._v("Female")]),
-                ]),
-                _vm._v(" "),
-                _c("tr", [
-                  _c(
-                    "th",
-                    {
-                      staticClass: "bg-primary text-white",
-                      staticStyle: { width: "20%" },
-                    },
-                    [
-                      _vm._v(
-                        "\n                        Phone\n                    "
-                      ),
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("td", [_vm._v("013-636 2353")]),
-                ]),
-                _vm._v(" "),
-                _c("tr", [
-                  _c(
-                    "th",
-                    {
-                      staticClass: "bg-primary text-white",
-                      staticStyle: { width: "20%" },
-                    },
-                    [
-                      _vm._v(
-                        "\n                        Email\n                    "
-                      ),
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("td", [_vm._v("chemist.arif.husaini@gmail.com")]),
-                ]),
-              ]),
-              _vm._v(" "),
-              _c("table", { staticClass: "col-12 col-md-5 my-3" }, [
-                _c("tr", [
-                  _c(
-                    "th",
-                    {
-                      staticClass: "bg-primary text-white",
-                      staticStyle: { width: "20%" },
-                    },
-                    [
-                      _vm._v(
-                        "\n                        Program\n                    "
-                      ),
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("td", [
-                    _vm._v(
-                      "\n                        Foundation of Information and Communication\n                        Technology (ICT)\n                    "
-                    ),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("tr", [
-                  _c(
-                    "th",
-                    {
-                      staticClass: "bg-primary text-white",
-                      staticStyle: { width: "20%" },
-                    },
-                    [
-                      _vm._v(
-                        "\n                        Semester\n                    "
-                      ),
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("td", [_vm._v("6 (Total Semester: 7)")]),
-                ]),
-                _vm._v(" "),
-                _c("tr", [
-                  _c(
-                    "th",
-                    {
-                      staticClass: "bg-primary text-white",
-                      staticStyle: { width: "20%" },
-                    },
-                    [
-                      _vm._v(
-                        "\n                        CGPA/Point\n                    "
-                      ),
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("td", [_vm._v("3.61")]),
-                ]),
-              ]),
-            ]
-          ),
-          _vm._v(" "),
-          _c("Divider", { attrs: { align: "left", type: "dashed" } }, [
-            _c("b", [_vm._v("Result")]),
-          ]),
-          _vm._v(
-            "\n        The result of the election is as listed below,\n        "
-          ),
-          _c("ol", [
-            _c("li", [
-              _c("b", [
-                _vm._v(
-                  "\n                    Nur Arif Husaini Bin Norwaza:\n                    "
-                ),
-                _c("span", { staticClass: "text-success" }, [
-                  _vm._v(" 100 Vote "),
-                ]),
-              ]),
-              _vm._v("\n                (80% Male, 20% Female)\n            "),
-            ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("b", [
-                _vm._v(
-                  "\n                    Syazwani Binti Kamarul:\n                    "
-                ),
-                _c("span", { staticClass: "text-success" }, [
-                  _vm._v(" 80 Vote "),
-                ]),
-              ]),
-              _vm._v("\n                (20% Male, 80% Female)\n            "),
-            ]),
-          ]),
-        ],
-        1
-      ),
+            _vm._l(_vm.categories, function (category) {
+              return _c("CategoricalReport", {
+                key: category.id,
+                attrs: {
+                  name: category.name,
+                  description: category.description,
+                  programme_categories_name: category.programme_categories_name,
+                  total_students: category.total_students,
+                  total_turnouts: category.total_turnouts,
+                  total_not_turnouts: category.total_not_turnouts,
+                  candidates: category.candidates,
+                },
+              })
+            }),
+            1
+          )
+        : _vm._e(),
     ],
     1
   )
@@ -94450,6 +94775,180 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/eVoting/CategoricalReport.vue":
+/*!***************************************************************!*\
+  !*** ./resources/js/components/eVoting/CategoricalReport.vue ***!
+  \***************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _CategoricalReport_vue_vue_type_template_id_3f9b87b6_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CategoricalReport.vue?vue&type=template&id=3f9b87b6&scoped=true& */ "./resources/js/components/eVoting/CategoricalReport.vue?vue&type=template&id=3f9b87b6&scoped=true&");
+/* harmony import */ var _CategoricalReport_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CategoricalReport.vue?vue&type=script&lang=js& */ "./resources/js/components/eVoting/CategoricalReport.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _CategoricalReport_vue_vue_type_style_index_0_id_3f9b87b6_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CategoricalReport.vue?vue&type=style&index=0&id=3f9b87b6&lang=scss&scoped=true& */ "./resources/js/components/eVoting/CategoricalReport.vue?vue&type=style&index=0&id=3f9b87b6&lang=scss&scoped=true&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _CategoricalReport_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _CategoricalReport_vue_vue_type_template_id_3f9b87b6_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _CategoricalReport_vue_vue_type_template_id_3f9b87b6_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "3f9b87b6",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/eVoting/CategoricalReport.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/eVoting/CategoricalReport.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/eVoting/CategoricalReport.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CategoricalReport_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./CategoricalReport.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/eVoting/CategoricalReport.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CategoricalReport_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/eVoting/CategoricalReport.vue?vue&type=style&index=0&id=3f9b87b6&lang=scss&scoped=true&":
+/*!*************************************************************************************************************************!*\
+  !*** ./resources/js/components/eVoting/CategoricalReport.vue?vue&type=style&index=0&id=3f9b87b6&lang=scss&scoped=true& ***!
+  \*************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_CategoricalReport_vue_vue_type_style_index_0_id_3f9b87b6_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./CategoricalReport.vue?vue&type=style&index=0&id=3f9b87b6&lang=scss&scoped=true& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/eVoting/CategoricalReport.vue?vue&type=style&index=0&id=3f9b87b6&lang=scss&scoped=true&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_CategoricalReport_vue_vue_type_style_index_0_id_3f9b87b6_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_CategoricalReport_vue_vue_type_style_index_0_id_3f9b87b6_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_CategoricalReport_vue_vue_type_style_index_0_id_3f9b87b6_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_CategoricalReport_vue_vue_type_style_index_0_id_3f9b87b6_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+
+
+/***/ }),
+
+/***/ "./resources/js/components/eVoting/CategoricalReport.vue?vue&type=template&id=3f9b87b6&scoped=true&":
+/*!**********************************************************************************************************!*\
+  !*** ./resources/js/components/eVoting/CategoricalReport.vue?vue&type=template&id=3f9b87b6&scoped=true& ***!
+  \**********************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CategoricalReport_vue_vue_type_template_id_3f9b87b6_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./CategoricalReport.vue?vue&type=template&id=3f9b87b6&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/eVoting/CategoricalReport.vue?vue&type=template&id=3f9b87b6&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CategoricalReport_vue_vue_type_template_id_3f9b87b6_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CategoricalReport_vue_vue_type_template_id_3f9b87b6_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/eVoting/CategoricalStatisticalChart.vue":
+/*!*************************************************************************!*\
+  !*** ./resources/js/components/eVoting/CategoricalStatisticalChart.vue ***!
+  \*************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _CategoricalStatisticalChart_vue_vue_type_template_id_d2b21cb6_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CategoricalStatisticalChart.vue?vue&type=template&id=d2b21cb6&scoped=true& */ "./resources/js/components/eVoting/CategoricalStatisticalChart.vue?vue&type=template&id=d2b21cb6&scoped=true&");
+/* harmony import */ var _CategoricalStatisticalChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CategoricalStatisticalChart.vue?vue&type=script&lang=js& */ "./resources/js/components/eVoting/CategoricalStatisticalChart.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _CategoricalStatisticalChart_vue_vue_type_style_index_0_id_d2b21cb6_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CategoricalStatisticalChart.vue?vue&type=style&index=0&id=d2b21cb6&lang=scss&scoped=true& */ "./resources/js/components/eVoting/CategoricalStatisticalChart.vue?vue&type=style&index=0&id=d2b21cb6&lang=scss&scoped=true&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _CategoricalStatisticalChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _CategoricalStatisticalChart_vue_vue_type_template_id_d2b21cb6_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _CategoricalStatisticalChart_vue_vue_type_template_id_d2b21cb6_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "d2b21cb6",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/eVoting/CategoricalStatisticalChart.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/eVoting/CategoricalStatisticalChart.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************!*\
+  !*** ./resources/js/components/eVoting/CategoricalStatisticalChart.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CategoricalStatisticalChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./CategoricalStatisticalChart.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/eVoting/CategoricalStatisticalChart.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CategoricalStatisticalChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/eVoting/CategoricalStatisticalChart.vue?vue&type=style&index=0&id=d2b21cb6&lang=scss&scoped=true&":
+/*!***********************************************************************************************************************************!*\
+  !*** ./resources/js/components/eVoting/CategoricalStatisticalChart.vue?vue&type=style&index=0&id=d2b21cb6&lang=scss&scoped=true& ***!
+  \***********************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_CategoricalStatisticalChart_vue_vue_type_style_index_0_id_d2b21cb6_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./CategoricalStatisticalChart.vue?vue&type=style&index=0&id=d2b21cb6&lang=scss&scoped=true& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/eVoting/CategoricalStatisticalChart.vue?vue&type=style&index=0&id=d2b21cb6&lang=scss&scoped=true&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_CategoricalStatisticalChart_vue_vue_type_style_index_0_id_d2b21cb6_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_CategoricalStatisticalChart_vue_vue_type_style_index_0_id_d2b21cb6_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_CategoricalStatisticalChart_vue_vue_type_style_index_0_id_d2b21cb6_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_CategoricalStatisticalChart_vue_vue_type_style_index_0_id_d2b21cb6_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+
+
+/***/ }),
+
+/***/ "./resources/js/components/eVoting/CategoricalStatisticalChart.vue?vue&type=template&id=d2b21cb6&scoped=true&":
+/*!********************************************************************************************************************!*\
+  !*** ./resources/js/components/eVoting/CategoricalStatisticalChart.vue?vue&type=template&id=d2b21cb6&scoped=true& ***!
+  \********************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CategoricalStatisticalChart_vue_vue_type_template_id_d2b21cb6_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./CategoricalStatisticalChart.vue?vue&type=template&id=d2b21cb6&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/eVoting/CategoricalStatisticalChart.vue?vue&type=template&id=d2b21cb6&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CategoricalStatisticalChart_vue_vue_type_template_id_d2b21cb6_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CategoricalStatisticalChart_vue_vue_type_template_id_d2b21cb6_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/eVoting/HorizontalBarChart.vue":
 /*!****************************************************************!*\
   !*** ./resources/js/components/eVoting/HorizontalBarChart.vue ***!
@@ -94559,11 +95058,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _PlatformDashboard_vue_vue_type_template_id_1cb049c5_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PlatformDashboard.vue?vue&type=template&id=1cb049c5&scoped=true& */ "./resources/js/pages/eVoting/PlatformDashboard.vue?vue&type=template&id=1cb049c5&scoped=true&");
+/* harmony import */ var _PlatformDashboard_vue_vue_type_template_id_1cb049c5___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PlatformDashboard.vue?vue&type=template&id=1cb049c5& */ "./resources/js/pages/eVoting/PlatformDashboard.vue?vue&type=template&id=1cb049c5&");
 /* harmony import */ var _PlatformDashboard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PlatformDashboard.vue?vue&type=script&lang=js& */ "./resources/js/pages/eVoting/PlatformDashboard.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _PlatformDashboard_vue_vue_type_style_index_0_id_1cb049c5_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PlatformDashboard.vue?vue&type=style&index=0&id=1cb049c5&lang=scss&scoped=true& */ "./resources/js/pages/eVoting/PlatformDashboard.vue?vue&type=style&index=0&id=1cb049c5&lang=scss&scoped=true&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -94571,13 +95068,13 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _PlatformDashboard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _PlatformDashboard_vue_vue_type_template_id_1cb049c5_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _PlatformDashboard_vue_vue_type_template_id_1cb049c5_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _PlatformDashboard_vue_vue_type_template_id_1cb049c5___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _PlatformDashboard_vue_vue_type_template_id_1cb049c5___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  "1cb049c5",
+  null,
   null
   
 )
@@ -94603,35 +95100,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/pages/eVoting/PlatformDashboard.vue?vue&type=style&index=0&id=1cb049c5&lang=scss&scoped=true&":
-/*!********************************************************************************************************************!*\
-  !*** ./resources/js/pages/eVoting/PlatformDashboard.vue?vue&type=style&index=0&id=1cb049c5&lang=scss&scoped=true& ***!
-  \********************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PlatformDashboard_vue_vue_type_style_index_0_id_1cb049c5_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./PlatformDashboard.vue?vue&type=style&index=0&id=1cb049c5&lang=scss&scoped=true& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/eVoting/PlatformDashboard.vue?vue&type=style&index=0&id=1cb049c5&lang=scss&scoped=true&");
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PlatformDashboard_vue_vue_type_style_index_0_id_1cb049c5_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PlatformDashboard_vue_vue_type_style_index_0_id_1cb049c5_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PlatformDashboard_vue_vue_type_style_index_0_id_1cb049c5_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PlatformDashboard_vue_vue_type_style_index_0_id_1cb049c5_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-
-
-/***/ }),
-
-/***/ "./resources/js/pages/eVoting/PlatformDashboard.vue?vue&type=template&id=1cb049c5&scoped=true&":
-/*!*****************************************************************************************************!*\
-  !*** ./resources/js/pages/eVoting/PlatformDashboard.vue?vue&type=template&id=1cb049c5&scoped=true& ***!
-  \*****************************************************************************************************/
+/***/ "./resources/js/pages/eVoting/PlatformDashboard.vue?vue&type=template&id=1cb049c5&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/pages/eVoting/PlatformDashboard.vue?vue&type=template&id=1cb049c5& ***!
+  \*****************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PlatformDashboard_vue_vue_type_template_id_1cb049c5_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./PlatformDashboard.vue?vue&type=template&id=1cb049c5&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/eVoting/PlatformDashboard.vue?vue&type=template&id=1cb049c5&scoped=true&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PlatformDashboard_vue_vue_type_template_id_1cb049c5_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PlatformDashboard_vue_vue_type_template_id_1cb049c5___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./PlatformDashboard.vue?vue&type=template&id=1cb049c5& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/eVoting/PlatformDashboard.vue?vue&type=template&id=1cb049c5&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PlatformDashboard_vue_vue_type_template_id_1cb049c5___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PlatformDashboard_vue_vue_type_template_id_1cb049c5_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PlatformDashboard_vue_vue_type_template_id_1cb049c5___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -94889,11 +95370,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ReportIndex_vue_vue_type_template_id_1ab56ce2_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ReportIndex.vue?vue&type=template&id=1ab56ce2&scoped=true& */ "./resources/js/pages/eVoting/ReportIndex.vue?vue&type=template&id=1ab56ce2&scoped=true&");
+/* harmony import */ var _ReportIndex_vue_vue_type_template_id_1ab56ce2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ReportIndex.vue?vue&type=template&id=1ab56ce2& */ "./resources/js/pages/eVoting/ReportIndex.vue?vue&type=template&id=1ab56ce2&");
 /* harmony import */ var _ReportIndex_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ReportIndex.vue?vue&type=script&lang=js& */ "./resources/js/pages/eVoting/ReportIndex.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _ReportIndex_vue_vue_type_style_index_0_id_1ab56ce2_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ReportIndex.vue?vue&type=style&index=0&id=1ab56ce2&lang=scss&scoped=true& */ "./resources/js/pages/eVoting/ReportIndex.vue?vue&type=style&index=0&id=1ab56ce2&lang=scss&scoped=true&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -94901,13 +95380,13 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _ReportIndex_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _ReportIndex_vue_vue_type_template_id_1ab56ce2_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _ReportIndex_vue_vue_type_template_id_1ab56ce2_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _ReportIndex_vue_vue_type_template_id_1ab56ce2___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ReportIndex_vue_vue_type_template_id_1ab56ce2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  "1ab56ce2",
+  null,
   null
   
 )
@@ -94933,35 +95412,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/pages/eVoting/ReportIndex.vue?vue&type=style&index=0&id=1ab56ce2&lang=scss&scoped=true&":
-/*!**************************************************************************************************************!*\
-  !*** ./resources/js/pages/eVoting/ReportIndex.vue?vue&type=style&index=0&id=1ab56ce2&lang=scss&scoped=true& ***!
-  \**************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_ReportIndex_vue_vue_type_style_index_0_id_1ab56ce2_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./ReportIndex.vue?vue&type=style&index=0&id=1ab56ce2&lang=scss&scoped=true& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/eVoting/ReportIndex.vue?vue&type=style&index=0&id=1ab56ce2&lang=scss&scoped=true&");
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_ReportIndex_vue_vue_type_style_index_0_id_1ab56ce2_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_ReportIndex_vue_vue_type_style_index_0_id_1ab56ce2_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_ReportIndex_vue_vue_type_style_index_0_id_1ab56ce2_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_ReportIndex_vue_vue_type_style_index_0_id_1ab56ce2_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-
-
-/***/ }),
-
-/***/ "./resources/js/pages/eVoting/ReportIndex.vue?vue&type=template&id=1ab56ce2&scoped=true&":
-/*!***********************************************************************************************!*\
-  !*** ./resources/js/pages/eVoting/ReportIndex.vue?vue&type=template&id=1ab56ce2&scoped=true& ***!
-  \***********************************************************************************************/
+/***/ "./resources/js/pages/eVoting/ReportIndex.vue?vue&type=template&id=1ab56ce2&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/pages/eVoting/ReportIndex.vue?vue&type=template&id=1ab56ce2& ***!
+  \***********************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReportIndex_vue_vue_type_template_id_1ab56ce2_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ReportIndex.vue?vue&type=template&id=1ab56ce2&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/eVoting/ReportIndex.vue?vue&type=template&id=1ab56ce2&scoped=true&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReportIndex_vue_vue_type_template_id_1ab56ce2_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReportIndex_vue_vue_type_template_id_1ab56ce2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ReportIndex.vue?vue&type=template&id=1ab56ce2& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/eVoting/ReportIndex.vue?vue&type=template&id=1ab56ce2&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReportIndex_vue_vue_type_template_id_1ab56ce2___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReportIndex_vue_vue_type_template_id_1ab56ce2_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReportIndex_vue_vue_type_template_id_1ab56ce2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

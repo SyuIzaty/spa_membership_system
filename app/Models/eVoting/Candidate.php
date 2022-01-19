@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Candidate extends Model
 {
     use SoftDeletes;
+    protected $connection = 'mysql';
     protected $table = 'evs_candidate';
     protected $primaryKey = 'id';
     protected $fillable = [

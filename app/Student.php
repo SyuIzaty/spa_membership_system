@@ -17,12 +17,24 @@ class Student extends Model
 
     public function programme()
     {
-        return $this->hasOne('App\Programme','id', 'students_programme');
+        return $this->belongsTo('App\Models\eVoting\Programme','students_programme','code');
     }
 
-    public function candidate()
+    public function candidates()
     {
         return $this->hasMany('App\Models\eVoting\Candidate', 'student_id', 'students_id');
+    }
+
+
+    public function votes()
+    {
+        return $this->hasMany('App\Models\eVoting\Vote', 'student_id', 'students_id');
+    }
+
+
+    public function state()
+    {
+        return $this->belongsTo('App\State', 'students_state', 'state_code');
     }
 
 }

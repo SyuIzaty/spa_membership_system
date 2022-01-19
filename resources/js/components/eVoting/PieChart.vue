@@ -3,7 +3,10 @@ import { Pie } from "vue-chartjs";
 
 export default {
     extends: Pie,
-    props: { options: { type: Object, default: () => {}, required: false } },
+    props: {
+        options: { type: Object, default: () => {}, required: false },
+        data: { type: Object, default: () => {}, required: true },
+    },
     mounted() {
         this.gradient2 = this.$refs.canvas
             .getContext("2d")
@@ -34,25 +37,7 @@ export default {
         //         };
         //     }
         // });
-
-        console.log(this.plugins);
-        this.renderChart(
-            {
-                labels: ["Turnout", "Not Turnout"],
-                datasets: [
-                    {
-                        label: "Faculty of Mathematics",
-                        backgroundColor: [
-                            this.gradient,
-                            this.gradient2,
-                            "#00D8FF"
-                        ],
-                        data: [40, 10]
-                    }
-                ]
-            },
-            this.options
-        );
-    }
+        this.renderChart(this.data, this.options);
+    },
 };
 </script>

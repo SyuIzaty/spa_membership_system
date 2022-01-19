@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Vote extends Model
 {
     use SoftDeletes;
+    protected $connection = 'mysql';
     protected $table = 'evs_vote';
     protected $primaryKey = 'id';
     protected $fillable = [

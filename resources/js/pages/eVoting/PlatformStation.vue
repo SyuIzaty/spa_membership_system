@@ -102,28 +102,44 @@ export default {
     },
     methods: {
         confirm(event) {
-            this.$confirm.require({
-                target: event.currentTarget,
-                message: "Are you sure you want to proceed?",
-                icon: "pi pi-exclamation-triangle",
-                accept: () => {
-                    this.submit();
-                    this.$toast.add({
-                        severity: "info",
-                        summary: "Submitted",
-                        detail: "You have submitted the vote",
-                        life: 3000,
-                    });
-                },
-                reject: () => {
-                    this.$toast.add({
-                        severity: "warn",
-                        summary: "Cancel",
-                        detail: "You choose to reconsider your vote again.",
-                        life: 3000,
-                    });
-                },
+            var count_vote = 0;
+            this.candidates.forEach((x) => {
+                if (x.is_selected) {
+                    count_vote += 1;
+                }
             });
+            if (count_vote < 1) {
+                this.below_min = true;
+                this.above_max = false;
+            } else if (count_vote > 2) {
+                this.below_min = false;
+                this.above_max = true;
+            } else {
+                this.below_min = false;
+                this.above_max = false;
+                this.$confirm.require({
+                    target: event.currentTarget,
+                    message: "Are you sure you want to proceed?",
+                    icon: "pi pi-exclamation-triangle",
+                    accept: () => {
+                        this.submit();
+                        this.$toast.add({
+                            severity: "info",
+                            summary: "Submitted",
+                            detail: "You have submitted the vote",
+                            life: 3000,
+                        });
+                    },
+                    reject: () => {
+                        this.$toast.add({
+                            severity: "warn",
+                            summary: "Cancel",
+                            detail: "You choose to reconsider your vote again.",
+                            life: 3000,
+                        });
+                    },
+                });
+            }
         },
         voted_candidate(value) {
             console.log(value);
@@ -138,7 +154,7 @@ export default {
                     count_vote += 1;
                 }
             });
-            if (count_vote < 2) {
+            if (count_vote < 1) {
                 this.below_min = true;
                 this.above_max = false;
             } else if (count_vote > 2) {
