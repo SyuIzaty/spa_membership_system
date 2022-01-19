@@ -133,11 +133,32 @@ class VoteController extends BaseController
     }
 
     public function categoricalStatistics(){
-        $candidate_categories = CandidateCategory::all()->load(
-            ['candidate_category_programme_category_s.programme_category.programmes.students.votes',
-            'candidate_category_programme_category_s.programme_category.programmes.students.candidates.votes',
-            'candidate_category_programme_category_s.programme_category.programmes.students.candidates.student'
-        ]);
+
+        if(Auth::user()->category!=='STF'){
+
+            $student=Student::where('students_id',Auth::user()->id)
+            ->first()->load(['programme.programme_category.candidate_category_programme_category_s']);
+            $candidate_category_programme_category_s=$student->programme->programme_category->candidate_category_programme_category_s;
+            $candidate_category_ids=[];
+
+
+            foreach($candidate_category_programme_category_s as $candidate_category_programme_category){
+                array_push($candidate_category_ids,$candidate_category_programme_category->candidate_category_id);
+            }
+
+            $candidate_categories = CandidateCategory::whereIn('id',$candidate_category_ids)->get()->load(
+                ['candidate_category_programme_category_s.programme_category.programmes.students.votes',
+                'candidate_category_programme_category_s.programme_category.programmes.students.candidates.votes',
+                'candidate_category_programme_category_s.programme_category.programmes.students.candidates.student'
+            ]);
+        }else{
+            $candidate_categories = CandidateCategory::all()->load(
+                ['candidate_category_programme_category_s.programme_category.programmes.students.votes',
+                'candidate_category_programme_category_s.programme_category.programmes.students.candidates.votes',
+                'candidate_category_programme_category_s.programme_category.programmes.students.candidates.student'
+            ]);
+        }
+
         $categorical_statistics=[];
         foreach($candidate_categories as $candidate_category){
             $statistics['candidate_category']=$candidate_category->name;

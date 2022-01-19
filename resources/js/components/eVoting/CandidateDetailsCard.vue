@@ -12,7 +12,7 @@
                     position: relative;
                 "
             >
-                <img
+                <!-- <img
                     style="
                         width: 100%;
                         height: 100%;
@@ -20,6 +20,26 @@
                         backface-visibility: hidden;
                     "
                     :src="require(`../../assets/${img}`)"
+                /> -->
+                <img
+                    v-if="img !== ''"
+                    style="
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        backface-visibility: hidden;
+                    "
+                    :src="img"
+                />
+                <img
+                    v-else
+                    style="
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        backface-visibility: hidden;
+                    "
+                    :src="require(`../../assets/profile_default.jpg`)"
                 />
             </figure>
             <div

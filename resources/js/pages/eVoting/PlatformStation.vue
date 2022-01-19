@@ -39,7 +39,7 @@
                 :id="candidate.id.toString()"
                 :name="candidate.student.students_name"
                 :is_selected="candidate.is_selected"
-                img="profile_1.jpg"
+                :img="candidate.image !== null ? candidate.image : ''"
                 :category="
                     candidate.student.programme.programme_category.short_name
                         ? `${candidate.student.programme.programme_category.name} (${candidate.student.programme.programme_category.short_name})`
@@ -87,12 +87,19 @@ export default {
         });
     },
 
-    mounted() {
+    async mounted() {
         window.scrollTo({ top: 100, left: 0, behavior: "smooth" });
 
-        axios.get("/candidate-relevant").then((response) => {
+        await axios.get("/candidate-relevant").then((response) => {
             if (typeof response.data.data === "object") {
                 this.candidates = response.data.data;
+                this.candidates.forEach(async (x, index) => {
+                    if (x.image !== null) {
+                        this.candidates[index].image = await this.getImage(
+                            x.image
+                        );
+                    }
+                });
             } else {
                 this.$router.push({
                     name: "vote-platform-station-success",
@@ -101,6 +108,39 @@ export default {
         });
     },
     methods: {
+        async getImage(path) {
+            return await axios
+                .get("/get-candidate-image", {
+                    params: { image_path: path },
+                    responseType: "arraybuffer",
+                })
+                .then((response) => {
+                    const data = response.data;
+                    if (data) {
+                        const binary = this.arrayBufferToBinary(data);
+                        let btoaBinary = "";
+                        if (btoa(binary) === "") {
+                            return "";
+                        } else {
+                            btoaBinary = btoa(binary);
+                            return "data:image/jpeg;base64," + btoaBinary;
+                        }
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                    return "";
+                });
+        },
+        arrayBufferToBinary(arrayBuffer) {
+            const bytes = new Uint8Array(arrayBuffer);
+            const binary = bytes.reduce(
+                (data, b) => (data += String.fromCharCode(b)),
+                ""
+            );
+
+            return binary;
+        },
         confirm(event) {
             var count_vote = 0;
             this.candidates.forEach((x) => {
@@ -192,7 +232,7 @@ export default {
     justify-content: center;
     justify-items: center;
     align-items: center;
-    padding: 0rem 2rem 0rem 2rem;
+    padding: 1rem 2rem 1rem 2rem;
     min-height: 25rem;
 }
 </style>

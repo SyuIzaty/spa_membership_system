@@ -66,7 +66,10 @@ export default {
                     }
                 });
                 temp.category_name += ")";
-                temp.candidates_data.labels = x.candidate_names;
+                x.candidate_names.forEach((y) =>
+                    temp.candidates_data.labels.push(this.truncateString(y, 15))
+                );
+                // temp.candidates_data.labels = x.candidate_names
                 temp.candidates_data.datasets[0].data = x.total_voted;
                 // x.participation_data.labels = [];
                 temp.participation_data.datasets[0].data.push(x.total_turnouts);
@@ -76,6 +79,14 @@ export default {
                 this.categories.push(temp);
             });
         });
+    },
+    methods: {
+        truncateString(input, maxCharacters) {
+            if (input.length > maxCharacters) {
+                return input.substring(0, maxCharacters) + "...";
+            }
+            return input;
+        },
     },
 };
 </script>
