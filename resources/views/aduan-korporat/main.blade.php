@@ -11,9 +11,8 @@
 	box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
 	display: flex;
 	max-width: 100%;
-	margin: 20px;
+	margin: 55px;
 	overflow: hidden;
-	width: 250px;
     color: rgb(0, 0, 0);
     transition: top ease 0.5s;
     top: 0;
@@ -41,7 +40,7 @@
 	padding: 30px;
 	position: relative;
 	width: 100%;
-    font-size: 15px;
+    font-size: 16px;
 }
 
 .ftco-section {
@@ -109,61 +108,6 @@
 
 </style>
 <main id="js-page-content" role="main" id="main" class="page-content" style="background-image: url({{asset('img/bg4.jpg')}}); background-size: cover">
-    {{-- <div class="row" style="margin-bottom: 20px;">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <div class="d-flex justify-content-center" style="color: black">
-                        <div class="p-2">
-                            <img src="{{ asset('img/intec_logo_new.png') }}" style="width: 320px;"/><br>
-                            <h1 class="title text-center" style="margin-top: 20px;">
-                                i-Complaint
-                            </h1>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="card-body" style="background-color: #d3d3d366;">
-                    <div style="margin-bottom: 100px;"></div>
-                    <div class="panel-container show">
-                        <div class="panel-content">
-
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-sm-6 col-xl-6" style="padding: 0 80px">
-                                        <div>
-                                            <a href="/form">
-                                                <div class="box">
-                                                    <div class="box-icon">
-                                                        <span><i class="fas fa-plus-square"></i></span>
-                                                    </div>
-                                                    <div class="box-text text-center"><b>New</b></div>
-                                                </div>
-                                            </a> 
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-sm-6 col-xl-6" style="padding: 0 80px">
-                                        <a href="/lists">
-                                            <div class="box">
-                                                <div class="box-icon">
-                                                    <span><i class="fas fa-search"></i></span>
-                                                </div>
-                                                <div class="box-text text-center"><b>Check</b></div>
-                                            </div>
-                                        </a> 
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        </div>
-                    </div>
-                    <div style="margin-bottom: 100px;"></div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
 		<div class="container">
 			<div class="row justify-content-center">
 				<div class="col-md-6 text-center mb-5">
@@ -189,26 +133,22 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-12" style="padding: 0 80px">
-                                    <div>
-                                        <a href="/form">
-                                            <div class="box">
-                                                <div class="box-icon">
-                                                    <span><i class="fas fa-plus-square"></i></span>
-                                                </div>
-                                                <div class="box-text text-center"><b>New</b></div>
+                                <div class="col-lg-12 text-center">
+                                    <a href="/form" class="text-center">
+                                        <div class="box">
+                                            <div class="box-icon">
+                                                <span><i class="fas fa-plus-square"></i></span>
                                             </div>
-                                        </a> 
-                                    </div>
-                                </div>
-                                
-                                <div class="col-sm-12" style="padding: 0 80px">
+                                            <div class="box-text text-center"><b>Create</b></div>
+                                        </div>
+                                    </a> 
+                            
                                     <a href="/lists">
                                         <div class="box">
                                             <div class="box-icon">
                                                 <span><i class="fas fa-search"></i></span>
                                             </div>
-                                            <div class="box-text text-center"><b>Check</b></div>
+                                            <div class="box-text"><b>Check</b></div>
                                         </div>
                                     </a> 
                                 </div>
