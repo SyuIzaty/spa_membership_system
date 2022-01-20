@@ -4,14 +4,14 @@
     <main id="js-page-content" role="main" class="page-content">
         <div class="subheader">
             <h1 class="subheader-title">
-                <i class='subheader-icon fal fa-users'></i> Engagement Management
+                <i class='subheader-icon fal fa-file-alt'></i> i-Complaint
             </h1>
         </div>
         <div class="row">
             <div class="col-xl-12">
                 <div id="panel-1" class="panel">
                     <div class="panel-hdr">
-                        <h2>List of Status</h2>
+                        <h2>List of Category</h2>
                         <div class="panel-toolbar">
                             <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
                             <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
@@ -26,17 +26,19 @@
                                 </div>
                             @endif
                             <div class="table-responsive">
-                                <table id="statuslist" class="table table-bordered table-hover table-striped w-100">
+                                <table id="categorylist" class="table table-bordered table-hover table-striped w-100">
                                     <thead>
-                                        <tr class="bg-primary-50 text-center">
-                                            <th class="text-center">Status</th>
-                                            <th class="text-center">Active</th>
+                                        <tr class="bg-info-50 text-center">
+                                            <th class="text-center">ID</th>
+                                            <th class="text-center">Category</th>
+                                            <th class="text-center">Code</th>
                                             <th class="text-center">Edit</th>
                                             <th class="text-center">Delete</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
+                                            <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
@@ -48,7 +50,7 @@
                         </div>
                     </div>
                     <div class="panel-content py-2 rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted">
-                        <a href= "#" data-target="#add" data-toggle="modal" class="btn btn-danger waves-effect waves-themed float-right" style="margin-right:7px;"><i class="fal fa-plus-square"></i> Add New Status</a>
+                        <a href= "#" data-target="#add" data-toggle="modal" class="btn btn-danger waves-effect waves-themed float-right" style="margin-right:7px;"><i class="fal fa-plus-square"></i> Add New Category</a>
                     </div>
 
                 </div>
@@ -59,30 +61,26 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="card-header">
-                        <h5 class="card-title w-100">Add New Status </h5>
+                        <h5 class="card-title w-100">Add New Category </h5>
                     </div>
                     <div class="modal-body">
-                    {!! Form::open(['action' => 'EngagementManagementController@addStatus', 'method' => 'POST']) !!}
+                    {!! Form::open(['action' => 'AduanKorporatController@addCategory', 'method' => 'POST']) !!}
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">Status</span>
+                                    <span class="input-group-text">Category</span>
                                 </div>
-                                <input type="text" name="status" class="form-control max" required>
+                                <input type="text" name="category" class="form-control max" required>
                             </div>
                             <span style="font-size: 10px; color: red;"><i>*Limit to 50 characters only</i></span>
-                        </div>
 
-                        <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">Active</span>
+                                    <span class="input-group-text">Code</span>
                                 </div>
-                                <select class="custom-select form-control" name="active" id="active" required>
-                                    <option value="Y">Active</option>
-                                    <option value="N">Inactive</option>
-                                </select>
+                                <input type="text" name="code" class="form-control maxCode" required>
                             </div>
+                            <span style="font-size: 10px; color: red;"><i>*1 characters only (for ticket no.)</i></span>
                         </div>
 
                         <div class="footer">
@@ -99,32 +97,28 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="card-header">
-                        <h5 class="card-title w-100">Edit Status </h5>
+                        <h5 class="card-title w-100">Edit Category </h5>
                     </div>
                     <div class="modal-body">
-                        {!! Form::open(['action' => 'EngagementManagementController@editStatus', 'method' => 'POST']) !!}
+                        {!! Form::open(['action' => 'AduanKorporatController@updateCategory', 'method' => 'POST']) !!}
                         <input type="hidden" name="id" id="id">
 
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">Status</span>
+                                    <span class="input-group-text">Category</span>
                                 </div>
-                                <input type="text" id="status" name="status" class="form-control max" required>
+                                <input type="text" id="category" name="category" class="form-control maxCode" required>
                             </div>
                             <span style="font-size: 10px; color: red;"><i>*Limit to 50 characters only</i></span>
-                        </div>
 
-                        <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">Active</span>
+                                    <span class="input-group-text">Code</span>
                                 </div>
-                                <select class="custom-select form-control" name="active" id="active" required>
-                                    <option value="Y">Active</option>
-                                    <option value="N">Inactive</option>
-                                </select>
+                                <input type="text" id="code" name="code" class="form-control max" required>
                             </div>
+                            <span style="font-size: 10px; color: red;"><i>*1 characters only (for ticket no.)</i></span>
                         </div>
 
                         <div class="footer">
@@ -147,26 +141,27 @@
         $('#edit').on('show.bs.modal', function(event) {
         var button = $(event.relatedTarget) 
         var id = button.data('id') // data-id
-        var status = button.data('status') // data-status
-        var active = button.data('active') // data-active
+        var category = button.data('category') // data-category
+        var code = button.data('code') // data-code
 
         $('.modal-body #id').val(id);
-        $('.modal-body #status').val(status);
-        $('.modal-body #active').val(active);
+        $('.modal-body #category').val(category);
+        $('.modal-body #code').val(code);
 
         });
 
-        var table = $('#statuslist').DataTable({
+        var table = $('#categorylist').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
-                url: "/getStatus",
+                url: "/get-category-list",
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
             columns: [
+                    { className: 'text-center', data: 'id', name: 'id' },
                     { className: 'text-center', data: 'description', name: 'description' },
-                    { className: 'text-center', data: 'active', name: 'active' },
+                    { className: 'text-center', data: 'code', name: 'code' },
                     { className: 'text-center', data: 'edit', name: 'edit', orderable: false, searchable: false},
                     { className: 'text-center', data: 'delete', name: 'delete', orderable: false, searchable: false},
                 ],
@@ -177,7 +172,7 @@
                 }
         });
 
-        $('#statuslist').on('click', '.btn-delete[data-remote]', function (e) {
+        $('#categorylist').on('click', '.btn-delete[data-remote]', function (e) {
             e.preventDefault();
             $.ajaxSetup({
                 headers: {
@@ -204,7 +199,7 @@
                     dataType: 'json',
                     data: {method: '_DELETE', submit: true}
                     }).always(function (data) {
-                        $('#statuslist').DataTable().draw(false);
+                        $('#categorylist').DataTable().draw(false);
                     });
                 }
             })
@@ -216,8 +211,6 @@
         var max = 50;
         $('.max').keypress(function(e) {
             if (e.which < 0x20) {
-                // e.which < 0x20, then it's not a printable character
-                // e.which === 0 - Not a character
                 return;     // Do nothing
             }
             if (this.value.length == max) {
@@ -227,8 +220,22 @@
                 this.value = this.value.substring(0, max);
             }
         });
-    }); //end if ready(fn)
-    
+    });
+
+    jQuery(document).ready(function($) {
+        var maxCode = 1;
+        $('.maxCode').keypress(function(e) {
+            if (e.which < 0x20) {
+                return;     // Do nothing
+            }
+            if (this.value.length == maxCode) {
+                e.preventDefault();
+            } else if (this.value.length > maxCode) {
+                // Maximum exceeded
+                this.value = this.value.substring(0, maxCode);
+            }
+        });
+    });
 
 </script>
 @endsection

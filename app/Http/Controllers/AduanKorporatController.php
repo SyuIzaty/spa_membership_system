@@ -9,6 +9,7 @@ use App\AduanKorporatUser;
 use App\AduanKorporatLog;
 use App\AduanKorporatRemark;
 use App\AduanKorporatFile;
+use App\AduanKorporatAdmin;
 use App\DepartmentList;
 use App\User;
 use App\Staff;
@@ -68,6 +69,15 @@ class AduanKorporatController extends Controller
     {
         if($request->userCategory == "STF" || $request->userCategory == "STD")
         {
+            $validated = $request->validate([
+                'user_phone'   => 'required|regex:/[0-9]/|min:10|max:11',
+            ], [
+                'user_phone.min'      => 'Phone number does not match the format!',
+                'user_phone.max'      => 'Phone number does not match the format!',                
+                'user_phone.regex'    => 'Phone number must be number only!',
+                'user_phone.required' => 'Phone number is required!',
+            ]);
+
             $data                = new AduanKorporat();
             $data->name          = $request->user_name;
             $data->phone_no      = $request->user_phone;
@@ -124,7 +134,19 @@ class AduanKorporatController extends Controller
             $validated = $request->validate([
                 'user_phone'   => 'required|regex:/[0-9]/|min:10|max:11',
                 'other_email'  => 'required|email',
-                'ic'      => 'required|regex:/[0-9]/|min:9|max:12',
+                'ic'           => 'required|regex:/[0-9]/|min:9|max:12',
+            ], [
+                'user_phone.min'      => 'Phone number does not match the format!',
+                'user_phone.max'      => 'Phone number does not match the format!',                
+                'user_phone.regex'    => 'Phone number must be number only!',
+                'user_phone.required' => 'Phone number is required!',
+
+                'other_email.email'   => 'Email does not match the format!',
+
+                'ic.min'      => 'IC/Passport No. does not match the format!',
+                'ic.max'      => 'IC/Passport No. does not match the format!',                
+                'ic.regex'    => 'IC/Passport No. must be number only!',
+                'ic.required' => 'IC/Passport No. is required!',
             ]);
 
             $data                = new AduanKorporat();
@@ -202,41 +224,9 @@ class AduanKorporatController extends Controller
 
     public function show($id)
     {
-       if( Auth::user()->hasRole('eAduan (Admin)') )
-        {
-            $list = AduanKorporat::where('status', $id)->get();
-        }
-
-        else if( Auth::user()->hasRole('eAduan (IT)') )
-        {
-            $list = AduanKorporat::where('assign', 1)->where('status', $id)->get();
-        }
-
-        else if( Auth::user()->hasRole('eAduan (Finance)') )
-        {
-            $list = AduanKorporat::where('assign', 2)->where('status', $id)->get();
-        }
-
-        else if( Auth::user()->hasRole('eAduan (Corporate)') )
-        {
-            $list = AduanKorporat::where('assign', 3)->where('status', $id)->get();
-        }
-
-        else if( Auth::user()->hasRole('eAduan (Academic)') )
-        {
-            $list = AduanKorporat::where('assign', 4)->where('status', $id)->get();
-        }
-
-        else if( Auth::user()->hasRole('eAduan (Operation)') )
-        {
-            $list = AduanKorporat::where('assign', 5)->where('status', $id)->get();
-        }
-
-        else if( Auth::user()->hasRole('eAduan (Marketing)') )
-        {
-            $list = AduanKorporat::where('assign', 6)->where('status', $id)->get();
-        }
-
+       
+        $list = AduanKorporat::where('status', $id)->get();
+        
         return datatables()::of($list)
 
         ->editColumn('ticket_no', function ($list) {
@@ -763,28 +753,272 @@ class AduanKorporatController extends Controller
         ->make(true);
     }
 
-
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\AduanKorporat  $aduanKorporat
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, AduanKorporat $aduanKorporat)
+    public function admin()
     {
-        //
+        return view('aduan-korporat.department-list');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\AduanKorporat  $aduanKorporat
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(AduanKorporat $aduanKorporat)
+    public function departmentLists()
     {
-        //
+        $department = DepartmentList::all();
+
+        return datatables()::of($department)
+
+            ->editColumn('department',function($department)
+            {
+                return $department->name;
+            })
+
+            ->editColumn('total',function($department)
+            {
+                return AduanKorporatAdmin::where('department_id',$department->id)->count();
+            })
+
+            ->addColumn('update', function ($department) {
+
+                return '<a href="/admin-list/'.$department->id.'" class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+            })
+
+            ->rawColumns(['update'])
+            ->make(true);
     }
+
+    public function adminList($id)
+    {
+        $department = DepartmentList::where('id',$id)->first();
+        $mainAdmin =  User::orderBy('name', 'ASC')->where('category', 'STF')->get();
+        $admin = AduanKorporatAdmin::where('department_id',$id)->get();
+
+        return view('aduan-korporat.admin-list', compact('id','department','mainAdmin','admin'));
+    }
+
+    public function storeAdmin(Request $request)
+    {
+        $error = [];
+        $message = '';
+
+        foreach($request->admin as $key => $value)
+        {
+            if (AduanKorporatAdmin::where('department_id',$request->id)->where('admin_id', $value)->count() > 0)
+            {
+                $staff = User::where('id',$value)->first();
+                $error[] = $staff->name;
+            }
+            
+            else
+            {
+                AduanKorporatAdmin::create([
+                    'admin_id'      => $value,
+                    'department_id' => $request->id,
+                    'created_by'    => Auth::user()->id,
+                    'updated_by'    => Auth::user()->id
+                ]);
+            }
+        }
+
+        if($error)
+        {
+            $message = "[".implode(',',$error)."] already inserted";
+        }
+
+        if($message)
+        {
+            return redirect()->back()->withErrors([$message]);
+        }
+
+        else
+        {
+            return redirect()->back()->with('message','Admin Added!');
+        }
+    }
+
+    public function destroy($id)
+    {
+        $admin = AduanKorporatAdmin::where('id', $id)->first();
+
+        $exist = AduanKorporatAdmin::find($id);
+        $exist->delete();
+        $exist->update(['deleted_by' => Auth::user()->id]);
+
+        return redirect('admin-list/'.$admin->department_id);
+    }
+
+    public function status()
+    {
+        $status = AduanKorporatStatus::all();
+
+        return view('aduan-korporat.status', compact('status'));
+    }
+
+    public function getStatus()
+    {
+        $status = AduanKorporatStatus::all();
+
+        return datatables()::of($status)
+
+            ->editColumn('edit', function ($status) {
+                return $status->id;
+            })
+
+            ->editColumn('edit', function ($status) {
+                return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$status->id.'" data-status="'.$status->description.'"
+                class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+            })
+
+            ->editColumn('delete', function ($status) {
+                return '<button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-status/' . $status->id . '"><i class="fal fa-trash"></i></button>';
+            })
+
+            ->rawColumns(['edit','delete'])
+            ->make(true);
+    }
+
+    public function addStatus(Request $request)
+    {
+        AduanKorporatStatus::create([
+            'description' => $request->status,
+            'created_by'  => Auth::user()->id
+        ]);
+
+        return redirect()->back()->with('message','Add Successfully');
+    }
+
+    public function updateStatus(Request $request)
+    {
+        $update = AduanKorporatStatus::where('id', $request->id)->first();
+        $update->update([
+            'description' => $request->status,
+            'updated_by'  => Auth::user()->id
+        ]);
+        
+        return redirect()->back()->with('message','Update Successfully');
+    }
+
+    public function destroyStatus($id)
+    {
+        $exist = AduanKorporatStatus::find($id);
+        $exist->delete();
+        $exist->update(['deleted_by' => Auth::user()->id]);
+    }
+
+    public function category()
+    {
+        $category = AduanKorporatCategory::all();
+
+        return view('aduan-korporat.category', compact('category'));
+    }
+
+    public function getCategory()
+    {
+        $category = AduanKorporatCategory::all();
+
+        return datatables()::of($category)
+
+            ->editColumn('edit', function ($category) {
+                return $category->id;
+            })
+
+            ->editColumn('edit', function ($category) {
+                return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$category->id.'" data-category="'.$category->description.'" data-code="'.$category->code.'"
+                class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+            })
+
+            ->editColumn('delete', function ($category) {
+                return '<button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-categories/' . $category->id . '"><i class="fal fa-trash"></i></button>';
+            })
+
+            ->rawColumns(['edit','delete'])
+            ->make(true);
+    }
+
+    public function addCategory(Request $request)
+    {
+        AduanKorporatCategory::create([
+            'description' => $request->category,
+            'code'        => $request->code,
+            'created_by'  => Auth::user()->id
+        ]);
+
+        return redirect()->back()->with('message','Add Successfully');
+    }
+
+    public function updateCategory(Request $request)
+    {
+        $update = AduanKorporatCategory::where('id', $request->id)->first();
+        $update->update([
+            'description' => $request->category,
+            'code'        => $request->code,
+            'updated_by'  => Auth::user()->id
+        ]);
+        
+        return redirect()->back()->with('message','Update Successfully');
+    }
+
+    public function destroyCategory($id)
+    {
+        $exist = AduanKorporatCategory::find($id);
+        $exist->delete();
+        $exist->update(['deleted_by' => Auth::user()->id]);
+    }
+
+    public function userCategory()
+    {
+        $category = AduanKorporatUser::all();
+
+        return view('aduan-korporat.user-category', compact('category'));
+    }
+
+    public function getUserCategory()
+    {
+        $category = AduanKorporatUser::all();
+
+        return datatables()::of($category)
+
+            ->editColumn('edit', function ($category) {
+                return $category->id;
+            })
+
+            ->editColumn('edit', function ($category) {
+                return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$category->id.'" data-category="'.$category->description.'" data-code="'.$category->code.'"
+                class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+            })
+
+            ->editColumn('delete', function ($category) {
+                return '<button class="btn btn-sm btn-danger btn-delete" data-remote="/delete-usercategory/' . $category->id . '"><i class="fal fa-trash"></i></button>';
+            })
+
+            ->rawColumns(['edit','delete'])
+            ->make(true);
+    }
+
+    public function addUserCategory(Request $request)
+    {
+        AduanKorporatUser::create([
+            'description' => $request->category,
+            'code'        => $request->code,
+            'created_by'  => Auth::user()->id
+        ]);
+
+        return redirect()->back()->with('message','Add Successfully');
+    }
+
+    public function updateUserCategory(Request $request)
+    {
+        $update = AduanKorporatUser::where('id', $request->id)->first();
+        $update->update([
+            'description' => $request->category,
+            'code'        => $request->code,
+            'updated_by'  => Auth::user()->id
+        ]);
+        
+        return redirect()->back()->with('message','Update Successfully');
+    }
+
+    public function destroyUserCategory($id)
+    {
+        $exist = AduanKorporatUser::find($id);
+        $exist->delete();
+        $exist->update(['deleted_by' => Auth::user()->id]);
+    }
+
 }

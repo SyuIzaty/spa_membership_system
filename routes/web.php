@@ -503,6 +503,29 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/year-month-report', 'AduanKorporatController@getReport');
     Route::post('/year-month-dashboard', 'AduanKorporatController@getDashboard');
 
+    Route::get('/admin-list', 'AduanKorporatController@admin');
+    Route::post('/departmentList', 'AduanKorporatController@departmentLists');
+    Route::get('/admin-list/{id}','AduanKorporatController@adminList');
+    Route::post('/store-admin', 'AduanKorporatController@storeAdmin');
+    Route::delete('/destroy/{id}', 'AduanKorporatController@destroy')->name('destroyAdmin');
+
+    Route::get('/status-list', 'AduanKorporatController@status');
+    Route::post('/get-status-list', 'AduanKorporatController@getStatus');
+    Route::post('/store-status', 'AduanKorporatController@addStatus');
+    Route::post('/update-status', 'AduanKorporatController@updateStatus');
+    Route::delete('/delete-status/{id}','AduanKorporatController@destroyStatus');
+
+    Route::get('category-lists', 'AduanKorporatController@category');
+    Route::post('/get-category-list', 'AduanKorporatController@getCategory');
+    Route::post('/storeCategories', 'AduanKorporatController@addCategory');
+    Route::post('/update-categories', 'AduanKorporatController@updateCategory');
+    Route::delete('/delete-categories/{id}','AduanKorporatController@destroyCategory');
+
+    Route::get('user-category-list', 'AduanKorporatController@userCategory');
+    Route::post('get-usercategory-list', 'AduanKorporatController@getUserCategory');
+    Route::post('/store-usercategory', 'AduanKorporatController@addUserCategory');
+    Route::post('/update-usercategory', 'AduanKorporatController@updateUserCategory');
+    Route::delete('/delete-usercategory/{id}','AduanKorporatController@destroyUserCategory');
 
     // Training : Training
     Route::get('/training-list', 'TrainingController@trainingList');

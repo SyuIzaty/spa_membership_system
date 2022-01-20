@@ -1,6 +1,11 @@
 @extends('layouts.public')
 
 @section('content')
+<style>
+    .preserveLines {
+    white-space: pre-wrap;
+}
+</style>
 <link rel="stylesheet" href="{{ asset('css/icomplaint.css') }}">
 
 <main id="js-page-content" role="main" id="main" class="page-content"  style="background-image: url({{asset('img/bg4.jpg')}}); background-size: cover">
@@ -82,7 +87,7 @@
                                                     <td>
                                                         <input class="form-control intec" id="user_email" name="user_email" readonly>
                                                         <input class="form-control other" id="other_email" name="other_email" placeholder="eg: intec@intec.edu.my">
-                                                        <span style="font-size: 12px; color: red;"><i>*Feedback will be sent to this email.</i></span>
+                                                        <span style="font-size: 12px; color: #1487fd;"><i>*Feedback will be sent to this email.</i></span>
 
                                                         @error('user_email')
                                                             <p style="color: red"><strong> {{ $message }} </strong></p>
@@ -104,7 +109,7 @@
                                                 <tr>
                                                     <td width="20%" style="vertical-align: middle"><label class="form-label" for="user_address"><span class="text-danger">*</span> Full Address </label></td>
                                                     <td colspan="6">
-                                                        <textarea class="form-control" name="address" id="address" rows="2" required></textarea>
+                                                        <textarea class="form-control preserveLines" name="address" id="address" rows="2" required>{{ old('address') }}</textarea>
                                                     </td>
 
                                                     @error('address')
@@ -145,7 +150,7 @@
                                                 <tr>
                                                     <td width="20%" style="vertical-align: middle"><label class="form-label" for="user_address"><span class="text-danger">*</span> Description</label></td>
                                                     <td colspan="6">
-                                                        <textarea class="form-control" name="description" id="description" rows="5" required></textarea>
+                                                        <textarea class="form-control preserveLines" name="description" id="description" rows="10" required>{{ old('description') }}</textarea>
                                                     </td>
 
                                                     @error('description')
@@ -296,12 +301,9 @@
         $("#user_id").val("");
         $("#user_name").val("");
         $("#user_phone").val("");
-        $("#address").val("");
         $("#user_email").val("");
         $("#category").val("");
         $("#title").val("");
-        $("#description").val("");
-
         $("#ic").val("");
         $("#other_name").val("");
         $("#other_email").val("");
@@ -319,10 +321,8 @@
         $('#user_id').val('{{ old('user_id') }}');
         $('#user_name').val('{{ old('user_name') }}');
         $('#user_phone').val('{{ old('user_phone') }}');
-        $('#address').val('{{ old('address') }}');
         $('#user_email').val('{{ old('user_email') }}');
         $('#title').val('{{ old('title') }}');
-        $('#description').val('{{ old('description') }}');
         $('#category').val('{{ old('category') }}');
         $('#ic').val('{{ old('ic') }}');
         $('#other_name').val('{{ old('other_name') }}');

@@ -145,7 +145,7 @@
                                                 </thead>
                                             </table>
                                         </div>
-                                        <button type="submit" class="btn btn-danger ml-auto float-right mr-2 waves-effect waves-themed" id="assign" style="margin-bottom: 20px;"><i class="fal fa-times-circle"></i> Submit</button>
+                                        <button type="submit" class="btn btn-warning ml-auto float-right mr-2 waves-effect waves-themed" id="assign" style="margin-bottom: 20px;"><i class="fal fa-times-circle"></i> Change</button>
                                     </form>
                                     @endcan
                                 @endif

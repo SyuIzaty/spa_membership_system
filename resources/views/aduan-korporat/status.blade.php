@@ -4,7 +4,7 @@
     <main id="js-page-content" role="main" class="page-content">
         <div class="subheader">
             <h1 class="subheader-title">
-                <i class='subheader-icon fal fa-users'></i> Engagement Management
+                <i class='subheader-icon fal fa-file-alt'></i> i-Complaint
             </h1>
         </div>
         <div class="row">
@@ -29,8 +29,8 @@
                                 <table id="statuslist" class="table table-bordered table-hover table-striped w-100">
                                     <thead>
                                         <tr class="bg-primary-50 text-center">
+                                            <th class="text-center">ID</th>
                                             <th class="text-center">Status</th>
-                                            <th class="text-center">Active</th>
                                             <th class="text-center">Edit</th>
                                             <th class="text-center">Delete</th>
                                         </tr>
@@ -62,7 +62,7 @@
                         <h5 class="card-title w-100">Add New Status </h5>
                     </div>
                     <div class="modal-body">
-                    {!! Form::open(['action' => 'EngagementManagementController@addStatus', 'method' => 'POST']) !!}
+                    {!! Form::open(['action' => 'AduanKorporatController@addStatus', 'method' => 'POST']) !!}
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -71,18 +71,6 @@
                                 <input type="text" name="status" class="form-control max" required>
                             </div>
                             <span style="font-size: 10px; color: red;"><i>*Limit to 50 characters only</i></span>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Active</span>
-                                </div>
-                                <select class="custom-select form-control" name="active" id="active" required>
-                                    <option value="Y">Active</option>
-                                    <option value="N">Inactive</option>
-                                </select>
-                            </div>
                         </div>
 
                         <div class="footer">
@@ -102,7 +90,7 @@
                         <h5 class="card-title w-100">Edit Status </h5>
                     </div>
                     <div class="modal-body">
-                        {!! Form::open(['action' => 'EngagementManagementController@editStatus', 'method' => 'POST']) !!}
+                        {!! Form::open(['action' => 'AduanKorporatController@updateStatus', 'method' => 'POST']) !!}
                         <input type="hidden" name="id" id="id">
 
                         <div class="form-group">
@@ -113,18 +101,6 @@
                                 <input type="text" id="status" name="status" class="form-control max" required>
                             </div>
                             <span style="font-size: 10px; color: red;"><i>*Limit to 50 characters only</i></span>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Active</span>
-                                </div>
-                                <select class="custom-select form-control" name="active" id="active" required>
-                                    <option value="Y">Active</option>
-                                    <option value="N">Inactive</option>
-                                </select>
-                            </div>
                         </div>
 
                         <div class="footer">
@@ -148,11 +124,9 @@
         var button = $(event.relatedTarget) 
         var id = button.data('id') // data-id
         var status = button.data('status') // data-status
-        var active = button.data('active') // data-active
 
         $('.modal-body #id').val(id);
         $('.modal-body #status').val(status);
-        $('.modal-body #active').val(active);
 
         });
 
@@ -160,13 +134,13 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "/getStatus",
+                url: "/get-status-list",
                 type: 'POST',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
             },
             columns: [
+                    { className: 'text-center', data: 'id', name: 'id' },
                     { className: 'text-center', data: 'description', name: 'description' },
-                    { className: 'text-center', data: 'active', name: 'active' },
                     { className: 'text-center', data: 'edit', name: 'edit', orderable: false, searchable: false},
                     { className: 'text-center', data: 'delete', name: 'delete', orderable: false, searchable: false},
                 ],

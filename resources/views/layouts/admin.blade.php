@@ -161,7 +161,7 @@
                         @endphp
 
                         <!-- Start eAduan Korporat System -->
-                            @can('take action')
+                            
                             <li class="nav-title">i-Complaint</li>
                             <li>
                                 <a href="/main" title="Form" data-filter-tags="form">
@@ -169,13 +169,13 @@
                                     <span class="nav-link-text" data-i18n="nav.form">Form</span>
                                 </a>
                             </li>
+                            @can('take action')
                             <li>
                                 <a href="/dashboard-icomplaint" title="Dashboard i-Complaint" data-filter-tags="dashboard">
                                     <i class="fal fa-chart-pie"></i>
                                     <span class="nav-link-text" data-i18n="nav.dashboard">Dashboard</span>
                                 </a>
                             </li>
-                            
 
                             <li class="open">
                                 <a href="#" title="List" data-filter-tags="list">
@@ -216,6 +216,36 @@
                                     <i class="fal fa-clipboard-list"></i>
                                     <span class="nav-link-text" data-i18n="nav.report">Report</span>
                                 </a>
+                            </li>
+                            @endcan
+                            @can('take action')
+                            <li class="open">
+                                <a href="#" title="Setting" data-filter-tags="setting">
+                                    <i class="fal fa-cogs"></i>
+                                    <span class="nav-link-text" data-i18n="nav.setting">Setting</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="/admin-list" title="Admin" data-filter-tags="admin">
+                                            <span class="nav-link-text" data-i18n="nav.admin">Admin</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/status-list" title="Status" data-filter-tags="status">
+                                            <span class="nav-link-text" data-i18n="nav.status">Status</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/category-lists" title="Category" data-filter-tags="category">
+                                            <span class="nav-link-text" data-i18n="nav.category">Category</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/user-category-list" title="User Category" data-filter-tags="usercategory">
+                                            <span class="nav-link-text" data-i18n="nav.usercategory">User Category</span>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                             @endcan
 
