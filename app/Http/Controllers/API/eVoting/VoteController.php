@@ -255,4 +255,76 @@ class VoteController extends BaseController
         }
         return $this->sendResponse($categorical_statistics, 'Vote Categories Fetched!');
     }
+    public function overallReport(){
+
+        $candidate_categories = CandidateCategory::all()->load(
+            ['candidate_category_programme_category_s.programme_category.programmes.students.votes',
+            'candidate_category_programme_category_s.programme_category.programmes.students.candidates.votes',
+            'candidate_category_programme_category_s.programme_category.programmes.students.candidates.student.state'
+        ]);
+        $categorical_statistics=[];
+        $overallReport = new stdClass();
+        $overallReport->total_students=0;
+        $overallReport->total_turnouts=0;
+        $overallReport->total_not_turnouts=0;
+        foreach($candidate_categories as $candidate_category){
+            $statistics['name']=$candidate_category->name;
+            $statistics['description']="";
+            $statistics['total_turnouts']=0;
+            $statistics['total_not_turnouts']=0;
+            $statistics['programme_categories_name']=[];
+            $statistics['programme_categories_description']=[];
+            $statistics['programmes']=[];
+            $statistics['candidates']=[];
+            // $statistics['candidate_names']=[];
+            // $statistics['total_voted']=[];
+            foreach($candidate_category->candidate_category_programme_category_s as $candidate_category_programme_category){
+                array_push($statistics['programme_categories_name'],$candidate_category_programme_category->programme_category->short_name);
+                array_push($statistics['programme_categories_description'],$candidate_category_programme_category->programme_category->description);
+                $statistics['description'].=$candidate_category_programme_category->programme_category->description;
+                foreach($candidate_category_programme_category->programme_category->programmes as $programme){
+                    array_push($statistics['programmes'],$programme->name);
+                    foreach($programme->students as $student){
+
+                        $overallReport->total_students+=1;
+                        if(!is_null($student->votes) && count($student->votes)>0){
+
+                            $overallReport->total_turnouts+=1;
+                            $statistics['total_turnouts']+=1;
+                        }else{
+                            $overallReport->total_not_turnouts+=1;
+                            $statistics['total_not_turnouts']+=1;
+                        }
+                        foreach($student->candidates as $candidate){
+                            $candidate_temp=new stdClass();
+                            $candidate_temp->id=$candidate->id;
+                            $candidate_temp->name=$candidate->student->students_name;
+                            $candidate_temp->age=null;
+                            if(!is_null($candidate->student->state)){
+                                $candidate_temp->origin=$candidate->student->state->state_name;
+                            }else{
+                                $candidate_temp->origin=null;
+                            }
+                            $candidate_temp->student_id=$candidate->student->students_id;
+                            $candidate_temp->gender=$candidate->student->students_gender;
+                            $candidate_temp->phone=$candidate->student->students_phone;
+                            $candidate_temp->email=$candidate->student->students_email;
+                            $candidate_temp->programme=$candidate->student->students_programme;
+                            $candidate_temp->current_semester=$candidate->student->current_semester;
+                            $candidate_temp->total_semester=null;
+                            $candidate_temp->result=null;
+                            $candidate_temp->total_vote=count($candidate->votes);
+                            array_push($statistics['candidates'],$candidate_temp);
+                            // array_push($statistics['candidate_names'],$candidate->student->students_name);
+                            // array_push($statistics['total_voted'],count($candidate->votes));
+                        }
+                    }
+
+                }
+            }
+            $statistics['total_students']=$statistics['total_turnouts']+$statistics['total_not_turnouts'];
+            array_push($categorical_statistics, $statistics);
+        }
+        return $this->sendResponse($overallReport, 'Vote Categories Fetched!');
+    }
 }

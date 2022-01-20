@@ -599,6 +599,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/vote-status', 'API\eVoting\VoteController@voteStatus');
     Route::get('/categorical-statistics', 'API\eVoting\VoteController@categoricalStatistics');
     Route::get('/categorical-report', 'API\eVoting\VoteController@categoricalReport');
+    Route::get('/overall-report', 'API\eVoting\VoteController@overallReport');
     Route::get('/get-candidate-image', 'API\eVoting\CandidateController@getCandidateImage');
 
     Route::get('/vote-platform', function () {

@@ -32,7 +32,23 @@
             </p>
         </div>
 
-        <div class="grid" v-if="candidates">
+        <div
+            style="
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            "
+            v-if="this.is_loading"
+        >
+            <ProgressSpinner
+                style="width: 100px; height: 100px"
+                strokeWidth="8"
+                fill="#EEEEEE"
+                animationDuration=".5s"
+            />
+        </div>
+        <div class="grid" v-else-if="!this.is_loading && candidates.length > 0">
             <CandidateDetailsCard
                 v-for="candidate in candidates"
                 :key="candidate.id"
@@ -49,6 +65,7 @@
                 @voted-candidate="voted_candidate"
             />
         </div>
+        <div v-else class="text-center h1">No candidate for you to vote.</div>
         <ConfirmPopup></ConfirmPopup>
         <button
             type="submit"
@@ -64,14 +81,16 @@
 <script>
 import CandidateDetailsCard from "../../components/eVoting/CandidateDetailsCard.vue";
 import ConfirmPopup from "primevue/confirmpopup";
+import ProgressSpinner from "primevue/progressspinner";
 export default {
     name: "eVotingStation",
-    components: { CandidateDetailsCard, ConfirmPopup },
+    components: { CandidateDetailsCard, ConfirmPopup, ProgressSpinner },
     data() {
         return {
-            candidates: null,
+            candidates: [],
             below_min: false,
             above_max: false,
+            is_loading: true,
         };
     },
 
@@ -90,22 +109,37 @@ export default {
     async mounted() {
         window.scrollTo({ top: 100, left: 0, behavior: "smooth" });
 
-        await axios.get("/candidate-relevant").then((response) => {
-            if (typeof response.data.data === "object") {
-                this.candidates = response.data.data;
-                this.candidates.forEach(async (x, index) => {
-                    if (x.image !== null) {
-                        this.candidates[index].image = await this.getImage(
-                            x.image
-                        );
-                    }
+        this.is_loading = true;
+        await axios
+            .get("/candidate-relevant")
+            .then((response) => {
+                if (typeof response.data.data === "object") {
+                    this.candidates = response.data.data;
+                    this.candidates.forEach(async (x, index) => {
+                        if (x.image !== null) {
+                            this.candidates[index].image = await this.getImage(
+                                x.image
+                            );
+                        }
+                    });
+                } else {
+                    this.$router.push({
+                        name: "vote-platform-station-success",
+                    });
+                }
+
+                this.is_loading = false;
+            })
+            .catch((error) => {
+                console.error(error);
+                this.$toast.add({
+                    severity: "error",
+                    summary: "Error Message",
+                    detail: "No content to be loaded",
+                    life: 3000,
                 });
-            } else {
-                this.$router.push({
-                    name: "vote-platform-station-success",
-                });
-            }
-        });
+                this.is_loading = false;
+            });
     },
     methods: {
         async getImage(path) {
@@ -203,6 +237,8 @@ export default {
             } else {
                 this.below_min = false;
                 this.above_max = false;
+
+                this.is_loading = true;
                 axios
                     .post("/candidate-relevant/vote", {
                         payload: this.candidates,
@@ -211,7 +247,18 @@ export default {
                         this.$router.push({
                             name: "vote-platform-station-success",
                         });
-                        console.log(response);
+
+                        // this.is_loading = false;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        this.$toast.add({
+                            severity: "error",
+                            summary: "Error Message",
+                            detail: "Fail to submit vote.",
+                            life: 3000,
+                        });
+                        this.is_loading = false;
                     });
             }
         },

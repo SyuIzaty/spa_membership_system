@@ -3586,6 +3586,32 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_eVoting_CategoricalStatisticalChart_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/eVoting/CategoricalStatisticalChart.vue */ "./resources/js/components/eVoting/CategoricalStatisticalChart.vue");
+/* harmony import */ var primevue_progressspinner__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! primevue/progressspinner */ "./node_modules/primevue/progressspinner/index.js");
+/* harmony import */ var primevue_progressspinner__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(primevue_progressspinner__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3607,19 +3633,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "eVotingDashboard",
   components: {
-    CategoricalStatisticalChart: _components_eVoting_CategoricalStatisticalChart_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    CategoricalStatisticalChart: _components_eVoting_CategoricalStatisticalChart_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    ProgressSpinner: primevue_progressspinner__WEBPACK_IMPORTED_MODULE_1___default.a
   },
   data: function data() {
     return {
-      categories: []
+      categories: [],
+      is_loading: true
     };
   },
   mounted: function mounted() {
     var _this = this;
 
+    this.is_loading = true;
     axios.get("/categorical-statistics").then(function (response) {
       var categories = response.data.data;
       categories.forEach(function (x) {
@@ -3661,6 +3691,17 @@ __webpack_require__.r(__webpack_exports__);
         temp.participation_data.datasets[0].data.push(x.total_not_turnouts);
 
         _this.categories.push(temp);
+      });
+      _this.is_loading = false;
+    })["catch"](function (error) {
+      console.log(error);
+      _this.is_loading = false;
+
+      _this.$toast.add({
+        severity: "error",
+        summary: "Error Message",
+        detail: "No content to be loaded",
+        life: 3000
       });
     });
   },
@@ -3760,6 +3801,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_eVoting_CandidateDetailsCard_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/eVoting/CandidateDetailsCard.vue */ "./resources/js/components/eVoting/CandidateDetailsCard.vue");
 /* harmony import */ var primevue_confirmpopup__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! primevue/confirmpopup */ "./node_modules/primevue/confirmpopup/index.js");
 /* harmony import */ var primevue_confirmpopup__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(primevue_confirmpopup__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var primevue_progressspinner__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! primevue/progressspinner */ "./node_modules/primevue/progressspinner/index.js");
+/* harmony import */ var primevue_progressspinner__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(primevue_progressspinner__WEBPACK_IMPORTED_MODULE_3__);
 
 
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
@@ -3831,19 +3874,39 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "eVotingStation",
   components: {
     CandidateDetailsCard: _components_eVoting_CandidateDetailsCard_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    ConfirmPopup: primevue_confirmpopup__WEBPACK_IMPORTED_MODULE_2___default.a
+    ConfirmPopup: primevue_confirmpopup__WEBPACK_IMPORTED_MODULE_2___default.a,
+    ProgressSpinner: primevue_progressspinner__WEBPACK_IMPORTED_MODULE_3___default.a
   },
   data: function data() {
     return {
-      candidates: null,
+      candidates: [],
       below_min: false,
-      above_max: false
+      above_max: false,
+      is_loading: true
     };
   },
   beforeRouteEnter: function beforeRouteEnter(to, from, next) {
@@ -3870,7 +3933,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 left: 0,
                 behavior: "smooth"
               });
-              _context2.next = 3;
+              _this.is_loading = true;
+              _context2.next = 4;
               return axios.get("/candidate-relevant").then(function (response) {
                 if (_typeof(response.data.data) === "object") {
                   _this.candidates = response.data.data;
@@ -3909,9 +3973,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     name: "vote-platform-station-success"
                   });
                 }
+
+                _this.is_loading = false;
+              })["catch"](function (error) {
+                console.error(error);
+
+                _this.$toast.add({
+                  severity: "error",
+                  summary: "Error Message",
+                  detail: "No content to be loaded",
+                  life: 3000
+                });
+
+                _this.is_loading = false;
               });
 
-            case 3:
+            case 4:
             case "end":
               return _context2.stop();
           }
@@ -4042,14 +4119,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       } else {
         this.below_min = false;
         this.above_max = false;
+        this.is_loading = true;
         axios.post("/candidate-relevant/vote", {
           payload: this.candidates
         }).then(function (response) {
           _this4.$router.push({
             name: "vote-platform-station-success"
+          }); // this.is_loading = false;
+
+        })["catch"](function (error) {
+          console.log(error);
+
+          _this4.$toast.add({
+            severity: "error",
+            summary: "Error Message",
+            detail: "Fail to submit vote.",
+            life: 3000
           });
 
-          console.log(response);
+          _this4.is_loading = false;
         });
       }
     }
@@ -4123,7 +4211,79 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_eVoting_CategoricalReport_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/eVoting/CategoricalReport.vue */ "./resources/js/components/eVoting/CategoricalReport.vue");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _components_eVoting_CategoricalReport_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/eVoting/CategoricalReport.vue */ "./resources/js/components/eVoting/CategoricalReport.vue");
+/* harmony import */ var primevue_progressspinner__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! primevue/progressspinner */ "./node_modules/primevue/progressspinner/index.js");
+/* harmony import */ var primevue_progressspinner__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(primevue_progressspinner__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var primevue_divider__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! primevue/divider */ "./node_modules/primevue/divider/index.js");
+/* harmony import */ var primevue_divider__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(primevue_divider__WEBPACK_IMPORTED_MODULE_3__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4149,24 +4309,81 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ReportIndex",
   components: {
-    CategoricalReport: _components_eVoting_CategoricalReport_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    CategoricalReport: _components_eVoting_CategoricalReport_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    ProgressSpinner: primevue_progressspinner__WEBPACK_IMPORTED_MODULE_2___default.a,
+    Divider: primevue_divider__WEBPACK_IMPORTED_MODULE_3___default.a
   },
   data: function data() {
     return {
-      categories: []
+      categories: [],
+      overall_report: {
+        total_students: 0,
+        total_turnouts: 0,
+        total_not_turnouts: 0
+      },
+      is_loading: {
+        overall: true,
+        detail: true
+      }
     };
   },
   mounted: function mounted() {
     var _this = this;
 
-    axios.get("/categorical-report").then(function (response) {
-      var categories = response.data.data;
-      console.log(categories);
-      _this.categories = categories;
-    });
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _this.is_loading.overall = true;
+              _this.is_loading.detail = true;
+              _context.next = 4;
+              return axios.get("/overall-report").then(function (response) {
+                var overall_report = response.data.data;
+                _this.overall_report = overall_report;
+                _this.is_loading.overall = false;
+              })["catch"](function (error) {
+                console.log(error);
+                _this.is_loading.overall = false;
+
+                _this.$toast.add({
+                  severity: "error",
+                  summary: "Error Message",
+                  detail: "No report detail to be loaded",
+                  life: 3000
+                });
+              });
+
+            case 4:
+              _context.next = 6;
+              return axios.get("/categorical-report").then(function (response) {
+                var categories = response.data.data;
+                _this.categories = categories;
+                _this.is_loading.detail = false;
+              })["catch"](function (error) {
+                console.log(error);
+                _this.is_loading.detail = false;
+
+                _this.$toast.add({
+                  severity: "error",
+                  summary: "Error Message",
+                  detail: "No report detail to be loaded",
+                  life: 3000
+                });
+              });
+
+            case 6:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
   }
 });
 
@@ -19067,6 +19284,25 @@ exports = module.exports = __webpack_require__(/*! ../../css-loader/lib/css-base
 
 // module
 exports.push([module.i, "\n.p-fieldset-legend > a,\n.p-fieldset-legend > span {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n.p-fieldset-toggleable .p-fieldset-legend a {\n    cursor: pointer;\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n    overflow: hidden;\n    position: relative;\n    text-decoration: none;\n}\n.p-fieldset-legend-text {\n    line-height: 1;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./node_modules/primevue/progressspinner/ProgressSpinner.vue?vue&type=style&index=0&lang=css&":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./node_modules/primevue/progressspinner/ProgressSpinner.vue?vue&type=style&index=0&lang=css& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.p-progress-spinner {\n    position: relative;\n    margin: 0 auto;\n    width: 100px;\n    height: 100px;\n    display: inline-block;\n}\n.p-progress-spinner::before {\n     content: '';\n     display: block;\n     padding-top: 100%;\n}\n.p-progress-spinner-svg {\n    -webkit-animation: p-progress-spinner-rotate 2s linear infinite;\n            animation: p-progress-spinner-rotate 2s linear infinite;\n    height: 100%;\n    transform-origin: center center;\n    width: 100%;\n    position: absolute;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    margin: auto;\n}\n.p-progress-spinner-circle {\n    stroke-dasharray: 89, 200;\n    stroke-dashoffset: 0;\n    stroke: #d62d20;\n    -webkit-animation: p-progress-spinner-dash 1.5s ease-in-out infinite, p-progress-spinner-color 6s ease-in-out infinite;\n            animation: p-progress-spinner-dash 1.5s ease-in-out infinite, p-progress-spinner-color 6s ease-in-out infinite;\n    stroke-linecap: round;\n}\n@-webkit-keyframes p-progress-spinner-rotate {\n100% {\n        transform: rotate(360deg);\n}\n}\n@keyframes p-progress-spinner-rotate {\n100% {\n        transform: rotate(360deg);\n}\n}\n@-webkit-keyframes p-progress-spinner-dash {\n0% {\n        stroke-dasharray: 1, 200;\n        stroke-dashoffset: 0;\n}\n50% {\n        stroke-dasharray: 89, 200;\n        stroke-dashoffset: -35px;\n}\n100% {\n        stroke-dasharray: 89, 200;\n        stroke-dashoffset: -124px;\n}\n}\n@keyframes p-progress-spinner-dash {\n0% {\n        stroke-dasharray: 1, 200;\n        stroke-dashoffset: 0;\n}\n50% {\n        stroke-dasharray: 89, 200;\n        stroke-dashoffset: -35px;\n}\n100% {\n        stroke-dasharray: 89, 200;\n        stroke-dashoffset: -124px;\n}\n}\n@-webkit-keyframes p-progress-spinner-color {\n100%,\n    0% {\n        stroke: #d62d20;\n}\n40% {\n        stroke: #0057e7;\n}\n66% {\n        stroke: #008744;\n}\n80%,\n    90% {\n        stroke: #ffa700;\n}\n}\n@keyframes p-progress-spinner-color {\n100%,\n    0% {\n        stroke: #d62d20;\n}\n40% {\n        stroke: #0057e7;\n}\n66% {\n        stroke: #008744;\n}\n80%,\n    90% {\n        stroke: #ffa700;\n}\n}\n", ""]);
 
 // exports
 
@@ -72823,6 +73059,106 @@ module.exports = __webpack_require__(/*! ./Fieldset.vue */ "./node_modules/prime
 
 /***/ }),
 
+/***/ "./node_modules/primevue/progressspinner/ProgressSpinner.vue":
+/*!*******************************************************************!*\
+  !*** ./node_modules/primevue/progressspinner/ProgressSpinner.vue ***!
+  \*******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ProgressSpinner_vue_vue_type_template_id_1b100530___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ProgressSpinner.vue?vue&type=template&id=1b100530& */ "./node_modules/primevue/progressspinner/ProgressSpinner.vue?vue&type=template&id=1b100530&");
+/* harmony import */ var _ProgressSpinner_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ProgressSpinner.vue?vue&type=script&lang=js& */ "./node_modules/primevue/progressspinner/ProgressSpinner.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _ProgressSpinner_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ProgressSpinner.vue?vue&type=style&index=0&lang=css& */ "./node_modules/primevue/progressspinner/ProgressSpinner.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _ProgressSpinner_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ProgressSpinner_vue_vue_type_template_id_1b100530___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ProgressSpinner_vue_vue_type_template_id_1b100530___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "node_modules/primevue/progressspinner/ProgressSpinner.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./node_modules/primevue/progressspinner/ProgressSpinner.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************!*\
+  !*** ./node_modules/primevue/progressspinner/ProgressSpinner.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _vue_loader_lib_index_js_vue_loader_options_ProgressSpinner_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../vue-loader/lib??vue-loader-options!./ProgressSpinner.vue?vue&type=script&lang=js& */ "./node_modules/vue-loader/lib/index.js?!./node_modules/primevue/progressspinner/ProgressSpinner.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_vue_loader_lib_index_js_vue_loader_options_ProgressSpinner_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./node_modules/primevue/progressspinner/ProgressSpinner.vue?vue&type=style&index=0&lang=css&":
+/*!****************************************************************************************************!*\
+  !*** ./node_modules/primevue/progressspinner/ProgressSpinner.vue?vue&type=style&index=0&lang=css& ***!
+  \****************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _style_loader_index_js_css_loader_index_js_ref_6_1_vue_loader_lib_loaders_stylePostLoader_js_postcss_loader_src_index_js_ref_6_2_vue_loader_lib_index_js_vue_loader_options_ProgressSpinner_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../style-loader!../../css-loader??ref--6-1!../../vue-loader/lib/loaders/stylePostLoader.js!../../postcss-loader/src??ref--6-2!../../vue-loader/lib??vue-loader-options!./ProgressSpinner.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./node_modules/primevue/progressspinner/ProgressSpinner.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _style_loader_index_js_css_loader_index_js_ref_6_1_vue_loader_lib_loaders_stylePostLoader_js_postcss_loader_src_index_js_ref_6_2_vue_loader_lib_index_js_vue_loader_options_ProgressSpinner_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_style_loader_index_js_css_loader_index_js_ref_6_1_vue_loader_lib_loaders_stylePostLoader_js_postcss_loader_src_index_js_ref_6_2_vue_loader_lib_index_js_vue_loader_options_ProgressSpinner_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _style_loader_index_js_css_loader_index_js_ref_6_1_vue_loader_lib_loaders_stylePostLoader_js_postcss_loader_src_index_js_ref_6_2_vue_loader_lib_index_js_vue_loader_options_ProgressSpinner_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _style_loader_index_js_css_loader_index_js_ref_6_1_vue_loader_lib_loaders_stylePostLoader_js_postcss_loader_src_index_js_ref_6_2_vue_loader_lib_index_js_vue_loader_options_ProgressSpinner_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+
+
+/***/ }),
+
+/***/ "./node_modules/primevue/progressspinner/ProgressSpinner.vue?vue&type=template&id=1b100530&":
+/*!**************************************************************************************************!*\
+  !*** ./node_modules/primevue/progressspinner/ProgressSpinner.vue?vue&type=template&id=1b100530& ***!
+  \**************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _vue_loader_lib_loaders_templateLoader_js_vue_loader_options_vue_loader_lib_index_js_vue_loader_options_ProgressSpinner_vue_vue_type_template_id_1b100530___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../vue-loader/lib??vue-loader-options!./ProgressSpinner.vue?vue&type=template&id=1b100530& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./node_modules/primevue/progressspinner/ProgressSpinner.vue?vue&type=template&id=1b100530&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _vue_loader_lib_loaders_templateLoader_js_vue_loader_options_vue_loader_lib_index_js_vue_loader_options_ProgressSpinner_vue_vue_type_template_id_1b100530___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _vue_loader_lib_loaders_templateLoader_js_vue_loader_options_vue_loader_lib_index_js_vue_loader_options_ProgressSpinner_vue_vue_type_template_id_1b100530___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./node_modules/primevue/progressspinner/index.js":
+/*!********************************************************!*\
+  !*** ./node_modules/primevue/progressspinner/index.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+module.exports = __webpack_require__(/*! ./ProgressSpinner.vue */ "./node_modules/primevue/progressspinner/ProgressSpinner.vue");
+
+/***/ }),
+
 /***/ "./node_modules/primevue/resources/images/color.png":
 /*!**********************************************************!*\
   !*** ./node_modules/primevue/resources/images/color.png ***!
@@ -74862,6 +75198,36 @@ if(false) {}
 
 
 var content = __webpack_require__(/*! !../../css-loader??ref--6-1!../../vue-loader/lib/loaders/stylePostLoader.js!../../postcss-loader/src??ref--6-2!../../vue-loader/lib??vue-loader-options!./Fieldset.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./node_modules/primevue/fieldset/Fieldset.vue?vue&type=style&index=0&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./node_modules/primevue/progressspinner/ProgressSpinner.vue?vue&type=style&index=0&lang=css&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./node_modules/primevue/progressspinner/ProgressSpinner.vue?vue&type=style&index=0&lang=css& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../css-loader??ref--6-1!../../vue-loader/lib/loaders/stylePostLoader.js!../../postcss-loader/src??ref--6-2!../../vue-loader/lib??vue-loader-options!./ProgressSpinner.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./node_modules/primevue/progressspinner/ProgressSpinner.vue?vue&type=style&index=0&lang=css&");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -78280,6 +78646,51 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/index.js?!./node_modules/primevue/progressspinner/ProgressSpinner.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib??vue-loader-options!./node_modules/primevue/progressspinner/ProgressSpinner.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        strokeWidth: {
+            type: String,
+            default: '2'
+        },
+        fill: {
+            type: String,
+            default: 'none'
+        },
+        animationDuration: {
+            type: String,
+            default: '2s'
+        }
+    },
+    computed: {
+        svgStyle() {
+            return {
+                'animation-duration': this.animationDuration
+            };
+        }
+    }
+});
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/index.js?!./node_modules/primevue/toast/Toast.vue?vue&type=script&lang=js&":
 /*!**************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib??vue-loader-options!./node_modules/primevue/toast/Toast.vue?vue&type=script&lang=js& ***!
@@ -78843,6 +79254,59 @@ var render = function () {
       ]),
     ],
     1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./node_modules/primevue/progressspinner/ProgressSpinner.vue?vue&type=template&id=1b100530&":
+/*!********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./node_modules/primevue/progressspinner/ProgressSpinner.vue?vue&type=template&id=1b100530& ***!
+  \********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "p-progress-spinner",
+      attrs: { role: "alert", "aria-busy": "true" },
+    },
+    [
+      _c(
+        "svg",
+        {
+          staticClass: "p-progress-spinner-svg",
+          style: _vm.svgStyle,
+          attrs: { viewBox: "25 25 50 50" },
+        },
+        [
+          _c("circle", {
+            staticClass: "p-progress-spinner-circle",
+            attrs: {
+              cx: "50",
+              cy: "50",
+              r: "20",
+              fill: _vm.fill,
+              "stroke-width": _vm.strokeWidth,
+              strokeMiterlimit: "10",
+            },
+          }),
+        ]
+      ),
+    ]
   )
 }
 var staticRenderFns = []
@@ -79655,6 +80119,13 @@ var render = function () {
     "div",
     { staticStyle: { position: "relative" } },
     [
+      _c("Toast", {
+        attrs: {
+          position: "top-right",
+          breakpoints: { "920px": { width: "100%", right: "0", left: "0" } },
+        },
+      }),
+      _vm._v(" "),
       _c(
         "button",
         {
@@ -79671,18 +80142,49 @@ var render = function () {
       _vm._v(" "),
       _c("h1", { staticClass: "text-center" }, [_vm._v("Dashboard")]),
       _vm._v(" "),
-      _vm._l(_vm.categories, function (category, index) {
-        return _c("CategoricalStatisticalChart", {
-          key: index,
-          attrs: {
-            title: category.category_name,
-            data_pie: category.participation_data,
-            data_bar: category.candidates_data,
-          },
-        })
-      }),
+      _vm.is_loading
+        ? _c(
+            "div",
+            {
+              staticStyle: {
+                width: "100%",
+                display: "flex",
+                "flex-direction": "column",
+                "align-items": "center",
+              },
+            },
+            [
+              _c("ProgressSpinner", {
+                staticStyle: { width: "100px", height: "100px" },
+                attrs: {
+                  strokeWidth: "8",
+                  fill: "#EEEEEE",
+                  animationDuration: ".5s",
+                },
+              }),
+            ],
+            1
+          )
+        : !_vm.is_loading && _vm.categories.length > 0
+        ? _c(
+            "div",
+            _vm._l(_vm.categories, function (category, index) {
+              return _c("CategoricalStatisticalChart", {
+                key: index,
+                attrs: {
+                  title: category.category_name,
+                  data_pie: category.participation_data,
+                  data_bar: category.candidates_data,
+                },
+              })
+            }),
+            1
+          )
+        : _c("div", { staticClass: "text-center h1" }, [
+            _vm._v("No dashboard for you."),
+          ]),
     ],
-    2
+    1
   )
 }
 var staticRenderFns = []
@@ -79872,7 +80374,30 @@ var render = function () {
         ]
       ),
       _vm._v(" "),
-      _vm.candidates
+      this.is_loading
+        ? _c(
+            "div",
+            {
+              staticStyle: {
+                width: "100%",
+                display: "flex",
+                "flex-direction": "column",
+                "align-items": "center",
+              },
+            },
+            [
+              _c("ProgressSpinner", {
+                staticStyle: { width: "100px", height: "100px" },
+                attrs: {
+                  strokeWidth: "8",
+                  fill: "#EEEEEE",
+                  animationDuration: ".5s",
+                },
+              }),
+            ],
+            1
+          )
+        : !this.is_loading && _vm.candidates.length > 0
         ? _c(
             "div",
             { staticClass: "grid" },
@@ -79899,7 +80424,9 @@ var render = function () {
             }),
             1
           )
-        : _vm._e(),
+        : _c("div", { staticClass: "text-center h1" }, [
+            _vm._v("No candidate for you to vote."),
+          ]),
       _vm._v(" "),
       _c("ConfirmPopup"),
       _vm._v(" "),
@@ -80011,6 +80538,13 @@ var render = function () {
   return _c(
     "div",
     [
+      _c("Toast", {
+        attrs: {
+          position: "top-right",
+          breakpoints: { "920px": { width: "100%", right: "0", left: "0" } },
+        },
+      }),
+      _vm._v(" "),
       _c("center", { staticClass: "mb-5" }, [
         _c("img", {
           staticStyle: { height: "100px" },
@@ -80020,26 +80554,114 @@ var render = function () {
       _vm._v(" "),
       _vm._m(0),
       _vm._v(" "),
-      _vm.categories.length > 0
+      _vm.is_loading.overall || _vm.is_loading.detail
         ? _c(
             "div",
-            _vm._l(_vm.categories, function (category) {
-              return _c("CategoricalReport", {
-                key: category.id,
+            {
+              staticStyle: {
+                width: "100%",
+                display: "flex",
+                "flex-direction": "column",
+                "align-items": "center",
+              },
+            },
+            [
+              _c("ProgressSpinner", {
+                staticStyle: { width: "100px", height: "100px" },
                 attrs: {
-                  name: category.name,
-                  description: category.description,
-                  programme_categories_name: category.programme_categories_name,
-                  total_students: category.total_students,
-                  total_turnouts: category.total_turnouts,
-                  total_not_turnouts: category.total_not_turnouts,
-                  candidates: category.candidates,
+                  strokeWidth: "8",
+                  fill: "#EEEEEE",
+                  animationDuration: ".5s",
                 },
-              })
-            }),
+              }),
+            ],
             1
           )
-        : _vm._e(),
+        : !_vm.is_loading.overall &&
+          !_vm.is_loading.detail &&
+          _vm.categories.length > 0
+        ? _c(
+            "div",
+            [
+              _c("Divider", { attrs: { align: "left", type: "dashed" } }, [
+                _c("b", [_vm._v("Overall")]),
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "p-fieldset-content",
+                  staticStyle: {
+                    "font-size": "1.25rem",
+                    padding: "0rem 0rem 2rem 2rem",
+                  },
+                },
+                [
+                  _vm._v(
+                    "\n            Total Students:\n            " +
+                      _vm._s(_vm.overall_report.total_students) +
+                      " persons"
+                  ),
+                  _c("br"),
+                  _vm._v(
+                    "\n            Total Turnouts: " +
+                      _vm._s(_vm.overall_report.total_turnouts) +
+                      " persons (" +
+                      _vm._s(
+                        _vm.overall_report.total_students
+                          ? Math.round(
+                              ((_vm.overall_report.total_turnouts /
+                                _vm.overall_report.total_students) *
+                                100 +
+                                Number.EPSILON) *
+                                100
+                            ) / 100
+                          : 0
+                      ) +
+                      "%)"
+                  ),
+                  _c("br"),
+                  _vm._v(
+                    "\n            Total Not Turnouts:\n            " +
+                      _vm._s(_vm.overall_report.total_not_turnouts) +
+                      " persons (" +
+                      _vm._s(
+                        _vm.overall_report.total_students
+                          ? Math.round(
+                              ((_vm.overall_report.total_not_turnouts /
+                                _vm.overall_report.total_students) *
+                                100 +
+                                Number.EPSILON) *
+                                100
+                            ) / 100
+                          : 0
+                      ) +
+                      "%)\n        "
+                  ),
+                ]
+              ),
+              _vm._v(" "),
+              _vm._l(_vm.categories, function (category) {
+                return _c("CategoricalReport", {
+                  key: category.id,
+                  attrs: {
+                    name: category.name,
+                    description: category.description,
+                    programme_categories_name:
+                      category.programme_categories_name,
+                    total_students: category.total_students,
+                    total_turnouts: category.total_turnouts,
+                    total_not_turnouts: category.total_not_turnouts,
+                    candidates: category.candidates,
+                  },
+                })
+              }),
+            ],
+            2
+          )
+        : _c("div", { staticClass: "text-center h1" }, [
+            _vm._v("No report for you."),
+          ]),
     ],
     1
   )
@@ -95490,7 +96112,7 @@ vue__WEBPACK_IMPORTED_MODULE_4___default.a.component("Toast", primevue_toast__WE
 vue__WEBPACK_IMPORTED_MODULE_4___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_6__["default"]);
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_6__["default"]({
   routes: _routes__WEBPACK_IMPORTED_MODULE_5__["routes"],
-  // short for `routes: routes`
+  // short for `routes: routes`.
   mode: "history"
 });
 vue__WEBPACK_IMPORTED_MODULE_4___default.a.config.productionTip = false;
