@@ -3,7 +3,7 @@
         <Fieldset :legend="custom_name" :toggleable="false">
             {{ description }}
 
-            <Divider align="left" type="dashed">
+            <Divider align="left">
                 <b>General Information</b>
             </Divider>
             Total Students: {{ total_students }} persons<br />
@@ -21,7 +21,7 @@
                 ) / 100
             }}%)
 
-            <Divider align="left" type="dashed">
+            <Divider align="left">
                 <b>Candidate Information</b>
             </Divider>
 
@@ -125,7 +125,7 @@
             </div>
 
             <div class="text-center" v-else>There is no candidates</div>
-            <Divider align="left" type="dashed">
+            <Divider align="left">
                 <b>Result</b>
             </Divider>
 

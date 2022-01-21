@@ -11,11 +11,13 @@ import ConfirmationService from "primevue/confirmationservice";
 import ToastService from "primevue/toastservice";
 import Toast from "primevue/toast";
 
+import VueHtml2pdf from "vue-html2pdf";
 require("./bootstrap");
 
 Vue.use(PrimeVue);
 Vue.use(ToastService);
 Vue.use(ConfirmationService);
+Vue.use(VueHtml2pdf);
 Vue.component("ValidationProvider", ValidationProvider);
 Vue.component("ValidationObserver", ValidationObserver);
 Vue.component("Toast", Toast);

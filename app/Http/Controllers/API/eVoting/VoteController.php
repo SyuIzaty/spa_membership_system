@@ -7,7 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\eVoting\Vote;
 use App\Http\Controllers\API\BaseController as BaseController;
 use App\Models\eVoting\CandidateCategory;
+use App\Models\eVoting\VotingSession;
 use App\Student;
+
+use Carbon\Carbon;
 use stdClass;
 use Auth;
 
@@ -326,5 +329,22 @@ class VoteController extends BaseController
             array_push($categorical_statistics, $statistics);
         }
         return $this->sendResponse($overallReport, 'Vote Categories Fetched!');
+    }
+
+    public function getVoteIsOpen(){
+
+        $mytime = Carbon::now();
+        $exist=VotingSession::where([['is_active','=',1]])
+        ->whereDate('vote_datetime_start','<=',$mytime)
+        ->whereDate('vote_datetime_end','>=',$mytime)
+        ->whereTime('vote_datetime_start','<=',$mytime)
+        ->whereTime('vote_datetime_end','>=',$mytime)
+        ->first();
+        if(!is_null($exist)){
+            $is_open=true;
+        }else{
+            $is_open=false;
+        }
+        return $this->sendResponse($is_open, 'Vote Is Open Fetched!');
     }
 }

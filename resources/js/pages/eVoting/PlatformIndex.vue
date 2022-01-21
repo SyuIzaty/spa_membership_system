@@ -32,8 +32,8 @@
                     </div>
                 </div>
             </router-link>
-            <div class="gap"></div>
-            <router-link :to="{ name: 'vote-platform-station' }">
+            <div class="gap" v-if="is_open"></div>
+            <router-link :to="{ name: 'vote-platform-station' }" v-if="is_open">
                 <div class="card card__option">
                     <i
                         class="card-img-top ni ni-envelope-letter py-3"
@@ -55,6 +55,17 @@
 <script>
 export default {
     name: "PlatformIndex",
+    data() {
+        return {
+            is_open: false,
+        };
+    },
+    mounted() {
+        axios.get("/vote-is-open").then((response) => {
+            console.log(response);
+            this.is_open = response.data.data;
+        });
+    },
 };
 </script>
 

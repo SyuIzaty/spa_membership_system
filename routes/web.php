@@ -601,6 +601,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/categorical-report', 'API\eVoting\VoteController@categoricalReport');
     Route::get('/overall-report', 'API\eVoting\VoteController@overallReport');
     Route::get('/get-candidate-image', 'API\eVoting\CandidateController@getCandidateImage');
+    Route::get('/vote-is-open', 'API\eVoting\VoteController@getVoteIsOpen');
 
     Route::get('/vote-platform', function () {
         return view('e-voting/platform');
@@ -612,6 +613,9 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
 
+    Route::get('/vote-management', function () {
+        return view('e-voting/management');
+    });
 
     Route::get('/vote-platform/{vue_capture?}',function () {
         return view('e-voting/platform');
@@ -619,6 +623,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/vote-report/{vue_capture?}',function () {
         return view('e-voting/report');
+    })->where('vue_capture', '[\/\w\.-]*');
+
+    Route::get('/vote-management/{vue_capture?}',function () {
+        return view('e-voting/management');
     })->where('vue_capture', '[\/\w\.-]*');
 
 });

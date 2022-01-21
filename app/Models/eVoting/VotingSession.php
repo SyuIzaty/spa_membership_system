@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Models\eVoting;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class VotingSession extends Model
+{
+    use SoftDeletes;
+    protected $connection = 'mysql';
+    protected $table = 'evs_voting_session';
+    protected $primaryKey = 'id';
+    protected $fillable = [
+        'session',
+        'vote_datetime_start',
+        'vote_datetime_end',
+        'is_active',
+        'created_by',
+        'created_at',
+        'updated_by',
+        'updated_at',
+        'deleted_by',
+        'deleted_at'
+    ];
+}

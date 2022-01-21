@@ -187,6 +187,16 @@
                         <!-- Start eDocument Management System -->
 
                         <li class="nav-title">eVoting</li>
+
+                        @can('eVoting - Management System')
+                        <li>
+                            <a href="/vote-management" title="e-Voting Management" data-filter-tags="vote-management">
+                                <!-- <i class="fal fa-file"></i> -->
+                                <i class="ni ni-briefcase"></i>
+                                <span class="nav-link-text" data-i18n="nav.vote-management">e-Voting Management</span>
+                            </a>
+                        </li>
+                        @endcan
                         <li>
                             <a href="/vote-platform" title="e-Voting Platform" data-filter-tags="vote-platform">
                                 <!-- <i class="fal fa-file"></i> -->
@@ -194,6 +204,7 @@
                                 <span class="nav-link-text" data-i18n="nav.vote-platform">e-Voting Platform</span>
                             </a>
                         </li>
+                        @can('eVoting - View Report')
                         <li>
                             <a href="/vote-report" title="e-Voting Report" data-filter-tags="vote-report">
                                 <!-- <i class="fal fa-file"></i> -->
@@ -201,6 +212,7 @@
                                 <span class="nav-link-text" data-i18n="nav.vote-report">e-Voting Report</span>
                             </a>
                         </li>
+                        @endcan
 
                         <!-- End eDocument Management System -->
 
