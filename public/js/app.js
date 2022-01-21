@@ -3699,8 +3699,52 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "ManagementIndex"
+  name: "ManagementIndex",
+  data: function data() {
+    return {
+      sessions: [{
+        id: 1,
+        session: "2021",
+        vote_datetime_start: "21/02/2021 (08:00am)",
+        vote_datetime_end: "23/02/2021 (05:00am)",
+        active: false
+      }, {
+        id: 2,
+        session: "2022",
+        vote_datetime_start: "21/02/2022 (08:00am)",
+        vote_datetime_end: "23/02/2022 (05:00am)",
+        active: true
+      }]
+    };
+  }
 });
 
 /***/ }),
@@ -91156,7 +91200,61 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", [
+    _c(
+      "div",
+      {
+        staticClass: "row",
+        staticStyle: {
+          padding: "2rem 5rem 2rem 5rem",
+          "justify-content": "space-between",
+          gap: "1rem",
+        },
+      },
+      [
+        _vm._l(_vm.sessions, function (session) {
+          return _c(
+            "div",
+            {
+              key: session.id,
+              staticClass: "card p-3 col-12 col-lg-3",
+              staticStyle: {
+                "min-height": "12.5rem",
+                display: "flex",
+                "justify-content": "center",
+              },
+            },
+            [
+              _c("h1", { staticStyle: { "margin-bottom": "0px" } }, [
+                _vm._v("\n                MPP Voting " + _vm._s(session.id)),
+                _c("small", [_vm._v("(session: " + _vm._s(session.id) + ")")]),
+              ]),
+              _vm._v(" "),
+              _c("span", [
+                _vm._v("Date Start: " + _vm._s(session.vote_datetime_start)),
+              ]),
+              _vm._v(" "),
+              _c("span", [
+                _vm._v("Date End: " + _vm._s(session.vote_datetime_end)),
+              ]),
+              _vm._v(" "),
+              _c("span", [_vm._v("Active: " + _vm._s(session.active))]),
+            ]
+          )
+        }),
+        _vm._v(" "),
+        _vm._m(0),
+        _vm._v(" "),
+        (_vm.sessions.length - 1) % 3 === 0
+          ? _c("div", {
+              staticClass: "p-3 col-12 col-lg-3",
+              staticStyle: { width: "100%", height: "100%" },
+            })
+          : _vm._e(),
+      ],
+      2
+    ),
+  ])
 }
 var staticRenderFns = [
   function () {
@@ -91166,42 +91264,21 @@ var staticRenderFns = [
     return _c(
       "div",
       {
-        staticClass: "row p-5",
-        staticStyle: { "justify-content": "space-around", gap: "1rem" },
+        staticClass: "card p-3 col-12 col-lg-3",
+        staticStyle: {
+          display: "flex",
+          "flex-direction": "column",
+          "justify-content": "center",
+          "align-items": "center",
+          cursor: "pointer",
+          "min-height": "12.5rem",
+        },
       },
       [
-        _c("div", { staticClass: "card p-3 col-12 col-lg-3" }, [
-          _c("h1", { staticStyle: { "margin-bottom": "0px" } }, [
-            _vm._v("\n            MPP Voting 2022"),
-            _c("small", [_vm._v("(session: 2022)")]),
-          ]),
-          _vm._v(" "),
-          _c("span", [_vm._v("Date Start: 21/02/2022 (08:00am)")]),
-          _vm._v(" "),
-          _c("span", [_vm._v("Date End: 23/02/2022 (05:00pm)")]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card p-3 col-12 col-lg-3" }, [
-          _c("h1", { staticStyle: { "margin-bottom": "0px" } }, [
-            _vm._v("\n            MPP Voting 2022"),
-            _c("small", [_vm._v("(session: 2022)")]),
-          ]),
-          _vm._v(" "),
-          _c("span", [_vm._v("Date Start: 21/02/2022 (08:00am)")]),
-          _vm._v(" "),
-          _c("span", [_vm._v("Date End: 23/02/2022 (05:00pm)")]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card p-3 col-12 col-lg-3" }, [
-          _c("h1", { staticStyle: { "margin-bottom": "0px" } }, [
-            _vm._v("\n            MPP Voting 2022"),
-            _c("small", [_vm._v("(session: 2022)")]),
-          ]),
-          _vm._v(" "),
-          _c("span", [_vm._v("Date Start: 21/02/2022 (08:00am)")]),
-          _vm._v(" "),
-          _c("span", [_vm._v("Date End: 23/02/2022 (05:00pm)")]),
-        ]),
+        _c("i", {
+          staticClass: "ni ni-big-plus",
+          staticStyle: { "font-size": "5rem", color: "purple" },
+        }),
       ]
     )
   },
