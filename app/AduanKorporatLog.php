@@ -15,10 +15,4 @@ class AduanKorporatLog extends Model
         return $this->hasMany('App\AduanKorporat', 'id', 'complaint_id');
     }
 
-    public function staff()
-    {
-        return $this->hasOne('App\Staff','staff_id','created_by');
-    }
-
-
 }

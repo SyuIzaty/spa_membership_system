@@ -15,6 +15,11 @@ class AduanKorporat extends Model
         'category', 'status', 'assign', 'title', 'description', 'created_by', 'updated_by', 'deleted_by'
     ];
 
+    public function getAdmin()
+    {
+        return $this->hasOne('App\AduanKorporatAdmin','department_id','assign');
+    }
+
     public function getStatus()
     {
         return $this->hasOne('App\AduanKorporatStatus','id','status');

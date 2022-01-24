@@ -224,8 +224,17 @@ class AduanKorporatController extends Controller
 
     public function show($id)
     {
-       
-        $list = AduanKorporat::where('status', $id)->get();
+        if( Auth::user()->hasAnyRole('eAduan (Super Admin)','eAduan (Admin)' ) )
+        {
+            $list = AduanKorporat::where('status', $id)->orderby('created_at','DESC')->get();
+        }
+
+        else
+        {
+            $list = AduanKorporat::where('status', $id)->wherehas('getAdmin', function($query){
+                $query->where('admin_id', Auth::user()->id);
+            })->orderby('created_at','DESC')->get();    
+        }
         
         return datatables()::of($list)
 
@@ -278,12 +287,9 @@ class AduanKorporatController extends Controller
         $department = DepartmentList::all();
         $dataRemark = AduanKorporatRemark::where('complaint_id', $id)->first();
         $file = AduanKorporatFile::where('complaint_id', $id)->get();
-
-        $dept_pic = AduanKorporatLog::where('complaint_id',$id)->where('activity','Sent remark')->first();
-
         $admin = AduanKorporatLog::where('complaint_id',$id)->where('activity','Completed')->first();
 
-        return view('aduan-korporat.admin-view-detail', compact('data','department','dataRemark','file','dept_pic','admin'));
+        return view('aduan-korporat.admin-view-detail', compact('data','department','dataRemark','file','admin'));
     }
 
     public function assign(Request $request)
@@ -312,7 +318,7 @@ class AduanKorporatController extends Controller
         $data  = new AduanKorporatRemark();
         $data->complaint_id = $request->id;
         $data->remark       = $request->remark;
-        $data->created_by   = $request->user_id;
+        $data->created_by   = Auth::user()->id;
         $data->save();
 
         $update = AduanKorporat::where('id', $request->id)->first();
@@ -430,7 +436,14 @@ class AduanKorporatController extends Controller
 
         ->editColumn('status', function ($list) {
 
-            return $list->getStatus->description ?? '';            
+            if ($list->status == '2' || $list->status == '3')
+                {
+                    return "In Process";
+                }
+            else 
+                {
+                    return $list->getStatus->description;  
+                }                                               
         })
 
         ->addColumn('action', function ($list) {
@@ -647,12 +660,12 @@ class AduanKorporatController extends Controller
 
             if ($date->exists()) {
                 
-                return Carbon::parse($list->created_at)->diffInDays($date->first()->created_at)." days";
+                return $list->created_at->diffInDays($date->first()->created_at)." days";
             }
 
             else
             {
-                return Carbon::parse($list->created_at)->diffInDays(Carbon::now()->toDateTimeString())." days";
+                return $list->created_at->diffInDays(Carbon::now())." days";
             }
         })
 
@@ -813,6 +826,13 @@ class AduanKorporatController extends Controller
                     'created_by'    => Auth::user()->id,
                     'updated_by'    => Auth::user()->id
                 ]);
+
+                $user = User::find($value);
+
+                if(!$user->hasRole('eAduan (Team)'))
+                {
+                    $user->assignRole('eAduan (Team)');
+                }
             }
         }
 
@@ -839,6 +859,10 @@ class AduanKorporatController extends Controller
         $exist = AduanKorporatAdmin::find($id);
         $exist->delete();
         $exist->update(['deleted_by' => Auth::user()->id]);
+
+        $user = User::find($admin->staff_id);
+
+        $user->removeRole('EAduan (Team)');
 
         return redirect('admin-list/'.$admin->department_id);
     }

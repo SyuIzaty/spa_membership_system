@@ -169,85 +169,102 @@
                                     <span class="nav-link-text" data-i18n="nav.form">Form</span>
                                 </a>
                             </li>
-                            @can('take action')
-                            <li>
-                                <a href="/dashboard-icomplaint" title="Dashboard i-Complaint" data-filter-tags="dashboard">
-                                    <i class="fal fa-chart-pie"></i>
-                                    <span class="nav-link-text" data-i18n="nav.dashboard">Dashboard</span>
-                                </a>
-                            </li>
 
-                            <li class="open">
-                                <a href="#" title="List" data-filter-tags="list">
-                                    <i class="fal fa-list"></i>
-                                    <span class="nav-link-text" data-i18n="nav.list">List</span>
-                                </a>
-                                <ul>
-                                @endcan
-                                @can('assign department')
-                                    <li>
-                                        @inject('lists', 'App\AduanKorporat')
-                                        <a href="/lists/1" title="Pending" data-filter-tags="pending">
-                                            <span class="nav-link-text" data-i18n="nav.pending">Pending ({{ $lists->countPending() }})</span>
-                                        </a>
-                                    </li>
-                                @endcan
-                                @can('take action')
-                                    @inject('lists', 'App\AduanKorporat')
-                                    <li>
-                                        <a href="/lists/2" title="Has Assigned" data-filter-tags="assign">
-                                            <span class="nav-link-text" data-i18n="nav.assign">Has Assigned ({{ $lists->countAssigned() }})</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/lists/3" title="Action Taken" data-filter-tags="action">
-                                            <span class="nav-link-text" data-i18n="nav.action">Action Taken ({{ $lists->countAction() }})</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/lists/4" title="Completed" data-filter-tags="completed">
-                                            <span class="nav-link-text" data-i18n="nav.completed">Completed ({{ $lists->countCompleted() }})</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="reports" title="Report" data-filter-tags="report">
-                                    <i class="fal fa-clipboard-list"></i>
-                                    <span class="nav-link-text" data-i18n="nav.report">Report</span>
-                                </a>
-                            </li>
+                            @can('assign department')
+                                <li>
+                                    <a href="/dashboard-icomplaint" title="Dashboard i-Complaint" data-filter-tags="dashboard">
+                                        <i class="fal fa-chart-pie"></i>
+                                        <span class="nav-link-text" data-i18n="nav.dashboard">Dashboard</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="/reports" title="Report" data-filter-tags="report">
+                                        <i class="fal fa-clipboard-list"></i>
+                                        <span class="nav-link-text" data-i18n="nav.report">Report</span>
+                                    </a>
+                                </li>
                             @endcan
+
                             @can('take action')
-                            <li class="open">
-                                <a href="#" title="Setting" data-filter-tags="setting">
-                                    <i class="fal fa-cogs"></i>
-                                    <span class="nav-link-text" data-i18n="nav.setting">Setting</span>
-                                </a>
-                                <ul>
-                                    <li>
-                                        <a href="/admin-list" title="Admin" data-filter-tags="admin">
-                                            <span class="nav-link-text" data-i18n="nav.admin">Admin</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/status-list" title="Status" data-filter-tags="status">
-                                            <span class="nav-link-text" data-i18n="nav.status">Status</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/category-lists" title="Category" data-filter-tags="category">
-                                            <span class="nav-link-text" data-i18n="nav.category">Category</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/user-category-list" title="User Category" data-filter-tags="usercategory">
-                                            <span class="nav-link-text" data-i18n="nav.usercategory">User Category</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+                                <li class="open">
+                                    <a href="#" title="iComplaint List" data-filter-tags="list">
+                                        <i class="fal fa-list"></i>
+                                        <span class="nav-link-text" data-i18n="nav.list">List</span>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="/lists/2" title="Pending List" data-filter-tags="pending">
+                                                <span class="nav-link-text" data-i18n="nav.pending">Pending</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
                             @endcan
+
+                            @can('assign department')
+                                <li class="open">
+                                    <a href="#" title="Admin List" data-filter-tags="list">
+                                        <i class="fal fa-list"></i>
+                                        <span class="nav-link-text" data-i18n="nav.list">Admin List</span>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            @inject('lists', 'App\AduanKorporat')
+                                            <a href="/lists/1" title="Pending" data-filter-tags="pending">
+                                                <span class="nav-link-text" data-i18n="nav.pending">Pending ({{ $lists->countPending() }})</span>
+                                            </a>
+                                        </li>
+                                        @inject('lists', 'App\AduanKorporat')
+                                        <li>
+                                            <a href="/lists/2" title="Has Assigned" data-filter-tags="assign">
+                                                <span class="nav-link-text" data-i18n="nav.assign">Has Assigned ({{ $lists->countAssigned() }})</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/lists/3" title="Action Taken" data-filter-tags="action">
+                                                <span class="nav-link-text" data-i18n="nav.action">Action Taken ({{ $lists->countAction() }})</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/lists/4" title="Completed" data-filter-tags="completed">
+                                                <span class="nav-link-text" data-i18n="nav.completed">Completed ({{ $lists->countCompleted() }})</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            @endcan
+                            
+                            @role('eAduan (Super Admin)')
+                                <li class="open">
+                                    <a href="#" title="Setting" data-filter-tags="setting">
+                                        <i class="fal fa-cogs"></i>
+                                        <span class="nav-link-text" data-i18n="nav.setting">Setting</span>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="/admin-list" title="Admin" data-filter-tags="admin">
+                                                <span class="nav-link-text" data-i18n="nav.admin">Admin</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/status-list" title="Status" data-filter-tags="status">
+                                                <span class="nav-link-text" data-i18n="nav.status">Status</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/category-lists" title="Category" data-filter-tags="category">
+                                                <span class="nav-link-text" data-i18n="nav.category">Category</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/user-category-list" title="User Category" data-filter-tags="usercategory">
+                                                <span class="nav-link-text" data-i18n="nav.usercategory">User Category</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            @endrole
 
                         <!-- End eAduan Korporat System -->
 

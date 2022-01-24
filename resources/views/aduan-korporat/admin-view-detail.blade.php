@@ -121,32 +121,32 @@
 
                                 @if ($data->status == '1')
                                     @can('assign department')
-                                    <form id="formId">
-                                        @csrf
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered table-hover table-striped w-100">
-                                                <thead>
-                                                    <input type="hidden" id="id" name="id" value="{{ $data->id }}" required>
-                                                    <tr>
-                                                        <td colspan="5" class="bg-info-50"><label class="form-label"><i class="fal fa-pencil"></i> ASSIGN DEPARTMENT</label></td>
-                                                    </tr>
-                                                    
-                                                    <tr>
-                                                        <th width="20%" style="vertical-align: middle">Department : </th>
-                                                        <td colspan="4" style="vertical-align: middle">
-                                                            <select class="form-control" name="department" id="department" required>
-                                                                <option disabled>Choose Department</option>
-                                                                @foreach ($department as $d)
-                                                                    <option value="{{ $d->id }}" {{ old('department') == $d->id  ? 'selected' : '' }}>{{ $d->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </td>
-                                                    </tr>
-                                                </thead>
-                                            </table>
-                                        </div>
-                                        <button type="submit" class="btn btn-warning ml-auto float-right mr-2 waves-effect waves-themed" id="assign" style="margin-bottom: 20px;"><i class="fal fa-times-circle"></i> Change</button>
-                                    </form>
+                                        <form id="formId">
+                                            @csrf
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-hover table-striped w-100">
+                                                    <thead>
+                                                        <input type="hidden" id="id" name="id" value="{{ $data->id }}" required>
+                                                        <tr>
+                                                            <td colspan="5" class="bg-info-50"><label class="form-label"><i class="fal fa-pencil"></i> ASSIGN DEPARTMENT</label></td>
+                                                        </tr>
+                                                        
+                                                        <tr>
+                                                            <th width="20%" style="vertical-align: middle">Department : </th>
+                                                            <td colspan="4" style="vertical-align: middle">
+                                                                <select class="form-control" name="department" id="department" required>
+                                                                    <option disabled>Choose Department</option>
+                                                                    @foreach ($department as $d)
+                                                                        <option value="{{ $d->id }}" {{ old('department') == $d->id  ? 'selected' : '' }}>{{ $d->name }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                            <button type="submit" class="btn btn-warning ml-auto float-right mr-2 waves-effect waves-themed" id="assign" style="margin-bottom: 20px;"><i class="fal fa-times-circle"></i> Submit</button>
+                                        </form>
                                     @endcan
                                 @endif
 
@@ -158,40 +158,40 @@
                                                             <tr>
                                                                 <td colspan="5" class="bg-info-50">
                                                                     <label class="form-label"><i class="fal fa-comment-alt"></i> REMARK: 
-                                                                        <form id="changedept" style="display: inline-block;">
-                                                                            @csrf
-                                                                            <input type="hidden" id="id" name="id" value="{{ $data->id }}">
-                                                                            <select name="department" id="department" >
-                                                                                <option disabled>Choose Department</option>
-                                                                                @foreach ($department as $d)
-                                                                                    <option value="{{ $d->id }}" {{ $data->assign == $d->id  ? 'selected' : '' }}>{{ $d->name }}</option>
-                                                                                @endforeach
-                                                                            </select>
-
-                                                                            <button type="submit" id="submitDept" class="btn btn-danger btn-xs float-right waves-effect waves-themed" style="margin-left: 10px; display: none;"><i class="fal fa-times-circle"></i> Submit</button>
-
-                                                                        </form>
+                                                                        @can('assign department')
+                                                                            <form id="changedept" style="display: inline-block;">
+                                                                                @csrf
+                                                                                <input type="hidden" id="id" name="id" value="{{ $data->id }}">
+                                                                                <select name="department" id="department" >
+                                                                                    <option disabled>Choose Department</option>
+                                                                                    @foreach ($department as $d)
+                                                                                        <option value="{{ $d->id }}" {{ $data->assign == $d->id  ? 'selected' : '' }}>{{ $d->name }}</option>
+                                                                                    @endforeach
+                                                                                </select>
+                                                                                <button type="submit" id="submitDept" class="btn btn-danger btn-xs float-right waves-effect waves-themed" style="margin-left: 10px; display: none;"><i class="fal fa-times-circle"></i> Change</button>
+                                                                            </form>
+                                                                        @endcan
                                                                     </label>
                                                                 </td>
                                                             </tr>
                                                             <form id="formRemark">
                                                                 @csrf                
                                                                 <input type="hidden" id="id" name="id" value="{{ $data->id }}">
-                                                            <tr>
-                                                                <td colspan="4" style="vertical-align: middle">
-                                                                    <textarea value="{{ old('remark') }}" class="form-control summernote" id="remark" name="remark"></textarea>                                        
-                                                                </td>
-                                                            </tr>
+                                                                <tr>
+                                                                    <td colspan="4" style="vertical-align: middle">
+                                                                        <textarea value="{{ old('remark') }}" class="form-control summernote" id="remark" name="remark"></textarea>                                        
+                                                                    </td>
+                                                                </tr>
                                                         </thead>
                                                     </table>
                                                 </div>
-                                                <button type="submit" class="btn btn-danger ml-auto float-right mr-2 waves-effect waves-themed" id="remarks" style="margin-bottom: 20px;"><i class="fal fa-times-circle"></i> Submit</button>
-                                            </form>
+                                                                <button type="submit" class="btn btn-danger ml-auto float-right mr-2 waves-effect waves-themed" id="remarks" style="margin-bottom: 20px;"><i class="fal fa-times-circle"></i> Submit</button>
+                                                            </form>
                                         @endcan
                                 @endif
 
                                 @if ($data->status == '3' || $data->status == '4')
-                                        @can('take action')
+                                        @can('view complaint')
                                                 <div class="table-responsive">
                                                     <table class="table table-bordered table-hover table-striped w-100">
                                                         <thead>
@@ -201,8 +201,8 @@
                                                             
                                                             <tr>
                                                                 <td colspan="4" style="vertical-align: middle">
-                                                                    <p style="font-size: 10px;"><i style="color:#858c93">{{isset($dept_pic->staff->staff_name) ? $dept_pic->staff->staff_name : ''}} &nbsp; {{isset($dept_pic->created_at) ? $dept_pic->created_at : ''}}</i></p>
-                                                                    {!! nl2br($data->getRemark->remark) !!}
+                                                                    <p style="font-size: 10px;"><i style="color:#858c93">{{isset($dataRemark->staff->staff_name) ? $dataRemark->staff->staff_name : ''}} &nbsp; {{isset($dataRemark->created_at) ? $dataRemark->created_at : ''}}</i></p>
+                                                                    {!! nl2br($dataRemark->remark) !!}
                                                                 </td>
                                                             </tr>
                                                         </thead>
@@ -225,7 +225,7 @@
                                                             
                                                             <tr>
                                                                 <td colspan="4" style="vertical-align: middle">   
-                                                                    <textarea value="{{ old('adminremarks') }}" class="form-control summernote" id="adminremarks" name="adminremarks" required>{!! nl2br($data->getRemark->remark) !!}</textarea>                                        
+                                                                    <textarea value="{{ old('adminremarks') }}" class="form-control summernote" id="adminremarks" name="adminremarks" required>{!! nl2br($dataRemark->remark) !!}</textarea>                                        
                                                                 </td>
                                                             </tr>
                                                         </thead>
@@ -237,7 +237,7 @@
                                     @endif
 
                                     @if ($data->status == '4')
-                                        @can('take action')
+                                        @can('assign department')
                                             @if ($dataRemark->admin_remark != '')
                                                 <div class="table-responsive">
                                                     <table class="table table-bordered table-hover table-striped w-100">
@@ -248,8 +248,8 @@
 
                                                             <tr>
                                                                 <td colspan="4" style="vertical-align: middle">
-                                                                    <p style="font-size: 10px;"><i style="color:#858c93">{{isset($admin->staff->staff_name) ? $admin->staff->staff_name : ''}} &nbsp; {{isset($admin->created_at) ? $admin->created_at : ''}}</i></p>
-                                                                    {!! nl2br($data->getRemark->remark) !!}
+                                                                    <p style="font-size: 10px;"><i style="color:#858c93">{{isset($dataRemark->staffAdmin->staff_name) ? $dataRemark->staffAdmin->staff_name : ''}} &nbsp; {{isset($dataRemark->updated_at) ? $dataRemark->updated_at : ''}}</i></p>
+                                                                    {!! nl2br($dataRemark->admin_remark) !!}
                                                                 </td>
                                                             </tr>
                                                         </thead>

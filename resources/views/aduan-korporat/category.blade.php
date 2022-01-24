@@ -80,7 +80,7 @@
                                 </div>
                                 <input type="text" name="code" class="form-control maxCode" required>
                             </div>
-                            <span style="font-size: 10px; color: red;"><i>*1 characters only (for ticket no.)</i></span>
+                            <span style="font-size: 10px; color: red;"><i>*1 character only (for ticket no.)</i></span>
                         </div>
 
                         <div class="footer">
@@ -118,7 +118,7 @@
                                 </div>
                                 <input type="text" id="code" name="code" class="form-control max" required>
                             </div>
-                            <span style="font-size: 10px; color: red;"><i>*1 characters only (for ticket no.)</i></span>
+                            <span style="font-size: 10px; color: red;"><i>*1 character only (for ticket no.)</i></span>
                         </div>
 
                         <div class="footer">

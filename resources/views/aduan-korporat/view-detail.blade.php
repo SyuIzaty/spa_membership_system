@@ -30,7 +30,17 @@
                                 <table class="table table-bordered table-hover table-striped w-100">
                                     <thead>
                                         <tr>
-                                            <td colspan="3" class="bg-warning text-center"><h5>Status:  <b>{{strtoupper($data->getStatus->description)}}</b></h5></td>
+                                            <td colspan="3" class="bg-warning text-center">
+                                                <h5>Status:  
+                                                    <b>
+                                                        @if ($data->status == '2' || $data->status == '3')
+                                                            In Process
+                                                        @else 
+                                                            {{strtoupper($data->getStatus->description)}}
+                                                        @endif
+                                                    </b>
+                                                </h5>
+                                            </td>
                                         </tr>
                                     </thead>
                                 </table>
@@ -100,7 +110,7 @@
                                     <table class="table table-bordered table-hover table-striped w-100">
                                         <thead>
                                             <tr>
-                                                <td colspan="5" class="bg-primary-50"><label class="form-label"><i class="fal fa-file"></i> ATTACHMENT</label></td>
+                                                <td colspan="5" class="bg-primary-50"><label class="form-label">ATTACHMENT</label></td>
                                             </tr>
                                             
                                             <tr>
@@ -123,12 +133,14 @@
                             <div class="table-responsive">
                                 <table class="table table-bordered table-hover table-striped w-100">
                                     <thead>
-                                        @if ($data->getRemark != '')
-                                            <tr>
-                                                <td style="vertical-align: middle"><label class="form-label" for="feedback">Feedback </label></td>
-                                                <td colspan="6">{!! nl2br($data->getRemark->admin_remark) !!}</td>
-                                            </tr>
-                                        @endif
+                                        <tr>
+                                            <td colspan="6" class="bg-primary-50"><label class="form-label">FEEDBACK</label></td>
+                                        </tr>                                               
+                                        <tr>
+                                            <td colspan="6">
+                                                {!! nl2br($data->getRemark->admin_remark) !!}
+                                            </td>
+                                        </tr>
                                     </thead>
                                 </table>
                             </div>
