@@ -5,6 +5,7 @@ let PlatformSuccess = require("./pages/eVoting/PlatformSuccess").default;
 let PlatformIndex = require("./pages/eVoting/PlatformIndex").default;
 let ReportIndex = require("./pages/eVoting/ReportIndex").default;
 let ManagementIndex = require("./pages/eVoting/ManagementIndex").default;
+let ManagementPlatform = require("./pages/eVoting/ManagementPlatform").default;
 
 export const routes = [
     { path: "/vote-platform", component: PlatformIndex, name: "vote-platform" },
@@ -28,5 +29,10 @@ export const routes = [
         path: "/vote-management",
         component: ManagementIndex,
         name: "vote-management",
+    },
+    {
+        path: "/vote-management/:session_id",
+        component: ManagementPlatform,
+        name: "vote-management-session_id",
     },
 ];

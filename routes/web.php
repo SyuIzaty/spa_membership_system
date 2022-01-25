@@ -602,11 +602,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/overall-report', 'API\eVoting\VoteController@overallReport');
     Route::get('/get-candidate-image', 'API\eVoting\CandidateController@getCandidateImage');
     Route::get('/vote-is-open', 'API\eVoting\VoteController@getVoteIsOpen');
+    Route::get('/vote-sessions', 'API\eVoting\VoteController@getVoteSessions');
+    Route::get('/vote-sessions/{id}', 'API\eVoting\VoteController@getVoteSessionDetails');
 
     Route::get('/vote-platform', function () {
         return view('e-voting/platform');
     });
-
 
     Route::get('/vote-report', function () {
         return view('e-voting/report');

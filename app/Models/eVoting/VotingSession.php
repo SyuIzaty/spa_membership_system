@@ -23,4 +23,14 @@ class VotingSession extends Model
         'deleted_by',
         'deleted_at'
     ];
+
+
+    public function candidates()
+    {
+        return $this->hasMany('App\Models\eVoting\Candidate', 'voting_session_id', 'id');
+    }
+    public function candidate_categories()
+    {
+        return $this->hasMany('App\Models\eVoting\CandidateCategory', 'voting_session_id', 'id');
+    }
 }

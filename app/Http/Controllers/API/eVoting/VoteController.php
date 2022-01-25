@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\eVoting\Vote;
 use App\Http\Controllers\API\BaseController as BaseController;
+use App\Models\eVoting\Candidate;
 use App\Models\eVoting\CandidateCategory;
 use App\Models\eVoting\VotingSession;
 use App\Student;
+use Config;
 
 use Carbon\Carbon;
 use stdClass;
@@ -346,5 +348,39 @@ class VoteController extends BaseController
             $is_open=false;
         }
         return $this->sendResponse($is_open, 'Vote Is Open Fetched!');
+    }
+
+    public function getVoteSessions(){
+
+        $exist=VotingSession::all();
+
+        return $this->sendResponse($exist, 'Vote sessions fetched!');
+    }
+    public function getVoteSessionDetails($id){
+        $session=VotingSession::find($id);
+        $candidate_categories=CandidateCategory::where('voting_session_id', $id)->get()->load([
+            'candidate_category_programme_category_s.programme_category.programmes'
+        ]);
+        $index=0;
+        foreach($candidate_categories as $candidate_category){
+            $programmes=[];
+            $programme_categories=[];
+            foreach($candidate_category->candidate_category_programme_category_s
+            as  $candidate_category_programme_category){
+                array_push($programme_categories,$candidate_category_programme_category->programme_category);
+                foreach($candidate_category_programme_category->programme_category->programmes as $programme){
+                    array_push($programmes,$programme->code);
+
+                }
+            }
+            $candidates=Candidate::join(config('global_env.DB_DATABASE_SIMS').'.students',config('global_env.DB_DATABASE_SIMS').'.students.students_id','=','evs_candidate.student_id')->whereHas('student', function ($query) use($programmes){
+                $query->whereIn('students_programme',$programmes);
+            })->where('voting_session_id', $id)->get();
+            $candidate_categories[$index]->programme_categories=$programme_categories;
+            $candidate_categories[$index]->candidates=$candidates;
+            $index+=1;
+        }
+        $session->candidate_categories=$candidate_categories;
+        return $this->sendResponse($session, 'Vote sessions fetched!');
     }
 }
