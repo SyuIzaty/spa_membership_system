@@ -176,6 +176,7 @@ import InputText from "primevue/inputtext";
 import Calendar from "primevue/calendar";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
+import moment from "moment";
 export default {
     name: "ManagementPlatform",
     components: {
@@ -200,8 +201,12 @@ export default {
             .then((response) => {
                 let session = response.data.data;
                 this.session = session.session;
-                this.vote_datetime_start = session.vote_datetime_start;
-                this.vote_datetime_end = session.vote_datetime_end;
+                this.vote_datetime_start = moment(
+                    String(session.vote_datetime_start)
+                ).format("DD-MM-YYYY HH:mm");
+                this.vote_datetime_end = moment(
+                    String(session.vote_datetime_end)
+                ).format("DD-MM-YYYY HH:mm");
 
                 session.candidate_categories.forEach(async (x) => {
                     x.candidates.forEach(async (y, index) => {
