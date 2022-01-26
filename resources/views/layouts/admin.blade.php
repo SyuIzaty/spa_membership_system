@@ -198,6 +198,11 @@
                                                 <span class="nav-link-text" data-i18n="nav.pending">Pending</span>
                                             </a>
                                         </li>
+                                        <li>
+                                            <a href="/lists/complete" title="Complete List" data-filter-tags="complete">
+                                                <span class="nav-link-text" data-i18n="nav.complete">Complete</span>
+                                            </a>
+                                        </li>
                                     </ul>
                                 </li>
                             @endcan

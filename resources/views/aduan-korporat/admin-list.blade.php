@@ -86,11 +86,7 @@
                                                                 Email : {{ $a->staff->staff_email }}
                                                             </td>
                                                             <td style="vertical-align: middle" class="text-center">
-                                                                <form action="{{route('destroyAdmin', $a->id)}}" method="POST" class="deleteAdmin"> 
-                                                                    @method('DELETE')  
-                                                                    @csrf
-                                                                    <button type="submit" class="btn btn-danger btn-sm delete-alert"><i class="fal fa-trash"></i> Delete</button>               
-                                                                </form>
+                                                                <a href="#" data-path ="{{$a->id}}" class="btn btn-danger btn-xs delete-alert" id="delete"><i class="fal fa-trash"></i></a>                                                        
                                                             </td>
                                                         </tr>
                                                         @php $i++; @endphp                                                        
@@ -122,26 +118,45 @@
     {
         $('.admin').select2();
 
-        $("form.deleteAdmin").submit(function(e){
+
+        $(".delete-alert").on('click', function(e) {
         e.preventDefault();
-        var form = $(this);
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        })
-        .then((willDelete) => {
-            if (willDelete.value) {
-                    form[0].submit();
-                    Swal.fire({ text: "Admin deleted!", icon: 'success'
-                });
-            } 
+
+        let id = $(this).data('path');
+
+            Swal.fire({
+                title: 'Delete?',
+                text: "Data cannot be restored!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Delete!',
+                cancelButtonText: 'No'
+            }).then(function (e) {
+                if (e.value === true) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/delete-admin/" + id,
+                        data: id,
+                        dataType: "json",
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        success: function (response) {
+                        console.log(response);
+                        if(response){
+                        Swal.fire(response.success);
+                        location.reload();
+                    }
+                        }
+                    });
+                }
+                else {
+                    e.dismiss;
+                }
+            }, function (dismiss) {
+                return false;
+            })
         });
-    });
     });
 
 </script>

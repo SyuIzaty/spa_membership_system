@@ -138,7 +138,7 @@
                                         </tr>                                               
                                         <tr>
                                             <td colspan="6">
-                                                {!! nl2br($data->getRemark->admin_remark) !!}
+                                                {!! nl2br(isset($data->getRemark->admin_remark) ? $data->getRemark->admin_remark : '') !!}
                                             </td>
                                         </tr>
                                     </thead>

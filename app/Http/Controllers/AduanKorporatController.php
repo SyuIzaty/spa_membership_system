@@ -19,6 +19,7 @@ use Response;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 
 class AduanKorporatController extends Controller
@@ -127,6 +128,29 @@ class AduanKorporatController extends Controller
                 }
             }
 
+            $admin = User::whereHas('roles', function($query){
+                $query->where('id', 'EAK001'); // Admin
+            })->get();
+
+    
+            foreach($admin as $a)
+            {
+                $admin_email = $a->email;
+    
+                $data = [
+                    'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $a->name,
+                    'emel'     => 'You have received new iComplaint from '.$request->user_name.' on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Please log in to the IDS system for further action.',
+                ];
+
+                
+    
+                Mail::send('aduan-korporat.email', $data, function ($message) use ($admin_email) {
+                    $message->subject('New iComplaint');
+                    $message->from('corporate@intec.edu.my');
+                    $message->to($admin_email);
+                });
+            }    
+
         }
 
         if($request->userCategory == "VSR" || $request->userCategory == "SPL" || $request->userCategory == "SPR" || $request->userCategory == "SPS")
@@ -198,8 +222,29 @@ class AduanKorporatController extends Controller
                 }
             }
 
+            $admin = User::whereHas('roles', function($query){
+                $query->where('id', 'EAK001'); // Admin
+            })->get();
+    
+            foreach($admin as $a)
+            {
+                $admin_email = $a->email;
+    
+                $data = [
+                    'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $a->name,
+                    'emel'     => 'You have received new iComplaint from '.$request->other_name.' on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Please log in to the IDS system for further action.',
+                ];
+    
+                Mail::send('aduan-korporat.email', $data, function ($message) use ($admin_email) {
+                    $message->subject('New iComplaint');
+                    $message->from('corporate@intec.edu.my');
+                    $message->to($admin_email);
+                });
+            }    
+
         }
 
+        
         return redirect('end/'.$ticket);
       
     }
@@ -224,7 +269,14 @@ class AduanKorporatController extends Controller
 
     public function show($id)
     {
-        if( Auth::user()->hasAnyRole('eAduan (Super Admin)','eAduan (Admin)' ) )
+        if ($id == 'complete')
+        {
+            $list = AduanKorporat::wherehas('getAdmin', function($query){
+                $query->where('admin_id', Auth::user()->id);
+            })->orderby('created_at','DESC')->get();   
+        }
+
+        else if( Auth::user()->hasAnyRole('eAduan (Super Admin)','eAduan (Admin)' ) )
         {
             $list = AduanKorporat::where('status', $id)->orderby('created_at','DESC')->get();
         }
@@ -336,6 +388,26 @@ class AduanKorporatController extends Controller
             'created_by'    => Auth::user()->id
         ]);
 
+        $admin = User::whereHas('roles', function($query){
+            $query->where('id', 'EAK001'); // Admin
+        })->get();
+
+        foreach($admin as $a)
+        {
+            $admin_email = $a->email;
+
+            $data = [
+                'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $a->name,
+                'emel'     => 'Feedback for iComplaint ['.$update->ticket_no.'] has been made by '.$user->name.' on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Please log in to the IDS system for further action.',
+            ];
+
+            Mail::send('aduan-korporat.email', $data, function ($message) use ($admin_email) {
+                $message->subject('iComplaint Feedback');
+                $message->from('corporate@intec.edu.my');
+                $message->to($admin_email);
+            });
+        }    
+
         return response() ->json(['success' => 'Remark Sent!']);
     }
 
@@ -360,7 +432,20 @@ class AduanKorporatController extends Controller
             'name'          => $user->name,
             'activity'      => 'Completed',
             'created_by'    => Auth::user()->id
-        ]); 
+        ]);
+        
+        $user_email = $update->email;
+
+            $data = [
+                'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $update->name,
+                'emel'     => 'You have received feedback for iComplaint ['.$update->ticket_no.'] on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Kindly check in https://iComplaint.intec.edu.my/',
+            ];
+
+            Mail::send('aduan-korporat.email_user', $data, function ($message) use ($user_email) {
+                $message->subject('iComplaint Feedback');
+                $message->from('corporate@intec.edu.my');
+                $message->to($user_email);
+            });
     
         return response() ->json(['success' => 'Remark sent!']);
     }
@@ -852,19 +937,17 @@ class AduanKorporatController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function deleteAdmin($id)
     {
-        $admin = AduanKorporatAdmin::where('id', $id)->first();
-
-        $exist = AduanKorporatAdmin::find($id);
+        $exist = AduanKorporatAdmin::where('id',$id)->first();
         $exist->delete();
         $exist->update(['deleted_by' => Auth::user()->id]);
 
-        $user = User::find($admin->staff_id);
+        $user = User::find($exist->admin_id);
 
-        $user->removeRole('EAduan (Team)');
+        $user->removeRole('eAduan (Team)');
 
-        return redirect('admin-list/'.$admin->department_id);
+        return response()->json(['success' => 'Deleted!']);
     }
 
     public function status()

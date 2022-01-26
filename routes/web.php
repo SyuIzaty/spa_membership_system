@@ -507,7 +507,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/departmentList', 'AduanKorporatController@departmentLists');
     Route::get('/admin-list/{id}','AduanKorporatController@adminList');
     Route::post('/store-admin', 'AduanKorporatController@storeAdmin');
-    Route::delete('/destroy/{id}', 'AduanKorporatController@destroy')->name('destroyAdmin');
+    Route::delete('/delete-admin/{id}', 'AduanKorporatController@deleteAdmin');
 
     Route::get('/status-list', 'AduanKorporatController@status');
     Route::post('/get-status-list', 'AduanKorporatController@getStatus');
