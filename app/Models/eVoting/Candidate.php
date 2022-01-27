@@ -13,8 +13,9 @@ class Candidate extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
         'student_id',
-        'moto',
+        'tagline',
         'image',
+        'voting_session_id',
         'created_by',
         'created_at',
         'updated_by',

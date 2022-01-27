@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers\API\eVoting;
 
+// require 'vendor/autoload.php';
+
+// import the Intervention Image Manager Class
+use Intervention\Image\ImageManagerStatic as Image;
+
 use Config;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -12,6 +17,7 @@ use File;
 use Response;
 use App\Student;
 use Auth;
+use Carbon\Carbon;
 
 class CandidateController extends BaseController
 {
@@ -44,6 +50,42 @@ class CandidateController extends BaseController
     public function store(Request $request)
     {
         //
+        $exist=Candidate::where([
+            ['student_id',$request->id],
+            ['voting_session_id',$request->voting_session_id]])
+        ->first();
+        if(!$exist || is_null($exist)){
+
+
+            $candidate=Candidate::create([
+                'student_id'=> $request->id,
+                'tagline'=> $request->tagline,
+                'image'=> null,
+                'voting_session_id'=> (int)$request->voting_session_id,
+                'created_by' => Auth::user()->id]);
+
+            if($request->image && !is_null($request->image) && $request->image!==""){
+
+                $extension = explode('/', mime_content_type($request->image))[1];
+                $date = Carbon::today()->toDateString();
+                $year = substr($date, 0, 4);
+                $path='app/evoting/candidates/'.$year.'/candidate_'.$candidate->id.'.'.$extension;
+                Image::make(file_get_contents($request->image))->save(storage_path() . '/'.$path);
+                $candidate->image=$path;
+                $candidate->image=$path;
+                $candidate->save();
+            }
+        }else{
+            return $this->sendError("
+            Already registered as candidate!
+            You may edit the candidate details from the list.");
+        }
+        $candidate=Candidate::join(config('global_env.DB_DATABASE_SIMS').'.students',
+        config('global_env.DB_DATABASE_SIMS').'.students.students_id','=','evs_candidate.student_id')
+        ->where('evs_candidate.id',$candidate->id)
+        ->first();
+
+        return $this->sendResponse($candidate, 'Candidate registered!');
     }
 
     /**
@@ -75,9 +117,25 @@ class CandidateController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         //
+        $candidate=Candidate::where([
+            ['voting_session_id','=',$request->payload['voting_session_id']],
+            ['student_id','=',$request->payload['student_id']]
+            ])
+            ->first();
+        if(!is_null($request->payload['image'])){
+            $extension = explode('/', mime_content_type($request->payload['image']))[1];
+            $date = Carbon::today()->toDateString();
+            $year = substr($date, 0, 4);
+            $path='app/evoting/candidates/'.$year.'/candidate_'.$candidate['id'].'.'.$extension;
+            Image::make(file_get_contents($request->payload['image']))->save(storage_path() . '/'.$path);
+            $candidate->image=$path;
+        }
+        $candidate->tagline=$request->payload['tagline'];
+        $candidate->save();
+        return $this->sendResponse($candidate, 'Candidate updated!');
     }
 
     /**
@@ -86,9 +144,20 @@ class CandidateController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($student_id,$voting_session_id)
     {
         //
+
+        $candidate=Candidate::where([
+            ['voting_session_id','=',$voting_session_id],
+            ['student_id','=',$student_id]])
+            ->first();
+            $candidate->updated_by=Auth::user()->id;
+            $candidate->deleted_by=Auth::user()->id;
+            $candidate->save();
+            $candidate->delete();
+
+        return $this->sendResponse($candidate, 'Deletion Succeed!');
     }
 
 

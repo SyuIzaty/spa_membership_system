@@ -596,6 +596,11 @@ Route::group(['middleware' => 'auth'], function () {
     // eVotingController
     Route::get('/candidate-relevant', 'API\eVoting\CandidateController@getCandidateRelevant');
     Route::post('/candidate-relevant/vote', 'API\eVoting\VoteController@store');
+    Route::post('/candidate-relevant/update', 'API\eVoting\CandidateController@update');
+    Route::post('/candidate-relevant/add', 'API\eVoting\CandidateController@store');
+    Route::delete('/candidate-relevant/{student_id}/{voting_session_id}', 'API\eVoting\CandidateController@destroy');
+    Route::delete('/candidate-category-programme-category/{candidate_category_id}/{programme_category_id}',
+    'API\eVoting\CandidateCategoryProgrammeCategoryController@destroy');
     Route::get('/vote-status', 'API\eVoting\VoteController@voteStatus');
     Route::get('/categorical-statistics', 'API\eVoting\VoteController@categoricalStatistics');
     Route::get('/categorical-report', 'API\eVoting\VoteController@categoricalReport');
@@ -604,6 +609,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/vote-is-open', 'API\eVoting\VoteController@getVoteIsOpen');
     Route::get('/vote-sessions', 'API\eVoting\VoteController@getVoteSessions');
     Route::get('/vote-sessions/{id}', 'API\eVoting\VoteController@getVoteSessionDetails');
+    Route::get('/students/{id}', 'API\StudentController@show');
 
     Route::get('/vote-platform', function () {
         return view('e-voting/platform');
