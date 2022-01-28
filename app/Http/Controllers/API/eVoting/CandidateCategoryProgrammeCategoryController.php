@@ -70,9 +70,43 @@ class CandidateCategoryProgrammeCategoryController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         //
+
+
+        $candidate_category_programme_category_temp=
+        CandidateCategoryProgrammeCategory::where([
+            ['programme_category_id', '=',$request->programme_category_id],
+            ['candidate_category_id', '=',$request->candidate_category_id]
+            ])
+        ->first();
+
+        if($candidate_category_programme_category_temp && !is_null($candidate_category_programme_category_temp)){
+
+            return $this->sendError("The programme category is already added to this candidate category!");
+
+        }else{
+            $candidate_category_programme_categories=
+            CandidateCategoryProgrammeCategory::where('programme_category_id', $request->programme_category_id)
+            ->get();
+            if(!is_null($candidate_category_programme_categories) && count($candidate_category_programme_categories)>0)
+            {
+                foreach($candidate_category_programme_categories as $candidate_category_programme_category){
+                    $candidate_category_programme_category->updated_by=Auth::user()->id;
+                    $candidate_category_programme_category->deleted_by=Auth::user()->id;
+                    $candidate_category_programme_category->save();
+                    $candidate_category_programme_category->delete();
+                }
+
+            }
+            $candidate_category_programme_category_query=CandidateCategoryProgrammeCategory::create([
+                'candidate_category_id'=>$request->candidate_category_id,
+                'programme_category_id'=>$request->programme_category_id,
+                'created_by'=>Auth::user()->id
+            ])->load(['programme_category.programmes']);
+            return $this->sendResponse($candidate_category_programme_category_query->programme_category, 'Programme Category Added!');
+        }
     }
 
     /**

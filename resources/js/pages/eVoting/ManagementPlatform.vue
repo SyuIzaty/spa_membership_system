@@ -1,12 +1,16 @@
 <template>
     <div>
+        <Toast
+            position="top-right"
+            :breakpoints="{ '920px': { width: '100%', right: '0', left: '0' } }"
+        />
         <div class="row pt-5 px-5 align-items-center">
             <div class="col-12 col-lg-2 h3 text-center">Session</div>
             <InputText v-model="session" class="col-12 col-lg-10" />
         </div>
         <div class="row pt-5 px-5 align-items-center">
             <div class="col-12 col-lg-2 h3 text-center">From</div>
-            <Calendar
+            <!-- <Calendar
                 class="col-12 col-lg-4 p-0"
                 id="vote_datetime_start"
                 :minDate="new Date()"
@@ -14,9 +18,16 @@
                 dateFormat="dd-mm-yy"
                 :showTime="true"
                 v-model="vote_datetime_start"
+            /> -->
+            <input
+                class="col-12 col-lg-4 p-0"
+                id="vote_datetime_start"
+                v-model="vote_datetime_start"
+                type="datetime-local"
+                name="vote_datetime_start"
             />
             <div class="col-12 col-lg-2 h3 text-center">To</div>
-            <Calendar
+            <!-- <Calendar
                 class="col-12 col-lg-4 p-0"
                 id="vote_datetime_end"
                 :minDate="new Date()"
@@ -24,8 +35,28 @@
                 dateFormat="dd-mm-yy"
                 :showTime="true"
                 v-model="vote_datetime_end"
+            /> -->
+
+            <input
+                class="col-12 col-lg-4 p-0"
+                id="vote_datetime_end"
+                v-model="vote_datetime_end"
+                type="datetime-local"
+                name="vote_datetime_end"
             />
         </div>
+
+        <div class="row pt-5 px-5 align-items-center justify-content-end">
+            <button
+                type="submit"
+                class="btn btn-success"
+                style="align-self: center"
+                @click="editSessionDetails()"
+            >
+                Save
+            </button>
+        </div>
+
         <div class="row p-5">
             <DataTable
                 v-if="candidate_categories.length > 0"
@@ -124,6 +155,14 @@
                                 </template>
                             </Column>
                         </DataTable>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary align-self-lg-end mt-4"
+                            @click="addProgrammeCategory(slotProps.data.index)"
+                        >
+                            Add a Programme Category
+                        </button>
                         <h5 class="pt-5">
                             Candidates for {{ slotProps.data.name }}
                         </h5>
@@ -227,6 +266,32 @@
             </DataTable>
 
             <Dialog
+                header="Add Programme Category"
+                :visible.sync="displayProgrammeCategoryStore"
+                :maximizable="true"
+                :modal="true"
+                contentStyle="
+                min-height:25rem;
+                min-width:25rem;
+                display:flex;
+                flex-direction:column;
+                justify-content:space-between;
+                padding:1rem 1rem 1rem 1rem;"
+            >
+                <Button
+                    v-for="programme_category in programme_categories"
+                    :key="programme_category.id"
+                    @click="
+                        addProgrammeCategoryToCandidateCategory(
+                            programme_category
+                        )
+                    "
+                >
+                    {{ programme_category.short_name }} -
+                    {{ truncateString(programme_category.name, 75) }}
+                </Button>
+            </Dialog>
+            <Dialog
                 v-if="
                     selectedProgrammeCategory &&
                     selectedProgrammeCategory !== null
@@ -239,6 +304,7 @@
                 :visible.sync="displayProgrammeCategoryDetails"
                 :maximizable="true"
                 :modal="true"
+                contentStyle="min-height:25rem;"
             >
                 <!-- Dialog must have default content -->
                 <h3>Programmes</h3>
@@ -247,17 +313,58 @@
                         v-for="programme in selectedProgrammeCategory.programmes"
                         :key="programme.id"
                     >
-                        {{ `(${programme.code}) ${programme.name}` }}
+                        {{
+                            `(${programme.code}) ${truncateString(
+                                programme.name,
+                                75
+                            )}`
+                        }}
+
+                        <i
+                            @click="
+                                dropRevertProgramme(
+                                    programme.id,
+                                    programme.programme_category_id
+                                )
+                            "
+                            :class="{
+                                'ni ni-close text-danger':
+                                    programme.programme_category_id !== null,
+                                'ni ni-action-undo text-success':
+                                    programme.programme_category_id === null,
+                            }"
+                            style="cursor: pointer"
+                        ></i>
+                    </li>
+                    <li v-if="programmes.length > 0">
+                        <Dropdown
+                            v-model="selectedProgramme"
+                            :options="programmes"
+                            optionLabel="code"
+                            :filter="true"
+                            placeholder="Select a Programme"
+                            :showClear="false"
+                            @change="addProgramme($event)"
+                        >
+                            <template #value="slotProps">
+                                <span>
+                                    {{ slotProps.placeholder }}
+                                </span>
+                            </template>
+                            <template #option="slotProps">
+                                <div>
+                                    {{ slotProps.option.code }} -
+                                    {{
+                                        truncateString(
+                                            slotProps.option.name,
+                                            40
+                                        )
+                                    }}
+                                </div>
+                            </template>
+                        </Dropdown>
                     </li>
                 </ol>
-                <template #footer>
-                    <Button
-                        :disabled="is_loading_update"
-                        label="Close"
-                        @click="closeProgrammeCategoryDetails"
-                        class="p-button-text"
-                    />
-                </template>
             </Dialog>
             <Dialog
                 v-if="selectedCandidate && selectedCandidate !== null"
@@ -314,7 +421,6 @@
                     />
                 </template>
             </Dialog>
-
             <Dialog
                 header="Register Candidate"
                 :visible.sync="displayCandidateStore"
@@ -414,7 +520,9 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Dialog from "primevue/dialog";
 import Button from "primevue/button";
+import Dropdown from "primevue/dropdown";
 import moment from "moment";
+
 export default {
     name: "ManagementPlatform",
     components: {
@@ -428,6 +536,7 @@ export default {
         Textarea,
         InputNumber,
         ConfirmDialog,
+        Dropdown,
     },
     data() {
         return {
@@ -447,13 +556,19 @@ export default {
             expandedRows: [],
             selectedCandidate: null,
             selectedProgrammeCategory: null,
+            selectedNewProgrammeCategory: null,
+            selectedProgramme: null,
+            programmes: [],
+            programme_categories: [],
             displayCandidateStore: false,
             displayProgrammeCategoryDetails: false,
             tagline: null,
             completionImage: null,
             is_loading_update: false,
             is_loading_find_student: false,
+            candidate_category_index: null,
             candidate_category_registration_index: null,
+            displayProgrammeCategoryStore: false,
             error: {
                 newStudent_id: { status: false, message: null },
             },
@@ -494,9 +609,22 @@ export default {
             }
         },
     },
-
+    // computed:{
+    //     filtered_programme_categories(){
+    //         this.candidate_categories[candidate_category_index];
+    //         return this.programme_categories.filter(x=>x.!==this.candidate_category_index);
+    //     }
+    // },
     mounted() {
         this.newStudent.voting_session_id = this.$route.params.session_id;
+        axios
+            .get(`/e-voting/programme-categories`)
+            .then((response) => {
+                this.programme_categories = response.data.data;
+            })
+            .catch((error) => {
+                console.log(error);
+            });
         axios
             .get(`/vote-sessions/${this.$route.params.session_id}`)
             .then((response) => {
@@ -504,10 +632,10 @@ export default {
                 this.session = session.session;
                 this.vote_datetime_start = moment(
                     String(session.vote_datetime_start)
-                ).format("DD-MM-YYYY HH:mm");
+                ).format("YYYY-MM-DDTHH:mm");
                 this.vote_datetime_end = moment(
                     String(session.vote_datetime_end)
-                ).format("DD-MM-YYYY HH:mm");
+                ).format("YYYY-MM-DDTHH:mm");
 
                 session.candidate_categories.forEach(async (x) => {
                     x.candidates.forEach(async (y, index) => {
@@ -539,8 +667,146 @@ export default {
     },
 
     methods: {
+        editSessionDetails() {
+            console.log("edit session");
+            let session_id = this.$route.params.session_id;
+            axios
+                .post(`/e-voting/session/${session_id}`, {
+                    session: this.session,
+                    vote_datetime_start: moment(
+                        String(this.vote_datetime_start),
+                        "YYYY-MM-DD HH:mm"
+                    ).format("YYYY-MM-DD HH:mm:ss"),
+                    vote_datetime_end: moment(
+                        String(this.vote_datetime_end),
+                        "YYYY-MM-DD HH:mm"
+                    ).format("YYYY-MM-DD HH:mm:ss"),
+                })
+                .then((response) => {
+                    this.$toast.add({
+                        severity: "success",
+                        summary: "Updated!",
+                        detail: "The session details have been updated!",
+                        life: 3000,
+                    });
+                })
+                .catch((error) => {
+                    console.log(error);
+                    this.$toast.add({
+                        severity: "error",
+                        summary: "Error Message",
+                        detail: "Failed to update session details",
+                        life: 3000,
+                    });
+                });
+        },
+        addProgrammeCategoryToCandidateCategory(programme_category) {
+            axios
+                .post(`/e-voting/candidate-categories-programme-categories`, {
+                    programme_category_id: programme_category.id,
+                    candidate_category_id:
+                        this.candidate_categories[this.candidate_category_index]
+                            .id,
+                })
+                .then((response) => {
+                    console.log(response);
+                    let programme_category_res = response.data.data;
+                    let programme_categories_temp =
+                        this.candidate_categories[this.candidate_category_index]
+                            .programme_categories;
+                    programme_categories_temp.push({
+                        ...programme_category_res,
+                        candidate_category_id:
+                            this.candidate_categories[
+                                this.candidate_category_index
+                            ].id,
+                        candidate_category_index:
+                            programme_categories_temp.length,
+                    });
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+        truncateString(input, maxCharacters) {
+            if (input.length > maxCharacters) {
+                return input.substring(0, maxCharacters) + "...";
+            }
+            return input;
+        },
+        addProgramme($event) {
+            let programme_temp = $event.value;
+            if (programme_temp.programme_category_id !== null) {
+                const programme_name = this.programme_categories.find(
+                    (x) => x.id === programme_temp.id
+                ).name;
+                this.$confirm.require({
+                    message: `This programme is currently under the programme category with id ${programme_temp.id} (${programme_name}).\n
+                Are you sure to change it to programme category with id ${this.selectedProgrammeCategory.id} (${this.selectedProgrammeCategory.name})?`,
+                    header: "Change programme category confirmation",
+                    icon: "pi pi-info-circle",
+                    acceptClass: "p-button-danger",
+                    accept: () => {
+                        axios
+                            .post(`/e-voting/programmes/${programme_temp.id}`, {
+                                programme_category_id:
+                                    this.selectedProgrammeCategory.id,
+                            })
+                            .then((response) => {
+                                console.log(response.data.data);
+                                let programme = response.data.data;
+                                this.candidate_categories[
+                                    this.selectedProgrammeCategory
+                                        .candidate_category_index
+                                ].programme_categories
+                                    .find((x) => {
+                                        return (
+                                            x.id ===
+                                            this.selectedProgrammeCategory.id
+                                        );
+                                    })
+                                    .programmes.push(programme);
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            });
+                    },
+                    reject: () => {
+                        this.selectedProgramme = null;
+                        console.log("reject");
+                    },
+                });
+            }
+        },
+        dropRevertProgramme(programme_id, programme_category_id) {
+            let payload_programme_category_id =
+                programme_category_id !== null
+                    ? null
+                    : this.selectedProgrammeCategory.id;
+            axios
+                .post(`/e-voting/programmes/${programme_id}`, {
+                    programme_category_id: payload_programme_category_id,
+                })
+                .then((response) => {
+                    let programme = response.data.data;
+                    this.candidate_categories[
+                        this.selectedProgrammeCategory.candidate_category_index
+                    ].programme_categories
+                        .find((x) => {
+                            return programme_category_id !== null
+                                ? x.id === programme_category_id
+                                : x.id === this.selectedProgrammeCategory.id;
+                        })
+                        .programmes.find(
+                            (x) => x.id === programme.id
+                        ).programme_category_id =
+                        programme.programme_category_id;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
         storeCandidate() {
-            console.log(this.newStudent);
             axios
                 .post(`/candidate-relevant/add`, this.newStudent)
                 .then(async (response) => {
@@ -594,6 +860,9 @@ export default {
         openCandidateStore() {
             this.displayCandidateStore = true;
         },
+        openProgrammeCategoryStore() {
+            this.displayProgrammeCategoryStore = true;
+        },
         closeProgrammeCategoryDetails() {
             this.displayProgrammeCategoryDetails = false;
         },
@@ -604,6 +873,9 @@ export default {
         closeCandidateStore() {
             this.completionImage = null;
             this.displayCandidateStore = false;
+        },
+        closeProgrammeCategoryStore() {
+            this.displayProgrammeCategoryStore = false;
         },
         updateCandidateDetails() {
             this.is_loading_update = true;
@@ -656,6 +928,16 @@ export default {
         editProgrammeCategory(programme_category, index) {
             this.selectedProgrammeCategory = programme_category;
             console.log("edit");
+            if (this.programmes.length === 0) {
+                axios
+                    .get("/e-voting/programmes")
+                    .then((response) => {
+                        this.programmes = response.data.data;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            }
             this.openProgrammeCategoryDetails();
         },
         editCandidate(candidate) {
@@ -777,6 +1059,10 @@ export default {
                 },
             });
         },
+        addProgrammeCategory(index) {
+            this.candidate_category_index = index;
+            this.openProgrammeCategoryStore();
+        },
         addCandidate(index) {
             this.candidate_category_registration_index = index;
             this.openCandidateStore();
@@ -830,6 +1116,9 @@ export default {
 }
 .p-datatable-table {
     width: 100% !important;
+}
+.p-dialog {
+    min-width: 50%;
 }
 // .col-12 {
 //     padding-right: 0rem !important;
