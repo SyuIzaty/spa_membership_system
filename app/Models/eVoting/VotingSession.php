@@ -33,4 +33,8 @@ class VotingSession extends Model
     {
         return $this->hasMany('App\Models\eVoting\CandidateCategory', 'voting_session_id', 'id');
     }
+    public function programme_categories()
+    {
+        return $this->hasMany('App\Models\eVoting\ProgrammeCategory', 'voting_session_id', 'id');
+    }
 }

@@ -336,12 +336,13 @@ class VoteController extends BaseController
     public function getVoteIsOpen(){
 
         $mytime = Carbon::now();
-        $exist=VotingSession::where([['is_active','=',1]])
-        ->whereDate('vote_datetime_start','<=',$mytime)
-        ->whereDate('vote_datetime_end','>=',$mytime)
-        ->whereTime('vote_datetime_start','<=',$mytime)
-        ->whereTime('vote_datetime_end','>=',$mytime)
+        $exist=VotingSession::where([
+            ['is_active','=',1],
+        ['vote_datetime_start','<=',$mytime],
+        ['vote_datetime_end','>=',$mytime]
+        ])
         ->first();
+
         if(!is_null($exist)){
             $is_open=true;
         }else{

@@ -17,7 +17,7 @@ class ProgrammeCategoryController extends BaseController
     public function index()
     {
         //
-        $programme_categories=ProgrammeCategory::all();
+        $programme_categories=ProgrammeCategory::all()->load(['candidate_category_programme_category_s']);
         return $this->sendResponse($programme_categories, 'Programme categories fetched!');
     }
 

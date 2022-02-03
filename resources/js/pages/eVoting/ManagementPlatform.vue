@@ -275,21 +275,30 @@
                 min-width:25rem;
                 display:flex;
                 flex-direction:column;
-                justify-content:space-between;
+                justify-content:space-around;
                 padding:1rem 1rem 1rem 1rem;"
             >
                 <Button
-                    v-for="programme_category in programme_categories"
+                    v-for="(
+                        programme_category, index
+                    ) in filtered_programme_categories"
                     :key="programme_category.id"
                     @click="
                         addProgrammeCategoryToCandidateCategory(
-                            programme_category
+                            programme_category,
+                            index
                         )
                     "
                 >
                     {{ programme_category.short_name }} -
                     {{ truncateString(programme_category.name, 75) }}
                 </Button>
+                <div
+                    v-if="filtered_programme_categories.length === 0"
+                    style="text-align: center"
+                >
+                    No available category
+                </div>
             </Dialog>
             <Dialog
                 v-if="
@@ -609,12 +618,14 @@ export default {
             }
         },
     },
-    // computed:{
-    //     filtered_programme_categories(){
-    //         this.candidate_categories[candidate_category_index];
-    //         return this.programme_categories.filter(x=>x.!==this.candidate_category_index);
-    //     }
-    // },
+    computed: {
+        filtered_programme_categories() {
+            // this.candidate_categories[candidate_category_index];
+            return this.programme_categories.filter(
+                (x) => x.candidate_category_programme_category_s.length === 0
+            );
+        },
+    },
     mounted() {
         this.newStudent.voting_session_id = this.$route.params.session_id;
         axios
@@ -700,7 +711,7 @@ export default {
                     });
                 });
         },
-        addProgrammeCategoryToCandidateCategory(programme_category) {
+        addProgrammeCategoryToCandidateCategory(programme_category, index) {
             axios
                 .post(`/e-voting/candidate-categories-programme-categories`, {
                     programme_category_id: programme_category.id,
@@ -720,9 +731,12 @@ export default {
                             this.candidate_categories[
                                 this.candidate_category_index
                             ].id,
-                        candidate_category_index:
-                            programme_categories_temp.length,
+                        candidate_category_index: this.candidate_category_index,
+                        // programme_categories_temp.length,
                     });
+
+                    this.filtered_programme_categories.splice(index, 1);
+                    this.displayProgrammeCategoryStore = false;
                 })
                 .catch((error) => {
                     console.log(error);
@@ -738,7 +752,7 @@ export default {
             let programme_temp = $event.value;
             if (programme_temp.programme_category_id !== null) {
                 const programme_name = this.programme_categories.find(
-                    (x) => x.id === programme_temp.id
+                    (x) => x.id === programme_temp.programme_category_id
                 ).name;
                 this.$confirm.require({
                     message: `This programme is currently under the programme category with id ${programme_temp.id} (${programme_name}).\n
@@ -776,6 +790,29 @@ export default {
                         console.log("reject");
                     },
                 });
+            } else {
+                axios
+                    .post(`/e-voting/programmes/${programme_temp.id}`, {
+                        programme_category_id:
+                            this.selectedProgrammeCategory.id,
+                    })
+                    .then((response) => {
+                        console.log(response.data.data);
+                        let programme = response.data.data;
+                        this.candidate_categories[
+                            this.selectedProgrammeCategory
+                                .candidate_category_index
+                        ].programme_categories
+                            .find((x) => {
+                                return (
+                                    x.id === this.selectedProgrammeCategory.id
+                                );
+                            })
+                            .programmes.push(programme);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
             }
         },
         dropRevertProgramme(programme_id, programme_category_id) {
@@ -911,15 +948,15 @@ export default {
         onRowExpand(event) {
             this.$toast.add({
                 severity: "info",
-                summary: "Product Expanded",
+                summary: "Category Expanded",
                 detail: event.data.name,
                 life: 3000,
             });
         },
         onRowCollapse(event) {
             this.$toast.add({
-                severity: "success",
-                summary: "Product Collapsed",
+                severity: "info",
+                summary: "Category Collapsed",
                 detail: event.data.name,
                 life: 3000,
             });
@@ -985,6 +1022,15 @@ export default {
                                         );
                                     }
                                 );
+
+                            let temp_programme_category =
+                                this.programme_categories.find(
+                                    (x) => x.id === programme_category.id
+                                );
+                            temp_programme_category.candidate_category_programme_category_s.length = 0;
+                            this.filtered_programme_categories.push(
+                                temp_programme_category
+                            );
                         })
                         .catch((error) => {
                             console.log(error);
@@ -996,7 +1042,7 @@ export default {
                     this.$toast.add({
                         severity: "info",
                         summary: "Confirmed",
-                        detail: "Remove candidate",
+                        detail: "Unattached Programme Category",
                         life: 3000,
                     });
                 },

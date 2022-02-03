@@ -13,6 +13,7 @@ class CandidateCategory extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
         'name',
+        'voting_session_id',
         'created_by',
         'created_at',
         'updated_by',
@@ -23,5 +24,10 @@ class CandidateCategory extends Model
     public function candidate_category_programme_category_s()
     {
         return $this->hasMany('App\Models\eVoting\CandidateCategoryProgrammeCategory', 'candidate_category_id', 'id');
+    }
+
+    public function voting_session()
+    {
+        return $this->belongsTo('App\Models\eVoting\VotingSession', 'voting_session_id', 'id');
     }
 }

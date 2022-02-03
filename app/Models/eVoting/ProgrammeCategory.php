@@ -20,4 +20,9 @@ class ProgrammeCategory extends Model
     {
         return $this->hasMany('App\Models\eVoting\CandidateCategoryProgrammeCategory', 'programme_category_id', 'id');
     }
+
+    public function voting_session()
+    {
+        return $this->belongsTo('App\Models\eVoting\VotingSession', 'voting_session_id', 'id');
+    }
 }
