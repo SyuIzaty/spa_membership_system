@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\API\eVoting;
 
-use App\Http\Controllers\API\BaseController as BaseController;
 use App\Http\Controllers\Controller;
-use App\Models\eVoting\ProgrammeCategory;
 use Illuminate\Http\Request;
+use App\Http\Controllers\API\BaseController as BaseController;
+use App\Models\eVoting\CandidateCategory;
+use Auth;
 
-class ProgrammeCategoryController extends BaseController
+class CandidateCategoryController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +18,6 @@ class ProgrammeCategoryController extends BaseController
     public function index()
     {
         //
-        $programme_categories=ProgrammeCategory::all()->load(['candidate_category_programme_category_s.candidate_category']);
-        return $this->sendResponse($programme_categories, 'Programme categories fetched!');
     }
 
     /**
@@ -40,6 +39,14 @@ class ProgrammeCategoryController extends BaseController
     public function store(Request $request)
     {
         //
+        $candidate_category=CandidateCategory::create([
+            'name'=>$request->name,
+            'voting_session_id' =>$request->voting_session_id,
+            'created_by'=>Auth::user()->id
+        ]);
+
+
+        return $this->sendResponse($candidate_category, 'new candidate category created!');
     }
 
     /**
@@ -74,6 +81,12 @@ class ProgrammeCategoryController extends BaseController
     public function update(Request $request, $id)
     {
         //
+        $candidate_category=CandidateCategory::find($id);
+        $candidate_category->name=$request->name;
+        $candidate_category->updated_by=Auth::user()->id;
+        $candidate_category->save();
+
+        return $this->sendResponse($candidate_category, 'Candidate category updated!');
     }
 
     /**
@@ -85,5 +98,13 @@ class ProgrammeCategoryController extends BaseController
     public function destroy($id)
     {
         //
+        $candidate_category=CandidateCategory::find($id);
+        $candidate_category->updated_by=Auth::user()->id;
+        $candidate_category->deleted_by=Auth::user()->id;
+        $candidate_category->save();
+        $candidate_category->delete();
+        return $this->sendResponse($candidate_category, 'Candidate category deleted successfully!');
+
+
     }
 }

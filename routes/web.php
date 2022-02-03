@@ -613,9 +613,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/e-voting/programmes/{programme_id}', 'API\eVoting\ProgrammeController@update');
     Route::get('/e-voting/programmes', 'API\eVoting\ProgrammeController@index');
     Route::get('/e-voting/programme-categories', 'API\eVoting\ProgrammeCategoryController@index');
+    Route::post('/e-voting/candidate-category', 'API\eVoting\CandidateCategoryController@store');
+    Route::post('/e-voting/candidate-category/{id}', 'API\eVoting\CandidateCategoryController@update');
+    Route::delete('/e-voting/candidate-category/{id}', 'API\eVoting\CandidateCategoryController@destroy');
 
     Route::post('/e-voting/candidate-categories-programme-categories', 'API\eVoting\CandidateCategoryProgrammeCategoryController@update');
     Route::post('/e-voting/session/{session_id}', 'API\eVoting\SessionController@update');
+    Route::post('/e-voting/session', 'API\eVoting\SessionController@store');
 
 
     Route::get('/vote-platform', function () {

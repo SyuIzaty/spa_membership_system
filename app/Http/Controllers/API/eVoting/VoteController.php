@@ -151,13 +151,17 @@ class VoteController extends BaseController
                 array_push($candidate_category_ids,$candidate_category_programme_category->candidate_category_id);
             }
 
-            $candidate_categories = CandidateCategory::whereIn('id',$candidate_category_ids)->get()->load(
+            $candidate_categories = CandidateCategory::whereHas('voting_session', function ($query){
+                $query->where('is_active',1);
+            })->whereIn('id',$candidate_category_ids)->get()->load(
                 ['candidate_category_programme_category_s.programme_category.programmes.students.votes',
                 'candidate_category_programme_category_s.programme_category.programmes.students.candidates.votes',
                 'candidate_category_programme_category_s.programme_category.programmes.students.candidates.student'
             ]);
         }else{
-            $candidate_categories = CandidateCategory::all()->load(
+            $candidate_categories = CandidateCategory::whereHas('voting_session', function ($query){
+                $query->where('is_active',1);
+            })->get()->load(
                 ['candidate_category_programme_category_s.programme_category.programmes.students.votes',
                 'candidate_category_programme_category_s.programme_category.programmes.students.candidates.votes',
                 'candidate_category_programme_category_s.programme_category.programmes.students.candidates.student'
@@ -374,7 +378,8 @@ class VoteController extends BaseController
 
                 }
             }
-            $candidates=Candidate::join(config('global_env.DB_DATABASE_SIMS').'.students',config('global_env.DB_DATABASE_SIMS').'.students.students_id','=','evs_candidate.student_id')->whereHas('student', function ($query) use($programmes){
+            $candidates=Candidate::join(config('global_env.DB_DATABASE_SIMS').'.students',config('global_env.DB_DATABASE_SIMS').'.students.students_id','=','evs_candidate.student_id')
+            ->whereHas('student', function ($query) use($programmes){
                 $query->whereIn('students_programme',$programmes);
             })->where('voting_session_id', $id)->get();
             $candidate_categories[$index]->programme_categories=$programme_categories;

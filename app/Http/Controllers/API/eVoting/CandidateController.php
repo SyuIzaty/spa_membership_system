@@ -187,7 +187,9 @@ class CandidateController extends BaseController
             }
             // $candidate_category_id=$candidate_category_programme_category_s[count($candidate_category_programme_category_s)-1]->candidate_category_id;
 
-            $candidates=Candidate::
+            $candidates=Candidate::whereHas('voting_session', function ($query){
+                $query->where('is_active',1);
+            })->
             whereHas('student.programme.programme_category.candidate_category_programme_category_s', function ($query) use($candidate_category_ids) {
                 $query->whereIn('candidate_category_id',$candidate_category_ids);
             })

@@ -33,4 +33,8 @@ class Candidate extends Model
     {
         return $this->hasMany('App\Models\eVoting\Vote', 'candidate_id', 'id');
     }
+    public function voting_session()
+    {
+        return $this->belongsTo('App\Models\eVoting\VotingSession', 'voting_session_id', 'id');
+    }
 }

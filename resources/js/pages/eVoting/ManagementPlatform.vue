@@ -46,6 +46,13 @@
             />
         </div>
 
+        <div
+            class="row pt-5 px-5 align-items-center justify-content-center justify-content-lg-start"
+        >
+            <div class="col-12 col-lg-2 h3 text-center">Active</div>
+            <InputSwitch v-model="is_active" />
+        </div>
+
         <div class="row pt-5 px-5 align-items-center justify-content-end">
             <button
                 type="submit"
@@ -59,7 +66,6 @@
 
         <div class="row p-5">
             <DataTable
-                v-if="candidate_categories.length > 0"
                 class="col-12 p-datatable-striped"
                 :value="candidate_categories"
                 :expandedRows.sync="expandedRows"
@@ -67,7 +73,9 @@
                 responsiveLayout="scroll"
                 @row-expand="onRowExpand"
                 @row-collapse="onRowCollapse"
+                :loading="is_loading_candidate_categories"
             >
+                <template #empty> No records found. </template>
                 <template #header>
                     <div class="table-header-container">
                         <h1>Candidate Categories</h1>
@@ -75,6 +83,37 @@
                 </template>
                 <Column :expander="true" :headerStyle="{ width: '3rem' }" />
                 <Column field="name" header="Name" sortable></Column>
+
+                <Column header="Action" :headerStyle="{ width: '25%' }">
+                    <template #body="slotProps">
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            style="align-self: center"
+                            @click="
+                                editCandidateCategory(
+                                    slotProps.data,
+                                    slotProps.index
+                                )
+                            "
+                        >
+                            <i class="ni ni-note"></i>
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-danger"
+                            style="align-self: center"
+                            @click="
+                                removeCandidateCategory(
+                                    slotProps.data,
+                                    slotProps.index
+                                )
+                            "
+                        >
+                            <i class="ni ni-close"></i>
+                        </button>
+                    </template>
+                </Column>
                 <template #expansion="slotProps">
                     <div
                         class="orders-subtable"
@@ -264,7 +303,66 @@
                     </div>
                 </template>
             </DataTable>
-
+            <button
+                type="submit"
+                class="btn btn-primary align-self-lg-end mt-4"
+                style="width: 100%"
+                @click="openCreateCandidateCategory()"
+            >
+                Create New Category
+            </button>
+            <Dialog
+                header="Create Candidate Category"
+                :visible.sync="displayCreateCandidateCategory"
+                :modal="true"
+                ><div style="display: flex; flex-direction: column">
+                    <label for="name"><h3>Candidate Category Name</h3></label>
+                    <InputText
+                        id="name"
+                        v-model="new_candidate_category.name"
+                    />
+                </div>
+                <template #footer>
+                    <Button
+                        label="Close"
+                        icon="pi pi-times"
+                        @click="closeCreateCandidateCategory"
+                        class="p-button-text"
+                    />
+                    <Button
+                        label="Update"
+                        icon="pi pi-check"
+                        @click="storeCandidateCategory"
+                        autofocus
+                    />
+                </template>
+            </Dialog>
+            <Dialog
+                header="Edit Candidate Category"
+                :visible.sync="displayEditCandidateCategory"
+                :modal="true"
+                ><div style="display: flex; flex-direction: column">
+                    <label for="name"><h3>Candidate Category Name</h3></label>
+                    <InputText
+                        id="name"
+                        v-model="selected_candidate_category.name"
+                    />
+                </div>
+                <template #footer>
+                    <Button
+                        label="Close"
+                        icon="pi pi-times"
+                        @click="closeCandidateCategory"
+                        class="p-button-text"
+                    />
+                    <Button
+                        label="Update"
+                        icon="pi pi-check"
+                        @click="updateCandidateCategory"
+                        autofocus
+                    />
+                </template>
+            </Dialog>
             <Dialog
                 header="Add Programme Category"
                 :visible.sync="displayProgrammeCategoryStore"
@@ -530,6 +628,7 @@ import Column from "primevue/column";
 import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 import Dropdown from "primevue/dropdown";
+import InputSwitch from "primevue/inputswitch";
 import moment from "moment";
 
 export default {
@@ -546,6 +645,7 @@ export default {
         InputNumber,
         ConfirmDialog,
         Dropdown,
+        InputSwitch,
     },
     data() {
         return {
@@ -555,6 +655,7 @@ export default {
                 name: "",
                 tagline: "",
             },
+            is_active: false,
             selectedStudent: null,
             students: [],
             displayCandidateDetails: false,
@@ -569,17 +670,27 @@ export default {
             selectedProgramme: null,
             programmes: [],
             programme_categories: [],
+            displayEditCandidateCategory: false,
             displayCandidateStore: false,
             displayProgrammeCategoryDetails: false,
             tagline: null,
             completionImage: null,
             is_loading_update: false,
             is_loading_find_student: false,
+            is_loading_candidate_categories: false,
             candidate_category_index: null,
             candidate_category_registration_index: null,
             displayProgrammeCategoryStore: false,
+            displayCreateCandidateCategory: false,
             error: {
                 newStudent_id: { status: false, message: null },
+                category: { name: false },
+            },
+            selected_candidate_category: {
+                name: "",
+            },
+            new_candidate_category: {
+                name: "",
             },
         };
     },
@@ -621,13 +732,23 @@ export default {
     computed: {
         filtered_programme_categories() {
             // this.candidate_categories[candidate_category_index];
-            return this.programme_categories.filter(
-                (x) => x.candidate_category_programme_category_s.length === 0
+            console.log("Params:", Number(this.$route.params.session_id));
+            return this.programme_categories.filter((x) =>
+                x.candidate_category_programme_category_s.find(
+                    (y) =>
+                        y.candidate_category.voting_session_id ===
+                        Number(this.$route.params.session_id)
+                )
+                    ? false
+                    : true
             );
         },
     },
     mounted() {
-        this.newStudent.voting_session_id = this.$route.params.session_id;
+        this.newStudent.voting_session_id = Number(
+            this.$route.params.session_id
+        );
+        this.is_loading_candidate_categories = true;
         axios
             .get(`/e-voting/programme-categories`)
             .then((response) => {
@@ -637,7 +758,7 @@ export default {
                 console.log(error);
             });
         axios
-            .get(`/vote-sessions/${this.$route.params.session_id}`)
+            .get(`/vote-sessions/${Number(this.$route.params.session_id)}`)
             .then((response) => {
                 let session = response.data.data;
                 this.session = session.session;
@@ -647,6 +768,7 @@ export default {
                 this.vote_datetime_end = moment(
                     String(session.vote_datetime_end)
                 ).format("YYYY-MM-DDTHH:mm");
+                this.is_active = session.is_active === 1 ? true : false;
 
                 session.candidate_categories.forEach(async (x) => {
                     x.candidates.forEach(async (y, index) => {
@@ -674,13 +796,141 @@ export default {
                         return { ...x, index: index };
                     }
                 );
+                this.is_loading_candidate_categories = false;
+            })
+            .catch((err) => {
+                console.log(err);
+                this.is_loading_candidate_categories = false;
             });
     },
 
     methods: {
+        openCreateCandidateCategory() {
+            this.displayCreateCandidateCategory = true;
+        },
+        closeCreateCandidateCategory() {
+            this.displayCreateCandidateCategory = false;
+        },
+        storeCandidateCategory() {
+            axios
+                .post(`/e-voting/candidate-category`, {
+                    name: this.new_candidate_category.name,
+                    voting_session_id: Number(this.$route.params.session_id),
+                })
+                .then((response) => {
+                    this.candidate_categories.push({
+                        ...response.data.data,
+                        index: this.candidate_categories.length,
+                    });
+
+                    this.$toast.add({
+                        severity: "success",
+                        summary: "Submitted",
+                        detail: "Candidate category updated successfully",
+                        life: 3000,
+                    });
+                    this.is_loading = false;
+                    this.closeCreateCandidateCategory();
+                })
+                .catch((error) => {
+                    console.log(error);
+                    this.$toast.add({
+                        severity: "error",
+                        summary: "Error Message",
+                        detail: "Fail to update candidate category.",
+                        life: 3000,
+                    });
+                    this.is_loading = false;
+                });
+        },
+        updateCandidateCategory() {
+            this.is_loading = true;
+
+            let candidate_category =
+                this.candidate_categories[this.candidate_category_index];
+            axios
+                .post(`/e-voting/candidate-category/${candidate_category.id}`, {
+                    name: this.selected_candidate_category.name,
+                })
+                .then((response) => {
+                    candidate_category.name =
+                        this.selected_candidate_category.name;
+                    this.$toast.add({
+                        severity: "success",
+                        summary: "Submitted",
+                        detail: "Candidate category updated successfully",
+                        life: 3000,
+                    });
+                    this.is_loading = false;
+                    this.closeCandidateCategory();
+                })
+                .catch((error) => {
+                    console.log(error);
+                    this.$toast.add({
+                        severity: "error",
+                        summary: "Error Message",
+                        detail: "Fail to update candidate category.",
+                        life: 3000,
+                    });
+                    this.is_loading = false;
+                });
+            console.log("Update Candidate Category");
+        },
+        closeCandidateCategory() {
+            this.displayEditCandidateCategory = false;
+        },
+        editCandidateCategory(data, index) {
+            this.displayEditCandidateCategory = true;
+            this.selected_candidate_category.name = data.name;
+            this.candidate_category_index = index;
+            console.log("Edit Candidate Category");
+        },
+        removeCandidateCategory(data, index) {
+            console.log("Remove Candidate Category");
+            this.$confirm.require({
+                message: `Do you want to drop this candidate category from this session? (${data.name})`,
+                header: "Drop Confirmation",
+                icon: "pi pi-info-circle",
+                acceptClass: "p-button-danger",
+                accept: () => {
+                    // student_id: this.selectedCandidate.student_id,
+                    // voting_session_id: Number(this.$route.params.session_id),
+                    axios
+                        .delete(`/e-voting/candidate-category/${data.id}`)
+                        .then((response) => {
+                            console.log(response);
+                            this.candidate_categories.splice(index, 1);
+                            this.$toast.add({
+                                severity: "success",
+                                summary: "Drop Candidate Category",
+                                detail: "Candidate category has been dropped successfully",
+                                life: 3000,
+                            });
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            this.$toast.add({
+                                severity: "error",
+                                summary: "Error Message",
+                                detail: "Fail to drop candidate category.",
+                                life: 3000,
+                            });
+                        });
+                    this.$toast.add({
+                        severity: "info",
+                        summary: "Confirmed",
+                        detail: "Unattached Programme Category",
+                        life: 3000,
+                    });
+                },
+                reject: () => {
+                    console.log("reject");
+                },
+            });
+        },
         editSessionDetails() {
             console.log("edit session");
-            let session_id = this.$route.params.session_id;
+            let session_id = Number(this.$route.params.session_id);
             axios
                 .post(`/e-voting/session/${session_id}`, {
                     session: this.session,
@@ -692,6 +942,8 @@ export default {
                         String(this.vote_datetime_end),
                         "YYYY-MM-DD HH:mm"
                     ).format("YYYY-MM-DD HH:mm:ss"),
+
+                    is_active: this.is_active ? 1 : 0,
                 })
                 .then((response) => {
                     this.$toast.add({
@@ -920,7 +1172,9 @@ export default {
                 .post("/candidate-relevant/update", {
                     payload: {
                         student_id: this.selectedCandidate.student_id,
-                        voting_session_id: this.$route.params.session_id,
+                        voting_session_id: Number(
+                            this.$route.params.session_id
+                        ),
                         image: this.completionImage,
                         tagline: this.selectedCandidate.tagline,
                     },
@@ -990,7 +1244,7 @@ export default {
                 acceptClass: "p-button-danger",
                 accept: () => {
                     // student_id: this.selectedCandidate.student_id,
-                    // voting_session_id: this.$route.params.session_id,
+                    // voting_session_id: Number(this.$route.params.session_id),
                     axios
                         .delete(
                             `/candidate-category-programme-category/${programme_category.candidate_category_id}/${programme_category.id}`
@@ -1059,10 +1313,12 @@ export default {
                 acceptClass: "p-button-danger",
                 accept: () => {
                     // student_id: this.selectedCandidate.student_id,
-                    // voting_session_id: this.$route.params.session_id,
+                    // voting_session_id: Number(this.$route.params.session_id),
                     axios
                         .delete(
-                            `/candidate-relevant/${candidate.student_id}/${this.$route.params.session_id}`
+                            `/candidate-relevant/${
+                                candidate.student_id
+                            }/${Number(this.$route.params.session_id)}`
                         )
                         .then((response) => {
                             let temp_candidate_category =
