@@ -330,7 +330,7 @@
                         class="p-button-text"
                     />
                     <Button
-                        label="Update"
+                        label="Create"
                         icon="pi pi-check"
                         @click="storeCandidateCategory"
                         autofocus
@@ -732,13 +732,18 @@ export default {
     computed: {
         filtered_programme_categories() {
             // this.candidate_categories[candidate_category_index];
+            let params = Number(this.$route.params.session_id);
             console.log("Params:", Number(this.$route.params.session_id));
             return this.programme_categories.filter((x) =>
-                x.candidate_category_programme_category_s.find(
-                    (y) =>
-                        y.candidate_category.voting_session_id ===
-                        Number(this.$route.params.session_id)
-                )
+                x.candidate_category_programme_category_s.find(function (y) {
+                    if (y.candidate_category) {
+                        return (
+                            y.candidate_category.voting_session_id === params
+                        );
+                    } else {
+                        return true;
+                    }
+                })
                     ? false
                     : true
             );
@@ -820,6 +825,8 @@ export default {
                 .then((response) => {
                     this.candidate_categories.push({
                         ...response.data.data,
+                        programme_categories: [],
+                        candidates: [],
                         index: this.candidate_categories.length,
                     });
 
@@ -970,6 +977,7 @@ export default {
                     candidate_category_id:
                         this.candidate_categories[this.candidate_category_index]
                             .id,
+                    voting_session_id:this.$route.params.session_id
                 })
                 .then((response) => {
                     console.log(response);

@@ -4,13 +4,21 @@
             position="top-right"
             :breakpoints="{ '920px': { width: '100%', right: '0', left: '0' } }"
         />
-
+        <Dropdown
+            v-if="sessions.length > 0"
+            v-model="selectedSession"
+            :options="sessions"
+            optionLabel="session"
+            placeholder="Select a session"
+            @change="generateReport()"
+        />
         <button
             v-if="
                 !is_loading.overall &&
                 !is_loading.detail &&
                 categories.length > 0 &&
-                !is_generating_pdf
+                !is_generating_pdf &&
+                selectedSession !== null
             "
             :disabled="is_generating_pdf"
             class="btn btn-primary position-absolute"
@@ -22,7 +30,7 @@
             Print
         </button>
         <ProgressSpinner
-            v-else-if="is_generating_pdf"
+            v-else-if="is_generating_pdf && selectedSession !== null"
             class="position-absolute"
             style="top: 0; right: 0; width: 1rem; height: 1rem"
             strokeWidth="8"
@@ -32,7 +40,11 @@
             <img src="../../assets/logo_primary_2.png" style="height: 100px" />
         </center>
         <h4 class="mb-5" style="text-align: center">
-            <b>Campus General Election Report</b>
+            <b
+                >Campus General Election Report ({{
+                    selectedSession.session
+                }})</b
+            >
         </h4>
 
         <VueHtml2pdf
@@ -61,7 +73,11 @@
                     />
                 </center>
                 <h4 class="mb-5" style="text-align: center">
-                    <b>Campus General Election Report</b>
+                    <b
+                        >Campus General Election Report ({{
+                            selectedSession.session
+                        }})</b
+                    >
                 </h4>
                 <Divider align="left">
                     <b>Overall</b>
@@ -119,7 +135,10 @@
                 flex-direction: column;
                 align-items: center;
             "
-            v-if="is_loading.overall || is_loading.detail"
+            v-if="
+                is_loading.overall ||
+                (is_loading.detail && selectedSession !== null)
+            "
         >
             <ProgressSpinner
                 style="width: 100px; height: 100px"
@@ -132,7 +151,8 @@
             v-else-if="
                 !is_loading.overall &&
                 !is_loading.detail &&
-                categories.length > 0
+                categories.length > 0 &&
+                selectedSession !== null
             "
         >
             <ReportContent
@@ -151,6 +171,7 @@ import Divider from "primevue/divider";
 import ReportContent from "../../components/eVoting/ReportContent.vue";
 import ProgressSpinner from "primevue/progressspinner";
 import VueHtml2pdf from "vue-html2pdf";
+import Dropdown from "primevue/dropdown";
 export default {
     name: "ReportIndex",
     components: {
@@ -159,6 +180,7 @@ export default {
         ReportContent,
         CategoricalReport,
         Divider,
+        Dropdown,
     },
     data() {
         return {
@@ -168,6 +190,8 @@ export default {
                 total_turnouts: 0,
                 total_not_turnouts: 0,
             },
+            sessions: [],
+            selectedSession: null,
             is_loading: { overall: true, detail: true },
             is_generating_pdf: false,
         };
@@ -189,6 +213,44 @@ export default {
             console.log("Print button clicked");
             this.$refs.html2Pdf.generatePdf();
         },
+        async generateReport() {
+            this.is_loading.overall = true;
+            this.is_loading.detail = true;
+            await axios
+                .get(`/overall-report/${this.selectedSession.id}`)
+                .then((response) => {
+                    const overall_report = response.data.data;
+                    this.overall_report = overall_report;
+                    this.is_loading.overall = false;
+                })
+                .catch((error) => {
+                    console.log(error);
+                    this.is_loading.overall = false;
+                    this.$toast.add({
+                        severity: "error",
+                        summary: "Error Message",
+                        detail: "No report detail to be loaded",
+                        life: 3000,
+                    });
+                });
+            await axios
+                .get(`/categorical-report/${this.selectedSession.id}`)
+                .then((response) => {
+                    const categories = response.data.data;
+                    this.categories = categories;
+                    this.is_loading.detail = false;
+                })
+                .catch((error) => {
+                    console.log(error);
+                    this.is_loading.detail = false;
+                    this.$toast.add({
+                        severity: "error",
+                        summary: "Error Message",
+                        detail: "No report detail to be loaded",
+                        life: 3000,
+                    });
+                });
+        },
     },
 
     computed: {
@@ -197,44 +259,17 @@ export default {
         },
     },
 
-    async mounted() {
-        this.is_loading.overall = true;
-        this.is_loading.detail = true;
-        await axios
-            .get("/overall-report")
-            .then((response) => {
-                const overall_report = response.data.data;
-                this.overall_report = overall_report;
-                this.is_loading.overall = false;
-            })
-            .catch((error) => {
-                console.log(error);
-                this.is_loading.overall = false;
-                this.$toast.add({
-                    severity: "error",
-                    summary: "Error Message",
-                    detail: "No report detail to be loaded",
-                    life: 3000,
-                });
-            });
-        await axios
-            .get("/categorical-report")
-            .then((response) => {
-                const categories = response.data.data;
-                this.categories = categories;
-                this.is_loading.detail = false;
-            })
-            .catch((error) => {
-                console.log(error);
-                this.is_loading.detail = false;
-                this.$toast.add({
-                    severity: "error",
-                    summary: "Error Message",
-                    detail: "No report detail to be loaded",
-                    life: 3000,
-                });
-            });
+    mounted() {
+        axios.get("/vote-sessions").then((response) => {
+            this.sessions = response.data.data;
+            this.selectedSession = this.sessions[this.sessions.length - 1];
+            this.generateReport();
+        });
     },
 };
 </script>
-<style></style>
+<style lang="scss" scoped>
+.p-dropdown {
+    min-width: 15rem;
+}
+</style>

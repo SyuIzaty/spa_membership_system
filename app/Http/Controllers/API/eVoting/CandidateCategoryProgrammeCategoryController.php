@@ -89,6 +89,9 @@ class CandidateCategoryProgrammeCategoryController extends BaseController
         }else{
             $candidate_category_programme_categories=
             CandidateCategoryProgrammeCategory::where('programme_category_id', $request->programme_category_id)
+            ->whereHas('candidate_category', function($query) use ($request){
+                $query->where('voting_session_id', $request->voting_session_id);
+            })
             ->get();
             if(!is_null($candidate_category_programme_categories) && count($candidate_category_programme_categories)>0)
             {

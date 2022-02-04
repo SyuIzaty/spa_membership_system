@@ -183,10 +183,12 @@ class VoteController extends BaseController
                 foreach($candidate_category_programme_category->programme_category->programmes as $programme){
                     array_push($statistics['programmes'],$programme->name);
                     foreach($programme->students as $student){
-                        if(!is_null($student->votes) && count($student->votes)>0){
-                            $statistics['total_turnouts']+=1;
-                        }else{
-                            $statistics['total_not_turnouts']+=1;
+                        if($student->students_status==='AKTIF'){
+                            if(!is_null($student->votes) && count($student->votes)>0){
+                                $statistics['total_turnouts']+=1;
+                            }else{
+                                $statistics['total_not_turnouts']+=1;
+                            }
                         }
                         foreach($student->candidates as $candidate){
                             // $candidate_temp=$candidate;
@@ -202,8 +204,8 @@ class VoteController extends BaseController
         return $this->sendResponse($categorical_statistics, 'Vote Categories Fetched!');
     }
 
-    public function categoricalReport(){
-        $candidate_categories = CandidateCategory::all()->load(
+    public function categoricalReport($voting_session_id){
+        $candidate_categories = CandidateCategory::where('voting_session_id', $voting_session_id)->get()->load(
             ['candidate_category_programme_category_s.programme_category.programmes.students.votes',
             'candidate_category_programme_category_s.programme_category.programmes.students.candidates.votes',
             'candidate_category_programme_category_s.programme_category.programmes.students.candidates.student.state'
@@ -227,10 +229,13 @@ class VoteController extends BaseController
                 foreach($candidate_category_programme_category->programme_category->programmes as $programme){
                     array_push($statistics['programmes'],$programme->name);
                     foreach($programme->students as $student){
-                        if(!is_null($student->votes) && count($student->votes)>0){
-                            $statistics['total_turnouts']+=1;
-                        }else{
-                            $statistics['total_not_turnouts']+=1;
+
+                        if($student->students_status==='AKTIF'){
+                            if(!is_null($student->votes) && count($student->votes)>0){
+                                $statistics['total_turnouts']+=1;
+                            }else{
+                                $statistics['total_not_turnouts']+=1;
+                            }
                         }
                         foreach($student->candidates as $candidate){
                             $candidate_temp=new stdClass();
@@ -264,9 +269,9 @@ class VoteController extends BaseController
         }
         return $this->sendResponse($categorical_statistics, 'Vote Categories Fetched!');
     }
-    public function overallReport(){
+    public function overallReport($voting_session_id){
 
-        $candidate_categories = CandidateCategory::all()->load(
+        $candidate_categories = CandidateCategory::where('voting_session_id', $voting_session_id)->get()->load(
             ['candidate_category_programme_category_s.programme_category.programmes.students.votes',
             'candidate_category_programme_category_s.programme_category.programmes.students.candidates.votes',
             'candidate_category_programme_category_s.programme_category.programmes.students.candidates.student.state'
@@ -295,14 +300,16 @@ class VoteController extends BaseController
                     array_push($statistics['programmes'],$programme->name);
                     foreach($programme->students as $student){
 
-                        $overallReport->total_students+=1;
-                        if(!is_null($student->votes) && count($student->votes)>0){
+                        if($student->students_status==='AKTIF'){
+                            $overallReport->total_students+=1;
+                            if(!is_null($student->votes) && count($student->votes)>0){
 
-                            $overallReport->total_turnouts+=1;
-                            $statistics['total_turnouts']+=1;
-                        }else{
-                            $overallReport->total_not_turnouts+=1;
-                            $statistics['total_not_turnouts']+=1;
+                                $overallReport->total_turnouts+=1;
+                                $statistics['total_turnouts']+=1;
+                            }else{
+                                $overallReport->total_not_turnouts+=1;
+                                $statistics['total_not_turnouts']+=1;
+                            }
                         }
                         foreach($student->candidates as $candidate){
                             $candidate_temp=new stdClass();

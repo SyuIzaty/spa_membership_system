@@ -98,7 +98,13 @@ class CandidateCategoryController extends BaseController
     public function destroy($id)
     {
         //
-        $candidate_category=CandidateCategory::find($id);
+        $candidate_category=CandidateCategory::where('id',$id)->first()->load(['candidate_category_programme_category_s']);
+        foreach($candidate_category->candidate_category_programme_category_s as $candidate_category_programme_category){
+            $candidate_category_programme_category->updated_by=Auth::user()->id;
+            $candidate_category_programme_category->deleted_by=Auth::user()->id;
+            $candidate_category_programme_category->save();
+            $candidate_category_programme_category->delete();
+        }
         $candidate_category->updated_by=Auth::user()->id;
         $candidate_category->deleted_by=Auth::user()->id;
         $candidate_category->save();
