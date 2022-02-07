@@ -1,12 +1,35 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+// The order of imported files are important!
+import "primevue/resources/themes/saga-blue/theme.css";
+import "primevue/resources/primevue.min.css";
+import "primeicons/primeicons.css";
+import PrimeVue from "primevue/config";
+import Vue from "vue";
+import { routes } from "./routes";
+import VueRouter from "vue-router";
+import { ValidationProvider, ValidationObserver } from "vee-validate";
+import ConfirmationService from "primevue/confirmationservice";
+import ToastService from "primevue/toastservice";
+import Toast from "primevue/toast";
 
-require('./bootstrap');
+import VueHtml2pdf from "vue-html2pdf";
+require("./bootstrap");
 
-window.Vue = require('vue');
+Vue.use(PrimeVue);
+Vue.use(ToastService);
+Vue.use(ConfirmationService);
+Vue.use(VueHtml2pdf);
+Vue.component("ValidationProvider", ValidationProvider);
+Vue.component("ValidationObserver", ValidationObserver);
+Vue.component("Toast", Toast);
+
+Vue.use(VueRouter);
+
+const router = new VueRouter({
+    routes, // short for `routes: routes`.
+    mode: "history",
+});
+
+Vue.config.productionTip = false;
 
 /**
  * The following block of code may be used to automatically register your
@@ -16,17 +39,12 @@ window.Vue = require('vue');
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+Vue.component(
+    "example-component",
+    require("./components/ExampleComponent.vue").default
+);
 
 const app = new Vue({
-    el: '#app',
+    el: "#app",
+    router,
 });
