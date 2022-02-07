@@ -12,7 +12,7 @@
                 <div id="panel-1" class="panel">
                     <div class="panel-hdr">
 
-                        @if ($status == '1' || $status == '2' || $status == '3' || $status == '4')
+                        @if ($id == '1' || $id == '2' || $id == '3' || $id == '4')
                          <h2>List for Status : {{$status->description}}</h2>
                         @endif
 
@@ -35,6 +35,11 @@
                                         <tr class="bg-primary-50 text-center">
                                             <th class="text-center">No.</th>
                                             <th class="text-center">Ticket No.</th>
+                                            <th class="text-center">Date</th>
+                                            <th class="text-center">Name</th>
+                                            <th class="text-center">Email</th>
+                                            <th class="text-center">Contact No.</th>
+                                            <th class="text-center">Title</th>
                                             <th class="text-center">Category</th>
                                             <th class="text-center">User Category</th>
                                             <th class="text-center">Status</th>
@@ -44,6 +49,11 @@
                                     </thead>
                                     <tbody>
                                         <tr>
+                                            <td class="hasinput"></td>
+                                            <td class="hasinput"></td>
+                                            <td class="hasinput"></td>
+                                            <td class="hasinput"></td>
+                                            <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
@@ -79,7 +89,12 @@
             },
             columns: [
                 { className: 'text-center', data: 'DT_RowIndex', name: 'DT_RowIndex' , orderable: false, searchable: false },
-                { className: 'text-left', data: 'ticket_no', name: 'ticket_no' },
+                { className: 'text-center', data: 'ticket_no', name: 'ticket_no' },
+                { className: 'text-center', data: 'complaint_date', name: 'complaint_date' },
+                { className: 'text-left', data: 'name', name: 'name' },
+                { className: 'text-left', data: 'email', name: 'email' },
+                { className: 'text-center', data: 'phone', name: 'phone' },
+                { className: 'text-left', data: 'title', name: 'title' },
                 { className: 'text-center', data: 'category', name: 'category' },
                 { className: 'text-center', data: 'user', name: 'user' },
                 { className: 'text-center', data: 'status', name: 'status' },

@@ -130,12 +130,14 @@
                                                         <tr>
                                                             <td colspan="5" class="bg-info-50"><label class="form-label"><i class="fal fa-pencil"></i> ASSIGN DEPARTMENT</label></td>
                                                         </tr>
-                                                        
+                                                        <tr>      
+                                                            <td colspan="5" class="bg-warning-50" style="vertical-align: middle">Please assign department.</td>
+                                                        </tr>
                                                         <tr>
                                                             <th width="20%" style="vertical-align: middle">Department : </th>
                                                             <td colspan="4" style="vertical-align: middle">
                                                                 <select class="form-control" name="department" id="department" required>
-                                                                    <option disabled>Choose Department</option>
+                                                                    <option disabled selected>Select Department</option>
                                                                     @foreach ($department as $d)
                                                                         <option value="{{ $d->id }}" {{ old('department') == $d->id  ? 'selected' : '' }}>{{ $d->name }}</option>
                                                                     @endforeach
@@ -145,7 +147,7 @@
                                                     </thead>
                                                 </table>
                                             </div>
-                                            <button type="submit" class="btn btn-warning ml-auto float-right mr-2 waves-effect waves-themed" id="assign" style="margin-bottom: 20px;"><i class="fal fa-times-circle"></i> Submit</button>
+                                            <button type="submit" class="btn btn-primary ml-auto float-right mr-2 waves-effect waves-themed" id="assign" style="margin-bottom: 20px;"><i class="fal fa-times-circle"></i> Submit</button>
                                         </form>
                                     @endcan
                                 @endif
@@ -157,18 +159,18 @@
                                                         <thead>
                                                             <tr>
                                                                 <td colspan="5" class="bg-info-50">
-                                                                    <label class="form-label"><i class="fal fa-comment-alt"></i> REMARK: 
+                                                                    <label class="form-label"><i class="fal fa-comment-alt"></i> FEEDBACK: 
                                                                         @can('assign department')
                                                                             <form id="changedept" style="display: inline-block;">
                                                                                 @csrf
                                                                                 <input type="hidden" id="id" name="id" value="{{ $data->id }}">
                                                                                 <select name="department" id="department" >
-                                                                                    <option disabled>Choose Department</option>
+                                                                                    <option disabled selected>Select Department</option>
                                                                                     @foreach ($department as $d)
                                                                                         <option value="{{ $d->id }}" {{ $data->assign == $d->id  ? 'selected' : '' }}>{{ $d->name }}</option>
                                                                                     @endforeach
                                                                                 </select>
-                                                                                <button type="submit" id="submitDept" class="btn btn-danger btn-xs float-right waves-effect waves-themed" style="margin-left: 10px; display: none;"><i class="fal fa-times-circle"></i> Change</button>
+                                                                                <button type="submit" id="submitDept" class="btn btn-primary btn-xs float-right waves-effect waves-themed" style="display: none;"><i class="fal fa-times-circle"></i> Change</button>
                                                                             </form>
                                                                         @endcan
                                                                     </label>
@@ -185,7 +187,7 @@
                                                         </thead>
                                                     </table>
                                                 </div>
-                                                                <button type="submit" class="btn btn-danger ml-auto float-right mr-2 waves-effect waves-themed" id="remarks" style="margin-bottom: 20px;"><i class="fal fa-times-circle"></i> Submit</button>
+                                                                <button type="submit" class="btn btn-success ml-auto float-right mr-2 waves-effect waves-themed" id="remarks" style="margin-bottom: 20px;"><i class="fal fa-times-circle"></i> Submit</button>
                                                             </form>
                                         @endcan
                                 @endif
@@ -196,7 +198,7 @@
                                                     <table class="table table-bordered table-hover table-striped w-100">
                                                         <thead>
                                                             <tr>
-                                                                <td colspan="5" class="bg-info-50"><label class="form-label"><i class="fal fa-comment-alt"></i> REMARK: {{$data->getDepartment->name}} DEPARTMENT</label></td>
+                                                                <td colspan="5" class="bg-info-50"><label class="form-label"><i class="fal fa-comment-alt"></i> FEEDBACK: {{$data->getDepartment->name}} Department</label></td>
                                                             </tr>
                                                             
                                                             <tr>
@@ -220,18 +222,23 @@
                                                         <thead>
                                                             <input type="hidden" id="id" name="id" value="{{ $data->id }}" required>
                                                             <tr>
-                                                                <td colspan="5" class="bg-info-50"><label class="form-label"><i class="fal fa-user"></i> ADMIN REMARK</label></td>
+                                                                <td colspan="5" class="bg-info-50"><label class="form-label"><i class="fal fa-user"></i> ADMIN FEEDBACK</label></td>
                                                             </tr>
-                                                            
+                                                            <tr>      
+                                                                <td colspan="5" class="bg-warning-50" style="vertical-align: middle; color:#ff0030;">Please write feedback carefully. This will be displayed to user view.</td>
+                                                            </tr>
                                                             <tr>
                                                                 <td colspan="4" style="vertical-align: middle">   
-                                                                    <textarea value="{{ old('adminremarks') }}" class="form-control summernote" id="adminremarks" name="adminremarks" required>{!! nl2br($dataRemark->remark) !!}</textarea>                                        
+                                                                    <textarea class="form-control summernote" id="adminremarks" name="adminremarks" required>{!! nl2br($dataRemark->remark) !!}</textarea>                                        
+                                                                    <br>
+                                                                    <p class="form-label" for="check"><input type="checkbox" name="check" checked> Notify user by email</p> 
                                                                 </td>
                                                             </tr>
+                                                           
                                                         </thead>
                                                     </table>
                                                 </div>
-                                                <button type="submit" class="btn btn-danger ml-auto float-right mr-2 waves-effect waves-themed" id="adminremark" style="margin-bottom: 20px;"><i class="fal fa-times-circle"></i> Complete</button>
+                                                <button type="submit" class="btn btn-success ml-auto float-right mr-2 waves-effect waves-themed" id="adminremark" style="margin-bottom: 15px; margin-top: 15px;"><i class="fal fa-times-circle"></i> Complete</button>
                                             </form>
                                         @endcan
                                     @endif
@@ -243,7 +250,7 @@
                                                     <table class="table table-bordered table-hover table-striped w-100">
                                                         <thead>
                                                             <tr>
-                                                                <td colspan="5" class="bg-info-50"><label class="form-label"><i class="fal fa-user"></i> ADMIN REMARK</label></td>
+                                                                <td colspan="5" class="bg-info-50"><label class="form-label"><i class="fal fa-user"></i> ADMIN FEEDBACK</label></td>
                                                             </tr>
 
                                                             <tr>
@@ -271,6 +278,9 @@
 
 @section('script')
 <script>
+        
+        $('#department').select2();
+
 
         $('.summernote').summernote({
             height: 200,
@@ -278,38 +288,41 @@
             spellCheck: true
         });
 
+
         $("#assign").on('click', function(e) {
-            e.preventDefault();
+           
+           e.preventDefault();
 
             var datas = $('#formId').serialize();
 
-            $.ajaxSetup({
-            headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-            });
-
-            Swal.fire({
-                title: 'Are you sure you want to assign this department?',
+            $.ajax({
+                type: "POST",
+                url: "{{ url('get-department')}}",
+                data: datas,
+                dataType: "json",
+                success: function (response) {
+                console.log(response);
+                        
+                Swal.fire({
+                title: response.success,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes!',
-                cancelButtonText: 'No'
-            }).then((result) => {
-                if (result.value) {
+                confirmButtonText: 'Yes!'
+            }).then(function (e) {
 
+                if (e.value === true) {
                     Swal.fire({
-                    title: 'Loading..',
-                    text: 'Please wait..',
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                    allowEnterKey: false,
-                    onOpen: () => {
-                        Swal.showLoading()
-                    }
-                })
+                        title: 'Sending..',
+                        text: 'Please wait..',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        allowEnterKey: false,
+                        onOpen: () => {
+                            Swal.showLoading()
+                        }
+                    })
                     $.ajax({
                         type: "POST",
                         url: "{{ url('assign-department')}}",
@@ -323,8 +336,19 @@
                     }
                         }
                     });
+
+                } else {
+                    e.dismiss;
                 }
+
+            }, function (dismiss) {
+                return false;
             })
+
+
+            }
+            });
+
         });
 
         $("#remarks").on('click', function(e) {

@@ -17,7 +17,7 @@ class AduanKorporatAdmin extends Model
 
     public function department()
     {
-        return $this->hasOne('App\DepartmentList', 'id', 'department_id');
+        return $this->hasOne('App\AduanKorporatDepartment', 'id', 'department_id');
     }
 
     public function staff()

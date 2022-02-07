@@ -10,7 +10,8 @@ use App\AduanKorporatLog;
 use App\AduanKorporatRemark;
 use App\AduanKorporatFile;
 use App\AduanKorporatAdmin;
-use App\DepartmentList;
+use App\AduanKorporatDepartment;
+use App\AduanKorporatSubCategory;
 use App\User;
 use App\Staff;
 use DateTime;
@@ -141,8 +142,6 @@ class AduanKorporatController extends Controller
                     'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $a->name,
                     'emel'     => 'You have received new iComplaint from '.$request->user_name.' on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Please log in to the IDS system for further action.',
                 ];
-
-                
     
                 Mail::send('aduan-korporat.email', $data, function ($message) use ($admin_email) {
                     $message->subject('New iComplaint');
@@ -241,12 +240,9 @@ class AduanKorporatController extends Controller
                     $message->to($admin_email);
                 });
             }    
-
         }
-
         
         return redirect('end/'.$ticket);
-      
     }
 
     public function end($ticket)
@@ -295,6 +291,31 @@ class AduanKorporatController extends Controller
             return $list->ticket_no;            
         })
 
+        ->editColumn('complaint_date', function ($list) {
+
+            return $list->created_at->format('d/m/Y');            
+        })
+
+        ->editColumn('name', function ($list) {
+
+            return $list->name;            
+        })
+
+        ->editColumn('email', function ($list) {
+
+            return $list->email;            
+        })
+
+        ->editColumn('phone', function ($list) {
+
+            return $list->phone_no;            
+        })
+
+        ->editColumn('title', function ($list) {
+
+            return $list->title;            
+        })
+
         ->editColumn('category', function ($list) {
 
             return $list->getCategory->description ?? '';            
@@ -312,12 +333,12 @@ class AduanKorporatController extends Controller
 
         ->editColumn('assign', function ($list) {
 
-            return isset($list->getDepartment->name) ? $list->getDepartment->name : 'N/A';            
+            return isset($list->getDepartment->code) ? $list->getDepartment->code : 'N/A';            
         })
 
         ->addColumn('action', function ($list) {
             
-            return '<a href="/detail/' .$list->id.'" class="btn btn-sm btn-danger"><i class="fal fa-eye"></i></a>
+            return '<a href="/detail/' .$list->id.'" class="btn btn-sm btn-info"><i class="fal fa-eye"></i></a>
                     <a href="/log/' .$list->id.'" class="btn btn-sm btn-primary"><i class="fal fa-list-alt"></i></a>';
         })
 
@@ -336,7 +357,7 @@ class AduanKorporatController extends Controller
     public function detail($id)
     {
         $data = AduanKorporat::where('id', $id)->first();
-        $department = DepartmentList::all();
+        $department = AduanKorporatDepartment::all();
         $dataRemark = AduanKorporatRemark::where('complaint_id', $id)->first();
         $file = AduanKorporatFile::where('complaint_id', $id)->get();
         $admin = AduanKorporatLog::where('complaint_id',$id)->where('activity','Completed')->first();
@@ -344,110 +365,154 @@ class AduanKorporatController extends Controller
         return view('aduan-korporat.admin-view-detail', compact('data','department','dataRemark','file','admin'));
     }
 
+    public function getDept(Request $request)
+    {
+        $message = $dept = '';
+
+        if($request->department)
+        {
+                $department = AduanKorporatDepartment::where('id', $request->department)->first();
+
+                $dept = $department->name;
+        }
+       
+        $message = "Are you sure you want to assign ".$dept." department?";
+
+        return response() ->json(['success' => $message]);
+    }
+
     public function assign(Request $request)
     {
-        $assign = AduanKorporat::where('id', $request->id)->first();
-        $assign->update([
-            'assign'     => $request->department,
-            'status'     => '2',
-            'updated_by' => Auth::user()->id
-        ]);
+        if ($request->department)
+        {
+            $assign = AduanKorporat::where('id', $request->id)->first();
+            $assign->update([
+                'assign'     => $request->department,
+                'status'     => '2',
+                'updated_by' => Auth::user()->id
+            ]);
+    
+            $user = User::where('id', Auth::user()->id)->first();
+    
+            AduanKorporatLog::create([
+                'complaint_id'  => $request->id,
+                'name'          => $user->name,
+                'activity'      => 'Assign department',
+                'created_by'    => Auth::user()->id
+            ]);
+    
+            return response() ->json(['success' => 'Successful Assign!']);    
+        }
 
-        $user = User::where('id', Auth::user()->id)->first();
-
-        AduanKorporatLog::create([
-            'complaint_id'  => $request->id,
-            'name'          => $user->name,
-            'activity'      => 'Assign department',
-            'created_by'    => Auth::user()->id
-        ]);
-
-        return response() ->json(['success' => 'Successful Assign!']);
+        else
+        {
+            return response() ->json(['success' => 'Please select department!']);    
+        }
     }
 
     public function remark(Request $request)
     {
-        $data  = new AduanKorporatRemark();
-        $data->complaint_id = $request->id;
-        $data->remark       = $request->remark;
-        $data->created_by   = Auth::user()->id;
-        $data->save();
-
-        $update = AduanKorporat::where('id', $request->id)->first();
-        $update->update([
-            'status'     => '3',
-            'updated_by' => Auth::user()->id
-        ]);
-
-        $user = User::where('id', Auth::user()->id)->first();
-
-        AduanKorporatLog::create([
-            'complaint_id'  => $request->id,
-            'name'          => $user->name,
-            'activity'      => 'Sent remark',
-            'created_by'    => Auth::user()->id
-        ]);
-
-        $admin = User::whereHas('roles', function($query){
-            $query->where('id', 'EAK001'); // Admin
-        })->get();
-
-        foreach($admin as $a)
+        if ($request->remark)
         {
-            $admin_email = $a->email;
+            $data  = new AduanKorporatRemark();
+            $data->complaint_id = $request->id;
+            $data->remark       = $request->remark;
+            $data->created_by   = Auth::user()->id;
+            $data->save();
+    
+            $update = AduanKorporat::where('id', $request->id)->first();
+            $update->update([
+                'status'     => '3',
+                'updated_by' => Auth::user()->id
+            ]);
+    
+            $user = User::where('id', Auth::user()->id)->first();
+    
+            AduanKorporatLog::create([
+                'complaint_id'  => $request->id,
+                'name'          => $user->name,
+                'activity'      => 'Sent remark',
+                'created_by'    => Auth::user()->id
+            ]);
+    
+            $admin = User::whereHas('roles', function($query){
+                $query->where('id', 'EAK001'); // Admin
+            })->get();
+    
+            foreach($admin as $a)
+            {
+                $admin_email = $a->email;
+    
+                $data = [
+                    'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $a->name,
+                    'emel'     => 'Feedback for iComplaint ['.$update->ticket_no.'] has been made by '.$user->name.' on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Please log in to the IDS system for further action.',
+                ];
+    
+                Mail::send('aduan-korporat.email', $data, function ($message) use ($admin_email) {
+                    $message->subject('iComplaint Feedback');
+                    $message->from('corporate@intec.edu.my');
+                    $message->to($admin_email);
+                });
+            }    
+    
+            return response() ->json(['success' => 'Feedback sent!']);
+        }
 
-            $data = [
-                'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $a->name,
-                'emel'     => 'Feedback for iComplaint ['.$update->ticket_no.'] has been made by '.$user->name.' on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Please log in to the IDS system for further action.',
-            ];
-
-            Mail::send('aduan-korporat.email', $data, function ($message) use ($admin_email) {
-                $message->subject('iComplaint Feedback');
-                $message->from('corporate@intec.edu.my');
-                $message->to($admin_email);
-            });
-        }    
-
-        return response() ->json(['success' => 'Remark Sent!']);
+        else
+        {
+            return response() ->json(['success' => 'Please fill in feedback!']);
+        }
+       
     }
 
     public function complete(Request $request)
     {
-        $assign = AduanKorporatRemark::where('complaint_id', $request->id)->first();
-        $assign->update([
-                'admin_remark' => $request->adminremarks,
+        if ($request->adminremarks === null)
+        {
+            return response() ->json(['success' => 'Please fill in feedback!']);    
+        }
+
+        else
+        {
+            $assign = AduanKorporatRemark::where('complaint_id', $request->id)->first();
+            $assign->update([
+                    'admin_remark' => $request->adminremarks,
+                    'updated_by' => Auth::user()->id
+                ]);
+    
+            $update = AduanKorporat::where('id', $request->id)->first();
+            $update->update([
+                'status'     => '4',
                 'updated_by' => Auth::user()->id
             ]);
-
-        $update = AduanKorporat::where('id', $request->id)->first();
-        $update->update([
-            'status'     => '4',
-            'updated_by' => Auth::user()->id
-        ]);
-
-        $user = User::where('id', Auth::user()->id)->first();
-
-        AduanKorporatLog::create([
-            'complaint_id'  => $request->id,
-            'name'          => $user->name,
-            'activity'      => 'Completed',
-            'created_by'    => Auth::user()->id
-        ]);
-        
-        $user_email = $update->email;
-
-            $data = [
-                'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $update->name,
-                'emel'     => 'You have received feedback for iComplaint ['.$update->ticket_no.'] on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Kindly check in https://iComplaint.intec.edu.my/',
-            ];
-
-            Mail::send('aduan-korporat.email_user', $data, function ($message) use ($user_email) {
-                $message->subject('iComplaint Feedback');
-                $message->from('corporate@intec.edu.my');
-                $message->to($user_email);
-            });
     
-        return response() ->json(['success' => 'Remark sent!']);
+            $user = User::where('id', Auth::user()->id)->first();
+    
+            AduanKorporatLog::create([
+                'complaint_id'  => $request->id,
+                'name'          => $user->name,
+                'activity'      => 'Completed',
+                'created_by'    => Auth::user()->id
+            ]);
+    
+            if ($request->check != '')
+            {
+                $user_email = $update->email;
+    
+                    $data = [
+                        'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $update->name,
+                        'emel'     => 'You have received feedback for iComplaint ['.$update->ticket_no.'] on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Kindly check in https://iComplaint.intec.edu.my/',
+                    ];
+    
+                    Mail::send('aduan-korporat.email_user', $data, function ($message) use ($user_email) {
+                        $message->subject('iComplaint Feedback');
+                        $message->from('corporate@intec.edu.my');
+                        $message->to($user_email);
+                    });
+            }
+            
+            return response() ->json(['success' => 'Feedback successfully sent to user!']);  
+        }
     }
 
     public function file($id)
@@ -582,7 +647,7 @@ class AduanKorporatController extends Controller
             $countCategory[++$key] = [$value->description, (int)$value->complaint_count];
         }
 
-        $department = DepartmentList::select('id', 'name')->withCount('complaint')->orderBy('name', 'ASC')->get();
+        $department = AduanKorporatDepartment::select('id', 'name')->withCount('complaint')->orderBy('name', 'ASC')->get();
 
         $countDepartment[] = ['Category','Total'];
         foreach ($department as $key => $value) {
@@ -622,7 +687,7 @@ class AduanKorporatController extends Controller
             $countCategory[++$key] = [$value->description, (int)$value->complaint_count];
         }
 
-        $department = DepartmentList::select('id', 'name')->withCount(['complaint' => function($query) use ($month,$request) {
+        $department = AduanKorporatDepartment::select('id', 'name')->withCount(['complaint' => function($query) use ($month,$request) {
             $query->whereYear('created_at', '=', $request->year)->whereMonth('created_at', '=', $month);}])->get();
 
         $countDepartment[] = ['Category','Total'];
@@ -858,7 +923,7 @@ class AduanKorporatController extends Controller
 
     public function departmentLists()
     {
-        $department = DepartmentList::all();
+        $department = AduanKorporatDepartment::all();
 
         return datatables()::of($department)
 
@@ -883,7 +948,7 @@ class AduanKorporatController extends Controller
 
     public function adminList($id)
     {
-        $department = DepartmentList::where('id',$id)->first();
+        $department = AduanKorporatDepartment::where('id',$id)->first();
         $mainAdmin =  User::orderBy('name', 'ASC')->where('category', 'STF')->get();
         $admin = AduanKorporatAdmin::where('department_id',$id)->get();
 
@@ -1126,6 +1191,67 @@ class AduanKorporatController extends Controller
         $exist = AduanKorporatUser::find($id);
         $exist->delete();
         $exist->update(['deleted_by' => Auth::user()->id]);
+    }
+
+    public function subCategory()
+    {
+        return view('aduan-korporat.subcategory');
+    }
+
+    public function getSubCat()
+    {
+        $subcategory = AduanKorporatSubCategory::all();
+
+        return datatables()::of($subcategory)
+
+            ->addColumn('title', function ($subcategory) {
+                return $subcategory->description;
+            })
+
+            ->editColumn('status',function($subcategory)
+            {
+
+                if ($subcategory->active == '1')
+                {
+                    return '<div style="color: green;"><b>Active</b></div>';
+                }
+
+                else
+                {
+                    return '<div style="color: red;"><b>Inactive</b></div>';
+                }
+            })
+
+            ->addColumn('action', function ($subcategory) {
+                return '<a href="#" data-target="#edit" data-toggle="modal" data-id="'.$subcategory->id.'" data-title="'.$subcategory->description.'" data-status="'.$subcategory->active.'"
+                class="btn btn-sm btn-primary"><i class="fal fa-pencil"></i></a>';
+            })
+
+            ->rawColumns(['status','action'])
+            ->make(true);
+    }
+
+    public function addSubCategory(Request $request)
+    {
+        AduanKorporatSubCategory::create([
+            'description' => $request->description,
+            'active'      => $request->active,
+            'created_by'  => Auth::user()->id
+        ]);
+
+        return redirect()->back()->with('message','Add Successfully');
+    }
+
+    public function editSubCategory(Request $request)
+    {
+        $update = AduanKorporatSubCategory::where('id', $request->id)->first();
+        $update->update([
+            'description' => $request->title,
+            'active'      => $request->status,
+            'updated_by'  => Auth::user()->id
+        ]);
+        
+        return redirect()->back()->with('message','Update Successfully');
     }
 
 }
