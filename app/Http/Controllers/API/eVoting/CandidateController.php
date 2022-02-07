@@ -129,7 +129,13 @@ class CandidateController extends BaseController
             $extension = explode('/', mime_content_type($request->payload['image']))[1];
             $date = Carbon::today()->toDateString();
             $year = substr($date, 0, 4);
-            $path='app/evoting/candidates/'.$year.'/candidate_'.$candidate['id'].'.'.$extension;
+            $path='app/evoting/candidates/'.$year;
+
+            if(!File::exists(storage_path() . '/' . $path)) {
+                File::makeDirectory(storage_path() . '/' . $path, 0755, true, true);
+            }
+
+            $path .='/candidate_'.$candidate['id'].'.'.$extension;
             Image::make(file_get_contents($request->payload['image']))->save(storage_path() . '/'.$path);
             $candidate->image=$path;
         }
