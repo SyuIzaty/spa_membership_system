@@ -110,7 +110,7 @@
                         @endphp
 
                         <!-- Start eAduan Korporat System -->
-                            
+
                             <li class="nav-title">i-Complaint</li>
                             <li>
                                 <a href="/main" title="Form" data-filter-tags="form">
@@ -118,8 +118,6 @@
                                     <span class="nav-link-text" data-i18n="nav.form">Form</span>
                                 </a>
                             </li>
-<<<<<<< HEAD
-=======
                             <li>
                                 <a href="/dashboard-aduan-korporat" title="Dashboard Aduan Korporat" data-filter-tags="dashboard">
                                     <i class="fal fa-chart-pie"></i>
@@ -127,7 +125,6 @@
                                 </a>
                             </li>
 
->>>>>>> wip-0001-experimental-vue
 
                             @can('assign department')
                                 <li>
@@ -198,7 +195,7 @@
                                     </ul>
                                 </li>
                             @endcan
-                            
+
                             @role('eAduan (Super Admin)')
                                 <li class="open">
                                     <a href="#" title="Setting" data-filter-tags="setting">
@@ -233,11 +230,6 @@
                         <!-- End eAduan Korporat System -->
 
                         <!-- Start eDocument Management System -->
-<<<<<<< HEAD
-=======
-
-                        <li class="nav-title">eDocument Management</li>
->>>>>>> wip-0001-experimental-vue
                         @role('Staff')
                         <li class="nav-title">eDocument Management</li>
                             <li>
