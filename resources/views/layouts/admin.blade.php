@@ -164,9 +164,9 @@
                             
                             <li class="nav-title">i-Complaint</li>
                             <li>
-                                <a href="/main" title="Form" data-filter-tags="form">
+                                <a href="/iComplaint" title="Form" data-filter-tags="form">
                                     <i class="fal fa-file-alt"></i>
-                                    <span class="nav-link-text" data-i18n="nav.form">Form</span>
+                                    <span class="nav-link-text" data-i18n="nav.form">i-Complaint</span>
                                 </a>
                             </li>
 
@@ -211,7 +211,7 @@
                                 <li class="open">
                                     <a href="#" title="Admin List" data-filter-tags="list">
                                         <i class="fal fa-list"></i>
-                                        <span class="nav-link-text" data-i18n="nav.list">Admin List</span>
+                                        <span class="nav-link-text" data-i18n="nav.list">Complaint List</span>
                                     </a>
                                     <ul>
                                         <li>
@@ -265,6 +265,11 @@
                                         <li>
                                             <a href="/user-category-list" title="User Category" data-filter-tags="usercategory">
                                                 <span class="nav-link-text" data-i18n="nav.usercategory">User Category</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/subcategory-list" title="Sub Category" data-filter-tags="subcategory">
+                                                <span class="nav-link-text" data-i18n="nav.subcategory">Sub Category</span>
                                             </a>
                                         </li>
                                     </ul>

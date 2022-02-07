@@ -527,6 +527,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/update-usercategory', 'AduanKorporatController@updateUserCategory');
     Route::delete('/delete-usercategory/{id}','AduanKorporatController@destroyUserCategory');
 
+    Route::get('subcategory-list', 'AduanKorporatController@subCategory');
+    Route::post('/getSubCat', 'AduanKorporatController@getSubCat');
+    Route::post('/addSubCat', 'AduanKorporatController@addSubCategory');
+    Route::post('/editSubCat', 'AduanKorporatController@editSubCategory');
+
     // Training : Training
     Route::get('/training-list', 'TrainingController@trainingList');
     Route::post('data-training', 'TrainingController@data_training');
@@ -672,7 +677,7 @@ Route::get('get-train-image/{filename}', 'TrainingController@getImage');
 
 // eAduan Korporat Public
 Route::get('/form', 'AduanKorporatController@index');
-Route::get('/main', 'AduanKorporatController@main');
+Route::get('/iComplaint', 'AduanKorporatController@main');
 Route::get('/end/{ticket}', 'AduanKorporatController@end');
 Route::get('/check', 'AduanKorporatController@check');
 Route::get('/search', 'AduanKorporatController@search');
