@@ -1127,7 +1127,6 @@
 
 
 </body>
-@yield('script')
     <script src="{{ asset('js/vendors.bundle.js') }}"></script>
     <script src="{{ asset('js/app.bundle.js') }}"></script>
     <script src="{{ asset('js/datagrid/datatables/datatables.bundle.js') }}"></script>
@@ -1150,6 +1149,8 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/29.1.0/classic/ckeditor.js"></script>
     {{-- <script src="https://cdn.ckeditor.com/ckeditor5/29.1.0/decoupled-document/ckeditor.js"></script> --}}
 <!-- DOC: script to save and load page settings -->
+
+@yield('script')
 <script>
         /**
          *	This script should be placed right after the body tag for fast execution
