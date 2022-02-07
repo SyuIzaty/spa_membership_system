@@ -16,6 +16,7 @@
     <!-- Remove Tap Highlight on Windows Phone IE -->
     <meta name="msapplication-tap-highlight" content="no">
 
+    @yield('css')
     <!-- base css -->
     <link rel="stylesheet" media="screen, print" href="{{ asset('css/vendors.bundle.css') }}">
     <link rel="stylesheet" media="screen, print" href="{{ asset('css/app.bundle.css') }}">
@@ -35,8 +36,6 @@
     <link rel="stylesheet" href="{{ asset('css/formplugins/summernote/summernote-bs4.css') }}">
     <link rel="stylesheet" href="{{ asset('css/indicator.css') }}">
     <link rel="stylesheet" href="{{ asset('css/jquery.fancybox.css') }}" />
-
-    @yield('css')
     <style>
         .highlight {
             font-weight: bolder;
@@ -46,57 +45,7 @@
 </head>
 
 <body class="mod-bg-1 mod-nav-link">
-    <!-- DOC: script to save and load page settings -->
-    <script>
-        /**
-         *	This script should be placed right after the body tag for fast execution
-         *	Note: the script is written in pure javascript and does not depend on thirdparty library
-         **/
-        'use strict';
 
-        var classHolder = document.getElementsByTagName("BODY")[0],
-            /**
-             * Load from localstorage
-             **/
-            themeSettings = (localStorage.getItem('themeSettings')) ? JSON.parse(localStorage.getItem('themeSettings')) :
-            {},
-            themeURL = themeSettings.themeURL || '',
-            themeOptions = themeSettings.themeOptions || '';
-        /**
-         * Load theme options
-         **/
-        if (themeSettings.themeOptions) {
-            classHolder.className = themeSettings.themeOptions;
-            console.log("%c✔ Theme settings loaded", "color: #148f32");
-        } else {
-            console.log("Heads up! Theme settings is empty or does not exist, loading default settings...");
-        }
-        if (themeSettings.themeURL && !document.getElementById('mytheme')) {
-            var cssfile = document.createElement('link');
-            cssfile.id = 'mytheme';
-            cssfile.rel = 'stylesheet';
-            cssfile.href = themeURL;
-            document.getElementsByTagName('head')[0].appendChild(cssfile);
-        }
-        /**
-         * Save to localstorage
-         **/
-        var saveSettings = function() {
-            themeSettings.themeOptions = String(classHolder.className).split(/[^\w-]+/).filter(function(item) {
-                return /^(nav|header|mod|display)-/i.test(item);
-            }).join(' ');
-            if (document.getElementById('mytheme')) {
-                themeSettings.themeURL = document.getElementById('mytheme').getAttribute("href");
-            };
-            localStorage.setItem('themeSettings', JSON.stringify(themeSettings));
-        }
-        /**
-         * Reset settings
-         **/
-        var resetSettings = function() {
-            localStorage.setItem("themeSettings", "");
-        }
-    </script>
     <!-- BEGIN Page Wrapper -->
     <div class="page-wrapper">
         <div class="page-inner">
@@ -161,7 +110,7 @@
                         @endphp
 
                         <!-- Start eAduan Korporat System -->
-                            
+
                             <li class="nav-title">i-Complaint</li>
                             <li>
                                 <a href="/iComplaint" title="Form" data-filter-tags="form">
@@ -169,6 +118,13 @@
                                     <span class="nav-link-text" data-i18n="nav.form">i-Complaint</span>
                                 </a>
                             </li>
+                            <li>
+                                <a href="/dashboard-aduan-korporat" title="Dashboard Aduan Korporat" data-filter-tags="dashboard">
+                                    <i class="fal fa-chart-pie"></i>
+                                    <span class="nav-link-text" data-i18n="nav.dashboard">Dashboard</span>
+                                </a>
+                            </li>
+
 
                             @can('assign department')
                                 <li>
@@ -239,7 +195,7 @@
                                     </ul>
                                 </li>
                             @endcan
-                            
+
                             @role('eAduan (Super Admin)')
                                 <li class="open">
                                     <a href="#" title="Setting" data-filter-tags="setting">
@@ -298,8 +254,40 @@
                         @endrole
 
                             <!-- End eDocument Management System -->
-                            
-                    
+
+                        <!-- Start eDocument Management System -->
+
+                        <li class="nav-title">eVoting</li>
+
+                        @can('eVoting - Management System')
+                        <li>
+                            <a href="/vote-management" title="e-Voting Management" data-filter-tags="vote-management">
+                                <!-- <i class="fal fa-file"></i> -->
+                                <i class="ni ni-briefcase"></i>
+                                <span class="nav-link-text" data-i18n="nav.vote-management">e-Voting Management</span>
+                            </a>
+                        </li>
+                        @endcan
+                        <li>
+                            <a href="/vote-platform" title="e-Voting Platform" data-filter-tags="vote-platform">
+                                <!-- <i class="fal fa-file"></i> -->
+                                <i class="ni ni-envelope-letter"></i>
+                                <span class="nav-link-text" data-i18n="nav.vote-platform">e-Voting Platform</span>
+                            </a>
+                        </li>
+                        @can('eVoting - View Report')
+                        <li>
+                            <a href="/vote-report" title="e-Voting Report" data-filter-tags="vote-report">
+                                <!-- <i class="fal fa-file"></i> -->
+                                <i class="ni ni-doc"></i>
+                                <span class="nav-link-text" data-i18n="nav.vote-report">e-Voting Report</span>
+                            </a>
+                        </li>
+                        @endcan
+
+                        <!-- End eDocument Management System -->
+
+
                         <!-- Start Engagement Management System -->
 
                         @role('Engagement (Admin)|Engagement (Team Member)')
@@ -755,7 +743,7 @@
                         {{-- Start Computer Grant Management --}}
                         @role('Lecturer|Computer Grant (IT Admin)|Computer Grant (Finance Admin)|Super Admin')
                             <li class="nav-title">COMPUTER GRANT MANAGEMENT</li>
-                            
+
                             {{-- User --}}
                             @role('Lecturer|Super Admin')
                                 <li>
@@ -807,22 +795,22 @@
                                         <a href="/all-grant-list/5" title="Agreement Signed" data-filter-tags="signed">
                                             <span class="nav-link-text" data-i18n="nav.signed">Signed Agreement ({{ $grant->countSigned() }})</span>
                                         </a>
-                                    </li>  
+                                    </li>
                                     <li>
                                         <a href="/all-grant-list/6" title="Reimbursement Completed" data-filter-tags="reimbursement">
                                             <span class="nav-link-text" data-i18n="nav.reimbursement">Completed ({{ $grant->countReimbursement() }})</span>
                                         </a>
-                                    </li>  
+                                    </li>
                                     <li>
                                         <a href="/all-grant-list/7" title="Request for Cancellation" data-filter-tags="cancel">
                                             <span class="nav-link-text" data-i18n="nav.cancel">Request Cancellation ({{ $grant->countRequestCancel() }})</span>
                                         </a>
-                                    </li>  
+                                    </li>
                                     <li>
                                         <a href="/all-grant-list/8" title="Request for Cancellation Verified" data-filter-tags="cancelverified">
                                             <span class="nav-link-text" data-i18n="nav.cancelverified">Cancellation Verified ({{ $grant->countCancelVerified() }})</span>
                                         </a>
-                                    </li>   
+                                    </li>
                                 </ul>
                             </li>
                             @endrole
@@ -1053,11 +1041,11 @@
                         <div>
                             <a href="#" data-toggle="dropdown" title="drlantern@gotbootstrap.com"
                                 class="header-icon d-flex align-items-center justify-content-center ml-2">
-                                <img src="{{ asset('img/demo/avatars/avatar-m.png') }}"
+                                <img style="cursor:pointer;" src="{{ asset('img/demo/avatars/avatar-m.png') }}"
                                     class="profile-image rounded-circle" alt="">
                                 <!-- you can also add username next to the avatar with the codes below:
-         <span class="ml-1 mr-1 text-truncate text-truncate-header hidden-xs-down">Me</span>
-         <i class="ni ni-chevron-down hidden-xs-down"></i> -->
+                                <span class="ml-1 mr-1 text-truncate text-truncate-header hidden-xs-down">Me</span>
+                                <i class="ni ni-chevron-down hidden-xs-down"></i> -->
                             </a>
                             <div class="dropdown-menu dropdown-menu-animated dropdown-lg">
                                 <div class="dropdown-header bg-trans-gradient d-flex flex-row py-4 rounded-top">
@@ -1100,6 +1088,7 @@
 
                 <!--@yield('breadcrumbs')-->
                 @yield('content')
+                <router-view></router-view>
 
                 <!-- this overlay is activated only when mobile menu is triggered -->
                 <div class="page-content-overlay" data-action="toggle" data-class="mobile-nav-on"></div>
@@ -1132,6 +1121,13 @@
       + waves.js (extension)
       + smartpanels.js (extension)
       + src/../jquery-snippets.js (core) -->
+
+
+
+
+
+</body>
+@yield('script')
     <script src="{{ asset('js/vendors.bundle.js') }}"></script>
     <script src="{{ asset('js/app.bundle.js') }}"></script>
     <script src="{{ asset('js/datagrid/datatables/datatables.bundle.js') }}"></script>
@@ -1153,8 +1149,57 @@
     <script src="{{ asset('js/jquery.fancybox.js') }}"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/29.1.0/classic/ckeditor.js"></script>
     {{-- <script src="https://cdn.ckeditor.com/ckeditor5/29.1.0/decoupled-document/ckeditor.js"></script> --}}
+<!-- DOC: script to save and load page settings -->
+<script>
+        /**
+         *	This script should be placed right after the body tag for fast execution
+         *	Note: the script is written in pure javascript and does not depend on thirdparty library
+         **/
+        'use strict';
 
-    @yield('script')
+        var classHolder = document.getElementsByTagName("BODY")[0],
+            /**
+             * Load from localstorage
+             **/
+            themeSettings = (localStorage.getItem('themeSettings')) ? JSON.parse(localStorage.getItem('themeSettings')) :
+            {},
+            themeURL = themeSettings.themeURL || '',
+            themeOptions = themeSettings.themeOptions || '';
+        /**
+         * Load theme options
+         **/
+        if (themeSettings.themeOptions) {
+            classHolder.className = themeSettings.themeOptions;
+            console.log("%c✔ Theme settings loaded", "color: #148f32");
+        } else {
+            console.log("Heads up! Theme settings is empty or does not exist, loading default settings...");
+        }
+        if (themeSettings.themeURL && !document.getElementById('mytheme')) {
+            var cssfile = document.createElement('link');
+            cssfile.id = 'mytheme';
+            cssfile.rel = 'stylesheet';
+            cssfile.href = themeURL;
+            document.getElementsByTagName('head')[0].appendChild(cssfile);
+        }
+        /**
+         * Save to localstorage
+         **/
+        var saveSettings = function() {
+            themeSettings.themeOptions = String(classHolder.className).split(/[^\w-]+/).filter(function(item) {
+                return /^(nav|header|mod|display)-/i.test(item);
+            }).join(' ');
+            if (document.getElementById('mytheme')) {
+                themeSettings.themeURL = document.getElementById('mytheme').getAttribute("href");
+            };
+            localStorage.setItem('themeSettings', JSON.stringify(themeSettings));
+        }
+        /**
+         * Reset settings
+         **/
+        var resetSettings = function() {
+            localStorage.setItem("themeSettings", "");
+        }
+    </script>
     <script>
         // var CKEDITOR = require('@ckeditor/ckeditor5-build-[name]');
         // $('.collapsable-list li a').on('click', function() {
@@ -1209,7 +1254,7 @@
             })
         });
     </script>
-    @yield('style')
+     @yield('style')
     <style>
         /* For CKEditor */
 
@@ -1354,7 +1399,5 @@ Preserve the relative scale, though. */
         }
 
     </style>
-
-</body>
 
 </html>

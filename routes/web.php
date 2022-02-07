@@ -17,7 +17,6 @@ Route::get('/', function () {
 
 Route::view('/reset_password', 'auth.passwords.email')->name('reset_password');
 
-Route::get('home', 'DashboardController@index');
 
 Auth::routes();
 
@@ -37,6 +36,7 @@ Route::get('/test', 'ApplicantController@test');
 
 Route::group(['middleware' => 'auth'], function () {
 
+    Route::get('home', 'DashboardController@index');
     // Aduan
     Route::get('/borang-aduan', 'AduanController@borangAduan')->name('borangAduan');
     Route::post('simpanAduan', 'AduanController@simpanAduan');
@@ -632,6 +632,62 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Training : Dashboard
     Route::get('/training-dashboard', 'TrainingController@dashboard')->name('dashList');
+
+
+    // eVotingController
+    Route::get('/candidate-relevant', 'API\eVoting\CandidateController@getCandidateRelevant');
+    Route::post('/candidate-relevant/vote', 'API\eVoting\VoteController@store');
+    Route::post('/candidate-relevant/update', 'API\eVoting\CandidateController@update');
+    Route::post('/candidate-relevant/add', 'API\eVoting\CandidateController@store');
+    Route::delete('/candidate-relevant/{student_id}/{voting_session_id}', 'API\eVoting\CandidateController@destroy');
+    Route::delete('/candidate-category-programme-category/{candidate_category_id}/{programme_category_id}',
+    'API\eVoting\CandidateCategoryProgrammeCategoryController@destroy');
+    Route::get('/vote-status', 'API\eVoting\VoteController@voteStatus');
+    Route::get('/categorical-statistics', 'API\eVoting\VoteController@categoricalStatistics');
+    Route::get('/categorical-report/{voting_session_id}', 'API\eVoting\VoteController@categoricalReport');
+    Route::get('/overall-report/{voting_session_id}', 'API\eVoting\VoteController@overallReport');
+    Route::get('/get-candidate-image', 'API\eVoting\CandidateController@getCandidateImage');
+    Route::get('/vote-is-open', 'API\eVoting\VoteController@getVoteIsOpen');
+    Route::get('/vote-sessions', 'API\eVoting\VoteController@getVoteSessions');
+    Route::get('/vote-sessions/{id}', 'API\eVoting\VoteController@getVoteSessionDetails');
+    Route::get('/students/{id}', 'API\StudentController@show');
+    Route::post('/e-voting/programmes/{programme_id}', 'API\eVoting\ProgrammeController@update');
+    Route::get('/e-voting/programmes', 'API\eVoting\ProgrammeController@index');
+    Route::get('/e-voting/programme-categories', 'API\eVoting\ProgrammeCategoryController@index');
+    Route::post('/e-voting/candidate-category', 'API\eVoting\CandidateCategoryController@store');
+    Route::post('/e-voting/candidate-category/{id}', 'API\eVoting\CandidateCategoryController@update');
+    Route::delete('/e-voting/candidate-category/{id}', 'API\eVoting\CandidateCategoryController@destroy');
+
+    Route::post('/e-voting/candidate-categories-programme-categories', 'API\eVoting\CandidateCategoryProgrammeCategoryController@update');
+    Route::post('/e-voting/session/{session_id}', 'API\eVoting\SessionController@update');
+    Route::post('/e-voting/session', 'API\eVoting\SessionController@store');
+
+
+    Route::get('/vote-platform', function () {
+        return view('e-voting/platform');
+    });
+
+    Route::get('/vote-report', function () {
+        return view('e-voting/report');
+    });
+
+
+    Route::get('/vote-management', function () {
+        return view('e-voting/management');
+    });
+
+    Route::get('/vote-platform/{vue_capture?}',function () {
+        return view('e-voting/platform');
+    })->where('vue_capture', '[\/\w\.-]*');
+
+    Route::get('/vote-report/{vue_capture?}',function () {
+        return view('e-voting/report');
+    })->where('vue_capture', '[\/\w\.-]*');
+
+    Route::get('/vote-management/{vue_capture?}',function () {
+        return view('e-voting/management');
+    })->where('vue_capture', '[\/\w\.-]*');
+
 });
 
 //SCM - Public View
