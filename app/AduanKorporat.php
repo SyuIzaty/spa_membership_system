@@ -37,7 +37,7 @@ class AduanKorporat extends Model
 
     public function getDepartment()
     {
-        return $this->hasOne('App\DepartmentList','id','assign');
+        return $this->hasOne('App\AduanKorporatDepartment','id','assign');
     }
 
     public function getLog()

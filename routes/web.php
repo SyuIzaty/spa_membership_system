@@ -487,6 +487,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/lists/{id}', 'AduanKorporatController@list');
     Route::post('/get-list/{id}', 'AduanKorporatController@show');
     Route::get('/detail/{id}', 'AduanKorporatController@detail');
+    Route::post('/get-department', 'AduanKorporatController@getDept');
     Route::post('/assign-department', 'AduanKorporatController@assign');
     Route::post('/submit-remark', 'AduanKorporatController@remark');
     Route::post('/submit-complete', 'AduanKorporatController@complete');

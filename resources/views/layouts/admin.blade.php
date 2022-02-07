@@ -118,14 +118,7 @@
                                     <span class="nav-link-text" data-i18n="nav.form">i-Complaint</span>
                                 </a>
                             </li>
-                            <li>
-                                <a href="/dashboard-aduan-korporat" title="Dashboard Aduan Korporat" data-filter-tags="dashboard">
-                                    <i class="fal fa-chart-pie"></i>
-                                    <span class="nav-link-text" data-i18n="nav.dashboard">Dashboard</span>
-                                </a>
-                            </li>
-
-
+                           
                             @can('assign department')
                                 <li>
                                     <a href="/dashboard-icomplaint" title="Dashboard i-Complaint" data-filter-tags="dashboard">
