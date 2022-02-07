@@ -364,7 +364,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     //SCM - Feedback
     Route::get('/feedback/form/view/{id}', 'ShortCourseManagement\Feedbacks\FeedbackController@viewForm');
-    Route::get('/feedback/form/participant/{event_participant_id}/{sha1_ic}', 'ShortCourseManagement\Feedbacks\FeedbackController@show');
     Route::post('/feedback/form/submit', 'ShortCourseManagement\Feedbacks\FeedbackController@submit');
     Route::get('/feedback/appreciation', 'ShortCourseManagement\Feedbacks\FeedbackController@appreciation');
     Route::get('/feedback-sets', 'ShortCourseManagement\Feedbacks\FeedbackController@index');
@@ -694,6 +693,8 @@ Route::group(['middleware' => 'auth'], function () {
 Route::get('/category/subcategories/{category_id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\CategoryController@getSubCategories');
 Route::get('/category/subcategory/topics/{subcategory_id}', 'ShortCourseManagement\Catalogues\TopicSubCategoryCategory\SubCategoryController@getTopics');
 Route::get('/participant/search-by-ic/{ic}/event/{event_id}', 'ShortCourseManagement\People\Participant\ParticipantController@searchByIc');
+
+Route::get('/feedback/form/participant/{event_participant_id}/{sha1_ic}', 'ShortCourseManagement\Feedbacks\FeedbackController@show');
 
 Route::get('/participant/get-hash-ic/{ic}', 'ShortCourseManagement\People\Participant\ParticipantController@hashIc');
 Route::post('/event/{event_id}/events-participants/store', 'ShortCourseManagement\EventManagement\EventParticipantController@store');
