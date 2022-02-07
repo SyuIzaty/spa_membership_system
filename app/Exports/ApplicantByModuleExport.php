@@ -21,7 +21,7 @@ use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use DateTime;
 
-class ApplicantByModuleExport implements FromCollection, WithColumnFormatting, WithStyles, WithMapping, WithEvents, ShouldAutoSize
+class ApplicantByModuleExport implements FromCollection, WithStyles, WithMapping, WithEvents, ShouldAutoSize
 {
     /**
      * @return \Illuminate\Support\Collection
@@ -41,13 +41,13 @@ class ApplicantByModuleExport implements FromCollection, WithColumnFormatting, W
 
         return collect($participantList);
     }
-    public function columnFormats(): array
-    {
-        return [
-            'B2:B10' => NumberFormat::FORMAT_TEXT,
-            'D2:D10' => NumberFormat::FORMAT_DATE_DATETIME,
-        ];
-    }
+    // public function columnFormats(): array
+    // {
+    //     return [
+    //         'B2:B10' => NumberFormat::FORMAT_TEXT,
+    //         'D2:D10' => NumberFormat::FORMAT_DATE_DATETIME,
+    //     ];
+    // }
 
     public function styles(Worksheet $sheet)
     {
