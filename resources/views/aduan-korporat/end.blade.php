@@ -36,7 +36,7 @@
                                 <p class="lead"><strong>Please check your email</strong> for any update.</p>
                                 <hr>
                                 <p class="lead">
-                                  <a class="btn btn-primary btn-sm" href="/main" role="button">Continue to homepage</a>
+                                  <a class="btn btn-primary btn-sm" href="/iComplaint" role="button">Continue to homepage</a>
                                 </p>
                               </div>
                         </div>

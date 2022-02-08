@@ -34,8 +34,9 @@ class AduanKorporatController extends Controller
     {
         $userCategory = AduanKorporatUser::all();
         $category = AduanKorporatCategory::all();
+        $subcategory = AduanKorporatSubCategory::all();
 
-        return view('aduan-korporat.form', compact('userCategory','category'));
+        return view('aduan-korporat.form', compact('userCategory','category','subcategory'));
     }
 
     public function main()
@@ -87,6 +88,7 @@ class AduanKorporatController extends Controller
             $data->email         = $request->user_email;
             $data->user_category = $request->userCategory;
             $data->category      = $request->category;
+            $data->subcategory   = $request->subcategory;
             $data->status        = '1';
             $data->title         = $request->title;
             $data->description   = $request->description;
@@ -156,7 +158,7 @@ class AduanKorporatController extends Controller
         {
             $validated = $request->validate([
                 'user_phone'   => 'required|regex:/[0-9]/|min:10|max:11',
-                'other_email'  => 'required|email',
+                'other_email'  => 'required|email:rfc,dns',
                 'ic'           => 'required|regex:/[0-9]/|min:9|max:12',
             ], [
                 'user_phone.min'      => 'Phone number does not match the format!',
@@ -179,6 +181,7 @@ class AduanKorporatController extends Controller
             $data->email         = $request->other_email;
             $data->user_category = $request->userCategory;
             $data->category      = $request->category;
+            $data->subcategory   = $request->subcategory;
             $data->status        = '1';
             $data->title         = $request->title;
             $data->description   = $request->description;
@@ -321,6 +324,11 @@ class AduanKorporatController extends Controller
             return $list->getCategory->description ?? '';            
         })
 
+        ->editColumn('subcategory', function ($list) {
+
+            return $list->getSubCategory->description ?? 'N/A';            
+        })
+
         ->editColumn('user', function ($list) {
 
             return $list->getUserCategory->description ?? '';            
@@ -431,7 +439,7 @@ class AduanKorporatController extends Controller
             AduanKorporatLog::create([
                 'complaint_id'  => $request->id,
                 'name'          => $user->name,
-                'activity'      => 'Sent remark',
+                'activity'      => 'Sent Feedback',
                 'created_by'    => Auth::user()->id
             ]);
     

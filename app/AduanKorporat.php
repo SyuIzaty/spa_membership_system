@@ -12,7 +12,7 @@ class AduanKorporat extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
         'ticket_no', 'staff_id', 'student_id', 'name', 'ic', 'phone_no', 'address','email','user_category',
-        'category', 'status', 'assign', 'title', 'description', 'created_by', 'updated_by', 'deleted_by'
+        'category', 'subcategory', 'status', 'assign', 'title', 'description', 'created_by', 'updated_by', 'deleted_by'
     ];
 
     public function getAdmin()
@@ -33,6 +33,11 @@ class AduanKorporat extends Model
     public function getCategory()
     {
         return $this->hasOne('App\AduanKorporatCategory','id','category');
+    }
+
+    public function getSubCategory()
+    {
+        return $this->hasOne('App\AduanKorporatSubCategory','id','subcategory');
     }
 
     public function getDepartment()

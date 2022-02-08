@@ -126,14 +126,15 @@
                                         <span class="nav-link-text" data-i18n="nav.dashboard">Dashboard</span>
                                     </a>
                                 </li>
-
+                            @endcan
+                            @role('eAduan (Super Admin)')
                                 <li>
                                     <a href="/reports" title="Report" data-filter-tags="report">
                                         <i class="fal fa-clipboard-list"></i>
                                         <span class="nav-link-text" data-i18n="nav.report">Report</span>
                                     </a>
                                 </li>
-                            @endcan
+                            @endrole
 
                             @can('take action')
                                 <li class="open">

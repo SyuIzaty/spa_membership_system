@@ -127,6 +127,17 @@
                                                         </select>
                                                     </td>
                                                 </tr>
+                                                <tr>
+                                                    <td width="20%" style="vertical-align: middle"><label class="form-label" for="subcategory">Sub Category</label></td>
+                                                    <td colspan="6">
+                                                        <select class="form-control subcategory" name="subcategory" id="subcategory">
+                                                            <option disabled selected value="">Please select</option>
+                                                            @foreach ($subcategory as $sc) 
+                                                                <option value="{{ $sc->id }}" @if (old('subcategory') == $sc->id) selected="selected" @endif>{{ $sc->description }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                </tr>
                                             </thead>
                                         </table>
                                     </div>
@@ -303,6 +314,7 @@
         $("#user_phone").val("");
         $("#user_email").val("");
         $("#category").val("");
+        $("#subcategory").val("");
         $("#title").val("");
         $("#ic").val("");
         $("#other_name").val("");
@@ -324,6 +336,7 @@
         $('#user_email').val('{{ old('user_email') }}');
         $('#title').val('{{ old('title') }}');
         $('#category').val('{{ old('category') }}');
+        $('#subcategory').val('{{ old('category') }}');
         $('#ic').val('{{ old('ic') }}');
         $('#other_name').val('{{ old('other_name') }}');
         $('#other_email').val('{{ old('other_email') }}');

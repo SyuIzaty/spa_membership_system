@@ -41,6 +41,7 @@
                                             <th class="text-center">Contact No.</th>
                                             <th class="text-center">Title</th>
                                             <th class="text-center">Category</th>
+                                            <th class="text-center">Sub Category</th>
                                             <th class="text-center">User Category</th>
                                             <th class="text-center">Status</th>
                                             <th class="text-center">Assigned Department</th>
@@ -49,6 +50,7 @@
                                     </thead>
                                     <tbody>
                                         <tr>
+                                            <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
                                             <td class="hasinput"></td>
@@ -96,6 +98,7 @@
                 { className: 'text-center', data: 'phone', name: 'phone' },
                 { className: 'text-left', data: 'title', name: 'title' },
                 { className: 'text-center', data: 'category', name: 'category' },
+                { className: 'text-center', data: 'subcategory', name: 'subcategory' },
                 { className: 'text-center', data: 'user', name: 'user' },
                 { className: 'text-center', data: 'status', name: 'status' },
                 { className: 'text-center', data: 'assign', name: 'assign' },

@@ -153,43 +153,52 @@
                                 @endif
 
                                 @if ($data->status == '2')
-                                        @can('take action')
-                                                <div class="table-responsive">
-                                                    <table class="table table-bordered table-hover table-striped w-100">
-                                                        <thead>
-                                                            <tr>
-                                                                <td colspan="5" class="bg-info-50">
-                                                                    <label class="form-label"><i class="fal fa-comment-alt"></i> FEEDBACK: 
-                                                                        @can('assign department')
-                                                                            <form id="changedept" style="display: inline-block;">
-                                                                                @csrf
-                                                                                <input type="hidden" id="id" name="id" value="{{ $data->id }}">
-                                                                                <select name="department" id="department" >
-                                                                                    <option disabled selected>Select Department</option>
-                                                                                    @foreach ($department as $d)
-                                                                                        <option value="{{ $d->id }}" {{ $data->assign == $d->id  ? 'selected' : '' }}>{{ $d->name }}</option>
-                                                                                    @endforeach
-                                                                                </select>
-                                                                                <button type="submit" id="submitDept" class="btn btn-primary btn-xs float-right waves-effect waves-themed" style="display: none;"><i class="fal fa-times-circle"></i> Change</button>
-                                                                            </form>
-                                                                        @endcan
-                                                                    </label>
-                                                                </td>
-                                                            </tr>
-                                                            <form id="formRemark">
-                                                                @csrf                
-                                                                <input type="hidden" id="id" name="id" value="{{ $data->id }}">
-                                                                <tr>
-                                                                    <td colspan="4" style="vertical-align: middle">
-                                                                        <textarea value="{{ old('remark') }}" class="form-control summernote" id="remark" name="remark"></textarea>                                        
-                                                                    </td>
-                                                                </tr>
-                                                        </thead>
-                                                    </table>
-                                                </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover table-striped w-100">
+                                            <thead>
+                                                @can('assign department')
+                                                    <tr>
+                                                        <td colspan="5" class="bg-info-50">
+                                                            <label class="form-label"><i class="fal fa-comment-alt"></i> FEEDBACK: 
+                                                                    <form id="changedept" style="display: inline-block;">
+                                                                        @csrf
+                                                                        <input type="hidden" id="id" name="id" value="{{ $data->id }}">
+                                                                        <select  name="department" id="department" >
+                                                                            <option disabled selected>Select Department</option>
+                                                                            @foreach ($department as $d)
+                                                                                <option value="{{ $d->id }}" {{ $data->assign == $d->id  ? 'selected' : '' }}>{{ $d->name }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                        <button type="submit" id="submitDept" class="btn btn-primary btn-xs float-right waves-effect waves-themed" style="display: none; margin-top: 5px;"><i class="fal fa-times-circle"></i> Change</button>
+                                                                    </form>
+                                                            </label>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>      
+                                                        <td colspan="5" class="bg-warning-50" style="vertical-align: middle">Department assignation can still be changed if still no feedback yet.</td>
+                                                    </tr>
+                                                @endcan
+                                                @can('take action')
+                                                    <tr>
+                                                        <td colspan="5" class="bg-info-50">
+                                                            <label class="form-label"><i class="fal fa-comment-alt"></i> FEEDBACK: </label>
+                                                        </td>
+                                                    </tr>
+                                                    <form id="formRemark">
+                                                        @csrf                
+                                                        <input type="hidden" id="id" name="id" value="{{ $data->id }}">
+                                                        <tr>
+                                                            <td colspan="4" style="vertical-align: middle">
+                                                                <textarea value="{{ old('remark') }}" class="form-control summernote" id="remark" name="remark"></textarea>                                        
+                                                                <br>
                                                                 <button type="submit" class="btn btn-success ml-auto float-right mr-2 waves-effect waves-themed" id="remarks" style="margin-bottom: 20px;"><i class="fal fa-times-circle"></i> Submit</button>
-                                                            </form>
-                                        @endcan
+                                                            </td>
+                                                        </tr>
+                                                    </form>
+                                                @endcan
+                                            </thead>
+                                        </table>
+                                    </div>                                       
                                 @endif
 
                                 @if ($data->status == '3' || $data->status == '4')
@@ -232,13 +241,12 @@
                                                                     <textarea class="form-control summernote" id="adminremarks" name="adminremarks" required>{!! nl2br($dataRemark->remark) !!}</textarea>                                        
                                                                     <br>
                                                                     <p class="form-label" for="check"><input type="checkbox" name="check" checked> Notify user by email</p> 
+                                                                    <button type="submit" class="btn btn-success ml-auto float-right mr-2 waves-effect waves-themed" id="adminremark"><i class="fal fa-times-circle"></i> Complete</button>
                                                                 </td>
                                                             </tr>
-                                                           
                                                         </thead>
                                                     </table>
                                                 </div>
-                                                <button type="submit" class="btn btn-success ml-auto float-right mr-2 waves-effect waves-themed" id="adminremark" style="margin-bottom: 15px; margin-top: 15px;"><i class="fal fa-times-circle"></i> Complete</button>
                                             </form>
                                         @endcan
                                     @endif
@@ -278,9 +286,11 @@
 
 @section('script')
 <script>
-        
-        $('#department').select2();
-
+        $('#department').select2({
+            placeholder: "Select Department",
+            allowClear: true,
+            width: "100%"
+        });
 
         $('.summernote').summernote({
             height: 200,
@@ -451,9 +461,7 @@
 
         $(function() { 
             $(document).on('change','#department',function(){
-
                 $("#submitDept").show();
-
             });
         });
 
