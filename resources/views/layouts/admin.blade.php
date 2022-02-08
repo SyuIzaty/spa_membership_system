@@ -149,7 +149,7 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/lists/complete" title="Complete List" data-filter-tags="complete">
+                                            <a href="/lists/4" title="Complete List" data-filter-tags="complete">
                                                 <span class="nav-link-text" data-i18n="nav.complete">Complete</span>
                                             </a>
                                         </li>
@@ -159,7 +159,7 @@
 
                             @can('assign department')
                                 <li class="open">
-                                    <a href="#" title="Admin List" data-filter-tags="list">
+                                    <a href="#" title="Complaint List" data-filter-tags="list">
                                         <i class="fal fa-list"></i>
                                         <span class="nav-link-text" data-i18n="nav.list">Complaint List</span>
                                     </a>

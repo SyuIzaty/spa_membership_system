@@ -268,14 +268,7 @@ class AduanKorporatController extends Controller
 
     public function show($id)
     {
-        if ($id == 'complete')
-        {
-            $list = AduanKorporat::wherehas('getAdmin', function($query){
-                $query->where('admin_id', Auth::user()->id);
-            })->orderby('created_at','DESC')->get();   
-        }
-
-        else if( Auth::user()->hasAnyRole('eAduan (Super Admin)','eAduan (Admin)' ) )
+        if ( Auth::user()->hasAnyRole('eAduan (Super Admin)','eAduan (Admin)' ) )
         {
             $list = AduanKorporat::where('status', $id)->orderby('created_at','DESC')->get();
         }
@@ -509,7 +502,7 @@ class AduanKorporatController extends Controller
     
                     $data = [
                         'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $update->name,
-                        'emel'     => 'You have received feedback for iComplaint ['.$update->ticket_no.'] on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Kindly check in https://iComplaint.intec.edu.my/',
+                        'emel'     => 'You have received feedback for iComplaint ['.$update->ticket_no.'] on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Kindly check in https://ids.intec.edu.my/iComplaint',
                     ];
     
                     Mail::send('aduan-korporat.email_user', $data, function ($message) use ($user_email) {
@@ -1015,10 +1008,6 @@ class AduanKorporatController extends Controller
         $exist = AduanKorporatAdmin::where('id',$id)->first();
         $exist->delete();
         $exist->update(['deleted_by' => Auth::user()->id]);
-
-        $user = User::find($exist->admin_id);
-
-        $user->removeRole('eAduan (Team)');
 
         return response()->json(['success' => 'Deleted!']);
     }
