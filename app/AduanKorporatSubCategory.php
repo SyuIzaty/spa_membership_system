@@ -15,6 +15,6 @@ class AduanKorporatSubCategory extends Model
 
     public function complaint()
     {
-        return $this->hasMany('App\AduanKorporat', 'category', 'id');
+        return $this->hasMany('App\AduanKorporat', 'subcategory', 'id');
     }
 }

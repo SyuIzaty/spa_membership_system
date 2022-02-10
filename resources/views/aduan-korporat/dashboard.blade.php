@@ -19,10 +19,8 @@
                         <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10" data-original-title="Close"></button>
                     </div>
                 </div>
-            
                 <div class="panel-container show">
                     <div class="panel-content">
-                        
                         <div class="card">
                             <div class="card-header">
                             <div class="card-tools">
@@ -66,6 +64,14 @@
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <div class="table-responsive" style="overflow:hidden;">
+                                                    <div id="chart4" style="height: 700px"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr style="border-top: 1px solid #b9b8b8;">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="table-responsive" style="overflow:hidden;">
                                                     <div id="chart3" style="height: 700px"></div>
                                                 </div>
                                             </div>
@@ -74,13 +80,11 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
 </main>
 @endsection
 
@@ -89,6 +93,7 @@
 <script>
 
     $(function () {    
+        //chart1
         var userCategory = <?php echo $userCategory; ?>;
         console.log(userCategory);
         google.charts.load('current', {'packages':['corechart']});
@@ -113,6 +118,7 @@
             chart.draw(data, options);
         }
 
+        //chart2
         var category = <?php echo $category; ?>;
         console.log(category);
         google.charts.load('current', {'packages':['corechart']});
@@ -137,6 +143,7 @@
             chart.draw(data, options);
         }
 
+        //chart3
         var department = <?php echo $department; ?>;
         console.log(department);
         google.charts.load('current', {'packages':['corechart']});
@@ -160,7 +167,31 @@
             var chart = new google.visualization.BarChart(document.getElementById('chart3'));
             chart.draw(data, options);
         }
+        
+        //chart4
+        var subcategory = <?php echo $subcategory; ?>;
+        console.log(subcategory);
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(barchart4);
 
+        function barchart4() {
+            var data = google.visualization.arrayToDataTable(subcategory);
+            var options = {
+            title: 'REPORT BASED ON SUBCATEGORY',
+            titleTextStyle: {
+                color: '333333',
+                fontName: 'Arial',
+                fontSize: 16,
+            },
+            bar: {groupWidth: "50%"},
+            borderColor: 
+                'rgb(135, 48, 14)',
+            legend: { position: 'bottom'},
+            colors: ['#ADDCF4'],
+            } 
+            var chart = new google.visualization.BarChart(document.getElementById('chart4'));
+            chart.draw(data, options);
+        }
     })
 
     $(document).ready(function() {

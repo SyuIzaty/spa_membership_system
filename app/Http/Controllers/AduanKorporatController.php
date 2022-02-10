@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Maatwebsite\Excel\Facades\Excel;
 use App\AduanKorporat;
 use App\AduanKorporatStatus;
 use App\AduanKorporatCategory;
@@ -21,7 +21,9 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-
+use App\Exports\iComplaintExport;
+use App\Exports\iComplaintExportByYear;
+use App\Exports\iComplaintExportByYearMonth;
 
 class AduanKorporatController extends Controller
 {
@@ -502,7 +504,7 @@ class AduanKorporatController extends Controller
     
                     $data = [
                         'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $update->name,
-                        'emel'     => 'You have received feedback for iComplaint ['.$update->ticket_no.'] on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Kindly check in https://ids.intec.edu.my/iComplaint',
+                        'emel'     => 'You have received a feedback in iComplaint ['.$update->ticket_no.'] on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Kindly check in: https://ids.intec.edu.my/iComplaint',
                     ];
     
                     Mail::send('aduan-korporat.email_user', $data, function ($message) use ($user_email) {
@@ -648,13 +650,19 @@ class AduanKorporatController extends Controller
             $countCategory[++$key] = [$value->description, (int)$value->complaint_count];
         }
 
+        $subcategory = AduanKorporatSubCategory::select('id', 'description')->withCount('complaint')->orderBy('description', 'ASC')->get();
+
+        $countSubCategory[] = ['Category','Total'];
+        foreach ($subcategory as $key => $value) {
+            $countSubCategory[++$key] = [$value->description, (int)$value->complaint_count];
+        }
+
         $department = AduanKorporatDepartment::select('id', 'name')->withCount('complaint')->orderBy('name', 'ASC')->get();
 
         $countDepartment[] = ['Category','Total'];
         foreach ($department as $key => $value) {
             $countDepartment[++$key] = [ucwords(strtolower($value->name)), (int)$value->complaint_count];
         }
-
 
         $year = AduanKorporat::orderBy('created_at', 'ASC')
                 ->pluck('created_at')
@@ -664,7 +672,7 @@ class AduanKorporatController extends Controller
                 })
                 ->unique(); //year selection
 
-        return view('aduan-korporat.dashboard', compact('year'))->with('userCategory',json_encode($countUserCat))->with('category',json_encode($countCategory))->with('department',json_encode($countDepartment));
+        return view('aduan-korporat.dashboard', compact('year'))->with('userCategory',json_encode($countUserCat))->with('category',json_encode($countCategory))->with('subcategory',json_encode($countSubCategory))->with('department',json_encode($countDepartment));
     }
 
     public function getDashboard(Request $request)
@@ -727,9 +735,19 @@ class AduanKorporatController extends Controller
         return response() ->json(['success' => 'Changes Saved!']);
     }
 
-    public function aduanKorporatExport($id)
+    public function iComplaintReport()
     {
-        return Excel::download(new aduanKorporatExport($id),'Aduan Korporat Report.xlsx');
+        return Excel::download(new iComplaintExport(),'iComplaint Full Report.xlsx');
+    }
+
+    public function iComplaintReportYear($year)
+    {
+        return Excel::download(new iComplaintExportByYear($year),'iComplaint Report '.$year.'.xlsx');
+    }
+
+    public function iComplaintReportYearMonth($year,$month)
+    {
+        return Excel::download(new iComplaintExportByYearMonth($year,$month),'iComplaint Report '.$month.' '.$year.'.xlsx');
     }
 
     public function reports()
@@ -837,6 +855,84 @@ class AduanKorporatController extends Controller
 
         return response()->json($month);
     }
+
+    public function getReportYear(Request $request)
+    {
+        $list = AduanKorporat::whereYear('created_at', '=', $request->year)->get();
+
+        return datatables()::of($list)
+
+        ->editColumn('ticket_no', function ($list) {
+
+            return $list->ticket_no;            
+        })
+
+        ->editColumn('date', function ($list) {
+
+            $date = new DateTime($list->created_at);
+
+            $date = $date->format('d-m-Y');
+
+            return $date;            
+        })
+
+        ->editColumn('category', function ($list) {
+
+            return $list->getCategory->description ?? '';            
+        })
+
+        ->editColumn('user', function ($list) {
+
+            return $list->getUserCategory->description ?? '';            
+        })
+
+        ->editColumn('status', function ($list) {
+
+            return $list->getStatus->description ?? '';            
+        })
+
+        ->editColumn('department', function ($list) {
+
+            return isset($list->getDepartment->name) ? $list->getDepartment->name : 'N/A';            
+        })
+
+        ->editColumn('complete', function ($list) {
+
+            $date = AduanKorporatLog::where('complaint_id',$list->id)->where('activity','Completed');
+            if ($date->exists()) {
+                
+                $date = new DateTime($date->first()->created_at);
+
+                $d = $date->format('d-m-Y');
+    
+                return $d;            
+            }
+
+            else
+            {
+                return "N/A";
+            }
+        })
+
+        ->editColumn('duration', function ($list) {
+
+            $date = AduanKorporatLog::where('complaint_id',$list->id)->where('activity','Completed');
+            
+            if ($date->exists()) {
+                
+                return Carbon::parse($list->created_at)->diffInDays($date->first()->created_at)." days";
+            }
+
+            else
+            {
+                return Carbon::parse($list->created_at)->diffInDays(Carbon::now()->toDateTimeString())." days";
+            }
+        })
+
+        ->addIndexColumn()
+        ->make(true);
+    }
+
 
     public function getReport(Request $request)
     {
