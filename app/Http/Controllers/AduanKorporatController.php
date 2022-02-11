@@ -270,7 +270,7 @@ class AduanKorporatController extends Controller
 
     public function show($id)
     {
-        if ( Auth::user()->hasAnyRole('eAduan (Super Admin)','eAduan (Admin)' ) )
+        if ( Auth::user()->hasAnyRole('eAduan Super Admin','eAduan Admin' ) )
         {
             $list = AduanKorporat::where('status', $id)->orderby('created_at','DESC')->get();
         }
@@ -1076,9 +1076,9 @@ class AduanKorporatController extends Controller
 
                 $user = User::find($value);
 
-                if(!$user->hasRole('eAduan (Team)'))
+                if(!$user->hasRole('eAduan Team'))
                 {
-                    $user->assignRole('eAduan (Team)');
+                    $user->assignRole('eAduan Team');
                 }
             }
         }
@@ -1104,6 +1104,10 @@ class AduanKorporatController extends Controller
         $exist = AduanKorporatAdmin::where('id',$id)->first();
         $exist->delete();
         $exist->update(['deleted_by' => Auth::user()->id]);
+
+        $user = User::find($exist->admin_id);
+
+        $user->removeRole('eAduan Team');
 
         return response()->json(['success' => 'Deleted!']);
     }

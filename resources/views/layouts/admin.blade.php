@@ -113,7 +113,7 @@
 
                             <li class="nav-title">i-Complaint</li>
                             <li>
-                                <a href="/iComplaint" title="Form" data-filter-tags="form">
+                                <a href="/iComplaint"  style="text-decoration: none!important;" title="Form" data-filter-tags="form" target="_blank">
                                     <i class="fal fa-file-alt"></i>
                                     <span class="nav-link-text" data-i18n="nav.form">i-Complaint</span>
                                 </a>
@@ -126,15 +126,14 @@
                                         <span class="nav-link-text" data-i18n="nav.dashboard">Dashboard</span>
                                     </a>
                                 </li>
-                            @endcan
-                            @role('eAduan (Super Admin)')
+                           
                                 <li>
                                     <a href="/reports" title="Report" data-filter-tags="report">
                                         <i class="fal fa-clipboard-list"></i>
                                         <span class="nav-link-text" data-i18n="nav.report">Report</span>
                                     </a>
                                 </li>
-                            @endrole
+                            @endcan
 
                             @can('take action')
                                 <li class="open">
@@ -190,7 +189,7 @@
                                 </li>
                             @endcan
 
-                            @role('eAduan (Super Admin)')
+                            @role('eAduan Super Admin')
                                 <li class="open">
                                     <a href="#" title="Setting" data-filter-tags="setting">
                                         <i class="fal fa-cogs"></i>
