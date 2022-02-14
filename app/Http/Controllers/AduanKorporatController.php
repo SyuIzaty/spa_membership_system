@@ -149,7 +149,7 @@ class AduanKorporatController extends Controller
     
                 Mail::send('aduan-korporat.email', $data, function ($message) use ($admin_email) {
                     $message->subject('New iComplaint');
-                    $message->from('corporate@intec.edu.my');
+                    $message->from('ITadmin@intec.edu.my');
                     $message->to($admin_email);
                 });
             }    
