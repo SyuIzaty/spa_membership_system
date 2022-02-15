@@ -144,7 +144,7 @@ class AduanKorporatController extends Controller
     
                 $data = [
                     'receiver' => 'Assalamualaikum & Good Day, Sir/Madam/Mrs./Mr./Ms. ' . $a->name,
-                    'emel'     => 'You have received new iComplaint from '.$request->user_name.' on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Please log in to the IDS system for further action.',
+                    'emel'     => 'You have received new iComplaint from '.$request->user_name.' on '.date(' j F Y ', strtotime(Carbon::now()->toDateTimeString())).'. Please log in to the IDS system for further action. https://ids.intec.edu.my/login',
                 ];
     
                 Mail::send('aduan-korporat.email', $data, function ($message) use ($admin_email) {
