@@ -1040,13 +1040,13 @@ class TrainingController extends Controller
 
                     foreach($request->input('staff_id') as $key => $value) {
 
-                        $exists = TrainingClaim::where('training_id', $request->training_id)->where('staff_id', $value)->first();
+                        // $exists = TrainingClaim::where('training_id', $request->training_id)->where('staff_id', $value)->first();
 
-                        if(!isset($exists)) {
+                        // if(!isset($exists)) {
 
                             $claim = TrainingClaim::create([
                                 'staff_id'          => $value,
-                                'training_id'       => $train->id,
+                                'training_id'       => '0',
                                 'title'             => strtoupper($request->title),
                                 'type'              => $request->type,
                                 'category'          => $request->category,
@@ -1078,7 +1078,7 @@ class TrainingController extends Controller
                                     ]);
                                 }
                             }
-                        }
+                        // }
                     }
 
             } else {
