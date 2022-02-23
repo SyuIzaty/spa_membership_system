@@ -1098,7 +1098,7 @@ class TrainingController extends Controller
                         'claim_hour'    => 'required',
                     ]);
             
-                    Excel::import(new BulkClaimImport($train->id, $request->title, $request->type, $request->category, $request->start_date, $request->end_date, $request->start_time, 
+                    Excel::import(new BulkClaimImport($request->title, $request->type, $request->category, $request->start_date, $request->end_date, $request->start_time, 
                     $request->end_time, $request->venue, $request->claim_hour), request()->file('import_file'));
             }
 

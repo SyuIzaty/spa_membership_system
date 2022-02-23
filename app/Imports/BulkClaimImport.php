@@ -18,9 +18,8 @@ use Maatwebsite\Excel\Concerns\WithStartRow;
 
 class BulkClaimImport implements ToModel, WithHeadingRow, WithValidation, WithStartRow
 {
-    public function __construct($id, $title, $type, $category, $start_date, $end_date, $start_time, $end_time, $venue, $claim_hour)
+    public function __construct($title, $type, $category, $start_date, $end_date, $start_time, $end_time, $venue, $claim_hour)
     {
-        $this->id = $id;
         $this->title = $title;
         $this->type = $type;
         $this->category = $category;
@@ -44,13 +43,13 @@ class BulkClaimImport implements ToModel, WithHeadingRow, WithValidation, WithSt
     
     public function model(array $row)
     {
-        $exists = TrainingClaim::where('training_id', $this->id)->where('staff_id', $row['staff_id'])->first();
+        // $exists = TrainingClaim::where('training_id', $this->id)->where('staff_id', $row['staff_id'])->first();
 
-        if(!isset($exists)) {
+        // if(!isset($exists)) {
 
             $claim = TrainingClaim::create([
                 'staff_id'          => $row['staff_id'],
-                'training_id'       => $this->id,
+                'training_id'       => '0',
                 'title'             => $this->title,
                 'type'              => $this->type,
                 'category'          => $this->category,
@@ -81,7 +80,7 @@ class BulkClaimImport implements ToModel, WithHeadingRow, WithValidation, WithSt
                     ]);
                 }
             }
-        }
+        // }
     }
 
     public function rules(): array
